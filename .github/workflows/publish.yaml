@@ -1,0 +1,27 @@
+﻿name: publish
+on: workflow_dispatch
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.0.x'
+      
+      # https://github.com/dawidd6/action-download-artifact
+      - name: Download artifact
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: build.yaml
+          workflow_conclusion: success
+          path: packages
+
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: packages
+
+      - name: Push to NuGet
+        run: dotnet nuget push "packages/package/*.nupkg" -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}

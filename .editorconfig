@@ -1,0 +1,6 @@
+﻿[*]
+end_of_line = crlf
+insert_final_newline = true
+
+[*.cs]
+place_attribute_on_same_line = never

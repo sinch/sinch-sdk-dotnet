@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Nullable>disable</Nullable>
+        <TargetFrameworks>net7.0;net6.0;net5.0</TargetFrameworks>
+        <RepositoryUrl>https://github.com/sinch/sinch-sdk-dotnet</RepositoryUrl>
+        <Version>0.1.0</Version>
+        <Title>Sinch</Title>
+        <Authors>Volodymyr Lisovskyi</Authors>
+        <Description>Sinch REST API SDK to work with sms, messaging, numbers, verification and more.</Description>
+        <PackageProjectUrl>https://developers.sinch.com/</PackageProjectUrl>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageTags>sinch,sms,numbers,verification,messaging,voice</PackageTags>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Remove="Sinch.Tests\**" />
+        <Compile Remove="TestAcomponator\**" />
+        <EmbeddedResource Remove="Sinch.Tests\**" />
+        <EmbeddedResource Remove="TestAcomponator\**" />
+        <None Remove="Sinch.Tests\**" />
+        <None Remove="TestAcomponator\**" />
+        <None Include="icon.png" Pack="true" Visible="false" PackagePath="\" />
+        <None Include="..\..\README.md" Pack="true" Visible="false" PackagePath="\" />
+        <None Include="..\..\LICENSE" Pack="true" Visible="false" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>Sinch.Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+</Project>
