@@ -16,7 +16,7 @@ namespace Sinch.Numbers.Active
         public string PhoneNumber { get; set; }
 #endif
 
-            /// <summary>
+        /// <summary>
         ///     Project ID. Your project ID can be found on your
         ///     <see href="https://dashboard.sinch.com/settings/project-management">Sinch Customer Dashboard</see>
         /// </summary>
