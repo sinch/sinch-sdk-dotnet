@@ -34,14 +34,14 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        run: dotnet build -p:Version=${{ steps.gitversion.outputs.semVer }} --configuration Release --no-restore
+        run: dotnet build -p:Version=${{ steps.gitversion.outputs.semVer }}-alpha --configuration Release --no-restore
 
       - name: Test
         run: dotnet test --no-restore --verbosity normal --framework ${{ matrix.dotnet-version.tfm }}
       
       # --include-symbols?
       - name: Pack
-        run: dotnet pack --configuration Release src/Sinch -p:PackageVersion=${{ steps.gitversion.outputs.semVer }} --no-restore
+        run: dotnet pack --configuration Release src/Sinch -p:PackageVersion=${{ steps.gitversion.outputs.semVer }}-alpha --no-restore
 
       - name: Archive nuget packages
         uses: actions/upload-artifact@v3
