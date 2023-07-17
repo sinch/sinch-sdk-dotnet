@@ -1,8 +1,5 @@
 ﻿name: build
-on: 
-  push:
-    tags-ignore:
-      - '**'
+on: [ push, pull_request ]
 
 jobs:
   build:
