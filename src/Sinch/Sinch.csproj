@@ -10,6 +10,7 @@
         <Description>Sinch REST API SDK to work with sms, messaging, numbers, verification and more.</Description>
         <PackageProjectUrl>https://developers.sinch.com/</PackageProjectUrl>
         <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageTags>sinch,sms,numbers,verification,messaging,voice</PackageTags>
         <RepositoryType>git</RepositoryType>
