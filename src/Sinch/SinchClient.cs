@@ -107,6 +107,21 @@ namespace Sinch
         }
 
         /// <summary>
+        /// For E2E tests only. Here you can override base addresses.
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="authUri"></param>
+        /// <param name="numbersBaseAddress"></param>
+        internal SinchClient(string projectId, Uri authUri, Uri numbersBaseAddress)
+        {
+            var http = new HttpClient();
+            var auth = new Auth.Auth(authUri, http);
+            var httpCamelCase = new Http(auth, http, null,
+                JsonNamingPolicy.CamelCase);
+            Numbers = new Numbers.Numbers(projectId, numbersBaseAddress, null, httpCamelCase);
+        }
+
+        /// <summary>
         ///     Only two regions are available for single-account model. it's eu, us.
         ///     So, we should map other regions provided in docs to nearest server.
         ///     See: https://developers.sinch.com/docs/sms/api-reference/#base-url
