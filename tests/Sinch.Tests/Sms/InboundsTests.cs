@@ -55,8 +55,8 @@ namespace Sinch.Tests.Sms
             var url = $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/inbounds";
             url += "?page=3";
             url += "&to=%2B123,%2B456";
-            url += "&start_date=2019-08-24T14%3A15%3A22.5420000";
-            url += "&end_date=2019-08-24T14%3A15%3A22.5420000";
+            url += "&start_date=2019-08-24T14%3A15%3A22.5420000Z";
+            url += "&end_date=2019-08-24T14%3A15%3A22.5420000Z";
             url += "&client_reference=icr";
             HttpMessageHandlerMock
                 .When(HttpMethod.Get, url)
@@ -71,7 +71,7 @@ namespace Sinch.Tests.Sms
                         Inbound()
                     }
                 }));
-            var date = new DateTime(2019, 8, 24, 14, 15, 22, 542);
+            var date = new DateTime(2019, 8, 24, 14, 15, 22, 542, DateTimeKind.Utc);
             var request = new Request
             {
                 Page = 3,

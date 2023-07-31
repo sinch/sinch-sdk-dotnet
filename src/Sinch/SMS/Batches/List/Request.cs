@@ -15,7 +15,7 @@ namespace Sinch.SMS.Batches.List
         /// <summary>
         ///     Determines the size of a page.
         /// </summary>
-        public int PageSize { get; set; } = 10;
+        public int? PageSize { get; set; }
 
         /// <summary>
         ///     Only list messages sent from this sender number.
@@ -26,7 +26,7 @@ namespace Sinch.SMS.Batches.List
         /// <summary>
         ///     Only list messages received at or after this date/time.
         /// </summary>
-        public DateTime? StartDate { get; set; } = DateTime.Now.AddDays(-1);
+        public DateTime? StartDate { get; set; }
 
         /// <summary>
         ///     Only list messages received before this date/time.
@@ -42,7 +42,12 @@ namespace Sinch.SMS.Batches.List
         {
             var kvp = new List<KeyValuePair<string, string>>();
             kvp.Add(new KeyValuePair<string, string>("page", Page.ToString()));
-            kvp.Add(new KeyValuePair<string, string>("page_size", PageSize.ToString()));
+            
+            if (PageSize.HasValue)
+            {
+                kvp.Add(new KeyValuePair<string, string>("page_size", PageSize.ToString()));
+            }
+
             if (From?.Any() is true) kvp.Add(new KeyValuePair<string, string>("from", string.Join(',', From)));
 
             if (StartDate.HasValue)

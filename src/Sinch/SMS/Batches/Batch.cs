@@ -14,13 +14,13 @@ namespace Sinch.SMS.Batches
         ///     List of Phone numbers and group IDs that will receive the batch.
         ///     <see href="https://community.sinch.com/t5/Glossary/MSISDN/ta-p/7628">More info.</see>
         /// </summary>
-        public List<long> To { get; set; }
+        public List<string> To { get; set; }
 
         /// <summary>
         ///     Sender number.
         ///     Must be valid phone number, short code or alphanumeric. Required if Automatic Default Originator not configured.
         /// </summary>
-        public long From { get; set; }
+        public string From { get; set; }
 
         /// <summary>
         ///     Indicates if the batch has been canceled or not.

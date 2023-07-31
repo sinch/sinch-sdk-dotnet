@@ -112,13 +112,16 @@ namespace Sinch
         /// <param name="projectId"></param>
         /// <param name="authUri"></param>
         /// <param name="numbersBaseAddress"></param>
-        internal SinchClient(string projectId, Uri authUri, Uri numbersBaseAddress)
+        internal SinchClient(string projectId, Uri authUri, Uri numbersBaseAddress, Uri smsBaseAddress)
         {
             var http = new HttpClient();
             var auth = new Auth.Auth(authUri, http);
             var httpCamelCase = new Http(auth, http, null,
                 JsonNamingPolicy.CamelCase);
+            var httpSnakeCase = new Http(auth, http,null,
+                SnakeCaseNamingPolicy.Instance);
             Numbers = new Numbers.Numbers(projectId, numbersBaseAddress, null, httpCamelCase);
+            Sms = new Sms(projectId, smsBaseAddress, null, httpSnakeCase);
         }
 
         /// <summary>

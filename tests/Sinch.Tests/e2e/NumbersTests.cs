@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -15,7 +14,7 @@ namespace Sinch.Tests.e2e
         [Fact]
         public async Task ListRegions()
         {
-            var response = await _sinchClient.Numbers.Regions.List(new List<Types>() { Types.Local, Types.Mobile });
+            var response = await SinchClient.Numbers.Regions.List(new List<Types>() { Types.Local, Types.Mobile });
             response = response.ToList();
             response.Should().HaveCount(18);
             var brRegion = response.First(x => x.RegionCode == "CL");
@@ -26,7 +25,7 @@ namespace Sinch.Tests.e2e
         [Fact]
         public async Task Rent()
         {
-            var response = await _sinchClient.Numbers.Available.Rent("+447520652221", new Request()
+            var response = await SinchClient.Numbers.Available.Rent("+447520652221", new Request()
             {
                 SmsConfiguration = null,
                 VoiceConfiguration = null,
@@ -38,7 +37,7 @@ namespace Sinch.Tests.e2e
         [Fact]
         public async Task ListAvailableWithPattern()
         {
-            var response = await _sinchClient.Numbers.Available.List(new Sinch.Numbers.Available.List.Request
+            var response = await SinchClient.Numbers.Available.List(new Sinch.Numbers.Available.List.Request
             {
                 RegionCode = "US",
                 Type = Types.Local,
@@ -54,7 +53,7 @@ namespace Sinch.Tests.e2e
         [Fact]
         public async Task ListAvailableWithCapabilities()
         {
-            var response = await _sinchClient.Numbers.Available.List(new Sinch.Numbers.Available.List.Request
+            var response = await SinchClient.Numbers.Available.List(new Sinch.Numbers.Available.List.Request
             {
                 RegionCode = "US",
                 Type = Types.Local,
@@ -69,7 +68,7 @@ namespace Sinch.Tests.e2e
         [Fact]
         public async Task ListActiveWithPageSize()
         {
-            var response = await _sinchClient.Numbers.Active.List(new Sinch.Numbers.Active.List.Request
+            var response = await SinchClient.Numbers.Active.List(new Sinch.Numbers.Active.List.Request
             {
                 RegionCode = "GB",
                 Type = Types.Mobile,
@@ -82,7 +81,7 @@ namespace Sinch.Tests.e2e
         [Fact]
         public async Task ListActiveWithPageToken()
         {
-            var response = await _sinchClient.Numbers.Active.List(new Sinch.Numbers.Active.List.Request
+            var response = await SinchClient.Numbers.Active.List(new Sinch.Numbers.Active.List.Request
             {
                 RegionCode = "GB",
                 Type = Types.Mobile,
@@ -98,14 +97,14 @@ namespace Sinch.Tests.e2e
         [Fact]
         public async Task GetActive()
         {
-            var response = await _sinchClient.Numbers.Active.Get("+447520650626");
+            var response = await SinchClient.Numbers.Active.Get("+447520650626");
             response.ExpireAt.Should().Be(8.October(2022).At(7, 52, 49, 454));
         }
-        
+
         [Fact]
         public async Task Release()
         {
-            var response = await _sinchClient.Numbers.Active.Release("+447520650626");
+            var response = await SinchClient.Numbers.Active.Release("+447520650626");
             response.PhoneNumber.Should().Be("+447520650626");
         }
     }

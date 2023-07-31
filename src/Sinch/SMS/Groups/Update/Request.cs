@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Sinch.SMS.Groups.Update
 {
@@ -19,6 +20,7 @@ namespace Sinch.SMS.Groups.Update
         ///     Set to null to remove name.
         ///     Set to string.Empty to leave the name unchanged.
         /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
