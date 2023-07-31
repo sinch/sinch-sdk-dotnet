@@ -15,7 +15,7 @@ namespace Sinch.SMS.Inbounds.List
         /// <summary>
         ///     Determines the size of a page
         /// </summary>
-        public int PageSize { get; set; } = 10;
+        public int? PageSize { get; set; }
 
         /// <summary>
         ///     Only list messages sent to this destination.
@@ -47,6 +47,11 @@ namespace Sinch.SMS.Inbounds.List
         {
             var kvp = new List<KeyValuePair<string, string>>();
             kvp.Add(new KeyValuePair<string, string>("page", Page.ToString()));
+
+            if (PageSize.HasValue)
+            {
+                kvp.Add(new KeyValuePair<string, string>("page_size", PageSize.Value.ToString()));
+            }
 
             if (To is not null && To.Any()) kvp.Add(new KeyValuePair<string, string>("to", string.Join(',', To)));
 

@@ -8,9 +8,9 @@ using Sinch.SMS.Batches;
 using Sinch.SMS.Batches.Send;
 using Xunit;
 
-namespace Sinch.Tests.e2e
+namespace Sinch.Tests.e2e.Sms
 {
-    public class SmsTests : TestBase
+    public class BatchesTests : TestBase
     {
         [Fact]
         public async Task SendBatch()

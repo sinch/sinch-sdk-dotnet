@@ -131,8 +131,8 @@ namespace Sinch.Tests.Sms
             var response = await Sms.Groups.Create(new SMS.Groups.Create.Request
             {
                 Name = "name_g",
-                Members = new[] { "1", "2" }.ToHashSet(),
-                ChildGroups = new[] { "3", "4" }.ToHashSet(),
+                Members = new List<string>() { "1", "2" },
+                ChildGroups = new List<string>() { "3", "4" },
                 AutoUpdate = new AutoUpdateEdit
                 {
                     To = ":123",

@@ -55,6 +55,6 @@ namespace Sinch.SMS.DeliveryReports
         /// <summary>
         ///     The object type. Will always be recipient_delivery_report_sms.
         /// </summary>
-        public string Type { get; set; }
+        public RecipientDeliveryReportType Type { get; set; }
     }
 }

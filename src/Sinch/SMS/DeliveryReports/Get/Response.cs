@@ -23,7 +23,7 @@ namespace Sinch.SMS.DeliveryReports.Get
         /// <summary>
         ///     The total number of messages for the batch
         /// </summary>
-        public string TotalMessageCount { get; set; }
+        public long TotalMessageCount { get; set; }
 
         /// <summary>
         ///     The client identifier of the batch this delivery report belongs to, if set when submitting batch.

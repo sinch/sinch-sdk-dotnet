@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Sinch.Core;
 
 namespace Sinch.SMS.DeliveryReports.Get
@@ -15,25 +16,38 @@ namespace Sinch.SMS.DeliveryReports.Get
         public string BatchId { get; set; }
 #endif
 
-        public DeliveryReportType DeliveryReportType { get; set; }
+        public DeliveryReportVerbosityType? DeliveryReportType { get; set; }
 
         /// <summary>
         ///     A list of <see cref="DeliveryReportStatus" /> to include.
         /// </summary>
-        public HashSet<DeliveryReportStatus> Statuses { get; set; }
+        public List<DeliveryReportStatus> Statuses { get; set; }
 
         /// <summary>
         ///     A list of delivery_receipt_error_codes to include.
         /// </summary>
-        public HashSet<string> Code { get; set; }
+        public List<string> Code { get; set; }
 
         internal string GetQueryString()
         {
             var kvp = new List<KeyValuePair<string, string>>();
-            kvp.Add(new KeyValuePair<string, string>("type", DeliveryReportType.ToString().ToLowerInvariant()));
-            kvp.Add(new KeyValuePair<string, string>("status", string.Join(",", Statuses)));
-            kvp.Add(new KeyValuePair<string, string>("code", string.Join(",", Code)));
-            return StringUtils.ToQueryString(kvp);
+            if (DeliveryReportType.HasValue)
+            {
+                kvp.Add(
+                    new KeyValuePair<string, string>("type", Utils.GetEnumString(DeliveryReportType.Value)));
+            }
+
+            if (Statuses is not null && Statuses.Count > 0)
+            {
+                kvp.Add(new KeyValuePair<string, string>("status", string.Join(",", Statuses)));
+            }
+
+            if (Code is not null && Code.Count > 0)
+            {
+                kvp.Add(new KeyValuePair<string, string>("code", string.Join(",", Code)));
+            }
+
+            return StringUtils.ToQueryString(kvp, false);
         }
     }
 }
