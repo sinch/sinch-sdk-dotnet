@@ -112,6 +112,7 @@ namespace Sinch
         /// <param name="projectId"></param>
         /// <param name="authUri"></param>
         /// <param name="numbersBaseAddress"></param>
+        /// <param name="smsBaseAddress"></param>
         internal SinchClient(string projectId, Uri authUri, Uri numbersBaseAddress, Uri smsBaseAddress)
         {
             var http = new HttpClient();
