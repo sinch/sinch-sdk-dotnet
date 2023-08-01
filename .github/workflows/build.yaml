@@ -36,7 +36,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: sinch/sinch-sdk-internal-specs
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GH_PAT_FINE }}
           ref: numbers_fixtures
           path: sinch-sdk-internal-specs
 
