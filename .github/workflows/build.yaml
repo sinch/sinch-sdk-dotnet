@@ -32,6 +32,18 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version.version }}
 
+      - name: Checkout Wiremock fixtures repo
+        uses: actions/checkout@v3
+        with:
+          repository: sinch/sinch-sdk-internal-specs
+          token: ${{ secrets.GH_PAT }}
+          ref: numbers_fixtures
+          path: sinch-sdk-internal-specs
+
+      - name: Run WireMock with fixtures 
+        run: |
+          cd sinch-sdk-internal-specs/fixtures/python/ && java -jar wiremock-studio-2.32.0-17.jar    
+          
       - name: Install dependencies
         run: dotnet restore
 
