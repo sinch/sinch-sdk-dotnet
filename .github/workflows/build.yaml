@@ -42,7 +42,7 @@ jobs:
 
       - name: Run WireMock with fixtures 
         run: |
-          cd sinch-sdk-internal-specs/fixtures/python/ && java -jar wiremock-studio-2.32.0-17.jar    
+          cd sinch-sdk-internal-specs/fixtures/python/ && java -jar wiremock-studio-2.32.0-17.jar &
           
       - name: Install dependencies
         run: dotnet restore
