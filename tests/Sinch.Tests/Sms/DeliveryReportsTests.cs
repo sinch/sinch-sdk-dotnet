@@ -43,7 +43,7 @@ namespace Sinch.Tests.Sms
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(new
                 {
-                    type = "full",
+                    type = "delivery_report_sms",
                     batch_id = "123",
                     total_message_count = "15231",
                     client_reference = "jojo",
@@ -69,19 +69,19 @@ namespace Sinch.Tests.Sms
             var response = await Sms.DeliveryReports.Get(new Request
             {
                 BatchId = batchId,
-                DeliveryReportType = DeliveryReportType.Full,
-                Statuses = new HashSet<DeliveryReportStatus>
+                DeliveryReportType = DeliveryReportVerbosityType.Full,
+                Statuses = new List<DeliveryReportStatus>
                 {
                     DeliveryReportStatus.Aborted,
                     DeliveryReportStatus.Delivered
                 },
-                Code = new HashSet<string> { "312,420" }
+                Code = new List<string> { "312,420" }
             });
 
             response.Should().NotBeNull();
-            response.Type.Should().Be(DeliveryReportType.Full);
+            response.Type.Should().Be(DeliveryReportType.Sms);
             response.BatchId.Should().Be("123");
-            response.TotalMessageCount.Should().Be("15231");
+            response.TotalMessageCount.Should().Be(15231);
             response.Statuses.Should().HaveCount(2);
             response.Statuses.ElementAt(0).Recipients.Should().BeNull();
             response.Statuses.ElementAt(0).Status.Should().Be(DeliveryReportStatus.Expired);
@@ -152,11 +152,11 @@ namespace Sinch.Tests.Sms
                 PageSize = 30,
                 StartDate = new DateTime(2023, 8, 16, 3, 14, 17, DateTimeKind.Utc),
                 EndDate = new DateTime(2023, 8, 16, 3, 14, 17, DateTimeKind.Utc),
-                Status = new HashSet<DeliveryReportStatus>
+                Status = new List<DeliveryReportStatus>
                 {
                     DeliveryReportStatus.Delivered, DeliveryReportStatus.Dispatched
                 },
-                Code = new HashSet<string> { "400", "405" },
+                Code = new List<string> { "400", "405" },
                 ClientReference = "xyz"
             });
 

@@ -18,8 +18,8 @@ namespace Sinch.Tests.Sms
         private static readonly object Batch = new
         {
             id = "01FC66621XXXXX119Z8PMV1QPQ",
-            to = new[] { 15551231234, 15551256344 },
-            from = 15551231234,
+            to = new[] { "15551231234", "15551256344" },
+            from = "15551231234",
             canceled = false,
             parameters = new
             {
@@ -141,7 +141,7 @@ namespace Sinch.Tests.Sms
         public async Task DryRun()
         {
             var uri =
-                $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/batches/dry_run?per_recipients=false&number_of_recipients=144";
+                $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/batches/dry_run?per_recipient=false&number_of_recipients=144";
             HttpMessageHandlerMock.When(HttpMethod.Post, uri)
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .WithPartialContent("mt_binary")
@@ -248,7 +248,7 @@ namespace Sinch.Tests.Sms
             var response = await Sms.Batches.Replace(new Batch
             {
                 Id = "01FC66621XXXXX119Z8PMV1QPQ",
-                To = new List<long> { 15551231234, 15551256344 },
+                To = new List<string> { "15551231234", "15551256344" },
                 Parameters = new Dictionary<string, Dictionary<string, string>>(),
                 Body = "hi, {admin}"
             });

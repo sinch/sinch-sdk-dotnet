@@ -29,6 +29,7 @@ namespace Sinch.Auth
         private readonly ILoggerAdapter<Auth> _logger;
         private DateTime? _expiresIn;
         private volatile string _token;
+        private readonly Uri _baseAddress;
 
         public Auth(string keyId, string keySecret, HttpClient httpClient, ILoggerAdapter<Auth> logger)
         {
@@ -36,6 +37,12 @@ namespace Sinch.Auth
             _keySecret = keySecret;
             _httpClient = httpClient;
             _logger = logger;
+            _baseAddress = new Uri("https://auth.sinch.com");
+        }
+
+        internal Auth(Uri baseAddress, HttpClient httpClient) : this("", "", httpClient, null)
+        {
+            _baseAddress = baseAddress;
         }
 
         public async Task<string> GetToken(bool force = false)
@@ -55,7 +62,7 @@ namespace Sinch.Auth
             };
             var request = new HttpRequestMessage
             {
-                RequestUri = new Uri("https://auth.sinch.com/oauth2/token"),
+                RequestUri = new Uri(_baseAddress, "oauth2/token"),
                 Content = new FormUrlEncodedContent(dict),
                 Method = HttpMethod.Post,
                 Headers = { Authorization = new AuthenticationHeaderValue("Basic", @base) }

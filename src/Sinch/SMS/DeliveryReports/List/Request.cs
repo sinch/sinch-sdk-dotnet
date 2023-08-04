@@ -6,17 +6,17 @@ namespace Sinch.SMS.DeliveryReports.List
 {
     public sealed class Request
     {
-        public int Page { get; set; } = 0;
+        public int Page { get; set; }
 
-        public int PageSize { get; set; } = 10;
+        public int? PageSize { get; set; }
 
         public DateTime? StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
 
-        public HashSet<DeliveryReportStatus> Status { get; set; }
+        public List<DeliveryReportStatus> Status { get; set; }
 
-        public HashSet<string> Code { get; set; }
+        public List<string> Code { get; set; }
 
         public string ClientReference { get; set; }
 
@@ -24,7 +24,13 @@ namespace Sinch.SMS.DeliveryReports.List
         {
             var kvp = new List<KeyValuePair<string, string>>();
             kvp.Add(new KeyValuePair<string, string>("page", Page.ToString()));
-            kvp.Add(new KeyValuePair<string, string>("page_size", PageSize.ToString()));
+            
+            if (PageSize.HasValue)
+            {
+                kvp.Add(new KeyValuePair<string, string>("page_size", PageSize.Value.ToString()));
+            }
+
+            
             if (StartDate.HasValue)
                 kvp.Add(new KeyValuePair<string, string>("start_date", StringUtils.ToIso8601(StartDate.Value)));
 

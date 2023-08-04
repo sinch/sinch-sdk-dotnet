@@ -85,7 +85,7 @@ namespace Sinch.Numbers.Active
         /// <summary>
         ///     The timestamp when the subscription will expire if an expiration date has been set.
         /// </summary>
-        public DateTime ExpireAt { get; set; }
+        public DateTime? ExpireAt { get; set; }
 
         /// <summary>
         ///     The current SMS configuration for this number.<br /><br />
