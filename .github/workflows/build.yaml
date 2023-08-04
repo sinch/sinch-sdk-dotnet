@@ -18,7 +18,9 @@ jobs:
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v0
         with:
-          versionSpec: '5.x'
+          # NOTE!: https://github.com/GitTools/GitVersion/issues/3614 from tag branch gitversion appends suffix 
+          # of tags-v*** which breaks publish right after tag branch build
+          versionSpec: '5.11.x'
 
       - name: Determine Version
         id: gitversion # id to later be referenced
