@@ -1,12 +1,10 @@
-﻿using System;
-using System.Runtime.Serialization;
-using System.Text.Json;
+﻿using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Numbers
 {
-    [JsonConverter(typeof(TypesEnumConverter))]
+    [JsonConverter(typeof(SinchEnumConverter<Types>))]
     public enum Types
     {
         /// <summary>
@@ -26,18 +24,5 @@ namespace Sinch.Numbers
         /// </summary>
         [EnumMember(Value = "TOLL_FREE")]
         TollFree
-    }
-
-    internal class TypesEnumConverter : JsonConverter<Types>
-    {
-        public override Types Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        {
-            return Utils.ParseEnum<Types>(reader.GetString());
-        }
-
-        public override void Write(Utf8JsonWriter writer, Types value, JsonSerializerOptions options)
-        {
-            writer.WriteStringValue(Utils.GetEnumString(value));
-        }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Core
 {
@@ -49,6 +51,19 @@ namespace Sinch.Core
         public static bool IsLastPage(int page, int pageSize, int totalCount)
         {
             return (page + 1) * pageSize >= totalCount;
+        }
+    }
+
+    internal class SinchEnumConverter<T> : JsonConverter<T>
+    {
+        public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            return Utils.ParseEnum<T>(reader.GetString());
+        }
+
+        public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(Utils.GetEnumString(value));
         }
     }
 }

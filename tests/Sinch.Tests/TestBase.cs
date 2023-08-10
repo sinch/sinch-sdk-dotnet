@@ -16,6 +16,9 @@ namespace Sinch.Tests
         protected readonly MockHttpMessageHandler HttpMessageHandlerMock = new();
         internal readonly Http HttpSnakeCase;
 
+        public static JsonSerializerOptions JsonSerializerOptions =
+            new JsonSerializerOptions(JsonSerializerDefaults.Web);
+
         protected TestBase()
         {
             var httpClient = new HttpClient(HttpMessageHandlerMock);
