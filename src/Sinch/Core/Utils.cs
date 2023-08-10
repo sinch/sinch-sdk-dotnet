@@ -19,7 +19,13 @@ namespace Sinch.Core
             var name = Enum.GetName(enumType, value)!;
             var enumMemberAttribute =
                 ((EnumMemberAttribute[])enumType.GetField(name)!.GetCustomAttributes(typeof(EnumMemberAttribute), true))
-                .Single();
+                .SingleOrDefault();
+
+            if (enumMemberAttribute == null)
+            {
+                return value.ToString();
+            }
+
             return enumMemberAttribute.Value!;
         }
 
@@ -41,8 +47,17 @@ namespace Sinch.Core
                 var enumMemberAttribute =
                     ((EnumMemberAttribute[])enumType.GetField(name)!.GetCustomAttributes(typeof(EnumMemberAttribute),
                         true))
-                    .Single();
-                if (enumMemberAttribute.Value == value) return (T)Enum.Parse(enumType, name);
+                    .SingleOrDefault();
+                // if EnumMember is missing, try match string representation of enum
+                if (enumMemberAttribute == null && name == value)
+                {
+                    return (T)Enum.Parse(enumType, name);
+                }
+
+                if (enumMemberAttribute != null && enumMemberAttribute.Value == value)
+                {
+                    return (T)Enum.Parse(enumType, name);
+                }
             }
 
             throw new InvalidOperationException($"Failed to parse {nameof(T)} enum");

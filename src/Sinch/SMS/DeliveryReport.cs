@@ -6,7 +6,7 @@ using Sinch.Core;
 
 namespace Sinch.SMS
 {
-    [JsonConverter(typeof(DeliveryReportEnumConverter))]
+    [JsonConverter(typeof(SinchEnumConverter<DeliveryReport>))]
     public enum DeliveryReport
     {
         /// <summary>
@@ -42,19 +42,5 @@ namespace Sinch.SMS
         /// </summary>
         [EnumMember(Value = "per_recipient_final")]
         PerRecipientFinal
-    }
-
-    internal class DeliveryReportEnumConverter : JsonConverter<DeliveryReport>
-    {
-        public override DeliveryReport Read(ref Utf8JsonReader reader, Type typeToConvert,
-            JsonSerializerOptions options)
-        {
-            return Utils.ParseEnum<DeliveryReport>(reader.GetString());
-        }
-
-        public override void Write(Utf8JsonWriter writer, DeliveryReport value, JsonSerializerOptions options)
-        {
-            writer.WriteStringValue(Utils.GetEnumString(value));
-        }
     }
 }
