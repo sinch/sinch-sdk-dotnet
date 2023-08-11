@@ -30,7 +30,7 @@ namespace Sinch.Tests.Sms
                             ""type"": ""delivery_report_sms""
                         }";
             var report = JsonSerializer.Deserialize<DeliveryReport>(json);
-            report.BatchId.Should().Be("01FC66621XXXXX119Z8PMV1QPQ");
+            report!.BatchId.Should().Be("01FC66621XXXXX119Z8PMV1QPQ");
             report.Type.Should().Be(DeliveryReportType.Sms);
             report.Statuses.First().Status.Should().Be(DeliveryReportStatus.Delivered);
         }
@@ -47,7 +47,7 @@ namespace Sinch.Tests.Sms
                             ""at"": ""2022-08-30T08:16:08.930Z""
                         }";
             var report = JsonSerializer.Deserialize<RecipientDeliveryReport>(json);
-            report.Code.Should().Be(401);
+            report!.Code.Should().Be(401);
             report.Status.Should().Be(DeliveryReportStatus.Dispatched);
         }
 
@@ -66,7 +66,7 @@ namespace Sinch.Tests.Sms
                             ""udh"": ""10010203040506070809000a0b0c0d0e0f""
                         }";
             var report = JsonSerializer.Deserialize<IncomingBinarySms>(json);
-            report.Type.Should().Be(SmsType.Binary);
+            report!.Type.Should().Be(SmsType.Binary);
         }
 
         [Fact]
@@ -83,7 +83,7 @@ namespace Sinch.Tests.Sms
                                 ""type"": ""mo_text""
                             }";
             var report = JsonSerializer.Deserialize<IncomingTextSms>(json);
-            report.Type.Should().Be(SmsType.Text);
+            report!.Type.Should().Be(SmsType.Text);
         }
     }
 }

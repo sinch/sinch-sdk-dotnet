@@ -21,7 +21,7 @@ namespace Sinch.Tests.Numbers
                 ""status"": ""FAILED"",
                 ""failureCode"": ""CAMPAIGN_NOT_AVAILABLE""
             }";
-            var @enum = JsonSerializer.Deserialize<Event>(jsonInput, TestBase.JsonSerializerOptions)!;
+            var @enum = JsonSerializer.Deserialize<Event>(jsonInput)!;
             @enum.Status.Should().Be(EventStatus.Failed);
             @enum.EventType.Should().Be(EventType.LinkTo10DlcCampaign);
             @enum.FailureCode.Should().Be(FailureCode.CampaignNotAvailable);
