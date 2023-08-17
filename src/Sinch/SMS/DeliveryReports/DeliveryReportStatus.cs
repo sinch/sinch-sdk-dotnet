@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Sinch.Core;
 
 namespace Sinch.SMS.DeliveryReports
 {
-    [JsonConverter(typeof(DeliveryReportStatusEnumConverter))]
+    [JsonConverter(typeof(SinchEnumConverter<DeliveryReportStatus>))]
     public enum DeliveryReportStatus
     {
         /// <summary>
@@ -53,19 +54,5 @@ namespace Sinch.SMS.DeliveryReports
         ///     a Delivery Receipt that couldn't be interpreted was received.
         /// </summary>
         Unknown
-    }
-
-    internal class DeliveryReportStatusEnumConverter : JsonConverter<DeliveryReportStatus>
-    {
-        public override DeliveryReportStatus Read(ref Utf8JsonReader reader, Type typeToConvert,
-            JsonSerializerOptions options)
-        {
-            return Enum.Parse<DeliveryReportStatus>(reader.GetString()!, true);
-        }
-
-        public override void Write(Utf8JsonWriter writer, DeliveryReportStatus value, JsonSerializerOptions options)
-        {
-            writer.WriteStringValue(value.ToString());
-        }
     }
 }

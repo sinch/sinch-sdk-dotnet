@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Core
 {
@@ -17,7 +19,13 @@ namespace Sinch.Core
             var name = Enum.GetName(enumType, value)!;
             var enumMemberAttribute =
                 ((EnumMemberAttribute[])enumType.GetField(name)!.GetCustomAttributes(typeof(EnumMemberAttribute), true))
-                .Single();
+                .SingleOrDefault();
+
+            if (enumMemberAttribute == null)
+            {
+                return value.ToString();
+            }
+
             return enumMemberAttribute.Value!;
         }
 
@@ -39,8 +47,17 @@ namespace Sinch.Core
                 var enumMemberAttribute =
                     ((EnumMemberAttribute[])enumType.GetField(name)!.GetCustomAttributes(typeof(EnumMemberAttribute),
                         true))
-                    .Single();
-                if (enumMemberAttribute.Value == value) return (T)Enum.Parse(enumType, name);
+                    .SingleOrDefault();
+                // if EnumMember is missing, try match string representation of enum
+                if (enumMemberAttribute == null && name == value)
+                {
+                    return (T)Enum.Parse(enumType, name);
+                }
+
+                if (enumMemberAttribute != null && enumMemberAttribute.Value == value)
+                {
+                    return (T)Enum.Parse(enumType, name);
+                }
             }
 
             throw new InvalidOperationException($"Failed to parse {nameof(T)} enum");
@@ -49,6 +66,19 @@ namespace Sinch.Core
         public static bool IsLastPage(int page, int pageSize, int totalCount)
         {
             return (page + 1) * pageSize >= totalCount;
+        }
+    }
+
+    internal class SinchEnumConverter<T> : JsonConverter<T>
+    {
+        public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            return Utils.ParseEnum<T>(reader.GetString());
+        }
+
+        public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(Utils.GetEnumString(value));
         }
     }
 }

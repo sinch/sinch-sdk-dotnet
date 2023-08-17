@@ -1,8 +1,12 @@
-﻿namespace Sinch.Numbers.Active
+﻿using System.Runtime.Serialization;
+
+namespace Sinch.Numbers.Active
 {
     public enum OrderBy
     {
+        [EnumMember(Value = "phoneNumber")]
         PhoneNumber,
+        [EnumMember(Value = "displayName")]
         DisplayName
     }
 
