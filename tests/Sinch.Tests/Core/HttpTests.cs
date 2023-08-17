@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Moq;
+using NSubstitute;
 using RichardSzalay.MockHttp;
 using Sinch.Auth;
 using Sinch.Core;
@@ -13,12 +13,12 @@ namespace Sinch.Tests.Core
 {
     public class HttpTests
     {
-        private readonly Mock<IAuth> _tokenManagerMock;
+        private readonly IAuth _tokenManagerMock;
         private readonly MockHttpMessageHandler _httpMessageHandlerMock;
 
         public HttpTests()
         {
-            _tokenManagerMock = new Mock<IAuth>();
+            _tokenManagerMock = Substitute.For<IAuth>();
             _httpMessageHandlerMock = new MockHttpMessageHandler();
         }
 
@@ -26,11 +26,11 @@ namespace Sinch.Tests.Core
         public async Task ForceNewToken()
         {
             _tokenManagerMock
-                .Setup(x => x.GetToken(It.Is<bool>(s => !s)))
-                .ReturnsAsync("first_token");
+                .GetToken(Arg.Is<bool>(x => !x))
+                .Returns("first_token");
             _tokenManagerMock
-                .Setup(x => x.GetToken(It.Is<bool>(s => s)))
-                .ReturnsAsync("second_token");
+                .GetToken(true)
+                .Returns("second_token");
 
             var uri = new Uri("http://sinch.com/items");
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
@@ -41,7 +41,7 @@ namespace Sinch.Tests.Core
                 .Respond(HttpStatusCode.OK);
 
             var httpClient = new HttpClient(_httpMessageHandlerMock);
-            var http = new Http(_tokenManagerMock.Object, httpClient, null, new SnakeCaseNamingPolicy());
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
 
             Func<Task<object>> response = () => http.Send<object>(uri, HttpMethod.Get);
 
@@ -52,10 +52,8 @@ namespace Sinch.Tests.Core
         [Fact]
         public async Task ForceNewTokenOnlyOnce()
         {
-            _tokenManagerMock.SetupSequence(x => x.GetToken(It.IsAny<bool>()))
-                .ReturnsAsync("first_token")
-                .ReturnsAsync("second_token")
-                .ReturnsAsync("third_token");
+            _tokenManagerMock.GetToken(Arg.Any<bool>())
+                .Returns("first_token", "second_token", "third_token");
 
             var uri = new Uri("http://sinch.com/items");
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
@@ -65,7 +63,7 @@ namespace Sinch.Tests.Core
                 .WithHeaders("Authorization", "Bearer second_token")
                 .Respond(HttpStatusCode.Unauthorized);
             var httpClient = new HttpClient(_httpMessageHandlerMock);
-            var http = new Http(_tokenManagerMock.Object, httpClient, null, new SnakeCaseNamingPolicy());
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
 
             Func<Task<object>> response = () => http.Send<object>(uri, HttpMethod.Get);
 

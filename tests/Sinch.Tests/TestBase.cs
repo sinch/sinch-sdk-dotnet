@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 using System.Text.Json;
-using Moq;
+using NSubstitute;
 using RichardSzalay.MockHttp;
 using Sinch.Auth;
 using Sinch.Core;
@@ -11,7 +11,7 @@ namespace Sinch.Tests
     {
         protected const string ProjectId = "MOCK_PROJECT_ID";
         protected const string Token = "to-ke-n";
-        private readonly Mock<IAuth> _tokenManager = new();
+        private readonly IAuth _tokenManager = Substitute.For<IAuth>();
         internal readonly Http HttpCamelCase;
         protected readonly MockHttpMessageHandler HttpMessageHandlerMock = new();
         internal readonly Http HttpSnakeCase;
@@ -19,9 +19,9 @@ namespace Sinch.Tests
         protected TestBase()
         {
             var httpClient = new HttpClient(HttpMessageHandlerMock);
-            _tokenManager.Setup(x => x.GetToken(false)).ReturnsAsync(Token);
-            HttpCamelCase = new Http(_tokenManager.Object, httpClient, null, JsonNamingPolicy.CamelCase);
-            HttpSnakeCase = new Http(_tokenManager.Object, httpClient, null, SnakeCaseNamingPolicy.Instance);
+            _tokenManager.GetToken(false).Returns(Token);
+            HttpCamelCase = new Http(_tokenManager, httpClient, null, JsonNamingPolicy.CamelCase);
+            HttpSnakeCase = new Http(_tokenManager, httpClient, null, SnakeCaseNamingPolicy.Instance);
         }
     }
 }
