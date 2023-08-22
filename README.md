@@ -92,7 +92,7 @@ try {
     {
         Body = "Hello, World!",
         DeliveryReport = DeliveryReport.None,
-        To = new List<long>()
+        To = new List<string>()
         {
             123456789
         }
