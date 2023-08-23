@@ -1,21 +1,33 @@
 ﻿using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
     public class AppMessage
     {
+        public AppMessage(IMessage message)
+        {
+            if (message is TextMessage textMessage)
+            {
+                TextMessage = textMessage;
+            }
+        }
+
         /// <summary>
         ///     Optional. Channel specific messages, overriding any transcoding.
         ///     The key in the map must point to a valid conversation channel as defined by the enum ConversationChannel.
         /// </summary>
         public object ExplicitChannelMessage { get; set; }
 
-        public IMessage Message { get; set; }
-
         /// <summary>
         ///     Gets or Sets AdditionalProperties
         /// </summary>
         public AppMessageAdditionalProperties AdditionalProperties { get; set; }
+        
+        /// <summary>
+        /// Get a text_message property
+        /// </summary>
+        public TextMessage TextMessage { get; private set; }
     }
 
     /// <summary>

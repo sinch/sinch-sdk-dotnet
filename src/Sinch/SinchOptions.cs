@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using Microsoft.Extensions.Logging;
+using Sinch.Conversation;
 using Sinch.SMS;
 
 namespace Sinch
@@ -23,5 +24,11 @@ namespace Sinch
         ///     Defaults to "us"
         /// </summary>
         public SmsRegion SmsRegion { get; set; } = SmsRegion.Us;
+
+        /// <summary>
+        ///     Set's the regions for the Conversation api.
+        ///     Defaults to "us"
+        /// </summary>
+        public ConversationRegion ConversationRegion { get; set; } = ConversationRegion.Us;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Core;
 
@@ -67,12 +68,6 @@ namespace Sinch.Conversation.Messages.Send
         public Dictionary<string, string> ChannelProperties { get; set; }
 
 
-        /// <summary>
-        ///     Gets or Sets Message. One of
-        /// <list type="bullet">
-        /// <item><see cref="CardMessage"/></item>
-        /// </list>
-        /// </summary>
 #if NET7_0_OR_GREATER
         public required AppMessage Message { get; set; }
 #else
@@ -113,9 +108,9 @@ namespace Sinch.Conversation.Messages.Send
         ///     If Dispatch Mode is used, only `identified_by` is allowed.
         /// </summary>
 #if NET7_0_OR_GREATER
-        public required OneOf<Contact, Identified> Recipient { get; set; }
+        public required IRecipient Recipient { get; set; }
 #else
-        public OneOf<Contact, Identified> Recipient { get; set; }
+        public IRecipient Recipient { get; set; }
 #endif
 
 
@@ -133,7 +128,7 @@ namespace Sinch.Conversation.Messages.Send
         /// <summary>
         ///     Overrides the app&#39;s [Processing Mode](../../../../../conversation/processing-modes/). Default value is &#x60;DEFAULT&#x60;.
         /// </summary>
-        public ProcessingStrategy ProcessingStrategy { get; set; }
+        public ProcessingStrategy? ProcessingStrategy { get; set; }
 
 
         /// <summary>

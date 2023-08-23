@@ -3,7 +3,7 @@ using Sinch.Core;
 
 namespace Sinch.Conversation.Messages
 {
-    public sealed class Contact : OneOf<Contact, Identified>
+    public sealed class Contact : OneOf<Contact, Identified>, IRecipient
     {
         /// <summary>
         ///     The ID of the contact.
