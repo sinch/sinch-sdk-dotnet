@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -7,9 +6,32 @@ namespace Sinch.Conversation.Messages.Message
     {
         public AppMessage(IMessage message)
         {
-            if (message is TextMessage textMessage)
+            switch (message)
             {
-                TextMessage = textMessage;
+                case TextMessage textMessage:
+                    TextMessage = textMessage;
+                    break;
+                case LocationMessage locationMessage:
+                    LocationMessage = locationMessage;
+                    break;
+                case CardMessage cardMessage:
+                    CardMessage = cardMessage;
+                    break;
+                case CarouselMessage carouselMessage:
+                    CarouselMessage = carouselMessage;
+                    break;
+                case ChoiceMessage choiceMessage:
+                    ChoiceMessage = choiceMessage;
+                    break;
+                case MediaMessage mediaMessage:
+                    MediaMessage = mediaMessage;
+                    break;
+                case TemplateMessage templateMessage:
+                    TemplateMessage = templateMessage;
+                    break;
+                case ListMessage listMessage:
+                    ListMessage = listMessage;
+                    break;
             }
         }
 
@@ -23,11 +45,46 @@ namespace Sinch.Conversation.Messages.Message
         ///     Gets or Sets AdditionalProperties
         /// </summary>
         public AppMessageAdditionalProperties AdditionalProperties { get; set; }
-        
+
         /// <summary>
         /// Get a text_message property
         /// </summary>
         public TextMessage TextMessage { get; private set; }
+
+        /// <summary>
+        /// Get a LocationMessage
+        /// </summary>
+        public LocationMessage LocationMessage { get; private set; }
+
+        /// <summary>
+        /// Get a CardMessage
+        /// </summary>
+        public CardMessage CardMessage { get; private set; }
+
+        /// <summary>
+        /// Get a CarouselMessage
+        /// </summary>
+        public CarouselMessage CarouselMessage { get; private set; }
+
+        /// <summary>
+        /// Get a ChoiceMessage
+        /// </summary>
+        public ChoiceMessage ChoiceMessage { get; private set; }
+
+        /// <summary>
+        /// Get a MediaMessage
+        /// </summary>
+        public MediaMessage MediaMessage { get; private set; }
+
+        /// <summary>
+        /// Get a TemplateMessage
+        /// </summary>
+        public TemplateMessage TemplateMessage { get; private set; }
+
+        /// <summary>
+        /// Get a ListMessage
+        /// </summary>
+        public ListMessage ListMessage { get; private set; }
     }
 
     /// <summary>

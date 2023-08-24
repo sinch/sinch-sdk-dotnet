@@ -52,15 +52,15 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     Coordinates
     /// </summary>
-    public sealed class Coordinates
+    public record Coordinates(float Latitude, float Longitude)
     {
-        /// <summary>
+            /// <summary>
         ///     The latitude.
         /// </summary>
 #if NET7_0_OR_GREATER
-        public required float Latitude { get; set; }
+        public float Latitude { get; init; } = Latitude;
 #else
-        public float Latitude { get; set; }
+        public float Latitude { get; } = Latitude;
 #endif
 
 
@@ -68,9 +68,9 @@ namespace Sinch.Conversation.Messages.Message
         ///     The longitude.
         /// </summary>
 #if NET7_0_OR_GREATER
-        public required float Longitude { get; set; }
+        public float Longitude { get; init; } = Longitude;
 #else
-        public float Longitude { get; set; }
+        public float Longitude { get; } = Longitude;
 #endif
 
 

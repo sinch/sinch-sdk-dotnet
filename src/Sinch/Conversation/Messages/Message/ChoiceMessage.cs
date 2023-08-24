@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Sinch.Conversation.Messages.Message
@@ -35,4 +36,18 @@ namespace Sinch.Conversation.Messages.Message
             return sb.ToString();
         }
     }
+
+    /// <summary>
+    ///     A generic URL message.
+    /// </summary>
+    /// <param name="Title"></param>
+    /// <param name="Url"></param>
+    public record UrlMessage(string Title, Uri Url);
+
+    /// <summary>
+    ///     Message for triggering a call.
+    /// </summary>
+    /// <param name="PhoneNumber">Phone number in E.164 with leading +.</param>
+    /// <param name="Title">Title shown close to the phone number. The title is clickable in some cases.</param>
+    public record CallMessage(string PhoneNumber, string Title);
 }

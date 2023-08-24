@@ -1,25 +1,26 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace Sinch.Conversation.Messages.Message
 {
     /// <summary>
     ///     A message containing a media component, such as an image, document, or video.
     /// </summary>
-    public sealed class MediaMessage : IMessage
+    public sealed record MediaMessage : IMessage
     {
         /// <summary>
         ///     An optional parameter. Will be used where it is natively supported.
         /// </summary>
-        public string ThumbnailUrl { get; set; }
+        public Uri ThumbnailUrl { get; set; }
 
 
         /// <summary>
         ///     Url to the media file.
         /// </summary>
 #if NET7_0_OR_GREATER
-        public required string Url { get; set; }
+        public required Uri Url { get; init; }
 #else
-        public string Url { get; set; }
+        public Uri Url { get; set; }
 #endif
 
 

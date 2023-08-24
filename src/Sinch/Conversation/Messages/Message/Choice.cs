@@ -1,54 +1,31 @@
-﻿using System.Text;
-
-namespace Sinch.Conversation.Messages.Message
+﻿namespace Sinch.Conversation.Messages.Message
 {
-    /// <summary>
-    ///     A message component for interactive messages, containing a choice.
-    /// </summary>
-    public class Choice : IListItem
+    public class Choice
     {
         /// <summary>
-        ///     Required parameter. Title for the choice item.
+        ///     Message for triggering a call.
         /// </summary>
-#if NET7_0_OR_GREATER
-        public required string Title { get; set; }
-#else
-        public string Title { get; set; }
-#endif
-
+        public CallMessage CallMessage { get; set; }
 
         /// <summary>
-        ///     Optional parameter. The description (or subtitle) of this choice item.
+        ///     Message containing geographic location.
         /// </summary>
-        public string Description { get; set; }
-
+        public LocationMessage LocationMessage { get; set; }
 
         /// <summary>
-        ///     Gets or Sets Media
-        /// </summary>
-        public MediaMessage Media { get; set; }
-
-
-        /// <summary>
-        ///     Optional parameter. Postback data that will be returned in the MO if the user selects this option.
+        ///     An optional field. This data will be returned in the ChoiceResponseMessage.
+        ///     The default is message_id_{text, title}.
         /// </summary>
         public string PostbackData { get; set; }
 
+        /// <summary>
+        ///     A message containing only text.
+        /// </summary>
+        public TextMessage TextMessage { get; set; }
 
         /// <summary>
-        ///     Returns the string presentation of the object
+        ///     A generic URL message.
         /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("class ChoiceItem {\n");
-            sb.Append("  Title: ").Append(Title).Append("\n");
-            sb.Append("  Description: ").Append(Description).Append("\n");
-            sb.Append("  Media: ").Append(Media).Append("\n");
-            sb.Append("  PostbackData: ").Append(PostbackData).Append("\n");
-            sb.Append("}\n");
-            return sb.ToString();
-        }
+        public UrlMessage UrlMessage { get; set; }
     }
 }
