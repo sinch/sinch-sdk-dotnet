@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Messages.Send;
 using Sinch.Core;
 using Sinch.Logger;
@@ -32,7 +33,15 @@ namespace Sinch.Conversation.Messages
         /// <returns><see cref="Send.Response"/></returns>
         Task<Send.Response> Send(Send.Request request, CancellationToken cancellationToken = default);
 
-        Task Get();
+        /// <summary>
+        ///     Retrieves a specific message by its ID.
+        /// </summary>
+        /// <param name="messageId">The unique ID of the message.</param>
+        /// <param name="messagesSource"><see cref="MessageSource"/></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ConversationMessage> Get(string messageId, MessageSource? messagesSource = default,
+            CancellationToken cancellationToken = default);
 
         Task Delete();
 
@@ -63,10 +72,19 @@ namespace Sinch.Conversation.Messages
             return _http.Send<Request, Response>(uri, HttpMethod.Post, request, cancellationToken);
         }
 
-        public Task Get()
+        /// <inheritdoc/>  
+        public Task<ConversationMessage> Get(string messageId, MessageSource? messagesSource = default,
+            CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var param = messagesSource is null
+                ? string.Empty
+                : $"?messages_source={messagesSource.Value.GetEnumString()}";
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/messages/{messageId}{param}");
+
+            _logger?.LogDebug("Getting a message with {messageId}...", messageId);
+            return _http.Send<ConversationMessage>(uri, HttpMethod.Get, cancellationToken);
         }
+
 
         public Task Delete()
         {

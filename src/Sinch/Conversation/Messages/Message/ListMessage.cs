@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Message
@@ -7,7 +8,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     A message containing a list of options to choose from
     /// </summary>
-    public sealed class ListMessage : IMessage
+    public sealed class ListMessage : MessageBase
     {
         /// <summary>
         ///     A title for the message that is displayed near the products or choices.
@@ -47,7 +48,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <returns>String presentation of the object</returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("class ListMessage {\n");
             sb.Append("  Title: ").Append(Title).Append("\n");
             sb.Append("  Description: ").Append(Description).Append("\n");
@@ -72,7 +73,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Gets or Sets Items
         /// </summary>
-        public List<IListItem> Items { get; set; }
+        public List<ListItem> Items { get; set; }
 
 
         /// <summary>
@@ -90,8 +91,10 @@ namespace Sinch.Conversation.Messages.Message
         }
     }
 
-    [JsonInterfaceConverter(typeof(InterfaceConverter<IListItem>))]
-    public interface IListItem
+    // [JsonInterfaceConverter(typeof(InterfaceConverter<IListItem>))]
+    [JsonDerivedType(typeof(ListItemChoice))]
+    [JsonDerivedType(typeof(ListItemProduct))]
+    public abstract class ListItem
     {
     }
 

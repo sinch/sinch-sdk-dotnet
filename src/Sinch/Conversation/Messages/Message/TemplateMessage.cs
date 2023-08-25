@@ -7,7 +7,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     TemplateMessage
     /// </summary>
-    public sealed class TemplateMessage : IMessage
+    public sealed class TemplateMessage : MessageBase
     {
         /// <summary>
         ///     Optional. Channel specific template reference with parameters per channel. The channel template if exists overrides the omnichannel template. At least one of &#x60;channel_template&#x60; or &#x60;omni_template&#x60; needs to be present. The key in the map must point to a valid conversation channel as defined by the enum ConversationChannel.

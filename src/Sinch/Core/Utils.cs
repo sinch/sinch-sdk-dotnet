@@ -13,7 +13,7 @@ namespace Sinch.Core
         /// </summary>
         /// <typeparam name="T">Enum Type</typeparam>
         /// <returns>Value of EnumMember attribute</returns>
-        public static string GetEnumString<T>(T value)
+        public static string GetEnumString<T>(this T value) where T : Enum
         {
             var enumType = typeof(T);
             var name = Enum.GetName(enumType, value)!;
@@ -69,7 +69,7 @@ namespace Sinch.Core
         }
     }
 
-    internal class SinchEnumConverter<T> : JsonConverter<T>
+    internal class SinchEnumConverter<T> : JsonConverter<T> where T : Enum
     {
         public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
