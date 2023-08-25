@@ -16,7 +16,9 @@ namespace Sinch.Conversation.Messages.Message
 
 
         /// <summary>
-        ///     Gets or Sets OmniTemplate
+        ///     The referenced template can be an omnichannel template stored in Conversation API
+        ///     Template Store as AppMessage or it can reference external channel-specific template
+        ///     such as WhatsApp Business Template.
         /// </summary>
         public TemplateReference OmniTemplate { get; set; }
 
@@ -42,18 +44,6 @@ namespace Sinch.Conversation.Messages.Message
     public sealed class TemplateReference
     {
         /// <summary>
-        ///     The BCP-47 language code, such as &#x60;en-US&#x60; or &#x60;sr-Latn&#x60;. For more information, see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. English is the default language_code.
-        /// </summary>
-        public string LanguageCode { get; set; }
-
-
-        /// <summary>
-        ///     Required if the template has parameters. Concrete values must be present for all defined parameters in the template. Parameters can be different for different versions and/or languages of the template.
-        /// </summary>
-        public Dictionary<string, string> Parameters { get; set; }
-
-
-        /// <summary>
         ///     The ID of the template.
         /// </summary>
 #if NET7_0_OR_GREATER
@@ -67,10 +57,21 @@ namespace Sinch.Conversation.Messages.Message
         ///     Used to specify what version of a template to use. This will be used in conjunction with &#x60;language_code&#x60;.
         /// </summary>
 #if NET7_0_OR_GREATER
-        public required string VarVersion { get; set; }
+        public required string Version { get; set; }
 #else
-        public string VarVersion { get; set; }
+        public string Version { get; set; }
 #endif
+
+        /// <summary>
+        ///     The BCP-47 language code, such as &#x60;en-US&#x60; or &#x60;sr-Latn&#x60;. For more information, see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. English is the default language_code.
+        /// </summary>
+        public string LanguageCode { get; set; }
+
+
+        /// <summary>
+        ///     Required if the template has parameters. Concrete values must be present for all defined parameters in the template. Parameters can be different for different versions and/or languages of the template.
+        /// </summary>
+        public Dictionary<string, string> Parameters { get; set; }
 
 
         /// <summary>
@@ -84,7 +85,7 @@ namespace Sinch.Conversation.Messages.Message
             sb.Append("  LanguageCode: ").Append(LanguageCode).Append("\n");
             sb.Append("  Parameters: ").Append(Parameters).Append("\n");
             sb.Append("  TemplateId: ").Append(TemplateId).Append("\n");
-            sb.Append("  VarVersion: ").Append(VarVersion).Append("\n");
+            sb.Append("  VarVersion: ").Append(Version).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

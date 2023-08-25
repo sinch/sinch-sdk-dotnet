@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -89,6 +90,7 @@ namespace Sinch.Conversation.Messages.Message
         }
     }
 
+    [JsonInterfaceConverter(typeof(InterfaceConverter<IListItem>))]
     public interface IListItem
     {
     }
