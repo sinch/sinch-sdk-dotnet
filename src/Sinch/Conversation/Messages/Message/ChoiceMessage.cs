@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Sinch.Conversation.Messages.Message
 {
-    public class ChoiceMessage : MessageBase
+    public class ChoiceMessage : IMessage
     {
         /// <summary>
         ///     The number of choices is limited to 10.

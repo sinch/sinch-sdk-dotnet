@@ -399,7 +399,7 @@ namespace Sinch.Tests.Conversation
                         new ListSection()
                         {
                             Title = "item1",
-                            Items = new List<ListItem>()
+                            Items = new List<IListItem>()
                             {
                                 new ListItemChoice()
                                 {

@@ -19,7 +19,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Message originating from an app
         /// </summary>
-        public MessageBase Message { get; set; }
+        public IMessage Message { get; set; }
     }
 
     /// <summary>

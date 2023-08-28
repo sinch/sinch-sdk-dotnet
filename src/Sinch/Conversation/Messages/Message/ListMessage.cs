@@ -8,7 +8,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     A message containing a list of options to choose from
     /// </summary>
-    public sealed class ListMessage : MessageBase
+    public sealed class ListMessage : IMessage
     {
         /// <summary>
         ///     A title for the message that is displayed near the products or choices.
@@ -73,7 +73,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Gets or Sets Items
         /// </summary>
-        public List<ListItem> Items { get; set; }
+        public List<IListItem> Items { get; set; }
 
 
         /// <summary>
@@ -91,10 +91,8 @@ namespace Sinch.Conversation.Messages.Message
         }
     }
 
-    // [JsonInterfaceConverter(typeof(InterfaceConverter<IListItem>))]
-    [JsonDerivedType(typeof(ListItemChoice))]
-    [JsonDerivedType(typeof(ListItemProduct))]
-    public abstract class ListItem
+    [JsonInterfaceConverter(typeof(InterfaceConverter<IListItem>))]
+    public interface IListItem
     {
     }
 

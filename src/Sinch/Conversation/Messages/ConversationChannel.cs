@@ -15,7 +15,7 @@ namespace Sinch.Conversation
         ///     Enum WHATSAPP for value: WHATSAPP
         /// </summary>
         [EnumMember(Value = "WHATSAPP")]
-        Whatsapp = 1,
+        WhatsApp = 1,
 
         /// <summary>
         /// Enum RCS for value: RCS

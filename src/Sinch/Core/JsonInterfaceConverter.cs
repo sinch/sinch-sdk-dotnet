@@ -26,36 +26,18 @@ namespace Sinch.Core
                 .SelectMany(s => s.GetTypes())
                 .Where(p => type.IsAssignableFrom(p));
 
-           
-            
-            var exceptions = new List<Exception>();
-            foreach (var t in types)
+            var elem = JsonElement.ParseValue(ref reader);
+            dynamic obj = null;
+            foreach (var @class in types)
             {
-                var typeReader = reader;
-                try
+                if (elem.IsTypeOf(@class, options))
                 {
-                    var r = JsonSerializer.Deserialize(ref typeReader, t, options);
-                    if (r == null)
-                    {
-                        exceptions.Add(new NullReferenceException("Deserialization to {t.GetName()} is null"));
-                        continue;
-                    }
-
-                    var props = r.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
-                    if (props.All(x => x.GetValue(r) is null))
-                    {
-                        continue;
-                    }
-
-                    return r as T;
-                }
-                catch (Exception e)
-                {
-                    exceptions.Add(e);
+                    obj = elem.ToObject(@class, options);
+                    break;
                 }
             }
 
-            throw new AggregateException(exceptions);
+            return (T)obj;
         }
 
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)

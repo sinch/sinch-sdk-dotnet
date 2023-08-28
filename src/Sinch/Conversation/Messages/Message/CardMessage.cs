@@ -7,7 +7,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     Message containing text, media and choices.
     /// </summary>
-    public sealed class CardMessage : MessageBase
+    public sealed class CardMessage : IMessage
     {
         /// <summary>
         /// Gets or Sets Height

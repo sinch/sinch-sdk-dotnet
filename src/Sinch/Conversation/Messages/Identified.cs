@@ -15,6 +15,8 @@ namespace Sinch.Conversation.Messages
 
     public class ChannelIdentity
     {
+        public string AppId { get; set; }
+        
         public string Identity { get; set; }
 
         public ConversationChannel Channel { get; set; }
