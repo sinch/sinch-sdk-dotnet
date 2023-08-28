@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -19,6 +22,26 @@ namespace Sinch.Core
             var name = Enum.GetName(enumType, value)!;
             var enumMemberAttribute =
                 ((EnumMemberAttribute[])enumType.GetField(name)!.GetCustomAttributes(typeof(EnumMemberAttribute), true))
+                .SingleOrDefault();
+
+            if (enumMemberAttribute == null)
+            {
+                return value.ToString();
+            }
+
+            return enumMemberAttribute.Value!;
+        }
+
+        /// <summary>
+        ///     Gets a enum string from EnumMember attribute
+        /// </summary>
+        /// <typeparam name="T">Enum Type</typeparam>
+        /// <returns>Value of EnumMember attribute</returns>
+        public static string GetEnumString(Type type, object value)
+        {
+            var name = Enum.GetName(type, value)!;
+            var enumMemberAttribute =
+                ((EnumMemberAttribute[])type.GetField(name)!.GetCustomAttributes(typeof(EnumMemberAttribute), true))
                 .SingleOrDefault();
 
             if (enumMemberAttribute == null)
@@ -66,6 +89,65 @@ namespace Sinch.Core
         public static bool IsLastPage(int page, int pageSize, int totalCount)
         {
             return (page + 1) * pageSize >= totalCount;
+        }
+
+        public static string ToQueryString<T>(T obj) where T : class
+        {
+            var props = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public |
+                                                BindingFlags.DeclaredOnly);
+            var list = new List<KeyValuePair<string, string>>();
+            foreach (var prop in props)
+            {
+                if (!prop.CanRead)
+                    continue;
+                var propVal = prop.GetValue(obj);
+
+                if (propVal is not null)
+                {
+                    var propName = prop.Name.ToLowerInvariant();
+                    if (typeof(IEnumerable).IsAssignableFrom(prop.PropertyType) &&
+                        prop.PropertyType != typeof(string))
+                    {
+                        list.AddRange(ParamsFromObject(propName, propVal as IEnumerable));
+                    }
+                    else if (typeof(DateTime).IsAssignableFrom(prop.PropertyType))
+                    {
+                        list.Add(new(propName, StringUtils.ToIso8601((DateTime)propVal)));
+                    }
+                    else if (typeof(Enum).IsAssignableFrom(prop.PropertyType))
+                    {
+                        list.Add(new(propName, GetEnumString(prop.PropertyType, propVal)));
+                    }
+                    else
+                    {
+                        list.Add(new(propName, prop.GetValue(obj).ToString()));
+                    }
+                }
+            }
+
+            return StringUtils.ToQueryString(list);
+        }
+
+        private static IEnumerable<KeyValuePair<string, string>> ParamsFromObject(string paramName, IEnumerable obj)
+        {
+            return obj.Cast<object>().Select(o =>
+                new KeyValuePair<string, string>(paramName, o.ToString().ToUpperInvariant()));
+        }
+
+        private static string GetStringRepresentation(object o)
+        {
+            var type = o.GetType();
+            if (typeof(DateTime).IsAssignableFrom(type))
+            {
+                return StringUtils.ToIso8601((DateTime)o);
+            }
+
+            if (typeof(Enum).IsAssignableFrom(type))
+            {
+                return GetEnumString(type, o);
+            }
+
+            return o.ToString();
         }
     }
 
