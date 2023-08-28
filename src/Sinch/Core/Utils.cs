@@ -39,6 +39,7 @@ namespace Sinch.Core
         /// <returns>Value of EnumMember attribute</returns>
         public static string GetEnumString(Type type, object value)
         {
+            type = Nullable.GetUnderlyingType(type) ?? type;
             var name = Enum.GetName(type, value)!;
             var enumMemberAttribute =
                 ((EnumMemberAttribute[])type.GetField(name)!.GetCustomAttributes(typeof(EnumMemberAttribute), true))
@@ -91,7 +92,7 @@ namespace Sinch.Core
             return (page + 1) * pageSize >= totalCount;
         }
 
-        public static string ToQueryString<T>(T obj) where T : class
+        public static string ToSnakeCaseQueryString<T>(T obj) where T : class
         {
             var props = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public |
                                                 BindingFlags.DeclaredOnly);
@@ -104,19 +105,27 @@ namespace Sinch.Core
 
                 if (propVal is not null)
                 {
-                    var propName = prop.Name.ToLowerInvariant();
-                    if (typeof(IEnumerable).IsAssignableFrom(prop.PropertyType) &&
-                        prop.PropertyType != typeof(string))
+                    // TODO: naming dynamically
+                    var propName = StringUtils.ToSnakeCase(prop.Name);
+                    var propType = prop.PropertyType;
+                    if (typeof(IEnumerable).IsAssignableFrom(propType) &&
+                        propType != typeof(string))
                     {
                         list.AddRange(ParamsFromObject(propName, propVal as IEnumerable));
                     }
-                    else if (typeof(DateTime).IsAssignableFrom(prop.PropertyType))
+                    else if (typeof(DateTime).IsAssignableFrom(propType) ||
+                             typeof(DateTime?).IsAssignableFrom(propType))
                     {
                         list.Add(new(propName, StringUtils.ToIso8601((DateTime)propVal)));
                     }
-                    else if (typeof(Enum).IsAssignableFrom(prop.PropertyType))
+                    else if (propType.IsEnum || Nullable.GetUnderlyingType(propType)?.IsEnum == true)
                     {
-                        list.Add(new(propName, GetEnumString(prop.PropertyType, propVal)));
+                        list.Add(new(propName, GetEnumString(propType, propVal)));
+                    }
+                    else if (typeof(bool).IsAssignableFrom(propType) ||
+                             typeof(bool?).IsAssignableFrom(propType))
+                    {
+                        list.Add(new(propName, prop.GetValue(obj).ToString().ToLowerInvariant()));
                     }
                     else
                     {
@@ -137,7 +146,7 @@ namespace Sinch.Core
         private static string GetStringRepresentation(object o)
         {
             var type = o.GetType();
-            if (typeof(DateTime).IsAssignableFrom(type))
+            if (typeof(DateTime).IsAssignableFrom(type) || typeof(DateTime?).IsAssignableFrom(type))
             {
                 return StringUtils.ToIso8601((DateTime)o);
             }
@@ -145,6 +154,11 @@ namespace Sinch.Core
             if (typeof(Enum).IsAssignableFrom(type))
             {
                 return GetEnumString(type, o);
+            }
+
+            if (typeof(bool).IsAssignableFrom(type) || typeof(bool?).IsAssignableFrom(type))
+            {
+                return o.ToString().ToLowerInvariant();
             }
 
             return o.ToString();

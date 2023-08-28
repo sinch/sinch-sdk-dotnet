@@ -30,7 +30,7 @@ namespace Sinch.Tests
         {
             public DateTime Date { get; set; }
 
-            public string Desc { get; set; }
+            public string DescLong { get; set; }
 
             public Sinch.Numbers.Types Type { get; set; }
 
@@ -48,14 +48,14 @@ namespace Sinch.Tests
             {
                 Type = Types.Local,
                 Date = new DateTime(2022, 7, 12),
-                Desc = "descri",
+                DescLong = "descri",
                 Types = new List<Types>()
                 {
                     Types.Local, Types.Mobile
                 }
             };
-            var str = Utils.ToQueryString(root);
-            str.Should().Be("date=2022-07-12T00:00:00.0000000&desc=descri&type=LOCAL&types=LOCAL&types=MOBILE");
+            var str = Utils.ToSnakeCaseQueryString(root);
+            str.Should().Be("date=2022-07-12T00%3A00%3A00.0000000&desc_long=descri&type=LOCAL&types=LOCAL&types=MOBILE");
         }
     }
 }

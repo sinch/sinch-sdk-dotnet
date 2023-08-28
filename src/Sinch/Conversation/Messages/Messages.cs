@@ -43,9 +43,33 @@ namespace Sinch.Conversation.Messages
         Task<ConversationMessage> Get(string messageId, MessageSource? messagesSource = default,
             CancellationToken cancellationToken = default);
 
-        Task Delete();
+        /// <summary>
+        ///     This operation lists all messages sent or received via particular Processing Modes<br/><br/>
+        ///     Setting the &#x60;messages_source&#x60; parameter to &#x60;CONVERSATION_SOURCE&#x60; allows
+        ///     for querying messages in &#x60;CONVERSATION&#x60; mode, and setting it to &#x60;DISPATCH_SOURCE&#x60;
+        ///     will allow for queries of messages in &#x60;DISPATCH&#x60; mode.<br/><br/>
+        ///     Combining multiple parameters is supported for more detailed filtering of messages,
+        ///     but some of them are not supported depending on the value specified for &#x60;messages_source&#x60;.
+        ///     The description for each field will inform if that field may not be supported. <br/><br/>
+        ///     The messages are ordered by their &#x60;accept_time&#x60; property in descending order,
+        ///     where &#x60;accept_time&#x60; is a timestamp of when the message was enqueued by the Conversation API.
+        ///     This means messages received most recently will be listed first.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<List.Response> List(List.Request request, CancellationToken cancellationToken = default);
 
-        Task List();
+        /// <summary>
+        ///     Delete a specific message by its ID. <br/><br/>
+        ///     Note: Removing all messages of a conversation will not automatically delete the conversation.
+        /// </summary>
+        /// <param name="messageId">The unique ID of the message.</param>
+        /// <param name="messagesSource"><see cref="MessageSource"/></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task Delete(string messageId, MessageSource? messagesSource = default,
+            CancellationToken cancellationToken = default);
     }
 
     /// <inheritdoc />
@@ -76,24 +100,39 @@ namespace Sinch.Conversation.Messages
         public Task<ConversationMessage> Get(string messageId, MessageSource? messagesSource = default,
             CancellationToken cancellationToken = default)
         {
-            var param = messagesSource is null
-                ? string.Empty
-                : $"?messages_source={messagesSource.Value.GetEnumString()}";
+            var param = GetMessageSourceQueryParam(messagesSource);
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/messages/{messageId}{param}");
 
             _logger?.LogDebug("Getting a message with {messageId}...", messageId);
             return _http.Send<ConversationMessage>(uri, HttpMethod.Get, cancellationToken);
         }
 
-
-        public Task Delete()
+        private static string GetMessageSourceQueryParam(MessageSource? messagesSource)
         {
-            throw new NotImplementedException();
+            var param = messagesSource is null
+                ? string.Empty
+                : $"?messages_source={messagesSource.Value.GetEnumString()}";
+            return param;
         }
 
-        public Task List()
+        /// <inheritdoc/>  
+        public Task<List.Response> List(List.Request request, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            _logger?.LogDebug("Fetching list of messages {request}", request);
+            var uri = new Uri(_baseAddress,
+                $"v1/projects/{_projectId}/messages?{Utils.ToSnakeCaseQueryString(request)}");
+            return _http.Send<List.Response>(uri, HttpMethod.Get, cancellationToken);
+        }
+
+        /// <inheritdoc/>  
+        public Task Delete(string messageId, MessageSource? messagesSource = default,
+            CancellationToken cancellationToken = default)
+        {
+            var param = GetMessageSourceQueryParam(messagesSource);
+            _logger?.LogDebug("Deleting a message {messageId}", messageId);
+            var uri = new Uri(_baseAddress,
+                $"v1/projects/{_projectId}/messages/{messageId}{param}");
+            return _http.Send<object>(uri, HttpMethod.Delete, cancellationToken);
         }
     }
 }

@@ -8,6 +8,7 @@ using FluentAssertions;
 using RichardSzalay.MockHttp;
 using Sinch.Conversation;
 using Sinch.Conversation.Messages;
+using Sinch.Conversation.Messages.List;
 using Sinch.Conversation.Messages.Message;
 using Xunit;
 
@@ -75,6 +76,74 @@ namespace Sinch.Tests.Conversation
                 Channel = ConversationChannel.WhatsApp,
                 Identity = "string"
             });
+        }
+
+        [Fact]
+        public async Task ListMessages()
+        {
+            var conversationId = "conversationId";
+            var nextPageToken = "hola!";
+            var contactId = "contact_d";
+            var appId = "appId";
+            var channelId = "channel_id";
+            var time = "2022-07-12T00:00:00.0000000";
+
+            HttpMessageHandlerMock
+                .When(HttpMethod.Get,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/messages")
+                .WithQueryString("conversation_id", conversationId)
+                .WithQueryString("contact_id", contactId)
+                .WithQueryString("app_id", appId)
+                .WithQueryString("channel_identity", channelId)
+                .WithQueryString("start_time", time)
+                .WithQueryString("end_time", time)
+                .WithQueryString("page_size", "2")
+                .WithQueryString("page_token", "3")
+                .WithQueryString("view", "WITH_METADATA")
+                .WithQueryString("message_source", "DISPATCH_SOURCE")
+                .WithQueryString("only_recipient_originated", "true")
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    next_page_token = nextPageToken,
+                    messages = new[]
+                    {
+                        Message(),
+                        Message()
+                    }
+                }));
+
+            var dateTime = new DateTime(2022, 7, 12);
+            var response = await Conversation.Messages.List(new Request
+            {
+                ConversationId = conversationId,
+                ContactId = contactId,
+                AppId = appId,
+                ChannelIdentity = channelId,
+                StartTime = dateTime,
+                EndTime = dateTime,
+                PageSize = 2,
+                PageToken = "3",
+                View = View.WithMetadata,
+                MessageSource = MessageSource.DispatchSource,
+                OnlyRecipientOriginated = true
+            });
+
+            response.Should().NotBeNull();
+            response.NextPageToken.Should().Be(nextPageToken);
+            response.Messages.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public async Task Delete()
+        {
+            var messageId = "123_abc";
+            HttpMessageHandlerMock
+                .When(HttpMethod.Delete,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/messages/{messageId}")
+                .WithQueryString("messages_source", "CONVERSATION_SOURCE")
+                .Respond(HttpStatusCode.OK);
+
+            await Conversation.Messages.Delete(messageId, MessageSource.ConversationSource);
         }
 
         // I'm sorry, but it's really that complex object...
