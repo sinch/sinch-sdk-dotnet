@@ -18,26 +18,14 @@ namespace Sinch.Core
         /// <returns>Value of EnumMember attribute</returns>
         public static string GetEnumString<T>(this T value) where T : Enum
         {
-            var enumType = typeof(T);
-            var name = Enum.GetName(enumType, value)!;
-            var enumMemberAttribute =
-                ((EnumMemberAttribute[])enumType.GetField(name)!.GetCustomAttributes(typeof(EnumMemberAttribute), true))
-                .SingleOrDefault();
-
-            if (enumMemberAttribute == null)
-            {
-                return value.ToString();
-            }
-
-            return enumMemberAttribute.Value!;
+            return GetEnumString(typeof(T), value);
         }
 
         /// <summary>
         ///     Gets a enum string from EnumMember attribute
         /// </summary>
-        /// <typeparam name="T">Enum Type</typeparam>
         /// <returns>Value of EnumMember attribute</returns>
-        public static string GetEnumString(Type type, object value)
+        private static string GetEnumString(Type type, object value)
         {
             type = Nullable.GetUnderlyingType(type) ?? type;
             var name = Enum.GetName(type, value)!;
@@ -103,34 +91,18 @@ namespace Sinch.Core
                     continue;
                 var propVal = prop.GetValue(obj);
 
-                if (propVal is not null)
+                if (propVal is null) continue;
+
+                var propName = StringUtils.ToSnakeCase(prop.Name);
+                var propType = prop.PropertyType;
+                if (typeof(IEnumerable).IsAssignableFrom(propType) &&
+                    propType != typeof(string))
                 {
-                    // TODO: naming dynamically
-                    var propName = StringUtils.ToSnakeCase(prop.Name);
-                    var propType = prop.PropertyType;
-                    if (typeof(IEnumerable).IsAssignableFrom(propType) &&
-                        propType != typeof(string))
-                    {
-                        list.AddRange(ParamsFromObject(propName, propVal as IEnumerable));
-                    }
-                    else if (typeof(DateTime).IsAssignableFrom(propType) ||
-                             typeof(DateTime?).IsAssignableFrom(propType))
-                    {
-                        list.Add(new(propName, StringUtils.ToIso8601((DateTime)propVal)));
-                    }
-                    else if (propType.IsEnum || Nullable.GetUnderlyingType(propType)?.IsEnum == true)
-                    {
-                        list.Add(new(propName, GetEnumString(propType, propVal)));
-                    }
-                    else if (typeof(bool).IsAssignableFrom(propType) ||
-                             typeof(bool?).IsAssignableFrom(propType))
-                    {
-                        list.Add(new(propName, prop.GetValue(obj).ToString().ToLowerInvariant()));
-                    }
-                    else
-                    {
-                        list.Add(new(propName, prop.GetValue(obj).ToString()));
-                    }
+                    list.AddRange(ParamsFromObject(propName, propVal as IEnumerable));
+                }
+                else
+                {
+                    list.Add(new(propName, ToQueryParamString(propVal)));
                 }
             }
 
@@ -140,10 +112,10 @@ namespace Sinch.Core
         private static IEnumerable<KeyValuePair<string, string>> ParamsFromObject(string paramName, IEnumerable obj)
         {
             return obj.Cast<object>().Select(o =>
-                new KeyValuePair<string, string>(paramName, o.ToString().ToUpperInvariant()));
+                new KeyValuePair<string, string>(paramName, ToQueryParamString(o)));
         }
 
-        private static string GetStringRepresentation(object o)
+        private static string ToQueryParamString(object o)
         {
             var type = o.GetType();
             if (typeof(DateTime).IsAssignableFrom(type) || typeof(DateTime?).IsAssignableFrom(type))
@@ -158,7 +130,7 @@ namespace Sinch.Core
 
             if (typeof(bool).IsAssignableFrom(type) || typeof(bool?).IsAssignableFrom(type))
             {
-                return o.ToString().ToLowerInvariant();
+                return o.ToString()?.ToLowerInvariant();
             }
 
             return o.ToString();
