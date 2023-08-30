@@ -1,5 +1,4 @@
-﻿using Sinch.Conversation.Messages.Send;
-using Sinch.Core;
+﻿using Sinch.Core;
 
 namespace Sinch.Conversation.Messages
 {

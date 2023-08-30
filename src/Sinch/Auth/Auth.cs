@@ -98,7 +98,6 @@ namespace Sinch.Auth
 
         private class AuthResponse
         {
-            // System.Text.Json doesn't support snake_case -_-
             [JsonPropertyName("access_token")]
             public string AccessToken { get; set; }
 

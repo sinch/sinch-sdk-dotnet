@@ -31,7 +31,7 @@ namespace Sinch.Conversation.Messages
         /// <param name="request">A request params</param>
         /// <param name="cancellationToken">cancellationToken</param>
         /// <returns><see cref="Send.Response"/></returns>
-        Task<Send.Response> Send(Send.Request request, CancellationToken cancellationToken = default);
+        Task<Response> Send(Request request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Retrieves a specific message by its ID.

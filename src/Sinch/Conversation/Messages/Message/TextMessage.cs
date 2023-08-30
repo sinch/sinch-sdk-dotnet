@@ -10,10 +10,10 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     A message containing only text.
         /// </summary>
-        /// <param name="Text">Text</param>
-        public TextMessage(string Text)
+        /// <param name="text">Text</param>
+        public TextMessage(string text)
         {
-            this.Text = Text;
+            Text = text;
         }
 
         /// <summary>

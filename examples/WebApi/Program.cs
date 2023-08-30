@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<ISinch>(x => new SinchClient(
+builder.Services.AddSingleton<ISinch>(_ => new SinchClient(
     builder.Configuration["Sinch:KeyId"]!,
     builder.Configuration["Sinch:KeySecret"]!,
     builder.Configuration["Sinch:ProjectId"],

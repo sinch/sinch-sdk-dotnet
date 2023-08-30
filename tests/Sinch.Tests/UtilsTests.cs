@@ -32,9 +32,9 @@ namespace Sinch.Tests
 
             public string DescLong { get; set; }
 
-            public Sinch.Numbers.Types Type { get; set; }
+            public Types Type { get; set; }
 
-            public List<Sinch.Numbers.Types> Types { get; set; }
+            public List<Types> Types { get; set; }
 
             public string Null { get; set; }
 

@@ -2,10 +2,10 @@
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Conversation
+namespace Sinch.Conversation.Messages
 {
     /// <summary>
-    /// The identifier of the channel you want to include. Must be one of the enum values.
+    ///     The identifier of the channel you want to include. Must be one of the enum values.
     /// </summary>
     /// <value>The identifier of the channel you want to include. Must be one of the enum values.</value>
     [JsonConverter(typeof(SinchEnumConverter<ConversationChannel>))]
@@ -18,7 +18,7 @@ namespace Sinch.Conversation
         WhatsApp = 1,
 
         /// <summary>
-        /// Enum RCS for value: RCS
+        ///     Enum RCS for value: RCS
         /// </summary>
         [EnumMember(Value = "RCS")]
         Rcs = 2,
