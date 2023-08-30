@@ -8,7 +8,7 @@ namespace Sinch.Conversation.Messages.Message
     public enum CardHeight
     {   
         /// <summary>
-        /// Enum UNSPECIFIEDHEIGHT for value: UNSPECIFIED_HEIGHT
+        ///     Enum UNSPECIFIEDHEIGHT for value: UNSPECIFIED_HEIGHT
         /// </summary>
         [EnumMember(Value = "UNSPECIFIED_HEIGHT")]
         UnspecifiedHeight = 1,

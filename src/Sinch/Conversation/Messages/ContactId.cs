@@ -1,8 +1,6 @@
-﻿using Sinch.Core;
-
-namespace Sinch.Conversation.Messages
+﻿namespace Sinch.Conversation.Messages
 {
-    public sealed class Contact : OneOf<Contact, Identified>, IRecipient
+    public sealed class Contact : IRecipient
     {
         /// <summary>
         ///     The ID of the contact.
