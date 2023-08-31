@@ -146,6 +146,45 @@ namespace Sinch.Tests.Conversation
             await Conversation.Messages.Delete(messageId, MessageSource.ConversationSource);
         }
 
+        [Fact]
+        public async Task Exception()
+        {
+            var messageId = "123_abc";
+            HttpMessageHandlerMock
+                .When(HttpMethod.Delete,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/messages/{messageId}")
+                .WithQueryString("messages_source", "CONVERSATION_SOURCE")
+                .Respond(HttpStatusCode.BadRequest, JsonContent.Create(new
+                {
+                    error = new
+                    {
+                        code = 400,
+                        error = "malformed",
+                        message = "Invalid argument",
+                        status = "INVALID_ARGUMENT",
+                        details = new[]
+                        {
+                            new
+                            {
+                                type = "type.googleapis.com/google.rpc.BadRequest",
+                                field_violations = new[]
+                                {
+                                    new
+                                    {
+                                        field = "message_id",
+                                        description = "Field is mandatory"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }));
+
+            Func<Task> request = () => Conversation.Messages.Delete(messageId, MessageSource.ConversationSource);
+            await request.Should().ThrowAsync<ApiException>().WithMessage("Bad Request")
+                .Where(x => x.DetailedMessage == "Invalid argument");
+        }
+
         // I'm sorry, but it's really that complex object...
         private static object Message()
         {
