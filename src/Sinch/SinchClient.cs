@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Text.Json;
 using Sinch.Auth;
+using Sinch.Conversation;
 using Sinch.Core;
 using Sinch.Numbers;
 using Sinch.SMS;
@@ -46,6 +47,15 @@ namespace Sinch
         ///     </see>
         /// </summary>
         public ISms Sms { get; }
+
+        /// <summary>
+        ///     Send and receive messages globally over SMS, RCS, WhatsApp, Viber Business,
+        ///     Facebook messenger and other popular channels using the Sinch Conversation API.<br/><br/>
+        ///     The Conversation API endpoint uses built-in transcoding to give you the power of conversation
+        ///     across all supported channels and, if required, full control over channel specific features.<br/><br/>
+        ///     <see href="https://developers.sinch.com/docs/conversation/api-reference/">Learn more.</see>
+        /// </summary>
+        public IConversation Conversation { get; set; }
     }
 
     public class SinchClient : ISinch
@@ -101,6 +111,11 @@ namespace Sinch
             Sms = new Sms(projectId, new Uri($"https://zt.{smsRegion}.sms.api.sinch.com"), _loggerFactory,
                 httpSnakeCase);
 
+            Conversation = new Conversation.Conversation(projectId,
+                new Uri(
+                    $"https://{optionsObj.ConversationRegion.ToString().ToLowerInvariant()}.conversation.api.sinch.com/"),
+                _loggerFactory, httpSnakeCase);
+
             Auth = auth;
 
             logger?.LogInformation("SinchClient initialized.");
@@ -119,7 +134,7 @@ namespace Sinch
             var auth = new Auth.Auth(authUri, http);
             var httpCamelCase = new Http(auth, http, null,
                 JsonNamingPolicy.CamelCase);
-            var httpSnakeCase = new Http(auth, http,null,
+            var httpSnakeCase = new Http(auth, http, null,
                 SnakeCaseNamingPolicy.Instance);
             Numbers = new Numbers.Numbers(projectId, numbersBaseAddress, null, httpCamelCase);
             Sms = new Sms(projectId, smsBaseAddress, null, httpSnakeCase);
@@ -144,14 +159,17 @@ namespace Sinch
             };
         }
 
-        /// <summary>
-        ///     You can use the Active Number API to manage numbers you own. Assign numbers to projects,
-        ///     release numbers from projects, or list all numbers assigned to a project.
-        /// </summary>
+        /// <inheritdoc/>       
         public INumbers Numbers { get; }
 
+        /// <inheritdoc/>
         public ISms Sms { get; }
+        
+        /// <inheritdoc/>
+        public IConversation Conversation { get; set; }
 
+
+        /// <inheritdoc/>
         public IAuth Auth { get; }
     }
 }

@@ -54,14 +54,14 @@ namespace Sinch.Tests.Sms
                             code = 14,
                             status = "Expired",
                             count = 4,
-                            recipients = (string[]?)null
+                            recipients = (string[])null
                         },
                         new
                         {
                             code = 14,
                             status = "Rejected",
                             count = 4,
-                            recipients = (string[]?)new[] { "1", "2" }
+                            recipients = new[] { "1", "2" }
                         }
                     }
                 }));

@@ -96,7 +96,7 @@ namespace Sinch.Tests.e2e.Sms
         public async Task DeliveryFeedbackForBatch()
         {
             Func<Task> op = () => SinchClient.Sms.Batches.SendDeliveryFeedback("01GJK2J7HXWZVS11GSEQRR19GT",
-                new string[] { "+48 737532793" });
+                new[] { "+48 737532793" });
             await op.Should().NotThrowAsync();
         }
     }
