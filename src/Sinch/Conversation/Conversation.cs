@@ -1,4 +1,5 @@
 ﻿using System;
+using Sinch.Conversation.Apps;
 using Sinch.Conversation.Messages;
 using Sinch.Core;
 using Sinch.Logger;
@@ -14,29 +15,27 @@ namespace Sinch.Conversation
     /// </summary>
     public interface IConversation
     {
-        /// <summary>
-        ///     To start sending messages you must have a Conversation API
-        ///     <see href="https://dashboard.sinch.com/convapi/app">app</see>.
-        ///     The app holds information about the channel credentials and registered webhooks
-        ///     to which the API delivers callbacks such as message delivery receipts and contact messages.
-        ///     If you don't already have an app please follow the instructions in the getting started guide available
-        ///     in the <see href="https://dashboard.sinch.com/convapi/getting-started">Sinch Dashboard</see>
-        ///     to create one.
-        /// </summary>
+        /// <inheritdoc cref="IMessages" />
         IMessages Messages { get; }
+
+        /// <inheritdoc cref="IApp" />
+        IApp App { get; }
     }
 
+    /// <inheritdoc />
     internal class Conversation : IConversation
     {
         internal Conversation(string projectId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
         {
             Messages = new Messages.Messages(projectId, baseAddress, loggerFactory?.Create<Messages.Messages>(),
                 http);
+            App = new Apps.Apps(projectId, baseAddress, loggerFactory?.Create<Apps.Apps>(), http);
         }
 
-        /// <summary>
-        ///     Access a Messages API.
-        /// </summary>
+        /// <inheritdoc />
         public IMessages Messages { get; }
+
+        /// <inheritdoc />
+        public IApp App { get; }
     }
 }

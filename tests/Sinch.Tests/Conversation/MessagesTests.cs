@@ -19,7 +19,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public async Task GetMessage()
         {
-            var messageId = "123_abc";
+            const string messageId = "123_abc";
             var responseObj = Message();
             HttpMessageHandlerMock
                 .When(HttpMethod.Get,
@@ -81,12 +81,12 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public async Task ListMessages()
         {
-            var conversationId = "conversationId";
-            var nextPageToken = "hola!";
-            var contactId = "contact_d";
-            var appId = "appId";
-            var channelId = "channel_id";
-            var time = "2022-07-12T00:00:00.0000000";
+            const string conversationId = "conversationId";
+            const string nextPageToken = "hola!";
+            const string contactId = "contact_d";
+            const string appId = "appId";
+            const string channelId = "channel_id";
+            const string time = "2022-07-12T00:00:00.0000000";
 
             HttpMessageHandlerMock
                 .When(HttpMethod.Get,
