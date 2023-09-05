@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -97,149 +98,152 @@ namespace Sinch.Tests.Conversation
             }
         };
 
+        private object _createApp = new
+        {
+            display_name = "display_name",
+            channel_credentials = new[]
+            {
+                new
+                {
+                    channel = "INSTAGRAM",
+                    static_token = new
+                    {
+                        token = "token"
+                    },
+                    telegram_credentials = new
+                    {
+                        token = "tok"
+                    },
+                    wechat_credentials = new
+                    {
+                        token = "troc",
+                        aes_key = "krok",
+                        app_id = "block",
+                        app_secret = "mrok"
+                    },
+                    line_credentials = new
+                    {
+                        secret = "sec",
+                        token = "torc"
+                    },
+                    callback_secret = "sec",
+                    kakaotalk_credentials = new
+                    {
+                        kakaotalk_sender_key = "ole",
+                        kakaotalk_plus_friend_id = "boke"
+                    },
+                    mms_credentials = new
+                    {
+                        account_id = "acc_id",
+                        api_key = "akey",
+                        basic_auth = new
+                        {
+                            password = "123",
+                            username = "456"
+                        }
+                    },
+                    static_bearer = new
+                    {
+                        token = "a",
+                        claimed_identity = "b"
+                    }
+                }
+            },
+            processing_mode = "CONVERSATION",
+            retention_policy = new
+            {
+                retention_type = "MESSAGE_EXPIRE_POLICY",
+                ttl_days = 180
+            },
+            smart_conversation = new
+            {
+                enabled = true
+            },
+            dispatch_retention_policy = new
+            {
+                retention_type = "MESSAGE_EXPIRE_POLICY",
+                ttl_days = 20
+            },
+            conversation_metadata_report_view = "FULL"
+        };
+
+        private Request _createRequest = new Request
+        {
+            DisplayName = "display_name",
+            ChannelCredentials = new List<ConversationChannelCredential>()
+            {
+                new ConversationChannelCredential()
+                {
+                    Channel = ConversationChannel.Instagram,
+                    StaticToken = new StaticTokenCredential
+                    {
+                        Token = "token"
+                    },
+                    TelegramCredentials = new TelegramCredentials()
+                    {
+                        Token = "tok"
+                    },
+                    WechatCredentials = new WeChatCredentials()
+                    {
+                        Token = "troc",
+                        AesKey = "krok",
+                        AppId = "block",
+                        AppSecret = "mrok"
+                    },
+                    LineCredentials = new LineCredentials()
+                    {
+                        Secret = "sec",
+                        Token = "torc"
+                    },
+                    CallbackSecret = "sec",
+                    KakaotalkCredentials = new KakaoTalkCredentials()
+                    {
+                        KakaotalkSenderKey = "ole",
+                        KakaotalkPlusFriendId = "boke",
+                    },
+                    MmsCredentials = new MmsCredentials()
+                    {
+                        AccountId = "acc_id",
+                        ApiKey = "akey",
+                        BasicAuth = new BasicAuthCredential()
+                        {
+                            Password = "123",
+                            Username = "456",
+                        }
+                    },
+                    StaticBearer = new StaticBearerCredential()
+                    {
+                        Token = "a",
+                        ClaimedIdentity = "b"
+                    }
+                }
+            },
+            ProcessingMode = ProcessingMode.Conversation,
+            RetentionPolicy = new RetentionPolicy()
+            {
+                RetentionType = RetentionType.MessageExpirePolicy,
+                TtlDays = 180,
+            },
+            SmartConversation = new SmartConversation(true),
+            DispatchRetentionPolicy = new DispatchRetentionPolicy()
+            {
+                RetentionType = DispatchRetentionPolicyType.MessageExpirePolicy,
+                TtlDays = 20,
+            },
+            ConversationMetadataReportView = ConversationMetadataReportView.Full,
+        };
+
         [Fact]
         public async Task Create()
         {
-            var jsonData = new
-            {
-                display_name = "display_name",
-                channel_credentials = new[]
-                {
-                    new
-                    {
-                        channel = "INSTAGRAM",
-                        static_token = new
-                        {
-                            token = "token"
-                        },
-                        telegram_credentials = new
-                        {
-                            token = "tok"
-                        },
-                        wechat_credentials = new
-                        {
-                            token = "troc",
-                            aes_key = "krok",
-                            app_id = "block",
-                            app_secret = "mrok"
-                        },
-                        line_credentials = new
-                        {
-                            secret = "sec",
-                            token = "torc"
-                        },
-                        callback_secret = "sec",
-                        kakaotalk_credentials = new
-                        {
-                            kakaotalk_sender_key = "ole",
-                            kakaotalk_plus_friend_id = "boke"
-                        },
-                        mms_credentials = new
-                        {
-                            account_id = "acc_id",
-                            api_key = "akey",
-                            basic_auth = new
-                            {
-                                password = "123",
-                                username = "456"
-                            }
-                        },
-                        static_bearer = new
-                        {
-                            token = "a",
-                            claimed_identity = "b"
-                        }
-                    }
-                },
-                processing_mode = "CONVERSATION",
-                retention_policy = new
-                {
-                    retention_type = "MESSAGE_EXPIRE_POLICY",
-                    ttl_days = 180
-                },
-                smart_conversation = new
-                {
-                    enabled = true
-                },
-                dispatch_retention_policy = new
-                {
-                    retention_type = "MESSAGE_EXPIRE_POLICY",
-                    ttl_days = 20
-                },
-                conversation_metadata_report_view = "FULL"
-            };
+                HttpMessageHandlerMock
+                    .When(HttpMethod.Post,
+                        $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/apps")
+                    .WithJson(JsonConvert.SerializeObject(_createApp))
+                    .Respond(HttpStatusCode.OK, JsonContent.Create(_app));
 
-            HttpMessageHandlerMock
-                .When(HttpMethod.Post,
-                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/apps")
-                .WithJson(JsonConvert.SerializeObject(jsonData))
-                .Respond(HttpStatusCode.OK, JsonContent.Create(_app));
 
-            var response = await Conversation.App.Create(new Request
-            {
-                DisplayName = "display_name",
-                ChannelCredentials = new List<ConversationChannelCredential>()
-                {
-                    new ConversationChannelCredential()
-                    {
-                        Channel = ConversationChannel.Instagram,
-                        StaticToken = new StaticTokenCredential
-                        {
-                            Token = "token"
-                        },
-                        TelegramCredentials = new TelegramCredentials()
-                        {
-                            Token = "tok"
-                        },
-                        WechatCredentials = new WeChatCredentials()
-                        {
-                            Token = "troc",
-                            AesKey = "krok",
-                            AppId = "block",
-                            AppSecret = "mrok"
-                        },
-                        LineCredentials = new LineCredentials()
-                        {
-                            Secret = "sec",
-                            Token = "torc"
-                        },
-                        CallbackSecret = "sec",
-                        KakaotalkCredentials = new KakaoTalkCredentials()
-                        {
-                            KakaotalkSenderKey = "ole",
-                            KakaotalkPlusFriendId = "boke",
-                        },
-                        MmsCredentials = new MmsCredentials()
-                        {
-                            AccountId = "acc_id",
-                            ApiKey = "akey",
-                            BasicAuth = new BasicAuthCredential()
-                            {
-                                Password = "123",
-                                Username = "456",
-                            }
-                        },
-                        StaticBearer = new StaticBearerCredential()
-                        {
-                            Token = "a",
-                            ClaimedIdentity = "b"
-                        }
-                    }
-                },
-                ProcessingMode = ProcessingMode.Conversation,
-                RetentionPolicy = new RetentionPolicy()
-                {
-                    RetentionType = RetentionType.MessageExpirePolicy,
-                    TtlDays = 180,
-                },
-                SmartConversation = new SmartConversation(true),
-                DispatchRetentionPolicy = new DispatchRetentionPolicy()
-                {
-                    RetentionType = DispatchRetentionPolicyType.MessageExpirePolicy,
-                    TtlDays = 20,
-                },
-                ConversationMetadataReportView = ConversationMetadataReportView.Full,
-            });
+            var response = await Conversation.App.Create(_createRequest);
 
             response.DisplayName.Should().Be("Sinch Conversation API Demo App 001");
             response.QueueStats.Should().BeEquivalentTo(new QueueStats()
@@ -312,6 +316,78 @@ namespace Sinch.Tests.Conversation
                     AesKey = "my_wechat_aes_key"
                 }
             });
+        }
+
+        [Fact]
+        public async Task List()
+        {
+            HttpMessageHandlerMock
+                .When(HttpMethod.Get,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/apps")
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    apps = new[]
+                    {
+                        _app, _app
+                    }
+                }));
+
+            var response = await Conversation.App.List();
+            response.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public async Task Get()
+        {
+            HttpMessageHandlerMock
+                .When(HttpMethod.Get,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/apps/123")
+                .Respond(HttpStatusCode.OK, JsonContent.Create(_app));
+
+            var response = await Conversation.App.Get("123");
+
+            response.DisplayName.Should().Be("Sinch Conversation API Demo App 001");
+        }
+
+        [Fact]
+        public async Task Delete()
+        {
+            HttpMessageHandlerMock
+                .When(HttpMethod.Delete,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/apps/123")
+                .Respond(HttpStatusCode.OK);
+
+            Func<Task> response = () => Conversation.App.Delete("123");
+
+            await response.Should().NotThrowAsync();
+        }
+
+        [Fact]
+        public async Task Update()
+        {
+            HttpMessageHandlerMock
+                .When(HttpMethod.Patch,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/apps/123")
+                .WithJson(JsonConvert.SerializeObject(new
+                {
+                    display_name = "abc"
+                }))
+                .WithQueryString("update_mask.paths", "a")
+                .WithQueryString("update_mask.paths", "b")
+                .Respond(HttpStatusCode.OK, JsonContent.Create(_app));
+
+            var request = new Sinch.Conversation.Apps.Update.Request()
+            {
+                DisplayName = "abc",
+                UpdateMaskPaths = new List<string>()
+                {
+                    "a", "b"
+                },
+            };
+
+            var response = await Conversation.App.Update("123", request);
+
+            response.Should().NotBeNull();
         }
     }
 }
