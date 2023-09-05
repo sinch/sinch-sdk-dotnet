@@ -236,11 +236,11 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public async Task Create()
         {
-                HttpMessageHandlerMock
-                    .When(HttpMethod.Post,
-                        $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/apps")
-                    .WithJson(JsonConvert.SerializeObject(_createApp))
-                    .Respond(HttpStatusCode.OK, JsonContent.Create(_app));
+            HttpMessageHandlerMock
+                .When(HttpMethod.Post,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/apps")
+                .WithJson(JsonConvert.SerializeObject(_createApp))
+                .Respond(HttpStatusCode.OK, JsonContent.Create(_app));
 
 
             var response = await Conversation.App.Create(_createRequest);
@@ -333,6 +333,7 @@ namespace Sinch.Tests.Conversation
                 }));
 
             var response = await Conversation.App.List();
+
             response.Should().HaveCount(2);
         }
 
