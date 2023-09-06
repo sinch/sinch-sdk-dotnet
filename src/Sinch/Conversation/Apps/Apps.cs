@@ -160,7 +160,7 @@ namespace Sinch.Conversation.Apps
             _logger?.LogDebug("Updating an app for a {projectId} with {appId}", _projectId, appId);
             return _http.Send<Update.Request, App>(uri, HttpMethod.Patch, request, cancellationToken);
         }
-        
+
         private class ListResponse
         {
             public List<App> Apps { get; set; }

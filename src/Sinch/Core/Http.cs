@@ -13,37 +13,37 @@ using Sinch.Logger;
 
 namespace Sinch.Core
 {
-    // TODO: re-think this interface
+    /// <summary>
+    ///     A single place to control token fetching and common headers.
+    /// </summary>
     internal interface IHttp
     {
         /// <summary>
-        /// Use to send http request without a body
+        ///     Use to send http request without a body
         /// </summary>
         /// <param name="uri"></param>
         /// <param name="httpMethod"></param>
         /// <param name="cancellationToken"></param>
-        /// <typeparam name="TResponse"></typeparam>
+        /// <typeparam name="TResponse">The type of the response object.</typeparam>
         /// <returns></returns>
         Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Use to send http request with a body
+        ///     Use to send http request with a body
         /// </summary>
         /// <param name="uri"></param>
         /// <param name="httpMethod"></param>
         /// <param name="httpContent"></param>
         /// <param name="cancellationToken"></param>
-        /// <typeparam name="TRequest"></typeparam>
-        /// <typeparam name="TResponse"></typeparam>
+        /// <typeparam name="TRequest">The type of the request object.</typeparam>
+        /// <typeparam name="TResponse">The type of the response object.</typeparam>
         /// <returns></returns>
         Task<TResponse> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest httpContent,
             CancellationToken cancellationToken = default);
     }
 
-    /// <summary>
-    ///     A single place to control token fetching and common headers.
-    /// </summary>
+    /// <inheritdoc /> 
     internal class Http : IHttp
     {
         private readonly HttpClient _httpClient;
@@ -64,41 +64,10 @@ namespace Sinch.Core
             };
         }
 
-        public async Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
+        public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default)
         {
-            var retry = true;
-            while (true)
-            {
-                // try get new token if retrying
-                var token = await _auth.GetToken(!retry);
-                _logger?.LogDebug("Sending request to {uri}", uri);
-                using var msg = new HttpRequestMessage
-                {
-                    RequestUri = uri, Method = httpMethod,
-                    Headers = { Authorization = new AuthenticationHeaderValue("Bearer", token) }
-                };
-
-                var result = await _httpClient.SendAsync(msg, cancellationToken);
-
-                if (result.StatusCode == HttpStatusCode.Unauthorized && retry)
-                {
-                    retry = false;
-                    continue;
-                }
-
-                await result.EnsureSuccessApiStatusCode();
-                _logger?.LogDebug("Finished processing request for {uri}", uri);
-                if (result.IsJson())
-                    return await result.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken,
-                               options: _jsonSerializerOptions)
-                           ?? throw new NullReferenceException(
-                               $"{nameof(TResponse)} is null");
-
-                _logger?.LogWarning("Response is not json, but {content}",
-                    await result.Content.ReadAsStringAsync(cancellationToken));
-                return default;
-            }
+            return Send<object, TResponse>(uri, httpMethod, null, cancellationToken);
         }
 
         public async Task<TResponse> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest request,
