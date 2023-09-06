@@ -10,5 +10,4 @@ var sinch = new SinchClient(Environment.GetEnvironmentVariable("SINCH_KEY_ID")!,
 
 
 
-
 Console.ReadLine();
