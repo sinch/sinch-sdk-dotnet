@@ -9,7 +9,7 @@ namespace Sinch.SMS.Hooks
     ///         To receive inbound message callbacks, a URL needs to be added to your REST API.
     ///         This URL can be specified in your <see href="https://dashboard.sinch.com/sms/api">Dashboard</see>.
     /// </summary>
-    public class IncomingTextSms
+    public class IncomingTextSms : IIncomingSms
     {
         /// <summary>
         ///     Gets or Sets Body
