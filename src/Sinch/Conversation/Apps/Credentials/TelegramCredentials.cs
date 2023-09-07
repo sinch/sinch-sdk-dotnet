@@ -15,20 +15,5 @@ namespace Sinch.Conversation.Apps.Credentials
 #else
         public string Token { get; set; }
 #endif
-        
-
-        /// <summary>
-        ///     Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            sb.Append("class TelegramCredentials {\n");
-            sb.Append("  Token: ").Append(Token).Append("\n");
-            sb.Append("}\n");
-            return sb.ToString();
-        }
-
     }
 }

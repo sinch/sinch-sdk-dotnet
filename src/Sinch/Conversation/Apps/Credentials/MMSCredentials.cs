@@ -31,21 +31,5 @@ namespace Sinch.Conversation.Apps.Credentials
         ///     Gets or Sets BasicAuth
         /// </summary>
         public BasicAuthCredential BasicAuth { get; set; }
-
-
-        /// <summary>
-        ///     Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            sb.Append("class MMSCredentials {\n");
-            sb.Append("  AccountId: ").Append(AccountId).Append("\n");
-            sb.Append("  ApiKey: ").Append(ApiKey).Append("\n");
-            sb.Append("  BasicAuth: ").Append(BasicAuth).Append("\n");
-            sb.Append("}\n");
-            return sb.ToString();
-        }
     }
 }

@@ -25,20 +25,5 @@ namespace Sinch.Conversation.Apps.Credentials
 #else
         public string Token { get; set; }
 #endif
-
-
-        /// <summary>
-        ///     Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            sb.Append("class StaticBearerCredential {\n");
-            sb.Append("  ClaimedIdentity: ").Append(ClaimedIdentity).Append("\n");
-            sb.Append("  Token: ").Append(Token).Append("\n");
-            sb.Append("}\n");
-            return sb.ToString();
-        }
     }
 }
