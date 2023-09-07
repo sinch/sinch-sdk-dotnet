@@ -72,7 +72,7 @@ namespace Sinch.Core
                 }
             }
 
-            throw new InvalidOperationException($"Failed to parse {enumType.Name} enum");
+            throw new InvalidOperationException($"Failed to parse {enumType.Name} enum for value {value}");
         }
 
         public static bool IsLastPage(int page, int pageSize, int totalCount)
