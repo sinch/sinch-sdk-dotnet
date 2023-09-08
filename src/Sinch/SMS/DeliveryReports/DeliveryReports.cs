@@ -27,10 +27,10 @@ namespace Sinch.SMS.DeliveryReports
         ///     A recipient delivery report contains the message status for a single recipient phone number.
         /// </summary>
         /// <param name="batchId">The batch ID you received from sending a message.</param>
-        /// <param name="recipientMisdn">Phone number for which you to want to search.</param>
+        /// <param name="recipientMsisdn">Phone number for which you to want to search.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<DeliveryReport> GetForNumber(string batchId, string recipientMisdn,
+        Task<DeliveryReport> GetForNumber(string batchId, string recipientMsisdn,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -52,7 +52,8 @@ namespace Sinch.SMS.DeliveryReports
         IAsyncEnumerable<DeliveryReport> ListAuto(List.Request request, CancellationToken cancellationToken = default);
     }
 
-    public class DeliveryReports : IDeliveryReports
+    /// <inheritdoc />
+    internal class DeliveryReports : IDeliveryReports
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
@@ -76,13 +77,13 @@ namespace Sinch.SMS.DeliveryReports
             return _http.Send<Request, Response>(uri, HttpMethod.Get, null, cancellationToken)!;
         }
 
-        public Task<DeliveryReport> GetForNumber(string batchId, string recipientMisdn,
+        public Task<DeliveryReport> GetForNumber(string batchId, string recipientMsisdn,
             CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress,
-                $"xms/v1/{_projectId}/batches/{batchId}/delivery_report/{recipientMisdn}");
+                $"xms/v1/{_projectId}/batches/{batchId}/delivery_report/{recipientMsisdn}");
 
-            _logger?.LogDebug("Fetching delivery report for a {number} of a {batchId}", recipientMisdn, batchId);
+            _logger?.LogDebug("Fetching delivery report for a {number} of a {batchId}", recipientMsisdn, batchId);
 
             return _http.Send<object, DeliveryReport>(uri, HttpMethod.Get, null, cancellationToken)!;
         }

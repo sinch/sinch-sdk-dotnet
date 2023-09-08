@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Conversation.Messages
+namespace Sinch.Conversation
 {
     [JsonConverter(typeof(SinchEnumConverter<ProcessingStrategy>))]
     public enum ProcessingStrategy
