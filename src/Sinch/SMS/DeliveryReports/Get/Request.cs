@@ -31,10 +31,10 @@ namespace Sinch.SMS.DeliveryReports.Get
         internal string GetQueryString()
         {
             var kvp = new List<KeyValuePair<string, string>>();
-            if (DeliveryReportType.HasValue)
+            if (DeliveryReportType is not null)
             {
                 kvp.Add(
-                    new KeyValuePair<string, string>("type", Utils.GetEnumString(DeliveryReportType.Value)));
+                    new KeyValuePair<string, string>("type",DeliveryReportType.Value));
             }
 
             if (Statuses is not null && Statuses.Count > 0)

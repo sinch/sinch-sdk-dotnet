@@ -78,8 +78,8 @@ namespace Sinch.Numbers.Active.List
 
             if (PageToken != null) dict.Add(new KeyValuePair<string, string>("pageToken", PageToken));
 
-            if (OrderBy.HasValue)
-                dict.Add(new KeyValuePair<string, string>("orderBy", OrderBy.Value.ToRequiredString()));
+            if (OrderBy is not null)
+                dict.Add(new KeyValuePair<string, string>("orderBy", OrderBy.Value));
 
             return string.Join("&", dict.Select(kvp => $"{kvp.Key}={WebUtility.UrlEncode(kvp.Value)}"));
         }

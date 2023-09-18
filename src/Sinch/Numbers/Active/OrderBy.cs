@@ -1,27 +1,18 @@
-﻿using System.Runtime.Serialization;
-
-namespace Sinch.Numbers.Active
+﻿namespace Sinch.Numbers.Active
 {
-    public enum OrderBy
+    /// <summary>
+    ///     Represents the order by options for sorting.
+    /// </summary>
+    public record OrderBy(string Value)
     {
-        [EnumMember(Value = "phoneNumber")]
-        PhoneNumber,
-        [EnumMember(Value = "displayName")]
-        DisplayName
-    }
+        /// <summary>
+        ///     Sort by phone number.
+        /// </summary>
+        public static readonly OrderBy PhoneNumber = new("phoneNumber");
 
-    internal static class Extension
-    {
-        internal static string ToRequiredString(this OrderBy orderBy)
-        {
-            // unfortunately, non exhaustive pattern matching not working as expected and forces to cover _ case
-#pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
-            return orderBy switch
-            {
-                OrderBy.PhoneNumber => "phoneNumber",
-                OrderBy.DisplayName => "displayName"
-            };
-#pragma warning restore CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
-        }
+        /// <summary>
+        ///     Sort by display name.
+        /// </summary>
+        public static readonly OrderBy DisplayName = new("displayName");
     }
 }

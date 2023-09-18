@@ -1,17 +1,27 @@
-﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Numbers.Hooks
 {
-    [JsonConverter(typeof(SinchEnumConverter<ResourceType>))]
-    public enum ResourceType
+    /// <summary>
+    ///     Represents the resource type options.
+    /// </summary>
+    [JsonConverter(typeof(EnumRecordJsonConverter<ResourceType>))]
+    public record ResourceType(string Value) : EnumRecord(Value)
     {
-        [EnumMember(Value = "NUMBER")]
-        Number,
-        [EnumMember(Value = "HOSTING_ORDER")]
-        HostingOrder,
-        [EnumMember(Value = "Brand")]
-        Brand
+        /// <summary>
+        ///     Represents a number resource.
+        /// </summary>
+        public static readonly ResourceType Number = new("NUMBER");
+
+        /// <summary>
+        ///     Represents a hosting order resource.
+        /// </summary>
+        public static readonly ResourceType HostingOrder = new("HOSTING_ORDER");
+
+        /// <summary>
+        ///     Represents a brand resource.
+        /// </summary>
+        public static readonly ResourceType Brand = new("Brand");
     }
 }

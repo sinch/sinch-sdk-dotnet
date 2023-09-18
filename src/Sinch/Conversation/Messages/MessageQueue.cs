@@ -1,19 +1,22 @@
-﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Conversation.Messages
 {
     /// <summary>
-    ///     Select the priority type for the message.
+    ///     Represents the message queue priority options.
     /// </summary>
-    [JsonConverter(typeof(SinchEnumConverter<MessageQueue>))]
-    public enum MessageQueue
+    [JsonConverter(typeof(EnumRecordJsonConverter<MessageQueue>))]
+    public record MessageQueue(string Value) : EnumRecord(Value)
     {
-        [EnumMember(Value = "NORMAL_PRIORITY")]
-        NormalPriority,
+        /// <summary>
+        ///     Selects normal priority for the message.
+        /// </summary>
+        public static readonly MessageQueue NormalPriority = new("NORMAL_PRIORITY");
 
-        [EnumMember(Value = "HIGH_PRIORITY")]
-        HighPriority,
+        /// <summary>
+        ///     Selects high priority for the message.
+        /// </summary>
+        public static readonly MessageQueue HighPriority = new("HIGH_PRIORITY");
     }
 }

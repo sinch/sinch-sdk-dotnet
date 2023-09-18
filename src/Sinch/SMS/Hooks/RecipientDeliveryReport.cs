@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Sinch.Core;
 using Sinch.SMS.DeliveryReports;
@@ -86,13 +85,20 @@ namespace Sinch.SMS.Hooks
         public DateTime OperatorStatusName { get; set; }
     }
 
-    [JsonConverter(typeof(SinchEnumConverter<Encoding>))]
-    public enum Encoding
+    /// <summary>
+    ///     Represents the encoding options for SMS.
+    /// </summary>
+    [JsonConverter(typeof(EnumRecordJsonConverter<Encoding>))]
+    public record Encoding(string Value) : EnumRecord(Value)
     {
-        [EnumMember(Value = "GSM")]
-        Gsm,
+        /// <summary>
+        ///     Represents the GSM encoding.
+        /// </summary>
+        public static readonly Encoding Gsm = new("GSM");
 
-        [EnumMember(Value = "UNICODE")]
-        Unicode
+        /// <summary>
+        ///     Represents the Unicode encoding.
+        /// </summary>
+        public static readonly Encoding Unicode = new("UNICODE");
     }
 }

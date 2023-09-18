@@ -1,33 +1,51 @@
-﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.SMS.DeliveryReports
 {
-    [JsonConverter(typeof(SinchEnumConverter<DeliveryReportType>))]
-    public enum DeliveryReportType
+    /// <summary>
+    ///     Represents the delivery report type options.
+    /// </summary>
+    [JsonConverter(typeof(EnumRecordJsonConverter<DeliveryReportType>))]
+    public record DeliveryReportType(string Value) : EnumRecord(Value)
     {
-        [EnumMember(Value = "delivery_report_sms")]
-        Sms,
+        /// <summary>
+        ///     Represents a delivery report for SMS.
+        /// </summary>
+        public static readonly DeliveryReportType Sms = new("delivery_report_sms");
 
-        [EnumMember(Value = "delivery_report_mms")]
-        Mms
+        /// <summary>
+        ///     Represents a delivery report for MMS.
+        /// </summary>
+        public static readonly DeliveryReportType Mms = new("delivery_report_mms");
     }
 
-    [JsonConverter(typeof(SinchEnumConverter<DeliveryReportVerbosityType>))]
-    public enum DeliveryReportVerbosityType
+    /// <summary>
+    ///     Represents the delivery report verbosity type options.
+    /// </summary>
+    [JsonConverter(typeof(EnumRecordJsonConverter<DeliveryReportVerbosityType>))]
+    public record DeliveryReportVerbosityType(string Value) : EnumRecord(Value)
     {
-        [EnumMember(Value = "summary")]
-        Summary,
+        /// <summary>
+        ///     Represents a summary delivery report.
+        /// </summary>
+        public static readonly DeliveryReportVerbosityType Summary = new("summary");
 
-        [EnumMember(Value = "full")]
-        Full
+        /// <summary>
+        ///     Represents a full delivery report.
+        /// </summary>
+        public static readonly DeliveryReportVerbosityType Full = new("full");
     }
-    
-    [JsonConverter(typeof(SinchEnumConverter<RecipientDeliveryReportType>))]
-    public enum RecipientDeliveryReportType
+
+    /// <summary>
+    ///     Represents the recipient delivery report type options.
+    /// </summary>
+    [JsonConverter(typeof(EnumRecordJsonConverter<RecipientDeliveryReportType>))]
+    public record RecipientDeliveryReportType(string Value) : EnumRecord(Value)
     {
-        [EnumMember(Value = "recipient_delivery_report_sms")]
-        Sms,
+        /// <summary>
+        ///     Represents a recipient delivery report for SMS.
+        /// </summary>
+        public static readonly RecipientDeliveryReportType Sms = new("recipient_delivery_report_sms");
     }
 }
