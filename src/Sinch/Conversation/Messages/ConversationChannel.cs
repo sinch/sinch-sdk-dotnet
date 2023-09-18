@@ -1,92 +1,77 @@
-﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Conversation.Messages
 {
     /// <summary>
-    ///     The identifier of the channel you want to include. Must be one of the enum values.
+    /// Represents the identifier of the channel you want to include.
     /// </summary>
-    /// <value>The identifier of the channel you want to include. Must be one of the enum values.</value>
-    [JsonConverter(typeof(SinchEnumConverter<ConversationChannel>))]
-    public enum ConversationChannel
+    [JsonConverter(typeof(EnumRecordJsonConverter<ConversationChannel>))]
+    public record ConversationChannel(string Value) : EnumRecord(Value)
     {
         /// <summary>
-        ///     Enum WHATSAPP for value: WHATSAPP
+        /// WhatsApp channel.
         /// </summary>
-        [EnumMember(Value = "WHATSAPP")]
-        WhatsApp = 1,
+        public static readonly ConversationChannel WhatsApp = new("WHATSAPP");
 
         /// <summary>
-        ///     Enum RCS for value: RCS
+        /// RCS channel.
         /// </summary>
-        [EnumMember(Value = "RCS")]
-        Rcs = 2,
+        public static readonly ConversationChannel Rcs = new("RCS");
 
         /// <summary>
-        ///     Enum SMS for value: SMS
+        /// SMS channel.
         /// </summary>
-        [EnumMember(Value = "SMS")]
-        Sms = 3,
+        public static readonly ConversationChannel Sms = new("SMS");
 
         /// <summary>
-        ///     Enum MESSENGER for value: MESSENGER
+        /// Messenger channel.
         /// </summary>
-        [EnumMember(Value = "MESSENGER")]
-        Messenger = 4,
+        public static readonly ConversationChannel Messenger = new("MESSENGER");
 
         /// <summary>
-        ///     Enum VIBER for value: VIBER
+        /// Viber channel.
         /// </summary>
-        [EnumMember(Value = "VIBER")]
-        Viber = 5,
+        public static readonly ConversationChannel Viber = new("VIBER");
 
         /// <summary>
-        ///     Enum VIBERBM for value: VIBERBM
+        /// ViberBm channel.
         /// </summary>
-        [EnumMember(Value = "VIBERBM")]
-        ViberBm = 6,
+        public static readonly ConversationChannel ViberBm = new("VIBERBM");
 
         /// <summary>
-        ///     Enum MMS for value: MMS
+        /// MMS channel.
         /// </summary>
-        [EnumMember(Value = "MMS")]
-        Mms = 7,
+        public static readonly ConversationChannel Mms = new("MMS");
 
         /// <summary>
-        ///     Enum INSTAGRAM for value: INSTAGRAM
+        /// Instagram channel.
         /// </summary>
-        [EnumMember(Value = "INSTAGRAM")]
-        Instagram = 8,
+        public static readonly ConversationChannel Instagram = new("INSTAGRAM");
 
         /// <summary>
-        ///     Enum TELEGRAM for value: TELEGRAM
+        /// Telegram channel.
         /// </summary>
-        [EnumMember(Value = "TELEGRAM")]
-        Telegram = 9,
+        public static readonly ConversationChannel Telegram = new("TELEGRAM");
 
         /// <summary>
-        ///     Enum KAKAOTALK for value: KAKAOTALK
+        /// KakaoTalk channel.
         /// </summary>
-        [EnumMember(Value = "KAKAOTALK")]
-        KakaoTalk = 10,
+        public static readonly ConversationChannel KakaoTalk = new("KAKAOTALK");
 
         /// <summary>
-        ///     Enum KAKAOTALKCHAT for value: KAKAOTALKCHAT
+        /// KakaoTalkChat channel.
         /// </summary>
-        [EnumMember(Value = "KAKAOTALKCHAT")]
-        KakaoTalkChat = 11,
+        public static readonly ConversationChannel KakaoTalkChat = new("KAKAOTALKCHAT");
 
         /// <summary>
-        ///     Enum LINE for value: LINE
+        /// Line channel.
         /// </summary>
-        [EnumMember(Value = "LINE")]
-        Line = 12,
+        public static readonly ConversationChannel Line = new("LINE");
 
         /// <summary>
-        ///     Enum WECHAT for value: WECHAT
+        /// WeChat channel.
         /// </summary>
-        [EnumMember(Value = "WECHAT")]
-        WeChat = 13
+        public static readonly ConversationChannel WeChat = new("WECHAT");
     }
 }
