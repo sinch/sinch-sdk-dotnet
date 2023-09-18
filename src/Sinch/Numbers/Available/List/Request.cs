@@ -47,7 +47,7 @@ namespace Sinch.Numbers.Available.List
             var list = new List<KeyValuePair<string, string>>
             {
                 new("regionCode", RegionCode),
-                new("type", Utils.GetEnumString(Type))
+                new("type", Type.Value)
             };
 
             if (NumberPattern != null) list.AddRange(NumberPattern.GetQueryParamPairs());
@@ -55,7 +55,7 @@ namespace Sinch.Numbers.Available.List
             if (Capabilities is not null)
             {
                 list.AddRange(Capabilities.Select(i =>
-                    new KeyValuePair<string, string>("capabilities", i.ToString().ToUpperInvariant())));
+                    new KeyValuePair<string, string>("capabilities", i.Value.ToUpperInvariant())));
             }
 
             if (Size.HasValue) list.Add(new KeyValuePair<string, string>("size", Size.Value.ToString()));

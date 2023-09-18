@@ -4,7 +4,13 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Core
 {
-    public record EnumRecord(string Value);
+    public record EnumRecord(string Value)
+    {
+        public override string ToString()
+        {
+            return Value;
+        }
+    }
     
     public class EnumRecordJsonConverter<T> : JsonConverter<T> where T : EnumRecord
     {

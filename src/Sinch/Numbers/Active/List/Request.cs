@@ -57,7 +57,7 @@ namespace Sinch.Numbers.Active.List
             var dict = new List<KeyValuePair<string, string>>
             {
                 new("regionCode", RegionCode),
-                new("type", Utils.GetEnumString(Type))
+                new("type", Type.Value)
             };
 
             if (NumberPattern != null)
@@ -65,13 +65,13 @@ namespace Sinch.Numbers.Active.List
                 dict.Add(new KeyValuePair<string, string>("numberPattern.pattern", NumberPattern.Pattern));
                 if (NumberPattern.SearchPattern != null)
                     dict.Add(new KeyValuePair<string, string>("numberPattern.searchPattern",
-                        NumberPattern.SearchPattern.ToString()!.ToUpperInvariant()));
+                        NumberPattern.SearchPattern.Value.ToUpperInvariant()));
             }
 
             if (Capability is not null)
             {
                 dict.AddRange(Capability.Select(i =>
-                    new KeyValuePair<string, string>("capability", i.ToString().ToUpperInvariant())));
+                    new KeyValuePair<string, string>("capability", i.Value.ToUpperInvariant())));
             }
 
             if (PageSize is not null) dict.Add(new KeyValuePair<string, string>("pageSize", PageSize.Value.ToString()));

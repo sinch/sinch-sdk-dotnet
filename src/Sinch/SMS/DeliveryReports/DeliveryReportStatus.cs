@@ -3,54 +3,57 @@ using Sinch.Core;
 
 namespace Sinch.SMS.DeliveryReports
 {
-    [JsonConverter(typeof(SinchEnumConverter<DeliveryReportStatus>))]
-    public enum DeliveryReportStatus
+    /// <summary>
+    ///     Represents the delivery report status options.
+    /// </summary>
+    [JsonConverter(typeof(EnumRecordJsonConverter<DeliveryReportStatus>))]
+    public record DeliveryReportStatus(string Value) : EnumRecord(Value)
     {
         /// <summary>
-        ///     Message is queued within REST API system and will be dispatched according to the rate of the account.
+        ///     Message is queued within the REST API system and will be dispatched according to the rate of the account.
         /// </summary>
-        Queued,
+        public static readonly DeliveryReportStatus Queued = new("Queued");
 
         /// <summary>
         ///     Message has been dispatched and accepted for delivery by the SMSC.
         /// </summary>
-        Dispatched,
+        public static readonly DeliveryReportStatus Dispatched = new("Dispatched");
 
         /// <summary>
         ///     Message was aborted before reaching the SMSC.
         /// </summary>
-        Aborted,
+        public static readonly DeliveryReportStatus Aborted = new("Aborted");
 
         /// <summary>
         ///     Message was rejected by the SMSC.
         /// </summary>
-        Rejected,
+        public static readonly DeliveryReportStatus Rejected = new("Rejected");
 
         /// <summary>
         ///     Message has been deleted. Message was deleted by a remote SMSC.
-        ///     This may happen if the destination is an invalid MSISDN or opted out subscriber.
+        ///     This may happen if the destination is an invalid MSISDN or opted-out subscriber.
         /// </summary>
-        Deleted,
+        public static readonly DeliveryReportStatus Deleted = new("Deleted");
 
         /// <summary>
         ///     Message has been delivered.
         /// </summary>
-        Delivered,
+        public static readonly DeliveryReportStatus Delivered = new("Delivered");
 
         /// <summary>
         ///     Message failed to be delivered.
         /// </summary>
-        Failed,
+        public static readonly DeliveryReportStatus Failed = new("Failed");
 
         /// <summary>
         ///     Message expired before delivery to the SMSC. This may happen if the expiry time for the message was very short.
         /// </summary>
-        Expired,
+        public static readonly DeliveryReportStatus Expired = new("Expired");
 
         /// <summary>
         ///     Message was delivered to the SMSC but no Delivery Receipt has been received or
         ///     a Delivery Receipt that couldn't be interpreted was received.
         /// </summary>
-        Unknown
+        public static readonly DeliveryReportStatus Unknown = new("Unknown");
     }
 }

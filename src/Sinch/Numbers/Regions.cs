@@ -48,7 +48,7 @@ namespace Sinch.Numbers
             var typesStr = string.Empty;
             if (types is not null)
             {
-                var typesQuery = string.Join("&", types.Select(x => "types=" + Utils.GetEnumString(x)));
+                var typesQuery = string.Join("&", types.Select(x => "types=" + x.Value));
                 if (!string.IsNullOrEmpty(typesQuery))
                 {
                     typesStr = typesQuery;
