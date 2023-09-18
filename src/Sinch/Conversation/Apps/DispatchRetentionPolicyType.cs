@@ -1,17 +1,18 @@
-﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Conversation.Apps
 {
-    [JsonConverter(typeof(SinchEnumConverter<DispatchRetentionPolicyType>))]
-    public enum DispatchRetentionPolicyType
+    /// <summary>
+    ///     Represents the dispatch retention policy type options.
+    /// </summary>
+    [JsonConverter(typeof(EnumRecordJsonConverter<DispatchRetentionPolicyType>))]
+    public record DispatchRetentionPolicyType(string Value) : EnumRecord(Value)
     {
         /// <summary>
         ///     The default retention policy where messages older
-        ///     than ttl_days are automatically deleted from Conversation API database.
+        ///     than ttl_days are automatically deleted from the Conversation API database.
         /// </summary>
-        [EnumMember(Value = "MESSAGE_EXPIRE_POLICY")]
-        MessageExpirePolicy,
+        public static readonly DispatchRetentionPolicyType MessageExpirePolicy = new("MESSAGE_EXPIRE_POLICY");
     }
 }

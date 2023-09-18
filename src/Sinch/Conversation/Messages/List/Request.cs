@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.List
 {
@@ -47,7 +48,7 @@ namespace Sinch.Conversation.Messages.List
         /// </summary>
         public string PageToken { get; set; }
 
-        public View? View { get; set; }
+        public View View { get; set; }
 
         /// <summary>
         ///     Specifies the message source for which the request will be processed.
@@ -63,12 +64,20 @@ namespace Sinch.Conversation.Messages.List
     }
 
 
-    public enum View
+    /// <summary>
+    /// Represents the view options.
+    /// </summary>
+    [JsonConverter(typeof(EnumRecordJsonConverter<View>))]
+    public record View(string Value) : EnumRecord(Value)
     {
-        [EnumMember(Value = "WITH_METADATA")]
-        WithMetadata,
+        /// <summary>
+        /// View with metadata.
+        /// </summary>
+        public static readonly View WithMetadata = new("WITH_METADATA");
 
-        [EnumMember(Value = "WITHOUT_METADATA")]
-        WithoutMetadat
+        /// <summary>
+        /// View without metadata.
+        /// </summary>
+        public static readonly View WithoutMetadata = new("WITHOUT_METADATA");
     }
 }

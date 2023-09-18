@@ -24,7 +24,7 @@ namespace Sinch.Conversation.Apps.Update
         /// <summary>
         /// Gets or Sets ConversationMetadataReportView
         /// </summary>
-        public ConversationMetadataReportView? ConversationMetadataReportView { get; set; }
+        public ConversationMetadataReportView ConversationMetadataReportView { get; set; }
 
         /// <summary>
         ///     An array of channel credentials. The order of the credentials defines the app channel priority.

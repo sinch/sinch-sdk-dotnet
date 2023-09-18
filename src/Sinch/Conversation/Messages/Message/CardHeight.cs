@@ -1,34 +1,32 @@
-﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Message
 {
-    [JsonConverter(typeof(SinchEnumConverter<CardHeight>))]
-    public enum CardHeight
-    {   
+    /// <summary>
+    ///     Represents the card height options.
+    /// </summary>
+    [JsonConverter(typeof(EnumRecordJsonConverter<CardHeight>))]
+    public record CardHeight(string Value) : EnumRecord(Value)
+    {
         /// <summary>
-        ///     Enum UNSPECIFIEDHEIGHT for value: UNSPECIFIED_HEIGHT
+        ///     Unspecified height.
         /// </summary>
-        [EnumMember(Value = "UNSPECIFIED_HEIGHT")]
-        UnspecifiedHeight = 1,
+        public static readonly CardHeight UnspecifiedHeight = new("UNSPECIFIED_HEIGHT");
 
         /// <summary>
-        /// Enum SHORT for value: SHORT
+        ///     Short height.
         /// </summary>
-        [EnumMember(Value = "SHORT")]
-        Short = 2,
+        public static readonly CardHeight Short = new("SHORT");
 
         /// <summary>
-        /// Enum MEDIUM for value: MEDIUM
+        ///     Medium height.
         /// </summary>
-        [EnumMember(Value = "MEDIUM")]
-        Medium = 3,
+        public static readonly CardHeight Medium = new("MEDIUM");
 
         /// <summary>
-        /// Enum TALL for value: TALL
+        ///     Tall height.
         /// </summary>
-        [EnumMember(Value = "TALL")]
-        Tall = 4
+        public static readonly CardHeight Tall = new("TALL");
     }
 }

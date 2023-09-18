@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Apps
         /// <summary>
         ///     Gets or Sets ConversationMetadataReportView
         /// </summary>
-        public ConversationMetadataReportView? ConversationMetadataReportView { get; set; }
+        public ConversationMetadataReportView ConversationMetadataReportView { get; set; }
 
         /// <summary>
         ///     The display name for the app.
