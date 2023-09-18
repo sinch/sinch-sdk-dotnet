@@ -111,7 +111,7 @@ namespace Sinch.Conversation.Messages
         {
             var param = messagesSource is null
                 ? string.Empty
-                : $"?messages_source={messagesSource.Value.GetEnumString()}";
+                : $"?messages_source={messagesSource.Value}";
             return param;
         }
 

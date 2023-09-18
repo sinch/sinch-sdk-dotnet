@@ -50,7 +50,7 @@ namespace Sinch.SMS.Batches.DryRun
         /// <summary>
         ///     Identifies the type of batch message.
         /// </summary>
-        public SmsType? Type { get; set; }
+        public SmsType Type { get; set; }
 
         /// <summary>
         ///     The UDH header of a binary message. Max 140 bytes together with body.<br /><br />Required if type is mt_binary.

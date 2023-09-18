@@ -30,7 +30,7 @@ namespace Sinch.Tests.Sms
                 }
             },
             body = "Hi ${name}! How are you?",
-            type = "mt_text",
+            type = "mt_binary",
             created_at = "2019-08-24T14:15:22Z",
             modified_at = "2019-08-24T14:15:22Z",
             delivery_report = "full",
@@ -93,6 +93,7 @@ namespace Sinch.Tests.Sms
                 { "default_value", "irythil" }
             });
             response.DeliveryReport.Should().Be(DeliveryReport.Full);
+            response.Type.Should().Be(SmsType.MtBinary);
         }
 
         [Fact]

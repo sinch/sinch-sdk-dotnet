@@ -1,16 +1,13 @@
-﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Conversation
 {
-    [JsonConverter(typeof(SinchEnumConverter<ProcessingStrategy>))]
-    public enum ProcessingStrategy
+    
+    [JsonConverter(typeof(EnumRecordJsonConverter<ProcessingStrategy>))]
+    public record ProcessingStrategy(string Value) : EnumRecord(Value)
     {
-        [EnumMember(Value = "DEFAULT")]
-        Default,
-
-        [EnumMember(Value = "DISPATCH_ONLY")]
-        DispatchOnly
+        public static readonly ProcessingStrategy Default = new("DEFAULT");
+        public static readonly ProcessingStrategy DispatchOnly = new("DISPATCH_ONLY");
     }
 }

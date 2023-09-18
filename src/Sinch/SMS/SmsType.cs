@@ -1,16 +1,12 @@
-﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.SMS
 {
-    [JsonConverter(typeof(SinchEnumConverter<SmsType>))]
-    public enum SmsType
+    [JsonConverter(typeof(EnumRecordJsonConverter<SmsType>))]
+    public record SmsType(string Value) : EnumRecord(Value)
     {
-        [EnumMember(Value = "mt_text")]
-        MtText,
-
-        [EnumMember(Value = "mt_binary")]
-        MtBinary
+        public static readonly SmsType MtText = new ("mt_text");
+        public static readonly SmsType MtBinary = new ("mt_binary");
     }
 }

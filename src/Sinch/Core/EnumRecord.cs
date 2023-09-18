@@ -1,0 +1,21 @@
+﻿using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace Sinch.Core
+{
+    public record EnumRecord(string Value);
+    
+    public class EnumRecordJsonConverter<T> : JsonConverter<T> where T : EnumRecord
+    {
+        public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            return Activator.CreateInstance(typeToConvert, reader.GetString()) as T;
+        }
+
+        public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.Value);
+        }
+    }
+}
