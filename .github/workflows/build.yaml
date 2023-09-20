@@ -10,17 +10,16 @@ jobs:
           { version: '5.0.x', tfm: 'net5.0' },
           { version: '6.0.x', tfm: 'net6.0' } ,
           { version: '7.0.x', tfm: 'net7.0' } ]
-    
+        
     services:
       doppleganger:
         image: dovchik/pastel:latest
         credentials:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_DOVCHIK_PRIVATE }}
-        env:
-          ports: 
-            - 6040:6040 
-            - 6041:6041
+        ports:
+          - 6040:6040
+          - 6041:6041
     
     steps:
       - uses: actions/checkout@v3
