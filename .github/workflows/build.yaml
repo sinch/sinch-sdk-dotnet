@@ -59,7 +59,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_DOVCHIK_PRIVATE }}
           
       - name: Pull Doppleganger Image
-        run: docker pull dovchik/pastel
+        run: docker pull dovchik/pastel:latest
       
       - name: Test
         run: dotnet test --no-restore --verbosity normal --framework ${{ matrix.dotnet-version.tfm }}
