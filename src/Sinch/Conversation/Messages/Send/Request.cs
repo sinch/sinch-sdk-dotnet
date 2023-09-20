@@ -22,7 +22,7 @@ namespace Sinch.Conversation.Messages.Send
         /// <summary>
         ///     Select the priority type for the message
         /// </summary>
-        public MessageQueue? Queue { get; set; }
+        public MessageQueue Queue { get; set; }
 
 
         /// <summary>

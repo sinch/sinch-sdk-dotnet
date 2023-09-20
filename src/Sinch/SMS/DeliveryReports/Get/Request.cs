@@ -16,7 +16,7 @@ namespace Sinch.SMS.DeliveryReports.Get
         public string BatchId { get; set; }
 #endif
 
-        public DeliveryReportVerbosityType? DeliveryReportType { get; set; }
+        public DeliveryReportVerbosityType DeliveryReportType { get; set; }
 
         /// <summary>
         ///     A list of <see cref="DeliveryReportStatus" /> to include.

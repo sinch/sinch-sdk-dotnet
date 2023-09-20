@@ -50,7 +50,7 @@ namespace Sinch.Numbers.Active.List
         /// <summary>
         ///     Supported fields for ordering by phoneNumber or displayName.
         /// </summary>
-        public OrderBy? OrderBy { get; set; }
+        public OrderBy OrderBy { get; set; }
 
         internal string GetQueryString()
         {
