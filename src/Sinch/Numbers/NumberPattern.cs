@@ -23,10 +23,16 @@ namespace Sinch.Numbers
         internal IEnumerable<KeyValuePair<string, string>> GetQueryParamPairs()
         {
             var list = new List<KeyValuePair<string, string>>();
-            list.Add(new KeyValuePair<string, string>("numberPattern.pattern", Pattern));
+            if (!string.IsNullOrEmpty(Pattern))
+            {
+                list.Add(new KeyValuePair<string, string>("numberPattern.pattern", Pattern));
+            }
+
             if (SearchPattern is not null)
+            {
                 list.Add(new KeyValuePair<string, string>("numberPattern.searchPattern",
                     SearchPattern.Value));
+            }
 
             return list;
         }
