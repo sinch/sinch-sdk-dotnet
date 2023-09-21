@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Sinch.Core;
 
 namespace Sinch.Numbers.Active.List
 {
@@ -65,7 +64,7 @@ namespace Sinch.Numbers.Active.List
                 dict.Add(new KeyValuePair<string, string>("numberPattern.pattern", NumberPattern.Pattern));
                 if (NumberPattern.SearchPattern != null)
                     dict.Add(new KeyValuePair<string, string>("numberPattern.searchPattern",
-                        NumberPattern.SearchPattern.Value.ToUpperInvariant()));
+                        NumberPattern.SearchPattern.Value));
             }
 
             if (Capability is not null)

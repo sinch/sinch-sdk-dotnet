@@ -26,7 +26,7 @@ namespace Sinch.Numbers
             list.Add(new KeyValuePair<string, string>("numberPattern.pattern", Pattern));
             if (SearchPattern is not null)
                 list.Add(new KeyValuePair<string, string>("numberPattern.searchPattern",
-                    SearchPattern.Value.ToUpperInvariant()));
+                    SearchPattern.Value));
 
             return list;
         }
@@ -42,16 +42,16 @@ namespace Sinch.Numbers
         /// When using START, a plus sign (+) must be included and URL encoded, so %2B. 
         /// For example, to search for area code 206 in the US, you would enter, %2b1206.
         /// </summary>
-        public static readonly SearchPattern Start = new("Start");
+        public static readonly SearchPattern Start = new("START");
 
         /// <summary>
         /// The number pattern entered is contained somewhere in the number, the location being undefined.
         /// </summary>
-        public static readonly SearchPattern Contain = new("Contain");
+        public static readonly SearchPattern Contain = new("CONTAINS");
 
         /// <summary>
         /// The number ends with the number pattern entered.
         /// </summary>
-        public static readonly SearchPattern End = new("End");
+        public static readonly SearchPattern End = new("END");
     }
 }

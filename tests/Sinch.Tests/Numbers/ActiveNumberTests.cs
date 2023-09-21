@@ -68,7 +68,7 @@ namespace Sinch.Tests.Numbers
         public async Task ListWithFullParams()
         {
             var url = $"https://numbers.api.sinch.com/v1/projects/{ProjectId}/activeNumbers?regionCode=US&type=LOCAL";
-            url += "&numberPattern.pattern=2020&numberPattern.searchPattern=CONTAIN";
+            url += "&numberPattern.pattern=2020&numberPattern.searchPattern=CONTAINS";
             url += "&capability=SMS&capability=VOICE";
             url += "&pageSize=128";
             url += "&pageToken=i32dsan";
@@ -85,6 +85,7 @@ namespace Sinch.Tests.Numbers
                     nextPageToken = "004",
                     totalSize = 5
                 }));
+            
             var request = new Request
             {
                 RegionCode = "US",
