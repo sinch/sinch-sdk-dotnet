@@ -24,7 +24,7 @@ namespace Sinch.Conversation.Apps.Update
         /// <summary>
         /// Gets or Sets ConversationMetadataReportView
         /// </summary>
-        public ConversationMetadataReportView? ConversationMetadataReportView { get; set; }
+        public ConversationMetadataReportView ConversationMetadataReportView { get; set; }
 
         /// <summary>
         ///     An array of channel credentials. The order of the credentials defines the app channel priority.
@@ -57,7 +57,7 @@ namespace Sinch.Conversation.Apps.Update
         /// <summary>
         ///     Whether or not Conversation API should store contacts and conversations for the app. For more information, see [Processing Modes](../../../../../conversation/processing-modes/).
         /// </summary>
-        public ProcessingMode? ProcessingMode { get; set; }
+        public ProcessingMode ProcessingMode { get; set; }
 
 
         /// <summary>

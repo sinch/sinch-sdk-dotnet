@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Sinch.Core;
 
 namespace Sinch.SMS.DeliveryReports.Get
@@ -15,7 +16,7 @@ namespace Sinch.SMS.DeliveryReports.Get
         public string BatchId { get; set; }
 #endif
 
-        public DeliveryReportVerbosityType? DeliveryReportType { get; set; }
+        public DeliveryReportVerbosityType DeliveryReportType { get; set; }
 
         /// <summary>
         ///     A list of <see cref="DeliveryReportStatus" /> to include.
@@ -30,15 +31,15 @@ namespace Sinch.SMS.DeliveryReports.Get
         internal string GetQueryString()
         {
             var kvp = new List<KeyValuePair<string, string>>();
-            if (DeliveryReportType.HasValue)
+            if (DeliveryReportType is not null)
             {
                 kvp.Add(
-                    new KeyValuePair<string, string>("type", Utils.GetEnumString(DeliveryReportType.Value)));
+                    new KeyValuePair<string, string>("type",DeliveryReportType.Value));
             }
 
             if (Statuses is not null && Statuses.Count > 0)
             {
-                kvp.Add(new KeyValuePair<string, string>("status", string.Join(",", Statuses)));
+                kvp.Add(new KeyValuePair<string, string>("status", string.Join(",", Statuses.Select(x => x.Value))));
             }
 
             if (Code is not null && Code.Count > 0)

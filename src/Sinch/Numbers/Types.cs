@@ -1,28 +1,27 @@
-﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Numbers
 {
-    [JsonConverter(typeof(SinchEnumConverter<Types>))]
-    public enum Types
+    /// <summary>
+    ///     Represents the types of numbers.
+    /// </summary>
+    [JsonConverter(typeof(EnumRecordJsonConverter<Types>))]
+    public record Types(string Value) : EnumRecord(Value)
     {
         /// <summary>
-        ///     Numbers that belong to a specific range.
+        ///     Numbers that belong to a specific range (e.g., mobile numbers).
         /// </summary>
-        [EnumMember(Value = "MOBILE")]
-        Mobile,
+        public static readonly Types Mobile = new("MOBILE");
 
         /// <summary>
-        ///     Numbers that are assigned to a specific geographic region
+        ///     Numbers that are assigned to a specific geographic region (e.g., local numbers).
         /// </summary>
-        [EnumMember(Value = "LOCAL")]
-        Local,
+        public static readonly Types Local = new("LOCAL");
 
         /// <summary>
-        ///     Number that are free of charge for the calling party but billed for all arriving calls.
+        ///     Numbers that are free of charge for the calling party but billed for all arriving calls (e.g., toll-free numbers).
         /// </summary>
-        [EnumMember(Value = "TOLL_FREE")]
-        TollFree
+        public static readonly Types TollFree = new("TOLL_FREE");
     }
 }

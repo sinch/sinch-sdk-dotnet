@@ -8,7 +8,7 @@ namespace Sinch.Conversation.Messages.Message
              /// <summary>
         /// Gets or Sets Direction
         /// </summary>
-        public ConversationDirection? Direction { get; set; }
+        public ConversationDirection Direction { get; set; }
 
         /// <summary>
         ///     The time Conversation API processed the message.

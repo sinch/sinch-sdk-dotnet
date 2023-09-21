@@ -29,7 +29,7 @@ namespace Sinch.SMS.Batches.Update
         ///     Request delivery report callback. Note that delivery reports can be fetched from the API regardless of this
         ///     setting.
         /// </summary>
-        public DeliveryReport? DeliveryReport { get; set; }
+        public DeliveryReport DeliveryReport { get; set; }
 
         /// <summary>
         ///     If set, in the future the message will be delayed until send_at occurs.

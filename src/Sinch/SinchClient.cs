@@ -4,9 +4,9 @@ using System.Text.Json;
 using Sinch.Auth;
 using Sinch.Conversation;
 using Sinch.Core;
+using Sinch.Logger;
 using Sinch.Numbers;
 using Sinch.SMS;
-using LoggerFactory = Sinch.Logger.LoggerFactory;
 
 namespace Sinch
 {
@@ -113,7 +113,7 @@ namespace Sinch
 
             Conversation = new Conversation.Conversation(projectId,
                 new Uri(
-                    $"https://{optionsObj.ConversationRegion.ToString().ToLowerInvariant()}.conversation.api.sinch.com/"),
+                    $"https://{optionsObj.ConversationRegion.Value}.conversation.api.sinch.com/"),
                 _loggerFactory, httpSnakeCase);
 
             Auth = auth;
@@ -152,10 +152,9 @@ namespace Sinch
         {
             return smsRegion switch
             {
-                SmsRegion.Us or SmsRegion.Ca or SmsRegion.Br => "us",
-                SmsRegion.Eu or SmsRegion.Au => "eu",
-                // unreachable
-                _ => throw new ArgumentOutOfRangeException(nameof(smsRegion), smsRegion, "Region is not supported")
+                _ when smsRegion == SmsRegion.Us || smsRegion == SmsRegion.Ca || smsRegion == SmsRegion.Br => "us",
+                _ when smsRegion == SmsRegion.Eu || smsRegion == SmsRegion.Au => "eu",
+                _ => smsRegion.Value
             };
         }
 
@@ -164,7 +163,7 @@ namespace Sinch
 
         /// <inheritdoc/>
         public ISms Sms { get; }
-        
+
         /// <inheritdoc/>
         public IConversation Conversation { get; set; }
 

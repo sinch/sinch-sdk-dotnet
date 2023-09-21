@@ -1,19 +1,27 @@
-﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Numbers
 {
-    [JsonConverter(typeof(SinchEnumConverter<ProvisioningStatus>))]
-    public enum ProvisioningStatus
+    /// <summary>
+    ///     Represents the provisioning status options.
+    /// </summary>
+    [JsonConverter(typeof(EnumRecordJsonConverter<ProvisioningStatus>))]
+    public record ProvisioningStatus(string Value) : EnumRecord(Value)
     {
-        [EnumMember(Value = "WAITING")]
-        Waiting,
+        /// <summary>
+        ///     The provisioning is waiting.
+        /// </summary>
+        public static readonly ProvisioningStatus Waiting = new("WAITING");
 
-        [EnumMember(Value = "IN_PROGRESS")]
-        InProgress,
+        /// <summary>
+        ///     The provisioning is in progress.
+        /// </summary>
+        public static readonly ProvisioningStatus InProgress = new("IN_PROGRESS");
 
-        [EnumMember(Value = "FAILED")]
-        Failed
+        /// <summary>
+        ///     The provisioning has failed.
+        /// </summary>
+        public static readonly ProvisioningStatus Failed = new("FAILED");
     }
 }

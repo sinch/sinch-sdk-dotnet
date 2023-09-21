@@ -1,5 +1,4 @@
-﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Conversation
@@ -9,22 +8,20 @@ namespace Sinch.Conversation
     ///     Used for operations on messages in Dispatch Mode. For more information,
     ///     see <see href="https://developers.sinch.com/docs/conversation/processing-modes/">Processing Modes</see>.
     /// </summary>
-    [JsonConverter(typeof(SinchEnumConverter<MessageSource>))]
-    public enum MessageSource
+    [JsonConverter(typeof(EnumRecordJsonConverter<MessageSource>))]
+    public record MessageSource(string Value) : EnumRecord(Value)
     {
         /// <summary>
         ///     The default messages source. Retrieves messages sent in the default CONVERSATION processing mode,
         ///     which associates the messages with a specific conversation and contact.
         /// </summary>
-        [EnumMember(Value = "CONVERSATION_SOURCE")]
-        ConversationSource = 1,
+        public static readonly MessageSource ConversationSource = new("CONVERSATION_SOURCE");
 
         /// <summary>
         ///     Retrieves messages sent in the DISPATCH processing mode.
         ///     These types of messages are not associated with any conversation or contact.
         /// </summary>
-        [EnumMember(Value = "DISPATCH_SOURCE")]
-        DispatchSource = 2,
+        public static readonly MessageSource DispatchSource = new("DISPATCH_SOURCE");
     }
 }
 

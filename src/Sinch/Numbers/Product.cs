@@ -1,18 +1,22 @@
 ﻿using System.Text.Json.Serialization;
+using Sinch.Core;
 
 namespace Sinch.Numbers
 {
-    [JsonConverter(typeof(JsonStringEnumConverter))]
-    public enum Product
+    /// <summary>
+    ///     Represents the product options.
+    /// </summary>
+    [JsonConverter(typeof(EnumRecordJsonConverter<Product>))]
+    public record Product(string Value) : EnumRecord(Value)
     {
         /// <summary>
         ///     The SMS product can use the number.
         /// </summary>
-        Sms,
+        public static readonly Product Sms = new("Sms");
 
         /// <summary>
         ///     The Voice product can use the number.
         /// </summary>
-        Voice
+        public static readonly Product Voice = new("Voice");
     }
 }

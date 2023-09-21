@@ -1,8 +1,12 @@
 ﻿namespace Sinch.Conversation
 {
-    public enum ConversationRegion
+    /// <summary>
+    ///     Represents the Conversation region options.
+    /// </summary>
+    public record ConversationRegion(string Value)
     {
-        Us,
-        Eu,
+        public static readonly ConversationRegion Us = new("us");
+
+        public static readonly ConversationRegion Eu = new("eu");
     }
 }

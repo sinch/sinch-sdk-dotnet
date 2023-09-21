@@ -50,7 +50,7 @@ namespace Sinch.SMS.Batches.DryRun
         /// <summary>
         ///     Identifies the type of batch message.
         /// </summary>
-        public SmsType? Type { get; set; }
+        public SmsType Type { get; set; }
 
         /// <summary>
         ///     The UDH header of a binary message. Max 140 bytes together with body.<br /><br />Required if type is mt_binary.
@@ -61,7 +61,7 @@ namespace Sinch.SMS.Batches.DryRun
         ///     Request delivery report callback. <br /><br />
         ///     Note that delivery reports can be fetched from the API regardless of this setting.
         /// </summary>
-        public DeliveryReport? DeliveryReport { get; set; }
+        public DeliveryReport DeliveryReport { get; set; }
 
         /// <summary>
         ///     If set in the future, the message will be delayed until send_at occurs. <br /><br />

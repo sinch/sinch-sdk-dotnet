@@ -18,37 +18,46 @@ namespace Sinch.Numbers
         /// <summary>
         ///     Search pattern to apply. The options are, START, CONTAIN, and END.
         /// </summary>
-        public SearchPattern? SearchPattern { get; set; }
+        public SearchPattern SearchPattern { get; set; }
 
         internal IEnumerable<KeyValuePair<string, string>> GetQueryParamPairs()
         {
             var list = new List<KeyValuePair<string, string>>();
-            list.Add(new KeyValuePair<string, string>("numberPattern.pattern", Pattern));
-            if (SearchPattern.HasValue)
+            if (!string.IsNullOrEmpty(Pattern))
+            {
+                list.Add(new KeyValuePair<string, string>("numberPattern.pattern", Pattern));
+            }
+
+            if (SearchPattern is not null)
+            {
                 list.Add(new KeyValuePair<string, string>("numberPattern.searchPattern",
-                    SearchPattern.Value.ToString()!.ToUpperInvariant()));
+                    SearchPattern.Value));
+            }
 
             return list;
         }
     }
 
-    public enum SearchPattern
+    /// <summary>
+    /// Represents the search pattern options for phone numbers.
+    /// </summary>
+    public record SearchPattern(string Value)
     {
         /// <summary>
-        ///     Numbers that begin with the numberPattern.pattern entered. Often used to search for a specific area code. When
-        ///     using START, a plus sign (+) must be included and URL encoded, so %2B. For example, to search for area code 206 in
-        ///     the US, you would enter, %2b1206.
+        /// Numbers that begin with the number pattern entered. Often used to search for a specific area code. 
+        /// When using START, a plus sign (+) must be included and URL encoded, so %2B. 
+        /// For example, to search for area code 206 in the US, you would enter, %2b1206.
         /// </summary>
-        Start,
+        public static readonly SearchPattern Start = new("START");
 
         /// <summary>
-        ///     The number pattern entered is contained somewhere in the number, the location being undefined.
+        /// The number pattern entered is contained somewhere in the number, the location being undefined.
         /// </summary>
-        Contain,
+        public static readonly SearchPattern Contain = new("CONTAINS");
 
         /// <summary>
-        ///     The number ends with the number pattern entered.
+        /// The number ends with the number pattern entered.
         /// </summary>
-        End
+        public static readonly SearchPattern End = new("END");
     }
 }

@@ -22,7 +22,7 @@ namespace Sinch.Conversation.Messages.Send
         /// <summary>
         ///     Select the priority type for the message
         /// </summary>
-        public MessageQueue? Queue { get; set; }
+        public MessageQueue Queue { get; set; }
 
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Sinch.Conversation.Messages.Send
         /// <summary>
         ///     Overrides the app&#39;s [Processing Mode](../../../../../conversation/processing-modes/). Default value is &#x60;DEFAULT&#x60;.
         /// </summary>
-        public ProcessingStrategy? ProcessingStrategy { get; set; }
+        public ProcessingStrategy ProcessingStrategy { get; set; }
 
 
         /// <summary>

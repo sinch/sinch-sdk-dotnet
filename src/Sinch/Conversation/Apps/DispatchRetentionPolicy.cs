@@ -14,7 +14,7 @@ namespace Sinch.Conversation.Apps
         /// <summary>
         /// Gets or Sets RetentionType
         /// </summary>
-        public DispatchRetentionPolicyType? RetentionType { get; set; }
+        public DispatchRetentionPolicyType RetentionType { get; set; }
 
         /// <summary>
         ///     Optional. The days before a message is eligible for deletion.

@@ -12,7 +12,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         /// Gets or Sets Height
         /// </summary>
-        public CardHeight? Height { get; set; }
+        public CardHeight Height { get; set; }
 
         /// <summary>
         ///     You may include choices in your Card Message. The number of choices is limited to 10.

@@ -1,31 +1,27 @@
-﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Message
 {
     /// <summary>
-    /// Defines ConversationDirection
+    /// Represents the conversation direction options.
     /// </summary>
-    [JsonConverter(typeof(SinchEnumConverter<ConversationDirection>))]
-    public enum ConversationDirection
+    [JsonConverter(typeof(EnumRecordJsonConverter<ConversationDirection>))]
+    public record ConversationDirection(string Value) : EnumRecord(Value)
     {
         /// <summary>
-        /// Enum UNDEFINEDDIRECTION for value: UNDEFINED_DIRECTION
+        /// Undefined direction.
         /// </summary>
-        [EnumMember(Value = "UNDEFINED_DIRECTION")]
-        UndefinedDirection = 1,
+        public static readonly ConversationDirection UndefinedDirection = new("UNDEFINED_DIRECTION");
 
         /// <summary>
-        /// Enum TOAPP for value: TO_APP
+        /// To app direction.
         /// </summary>
-        [EnumMember(Value = "TO_APP")]
-        ToApp = 2,
+        public static readonly ConversationDirection ToApp = new("TO_APP");
 
         /// <summary>
-        /// Enum TOCONTACT for value: TO_CONTACT
+        /// To contact direction.
         /// </summary>
-        [EnumMember(Value = "TO_CONTACT")]
-        ToContact = 3
+        public static readonly ConversationDirection ToContact = new("TO_CONTACT");
     }
 }

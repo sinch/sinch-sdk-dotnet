@@ -6,31 +6,31 @@
     ///     If you want access to servers in other parts of the world, contact your Sinch account manager.
     ///     Customer Data will be stored in the corresponding locations listed below.
     /// </summary>
-    public enum SmsRegion
+    public record SmsRegion(string Value)
     {
         /// <summary>
         ///     USA
         /// </summary>
-        Us,
+        public static readonly SmsRegion Us = new("Us");
 
         /// <summary>
         ///     Ireland, Sweden
         /// </summary>
-        Eu,
+        public static readonly SmsRegion Eu = new("Eu");
 
         /// <summary>
         ///     Australia
         /// </summary>
-        Au,
+        public static readonly SmsRegion Au = new("Au");
 
         /// <summary>
         ///     Brazil
         /// </summary>
-        Br,
+        public static readonly SmsRegion Br = new("Br");
 
         /// <summary>
         ///     Canada
         /// </summary>
-        Ca
+        public static readonly SmsRegion Ca = new("Ca");
     }
 }

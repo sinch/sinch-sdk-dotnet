@@ -45,7 +45,7 @@ namespace Sinch.SMS.Batches
         /// <summary>
         ///     Regular SMS
         /// </summary>
-        public SmsType Type { get; } = SmsType.MtText;
+        public SmsType Type { get; set; }
 
         /// <summary>
         ///     Timestamp for when batch was created.

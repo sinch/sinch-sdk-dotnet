@@ -18,15 +18,15 @@ namespace Sinch.Tests.Sms
         [Fact]
         public void DeliveryReportStatusToString()
         {
-            var enumStr = DeliveryReportStatus.Aborted.ToString();
+            var enumStr = DeliveryReportStatus.Aborted;
 
-            enumStr.Should().Be("Aborted");
+            enumStr.Value.Should().Be("Aborted");
         }
 
         [Fact]
         public void DeliveryReportStatusFromString()
         {
-            var @enum = Enum.Parse<DeliveryReportStatus>("Delivered");
+            var @enum = new DeliveryReportStatus("Delivered");
 
             @enum.Should().Be(DeliveryReportStatus.Delivered);
         }

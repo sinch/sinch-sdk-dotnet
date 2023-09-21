@@ -56,6 +56,6 @@ namespace Sinch.Numbers.Hooks
         ///     For numbers provisioning to SMS platform, there won't be any extra failureCode, as the result is binary.
         /// </summary>
         [JsonPropertyName("failureCode")]
-        public FailureCode? FailureCode { get; set; }
+        public FailureCode FailureCode { get; set; }
     }
 }

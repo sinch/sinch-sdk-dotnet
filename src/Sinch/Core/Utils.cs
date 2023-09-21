@@ -133,6 +133,11 @@ namespace Sinch.Core
                 return o.ToString()?.ToLowerInvariant();
             }
 
+            if (typeof(EnumRecord).IsAssignableFrom(type))
+            {
+                return type.GetProperty("Value", typeof(string))?.GetValue(o) as string;
+            }
+
             return o.ToString();
         }
     }
