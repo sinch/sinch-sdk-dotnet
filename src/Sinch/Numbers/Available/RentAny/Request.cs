@@ -22,10 +22,14 @@ namespace Sinch.Numbers.Available.RentAny
 #endif
 
         /// <summary>
-        ///     Number type to filter by. MOBILE, LOCAL or TOLL_FREE. Default: LOCAL
+        ///     Number type to filter by. MOBILE, LOCAL or TOLL_FREE.
         /// </summary>
-        public Types Type { get; set; } = Types.Local;
-
+#if NET7_0_OR_GREATER
+        public required Types Type { get; set; }
+#else
+        public Types Type { get; set; }
+#endif
+            
         /// <summary>
         ///     Number capabilities to filter by, SMS and/or VOICE
         /// </summary>
