@@ -1,16 +1,12 @@
-<h1 align="center">
+# [![Sinch Logo](https://developers.sinch.com/static/logo-07afe977d6d9dcd21b066d1612978e5c.svg)](https://www.sinch.com)
 
-[![Sinch Logo](https://developers.sinch.com/static/logo-07afe977d6d9dcd21b066d1612978e5c.svg)](https://www.sinch.com)
-
-.NET SDK
+# .NET SDK
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/sinch/sinch-sdk-dotnet/blob/main/LICENSE)
 
 [![.NET 5.0](https://img.shields.io/badge/.NET-5.0-blue.svg)](https://dotnet.microsoft.com/en-us/download/dotnet/5.0)
 [![.NET 6.0](https://img.shields.io/badge/.NET-6.0-blue.svg)](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 [![.NET 7.0](https://img.shields.io/badge/.NET-7.0-blue.svg)](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
-
-</h1>
 
 # Welcome to Sinch's .NET SDK.
 
@@ -21,10 +17,9 @@ To use this SDK you'll need a Sinch account and API keys. Please sign up at [sin
 For more in depth version of the Sinch APIs, please refer to the official developer
 portal - [developers.sinch.com](https://developers.sinch.com/)
 
-
-
-> ## :warning:  **This SDK is currently available as a technical preview. It is being provided for the purpose of
-collecting feedback, and should not be used in production environments.** :warning:
+>[!WARNING]
+>This SDK is currently available as a technical preview. It is being provided for the purpose of
+collecting feedback, and should not be used in production environments.
 
 * [Installation](#installation)
 * [Getting started](#getting-started)
@@ -47,13 +42,25 @@ dotnet add package Sinch
 To initialize communication with Sinch backed, credentials obtained from Sinch portal have to be provided to the main
 client class of this SDK.
 
-> ℹ️ Always store your credentials securely as an environment variables or with
-> a [secret manager](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0)
+> [!NOTE] 
+> Always store your credentials securely as an environment variables or with a [secret manager](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0)
 
 ```csharp
 using Sinch;
 
 var sinch = new SinchClient(configuration["Sinch:KeyId"], configuration["Sinch:KeySecret"], configuration["Sinch:ProjectId"]);
+```
+To configure Conversation and SMS regions, use `options`:
+```csharp
+var sinch = new SinchClient(
+    configuration["Sinch:KeyId"],
+    configuration["Sinch:KeySecret"], 
+    configuration["Sinch:ProjectId"],
+    options =>
+    {
+        options.SmsRegion = Sinch.SMS.SmsRegion.Eu;
+        options.ConversationRegion = Sinch.Conversation.ConversationRegion.Eu;
+    });
 ```
 
 With ASP.NET dependency injection:
@@ -65,6 +72,7 @@ builder.Services.AddSingleton<ISinch>(x => new SinchClient(
     builder.Configuration["Sinch:KeySecret"],
     builder.Configuration["Sinch:ProjectId"]));
 ```
+
 
 ## Products
 
