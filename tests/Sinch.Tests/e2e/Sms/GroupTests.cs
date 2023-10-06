@@ -13,7 +13,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task Create()
         {
-            var response = await SinchClient.Sms.Groups.Create(new Request
+            var response = await SinchClientMockStudio.Sms.Groups.Create(new Request
             {
                 Name = "KillerRabbit",
                 Members = new List<string>()
@@ -27,7 +27,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task Get()
         {
-            var response = await SinchClient.Sms.Groups.Get("01GJFY2CEJQ0Y20704G8G506N9");
+            var response = await SinchClientMockStudio.Sms.Groups.Get("01GJFY2CEJQ0Y20704G8G506N9");
             response.Name.Should().Be("WithChildGroups");
             response.ChildGroups.First().Should().Be("01GJFY2B2M6NXH1GS96QGG0K2K");
         }
@@ -35,7 +35,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task Update()
         {
-            var response = await SinchClient.Sms.Groups.Update(new SMS.Groups.Update.Request
+            var response = await SinchClientMockStudio.Sms.Groups.Update(new SMS.Groups.Update.Request
             {
                 GroupId = "01GJFY2CEJQ0Y20704G8G506N9",
                 Name = "KillerRabbit222",
@@ -46,7 +46,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task Replace()
         {
-            var response = await SinchClient.Sms.Groups.Replace(new SMS.Groups.Replace.Request
+            var response = await SinchClientMockStudio.Sms.Groups.Replace(new SMS.Groups.Replace.Request
             {
                 GroupId = "01GJFY2CEJQ0Y20704G8G506N9",
                 Members = new List<string>()
@@ -60,21 +60,21 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task Delete()
         {
-            Func<Task> response = () => SinchClient.Sms.Groups.Delete("01GJFY2CEJQ0Y20704G8G506N9");
+            Func<Task> response = () => SinchClientMockStudio.Sms.Groups.Delete("01GJFY2CEJQ0Y20704G8G506N9");
             await response.Should().NotThrowAsync();
         }
 
         [Fact]
         public async Task ListMemebers()
         {
-            var response = await SinchClient.Sms.Groups.ListMembers("01GJFY2CEJQ0Y20704G8G506N9");
+            var response = await SinchClientMockStudio.Sms.Groups.ListMembers("01GJFY2CEJQ0Y20704G8G506N9");
             response.Should().HaveCount(1);
         }
 
         [Fact]
         public async Task CreateWithChild()
         {
-            var response = await SinchClient.Sms.Groups.Create(new Request()
+            var response = await SinchClientMockStudio.Sms.Groups.Create(new Request()
             {
                 Name = "WithChildGroups",
                 Members = new List<string>()
@@ -92,7 +92,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task List()
         {
-            var response = await SinchClient.Sms.Groups.List(new SMS.Groups.List.Request
+            var response = await SinchClientMockStudio.Sms.Groups.List(new SMS.Groups.List.Request
             {
                 Page = 2,
             });

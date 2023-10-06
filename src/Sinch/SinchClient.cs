@@ -122,7 +122,7 @@ namespace Sinch
         }
 
         /// <summary>
-        /// For E2E tests only. Here you can override base addresses.
+        ///     For E2E tests only. Here you can override base addresses.
         /// </summary>
         /// <param name="projectId"></param>
         /// <param name="authUri"></param>
@@ -131,10 +131,10 @@ namespace Sinch
         internal SinchClient(string projectId, Uri authUri, Uri numbersBaseAddress, Uri smsBaseAddress)
         {
             var http = new HttpClient();
-            var auth = new Auth.Auth(authUri, http);
-            var httpCamelCase = new Http(auth, http, null,
+            Auth = new Auth.Auth(authUri, http);
+            var httpCamelCase = new Http(Auth, http, null,
                 JsonNamingPolicy.CamelCase);
-            var httpSnakeCase = new Http(auth, http, null,
+            var httpSnakeCase = new Http(Auth, http, null,
                 SnakeCaseNamingPolicy.Instance);
             Numbers = new Numbers.Numbers(projectId, numbersBaseAddress, null, httpCamelCase);
             Sms = new Sms(projectId, smsBaseAddress, null, httpSnakeCase);

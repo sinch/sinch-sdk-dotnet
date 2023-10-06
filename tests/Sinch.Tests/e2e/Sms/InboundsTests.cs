@@ -10,7 +10,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task List()
         {
-            var response = await SinchClient.Sms.Inbounds.List(new Request
+            var response = await SinchClientMockStudio.Sms.Inbounds.List(new Request
             {
                 Page = 0,
             });
