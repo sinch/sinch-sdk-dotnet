@@ -17,6 +17,8 @@ jobs:
         credentials:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_DOVCHIK_PRIVATE }}
+        env: 
+          MOCK_AUTH_PORT: 6039
         ports:
           - 6039:6039
           - 6040:6040
