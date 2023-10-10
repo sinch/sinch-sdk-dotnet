@@ -1,6 +1,12 @@
 ﻿name: build
 on: [ push ]
 
+env:
+  MOCK_AUTH_PORT: 6039
+  MOCK_SMS_PORT: 6041
+  MOCK_NUMBERS_PORT: 6040
+  MOCK_CONVERSATION_PORT: 6042
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,6 +16,18 @@ jobs:
           { version: '5.0.x', tfm: 'net5.0' },
           { version: '6.0.x', tfm: 'net6.0' } ,
           { version: '7.0.x', tfm: 'net7.0' } ]
+        
+    services:
+      doppleganger:
+        image: dovchik/pastel:latest
+        credentials:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_DOVCHIK_PRIVATE }}
+        ports:
+          - 6039:6039
+          - 6040:6040
+          - 6041:6041
+    
     steps:
       - uses: actions/checkout@v3
         with:
