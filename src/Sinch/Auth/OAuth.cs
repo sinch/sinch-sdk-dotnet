@@ -21,17 +21,17 @@ namespace Sinch.Auth
         Task<string> GetToken(bool force = false);
     }
 
-    internal class Auth : IAuth
+    internal class OAuth  : IAuth
     {
         private readonly HttpClient _httpClient;
         private readonly string _keyId;
         private readonly string _keySecret;
-        private readonly ILoggerAdapter<Auth> _logger;
+        private readonly ILoggerAdapter<OAuth> _logger;
         private DateTime? _expiresIn;
         private volatile string _token;
         private readonly Uri _baseAddress;
 
-        public Auth(string keyId, string keySecret, HttpClient httpClient, ILoggerAdapter<Auth> logger)
+        public OAuth(string keyId, string keySecret, HttpClient httpClient, ILoggerAdapter<OAuth> logger)
         {
             _keyId = keyId;
             _keySecret = keySecret;
@@ -40,7 +40,7 @@ namespace Sinch.Auth
             _baseAddress = new Uri("https://auth.sinch.com");
         }
 
-        internal Auth(Uri baseAddress, HttpClient httpClient) : this("", "", httpClient, null)
+        internal OAuth(Uri baseAddress, HttpClient httpClient) : this("", "", httpClient, null)
         {
             _baseAddress = baseAddress;
         }

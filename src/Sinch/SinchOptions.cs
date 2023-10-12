@@ -5,7 +5,7 @@ using Sinch.SMS;
 
 namespace Sinch
 {
-    public class SinchOptions
+    public sealed class SinchOptions
     {
         /// <summary>
         ///     A logger factory used to create ILogger inside the SDK to enable logging

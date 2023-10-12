@@ -7,6 +7,7 @@ using Sinch.Core;
 using Sinch.Logger;
 using Sinch.Numbers;
 using Sinch.SMS;
+using Sinch.Verification;
 
 namespace Sinch
 {
@@ -56,6 +57,36 @@ namespace Sinch
         ///     <see href="https://developers.sinch.com/docs/conversation/api-reference/">Learn more.</see>
         /// </summary>
         public IConversation Conversation { get; set; }
+        
+        /// <summary>
+        ///     Verify users with SMS, flash calls (missed calls), a regular call, or data verification.
+        ///     This document serves as a user guide and documentation on how to use the Sinch Verification REST APIs.
+        ///     <br/><br/>
+        ///     The Sinch Verification API is used to verify mobile phone numbers.
+        ///     It's consumed by the Sinch Verification SDK, but it can also be used by any backend or client directly.
+        ///     <br/><br/>
+        ///     The Sinch service uses four different verification methods:
+        ///     <list type="bullet">
+        ///         <item>
+        ///             SMS : Sending an SMS message with a PIN code
+        ///         </item>
+        ///         <item>
+        ///             FlashCall : Placing a flashcall (missed call) and detecting the incoming calling number (CLI)
+        ///         </item>
+        ///         <item>
+        ///             Phone Call : Placing a PSTN call to the user's phone and playing a message containing the code
+        ///         </item>
+        ///         <item>
+        ///             Data : By accessing internal infrastructure of mobile carriers to verify
+        ///             if given verification attempt was originated from device with matching phone number <br/>
+        ///             Note: If you want to use data verification, please contact your account manager.
+        ///         </item>
+        ///     </list>
+        /// </summary>
+        /// <param name="appKey"></param>
+        /// <param name="appSecret"></param>
+        /// <returns></returns>
+        public ISinchVerificationClient Verification(string appKey, string appSecret);
     }
 
     public class SinchClient : ISinch
@@ -91,7 +122,7 @@ namespace Sinch
             logger?.LogInformation("Initializing SinchClient...");
 
             IAuth auth =
-                new Auth.Auth(keyId, keySecret, optionsObj.HttpClient, _loggerFactory?.Create<Auth.Auth>());
+                new Auth.OAuth(keyId, keySecret, optionsObj.HttpClient, _loggerFactory?.Create<Auth.OAuth>());
             var httpCamelCase = new Http(auth, optionsObj.HttpClient, _loggerFactory?.Create<Http>(),
                 JsonNamingPolicy.CamelCase);
             var httpSnakeCase = new Http(auth, optionsObj.HttpClient, _loggerFactory?.Create<Http>(),
@@ -100,7 +131,7 @@ namespace Sinch
             Numbers = new Numbers.Numbers(projectId, new Uri("https://numbers.api.sinch.com/"),
                 _loggerFactory, httpCamelCase);
 
-            // only three regions are available for single-account model. it's eu, us and br. 
+            // only three regions are available for single-account model. it's eu and us. 
             // So, we should map other regions provided in docs to nearest server.
             // See: https://developers.sinch.com/docs/sms/api-reference/#base-url
             var smsRegion = GetSmsRegion(optionsObj.SmsRegion);
@@ -131,7 +162,7 @@ namespace Sinch
         internal SinchClient(string projectId, Uri authUri, Uri numbersBaseAddress, Uri smsBaseAddress)
         {
             var http = new HttpClient();
-            Auth = new Auth.Auth(authUri, http);
+            Auth = new Auth.OAuth(authUri, http);
             var httpCamelCase = new Http(Auth, http, null,
                 JsonNamingPolicy.CamelCase);
             var httpSnakeCase = new Http(Auth, http, null,
@@ -170,5 +201,11 @@ namespace Sinch
 
         /// <inheritdoc/>
         public IAuth Auth { get; }
+
+        /// <inheritdoc/>
+        public ISinchVerificationClient Verification(string appKey, string appSecret)
+        {
+            return new SinchVerificationClient();
+        }
     }
 }
