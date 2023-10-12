@@ -19,6 +19,7 @@ namespace Sinch.Tests.Core
         public HttpTests()
         {
             _tokenManagerMock = Substitute.For<IAuth>();
+            _tokenManagerMock.Scheme.Returns("Bearer");
             _httpMessageHandlerMock = new MockHttpMessageHandler();
         }
 
@@ -27,10 +28,10 @@ namespace Sinch.Tests.Core
         {
             _tokenManagerMock
                 .GetToken(Arg.Is<bool>(x => !x))
-                .Returns("first_token");
+                .Returns( "first_token");
             _tokenManagerMock
                 .GetToken(true)
-                .Returns("second_token");
+                .Returns( "second_token");
 
             var uri = new Uri("http://sinch.com/items");
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())

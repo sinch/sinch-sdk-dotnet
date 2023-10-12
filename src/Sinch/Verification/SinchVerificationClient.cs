@@ -1,6 +1,6 @@
 ﻿using System;
-using Microsoft.Extensions.Logging;
 using Sinch.Core;
+using Sinch.Logger;
 
 namespace Sinch.Verification
 {

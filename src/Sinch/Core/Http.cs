@@ -77,7 +77,7 @@ namespace Sinch.Core
             while (true)
             {
                 // try force get new token if retrying
-                var token = await _auth.GetToken(!retry);
+                var  token = await _auth.GetToken(!retry);
                 _logger?.LogDebug("Sending request to {uri}", uri);
                 HttpContent httpContent =
                     request == null ? null : JsonContent.Create(request, options: _jsonSerializerOptions);
@@ -92,7 +92,7 @@ namespace Sinch.Core
                     RequestUri = uri,
                     Method = httpMethod,
                     Content = httpContent,
-                    Headers = { Authorization = new AuthenticationHeaderValue("Bearer", token) }
+                    Headers = { Authorization = new AuthenticationHeaderValue(_auth.Scheme, token) }
                 };
 
                 var result = await _httpClient.SendAsync(msg, cancellationToken);

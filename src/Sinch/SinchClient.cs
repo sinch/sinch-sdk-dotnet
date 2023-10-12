@@ -205,7 +205,19 @@ namespace Sinch
         /// <inheritdoc/>
         public ISinchVerificationClient Verification(string appKey, string appSecret)
         {
-            return new SinchVerificationClient();
+            if (string.IsNullOrEmpty(appKey))
+            {
+                throw new ArgumentNullException(nameof(appKey), "The value should be present");
+            }
+            if (string.IsNullOrEmpty(appSecret))
+            {
+                throw new ArgumentNullException(nameof(appSecret), "The value should be present");
+            }
+            var basicAuth = new BasicAuth(appKey, appSecret);
+            var http = new Http(basicAuth, new HttpClient(), _loggerFactory.Create<Http>(), JsonNamingPolicy.CamelCase);
+            return new SinchVerificationClient(appKey, appSecret, 
+                new Uri("https://verification.api.sinch.com/"), 
+                _loggerFactory, http);
         }
     }
 }

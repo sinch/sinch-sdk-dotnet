@@ -11,17 +11,7 @@ using Sinch.Logger;
 
 namespace Sinch.Auth
 {
-    public interface IAuth
-    {
-        /// <summary>
-        /// Fetches a token, which is cached by ITokenManager, from OAuth endpoint.
-        /// </summary>
-        /// <param name="force">Set as true to drop cached token and fetch a fresh one.</param>
-        /// <returns>OAuth bearer token.</returns>
-        Task<string> GetToken(bool force = false);
-    }
-
-    internal class OAuth  : IAuth
+    internal class OAuth : IAuth
     {
         private readonly HttpClient _httpClient;
         private readonly string _keyId;
@@ -38,6 +28,7 @@ namespace Sinch.Auth
             _httpClient = httpClient;
             _logger = logger;
             _baseAddress = new Uri("https://auth.sinch.com");
+            Scheme = "Bearer";
         }
 
         internal OAuth(Uri baseAddress, HttpClient httpClient) : this("", "", httpClient, null)
@@ -95,6 +86,8 @@ namespace Sinch.Auth
             _logger?.LogInformation("Retrieved new token which will expire in {expire}", _expiresIn);
             return _token;
         }
+
+        public string Scheme { get; }
 
         private class AuthResponse
         {
