@@ -16,7 +16,7 @@ namespace Sinch.Auth
             Scheme = "Basic";
         }
 
-        public Task<string> GetToken(bool force = false)
+        public Task<string> GetAuthValue(bool force = false)
         {
             var plainTextBytes = Encoding.UTF8.GetBytes($"{_appKey}:{_appSecret}");
             return Task.FromResult(Convert.ToBase64String(plainTextBytes));

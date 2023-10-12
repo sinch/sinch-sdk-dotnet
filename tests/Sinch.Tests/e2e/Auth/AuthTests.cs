@@ -9,7 +9,7 @@ namespace Sinch.Tests.e2e.Auth
         [Fact]
         public async Task GetTokenValue()
         {
-            var token = await SinchClientMockServer.Auth.GetToken();
+            var token = await SinchClientMockServer.Auth.GetAuthValue();
             token.Length.Should().BeGreaterThan(10);
         }
     }

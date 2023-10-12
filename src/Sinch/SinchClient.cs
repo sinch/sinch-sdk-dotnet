@@ -92,6 +92,7 @@ namespace Sinch
     public class SinchClient : ISinch
     {
         private readonly LoggerFactory _loggerFactory;
+        private readonly HttpClient _httpClient;
 
         public SinchClient(string keyId, string keySecret, string projectId,
             Action<SinchOptions> options = default)
@@ -116,7 +117,7 @@ namespace Sinch
 
             if (optionsObj.LoggerFactory is not null) _loggerFactory = new LoggerFactory(optionsObj.LoggerFactory);
 
-            optionsObj.HttpClient ??= new HttpClient();
+            _httpClient = optionsObj.HttpClient ?? new HttpClient();
 
             var logger = _loggerFactory?.Create<SinchClient>();
             logger?.LogInformation("Initializing SinchClient...");
@@ -213,8 +214,10 @@ namespace Sinch
             {
                 throw new ArgumentNullException(nameof(appSecret), "The value should be present");
             }
+            
             var basicAuth = new BasicAuth(appKey, appSecret);
-            var http = new Http(basicAuth, new HttpClient(), _loggerFactory.Create<Http>(), JsonNamingPolicy.CamelCase);
+            // TODO: implement application signed authentication, create IHttp just before the request with SignedRequestAuth
+            var http = new Http(basicAuth, _httpClient, _loggerFactory.Create<Http>(), JsonNamingPolicy.CamelCase);
             return new SinchVerificationClient(appKey, appSecret, 
                 new Uri("https://verification.api.sinch.com/"), 
                 _loggerFactory, http);

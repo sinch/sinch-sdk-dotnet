@@ -36,7 +36,7 @@ namespace Sinch.Auth
             _baseAddress = baseAddress;
         }
 
-        public async Task<string> GetToken(bool force = false)
+        public async Task<string> GetAuthValue(bool force = false)
         {
             _logger?.LogInformation("Getting token...");
             if (_token is not null && _expiresIn.HasValue && DateTime.UtcNow < _expiresIn.Value && !force)

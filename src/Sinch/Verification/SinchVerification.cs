@@ -10,6 +10,7 @@ namespace Sinch.Verification
     }
     public class SinchVerification : ISinchVerification
     {
+        
         public Task<IVerificationResponse> Start()
         {
             throw new System.NotImplementedException();

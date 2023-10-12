@@ -6,7 +6,7 @@ namespace Sinch.Verification
 {
     public interface ISinchVerificationClient
     {
-        
+        ISinchVerification Verification { get; }
     }
 
     internal class SinchVerificationClient : ISinchVerificationClient
@@ -17,7 +17,12 @@ namespace Sinch.Verification
         internal SinchVerificationClient(string appKey, string appSecret, Uri baseAddress, LoggerFactory loggerFactory,
             IHttp http)
         {
+            _appKey = appKey;
+            _appSecret = appSecret;
+            
             
         }
+
+        public ISinchVerification Verification { get; }
     }
 }

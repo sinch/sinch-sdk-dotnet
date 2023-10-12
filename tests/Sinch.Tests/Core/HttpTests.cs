@@ -27,10 +27,10 @@ namespace Sinch.Tests.Core
         public async Task ForceNewToken()
         {
             _tokenManagerMock
-                .GetToken(Arg.Is<bool>(x => !x))
+                .GetAuthValue(Arg.Is<bool>(x => !x))
                 .Returns( "first_token");
             _tokenManagerMock
-                .GetToken(true)
+                .GetAuthValue(true)
                 .Returns( "second_token");
 
             var uri = new Uri("http://sinch.com/items");
@@ -53,7 +53,7 @@ namespace Sinch.Tests.Core
         [Fact]
         public async Task ForceNewTokenOnlyOnce()
         {
-            _tokenManagerMock.GetToken(Arg.Any<bool>())
+            _tokenManagerMock.GetAuthValue(Arg.Any<bool>())
                 .Returns("first_token", "second_token", "third_token");
 
             var uri = new Uri("http://sinch.com/items");
