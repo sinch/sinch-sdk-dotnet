@@ -6,12 +6,12 @@ namespace Sinch.Verification
 {
     public interface ISinchVerification
     {
-        Task<IVerificationResponse> Start();
+        Task<VerificationResponseBase> Start();
     }
     public class SinchVerification : ISinchVerification
     {
         
-        public Task<IVerificationResponse> Start()
+        public Task<VerificationResponseBase> Start()
         {
             throw new System.NotImplementedException();
         }

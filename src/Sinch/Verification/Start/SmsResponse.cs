@@ -1,16 +1,13 @@
 ﻿namespace Sinch.Verification.Start
 {
-    public class SmsResponse : IVerificationResponse
+    public class SmsResponse : VerificationResponseBase, IVerificationResponse
     {
-        public string Id { get; set; }
-
-        public string Method { get; set; }
-
         public SmsInfo Sms { get; set; }
-
-        public Links Links { get; set; }
     }
-
+    
+    /// <summary>
+    ///     The response contains the template of the SMS to be expected and intercepted.
+    /// </summary>
     public class SmsInfo
     {
         public string Template { get; set; }
