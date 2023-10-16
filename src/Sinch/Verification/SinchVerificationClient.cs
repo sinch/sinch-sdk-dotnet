@@ -19,8 +19,8 @@ namespace Sinch.Verification
         {
             _appKey = appKey;
             _appSecret = appSecret;
-            
-            
+
+            Verification = new SinchVerification(loggerFactory?.Create<SinchVerification>(), baseAddress, http);
         }
 
         public ISinchVerification Verification { get; }

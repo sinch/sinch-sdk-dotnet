@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Collections.Generic;
+using System.Text.Json;
 using FluentAssertions;
 using Newtonsoft.Json.Linq;
 using Sinch.Verification.Start;
@@ -22,11 +23,14 @@ namespace Sinch.Tests.Verification
                     template = "Your verification code is {{CODE}}",
                     interceptionTimeout = 32
                 },
-                _links = new
+                _links = new[]
                 {
-                    rel = "status",
-                    href = "string",
-                    method = "GET"
+                    new
+                    {
+                        rel = "status",
+                        href = "string",
+                        method = "GET"
+                    }
                 }
             };
 
@@ -46,11 +50,14 @@ namespace Sinch.Tests.Verification
                     Template = "Your verification code is {{CODE}}",
                     InterceptionTimeout = 32
                 },
-                Links = new Links()
+                Links = new List<Links>()
                 {
-                    Rel = "status",
-                    Href = "string",
-                    Method = "GET"
+                    new()
+                    {
+                        Rel = "status",
+                        Href = "string",
+                        Method = "GET"
+                    }
                 }
             });
         }

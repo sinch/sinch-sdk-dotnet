@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -22,7 +23,7 @@ namespace Sinch.Verification.Start
         ///     Available methods and actions which can be done after a successful Verification
         /// </summary>
         [JsonPropertyName("_links")]
-        public Links Links { get; set; }
+        public List<Links> Links { get; set; }
     }
     
     /// <summary>

@@ -217,7 +217,7 @@ namespace Sinch
             
             var basicAuth = new BasicAuth(appKey, appSecret);
             // TODO: implement application signed authentication, create IHttp just before the request with SignedRequestAuth
-            var http = new Http(basicAuth, _httpClient, _loggerFactory.Create<Http>(), JsonNamingPolicy.CamelCase);
+            var http = new Http(basicAuth, _httpClient, _loggerFactory?.Create<Http>(), JsonNamingPolicy.CamelCase);
             return new SinchVerificationClient(appKey, appSecret, 
                 new Uri("https://verification.api.sinch.com/"), 
                 _loggerFactory, http);
