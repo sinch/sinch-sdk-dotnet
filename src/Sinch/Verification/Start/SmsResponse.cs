@@ -1,6 +1,6 @@
 ﻿namespace Sinch.Verification.Start
 {
-    public class SmsResponse : VerificationResponseBase, IVerificationResponse
+    public class SmsResponse : VerificationResponseBase, IVerificationStartResponse
     {
         public SmsInfo Sms { get; set; }
     }

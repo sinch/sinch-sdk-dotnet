@@ -1,6 +1,6 @@
 ﻿namespace Sinch.Verification.Start
 {
-    public class DataResponse : VerificationResponseBase, IVerificationResponse
+    public class DataResponse : VerificationResponseBase, IVerificationStartResponse
     {
         
     }

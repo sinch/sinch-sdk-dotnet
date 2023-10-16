@@ -17,7 +17,20 @@ namespace Sinch.Verification
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IVerificationResponse> Start(VerificationStartRequest request,
+        Task<IVerificationStartResponse> Start(VerificationStartRequest request,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Report the received verification code to verify it,
+        ///     using the identity of the user (in most cases, the phone number).
+        ///     For an SMS PIN verification or Phone Call verification, this is the OTP code.
+        ///     For flashcalls, this is the CLI.
+        /// </summary>
+        /// <param name="endpoint">For type number use a E.164-compatible phone number.</param>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<IVerifyResponse> Verify(string endpoint, IVerifyRequest request,
             CancellationToken cancellationToken = default);
     }
 
@@ -35,12 +48,12 @@ namespace Sinch.Verification
         }
 
         /// <inheritdoc />
-        public Task<IVerificationResponse> Start(VerificationStartRequest request,
+        public Task<IVerificationStartResponse> Start(VerificationStartRequest request,
             CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"verification/v1/verifications");
             _logger?.LogDebug("Starting verification...");
-            return _http.Send<VerificationStartRequest, IVerificationResponse>(uri, HttpMethod.Post, request,
+            return _http.Send<VerificationStartRequest, IVerificationStartResponse>(uri, HttpMethod.Post, request,
                 cancellationToken);
         }
     }

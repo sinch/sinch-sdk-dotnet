@@ -30,14 +30,14 @@ namespace Sinch.Verification.Start
     ///     A marker interface for VerificationResponse items.
     /// </summary>
     [JsonConverter(typeof(VerificationResponseConverter))]
-    public interface IVerificationResponse
+    public interface IVerificationStartResponse
     {
         
     }
 
-    public class VerificationResponseConverter : JsonConverter<IVerificationResponse>
+    public class VerificationResponseConverter : JsonConverter<IVerificationStartResponse>
     {
-        public override IVerificationResponse Read(ref Utf8JsonReader reader, Type typeToConvert,
+        public override IVerificationStartResponse Read(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)
         {
             var elem = JsonElement.ParseValue(ref reader);
@@ -52,7 +52,7 @@ namespace Sinch.Verification.Start
             };
         }
 
-        public override void Write(Utf8JsonWriter writer, IVerificationResponse value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, IVerificationStartResponse value, JsonSerializerOptions options)
         {
             JsonSerializer.Serialize(writer, value, options);
         }
