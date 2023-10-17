@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
 using Sinch.Verification.Start;
+using Sinch.Verification.Report;
+using Sinch.Verification.Report.Response;
 
 namespace Sinch.Verification
 {
@@ -30,7 +32,7 @@ namespace Sinch.Verification
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IVerifyResponse> Verify(string endpoint, IVerifyRequest request,
+        Task<IVerificationReportResponse> Verify(string endpoint, IVerifyRequest request,
             CancellationToken cancellationToken = default);
     }
 
@@ -55,6 +57,37 @@ namespace Sinch.Verification
             _logger?.LogDebug("Starting verification...");
             return _http.Send<VerificationStartRequest, IVerificationStartResponse>(uri, HttpMethod.Post, request,
                 cancellationToken);
+        }
+
+        public Task<IVerificationReportResponse> Verify(string endpoint, IVerifyRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var uri = new Uri(_baseAddress, $"verification/v1/verifications/number/{endpoint}");
+            _logger?.LogDebug("Verifying the the code...");
+            // if (request is PhoneCallVerificationRequest verificationRequest )
+            // {
+            //     var result = await _http
+            //         .Send<PhoneCallVerificationRequest, PhoneVerifyResponse>(uri, HttpMethod.Put,
+            //             verificationRequest,
+            //             cancellationToken);
+            //     return result;
+            // }
+            return request switch
+            {
+                FlashCallVerificationRequest flashCallVerificationReportRequest =>
+                    _http.Send<FlashCallVerificationRequest, IVerificationReportResponse>(uri, HttpMethod.Put,
+                        flashCallVerificationReportRequest,
+                        cancellationToken),
+                SmsVerificationRequest smsVerificationRequest => _http.Send<SmsVerificationRequest, IVerificationReportResponse>(
+                    uri, HttpMethod.Put,
+                    smsVerificationRequest,
+                    cancellationToken),
+                PhoneCallVerificationRequest phoneRequest => _http
+                    .Send<PhoneCallVerificationRequest, IVerificationReportResponse>(uri, HttpMethod.Put,
+                        phoneRequest,
+                        cancellationToken),
+                _ => throw new ArgumentOutOfRangeException(nameof(request))
+            };
         }
     }
 }

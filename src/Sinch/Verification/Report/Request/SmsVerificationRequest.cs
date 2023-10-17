@@ -1,4 +1,4 @@
-﻿namespace Sinch.Verification.Verify
+﻿namespace Sinch.Verification.Report
 {
     public class SmsVerificationRequest : IVerifyRequest
     {
