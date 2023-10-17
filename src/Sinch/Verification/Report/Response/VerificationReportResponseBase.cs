@@ -6,9 +6,15 @@ using System.Text.Json.Serialization;
 namespace Sinch.Verification.Report.Response
 {
     public abstract class VerificationReportResponseBase
-    {
+    {  
+        /// <summary>
+        ///     The unique ID of the verification request.
+        /// </summary>
         public string Id { get; set; }
-
+        
+        /// <summary>
+        ///     The method of the verification request.
+        /// </summary>
         public string Method { get; set; }
 
         /// <summary>

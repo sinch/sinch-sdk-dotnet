@@ -92,8 +92,8 @@ namespace Sinch.Verification
         {
             return request switch
             {
-                FlashCallVerificationRequest flashCallVerificationReportRequest =>
-                    _http.Send<FlashCallVerificationRequest, IVerificationReportResponse>(uri, HttpMethod.Put,
+                FlashCallVerificationReportRequest flashCallVerificationReportRequest =>
+                    _http.Send<FlashCallVerificationReportRequest, IVerificationReportResponse>(uri, HttpMethod.Put,
                         flashCallVerificationReportRequest,
                         cancellationToken),
                 SmsVerificationRequest smsVerificationRequest => _http
@@ -101,8 +101,8 @@ namespace Sinch.Verification
                         uri, HttpMethod.Put,
                         smsVerificationRequest,
                         cancellationToken),
-                PhoneCallVerificationRequest phoneRequest => _http
-                    .Send<PhoneCallVerificationRequest, IVerificationReportResponse>(uri, HttpMethod.Put,
+                PhoneCallVerificationReportRequest phoneRequest => _http
+                    .Send<PhoneCallVerificationReportRequest, IVerificationReportResponse>(uri, HttpMethod.Put,
                         phoneRequest,
                         cancellationToken),
                 _ => throw new ArgumentOutOfRangeException(nameof(request))

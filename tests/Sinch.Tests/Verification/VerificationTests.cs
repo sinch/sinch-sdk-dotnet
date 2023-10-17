@@ -81,7 +81,7 @@ namespace Sinch.Tests.Verification
                     method = "callout"
                 }));
 
-            var response = await VerificationClient.Verification.ReportIdentity(endpoint, new PhoneCallVerificationRequest
+            var response = await VerificationClient.Verification.ReportIdentity(endpoint, new PhoneCallVerificationReportRequest
             {
                 Callout = new Callout
                 {

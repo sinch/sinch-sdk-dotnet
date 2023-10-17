@@ -4,99 +4,79 @@ using Sinch.Core;
 namespace Sinch.Verification.Report.Response
 {
     /// <summary>
-    /// Represents reasons for various states or actions.
+    ///     Displays the reason why a verification has FAILED, was DENIED, or was ABORTED.
     /// </summary>
     [JsonConverter(typeof(EnumRecordJsonConverter<Reason>))]
     public record Reason(string Value) : EnumRecord(Value)
     {
         /// <summary>
-        /// The reason for pending verification.
+        ///     The reason for fraud detected during the verification process.
         /// </summary>
-        public static readonly Reason Pending = new Reason("PENDING");
+        public static readonly Reason Fraud = new("Fraud");
 
         /// <summary>
-        /// The reason for a successful verification.
+        ///     The reason for not enough credit to complete the verification.
         /// </summary>
-        public static readonly Reason Successful = new Reason("SUCCESSFUL");
+        public static readonly Reason NotEnoughCredit = new("Not enough credit");
 
         /// <summary>
-        /// The reason for a failed verification attempt.
+        ///     The reason for a blocked verification attempt.
         /// </summary>
-        public static readonly Reason Fail = new Reason("FAIL");
+        public static readonly Reason Blocked = new("Blocked");
 
         /// <summary>
-        /// The reason for a denied verification attempt by Sinch or your backend.
+        ///     The reason for a verification attempt that was denied by callback.
         /// </summary>
-        public static readonly Reason Denied = new Reason("DENIED");
+        public static readonly Reason DeniedByCallback = new("Denied by callback");
 
         /// <summary>
-        /// The reason for a verification attempt that was denied by callback.
+        ///     The reason for an invalid callback during verification.
         /// </summary>
-        public static readonly Reason DeniedByCallback = new Reason("Denied by callback");
+        public static readonly Reason InvalidCallback = new("Invalid callback");
 
         /// <summary>
-        /// The reason for an invalid callback during verification.
+        ///     The reason for an internal error during the verification process.
         /// </summary>
-        public static readonly Reason InvalidCallback = new Reason("Invalid callback");
+        public static readonly Reason InternalError = new("Internal error");
 
         /// <summary>
-        /// The reason for an internal error during the verification process.
+        ///     The reason for a destination being denied during verification.
         /// </summary>
-        public static readonly Reason InternalError = new Reason("Internal error");
+        public static readonly Reason DestinationDenied = new("Destination denied");
 
         /// <summary>
-        /// The reason for a destination being denied during verification.
+        ///     The reason for a network error or the number being unreachable during verification.
         /// </summary>
-        public static readonly Reason DestinationDenied = new Reason("Destination denied");
+        public static readonly Reason NetworkErrorOrUnreachable = new("Network error or number unreachable");
 
         /// <summary>
-        /// The reason for a network error or the number being unreachable during verification.
+        ///     The reason for a failed verification attempt while pending.
         /// </summary>
-        public static readonly Reason NetworkErrorOrUnreachable = new Reason("Network error or number unreachable");
+        public static readonly Reason FailedPending = new("Failed pending");
 
         /// <summary>
-        /// The reason for a failed verification attempt while pending.
+        ///     The reason for an SMS delivery failure during verification.
         /// </summary>
-        public static readonly Reason FailedPending = new Reason("Failed pending");
+        public static readonly Reason SMSDeliveryFailure = new("SMS delivery failure");
 
         /// <summary>
-        /// The reason for an SMS delivery failure during verification.
+        ///     The reason for an invalid CLI (Caller Line Identity) during verification.
         /// </summary>
-        public static readonly Reason SMSDeliveryFailure = new Reason("SMS delivery failure");
+        public static readonly Reason InvalidCLI = new("Invalid CLI");
 
         /// <summary>
-        /// The reason for an invalid CLI (Caller Line Identity) during verification.
+        ///     The reason for an invalid code provided during verification.
         /// </summary>
-        public static readonly Reason InvalidCLI = new Reason("Invalid CLI");
+        public static readonly Reason InvalidCode = new("Invalid code");
 
         /// <summary>
-        /// The reason for an invalid code provided during verification.
+        ///     The reason for a verification code that has expired.
         /// </summary>
-        public static readonly Reason InvalidCode = new Reason("Invalid code");
+        public static readonly Reason Expired = new("Expired");
 
         /// <summary>
-        /// The reason for a verification code that has expired.
+        ///     The reason for the call being hung up without entering a valid code.
         /// </summary>
-        public static readonly Reason Expired = new Reason("Expired");
-
-        /// <summary>
-        /// The reason for the call being hung up without entering a valid code.
-        /// </summary>
-        public static readonly Reason HungUpWithoutValidCode = new Reason("Hung up without entering valid code");
-
-        /// <summary>
-        /// The reason for fraud detected during the verification process.
-        /// </summary>
-        public static readonly Reason Fraud = new Reason("Fraud");
-
-        /// <summary>
-        /// The reason for not enough credit to complete the verification.
-        /// </summary>
-        public static readonly Reason NotEnoughCredit = new Reason("Not enough credit");
-
-        /// <summary>
-        /// The reason for a blocked verification attempt.
-        /// </summary>
-        public static readonly Reason Blocked = new Reason("Blocked");
+        public static readonly Reason HungUpWithoutValidCode = new("Hung up without entering valid code");
     }
 }

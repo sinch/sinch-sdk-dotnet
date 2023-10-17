@@ -19,18 +19,6 @@ namespace Sinch.Core
 
             return JsonSerializer.Deserialize(bufferWriter.WrittenSpan, type, options);
         }
-        
-        // TODO: think about removing this
-        public static T ToObject<T>(this JsonElement element, JsonSerializerOptions options = null)
-        {
-            var bufferWriter = new ArrayBufferWriter<byte>();
-            using (var writer = new Utf8JsonWriter(bufferWriter))
-            {
-                element.WriteTo(writer);
-            }
-
-            return JsonSerializer.Deserialize<T>(bufferWriter.WrittenSpan, options);
-        } 
 
         public static bool IsTypeOf(this JsonElement element, Type type, JsonSerializerOptions options)
         {

@@ -1,9 +1,12 @@
 ﻿namespace Sinch.Verification.Report
 {
-    public class PhoneCallVerificationRequest : IVerifyReportRequest
+    public class PhoneCallVerificationReportRequest : IVerifyReportRequest
     {
         public override string Method { get; } = "callout";
-
+        
+        /// <summary>
+        ///     A configuration object containing settings specific to Phone Call verifications.
+        /// </summary>
 #if NET7_0_OR_GREATER
         public required Callout Callout { get; set; }
 #else
