@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
-using Sinch.Verification.Start;
 using Sinch.Verification.Report;
 using Sinch.Verification.Report.Response;
+using Sinch.Verification.Start;
 
 namespace Sinch.Verification
 {
@@ -32,7 +32,17 @@ namespace Sinch.Verification
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IVerificationReportResponse> Verify(string endpoint, IVerifyRequest request,
+        Task<IVerificationReportResponse> ReportIdentity(string endpoint, IVerifyReportRequest request,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Report the received verification code to verify it, using the Verification ID of the Verification request.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<IVerificationReportResponse> ReportId(string id, IVerifyReportRequest request,
             CancellationToken cancellationToken = default);
     }
 
@@ -59,29 +69,38 @@ namespace Sinch.Verification
                 cancellationToken);
         }
 
-        public Task<IVerificationReportResponse> Verify(string endpoint, IVerifyRequest request,
+        public Task<IVerificationReportResponse> ReportIdentity(string endpoint, IVerifyReportRequest request,
             CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"verification/v1/verifications/number/{endpoint}");
-            _logger?.LogDebug("Verifying the the code...");
-            // if (request is PhoneCallVerificationRequest verificationRequest )
-            // {
-            //     var result = await _http
-            //         .Send<PhoneCallVerificationRequest, PhoneVerifyResponse>(uri, HttpMethod.Put,
-            //             verificationRequest,
-            //             cancellationToken);
-            //     return result;
-            // }
+            _logger?.LogDebug("Reporting the the code with identity...");
+
+            return Report(request, uri, cancellationToken);
+        }
+
+        public Task<IVerificationReportResponse> ReportId(string id, IVerifyReportRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            _logger?.LogDebug("Reporting the the code with id...");
+            var uri = new Uri(_baseAddress, $"verification/v1/verifications/id/{id}");
+
+            return Report(request, uri, cancellationToken);
+        }
+
+        private Task<IVerificationReportResponse> Report(IVerifyReportRequest request,
+            Uri uri, CancellationToken cancellationToken)
+        {
             return request switch
             {
                 FlashCallVerificationRequest flashCallVerificationReportRequest =>
                     _http.Send<FlashCallVerificationRequest, IVerificationReportResponse>(uri, HttpMethod.Put,
                         flashCallVerificationReportRequest,
                         cancellationToken),
-                SmsVerificationRequest smsVerificationRequest => _http.Send<SmsVerificationRequest, IVerificationReportResponse>(
-                    uri, HttpMethod.Put,
-                    smsVerificationRequest,
-                    cancellationToken),
+                SmsVerificationRequest smsVerificationRequest => _http
+                    .Send<SmsVerificationRequest, IVerificationReportResponse>(
+                        uri, HttpMethod.Put,
+                        smsVerificationRequest,
+                        cancellationToken),
                 PhoneCallVerificationRequest phoneRequest => _http
                     .Send<PhoneCallVerificationRequest, IVerificationReportResponse>(uri, HttpMethod.Put,
                         phoneRequest,

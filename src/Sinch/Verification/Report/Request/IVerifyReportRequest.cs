@@ -1,6 +1,6 @@
 ﻿namespace Sinch.Verification.Report
 {
-    public abstract class IVerifyRequest
+    public abstract class IVerifyReportRequest
     {
         /// <summary>
         ///     The type of verification.
