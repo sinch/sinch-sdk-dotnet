@@ -160,7 +160,6 @@ namespace Sinch
         /// <param name="authUri"></param>
         /// <param name="numbersBaseAddress"></param>
         /// <param name="smsBaseAddress"></param>
-#if DEBUG
         internal SinchClient(string projectId, Uri authUri, Uri numbersBaseAddress, Uri smsBaseAddress)
         {
             var http = new HttpClient();
@@ -172,9 +171,7 @@ namespace Sinch
             Numbers = new Numbers.Numbers(projectId, numbersBaseAddress, null, httpCamelCase);
             Sms = new Sms(projectId, smsBaseAddress, null, httpSnakeCase);
         }
-#endif
-
-
+        
         /// <summary>
         ///     Only two regions are available for single-account model. it's eu, us.
         ///     So, we should map other regions provided in docs to nearest server.

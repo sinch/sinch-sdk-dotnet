@@ -3,7 +3,7 @@
     public class FlashCallVerificationReportRequest : IVerifyReportRequest
     {
         /// <inheritdoc />
-        public override string Method { get; } = "flashCall";
+        public override string Method { get; } = VerificationType.FlashCall;
 
         /// <summary>
         ///     A configuration object containing settings specific to FlashCall verifications.

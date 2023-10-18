@@ -2,7 +2,7 @@
 {
     public class SmsVerificationRequest : IVerifyReportRequest
     {
-        public override string Method { get; } = "sms";
+        public override string Method { get; } = VerificationType.Sms;
         
         /// <summary>
         ///     A configuration object containing settings specific to SMS verifications.

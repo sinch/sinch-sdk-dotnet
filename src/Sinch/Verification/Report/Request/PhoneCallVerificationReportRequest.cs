@@ -2,7 +2,7 @@
 {
     public class PhoneCallVerificationReportRequest : IVerifyReportRequest
     {
-        public override string Method { get; } = "callout";
+        public override string Method { get; } = VerificationType.PhoneCall;
         
         /// <summary>
         ///     A configuration object containing settings specific to Phone Call verifications.
