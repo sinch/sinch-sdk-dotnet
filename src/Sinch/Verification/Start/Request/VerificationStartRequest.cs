@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Verification.Start
+namespace Sinch.Verification.Start.Request
 {
     public class VerificationStartRequest
     {
@@ -38,6 +38,10 @@ namespace Sinch.Verification.Start
 
     public class FlashCallOptions
     {
+        /// <summary>
+        ///    The dial timeout in seconds. 
+        /// </summary>
+        public int DialTimeout { get; set; }
     }
 
     [JsonConverter(typeof(EnumRecordJsonConverter<VerificationMethod>))]

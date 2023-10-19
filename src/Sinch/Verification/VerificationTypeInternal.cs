@@ -1,6 +1,6 @@
 ﻿namespace Sinch.Verification
 {
-    internal static class VerificationType
+    internal static class VerificationTypeInternal
     {
         public const string Sms = "sms";
         public const string Seamless = "seamless";

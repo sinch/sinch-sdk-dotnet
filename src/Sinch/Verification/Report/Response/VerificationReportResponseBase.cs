@@ -47,13 +47,13 @@ namespace Sinch.Verification.Report.Response
             var descriptor = elem.EnumerateObject().FirstOrDefault(x => x.Name == "method");
             return descriptor.Value.GetString() switch
             {
-                VerificationType.Sms => (SmsVerificationReportResponse)elem.Deserialize(
+                VerificationTypeInternal.Sms => (SmsVerificationReportResponse)elem.Deserialize(
                     typeof(SmsVerificationReportResponse),
                     options),
-                VerificationType.PhoneCall => (PhoneVerificationReportResponse)elem.Deserialize(
+                VerificationTypeInternal.PhoneCall => (PhoneVerificationReportResponse)elem.Deserialize(
                     typeof(PhoneVerificationReportResponse),
                     options),
-                VerificationType.FlashCall => (FlashCallVerificationReportResponse)elem.Deserialize(
+                VerificationTypeInternal.FlashCall => (FlashCallVerificationReportResponse)elem.Deserialize(
                     typeof(FlashCallVerificationReportResponse), options),
                 _ => throw new JsonException($"Failed to match verification method object, got {descriptor.Name}")
             };

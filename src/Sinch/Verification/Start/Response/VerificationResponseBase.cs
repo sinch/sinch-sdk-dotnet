@@ -42,10 +42,10 @@ namespace Sinch.Verification.Start
             var descriptor = elem.EnumerateObject().FirstOrDefault(x => x.Name == "method");
             return descriptor.Value.GetString() switch
             {
-                VerificationType.Sms => (SmsResponse)elem.Deserialize(typeof(SmsResponse), options),
-                VerificationType.PhoneCall => (PhoneCallResponse)elem.Deserialize(typeof(PhoneCallResponse), options),
-                VerificationType.FlashCall => (FlashCallResponse)elem.Deserialize(typeof(FlashCallResponse), options),
-                VerificationType.Seamless => (DataResponse)elem.Deserialize(typeof(DataResponse), options),
+                VerificationTypeInternal.Sms => (SmsResponse)elem.Deserialize(typeof(SmsResponse), options),
+                VerificationTypeInternal.PhoneCall => (PhoneCallResponse)elem.Deserialize(typeof(PhoneCallResponse), options),
+                VerificationTypeInternal.FlashCall => (FlashCallResponse)elem.Deserialize(typeof(FlashCallResponse), options),
+                VerificationTypeInternal.Seamless => (DataResponse)elem.Deserialize(typeof(DataResponse), options),
                 _ => throw new JsonException($"Failed to match verification method object, got {descriptor.Name}")
             };
         }
