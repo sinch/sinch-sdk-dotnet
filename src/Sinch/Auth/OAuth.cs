@@ -11,41 +11,32 @@ using Sinch.Logger;
 
 namespace Sinch.Auth
 {
-    public interface IAuth
-    {
-        /// <summary>
-        /// Fetches a token, which is cached by ITokenManager, from OAuth endpoint.
-        /// </summary>
-        /// <param name="force">Set as true to drop cached token and fetch a fresh one.</param>
-        /// <returns>OAuth bearer token.</returns>
-        Task<string> GetToken(bool force = false);
-    }
-
-    internal class Auth : IAuth
+    internal class OAuth : IAuth
     {
         private readonly HttpClient _httpClient;
         private readonly string _keyId;
         private readonly string _keySecret;
-        private readonly ILoggerAdapter<Auth> _logger;
+        private readonly ILoggerAdapter<OAuth> _logger;
         private DateTime? _expiresIn;
         private volatile string _token;
         private readonly Uri _baseAddress;
 
-        public Auth(string keyId, string keySecret, HttpClient httpClient, ILoggerAdapter<Auth> logger)
+        public OAuth(string keyId, string keySecret, HttpClient httpClient, ILoggerAdapter<OAuth> logger)
         {
             _keyId = keyId;
             _keySecret = keySecret;
             _httpClient = httpClient;
             _logger = logger;
             _baseAddress = new Uri("https://auth.sinch.com");
+            Scheme = "Bearer";
         }
 
-        internal Auth(Uri baseAddress, HttpClient httpClient) : this("", "", httpClient, null)
+        internal OAuth(Uri baseAddress, HttpClient httpClient) : this("", "", httpClient, null)
         {
             _baseAddress = baseAddress;
         }
 
-        public async Task<string> GetToken(bool force = false)
+        public async Task<string> GetAuthValue(bool force = false)
         {
             _logger?.LogInformation("Getting token...");
             if (_token is not null && _expiresIn.HasValue && DateTime.UtcNow < _expiresIn.Value && !force)
@@ -95,6 +86,8 @@ namespace Sinch.Auth
             _logger?.LogInformation("Retrieved new token which will expire in {expire}", _expiresIn);
             return _token;
         }
+
+        public string Scheme { get; }
 
         private class AuthResponse
         {

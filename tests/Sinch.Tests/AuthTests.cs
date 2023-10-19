@@ -17,7 +17,7 @@ namespace Sinch.Tests
 {
     public class AuthTests
     {
-        private readonly ILoggerAdapter<Auth.Auth> _logger = Substitute.For<ILoggerAdapter<Auth.Auth>>();
+        private readonly ILoggerAdapter<Auth.OAuth> _logger = Substitute.For<ILoggerAdapter<Auth.OAuth>>();
         private readonly MockHttpMessageHandler _messageHandlerMock = new();
         private readonly MockedRequest _mockedRequest;
         private readonly IAuth _auth;
@@ -27,7 +27,7 @@ namespace Sinch.Tests
             var httpClient = new HttpClient(_messageHandlerMock);
             const string mockKeyId = "mock_key_id";
             const string mockKeySecret = "mock_key_secret";
-            _auth = new Auth.Auth(mockKeyId, mockKeySecret, httpClient, _logger);
+            _auth = new Auth.OAuth(mockKeyId, mockKeySecret, httpClient, _logger);
             var basicAuthHeaderValue = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{mockKeyId}:{mockKeySecret}"));
             _mockedRequest = _messageHandlerMock.When(HttpMethod.Post, "https://auth.sinch.com/oauth2/token")
                 .WithFormData(new[]
@@ -48,7 +48,7 @@ namespace Sinch.Tests
                 token_type = "bearer"
             }));
 
-            var token = await _auth.GetToken();
+            var token = await _auth.GetAuthValue();
 
             _messageHandlerMock.GetMatchCount(_mockedRequest).Should().Be(1);
             token.Should().Be("token_1");
@@ -65,7 +65,7 @@ namespace Sinch.Tests
                 token_type = "bearer"
             }));
 
-            var token = await _auth.GetToken();
+            var token = await _auth.GetAuthValue();
 
             _messageHandlerMock.GetMatchCount(_mockedRequest).Should().Be(1);
             token.Should().Be("token_1");
@@ -78,7 +78,7 @@ namespace Sinch.Tests
                 token_type = "bearer"
             }));
 
-            var token2 = await _auth.GetToken();
+            var token2 = await _auth.GetAuthValue();
             _messageHandlerMock.GetMatchCount(_mockedRequest).Should().Be(1);
             token2.Should().Be("token_1");
         }
@@ -94,7 +94,7 @@ namespace Sinch.Tests
                 token_type = "bearer"
             }));
 
-            var token = await _auth.GetToken();
+            var token = await _auth.GetAuthValue();
 
             token.Should().Be("token_1");
 
@@ -107,7 +107,7 @@ namespace Sinch.Tests
                 scope = "",
                 token_type = "bearer"
             }));
-            var token2 = await _auth.GetToken();
+            var token2 = await _auth.GetAuthValue();
             _messageHandlerMock.GetMatchCount(_mockedRequest).Should().Be(2);
             token2.Should().Be("token_2");
         }
@@ -117,7 +117,7 @@ namespace Sinch.Tests
         {
             _mockedRequest.Respond(HttpStatusCode.NotFound);
 
-            Func<Task<string>> act = () => _auth.GetToken();
+            Func<Task<string>> act = () => _auth.GetAuthValue();
 
             await act.Should().ThrowAsync<AuthException>();
         }
@@ -133,7 +133,7 @@ namespace Sinch.Tests
                 error_hint = "how_to_fix"
             }));
 
-            Func<Task<string>> act = () => _auth.GetToken();
+            Func<Task<string>> act = () => _auth.GetAuthValue();
 
             await act.Should().ThrowAsync<AuthException>().Where(x =>
                 x.Error == "invalid_request"
