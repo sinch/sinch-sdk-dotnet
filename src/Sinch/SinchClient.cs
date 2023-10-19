@@ -57,7 +57,7 @@ namespace Sinch
         ///     <see href="https://developers.sinch.com/docs/conversation/api-reference/">Learn more.</see>
         /// </summary>
         public IConversation Conversation { get; set; }
-        
+
         /// <summary>
         ///     Verify users with SMS, flash calls (missed calls), a regular call, or data verification.
         ///     This document serves as a user guide and documentation on how to use the Sinch Verification REST APIs.
@@ -93,6 +93,7 @@ namespace Sinch
     {
         private readonly LoggerFactory _loggerFactory;
         private readonly HttpClient _httpClient;
+        private readonly Uri _verificationBaseAddress = null;
 
         public SinchClient(string keyId, string keySecret, string projectId,
             Action<SinchOptions> options = default)
@@ -160,18 +161,21 @@ namespace Sinch
         /// <param name="authUri"></param>
         /// <param name="numbersBaseAddress"></param>
         /// <param name="smsBaseAddress"></param>
-        internal SinchClient(string projectId, Uri authUri, Uri numbersBaseAddress, Uri smsBaseAddress)
+        /// <param name="verificationBaseAddress"></param>
+        internal SinchClient(string projectId, Uri authUri, Uri numbersBaseAddress, Uri smsBaseAddress,
+            Uri verificationBaseAddress)
         {
-            var http = new HttpClient();
-            Auth = new Auth.OAuth(authUri, http);
-            var httpCamelCase = new Http(Auth, http, null,
+            _httpClient = new HttpClient();
+            Auth = new Auth.OAuth(authUri, _httpClient);
+            var httpCamelCase = new Http(Auth, _httpClient, null,
                 JsonNamingPolicy.CamelCase);
-            var httpSnakeCase = new Http(Auth, http, null,
+            var httpSnakeCase = new Http(Auth, _httpClient, null,
                 SnakeCaseNamingPolicy.Instance);
             Numbers = new Numbers.Numbers(projectId, numbersBaseAddress, null, httpCamelCase);
             Sms = new Sms(projectId, smsBaseAddress, null, httpSnakeCase);
+            _verificationBaseAddress = verificationBaseAddress;
         }
-        
+
         /// <summary>
         ///     Only two regions are available for single-account model. it's eu, us.
         ///     So, we should map other regions provided in docs to nearest server.
@@ -210,16 +214,17 @@ namespace Sinch
             {
                 throw new ArgumentNullException(nameof(appKey), "The value should be present");
             }
+
             if (string.IsNullOrEmpty(appSecret))
             {
                 throw new ArgumentNullException(nameof(appSecret), "The value should be present");
             }
-            
+
             var basicAuth = new BasicAuth(appKey, appSecret);
             // TODO: implement application signed authentication, create IHttp just before the request with SignedRequestAuth
             var http = new Http(basicAuth, _httpClient, _loggerFactory?.Create<Http>(), JsonNamingPolicy.CamelCase);
-            return new SinchVerificationClient(appKey, appSecret, 
-                new Uri("https://verification.api.sinch.com/"), 
+            return new SinchVerificationClient(appKey, appSecret,
+                _verificationBaseAddress ?? new Uri("https://verification.api.sinch.com/"),
                 _loggerFactory, http);
         }
     }
