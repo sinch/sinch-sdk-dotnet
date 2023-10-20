@@ -72,16 +72,6 @@ namespace Sinch.Verification.Start.Request
 
     public class Identity
     {
-        public Identity()
-        {
-        }
-
-        public Identity(string endpoint, IdentityType type)
-        {
-            Endpoint = endpoint;
-            Type = type;
-        }
-
         /// <summary>
         ///     Currently only number type is supported.
         /// </summary>
