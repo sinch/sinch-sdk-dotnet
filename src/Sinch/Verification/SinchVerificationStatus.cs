@@ -76,7 +76,7 @@ namespace Sinch.Verification
         public Task<IVerificationReportResponse> GetByReference(string reference,
             CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"verification/v1/verifications/{reference}");
+            var uri = new Uri(_baseAddress, $"verification/v1/reference/{reference}");
             _logger?.LogDebug("Getting status of the verification by {reference}", reference);
             return _http.Send<IVerificationReportResponse>(uri, HttpMethod.Get,
                 cancellationToken);
