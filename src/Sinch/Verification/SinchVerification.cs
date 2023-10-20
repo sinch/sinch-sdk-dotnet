@@ -98,8 +98,8 @@ namespace Sinch.Verification
                     _http.Send<FlashCallVerificationReportRequest, IVerificationReportResponse>(uri, HttpMethod.Put,
                         flashCallVerificationReportRequest,
                         cancellationToken),
-                SmsVerificationRequest smsVerificationRequest => _http
-                    .Send<SmsVerificationRequest, IVerificationReportResponse>(
+                SmsVerificationReportRequest smsVerificationRequest => _http
+                    .Send<SmsVerificationReportRequest, IVerificationReportResponse>(
                         uri, HttpMethod.Put,
                         smsVerificationRequest,
                         cancellationToken),

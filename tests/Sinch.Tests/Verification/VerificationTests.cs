@@ -49,25 +49,26 @@ namespace Sinch.Tests.Verification
             };
             var smsResponse = JsonSerializer.Deserialize<IVerificationStartResponse>(jData, _jsonSerializerOptions);
 
-            smsResponse.Should().BeOfType<SmsVerificationStartResponse>().Which.Should().BeEquivalentTo(new SmsVerificationStartResponse()
-            {
-                Id = "1234567890",
-                Method = VerificationMethod.Sms,
-                Sms = new SmsInfo()
+            smsResponse.Should().BeOfType<SmsVerificationStartResponse>().Which.Should().BeEquivalentTo(
+                new SmsVerificationStartResponse()
                 {
-                    Template = "Your verification code is {{CODE}}",
-                    InterceptionTimeout = 32
-                },
-                Links = new List<Links>()
-                {
-                    new()
+                    Id = "1234567890",
+                    Method = VerificationMethod.Sms,
+                    Sms = new SmsInfo()
                     {
-                        Rel = "status",
-                        Href = "string",
-                        Method = "GET"
+                        Template = "Your verification code is {{CODE}}",
+                        InterceptionTimeout = 32
+                    },
+                    Links = new List<Links>()
+                    {
+                        new()
+                        {
+                            Rel = "status",
+                            Href = "string",
+                            Method = "GET"
+                        }
                     }
-                }
-            });
+                });
         }
 
         [Fact]
@@ -83,20 +84,22 @@ namespace Sinch.Tests.Verification
                     method = "callout"
                 }));
 
-            var response = await VerificationClient.Verification.ReportIdentity(endpoint, new PhoneCallVerificationReportRequest
-            {
-                Callout = new Callout
+            var response = await VerificationClient.Verification.ReportIdentity(endpoint,
+                new PhoneCallVerificationReportRequest
                 {
-                    Code = "1"
-                }
-            });
+                    Callout = new Callout
+                    {
+                        Code = "1"
+                    }
+                });
 
-            response.Should().BeOfType<PhoneVerificationReportResponse>().Which.Should().BeEquivalentTo(new PhoneVerificationReportResponse
-            {
-                Id = "10",
-                CallComplete = true,
-                Method = "callout"
-            });
+            response.Should().BeOfType<PhoneCallVerificationReportResponse>().Which.Should().BeEquivalentTo(
+                new PhoneCallVerificationReportResponse
+                {
+                    Id = "10",
+                    CallComplete = true,
+                    Method = VerificationMethod.Callout
+                });
         }
     }
 }
