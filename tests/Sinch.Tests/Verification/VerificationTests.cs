@@ -9,6 +9,8 @@ using RichardSzalay.MockHttp;
 using Sinch.Verification.Start;
 using Sinch.Verification.Report;
 using Sinch.Verification.Report.Response;
+using Sinch.Verification.Start.Request;
+using Sinch.Verification.Start.Response;
 using Xunit;
 
 namespace Sinch.Tests.Verification
@@ -47,10 +49,10 @@ namespace Sinch.Tests.Verification
             };
             var smsResponse = JsonSerializer.Deserialize<IVerificationStartResponse>(jData, _jsonSerializerOptions);
 
-            smsResponse.Should().BeOfType<SmsResponse>().Which.Should().BeEquivalentTo(new SmsResponse()
+            smsResponse.Should().BeOfType<SmsVerificationStartResponse>().Which.Should().BeEquivalentTo(new SmsVerificationStartResponse()
             {
                 Id = "1234567890",
-                Method = "sms",
+                Method = VerificationMethod.Sms,
                 Sms = new SmsInfo()
                 {
                     Template = "Your verification code is {{CODE}}",

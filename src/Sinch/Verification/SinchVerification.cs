@@ -8,6 +8,7 @@ using Sinch.Verification.Report;
 using Sinch.Verification.Report.Response;
 using Sinch.Verification.Start;
 using Sinch.Verification.Start.Request;
+using Sinch.Verification.Start.Response;
 
 namespace Sinch.Verification
 {
