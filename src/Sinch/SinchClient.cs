@@ -91,10 +91,23 @@ namespace Sinch
 
     public class SinchClient : ISinch
     {
+        private const string VerificationApiUrl = "https://verification.api.sinch.com/";
+        private const string NumbersApiUrl = "https://numbers.api.sinch.com/";
+        private const string SmsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
+        private const string ConversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
+
         private readonly LoggerFactory _loggerFactory;
         private readonly HttpClient _httpClient;
         private readonly Uri _verificationBaseAddress = null;
 
+        /// <summary>
+        ///     Initialize a new <see cref="SinchClient"/>
+        /// </summary>
+        /// <param name="keyId">Your Sinch Account key id.</param>
+        /// <param name="keySecret">Your Sinch Account key secret.</param>
+        /// <param name="projectId">Your project id.</param>
+        /// <param name="options">Optional. See: <see cref="SinchOptions"/></param>
+        /// <exception cref="ArgumentNullException"></exception>
         public SinchClient(string keyId, string keySecret, string projectId,
             Action<SinchOptions> options = default)
         {
@@ -124,34 +137,36 @@ namespace Sinch
             logger?.LogInformation("Initializing SinchClient...");
 
             IAuth auth =
-                new Auth.OAuth(keyId, keySecret, optionsObj.HttpClient, _loggerFactory?.Create<Auth.OAuth>());
+                new OAuth(keyId, keySecret, optionsObj.HttpClient, _loggerFactory?.Create<OAuth>());
             var httpCamelCase = new Http(auth, optionsObj.HttpClient, _loggerFactory?.Create<Http>(),
                 JsonNamingPolicy.CamelCase);
             var httpSnakeCase = new Http(auth, optionsObj.HttpClient, _loggerFactory?.Create<Http>(),
                 SnakeCaseNamingPolicy.Instance);
 
-            Numbers = new Numbers.Numbers(projectId, new Uri("https://numbers.api.sinch.com/"),
+            Numbers = new Numbers.Numbers(projectId, new Uri(NumbersApiUrl),
                 _loggerFactory, httpCamelCase);
-
-            // only three regions are available for single-account model. it's eu and us. 
-            // So, we should map other regions provided in docs to nearest server.
-            // See: https://developers.sinch.com/docs/sms/api-reference/#base-url
-            var smsRegion = GetSmsRegion(optionsObj.SmsRegion);
-            // General SMS rest api uses service_plan_id to performs calls
-            // But SDK is based on single-account model which uses project_id
-            // Thus, baseAddress for sms api is using a special endpoint where service_plan_id is replaced with projectId
-            // for each provided endpoint
-            Sms = new Sms(projectId, new Uri($"https://zt.{smsRegion}.sms.api.sinch.com"), _loggerFactory,
+            Sms = new Sms(projectId, GetSmsBaseAddress(optionsObj.SmsRegion), _loggerFactory,
                 httpSnakeCase);
-
             Conversation = new Conversation.Conversation(projectId,
-                new Uri(
-                    $"https://{optionsObj.ConversationRegion.Value}.conversation.api.sinch.com/"),
+                new Uri(string.Format(ConversationApiUrlTemplate, optionsObj.ConversationRegion.Value)),
                 _loggerFactory, httpSnakeCase);
 
             Auth = auth;
 
             logger?.LogInformation("SinchClient initialized.");
+        }
+
+        private static Uri GetSmsBaseAddress(SmsRegion smsRegion)
+        {
+            // only three regions are available for single-account model. it's eu and us. 
+            // So, we should map other regions provided in docs to nearest server.
+            // See: https://developers.sinch.com/docs/sms/api-reference/#base-url
+            var smsRegionStr = GetSmsRegion(smsRegion);
+            // General SMS rest api uses service_plan_id to performs calls
+            // But SDK is based on single-account model which uses project_id
+            // Thus, baseAddress for sms api is using a special endpoint where service_plan_id is replaced with projectId
+            // for each provided endpoint
+            return new Uri(string.Format(SmsApiUrlTemplate, smsRegionStr));
         }
 
         /// <summary>
@@ -166,7 +181,7 @@ namespace Sinch
             Uri verificationBaseAddress)
         {
             _httpClient = new HttpClient();
-            Auth = new Auth.OAuth(authUri, _httpClient);
+            Auth = new OAuth(authUri, _httpClient);
             var httpCamelCase = new Http(Auth, _httpClient, null,
                 JsonNamingPolicy.CamelCase);
             var httpSnakeCase = new Http(Auth, _httpClient, null,
@@ -224,7 +239,7 @@ namespace Sinch
             // TODO: implement application signed authentication, create IHttp just before the request with SignedRequestAuth
             var http = new Http(basicAuth, _httpClient, _loggerFactory?.Create<Http>(), JsonNamingPolicy.CamelCase);
             return new SinchVerificationClient(appKey, appSecret,
-                _verificationBaseAddress ?? new Uri("https://verification.api.sinch.com/"),
+                _verificationBaseAddress ?? new Uri(VerificationApiUrl),
                 _loggerFactory, http);
         }
     }
