@@ -6,6 +6,7 @@ env:
   MOCK_SMS_PORT: 6041
   MOCK_NUMBERS_PORT: 6040
   MOCK_CONVERSATION_PORT: 6042
+  MOCK_VERIFICATION_PORT: 6043
 
 jobs:
   build:
@@ -27,6 +28,7 @@ jobs:
           - 6039:6039
           - 6040:6040
           - 6041:6041
+          - 6043:6043
     
     steps:
       - uses: actions/checkout@v3
