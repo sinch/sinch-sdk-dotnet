@@ -11,7 +11,7 @@ namespace Sinch.Auth
         private readonly string _appKey;
         private byte[] _jsonBodyInBytes;
         private string _httpVerb;
-        private string _requestContentType = "application/json; charset=UTF-8";
+        private string _requestContentType;
         private string _requestPath;
         private string _timestamp;
 

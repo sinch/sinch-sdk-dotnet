@@ -6,7 +6,7 @@ namespace Sinch.Tests.e2e.Verification
     {
         protected readonly ISinchVerificationClient VerificationClient;
 
-        public VerificationTestBase()
+        protected VerificationTestBase()
         {
             VerificationClient = SinchClientMockServer.Verification("app_key", "app_secret", AuthStrategy.Basic);
         }
