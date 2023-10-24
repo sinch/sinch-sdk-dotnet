@@ -6,7 +6,6 @@ using Sinch.Core;
 using Sinch.Logger;
 using Sinch.Verification.Report;
 using Sinch.Verification.Report.Response;
-using Sinch.Verification.Start;
 using Sinch.Verification.Start.Request;
 using Sinch.Verification.Start.Response;
 
@@ -68,7 +67,7 @@ namespace Sinch.Verification
             var uri = new Uri(_baseAddress, $"verification/v1/verifications");
             _logger?.LogDebug("Starting verification...");
             return _http.Send<VerificationStartRequest, IVerificationStartResponse>(uri, HttpMethod.Post, request,
-                cancellationToken);
+                cancellationToken: cancellationToken);
         }
 
         public Task<IVerificationReportResponse> ReportIdentity(string endpoint, IVerifyReportRequest request,
@@ -97,16 +96,16 @@ namespace Sinch.Verification
                 FlashCallVerificationReportRequest flashCallVerificationReportRequest =>
                     _http.Send<FlashCallVerificationReportRequest, IVerificationReportResponse>(uri, HttpMethod.Put,
                         flashCallVerificationReportRequest,
-                        cancellationToken),
+                        cancellationToken: cancellationToken),
                 SmsVerificationReportRequest smsVerificationRequest => _http
                     .Send<SmsVerificationReportRequest, IVerificationReportResponse>(
                         uri, HttpMethod.Put,
                         smsVerificationRequest,
-                        cancellationToken),
+                        cancellationToken: cancellationToken),
                 PhoneCallVerificationReportRequest phoneRequest => _http
                     .Send<PhoneCallVerificationReportRequest, IVerificationReportResponse>(uri, HttpMethod.Put,
                         phoneRequest,
-                        cancellationToken),
+                        cancellationToken: cancellationToken),
                 _ => throw new ArgumentOutOfRangeException(nameof(request))
             };
         }

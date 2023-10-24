@@ -62,7 +62,24 @@ namespace Sinch.Verification.Report.Response
         public override void Write(Utf8JsonWriter writer, IVerificationReportResponse value,
             JsonSerializerOptions options)
         {
-            JsonSerializer.Serialize(writer, value, options);
+            switch (value)
+            {
+                case FlashCallVerificationReportResponse flashCallVerificationReportResponse:
+                    JsonSerializer.Serialize(
+                        writer, flashCallVerificationReportResponse, options);
+                    break;
+                case PhoneCallVerificationReportResponse phoneCallVerificationReportResponse:
+                    JsonSerializer.Serialize(
+                        writer, phoneCallVerificationReportResponse, options);
+                    break;
+                case SmsVerificationReportResponse smsVerificationReportResponse:
+                    JsonSerializer.Serialize(
+                        writer, smsVerificationReportResponse, options);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value),
+                        $"Cannot find a proper specific type for {nameof(IVerificationReportResponse)}");
+            }
         }
     }
 }
