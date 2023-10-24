@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Verification.Start
+namespace Sinch.Verification.Start.Response
 {
-    public abstract class VerificationResponseBase
+    public abstract class VerificationStartResponseBase
     {
         /// <summary>
         ///     Verification identifier used to query for status.
@@ -16,7 +16,7 @@ namespace Sinch.Verification.Start
         /// <summary>
         ///     The value of the method used for the Verification.
         /// </summary>
-        public string Method { get; set; }
+        public Request.VerificationMethod Method { get; set; }
 
         /// <summary>
         ///     Available methods and actions which can be done after a successful Verification
@@ -42,10 +42,14 @@ namespace Sinch.Verification.Start
             var descriptor = elem.EnumerateObject().FirstOrDefault(x => x.Name == "method");
             return descriptor.Value.GetString() switch
             {
-                VerificationTypeInternal.Sms => (SmsResponse)elem.Deserialize(typeof(SmsResponse), options),
-                VerificationTypeInternal.PhoneCall => (PhoneCallResponse)elem.Deserialize(typeof(PhoneCallResponse), options),
-                VerificationTypeInternal.FlashCall => (FlashCallResponse)elem.Deserialize(typeof(FlashCallResponse), options),
-                VerificationTypeInternal.Seamless => (DataResponse)elem.Deserialize(typeof(DataResponse), options),
+                VerificationTypeInternal.Sms => (SmsVerificationStartResponse)elem.Deserialize(
+                    typeof(SmsVerificationStartResponse), options),
+                VerificationTypeInternal.PhoneCall => (PhoneCallVerificationStartResponse)elem.Deserialize(
+                    typeof(PhoneCallVerificationStartResponse), options),
+                VerificationTypeInternal.FlashCall => (FlashCallVerificationStartResponse)elem.Deserialize(
+                    typeof(FlashCallVerificationStartResponse), options),
+                VerificationTypeInternal.Seamless => (DataVerificationStartResponse)elem.Deserialize(
+                    typeof(DataVerificationStartResponse), options),
                 _ => throw new JsonException($"Failed to match verification method object, got {descriptor.Name}")
             };
         }

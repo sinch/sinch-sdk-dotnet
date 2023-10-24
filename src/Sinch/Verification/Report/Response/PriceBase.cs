@@ -15,7 +15,7 @@
         /// <summary>
         ///     ISO 4217 currency code
         /// </summary>
-        public string Currency { get; set; }
+        public string CurrencyId { get; set; }
 
         public double Amount { get; set; }
     }

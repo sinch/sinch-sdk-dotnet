@@ -71,7 +71,7 @@ namespace Sinch.Verification.Start.Request
     }
 
     public class Identity
-    {   
+    {
         /// <summary>
         ///     Currently only number type is supported.
         /// </summary>

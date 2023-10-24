@@ -15,7 +15,7 @@ namespace Sinch.Verification.Report.Response
         /// <summary>
         ///     The method of the verification request.
         /// </summary>
-        public string Method { get; set; }
+        public Start.Request.VerificationMethod Method { get; set; }
 
         /// <summary>
         ///     The status of the verification request.
@@ -50,8 +50,8 @@ namespace Sinch.Verification.Report.Response
                 VerificationTypeInternal.Sms => (SmsVerificationReportResponse)elem.Deserialize(
                     typeof(SmsVerificationReportResponse),
                     options),
-                VerificationTypeInternal.PhoneCall => (PhoneVerificationReportResponse)elem.Deserialize(
-                    typeof(PhoneVerificationReportResponse),
+                VerificationTypeInternal.PhoneCall => (PhoneCallVerificationReportResponse)elem.Deserialize(
+                    typeof(PhoneCallVerificationReportResponse),
                     options),
                 VerificationTypeInternal.FlashCall => (FlashCallVerificationReportResponse)elem.Deserialize(
                     typeof(FlashCallVerificationReportResponse), options),
