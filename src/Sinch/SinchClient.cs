@@ -86,7 +86,8 @@ namespace Sinch
         /// <param name="appKey"></param>
         /// <param name="appSecret"></param>
         /// <returns></returns>
-        public ISinchVerificationClient Verification(string appKey, string appSecret);
+        public ISinchVerificationClient Verification(string appKey, string appSecret,
+            AuthStrategy authStrategy = AuthStrategy.ApplicationSign);
     }
 
     public class SinchClient : ISinch
@@ -223,7 +224,8 @@ namespace Sinch
         public IAuth Auth { get; }
 
         /// <inheritdoc/>
-        public ISinchVerificationClient Verification(string appKey, string appSecret)
+        public ISinchVerificationClient Verification(string appKey, string appSecret,
+            AuthStrategy authStrategy)
         {
             if (string.IsNullOrEmpty(appKey))
             {
@@ -235,11 +237,19 @@ namespace Sinch
                 throw new ArgumentNullException(nameof(appSecret), "The value should be present");
             }
 
-            var basicAuth = new BasicAuth(appKey, appSecret);
+            IAuth auth;
+            if (authStrategy == AuthStrategy.ApplicationSign)
+            {
+                auth = new ApplicationSignedAuth(appKey, appSecret);
+            }
+            else
+            {
+                auth = new BasicAuth(appKey, appSecret);
+            }
+
             // TODO: implement application signed authentication, create IHttp just before the request with SignedRequestAuth
-            var http = new Http(basicAuth, _httpClient, _loggerFactory?.Create<Http>(), JsonNamingPolicy.CamelCase);
-            return new SinchVerificationClient(appKey, appSecret,
-                _verificationBaseAddress ?? new Uri(VerificationApiUrl),
+            var http = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(), JsonNamingPolicy.CamelCase);
+            return new SinchVerificationClient(_verificationBaseAddress ?? new Uri(VerificationApiUrl),
                 _loggerFactory, http);
         }
     }

@@ -60,7 +60,7 @@ namespace Sinch.Verification
             var uri = new Uri(_baseAddress, $"verification/v1/verifications/id/{id}");
             _logger?.LogDebug("Getting status of the verification by {id}", id);
             return _http.Send<IVerificationReportResponse>(uri, HttpMethod.Get,
-                cancellationToken);
+                cancellationToken: cancellationToken);
         }
 
         public Task<IVerificationReportResponse> GetByIdentity(string endpoint, VerificationMethod method,
@@ -70,7 +70,7 @@ namespace Sinch.Verification
             _logger?.LogDebug("Getting status of the verification by identity {endpoint} and {method}", endpoint,
                 method);
             return _http.Send<IVerificationReportResponse>(uri, HttpMethod.Get,
-                cancellationToken);
+                cancellationToken: cancellationToken);
         }
 
         public Task<IVerificationReportResponse> GetByReference(string reference,
@@ -79,7 +79,7 @@ namespace Sinch.Verification
             var uri = new Uri(_baseAddress, $"verification/v1/verifications/reference/{reference}");
             _logger?.LogDebug("Getting status of the verification by {reference}", reference);
             return _http.Send<IVerificationReportResponse>(uri, HttpMethod.Get,
-                cancellationToken);
+                cancellationToken: cancellationToken);
         }
     }
 }

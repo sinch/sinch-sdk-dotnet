@@ -17,7 +17,7 @@ namespace Sinch.Tests
 {
     public class AuthTests
     {
-        private readonly ILoggerAdapter<Auth.OAuth> _logger = Substitute.For<ILoggerAdapter<Auth.OAuth>>();
+        private readonly ILoggerAdapter<OAuth> _logger = Substitute.For<ILoggerAdapter<OAuth>>();
         private readonly MockHttpMessageHandler _messageHandlerMock = new();
         private readonly MockedRequest _mockedRequest;
         private readonly IAuth _auth;
@@ -27,7 +27,7 @@ namespace Sinch.Tests
             var httpClient = new HttpClient(_messageHandlerMock);
             const string mockKeyId = "mock_key_id";
             const string mockKeySecret = "mock_key_secret";
-            _auth = new Auth.OAuth(mockKeyId, mockKeySecret, httpClient, _logger);
+            _auth = new OAuth(mockKeyId, mockKeySecret, httpClient, _logger);
             var basicAuthHeaderValue = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{mockKeyId}:{mockKeySecret}"));
             _mockedRequest = _messageHandlerMock.When(HttpMethod.Post, "https://auth.sinch.com/oauth2/token")
                 .WithFormData(new[]
@@ -141,6 +141,34 @@ namespace Sinch.Tests
                 && x.ErrorDescription == "super_long_description"
                 && x.ErrorHint == "how_to_fix"
             );
+        }
+
+        [Fact]
+        public void GenerateCorrectApplicationSignature()
+        {
+            var auth = new ApplicationSignedAuth("669E367E-6BBA-48AB-AF15-266871C28135", "BeIukql3pTKJ8RGL5zo0DA==");
+
+            var json = "{\"identity\": {\"type\": \"number\", \"endpoint\": \"+46700000000\"}, \"method\": \"sms\"}";
+
+            var result = auth.GetSignedAuth(Encoding.UTF8.GetBytes(json), "POST", "/verification/v1/verifications",
+                "x-timestamp:2014-06-04T13:41:58Z",
+                "application/json");
+
+            result.Should()
+                .BeEquivalentTo("669E367E-6BBA-48AB-AF15-266871C28135:h6rXrFayOoggyHW4ymnLlfSDkZZPg6j98lHzvOXVjvw=");
+        }
+
+        [Fact]
+        public void AppSignatureWithEmptyBody()
+        {
+            var auth = new ApplicationSignedAuth("669E367E-6BBA-48AB-AF15-266871C28135", "BeIukql3pTKJ8RGL5zo0DA==");
+
+            var result = auth.GetSignedAuth(null, "POST", "/verification/v1/verifications",
+                "x-timestamp:2014-06-04T13:41:58Z",
+                "application/json");
+
+            result.Should()
+                .BeEquivalentTo("669E367E-6BBA-48AB-AF15-266871C28135:srx3SkKXw/ryFJLfwFFzZTigPxR/1+9Ae+eB3olDIjM=");
         }
     }
 }

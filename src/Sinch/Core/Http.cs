@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -76,8 +77,6 @@ namespace Sinch.Core
             var retry = true;
             while (true)
             {
-                // try force get new token if retrying
-                var token = await _auth.GetAuthValue(!retry);
                 _logger?.LogDebug("Sending request to {uri}", uri);
                 HttpContent httpContent =
                     request == null ? null : JsonContent.Create(request, options: _jsonSerializerOptions);
@@ -92,8 +91,30 @@ namespace Sinch.Core
                     RequestUri = uri,
                     Method = httpMethod,
                     Content = httpContent,
-                    Headers = { Authorization = new AuthenticationHeaderValue(_auth.Scheme, token) }
                 };
+
+                string token;
+                // Due to all the additional params appSignAuth is requiring,
+                // it's makes sense to still keep it in Http to manage all the details.
+                if (_auth is ApplicationSignedAuth appSignAuth)
+                {
+                    var now = DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture);
+                    const string headerName = "x-timestamp";
+                    msg.Headers.Add(headerName, now);
+                    token = appSignAuth.GetSignedAuth(
+                        msg.Content?.ReadAsByteArrayAsync(cancellationToken).GetAwaiter().GetResult(),
+                        msg.Method.ToString().ToUpperInvariant(), msg.RequestUri.PathAndQuery,
+                        $"{headerName}:{now}", msg.Content?.Headers?.ContentType?.ToString());
+                    retry = false;
+                }
+                else
+                {
+                    // try force get new token if retrying
+                    token = await _auth.GetAuthValue(!retry);
+                }
+
+                msg.Headers.Authorization = new AuthenticationHeaderValue(_auth.Scheme, token);
+
 
                 var result = await _httpClient.SendAsync(msg, cancellationToken);
 

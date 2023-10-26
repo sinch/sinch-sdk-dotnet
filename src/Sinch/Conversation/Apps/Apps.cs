@@ -99,7 +99,7 @@ namespace Sinch.Conversation.Apps
         {
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/apps");
             _logger?.LogDebug("Creating an app...");
-            return _http.Send<Request, App>(uri, HttpMethod.Post, request, cancellationToken);
+            return _http.Send<Request, App>(uri, HttpMethod.Post, request, cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
@@ -107,7 +107,7 @@ namespace Sinch.Conversation.Apps
         {
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/apps");
             _logger?.LogDebug("Listing apps for a {projectId}", _projectId);
-            var response = await _http.Send<ListResponse>(uri, HttpMethod.Get, cancellationToken);
+            var response = await _http.Send<ListResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
             return response.Apps;
         }
 
@@ -123,7 +123,7 @@ namespace Sinch.Conversation.Apps
 
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/apps/{appId}");
             _logger?.LogDebug("Getting an app for a {projectId} with {appId}", _projectId, appId);
-            return _http.Send<App>(uri, HttpMethod.Get, cancellationToken);
+            return _http.Send<App>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
@@ -138,7 +138,7 @@ namespace Sinch.Conversation.Apps
 
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/apps/{appId}");
             _logger?.LogDebug("Deleting an app for a {projectId} with {appId}", _projectId, appId);
-            return _http.Send<object>(uri, HttpMethod.Delete, cancellationToken);
+            return _http.Send<object>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
@@ -158,7 +158,8 @@ namespace Sinch.Conversation.Apps
 
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/apps/{appId}{query}");
             _logger?.LogDebug("Updating an app for a {projectId} with {appId}", _projectId, appId);
-            return _http.Send<Update.Request, App>(uri, HttpMethod.Patch, request, cancellationToken);
+            return _http.Send<Update.Request, App>(uri, HttpMethod.Patch, request,
+                cancellationToken: cancellationToken);
         }
 
         private class ListResponse

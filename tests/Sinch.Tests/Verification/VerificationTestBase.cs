@@ -9,7 +9,7 @@ namespace Sinch.Tests.Verification
 
         protected VerificationTestBase()
         {
-            VerificationClient = new SinchVerificationClient("app_key", "app_secret",
+            VerificationClient = new SinchVerificationClient(
                 new Uri("https://verification.api.sinch.com/"), null, HttpCamelCase);
         }
     }

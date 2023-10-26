@@ -22,16 +22,9 @@ namespace Sinch.Verification
 
     internal class SinchVerificationClient : ISinchVerificationClient
     {
-        // TODO: utilize with application signed authentication
-        private readonly string _appKey;
-        private readonly string _appSecret;
-
-        internal SinchVerificationClient(string appKey, string appSecret, Uri baseAddress, LoggerFactory loggerFactory,
+        internal SinchVerificationClient(Uri baseAddress, LoggerFactory loggerFactory,
             IHttp http)
         {
-            _appKey = appKey;
-            _appSecret = appSecret;
-
             Verification = new SinchVerification(loggerFactory?.Create<SinchVerification>(), baseAddress, http);
             VerificationStatus =
                 new SinchVerificationStatus(loggerFactory?.Create<SinchVerificationStatus>(), baseAddress, http);
