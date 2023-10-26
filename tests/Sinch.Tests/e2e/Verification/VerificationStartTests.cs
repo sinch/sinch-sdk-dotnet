@@ -35,7 +35,7 @@ namespace Sinch.Tests.e2e.Verification
             {
                 Custom = "456",
                 Reference = "123",
-                Method = VerificationMethodEx.Seamless,
+                Method = VerificationMethodEx.Sms,
                 Identity = new Identity()
                 {
                     Endpoint = "+49000000",

@@ -42,7 +42,7 @@ namespace Sinch.Verification.Start.Response
             var elem = JsonElement.ParseValue(ref reader);
             var descriptor = elem.EnumerateObject().FirstOrDefault(x => x.Name == "method");
             var method = descriptor.Value.GetString();
-            
+
             if (VerificationMethodEx.Seamless.Value == method)
             {
                 return elem.Deserialize<DataVerificationStartResponse>(options);
@@ -60,12 +60,13 @@ namespace Sinch.Verification.Start.Response
                 return elem.Deserialize<FlashCallVerificationStartResponse>(options);
             }
 
-            if (VerificationMethodEx.Sms.Value == method)
+            if (VerificationMethodEx.Callout.Value == method)
             {
                 return elem.Deserialize<PhoneCallVerificationStartResponse>(options);
             }
 
-            throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
+            throw new JsonException(
+                $"Failed to match verification method object, got prop `{descriptor.Name}` with value `{method}`");
         }
 
         public override void Write(Utf8JsonWriter writer, IVerificationStartResponse value,
