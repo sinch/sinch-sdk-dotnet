@@ -28,7 +28,7 @@ namespace Sinch.Verification.Hooks
         /// <summary>
         ///     Gets or sets the verification method. Must be one of the following: "sms", "flashCall", "callout".
         /// </summary>
-        [JsonPropertyName("id")]
+        [JsonPropertyName("method")]
         public VerificationMethod Method { get; set; }
 
         /// <summary>
