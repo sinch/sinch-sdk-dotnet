@@ -1,4 +1,6 @@
-﻿namespace Sinch.Verification.Report.Response
+﻿using Sinch.Verification.Common;
+
+namespace Sinch.Verification.Report.Response
 {
     public class SmsVerificationReportResponse : VerificationReportResponseBase, IVerificationReportResponse
     {
