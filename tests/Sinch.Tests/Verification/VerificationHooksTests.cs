@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
 using FluentAssertions;
+using Newtonsoft.Json.Linq;
 using Sinch.Verification.Common;
 using Sinch.Verification.Hooks;
 using Xunit;
@@ -95,6 +96,36 @@ namespace Sinch.Tests.Verification
                 Source = Source.Intercepted,
                 Status = VerificationStatus.Pending
             });
+        }
+
+        [Fact]
+        public void SerializeHookResponse()
+        {
+            var response = new SmsRequestEventResponse
+            {
+                Action = Action.Allow,
+                Sms = new Sinch.Verification.Hooks.Sms
+                {
+                    Code = "123",
+                    AcceptLanguage = new List<string>()
+                    {
+                        "en-US"
+                    }
+                }
+            };
+
+            var json = JsonSerializer.Serialize(response);
+
+            var expected= JToken.Parse(@"
+                                { 
+                                    ""action"": ""allow"", 
+                                    ""sms"": {
+                                        ""code"": ""123"",
+                                        ""acceptLanguage"": [""en-US""]
+                                     }
+                                }");
+            var actual = JToken.Parse(json);
+            actual.Should().BeEquivalentTo(expected);
         }
     }
 }
