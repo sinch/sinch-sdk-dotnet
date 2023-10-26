@@ -15,6 +15,8 @@ namespace Sinch.Auth
         private string _requestPath;
         private string _timestamp;
 
+        public string Scheme { get; } = "Application";
+
         public ApplicationSignedAuth(string appKey, string appSecret)
         {
             _appSecret = appSecret;
@@ -31,8 +33,6 @@ namespace Sinch.Auth
             _requestContentType = contentType;
             return GetAuthValue().GetAwaiter().GetResult();
         }
-
-        public string Scheme { get; } = "Application";
 
 
         public Task<string> GetAuthValue(bool force = false)

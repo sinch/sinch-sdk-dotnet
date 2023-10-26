@@ -21,6 +21,8 @@ namespace Sinch.Auth
         private volatile string _token;
         private readonly Uri _baseAddress;
 
+        public string Scheme { get; } = "Bearer";
+
         public OAuth(string keyId, string keySecret, HttpClient httpClient, ILoggerAdapter<OAuth> logger)
         {
             _keyId = keyId;
@@ -28,7 +30,6 @@ namespace Sinch.Auth
             _httpClient = httpClient;
             _logger = logger;
             _baseAddress = new Uri("https://auth.sinch.com");
-            Scheme = "Bearer";
         }
 
         internal OAuth(Uri baseAddress, HttpClient httpClient) : this("", "", httpClient, null)
@@ -86,8 +87,6 @@ namespace Sinch.Auth
             _logger?.LogInformation("Retrieved new token which will expire in {expire}", _expiresIn);
             return _token;
         }
-
-        public string Scheme { get; }
 
         private class AuthResponse
         {
