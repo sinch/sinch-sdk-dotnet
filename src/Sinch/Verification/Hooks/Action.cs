@@ -6,7 +6,7 @@ namespace Sinch.Verification.Hooks
     [JsonConverter(typeof(EnumRecordJsonConverter<Action>))]
     public record Action(string Value) : EnumRecord(Value)
     {
-        public static Action Allow = new("allow");
-        public static Action Deny = new("deny");
+        public static readonly Action Allow = new("allow");
+        public static readonly Action Deny = new("deny");
     }
 }
