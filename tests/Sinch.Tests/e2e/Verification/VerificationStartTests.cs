@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Sinch.Verification.Start;
+using Sinch.Verification.Common;
 using Sinch.Verification.Start.Request;
 using Sinch.Verification.Start.Response;
 using Xunit;
@@ -35,7 +35,7 @@ namespace Sinch.Tests.e2e.Verification
             {
                 Custom = "456",
                 Reference = "123",
-                Method = VerificationMethod.Sms,
+                Method = VerificationMethodEx.Sms,
                 Identity = new Identity()
                 {
                     Endpoint = "+49000000",
@@ -47,7 +47,7 @@ namespace Sinch.Tests.e2e.Verification
                 new SmsVerificationStartResponse()
                 {
                     Id = "1234567890",
-                    Method = VerificationMethod.Sms,
+                    Method = VerificationMethodEx.Sms,
                     Sms = new SmsInfo()
                     {
                         Template = "Your verification code is {{CODE}}",
@@ -71,7 +71,7 @@ namespace Sinch.Tests.e2e.Verification
             var response = await VerificationClient.Verification.Start(new VerificationStartRequest()
             {
                 Identity = _identity,
-                Method = VerificationMethod.FlashCall,
+                Method = VerificationMethodEx.FlashCall,
                 FlashCallOptions = new FlashCallOptions()
                 {
                     DialTimeout = 12,
@@ -81,7 +81,7 @@ namespace Sinch.Tests.e2e.Verification
                 new FlashCallVerificationStartResponse()
                 {
                     Id = _id,
-                    Method = VerificationMethod.FlashCall,
+                    Method = VerificationMethodEx.FlashCall,
                     FlashCall = new FlashCallDetails()
                     {
                         InterceptionTimeout = 50,
@@ -99,30 +99,30 @@ namespace Sinch.Tests.e2e.Verification
             var response = await VerificationClient.Verification.Start(new VerificationStartRequest()
             {
                 Identity = _identity,
-                Method = VerificationMethod.Callout,
+                Method = VerificationMethodEx.Callout,
             });
             response.Should().BeOfType<PhoneCallVerificationStartResponse>().Which.Should().BeEquivalentTo(
                 new PhoneCallVerificationStartResponse()
                 {
                     Id = _id,
-                    Method = VerificationMethod.Callout,
+                    Method = VerificationMethodEx.Callout,
                     Links = _links
                 });
         }
-        
+
         [Fact]
         public async Task StartSeamlessVerification()
         {
             var response = await VerificationClient.Verification.Start(new VerificationStartRequest()
             {
                 Identity = _identity,
-                Method = VerificationMethod.Seamless,
+                Method = VerificationMethodEx.Seamless,
             });
             response.Should().BeOfType<DataVerificationStartResponse>().Which.Should().BeEquivalentTo(
                 new DataVerificationStartResponse()
                 {
                     Id = _id,
-                    Method = VerificationMethod.Seamless,
+                    Method = VerificationMethodEx.Seamless,
                     Links = _links,
                     Seamless = new Seamless()
                     {

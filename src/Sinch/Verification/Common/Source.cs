@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Verification.Report.Response
+namespace Sinch.Verification.Common
 {
     /// <summary>
     ///     Free text that the client is sending, used to show if the call/SMS was intercepted or not.

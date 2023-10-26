@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Start.Response
 {
@@ -16,7 +17,7 @@ namespace Sinch.Verification.Start.Response
         /// <summary>
         ///     The value of the method used for the Verification.
         /// </summary>
-        public Request.VerificationMethod Method { get; set; }
+        public VerificationMethodEx Method { get; set; }
 
         /// <summary>
         ///     Available methods and actions which can be done after a successful Verification
@@ -40,18 +41,32 @@ namespace Sinch.Verification.Start.Response
         {
             var elem = JsonElement.ParseValue(ref reader);
             var descriptor = elem.EnumerateObject().FirstOrDefault(x => x.Name == "method");
-            return descriptor.Value.GetString() switch
+            var method = descriptor.Value.GetString();
+
+            if (VerificationMethodEx.Seamless.Value == method)
             {
-                VerificationTypeInternal.Sms => (SmsVerificationStartResponse)elem.Deserialize(
-                    typeof(SmsVerificationStartResponse), options),
-                VerificationTypeInternal.PhoneCall => (PhoneCallVerificationStartResponse)elem.Deserialize(
-                    typeof(PhoneCallVerificationStartResponse), options),
-                VerificationTypeInternal.FlashCall => (FlashCallVerificationStartResponse)elem.Deserialize(
-                    typeof(FlashCallVerificationStartResponse), options),
-                VerificationTypeInternal.Seamless => (DataVerificationStartResponse)elem.Deserialize(
-                    typeof(DataVerificationStartResponse), options),
-                _ => throw new JsonException($"Failed to match verification method object, got {descriptor.Name}")
-            };
+                return elem.Deserialize<DataVerificationStartResponse>(options);
+            }
+
+            if (VerificationMethodEx.Sms.Value == method)
+            {
+                return
+                    elem.Deserialize<SmsVerificationStartResponse>(
+                        options);
+            }
+
+            if (VerificationMethodEx.FlashCall.Value == method)
+            {
+                return elem.Deserialize<FlashCallVerificationStartResponse>(options);
+            }
+
+            if (VerificationMethodEx.Callout.Value == method)
+            {
+                return elem.Deserialize<PhoneCallVerificationStartResponse>(options);
+            }
+
+            throw new JsonException(
+                $"Failed to match verification method object, got prop `{descriptor.Name}` with value `{method}`");
         }
 
         public override void Write(Utf8JsonWriter writer, IVerificationStartResponse value,

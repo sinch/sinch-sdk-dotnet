@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
 using Sinch.Verification.Report;
+using Sinch.Verification.Report.Request;
 using Sinch.Verification.Report.Response;
 using Sinch.Verification.Start.Request;
 using Sinch.Verification.Start.Response;
@@ -33,7 +34,7 @@ namespace Sinch.Verification
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IVerificationReportResponse> ReportIdentity(string endpoint, IVerifyReportRequest request,
+        Task<IVerificationReportResponse> ReportIdentity(string endpoint, VerifyReportRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace Sinch.Verification
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IVerificationReportResponse> ReportId(string id, IVerifyReportRequest request,
+        Task<IVerificationReportResponse> ReportId(string id, VerifyReportRequest request,
             CancellationToken cancellationToken = default);
     }
 
@@ -70,7 +71,7 @@ namespace Sinch.Verification
                 cancellationToken: cancellationToken);
         }
 
-        public Task<IVerificationReportResponse> ReportIdentity(string endpoint, IVerifyReportRequest request,
+        public Task<IVerificationReportResponse> ReportIdentity(string endpoint, VerifyReportRequest request,
             CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"verification/v1/verifications/number/{endpoint}");
@@ -79,7 +80,7 @@ namespace Sinch.Verification
             return Report(request, uri, cancellationToken);
         }
 
-        public Task<IVerificationReportResponse> ReportId(string id, IVerifyReportRequest request,
+        public Task<IVerificationReportResponse> ReportId(string id, VerifyReportRequest request,
             CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Reporting the the code with id...");
@@ -88,7 +89,7 @@ namespace Sinch.Verification
             return Report(request, uri, cancellationToken);
         }
 
-        private Task<IVerificationReportResponse> Report(IVerifyReportRequest request,
+        private Task<IVerificationReportResponse> Report(VerifyReportRequest request,
             Uri uri, CancellationToken cancellationToken)
         {
             return request switch

@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using Sinch.Core;
+﻿using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Start.Request
 {
@@ -14,7 +13,7 @@ namespace Sinch.Verification.Start.Request
         /// <summary>
         ///     The type of the verification request.
         /// </summary>
-        public VerificationMethod Method { get; set; }
+        public VerificationMethodEx Method { get; set; }
         
         /// <summary>
         ///     Used to pass your own reference in the request for tracking purposes.
@@ -42,53 +41,5 @@ namespace Sinch.Verification.Start.Request
         ///    The dial timeout in seconds. 
         /// </summary>
         public int DialTimeout { get; set; }
-    }
-
-    [JsonConverter(typeof(EnumRecordJsonConverter<VerificationMethod>))]
-    public record VerificationMethod(string Value) : EnumRecord(Value)
-    {
-        /// <summary>
-        ///     Verification by SMS message with a PIN code.
-        /// </summary>
-        public static readonly VerificationMethod Sms = new("sms");
-        
-        /// <summary>
-        ///     Verification by placing a flashcall (missed call) and detecting the incoming calling number (CLI).
-        /// </summary>
-        public static readonly VerificationMethod FlashCall = new("flashCall");
-        
-        /// <summary>
-        ///     Verification by placing a PSTN call to the user's phone and playing an announcement,
-        ///     asking the user to press a particular digit to verify the phone number.
-        /// </summary>
-        public static readonly VerificationMethod Callout = new("callout");
-        
-        /// <summary>
-        ///     Data verification. Verification by accessing internal infrastructure of mobile carriers to verify
-        ///     if given verification attempt was originated from device with matching phone number.
-        /// </summary>
-        public static readonly VerificationMethod Seamless = new("seamless");
-    }
-
-    public class Identity
-    {
-        /// <summary>
-        ///     Currently only number type is supported.
-        /// </summary>
-        public IdentityType Type { get; set; }
-        
-        /// <summary>
-        ///     For type number use an E.164-compatible phone number.
-        /// </summary>
-        public string Endpoint { get; set; }
-    }
-    
-    [JsonConverter(typeof(EnumRecordJsonConverter<IdentityType>))]
-    public record IdentityType(string Value) : EnumRecord(Value)
-    {
-        /// <summary>
-        ///     Verification by SMS message with a PIN code.
-        /// </summary>
-        public static readonly IdentityType Number = new("number");
     }
 }

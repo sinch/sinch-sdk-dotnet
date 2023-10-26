@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using FluentAssertions;
+using Sinch.Verification.Common;
 using Sinch.Verification.Report.Response;
-using Sinch.Verification.Start.Request;
 using Xunit;
 
 namespace Sinch.Tests.e2e.Verification
@@ -41,7 +41,7 @@ namespace Sinch.Tests.e2e.Verification
         {
             var response =
                 await VerificationClient.VerificationStatus.GetByIdentity("123",
-                    Sinch.Verification.VerificationMethod.Sms);
+                    Sinch.Verification.Common.VerificationMethod.Sms);
 
             response.Should().BeOfType<SmsVerificationReportResponse>().Which.Should()
                 .BeEquivalentTo(_smsVerificationReportResponse);
@@ -86,7 +86,7 @@ namespace Sinch.Tests.e2e.Verification
         {
             var response =
                 await VerificationClient.VerificationStatus.GetByIdentity("+49342432",
-                    Sinch.Verification.VerificationMethod.Callout);
+                    Sinch.Verification.Common.VerificationMethod.Callout);
 
             response.Should().BeOfType<PhoneCallVerificationReportResponse>().Which.Should().BeEquivalentTo(
                 new PhoneCallVerificationReportResponse()

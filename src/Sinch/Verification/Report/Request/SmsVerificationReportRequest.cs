@@ -1,8 +1,10 @@
-﻿namespace Sinch.Verification.Report
+﻿using Sinch.Verification.Common;
+
+namespace Sinch.Verification.Report.Request
 {
-    public class SmsVerificationReportRequest : IVerifyReportRequest
+    public class SmsVerificationReportRequest : VerifyReportRequest
     {
-        public override string Method { get; } = VerificationTypeInternal.Sms;
+        public override string Method { get; } = VerificationMethod.Sms.Value;
         
         /// <summary>
         ///     A configuration object containing settings specific to SMS verifications.
