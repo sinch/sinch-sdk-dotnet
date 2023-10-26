@@ -1,6 +1,6 @@
-﻿namespace Sinch.Verification.Report
+﻿namespace Sinch.Verification.Report.Request
 {
-    public class FlashCallVerificationReportRequest : IVerifyReportRequest
+    public class FlashCallVerificationReportRequest : VerifyReportRequest
     {
         /// <inheritdoc />
         public override string Method { get; } = VerificationTypeInternal.FlashCall;

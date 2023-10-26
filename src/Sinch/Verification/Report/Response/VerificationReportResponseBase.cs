@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Sinch.Verification.Common;
+using VerificationMethod = Sinch.Verification.Start.Request.VerificationMethod;
 
 namespace Sinch.Verification.Report.Response
 {
@@ -15,7 +17,7 @@ namespace Sinch.Verification.Report.Response
         /// <summary>
         ///     The method of the verification request.
         /// </summary>
-        public Start.Request.VerificationMethod Method { get; set; }
+        public VerificationMethod Method { get; set; }
 
         /// <summary>
         ///     The status of the verification request.

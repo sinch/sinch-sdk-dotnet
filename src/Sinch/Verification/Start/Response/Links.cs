@@ -1,4 +1,4 @@
-﻿namespace Sinch.Verification.Start
+﻿namespace Sinch.Verification.Start.Response
 {
     public class Links
     {

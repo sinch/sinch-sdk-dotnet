@@ -6,7 +6,7 @@
         ///     Shows whether the call is complete or not.
         /// </summary>
         public bool CallComplete { get; set; }
-        
+
         /// <summary>
         ///     Prices associated with this verification
         /// </summary>

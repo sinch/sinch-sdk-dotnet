@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Sinch.Verification.Start.Request;
 
 namespace Sinch.Verification.Start.Response
 {
@@ -16,7 +17,7 @@ namespace Sinch.Verification.Start.Response
         /// <summary>
         ///     The value of the method used for the Verification.
         /// </summary>
-        public Request.VerificationMethod Method { get; set; }
+        public VerificationMethod Method { get; set; }
 
         /// <summary>
         ///     Available methods and actions which can be done after a successful Verification

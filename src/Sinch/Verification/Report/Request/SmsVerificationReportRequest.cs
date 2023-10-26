@@ -1,6 +1,6 @@
-﻿namespace Sinch.Verification.Report
+﻿namespace Sinch.Verification.Report.Request
 {
-    public class SmsVerificationReportRequest : IVerifyReportRequest
+    public class SmsVerificationReportRequest : VerifyReportRequest
     {
         public override string Method { get; } = VerificationTypeInternal.Sms;
         

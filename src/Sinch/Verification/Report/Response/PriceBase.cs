@@ -1,4 +1,6 @@
-﻿namespace Sinch.Verification.Report.Response
+﻿using Sinch.Verification.Common;
+
+namespace Sinch.Verification.Report.Response
 {
     public class PriceBase
     {
@@ -10,20 +12,10 @@
         public PriceDetail VerificationPrice { get; set; }
     }
 
-    public class PriceDetail
-    {
-        /// <summary>
-        ///     ISO 4217 currency code
-        /// </summary>
-        public string CurrencyId { get; set; }
-
-        public double Amount { get; set; }
-    }
-
     public class Price : PriceBase
     {
         public PriceDetail TerminationPrice { get; set; }
-        
+
         /// <summary>
         ///     The time of the call for which the fee was charged. <br/><br/>
         ///     Present only when termination debiting is enabled (disabled by default).<br/><br/>
