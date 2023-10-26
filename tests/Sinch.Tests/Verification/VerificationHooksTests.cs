@@ -116,7 +116,7 @@ namespace Sinch.Tests.Verification
 
             var json = JsonSerializer.Serialize(response);
 
-            var expected= JToken.Parse(@"
+            var expected = JToken.Parse(@"
                                 { 
                                     ""action"": ""allow"", 
                                     ""sms"": {
