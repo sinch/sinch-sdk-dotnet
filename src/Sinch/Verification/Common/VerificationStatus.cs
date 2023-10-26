@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Verification.Report.Response
+namespace Sinch.Verification.Common
 {
     [JsonConverter(typeof(EnumRecordJsonConverter<VerificationStatus>))]
     public record VerificationStatus(string Value) : EnumRecord(Value)

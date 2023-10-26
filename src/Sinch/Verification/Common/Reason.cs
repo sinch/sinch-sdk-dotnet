@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Verification.Report.Response
+namespace Sinch.Verification.Common
 {
     /// <summary>
     ///     Displays the reason why a verification has FAILED, was DENIED, or was ABORTED.

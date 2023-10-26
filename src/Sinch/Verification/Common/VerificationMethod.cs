@@ -1,6 +1,6 @@
 ﻿using Sinch.Core;
 
-namespace Sinch.Verification
+namespace Sinch.Verification.Common
 {
     /// <summary>
     ///     The method of the verification request.
