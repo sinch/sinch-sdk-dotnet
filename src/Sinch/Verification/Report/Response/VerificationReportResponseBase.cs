@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
-using VerificationMethod = Sinch.Verification.Start.Request.VerificationMethod;
 
 namespace Sinch.Verification.Report.Response
 {
@@ -47,18 +46,28 @@ namespace Sinch.Verification.Report.Response
         {
             var elem = JsonElement.ParseValue(ref reader);
             var descriptor = elem.EnumerateObject().FirstOrDefault(x => x.Name == "method");
-            return descriptor.Value.GetString() switch
+            var method = descriptor.Value.GetString();
+            if (method == VerificationMethod.Sms.Value)
             {
-                VerificationTypeInternal.Sms => (SmsVerificationReportResponse)elem.Deserialize(
+                return (SmsVerificationReportResponse)elem.Deserialize(
                     typeof(SmsVerificationReportResponse),
-                    options),
-                VerificationTypeInternal.PhoneCall => (PhoneCallVerificationReportResponse)elem.Deserialize(
+                    options);
+            }
+
+            if (method == VerificationMethod.Callout.Value)
+            {
+                return (PhoneCallVerificationReportResponse)elem.Deserialize(
                     typeof(PhoneCallVerificationReportResponse),
-                    options),
-                VerificationTypeInternal.FlashCall => (FlashCallVerificationReportResponse)elem.Deserialize(
-                    typeof(FlashCallVerificationReportResponse), options),
-                _ => throw new JsonException($"Failed to match verification method object, got {descriptor.Name}")
-            };
+                    options);
+            }
+
+            if (method == VerificationMethod.FlashCall.Value)
+            {
+                return (FlashCallVerificationReportResponse)elem.Deserialize(
+                    typeof(FlashCallVerificationReportResponse), options);
+            }
+
+            throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
         }
 
         public override void Write(Utf8JsonWriter writer, IVerificationReportResponse value,

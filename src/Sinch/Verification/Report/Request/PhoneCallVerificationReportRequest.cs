@@ -1,8 +1,10 @@
-﻿namespace Sinch.Verification.Report.Request
+﻿using Sinch.Verification.Common;
+
+namespace Sinch.Verification.Report.Request
 {
     public class PhoneCallVerificationReportRequest : VerifyReportRequest
     {
-        public override string Method { get; } = VerificationTypeInternal.PhoneCall;
+        public override string Method { get; } = VerificationMethod.Callout.Value;
         
         /// <summary>
         ///     A configuration object containing settings specific to Phone Call verifications.

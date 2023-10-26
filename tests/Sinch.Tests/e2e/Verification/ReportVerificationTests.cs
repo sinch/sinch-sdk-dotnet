@@ -1,12 +1,9 @@
 ﻿using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Verification.Common;
-using Sinch.Verification.Report;
 using Sinch.Verification.Report.Request;
 using Sinch.Verification.Report.Response;
-using Sinch.Verification.Start.Request;
 using Xunit;
-using VerificationMethod = Sinch.Verification.Start.Request.VerificationMethod;
 
 namespace Sinch.Tests.e2e.Verification
 {

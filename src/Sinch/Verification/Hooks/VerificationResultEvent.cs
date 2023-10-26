@@ -14,25 +14,26 @@ namespace Sinch.Verification.Hooks
     public class VerificationResultEvent
     {
         /// <summary>
-        ///     Gets or sets the ID of the verification request.
+        ///     The ID of the verification request.
         /// </summary>
         [JsonPropertyName("id")]
         public string Id { get; set; }
 
         /// <summary>
-        ///     Gets or sets the type of the event.
+        ///     The type of the event.
         /// </summary>
         [JsonPropertyName("event")]
         public string Event { get; set; }
 
         /// <summary>
-        ///     Gets or sets the verification method. Must be one of the following: "sms", "flashCall", "callout".
+        ///     The verification method.
         /// </summary>
         [JsonPropertyName("method")]
-        public VerificationMethod Method { get; set; }
+        public VerificationMethodEx Method { get; set; }
 
         /// <summary>
-        ///     Gets or sets the identity information, specifying the type of endpoint that will be verified.
+        ///     Specifies the type of endpoint that will be verified and the particular endpoint.
+        ///     `number` is currently the only supported endpoint type.
         /// </summary>
         [JsonPropertyName("identity")]
         public Identity Identity { get; set; }

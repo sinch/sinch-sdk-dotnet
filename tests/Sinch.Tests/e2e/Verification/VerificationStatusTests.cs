@@ -3,7 +3,6 @@ using FluentAssertions;
 using Sinch.Verification.Common;
 using Sinch.Verification.Report.Response;
 using Xunit;
-using VerificationMethod = Sinch.Verification.Start.Request.VerificationMethod;
 
 namespace Sinch.Tests.e2e.Verification
 {

@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json.Linq;
 using RichardSzalay.MockHttp;
+using Sinch.Verification.Common;
 using Sinch.Verification.Report.Request;
 using Sinch.Verification.Report.Response;
-using Sinch.Verification.Start;
-using Sinch.Verification.Start.Request;
 using Sinch.Verification.Start.Response;
 using Xunit;
 
@@ -53,7 +52,7 @@ namespace Sinch.Tests.Verification
                 new SmsVerificationStartResponse()
                 {
                     Id = "1234567890",
-                    Method = VerificationMethod.Sms,
+                    Method = VerificationMethodEx.Sms,
                     Sms = new SmsInfo()
                     {
                         Template = "Your verification code is {{CODE}}",
