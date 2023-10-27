@@ -158,8 +158,24 @@ namespace Sinch.Tests.Sms
             HttpMessageHandlerMock.When(HttpMethod.Post,
                     $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/groups/{groupId}")
                 .WithHeaders("Authorization", $"Bearer {Token}")
-                .WithPartialContent("name_g")
-                .WithPartialContent("ann")
+                .WithJson(new
+                {
+                    name = "name_g",
+                    auto_update = new
+                    {
+                        to = ":123",
+                        add = new
+                        {
+                            first_word = "biba",
+                            second_word = "obba"
+                        },
+                        remove = new
+                        {
+                            first_word = "ann",
+                            second_word = "bloom"
+                        }
+                    }
+                })
                 .Respond(HttpStatusCode.OK, JsonContent.Create(_group));
 
             var response = await Sms.Groups.Update(new SMS.Groups.Update.Request

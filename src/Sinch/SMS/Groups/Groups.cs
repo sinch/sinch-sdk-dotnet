@@ -163,7 +163,6 @@ namespace Sinch.SMS.Groups
             if (request.Name == string.Empty)
                 return _http.Send<RequestWithoutName, Group>(uri, HttpMethod.Post, new RequestWithoutName
                 {
-                    GroupId = request.GroupId,
                     Add = request.Add,
                     Remove = request.Remove,
                     AddFromGroup = request.AddFromGroup,
@@ -171,7 +170,7 @@ namespace Sinch.SMS.Groups
                     AutoUpdate = request.AutoUpdate
                 }, cancellationToken)!;
 
-            return _http.Send<Update.Request, Group>(uri, HttpMethod.Post, request, cancellationToken)!;
+            return _http.Send<Update.IGroupUpdateRequest, Group>(uri, HttpMethod.Post, request, cancellationToken)!;
         }
 
         public Task<Group> Replace(Replace.Request request, CancellationToken cancellationToken = default)
