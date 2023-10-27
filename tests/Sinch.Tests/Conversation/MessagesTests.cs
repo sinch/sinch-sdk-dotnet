@@ -181,7 +181,7 @@ namespace Sinch.Tests.Conversation
                 }));
 
             Func<Task> request = () => Conversation.Messages.Delete(messageId, MessageSource.ConversationSource);
-            await request.Should().ThrowAsync<ApiException>().WithMessage("Bad Request")
+            await request.Should().ThrowAsync<ApiException>().WithMessage("Bad Request:Invalid argument")
                 .Where(x => x.DetailedMessage == "Invalid argument");
         }
 
