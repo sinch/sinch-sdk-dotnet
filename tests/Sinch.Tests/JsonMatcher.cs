@@ -9,6 +9,15 @@ namespace Sinch.Tests
     {
         private readonly JToken _json;
 
+        /// <summary>
+        ///     Initialized a JsonMatcher from anonymous object
+        /// </summary>
+        /// <param name="obj"></param>
+        public JsonMatcher(object obj)
+        {
+            _json = JToken.FromObject(obj);
+        }
+
         public JsonMatcher(string expectedJson)
         {
             _json = JToken.Parse(expectedJson);

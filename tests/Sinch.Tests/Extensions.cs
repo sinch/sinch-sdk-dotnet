@@ -16,5 +16,12 @@ namespace Sinch.Tests
 
             return source;
         }
+
+        public static MockedRequest WithJson(this MockedRequest source, object obj)
+        {
+            source.With(new JsonMatcher(obj));
+
+            return source;
+        }
     }
 }
