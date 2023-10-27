@@ -22,7 +22,7 @@ namespace Sinch
         }
 
         internal ApiException(HttpStatusCode statusCode, string message, Exception inner, ApiErrorResponse authApiError)
-            : this(message, inner, statusCode)
+            : this($"{message}:{authApiError?.Error?.Message ?? authApiError?.Text}", inner, statusCode)
         {
             // https://developers.sinch.com/docs/sms/api-reference/status-codes/#4xx---user-errors
             // there can be nested error object or simple { text: "", code: "code" } not nested object with api errors
@@ -30,6 +30,7 @@ namespace Sinch
             var details = authApiError?.Error;
             Status = details?.Status ?? authApiError?.Code;
             DetailedMessage = details?.Message ?? authApiError?.Text;
+
 #if NET6_0_OR_GREATER
             Details = details?.Details ?? new List<JsonNode>();
 #endif
@@ -38,7 +39,7 @@ namespace Sinch
         public string DetailedMessage { get; init; }
 
         public string Status { get; init; }
-        
+
 #if NET6_0_OR_GREATER
         public List<JsonNode> Details { get; init; }
 #endif
