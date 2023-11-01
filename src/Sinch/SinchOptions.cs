@@ -28,7 +28,7 @@ namespace Sinch
         ///     <br /><br />
         ///     Defaults to "us"
         /// </summary>
-        public SmsRegion SmsHostingRegion { get; set; } = SmsRegion.Us;
+        public SmsHostingRegion SmsHostingRegion { get; set; } = SmsHostingRegion.Us;
 
         /// <summary>
         ///     Set's the regions for the Conversation api.

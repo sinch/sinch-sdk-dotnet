@@ -3,16 +3,16 @@
     /// <summary>
     ///     The following regions can be set to be used in SDK as a hosting region.
     /// </summary>
-    public record SmsRegion(string Value)
+    public record SmsHostingRegion(string Value)
     {
         /// <summary>
         ///     USA
         /// </summary>
-        public static readonly SmsRegion Us = new("Us");
+        public static readonly SmsHostingRegion Us = new("Us");
 
         /// <summary>
         ///     Ireland, Sweden
         /// </summary>
-        public static readonly SmsRegion Eu = new("Eu");
+        public static readonly SmsHostingRegion Eu = new("Eu");
     }
 }
