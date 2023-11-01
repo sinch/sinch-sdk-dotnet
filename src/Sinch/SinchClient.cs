@@ -146,7 +146,7 @@ namespace Sinch
 
             Numbers = new Numbers.Numbers(projectId, new Uri(NumbersApiUrl),
                 _loggerFactory, httpCamelCase);
-            Sms = new Sms(projectId, GetSmsBaseAddress(optionsObj.SmsRegion), _loggerFactory,
+            Sms = new Sms(projectId, GetSmsBaseAddress(optionsObj.SmsHostingRegion), _loggerFactory,
                 httpSnakeCase);
             Conversation = new Conversation.Conversation(projectId,
                 new Uri(string.Format(ConversationApiUrlTemplate, optionsObj.ConversationRegion.Value)),
@@ -159,15 +159,11 @@ namespace Sinch
 
         private static Uri GetSmsBaseAddress(SmsRegion smsRegion)
         {
-            // only three regions are available for single-account model. it's eu and us. 
-            // So, we should map other regions provided in docs to nearest server.
-            // See: https://developers.sinch.com/docs/sms/api-reference/#base-url
-            var smsRegionStr = GetSmsRegion(smsRegion);
             // General SMS rest api uses service_plan_id to performs calls
             // But SDK is based on single-account model which uses project_id
             // Thus, baseAddress for sms api is using a special endpoint where service_plan_id is replaced with projectId
             // for each provided endpoint
-            return new Uri(string.Format(SmsApiUrlTemplate, smsRegionStr));
+            return new Uri(string.Format(SmsApiUrlTemplate, smsRegion.Value.ToLowerInvariant()));
         }
 
         /// <summary>
@@ -190,24 +186,6 @@ namespace Sinch
             Numbers = new Numbers.Numbers(projectId, numbersBaseAddress, null, httpCamelCase);
             Sms = new Sms(projectId, smsBaseAddress, null, httpSnakeCase);
             _verificationBaseAddress = verificationBaseAddress;
-        }
-
-        /// <summary>
-        ///     Only two regions are available for single-account model. it's eu, us.
-        ///     So, we should map other regions provided in docs to nearest server.
-        ///     See: https://developers.sinch.com/docs/sms/api-reference/#base-url
-        /// </summary>
-        /// <param name="smsRegion"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        private static string GetSmsRegion(SmsRegion smsRegion)
-        {
-            return smsRegion switch
-            {
-                _ when smsRegion == SmsRegion.Us || smsRegion == SmsRegion.Ca || smsRegion == SmsRegion.Br => "us",
-                _ when smsRegion == SmsRegion.Eu || smsRegion == SmsRegion.Au => "eu",
-                _ => smsRegion.Value
-            };
         }
 
         /// <inheritdoc/>       
