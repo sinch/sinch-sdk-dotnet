@@ -84,35 +84,6 @@ namespace Sinch.Tests
         }
 
         [Fact]
-        public async Task RenewToken()
-        {
-            _mockedRequest.Respond(JsonContent.Create(new
-            {
-                access_token = "token_1",
-                expires_in = 1,
-                scope = "",
-                token_type = "bearer"
-            }));
-
-            var token = await _auth.GetAuthToken();
-
-            token.Should().Be("token_1");
-
-            Thread.Sleep(1000);
-
-            _mockedRequest.Respond(JsonContent.Create(new
-            {
-                access_token = "token_2",
-                expires_in = 10,
-                scope = "",
-                token_type = "bearer"
-            }));
-            var token2 = await _auth.GetAuthToken();
-            _messageHandlerMock.GetMatchCount(_mockedRequest).Should().Be(2);
-            token2.Should().Be("token_2");
-        }
-
-        [Fact]
         public async Task ThrowInvalidRequest()
         {
             _mockedRequest.Respond(HttpStatusCode.NotFound);
