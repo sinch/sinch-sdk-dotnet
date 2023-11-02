@@ -19,11 +19,16 @@ namespace Sinch
         public HttpClient HttpClient { get; set; }
 
         /// <summary>
-        ///     Set's the regions for the SMS api.
-        ///     <see href="https://developers.sinch.com/docs/sms/api-reference/#base-url">SMS base URL</see><br /><br />
+        ///     Set's the hosting region for the SMS service.
+        ///     <br/><br/>
+        ///     The difference between this option and
+        ///     <see href="https://developers.sinch.com/docs/sms/api-reference/#base-url">SMS base URL</see>
+        ///     is that your account is NOT region locked because SDK utilizes `project_id` API set instead of `service_plan_id`,
+        ///     and utilizes region to store the data.
+        ///     <br /><br />
         ///     Defaults to "us"
         /// </summary>
-        public SmsRegion SmsRegion { get; set; } = SmsRegion.Us;
+        public SmsHostingRegion SmsHostingRegion { get; set; } = SmsHostingRegion.Us;
 
         /// <summary>
         ///     Set's the regions for the Conversation api.
