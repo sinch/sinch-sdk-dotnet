@@ -17,11 +17,10 @@ namespace Sinch.Auth
         private readonly string _keyId;
         private readonly string _keySecret;
         private readonly ILoggerAdapter<OAuth> _logger;
-        private DateTime? _expiresIn;
         private volatile string _token;
         private readonly Uri _baseAddress;
 
-        public string Scheme { get; } = "Bearer";
+        public string Scheme { get; } = AuthSchemes.Bearer;
 
         public OAuth(string keyId, string keySecret, HttpClient httpClient, ILoggerAdapter<OAuth> logger)
         {
@@ -37,16 +36,17 @@ namespace Sinch.Auth
             _baseAddress = baseAddress;
         }
 
-        public async Task<string> GetAuthValue(bool force = false)
+        /// <inheritdoc />
+        public async Task<string> GetAuthToken(bool force = false)
         {
             _logger?.LogInformation("Getting token...");
-            if (_token is not null && _expiresIn.HasValue && DateTime.UtcNow < _expiresIn.Value && !force)
+            if (_token is not null && !force)
             {
-                _logger?.LogInformation("Returning cached token which will expire at {expire}", _expiresIn);
+                _logger?.LogInformation("Returning cached token");
                 return _token;
             }
 
-            _logger?.LogInformation("Fetching new token");
+            _logger?.LogInformation("Fetching a new token");
             var @base = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{_keyId}:{_keySecret}"));
             var dict = new Dictionary<string, string>
             {
@@ -79,12 +79,6 @@ namespace Sinch.Auth
 
             _token = response.AccessToken;
 
-            // Add some grace period for token update just in case
-            var expiresIn = response.ExpiresInSeconds;
-            if (expiresIn - 5 > 0) expiresIn -= 5;
-
-            _expiresIn = DateTime.UtcNow.AddSeconds(expiresIn);
-            _logger?.LogInformation("Retrieved new token which will expire in {expire}", _expiresIn);
             return _token;
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -96,6 +97,7 @@ namespace Sinch.Core
                 string token;
                 // Due to all the additional params appSignAuth is requiring,
                 // it's makes sense to still keep it in Http to manage all the details.
+                // TODO: get insight how to refactor this ?!?!?!
                 if (_auth is ApplicationSignedAuth appSignAuth)
                 {
                     var now = DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture);
@@ -110,7 +112,7 @@ namespace Sinch.Core
                 else
                 {
                     // try force get new token if retrying
-                    token = await _auth.GetAuthValue(!retry);
+                    token = await _auth.GetAuthToken(force: !retry);
                 }
 
                 msg.Headers.Authorization = new AuthenticationHeaderValue(_auth.Scheme, token);
@@ -120,8 +122,18 @@ namespace Sinch.Core
 
                 if (result.StatusCode == HttpStatusCode.Unauthorized && retry)
                 {
-                    retry = false;
-                    continue;
+                    // will not retry when no "expired" header for a token.
+                    const string wwwAuthenticateHeader = "www-authenticate";
+                    if (_auth.Scheme == AuthSchemes.Bearer && true == result.Headers?.Contains(wwwAuthenticateHeader) &&
+                        false == result.Headers?.GetValues(wwwAuthenticateHeader)?.Contains("expired"))
+                    {
+                        _logger?.LogDebug("OAuth Unauthorized");
+                    }
+                    else
+                    {
+                        retry = false;
+                        continue;
+                    }
                 }
 
                 await result.EnsureSuccessApiStatusCode();

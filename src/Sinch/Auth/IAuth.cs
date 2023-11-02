@@ -5,11 +5,11 @@ namespace Sinch.Auth
     public interface IAuth
     {
         /// <summary>
-        ///     Fetches a token, which is cached by ITokenManager, from OAuth endpoint.
+        ///     Get an auth token.
         /// </summary>
-        /// <param name="force">Set as true to drop cached token and fetch a fresh one.</param>
-        /// <returns>A string representation of auth</returns>
-        Task<string> GetAuthValue(bool force = false);
+        /// <param name="force">Set to `true` to invalidate cached token, if any.</param>
+        /// <returns>A string representation of an auth token</returns>
+        Task<string> GetAuthToken(bool force = false);
 
         public string Scheme { get; }
     }

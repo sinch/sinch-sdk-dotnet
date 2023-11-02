@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -27,11 +28,11 @@ namespace Sinch.Tests.Core
         public async Task ForceNewToken()
         {
             _tokenManagerMock
-                .GetAuthValue(Arg.Is<bool>(x => !x))
-                .Returns( "first_token");
+                .GetAuthToken(Arg.Is<bool>(x => !x))
+                .Returns("first_token");
             _tokenManagerMock
-                .GetAuthValue(true)
-                .Returns( "second_token");
+                .GetAuthToken(true)
+                .Returns("second_token");
 
             var uri = new Uri("http://sinch.com/items");
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
@@ -53,7 +54,7 @@ namespace Sinch.Tests.Core
         [Fact]
         public async Task ForceNewTokenOnlyOnce()
         {
-            _tokenManagerMock.GetAuthValue(Arg.Any<bool>())
+            _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
                 .Returns("first_token", "second_token", "third_token");
 
             var uri = new Uri("http://sinch.com/items");
@@ -70,6 +71,62 @@ namespace Sinch.Tests.Core
 
             var ex = await response.Should().ThrowAsync<ApiException>();
             ex.Where(x => x.StatusCode == HttpStatusCode.Unauthorized);
+            _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
+        public async Task OauthThrowExceptionIfTokenNotExpired()
+        {
+            _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
+                .Returns("first_token");
+
+            var uri = new Uri("http://sinch.com/items");
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .Respond(HttpStatusCode.Unauthorized, new KeyValuePair<string, string>[]
+                {
+                    new("www-authenticate", "no")
+                }, (HttpContent)null);
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+
+            Func<Task<object>> response = () => http.Send<object>(uri, HttpMethod.Get);
+
+            var ex = await response.Should().ThrowAsync<ApiException>();
+            ex.Which.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
+        public async Task NewTokenFetchedIfWwwExpiredIsPresent()
+        {
+            _tokenManagerMock
+                .GetAuthToken(Arg.Is<bool>(x => !x))
+                .Returns("first_token");
+            _tokenManagerMock
+                .GetAuthToken(true)
+                .Returns("second_token");
+
+            var uri = new Uri("http://sinch.com/items");
+            
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .Respond(HttpStatusCode.Unauthorized, new KeyValuePair<string, string>[]
+                {
+                    new("www-authenticate", "expired")
+                }, (HttpContent)null);
+            
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer second_token")
+                .Respond(HttpStatusCode.OK);
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+
+            Func<Task<object>> response = () => http.Send<object>(uri, HttpMethod.Get);
+
+            await response.Should().NotThrowAsync();
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
     }

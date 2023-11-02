@@ -48,7 +48,7 @@ namespace Sinch.Tests
                 token_type = "bearer"
             }));
 
-            var token = await _auth.GetAuthValue();
+            var token = await _auth.GetAuthToken();
 
             _messageHandlerMock.GetMatchCount(_mockedRequest).Should().Be(1);
             token.Should().Be("token_1");
@@ -65,7 +65,7 @@ namespace Sinch.Tests
                 token_type = "bearer"
             }));
 
-            var token = await _auth.GetAuthValue();
+            var token = await _auth.GetAuthToken();
 
             _messageHandlerMock.GetMatchCount(_mockedRequest).Should().Be(1);
             token.Should().Be("token_1");
@@ -78,7 +78,7 @@ namespace Sinch.Tests
                 token_type = "bearer"
             }));
 
-            var token2 = await _auth.GetAuthValue();
+            var token2 = await _auth.GetAuthToken();
             _messageHandlerMock.GetMatchCount(_mockedRequest).Should().Be(1);
             token2.Should().Be("token_1");
         }
@@ -94,7 +94,7 @@ namespace Sinch.Tests
                 token_type = "bearer"
             }));
 
-            var token = await _auth.GetAuthValue();
+            var token = await _auth.GetAuthToken();
 
             token.Should().Be("token_1");
 
@@ -107,7 +107,7 @@ namespace Sinch.Tests
                 scope = "",
                 token_type = "bearer"
             }));
-            var token2 = await _auth.GetAuthValue();
+            var token2 = await _auth.GetAuthToken();
             _messageHandlerMock.GetMatchCount(_mockedRequest).Should().Be(2);
             token2.Should().Be("token_2");
         }
@@ -117,7 +117,7 @@ namespace Sinch.Tests
         {
             _mockedRequest.Respond(HttpStatusCode.NotFound);
 
-            Func<Task<string>> act = () => _auth.GetAuthValue();
+            Func<Task<string>> act = () => _auth.GetAuthToken();
 
             await act.Should().ThrowAsync<AuthException>();
         }
@@ -133,7 +133,7 @@ namespace Sinch.Tests
                 error_hint = "how_to_fix"
             }));
 
-            Func<Task<string>> act = () => _auth.GetAuthValue();
+            Func<Task<string>> act = () => _auth.GetAuthToken();
 
             await act.Should().ThrowAsync<AuthException>().Where(x =>
                 x.Error == "invalid_request"

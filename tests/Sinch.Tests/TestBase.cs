@@ -19,7 +19,7 @@ namespace Sinch.Tests
         protected TestBase()
         {
             var httpClient = new HttpClient(HttpMessageHandlerMock);
-            _tokenManager.GetAuthValue().Returns( Token);
+            _tokenManager.GetAuthToken().Returns( Token);
             _tokenManager.Scheme.Returns("Bearer");
             HttpCamelCase = new Http(_tokenManager, httpClient, null, JsonNamingPolicy.CamelCase);
             HttpSnakeCase = new Http(_tokenManager, httpClient, null, SnakeCaseNamingPolicy.Instance);
