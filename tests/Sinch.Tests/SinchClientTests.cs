@@ -27,21 +27,21 @@ namespace Sinch.Tests
         [Fact]
         public void ThrowNullKeyId()
         {
-            Func<ISinch> initAction = () => new Sinch.SinchClient(null, "secret", "project");
+            Func<ISinchClient> initAction = () => new Sinch.SinchClient(null, "secret", "project");
             initAction.Should().Throw<ArgumentNullException>("Should have a value");
         }
 
         [Fact]
         public void ThrowNullKeySecret()
         {
-            Func<ISinch> initAction = () => new Sinch.SinchClient("secret", null, "project");
+            Func<ISinchClient> initAction = () => new Sinch.SinchClient("secret", null, "project");
             initAction.Should().Throw<ArgumentNullException>("Should have a value");
         }
 
         [Fact]
         public void ThrowNullProjectId()
         {
-            Func<ISinch> initAction = () => new Sinch.SinchClient("id", "secret", null);
+            Func<ISinchClient> initAction = () => new Sinch.SinchClient("id", "secret", null);
             initAction.Should().Throw<ArgumentNullException>("Should have a value");
         }
     }

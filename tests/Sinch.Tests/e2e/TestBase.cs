@@ -7,10 +7,10 @@ namespace Sinch.Tests.e2e
     {
         private const string ProjectId = "e15b2651-daac-4ccb-92e8-e3066d1d033b";
 
-        protected readonly ISinch SinchClientMockStudio;
+        protected readonly ISinchClient SinchClientMockStudio;
 
         // MockStudio should be removed and all contract testing should go to mock server version
-        protected readonly ISinch SinchClientMockServer;
+        protected readonly ISinchClient SinchClientMockServer;
 
         protected TestBase()
         {

@@ -10,10 +10,10 @@ namespace WebApiExamples.Controllers;
 [Route("reply")]
 public class ReplyToInboundController : ControllerBase
 {
-    private readonly ISinch _sinch;
+    private readonly ISinchClient _sinch;
     private readonly ILogger _logger;
 
-    public ReplyToInboundController(ISinch sinch, ILogger<ReplyToInboundController> logger)
+    public ReplyToInboundController(ISinchClient sinch, ILogger<ReplyToInboundController> logger)
     {
         _sinch = sinch;
         _logger = logger;
@@ -31,7 +31,7 @@ public class ReplyToInboundController : ControllerBase
             incomingSms.Body,
             incomingSms.From,
             incomingSms.To);
-        var _ = await _sinch.Sms.Batches.Send(new Request
+        var _ = await _sinch.Sms.Batches.Send(new SendBatchRequest
         {
             Body = incomingSms.Body,
             DeliveryReport = DeliveryReport.None,

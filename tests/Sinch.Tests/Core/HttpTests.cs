@@ -14,12 +14,12 @@ namespace Sinch.Tests.Core
 {
     public class HttpTests
     {
-        private readonly IAuth _tokenManagerMock;
+        private readonly ISinchAuth _tokenManagerMock;
         private readonly MockHttpMessageHandler _httpMessageHandlerMock;
 
         public HttpTests()
         {
-            _tokenManagerMock = Substitute.For<IAuth>();
+            _tokenManagerMock = Substitute.For<ISinchAuth>();
             _tokenManagerMock.Scheme.Returns("Bearer");
             _httpMessageHandlerMock = new MockHttpMessageHandler();
         }
@@ -69,7 +69,7 @@ namespace Sinch.Tests.Core
 
             Func<Task<object>> response = () => http.Send<object>(uri, HttpMethod.Get);
 
-            var ex = await response.Should().ThrowAsync<ApiException>();
+            var ex = await response.Should().ThrowAsync<SinchApiException>();
             ex.Where(x => x.StatusCode == HttpStatusCode.Unauthorized);
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
@@ -93,7 +93,7 @@ namespace Sinch.Tests.Core
 
             Func<Task<object>> response = () => http.Send<object>(uri, HttpMethod.Get);
 
-            var ex = await response.Should().ThrowAsync<ApiException>();
+            var ex = await response.Should().ThrowAsync<SinchApiException>();
             ex.Which.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }

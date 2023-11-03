@@ -8,26 +8,26 @@ namespace Sinch.Numbers
     ///     You can use the Active Number API to manage numbers you own. Assign numbers to projects, release numbers from
     ///     projects, or list all numbers assigned to a project.
     /// </summary>
-    public interface INumbers
+    public interface ISinchNumbers
     {
         /// <summary>
         ///     You can use the Available Regions API to list all of the regions that have numbers assigned to a project.
         /// </summary>
-        public IRegions Regions { get; }
+        public ISinchNumbersRegions Regions { get; }
 
         /// <summary>
         ///     You can use the Available Number API to search for available numbers or activate an available number.
         /// </summary>
-        public IAvailable Available { get; }
+        public ISinchNumbersAvailable Available { get; }
 
         /// <summary>
         ///     You can use the Active Number API to manage numbers you own. Assign numbers to projects,
         ///     release numbers from projects, or list all numbers assigned to a project.
         /// </summary>
-        public IActive Active { get; }
+        public ISinchNumbersActive Active { get; }
     }
 
-    public sealed class Numbers : INumbers
+    public sealed class Numbers : ISinchNumbers
     {
         internal Numbers(string projectId, Uri baseAddress,
             LoggerFactory loggerFactory, IHttp http)
@@ -40,10 +40,10 @@ namespace Sinch.Numbers
                 loggerFactory?.Create<AvailableNumbers>(), http);
         }
 
-        public IRegions Regions { get; }
+        public ISinchNumbersRegions Regions { get; }
 
-        public IActive Active { get; }
+        public ISinchNumbersActive Active { get; }
 
-        public IAvailable Available { get; }
+        public ISinchNumbersAvailable Available { get; }
     }
 }

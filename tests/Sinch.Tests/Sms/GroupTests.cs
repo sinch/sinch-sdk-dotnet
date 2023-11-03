@@ -59,7 +59,7 @@ namespace Sinch.Tests.Sms
                     groups = new[] { _group, _group }
                 }));
 
-            var response = await Sms.Groups.List(new Request
+            var response = await Sms.Groups.List(new ListGroupsRequest
             {
                 Page = 1,
                 PageSize = 2
@@ -104,7 +104,7 @@ namespace Sinch.Tests.Sms
                     count = 3,
                     groups = new[] { _group, _group }
                 }));
-            var groups = Sms.Groups.ListAuto(new Request());
+            var groups = Sms.Groups.ListAuto(new ListGroupsRequest());
             var list = new List<Group>();
             await foreach (var group in groups)
             {
@@ -127,7 +127,7 @@ namespace Sinch.Tests.Sms
                 .WithPartialContent("child_groups")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(_group));
 
-            var response = await Sms.Groups.Create(new SMS.Groups.Create.Request
+            var response = await Sms.Groups.Create(new SMS.Groups.Create.CreateGroupRequest
             {
                 Name = "name_g",
                 Members = new List<string>() { "1", "2" },
@@ -178,7 +178,7 @@ namespace Sinch.Tests.Sms
                 })
                 .Respond(HttpStatusCode.OK, JsonContent.Create(_group));
 
-            var response = await Sms.Groups.Update(new SMS.Groups.Update.Request
+            var response = await Sms.Groups.Update(new SMS.Groups.Update.UpdateGroupRequest
             {
                 GroupId = "g1",
                 Name = "name_g",
@@ -212,7 +212,7 @@ namespace Sinch.Tests.Sms
                 .WithPartialContent("\"name\":null")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(_group));
 
-            var request = new SMS.Groups.Update.Request
+            var request = new SMS.Groups.Update.UpdateGroupRequest
             {
                 GroupId = "g1",
                 Name = null,
@@ -247,7 +247,7 @@ namespace Sinch.Tests.Sms
                 .WithPartialContent("\"name\":\"\"")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(_group));
 
-            var request = new SMS.Groups.Update.Request
+            var request = new SMS.Groups.Update.UpdateGroupRequest
             {
                 GroupId = "g1",
                 Name = string.Empty,
@@ -283,7 +283,7 @@ namespace Sinch.Tests.Sms
                 .With(x => !x.Content!.ReadAsStringAsync().Result.Contains("group_id"))
                 .Respond(HttpStatusCode.OK, JsonContent.Create(_group));
 
-            var request = new SMS.Groups.Replace.Request
+            var request = new SMS.Groups.Replace.ReplaceGroupRequest
             {
                 GroupId = "g1",
                 Members = new List<string> { "123", "456" },

@@ -10,14 +10,14 @@ namespace Sinch.Core
         ///     Throws an exception if the IsSuccessStatusCode property for the HTTP response is false.
         /// </summary>
         /// <param name="httpResponseMessage">HttpResponseMessage to check for an error.</param>
-        /// <exception cref="ApiException">An exception which represents API error with additional info.</exception>
+        /// <exception cref="SinchApiException">An exception which represents API error with additional info.</exception>
         public static async Task EnsureSuccessApiStatusCode(this HttpResponseMessage httpResponseMessage)
         {
             if (httpResponseMessage.IsSuccessStatusCode) return;
 
             var apiError = await httpResponseMessage.TryGetJson<ApiErrorResponse>();
 
-            throw new ApiException(httpResponseMessage.StatusCode, httpResponseMessage.ReasonPhrase, null, apiError);
+            throw new SinchApiException(httpResponseMessage.StatusCode, httpResponseMessage.ReasonPhrase, null, apiError);
         }
 
         public static async Task<T> TryGetJson<T>(this HttpResponseMessage httpResponseMessage)

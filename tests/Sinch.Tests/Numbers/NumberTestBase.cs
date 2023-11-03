@@ -5,7 +5,7 @@ namespace Sinch.Tests.Numbers
 {
     public class NumberTestBase : TestBase
     {
-        internal readonly INumbers Numbers;
+        internal readonly ISinchNumbers Numbers;
 
         protected NumberTestBase()
         {

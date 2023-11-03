@@ -15,7 +15,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task SendBatch()
         {
-            var response = await SinchClientMockStudio.Sms.Batches.Send(new Request
+            var response = await SinchClientMockStudio.Sms.Batches.Send(new SendBatchRequest
             {
                 Body = "Asynchronous Spanish Inquisition",
                 DeliveryReport = DeliveryReport.Summary,
@@ -29,7 +29,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task DryRun()
         {
-            var response = await SinchClientMockStudio.Sms.Batches.DryRun(new SMS.Batches.DryRun.Request
+            var response = await SinchClientMockStudio.Sms.Batches.DryRun(new SMS.Batches.DryRun.DryRunRequest
             {
                 To = new List<string>() { "+48 737532793" },
                 Body = "Spanish Inquisition",
@@ -45,7 +45,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task ListBatches()
         {
-            var response = await SinchClientMockStudio.Sms.Batches.List(new SMS.Batches.List.Request
+            var response = await SinchClientMockStudio.Sms.Batches.List(new SMS.Batches.List.ListBatchesRequest
             {
                 Page = 0,
             });
@@ -63,7 +63,7 @@ namespace Sinch.Tests.e2e.Sms
         public async Task UpdateBatch()
         {
             var response = await SinchClientMockStudio.Sms.Batches.Update("01GK6ZMBRR3MQA0S2HA3K81EJJ",
-                new SMS.Batches.Update.Request()
+                new SMS.Batches.Update.UpdateBatchRequest()
                 {
                     Body = "Update Batch Test After Update"
                 });

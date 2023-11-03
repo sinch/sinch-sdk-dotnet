@@ -1,7 +1,9 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Sinch;
+using Sinch.SMS.Batches.Send;
 using Sinch.SMS.Groups.Create;
+using Sinch.SMS.Groups.Update;
 using Sinch.SMS.Hooks;
 using DeliveryReport = Sinch.SMS.DeliveryReport;
 
@@ -11,10 +13,10 @@ namespace WebApiExamples.Controllers;
 [Route("reply")]
 public class InboundSmsController : ControllerBase
 {
-    private readonly ISinch _sinchClient;
+    private readonly ISinchClient _sinchClient;
     private readonly ILogger _logger;
 
-    public InboundSmsController(ISinch sinchClient, ILogger<InboundSmsController> logger)
+    public InboundSmsController(ISinchClient sinchClient, ILogger<InboundSmsController> logger)
     {
         _sinchClient = sinchClient;
         _logger = logger;
@@ -24,7 +26,7 @@ public class InboundSmsController : ControllerBase
     [Route("subscription")]
     public async Task Subscribe([FromBody] IncomingTextSms incomingSms)
     {
-        var group = await _sinchClient.Sms.Groups.Create(new Request() { Name = "Pirates of Sinch" });
+        var group = await _sinchClient.Sms.Groups.Create(new CreateGroupRequest() { Name = "Pirates of Sinch" });
         var fromNumber = incomingSms.From;
         var toNumber = incomingSms.To;
         var autoReply = "";
@@ -34,7 +36,7 @@ public class InboundSmsController : ControllerBase
         switch (groupNumbers.Contains(fromNumber), inboundMessage)
         {
             case (false, "SUBSCRIBE"):
-                await _sinchClient.Sms.Groups.Update(new Sinch.SMS.Groups.Update.Request
+                await _sinchClient.Sms.Groups.Update(new UpdateGroupRequest
                     {
                         GroupId = group.Id,
                         Name = "group 1",
@@ -47,7 +49,7 @@ public class InboundSmsController : ControllerBase
                 autoReply = $"Congratulations! You are now subscribed to {group.Name}. Text STOP to leave this group.";
                 break;
             case (true, "STOP"):
-                await _sinchClient.Sms.Groups.Update(new Sinch.SMS.Groups.Update.Request
+                await _sinchClient.Sms.Groups.Update(new UpdateGroupRequest
                 {
                     GroupId = group.Id,
                     Name = "group 1",
@@ -65,7 +67,7 @@ public class InboundSmsController : ControllerBase
                 break;
         }
 
-        var response = await _sinchClient.Sms.Batches.Send(new Sinch.SMS.Batches.Send.Request
+        var response = await _sinchClient.Sms.Batches.Send(new SendBatchRequest
         {
             Body = autoReply,
             DeliveryReport = DeliveryReport.None,

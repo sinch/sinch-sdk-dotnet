@@ -10,7 +10,7 @@ using Sinch.SMS.Inbounds.List;
 
 namespace Sinch.SMS.Inbounds
 {
-    public interface IInbounds
+    public interface ISinchSmsInbounds
     {
         /// <summary>
         ///     With the list operation, you can list all inbound messages that you have received.
@@ -19,7 +19,7 @@ namespace Sinch.SMS.Inbounds
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Response> List(Request request,
+        Task<ListInboundsResponse> List(ListInboundsRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Sinch.SMS.Inbounds
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        IAsyncEnumerable<Inbound> ListAuto(Request request, CancellationToken cancellationToken = default);
+        IAsyncEnumerable<Inbound> ListAuto(ListInboundsRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     This operation retrieves a specific inbound message with the provided inbound ID.
@@ -40,7 +40,7 @@ namespace Sinch.SMS.Inbounds
         Task<Inbound> Get(string inboundId, CancellationToken cancellationToken = default);
     }
 
-    public class Inbounds : IInbounds
+    public class Inbounds : ISinchSmsInbounds
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
@@ -55,14 +55,14 @@ namespace Sinch.SMS.Inbounds
             _http = http;
         }
 
-        public Task<Response> List(Request request, CancellationToken cancellationToken = default)
+        public Task<ListInboundsResponse> List(ListInboundsRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/inbounds?{request.GetQueryString()}");
             _logger?.LogDebug("Listing inbounds...");
-            return _http.Send<Response>(uri, HttpMethod.Get, cancellationToken);
+            return _http.Send<ListInboundsResponse>(uri, HttpMethod.Get, cancellationToken);
         }
 
-        public async IAsyncEnumerable<Inbound> ListAuto(Request request, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        public async IAsyncEnumerable<Inbound> ListAuto(ListInboundsRequest request, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Auto listing inbounds...");
             bool isLastPage;
@@ -70,7 +70,7 @@ namespace Sinch.SMS.Inbounds
             {
                 var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/inbounds?{request.GetQueryString()}");
                 _logger?.LogDebug("Auto list {page}", request.Page);
-                var response = await _http.Send<Response>(uri, HttpMethod.Get, cancellationToken);
+                var response = await _http.Send<ListInboundsResponse>(uri, HttpMethod.Get, cancellationToken);
                 foreach (var inbound in response.Inbounds)
                 {
                     yield return inbound;

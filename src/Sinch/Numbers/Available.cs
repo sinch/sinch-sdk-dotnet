@@ -7,11 +7,12 @@ using Sinch.Logger;
 using Sinch.Numbers.Active;
 using Sinch.Numbers.Available;
 using Sinch.Numbers.Available.List;
-using Request = Sinch.Numbers.Available.RentAny.Request;
+using Sinch.Numbers.Available.Rent;
+using Sinch.Numbers.Available.RentAny;
 
 namespace Sinch.Numbers
 {
-    public interface IAvailable
+    public interface ISinchNumbersAvailable
     {
         /// <summary>
         ///     Search for and activate an available Sinch virtual number all in one API call.
@@ -20,7 +21,7 @@ namespace Sinch.Numbers
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ActiveNumber> RentAny(Request request,
+        Task<ActiveNumber> RentAny(RentAnyNumberRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -36,7 +37,7 @@ namespace Sinch.Numbers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<ActiveNumber> Rent(string phoneNumber,
-            Available.Rent.Request request, CancellationToken cancellationToken = default);
+            RentActiveNumberRequest request, CancellationToken cancellationToken = default);
 
 
         /// <summary>
@@ -48,8 +49,8 @@ namespace Sinch.Numbers
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Response> List(
-            Available.List.Request request, CancellationToken cancellationToken = default);
+        Task<ListAvailableNumbersResponse> List(
+            ListAvailableNumbersRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Allows you to enter a specific phone number to check if it's available for use.
@@ -65,7 +66,7 @@ namespace Sinch.Numbers
             CancellationToken cancellationToken = default);
     }
 
-    internal class AvailableNumbers : IAvailable
+    internal class AvailableNumbers : ISinchNumbersAvailable
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
@@ -81,35 +82,39 @@ namespace Sinch.Numbers
             _http = http;
         }
 
-
-        public Task<ActiveNumber> RentAny(Request request,
+        /// <inheritdoc />
+        public Task<ActiveNumber> RentAny(RentAnyNumberRequest request,
             CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Trying to rent any number");
 
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/availableNumbers:rentAny");
 
-            return _http.Send<Request, ActiveNumber>(uri, HttpMethod.Post, request, cancellationToken);
+            return _http.Send<RentAnyNumberRequest, ActiveNumber>(uri, HttpMethod.Post, request,
+                cancellationToken);
         }
 
-        public Task<ActiveNumber> Rent(string phoneNumber, Available.Rent.Request request,
+        /// <inheritdoc />
+        public Task<ActiveNumber> Rent(string phoneNumber, RentActiveNumberRequest request,
             CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Renting a {number}", phoneNumber);
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/availableNumbers/{phoneNumber}:rent");
-            return _http.Send<Available.Rent.Request, ActiveNumber>(uri, HttpMethod.Post, request, cancellationToken);
+            return _http.Send<RentActiveNumberRequest, ActiveNumber>(uri, HttpMethod.Post, request, cancellationToken);
         }
 
-        public Task<Response> List(Available.List.Request request,
+        /// <inheritdoc />
+        public Task<ListAvailableNumbersResponse> List(ListAvailableNumbersRequest request,
             CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Listing available numbers");
 
             var pathAndQuery = $"v1/projects/{_projectId}/availableNumbers?{request.GetQueryString()}";
             var uri = new Uri(_baseAddress, pathAndQuery);
-            return _http.Send<Response>(uri, HttpMethod.Get, cancellationToken);
+            return _http.Send<ListAvailableNumbersResponse>(uri, HttpMethod.Get, cancellationToken);
         }
 
+        /// <inheritdoc />
         public async Task<AvailableNumber> CheckAvailability(string phoneNumber,
             CancellationToken cancellationToken = default)
         {

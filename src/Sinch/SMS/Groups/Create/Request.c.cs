@@ -2,7 +2,7 @@
 
 namespace Sinch.SMS.Groups.Create
 {
-    public sealed class Request
+    public sealed class CreateGroupRequest
     {
         /// <summary>
         ///     Name of the group

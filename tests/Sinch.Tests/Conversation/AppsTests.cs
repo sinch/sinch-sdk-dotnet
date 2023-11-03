@@ -167,7 +167,7 @@ namespace Sinch.Tests.Conversation
             conversation_metadata_report_view = "FULL"
         };
 
-        private Request _createRequest = new Request
+        private CreateAppRequest _createRequest = new CreateAppRequest
         {
             DisplayName = "display_name",
             ChannelCredentials = new List<ConversationChannelCredential>()
@@ -377,7 +377,7 @@ namespace Sinch.Tests.Conversation
                 .WithQueryString("update_mask.paths", "b")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(_app));
 
-            var request = new Sinch.Conversation.Apps.Update.Request()
+            var request = new Sinch.Conversation.Apps.Update.UpdateAppRequest()
             {
                 DisplayName = "abc",
                 UpdateMaskPaths = new List<string>()

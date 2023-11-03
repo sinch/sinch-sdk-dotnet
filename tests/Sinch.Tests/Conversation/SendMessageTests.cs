@@ -20,7 +20,7 @@ namespace Sinch.Tests.Conversation
     {
         private readonly dynamic _baseMessageExpected = new ExpandoObject();
 
-        private readonly Request _baseRequest = new Request
+        private readonly SendMessageRequest _baseRequest = new SendMessageRequest
         {
             AppId = "123",
             Message = new AppMessage()

@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
 using Sinch.SMS.DeliveryReports.Get;
+using Sinch.SMS.DeliveryReports.List;
 
 namespace Sinch.SMS.DeliveryReports
 {
-    public interface IDeliveryReports
+    public interface ISinchSmsDeliveryReports
     {
         /// <summary>
         ///     Delivery reports can be retrieved even if no callback was requested.
@@ -21,7 +22,7 @@ namespace Sinch.SMS.DeliveryReports
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Response> Get(Request request, CancellationToken cancellationToken = default);
+        Task<GetDeliveryReportResponse> Get(GetDeliveryReportRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     A recipient delivery report contains the message status for a single recipient phone number.
@@ -40,7 +41,7 @@ namespace Sinch.SMS.DeliveryReports
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<List.Response> List(List.Request request, CancellationToken cancellationToken = default);
+        Task<ListDeliveryReportsResponse> List(ListDeliveryReportsRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Get a list of finished delivery reports.<br /><br />
@@ -49,11 +50,11 @@ namespace Sinch.SMS.DeliveryReports
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>An async enumerable of <see cref="DeliveryReport"/></returns>
-        IAsyncEnumerable<DeliveryReport> ListAuto(List.Request request, CancellationToken cancellationToken = default);
+        IAsyncEnumerable<DeliveryReport> ListAuto(ListDeliveryReportsRequest request, CancellationToken cancellationToken = default);
     }
 
     /// <inheritdoc />
-    internal class DeliveryReports : IDeliveryReports
+    internal class DeliveryReports : ISinchSmsDeliveryReports
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
@@ -68,15 +69,17 @@ namespace Sinch.SMS.DeliveryReports
             _http = http;
         }
 
-        public Task<Response> Get(Request request, CancellationToken cancellationToken = default)
+        /// <inheritdoc />
+        public Task<GetDeliveryReportResponse> Get(GetDeliveryReportRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress,
                 $"xms/v1/{_projectId}/batches/{request.BatchId}/delivery_report?{request.GetQueryString()}");
             _logger?.LogDebug("Fetching delivery report for a batch with {id}", request.BatchId);
 
-            return _http.Send<Request, Response>(uri, HttpMethod.Get, null, cancellationToken)!;
+            return _http.Send<GetDeliveryReportRequest, GetDeliveryReportResponse>(uri, HttpMethod.Get, null, cancellationToken)!;
         }
 
+        /// <inheritdoc />
         public Task<DeliveryReport> GetForNumber(string batchId, string recipientMsisdn,
             CancellationToken cancellationToken = default)
         {
@@ -88,17 +91,19 @@ namespace Sinch.SMS.DeliveryReports
             return _http.Send<object, DeliveryReport>(uri, HttpMethod.Get, null, cancellationToken)!;
         }
 
-        public Task<List.Response> List(List.Request request, CancellationToken cancellationToken = default)
+        /// <inheritdoc />
+        public Task<ListDeliveryReportsResponse> List(ListDeliveryReportsRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress,
                 $"xms/v1/{_projectId}/delivery_reports?{request.GetQueryString()}");
 
             _logger?.LogDebug("Listing delivery reports for {projectId}", _projectId);
 
-            return _http.Send<object, List.Response>(uri, HttpMethod.Get, null, cancellationToken);
+            return _http.Send<object, ListDeliveryReportsResponse>(uri, HttpMethod.Get, null, cancellationToken);
         }
 
-        public async IAsyncEnumerable<DeliveryReport> ListAuto(List.Request request,
+        /// <inheritdoc />
+        public async IAsyncEnumerable<DeliveryReport> ListAuto(ListDeliveryReportsRequest request,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Listing delivery reports for {projectId}", _projectId);
@@ -109,7 +114,7 @@ namespace Sinch.SMS.DeliveryReports
                     $"xms/v1/{_projectId}/delivery_reports?{request.GetQueryString()}");
 
 
-                var response = await _http.Send<List.Response>(uri, HttpMethod.Get, cancellationToken);
+                var response = await _http.Send<ListDeliveryReportsResponse>(uri, HttpMethod.Get, cancellationToken);
                 foreach (var report in response.DeliveryReports)
                 {
                     yield return report;

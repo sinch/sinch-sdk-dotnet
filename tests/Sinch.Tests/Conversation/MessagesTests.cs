@@ -113,7 +113,7 @@ namespace Sinch.Tests.Conversation
                 }));
 
             var dateTime = new DateTime(2022, 7, 12);
-            var response = await Conversation.Messages.List(new Request
+            var response = await Conversation.Messages.List(new ListMessagesRequest
             {
                 ConversationId = conversationId,
                 ContactId = contactId,
@@ -181,7 +181,7 @@ namespace Sinch.Tests.Conversation
                 }));
 
             Func<Task> request = () => Conversation.Messages.Delete(messageId, MessageSource.ConversationSource);
-            await request.Should().ThrowAsync<ApiException>().WithMessage("Bad Request:Invalid argument")
+            await request.Should().ThrowAsync<SinchApiException>().WithMessage("Bad Request:Invalid argument")
                 .Where(x => x.DetailedMessage == "Invalid argument");
         }
 

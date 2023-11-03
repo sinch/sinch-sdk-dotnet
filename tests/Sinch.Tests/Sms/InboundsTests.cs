@@ -72,7 +72,7 @@ namespace Sinch.Tests.Sms
                     }
                 }));
             var date = new DateTime(2019, 8, 24, 14, 15, 22, 542, DateTimeKind.Utc);
-            var request = new Request
+            var request = new ListInboundsRequest
             {
                 Page = 3,
                 PageSize = 0,
@@ -134,7 +134,7 @@ namespace Sinch.Tests.Sms
                         Inbound()
                     }
                 }));
-            var request = new Request
+            var request = new ListInboundsRequest
             {
                 Page = 0
             };

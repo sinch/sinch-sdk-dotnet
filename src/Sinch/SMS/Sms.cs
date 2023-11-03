@@ -12,20 +12,20 @@ namespace Sinch.SMS
     ///     Send and receive SMS through a single connection for timely and cost-efficient communications using the Sinch SMS
     ///     API.
     /// </summary>
-    public interface ISms
+    public interface ISinchSms
     {
         /// <summary>
         ///     Batches are sets of SMS messages. You can send a single message or many.
         ///     Batches are queued and sent at the rate limit in first-in-first-out order.
         /// </summary>
-        IBatches Batches { get; }
+        ISinchSmsBatches Batches { get; }
 
         /// <summary>
         ///     Inbounds, or Mobile Originated (MO) messages, are incoming messages.
         ///     Inbound messages can be listed and retrieved like batch messages and
         ///     they can also be delivered by callback requests like delivery reports.
         /// </summary>
-        IInbounds Inbounds { get; }
+        ISinchSmsInbounds Inbounds { get; }
 
         /// <summary>
         ///     A group is a set of phone numbers
@@ -34,7 +34,7 @@ namespace Sinch.SMS
         ///     An phone number (MSISDN) can only occur once in a group
         ///     and any attempts to add a duplicate are ignored but not rejected.
         /// </summary>
-        IGroups Groups { get; }
+        ISinchSmsGroups Groups { get; }
 
         /// <summary>
         ///     uses message statuses and error codes in delivery reports,
@@ -46,10 +46,10 @@ namespace Sinch.SMS
         ///     </see>
         ///     or sent to a callback.
         /// </summary>
-        IDeliveryReports DeliveryReports { get; }
+        ISinchSmsDeliveryReports DeliveryReports { get; }
     }
 
-    internal class Sms : ISms
+    internal class Sms : ISinchSms
     {
         internal Sms(string projectId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
         {
@@ -60,12 +60,12 @@ namespace Sinch.SMS
                 loggerFactory?.Create<DeliveryReports.DeliveryReports>(), http);
         }
 
-        public IBatches Batches { get; }
+        public ISinchSmsBatches Batches { get; }
 
-        public IInbounds Inbounds { get; }
+        public ISinchSmsInbounds Inbounds { get; }
 
-        public IGroups Groups { get; }
+        public ISinchSmsGroups Groups { get; }
 
-        public IDeliveryReports DeliveryReports { get; }
+        public ISinchSmsDeliveryReports DeliveryReports { get; }
     }
 }
