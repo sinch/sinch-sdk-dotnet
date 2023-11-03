@@ -8,10 +8,11 @@ using Sinch.Core;
 using Sinch.Logger;
 using Sinch.Numbers.Active;
 using Sinch.Numbers.Active.List;
+using Sinch.Numbers.Active.Update;
 
 namespace Sinch.Numbers
 {
-    public interface IActive
+    public interface ISinchNumbersActive
     {
         /// <summary>
         ///     Lists all virtual numbers for a project.<br /><br />
@@ -24,7 +25,7 @@ namespace Sinch.Numbers
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Response> List(Request request,
+        Task<ListActiveNumbersResponse> List(ListActiveNumbersRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -46,7 +47,7 @@ namespace Sinch.Numbers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<ActiveNumber> Update(string phoneNumber,
-            Active.Update.Request request, CancellationToken cancellationToken = default);
+            UpdateActiveNumberRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Get an information about a number
@@ -70,11 +71,11 @@ namespace Sinch.Numbers
         Task<ActiveNumber> Release(
             string phoneNumber, CancellationToken cancellationToken = default);
 
-        IAsyncEnumerable<ActiveNumber> ListAuto(Request request,
+        IAsyncEnumerable<ActiveNumber> ListAuto(ListActiveNumbersRequest request,
             CancellationToken cancellationToken = default);
     }
 
-    internal class ActiveNumbers : IActive
+    internal class ActiveNumbers : ISinchNumbersActive
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
@@ -90,21 +91,22 @@ namespace Sinch.Numbers
             _http = http;
         }
 
-        public Task<Response> List(Request request, CancellationToken cancellationToken = default)
+        public Task<ListActiveNumbersResponse> List(ListActiveNumbersRequest request, CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Fetching active numbers {request}", request);
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/activeNumbers?{request.GetQueryString()}");
-            return _http.Send<Response>(uri, HttpMethod.Get, cancellationToken);
+            return _http.Send<ListActiveNumbersResponse>(uri, HttpMethod.Get, cancellationToken);
         }
 
-        public async IAsyncEnumerable<ActiveNumber> ListAuto(Request request,
+        /// <inheritdoc />
+        public async IAsyncEnumerable<ActiveNumber> ListAuto(ListActiveNumbersRequest request,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Fetching active numbers {request}", request);
             do
             {
                 var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/activeNumbers?{request.GetQueryString()}");
-                var response = await _http.Send<Response>(uri, HttpMethod.Get, cancellationToken);
+                var response = await _http.Send<ListActiveNumbersResponse>(uri, HttpMethod.Get, cancellationToken);
                 request.PageToken = response.NextPageToken;
                 foreach (var activeNumber in response.ActiveNumbers)
                 {
@@ -113,16 +115,17 @@ namespace Sinch.Numbers
             } while (request.PageToken is not null);
         }
 
-
-        public Task<ActiveNumber> Update(string phoneNumber, Active.Update.Request request,
+        /// <inheritdoc />
+        public Task<ActiveNumber> Update(string phoneNumber, UpdateActiveNumberRequest request,
             CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Updating a {number}", phoneNumber);
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/activeNumbers/{phoneNumber}");
 
-            return _http.Send<Active.Update.Request, ActiveNumber>(uri, HttpMethod.Patch, request, cancellationToken);
+            return _http.Send<UpdateActiveNumberRequest, ActiveNumber>(uri, HttpMethod.Patch, request, cancellationToken);
         }
 
+        /// <inheritdoc />
         public Task<ActiveNumber> Get(string phoneNumber, CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Fetching active {number}", phoneNumber);
@@ -130,6 +133,7 @@ namespace Sinch.Numbers
             return _http.Send<ActiveNumber>(uri, HttpMethod.Get, cancellationToken);
         }
 
+        /// <inheritdoc />
         public async Task<ActiveNumber> Release(string phoneNumber, CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Trying to release a {number}", phoneNumber);

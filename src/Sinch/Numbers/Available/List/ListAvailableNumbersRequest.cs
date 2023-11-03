@@ -4,7 +4,7 @@ using Sinch.Core;
 
 namespace Sinch.Numbers.Available.List
 {
-    public sealed class Request
+    public sealed class ListAvailableNumbersRequest
     {
         /// <summary>
         ///     Region code to filter by. ISO 3166-1 alpha-2 country code of the phone number.

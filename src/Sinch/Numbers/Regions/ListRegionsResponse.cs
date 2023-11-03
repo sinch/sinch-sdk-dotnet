@@ -2,7 +2,7 @@
 
 namespace Sinch.Numbers.Regions
 {
-    internal sealed class Response
+    internal sealed class ListRegionsResponse
     {
 #if NET7_0_OR_GREATER
         public required IList<Region> AvailableRegions { get; set; }

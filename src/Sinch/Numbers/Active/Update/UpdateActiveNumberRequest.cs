@@ -1,6 +1,6 @@
 ﻿namespace Sinch.Numbers.Active.Update
 {
-    public sealed class Request
+    public sealed class UpdateActiveNumberRequest
     {
         /// <summary>
         ///     User supplied name for the phone number.

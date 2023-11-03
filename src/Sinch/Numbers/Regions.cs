@@ -10,7 +10,7 @@ using Sinch.Numbers.Regions;
 
 namespace Sinch.Numbers
 {
-    public interface IRegions
+    public interface ISinchNumbersRegions
     {
         /// <summary>
         ///     Lists all virtual numbers for a project.
@@ -25,7 +25,7 @@ namespace Sinch.Numbers
             CancellationToken cancellationToken = default);
     }
 
-    internal class AvailableRegions : IRegions
+    internal class AvailableRegions : ISinchNumbersRegions
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
@@ -41,6 +41,7 @@ namespace Sinch.Numbers
             _http = http;
         }
 
+        /// <inheritdoc />
         public async Task<IEnumerable<Region>> List(IEnumerable<Types> types,
             CancellationToken cancellationToken = default)
         {
@@ -57,7 +58,7 @@ namespace Sinch.Numbers
             }
 
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/availableRegions?{typesStr}");
-            var response = await _http.Send<Response>(uri, HttpMethod.Get, cancellationToken);
+            var response = await _http.Send<ListRegionsResponse>(uri, HttpMethod.Get, cancellationToken);
 
             return response.AvailableRegions;
         }

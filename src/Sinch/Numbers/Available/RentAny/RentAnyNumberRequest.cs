@@ -5,7 +5,7 @@ namespace Sinch.Numbers.Available.RentAny
     /// <summary>
     ///     The request to search and rent a number that matches the criteria.
     /// </summary>
-    public sealed class Request
+    public sealed class RentAnyNumberRequest
     {
         public NumberPattern NumberPattern { get; set; }
 

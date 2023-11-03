@@ -26,7 +26,7 @@ namespace Sinch.Tests.Numbers
                 .WithPartialContent("service_plan")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(TestData.ActiveNumber));
 
-            var request = new Request
+            var request = new RentActiveNumberRequest
             {
                 SmsConfiguration = new SmsConfiguration
                 {
@@ -54,7 +54,7 @@ namespace Sinch.Tests.Numbers
                 .WithPartialContent("1208")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(TestData.ActiveNumber));
 
-            var request = new Sinch.Numbers.Available.RentAny.Request
+            var request = new Sinch.Numbers.Available.RentAny.RentAnyNumberRequest
             {
                 RegionCode = "US",
                 NumberPattern = new NumberPattern
@@ -93,7 +93,7 @@ namespace Sinch.Tests.Numbers
                 }));
 
             var response = await Numbers.Available.List(
-                new Sinch.Numbers.Available.List.Request
+                new Sinch.Numbers.Available.List.ListAvailableNumbersRequest
                 {
                     RegionCode = "US",
                     Type = Types.Mobile,

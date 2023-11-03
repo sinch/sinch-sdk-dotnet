@@ -25,7 +25,7 @@ namespace Sinch.Tests.e2e
         [Fact]
         public async Task Rent()
         {
-            var response = await SinchClientMockStudio.Numbers.Available.Rent("+447520652221", new Request()
+            var response = await SinchClientMockStudio.Numbers.Available.Rent("+447520652221", new RentActiveNumberRequest()
             {
                 SmsConfiguration = null,
                 VoiceConfiguration = null,
@@ -37,7 +37,7 @@ namespace Sinch.Tests.e2e
         [Fact]
         public async Task ListAvailableWithPattern()
         {
-            var response = await SinchClientMockStudio.Numbers.Available.List(new Sinch.Numbers.Available.List.Request
+            var response = await SinchClientMockStudio.Numbers.Available.List(new Sinch.Numbers.Available.List.ListAvailableNumbersRequest
             {
                 RegionCode = "US",
                 Type = Types.Local,
@@ -53,7 +53,7 @@ namespace Sinch.Tests.e2e
         [Fact]
         public async Task ListAvailableWithCapabilities()
         {
-            var response = await SinchClientMockStudio.Numbers.Available.List(new Sinch.Numbers.Available.List.Request
+            var response = await SinchClientMockStudio.Numbers.Available.List(new Sinch.Numbers.Available.List.ListAvailableNumbersRequest
             {
                 RegionCode = "US",
                 Type = Types.Local,
@@ -68,7 +68,7 @@ namespace Sinch.Tests.e2e
         [Fact]
         public async Task ListActiveWithPageSize()
         {
-            var response = await SinchClientMockStudio.Numbers.Active.List(new Sinch.Numbers.Active.List.Request
+            var response = await SinchClientMockStudio.Numbers.Active.List(new Sinch.Numbers.Active.List.ListActiveNumbersRequest
             {
                 RegionCode = "GB",
                 Type = Types.Mobile,
@@ -81,7 +81,7 @@ namespace Sinch.Tests.e2e
         [Fact]
         public async Task ListActiveWithPageToken()
         {
-            var response = await SinchClientMockStudio.Numbers.Active.List(new Sinch.Numbers.Active.List.Request
+            var response = await SinchClientMockStudio.Numbers.Active.List(new Sinch.Numbers.Active.List.ListActiveNumbersRequest
             {
                 RegionCode = "GB",
                 Type = Types.Mobile,

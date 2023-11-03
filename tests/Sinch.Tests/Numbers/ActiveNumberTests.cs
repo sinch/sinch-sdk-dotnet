@@ -47,7 +47,7 @@ namespace Sinch.Tests.Numbers
                     totalSize = 5
                 }));
 
-            var response = await Numbers.Active.List(new Request
+            var response = await Numbers.Active.List(new ListActiveNumbersRequest
             {
                 RegionCode = "US",
                 Type = Types.Mobile,
@@ -86,7 +86,7 @@ namespace Sinch.Tests.Numbers
                     totalSize = 5
                 }));
             
-            var request = new Request
+            var request = new ListActiveNumbersRequest
             {
                 RegionCode = "US",
                 Type = Types.Local,
@@ -130,7 +130,7 @@ namespace Sinch.Tests.Numbers
                 .Respond(HttpStatusCode.OK, JsonContent.Create(TestData.ActiveNumber));
 
 
-            var response = await Numbers.Active.Update("+12025550134", new Sinch.Numbers.Active.Update.Request
+            var response = await Numbers.Active.Update("+12025550134", new Sinch.Numbers.Active.Update.UpdateActiveNumberRequest
             {
                 DisplayName = "Name",
                 SmsConfiguration = new SmsConfiguration
@@ -184,7 +184,7 @@ namespace Sinch.Tests.Numbers
                 }));
 
 
-            var res = Numbers.Active.ListAuto(new Request
+            var res = Numbers.Active.ListAuto(new ListActiveNumbersRequest
             {
                 RegionCode = "US",
                 Type = Types.Mobile,

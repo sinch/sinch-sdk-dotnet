@@ -10,7 +10,7 @@ namespace Examples
         public static async Task Example()
         {
             var sinchClient = new SinchClient("KEY_ID", "KEY_SECRET", "PROJECT_ID");
-            var response = await sinchClient.Numbers.Available.Rent("+4811111111", new Request()
+            var response = await sinchClient.Numbers.Available.Rent("+4811111111", new RentActiveNumberRequest()
             {
                 SmsConfiguration = new SmsConfiguration
                 {

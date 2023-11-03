@@ -1,6 +1,6 @@
 ﻿namespace Sinch.Numbers.Available.Rent
 {
-    public class Request
+    public class RentActiveNumberRequest
     {
         /// <summary>
         ///     The current SMS configuration for this number. <br /><br />
