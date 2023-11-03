@@ -4,7 +4,7 @@ using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.List
 {
-    public class Request
+    public class ListMessagesRequest
     {
         /// <summary>
         ///     Id of the conversation. Available only when messages_source is CONVERSATION_SOURCE.

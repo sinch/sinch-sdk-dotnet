@@ -1,26 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using System.Text.Json.Serialization;
 
-namespace Sinch.Conversation.Apps.Update
+namespace Sinch.Conversation.Apps.Create
 {
     /// <summary>
-    ///     Updates a particular app as specified by the App ID. Note that this is a PATCH operation,
-    ///     so any specified field values will replace existing values.
-    ///     Therefore, if you'd like to add additional configurations to an existing Conversation API app,
-    ///     ensure that you include existing values AND new values in the call. For example, if you'd like
-    ///     to add new channel_credentials, you can get your existing Conversation API app, extract the existing
-    ///     channel_credentials list, append your new configuration to that list, and include the updated channel_credentials
-    ///     list in this update call.
+    ///     The request sent to the API endpoint to create a new app.
     /// </summary>
-    public sealed class Request
+    public sealed class CreateAppRequest
     {
-        /// <summary>
-        ///     The set of field mask paths.
-        /// </summary>
-        [JsonIgnore]
-        public List<string> UpdateMaskPaths { get; set; }
-
         /// <summary>
         /// Gets or Sets ConversationMetadataReportView
         /// </summary>
@@ -29,7 +16,11 @@ namespace Sinch.Conversation.Apps.Update
         /// <summary>
         ///     An array of channel credentials. The order of the credentials defines the app channel priority.
         /// </summary>
+#if NET7_0_OR_GREATER
+        public required List<ConversationChannelCredential> ChannelCredentials { get; set; }
+#else
         public List<ConversationChannelCredential> ChannelCredentials { get; set; }
+#endif
 
 
         /// <summary>
@@ -74,7 +65,6 @@ namespace Sinch.Conversation.Apps.Update
         {
             var sb = new StringBuilder();
             sb.Append("class AppCreateRequest {\n");
-            sb.Append("  UpdateMaskPaths: ").Append(UpdateMaskPaths).Append("\n");
             sb.Append("  ChannelCredentials: ").Append(ChannelCredentials).Append("\n");
             sb.Append("  ConversationMetadataReportView: ").Append(ConversationMetadataReportView).Append("\n");
             sb.Append("  DisplayName: ").Append(DisplayName).Append("\n");

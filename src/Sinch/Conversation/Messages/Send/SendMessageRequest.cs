@@ -8,7 +8,7 @@ namespace Sinch.Conversation.Messages.Send
     /// <summary>
     ///     This is the request body for sending a message. `app_id`, `recipient`, and `message` are all required fields.
     /// </summary>
-    public sealed class Request
+    public sealed class SendMessageRequest
     {
         /// <summary>
         ///     The ID of the app sending the message.

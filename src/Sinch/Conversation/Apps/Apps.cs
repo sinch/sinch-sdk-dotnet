@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Conversation.Apps.Create;
+using Sinch.Conversation.Apps.Update;
 using Sinch.Core;
 using Sinch.Logger;
 
@@ -18,7 +19,7 @@ namespace Sinch.Conversation.Apps
     ///     for each underlying connected channel.
     ///     The app has a list of conversations between itself and different contacts which share the same project.
     /// </summary>
-    public interface IApp
+    public interface ISinchConversationApp
     {
         /// <summary>
         ///     You can create a new Conversation API app using the API.
@@ -28,7 +29,7 @@ namespace Sinch.Conversation.Apps
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<App> Create(Request request, CancellationToken cancellationToken = default);
+        Task<App> Create(CreateAppRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Get a list of all apps.
@@ -76,10 +77,10 @@ namespace Sinch.Conversation.Apps
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<App> Update(string appId, Update.Request request, CancellationToken cancellationToken = default);
+        Task<App> Update(string appId, UpdateAppRequest request, CancellationToken cancellationToken = default);
     }
 
-    internal class Apps : IApp
+    internal class Apps : ISinchConversationApp
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
@@ -95,11 +96,12 @@ namespace Sinch.Conversation.Apps
         }
 
         /// <inheritdoc />
-        public Task<App> Create(Request request, CancellationToken cancellationToken = default)
+        public Task<App> Create(CreateAppRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/apps");
             _logger?.LogDebug("Creating an app...");
-            return _http.Send<Request, App>(uri, HttpMethod.Post, request, cancellationToken: cancellationToken);
+            return _http.Send<CreateAppRequest, App>(uri, HttpMethod.Post, request,
+                cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
@@ -107,6 +109,7 @@ namespace Sinch.Conversation.Apps
         {
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/apps");
             _logger?.LogDebug("Listing apps for a {projectId}", _projectId);
+            // flatten the response 
             var response = await _http.Send<ListResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
             return response.Apps;
         }
@@ -142,7 +145,7 @@ namespace Sinch.Conversation.Apps
         }
 
         /// <inheritdoc />
-        public Task<App> Update(string appId, Update.Request request, CancellationToken cancellationToken = default)
+        public Task<App> Update(string appId, UpdateAppRequest request, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(appId))
             {
@@ -158,7 +161,7 @@ namespace Sinch.Conversation.Apps
 
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/apps/{appId}{query}");
             _logger?.LogDebug("Updating an app for a {projectId} with {appId}", _projectId, appId);
-            return _http.Send<Update.Request, App>(uri, HttpMethod.Patch, request,
+            return _http.Send<UpdateAppRequest, App>(uri, HttpMethod.Patch, request,
                 cancellationToken: cancellationToken);
         }
 

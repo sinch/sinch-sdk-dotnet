@@ -15,11 +15,11 @@ namespace Sinch.Conversation
     /// </summary>
     public interface ISinchConversation
     {
-        /// <inheritdoc cref="IMessages" />
-        IMessages Messages { get; }
+        /// <inheritdoc cref="ISinchConversationMessages" />
+        ISinchConversationMessages Messages { get; }
 
-        /// <inheritdoc cref="IApp" />
-        IApp App { get; }
+        /// <inheritdoc cref="ISinchConversationApp" />
+        ISinchConversationApp App { get; }
     }
 
     /// <inheritdoc />
@@ -33,9 +33,9 @@ namespace Sinch.Conversation
         }
 
         /// <inheritdoc />
-        public IMessages Messages { get; }
+        public ISinchConversationMessages Messages { get; }
 
         /// <inheritdoc />
-        public IApp App { get; }
+        public ISinchConversationApp App { get; }
     }
 }

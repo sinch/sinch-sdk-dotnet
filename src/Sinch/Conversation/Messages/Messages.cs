@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Sinch.Conversation.Messages.List;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Messages.Send;
 using Sinch.Core;
@@ -18,7 +19,7 @@ namespace Sinch.Conversation.Messages
     ///     in the <see href="https://dashboard.sinch.com/convapi/getting-started">Sinch Dashboard</see>
     ///     to create one.
     /// </summary>
-    public interface IMessages
+    public interface ISinchConversationMessages
     {
         /// <summary>
         ///     You can send a message from a Conversation app to a contact associated with that app.
@@ -30,8 +31,8 @@ namespace Sinch.Conversation.Messages
         /// </summary>
         /// <param name="request">A request params</param>
         /// <param name="cancellationToken">cancellationToken</param>
-        /// <returns><see cref="Send.Response"/></returns>
-        Task<Response> Send(Request request, CancellationToken cancellationToken = default);
+        /// <returns><see cref="SendMessageResponse"/></returns>
+        Task<SendMessageResponse> Send(SendMessageRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Retrieves a specific message by its ID.
@@ -58,7 +59,7 @@ namespace Sinch.Conversation.Messages
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<List.Response> List(List.Request request, CancellationToken cancellationToken = default);
+        Task<ListMessagesResponse> List(ListMessagesRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Delete a specific message by its ID. <br/><br/>
@@ -73,7 +74,7 @@ namespace Sinch.Conversation.Messages
     }
 
     /// <inheritdoc />
-    internal class Messages : IMessages
+    internal class Messages : ISinchConversationMessages
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
@@ -89,11 +90,11 @@ namespace Sinch.Conversation.Messages
         }
 
         /// <inheritdoc/>  
-        public Task<Response> Send(Request request, CancellationToken cancellationToken = default)
+        public Task<SendMessageResponse> Send(SendMessageRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/messages:send");
             _logger?.LogDebug("Sending a message...");
-            return _http.Send<Request, Response>(uri, HttpMethod.Post, request, cancellationToken: cancellationToken);
+            return _http.Send<SendMessageRequest, SendMessageResponse>(uri, HttpMethod.Post, request, cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc/>  
@@ -107,21 +108,13 @@ namespace Sinch.Conversation.Messages
             return _http.Send<ConversationMessage>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
         }
 
-        private static string GetMessageSourceQueryParam(MessageSource messagesSource)
-        {
-            var param = messagesSource is null
-                ? string.Empty
-                : $"?messages_source={messagesSource.Value}";
-            return param;
-        }
-
         /// <inheritdoc/>  
-        public Task<List.Response> List(List.Request request, CancellationToken cancellationToken = default)
+        public Task<ListMessagesResponse> List(ListMessagesRequest request, CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Fetching list of messages {request}", request);
             var uri = new Uri(_baseAddress,
                 $"v1/projects/{_projectId}/messages?{Utils.ToSnakeCaseQueryString(request)}");
-            return _http.Send<List.Response>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
+            return _http.Send<ListMessagesResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc/>  
@@ -133,6 +126,14 @@ namespace Sinch.Conversation.Messages
             var uri = new Uri(_baseAddress,
                 $"v1/projects/{_projectId}/messages/{messageId}{param}");
             return _http.Send<object>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
+        }
+
+        private static string GetMessageSourceQueryParam(MessageSource messagesSource)
+        {
+            var param = messagesSource is null
+                ? string.Empty
+                : $"?messages_source={messagesSource.Value}";
+            return param;
         }
     }
 }
