@@ -2,7 +2,7 @@
 
 namespace Sinch.SMS.DeliveryReports.List
 {
-    public sealed class Response
+    public sealed class ListDeliveryReportsResponse
     {
         /// <summary>
         ///     The total number of entries matching the given filters.

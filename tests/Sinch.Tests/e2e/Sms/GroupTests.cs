@@ -13,7 +13,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task Create()
         {
-            var response = await SinchClientMockStudio.Sms.Groups.Create(new Request
+            var response = await SinchClientMockStudio.Sms.Groups.Create(new CreateGroupRequest
             {
                 Name = "KillerRabbit",
                 Members = new List<string>()
@@ -35,7 +35,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task Update()
         {
-            var response = await SinchClientMockStudio.Sms.Groups.Update(new SMS.Groups.Update.Request
+            var response = await SinchClientMockStudio.Sms.Groups.Update(new SMS.Groups.Update.UpdateGroupRequest
             {
                 GroupId = "01GJFY2CEJQ0Y20704G8G506N9",
                 Name = "KillerRabbit222",
@@ -46,7 +46,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task Replace()
         {
-            var response = await SinchClientMockStudio.Sms.Groups.Replace(new SMS.Groups.Replace.Request
+            var response = await SinchClientMockStudio.Sms.Groups.Replace(new SMS.Groups.Replace.ReplaceGroupRequest
             {
                 GroupId = "01GJFY2CEJQ0Y20704G8G506N9",
                 Members = new List<string>()
@@ -74,7 +74,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task CreateWithChild()
         {
-            var response = await SinchClientMockStudio.Sms.Groups.Create(new Request()
+            var response = await SinchClientMockStudio.Sms.Groups.Create(new CreateGroupRequest()
             {
                 Name = "WithChildGroups",
                 Members = new List<string>()
@@ -92,7 +92,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task List()
         {
-            var response = await SinchClientMockStudio.Sms.Groups.List(new SMS.Groups.List.Request
+            var response = await SinchClientMockStudio.Sms.Groups.List(new SMS.Groups.List.ListGroupsRequest
             {
                 Page = 2,
             });

@@ -66,7 +66,7 @@ namespace Sinch.Tests.Sms
                     }
                 }));
 
-            var response = await Sms.DeliveryReports.Get(new Request
+            var response = await Sms.DeliveryReports.Get(new GetDeliveryReportRequest
             {
                 BatchId = batchId,
                 DeliveryReportType = DeliveryReportVerbosityType.Full,
@@ -146,7 +146,7 @@ namespace Sinch.Tests.Sms
                     }
                 }));
 
-            var response = await Sms.DeliveryReports.List(new SMS.DeliveryReports.List.Request
+            var response = await Sms.DeliveryReports.List(new SMS.DeliveryReports.List.ListDeliveryReportsRequest
             {
                 Page = 1,
                 PageSize = 30,
@@ -236,7 +236,7 @@ namespace Sinch.Tests.Sms
                     }
                 }));
             
-            var response = Sms.DeliveryReports.ListAuto(new SMS.DeliveryReports.List.Request
+            var response = Sms.DeliveryReports.ListAuto(new SMS.DeliveryReports.List.ListDeliveryReportsRequest
             {
                 Page = 0,
             });

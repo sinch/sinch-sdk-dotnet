@@ -24,7 +24,7 @@ public class InboundSmsController : ControllerBase
     [Route("subscription")]
     public async Task Subscribe([FromBody] IncomingTextSms incomingSms)
     {
-        var group = await _sinchClient.Sms.Groups.Create(new Request() { Name = "Pirates of Sinch" });
+        var group = await _sinchClient.Sms.Groups.Create(new CreateGroupRequest() { Name = "Pirates of Sinch" });
         var fromNumber = incomingSms.From;
         var toNumber = incomingSms.To;
         var autoReply = "";
@@ -34,7 +34,7 @@ public class InboundSmsController : ControllerBase
         switch (groupNumbers.Contains(fromNumber), inboundMessage)
         {
             case (false, "SUBSCRIBE"):
-                await _sinchClient.Sms.Groups.Update(new Sinch.SMS.Groups.Update.Request
+                await _sinchClient.Sms.Groups.Update(new Sinch.SMS.Groups.Update.UpdateGroupRequest
                     {
                         GroupId = group.Id,
                         Name = "group 1",
@@ -47,7 +47,7 @@ public class InboundSmsController : ControllerBase
                 autoReply = $"Congratulations! You are now subscribed to {group.Name}. Text STOP to leave this group.";
                 break;
             case (true, "STOP"):
-                await _sinchClient.Sms.Groups.Update(new Sinch.SMS.Groups.Update.Request
+                await _sinchClient.Sms.Groups.Update(new Sinch.SMS.Groups.Update.UpdateGroupRequest
                 {
                     GroupId = group.Id,
                     Name = "group 1",

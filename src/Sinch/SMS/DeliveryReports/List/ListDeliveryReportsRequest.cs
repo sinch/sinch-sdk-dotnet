@@ -5,7 +5,7 @@ using Sinch.Core;
 
 namespace Sinch.SMS.DeliveryReports.List
 {
-    public sealed class Request
+    public sealed class ListDeliveryReportsRequest
     {
         public int Page { get; set; }
 

@@ -3,7 +3,7 @@ using Sinch.Core;
 
 namespace Sinch.SMS.Groups.List
 {
-    public sealed class Request
+    public sealed class ListGroupsRequest
     {
         public int Page { get; set; }
 

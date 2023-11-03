@@ -2,7 +2,7 @@
 
 namespace Sinch.SMS.DeliveryReports.Get
 {
-    public sealed class Response
+    public sealed class GetDeliveryReportResponse
     {
         /// <summary>
         ///     The type of webhook for the delivery report.

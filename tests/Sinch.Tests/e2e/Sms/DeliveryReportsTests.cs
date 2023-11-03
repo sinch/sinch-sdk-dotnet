@@ -13,7 +13,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task Get()
         {
-            var response = await SinchClientMockStudio.Sms.DeliveryReports.Get(new Request
+            var response = await SinchClientMockStudio.Sms.DeliveryReports.Get(new GetDeliveryReportRequest
             {
                 BatchId = "01GRY6XP44CBK211XY3HFG09KR",
                 DeliveryReportType = DeliveryReportVerbosityType.Summary,
@@ -35,7 +35,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task List()
         {
-            var response = await SinchClientMockStudio.Sms.DeliveryReports.List(new SMS.DeliveryReports.List.Request()
+            var response = await SinchClientMockStudio.Sms.DeliveryReports.List(new SMS.DeliveryReports.List.ListDeliveryReportsRequest()
             {
                 
                 Page = 0,

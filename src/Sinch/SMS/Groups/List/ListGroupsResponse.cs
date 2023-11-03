@@ -2,7 +2,7 @@
 
 namespace Sinch.SMS.Groups.List
 {
-    public class Response
+    public class ListGroupsResponse
     {
         /// <summary>
         ///     The requested page.

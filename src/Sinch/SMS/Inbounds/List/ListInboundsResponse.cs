@@ -2,7 +2,7 @@
 
 namespace Sinch.SMS.Inbounds.List
 {
-    public sealed class Response
+    public sealed class ListInboundsResponse
     {
         public int Page { get; set; }
 

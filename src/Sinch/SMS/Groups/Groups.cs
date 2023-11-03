@@ -6,10 +6,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
+using Sinch.SMS.Groups.Create;
 using Sinch.SMS.Groups.List;
 using Sinch.SMS.Groups.Replace;
 using Sinch.SMS.Groups.Update;
-using Request = Sinch.SMS.Groups.List.Request;
 
 namespace Sinch.SMS.Groups
 {
@@ -23,7 +23,7 @@ namespace Sinch.SMS.Groups
         /// <param name="request">Request params</param>
         /// <param name="cancellationToken"></param>
         /// <returns>A paging data and a list of groups</returns>
-        Task<Response> List(Request request, CancellationToken cancellationToken = default);
+        Task<ListGroupsResponse> List(ListGroupsRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     With the list operation you can list all groups that you have created. This operation supports pagination.<br />
@@ -33,7 +33,7 @@ namespace Sinch.SMS.Groups
         /// <param name="request">Request params</param>
         /// <param name="cancellationToken"></param>
         /// <returns>An async enumerable of <see cref="Group"/></returns>
-        IAsyncEnumerable<Group> ListAuto(Request request, CancellationToken cancellationToken = default);
+        IAsyncEnumerable<Group> ListAuto(ListGroupsRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     This operation retrieves a specific group with the provided group ID.
@@ -50,7 +50,7 @@ namespace Sinch.SMS.Groups
         /// <param name="request">Params to create a group</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Group> Create(Create.Request request, CancellationToken cancellationToken = default);
+        Task<Group> Create(CreateGroupRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     With the update group operation, you can add and remove members in an existing group as well as rename the group.
@@ -70,7 +70,7 @@ namespace Sinch.SMS.Groups
         /// <param name="request">Params to create a group</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Group> Update(Update.Request request, CancellationToken cancellationToken = default);
+        Task<Group> Update(UpdateGroupRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     The replace operation will replace all parameters, including members,
@@ -81,7 +81,7 @@ namespace Sinch.SMS.Groups
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Group> Replace(Replace.Request request, CancellationToken cancellationToken = default);
+        Task<Group> Replace(ReplaceGroupRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     This operation deletes the group with the provided group ID.
@@ -115,14 +115,17 @@ namespace Sinch.SMS.Groups
             _http = http;
         }
 
-        public Task<Response> List(Request request, CancellationToken cancellationToken = default)
+        /// <inheritdoc />
+        public Task<ListGroupsResponse> List(ListGroupsRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/groups?{request.GetQueryString()}");
             _logger?.LogDebug("Listing groups...");
-            return _http.Send<Response>(uri, HttpMethod.Get, cancellationToken);
+            return _http.Send<ListGroupsResponse>(uri, HttpMethod.Get, cancellationToken);
         }
 
-        public async IAsyncEnumerable<Group> ListAuto(Request request, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        /// <inheritdoc />
+        public async IAsyncEnumerable<Group> ListAuto(ListGroupsRequest request,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Auto listing groups...");
             bool isLastPage;
@@ -130,7 +133,7 @@ namespace Sinch.SMS.Groups
             {
                 var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/groups?{request.GetQueryString()}");
                 _logger?.LogDebug("Listing group {page}", request.Page);
-                var response = await _http.Send<Response>(uri, HttpMethod.Get, cancellationToken);
+                var response = await _http.Send<ListGroupsResponse>(uri, HttpMethod.Get, cancellationToken);
                 foreach (var group in response.Groups)
                 {
                     yield return group;
@@ -141,6 +144,7 @@ namespace Sinch.SMS.Groups
             } while (!isLastPage);
         }
 
+        /// <inheritdoc />
         public Task<Group> Get(string groupId, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/groups/{groupId}");
@@ -148,14 +152,16 @@ namespace Sinch.SMS.Groups
             return _http.Send<Group>(uri, HttpMethod.Get, cancellationToken);
         }
 
-        public Task<Group> Create(Create.Request request, CancellationToken cancellationToken = default)
+        /// <inheritdoc />
+        public Task<Group> Create(CreateGroupRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/groups");
             _logger?.LogDebug("Creating a group...");
-            return _http.Send<Create.Request, Group>(uri, HttpMethod.Post, request, cancellationToken)!;
+            return _http.Send<CreateGroupRequest, Group>(uri, HttpMethod.Post, request, cancellationToken)!;
         }
 
-        public Task<Group> Update(Update.Request request, CancellationToken cancellationToken = default)
+        /// <inheritdoc />
+        public Task<Group> Update(UpdateGroupRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/groups/{request.GroupId}");
             _logger?.LogDebug("Updating a group with {id}...", request.GroupId);
@@ -170,10 +176,11 @@ namespace Sinch.SMS.Groups
                     AutoUpdate = request.AutoUpdate
                 }, cancellationToken)!;
 
-            return _http.Send<Update.IGroupUpdateRequest, Group>(uri, HttpMethod.Post, request, cancellationToken)!;
+            return _http.Send<IGroupUpdateRequest, Group>(uri, HttpMethod.Post, request, cancellationToken)!;
         }
 
-        public Task<Group> Replace(Replace.Request request, CancellationToken cancellationToken = default)
+        /// <inheritdoc />
+        public Task<Group> Replace(ReplaceGroupRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/groups/{request.GroupId}");
             _logger?.LogDebug("Replacing a group with {id}...", request.GroupId);
@@ -185,6 +192,7 @@ namespace Sinch.SMS.Groups
             return _http.Send<RequestInner, Group>(uri, HttpMethod.Put, requestInner, cancellationToken)!;
         }
 
+        /// <inheritdoc />
         public Task Delete(string groupId, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/groups/{groupId}");
@@ -192,6 +200,7 @@ namespace Sinch.SMS.Groups
             return _http.Send<object, Group>(uri, HttpMethod.Delete, null, cancellationToken);
         }
 
+        /// <inheritdoc />
         public Task<IEnumerable<string>> ListMembers(string groupId, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/groups/{groupId}/members");

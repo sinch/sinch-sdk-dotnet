@@ -4,7 +4,7 @@ using Sinch.Core;
 
 namespace Sinch.SMS.DeliveryReports.Get
 {
-    public sealed class Request
+    public sealed class GetDeliveryReportRequest
     {
         /// <summary>
         ///     The batch ID you received from sending a message.

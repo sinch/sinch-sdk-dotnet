@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Sinch.SMS.Groups.Replace
 {
-    public sealed class Request
+    public sealed class ReplaceGroupRequest
     {
         /// <summary>
         ///     ID of a group that you are interested in getting.
