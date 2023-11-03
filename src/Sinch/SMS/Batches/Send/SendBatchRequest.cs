@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Sinch.SMS.Batches.Send
 {
-    public class Request
+    public class SendBatchRequest
     {
         /// <summary>
         ///     The message content. 2000 characters max

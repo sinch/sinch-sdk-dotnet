@@ -56,7 +56,7 @@ namespace Sinch.Tests.Sms
                 .WithPartialContent("irythil")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(Batch));
 
-            var request = new Request
+            var request = new SendBatchRequest
             {
                 Body = "Hi ${name}! How are you?",
                 DeliveryReport = DeliveryReport.Full,
@@ -120,7 +120,7 @@ namespace Sinch.Tests.Sms
                     }
                 }));
 
-            var request = new SMS.Batches.List.Request
+            var request = new SMS.Batches.List.ListBatchesRequest
             {
                 PageSize = 11,
                 ClientReference = "havel",
@@ -157,7 +157,7 @@ namespace Sinch.Tests.Sms
                     }
                 }));
 
-            var response = await Sms.Batches.DryRun(new SMS.Batches.DryRun.Request
+            var response = await Sms.Batches.DryRun(new SMS.Batches.DryRun.DryRunRequest
             {
                 PerRecipient = false,
                 NumberOfRecipients = 144,
@@ -214,7 +214,7 @@ namespace Sinch.Tests.Sms
                 .WithPartialContent("31231323")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(Batch));
 
-            var response = await Sms.Batches.Update("01FC66621XXXXX119Z8PMV1QPQ", new SMS.Batches.Update.Request
+            var response = await Sms.Batches.Update("01FC66621XXXXX119Z8PMV1QPQ", new SMS.Batches.Update.UpdateBatchRequest
             {
                 Body = null,
                 From = "31231323",
@@ -334,7 +334,7 @@ namespace Sinch.Tests.Sms
                         Batch
                     }
                 }));
-            var request = new SMS.Batches.List.Request();
+            var request = new SMS.Batches.List.ListBatchesRequest();
             var response = Sms.Batches.ListAuto(request);
             await foreach (var batch in response)
             {

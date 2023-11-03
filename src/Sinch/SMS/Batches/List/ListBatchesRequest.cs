@@ -5,7 +5,7 @@ using Sinch.Core;
 
 namespace Sinch.SMS.Batches.List
 {
-    public sealed class Request
+    public sealed class ListBatchesRequest
     {
         /// <summary>
         ///     The page number starting from 0.

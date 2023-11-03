@@ -10,7 +10,7 @@ using Sinch.SMS.Inbounds.List;
 
 namespace Sinch.SMS.Inbounds
 {
-    public interface IInbounds
+    public interface ISinchSmsInbounds
     {
         /// <summary>
         ///     With the list operation, you can list all inbound messages that you have received.
@@ -40,7 +40,7 @@ namespace Sinch.SMS.Inbounds
         Task<Inbound> Get(string inboundId, CancellationToken cancellationToken = default);
     }
 
-    public class Inbounds : IInbounds
+    public class Inbounds : ISinchSmsInbounds
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

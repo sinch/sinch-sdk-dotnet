@@ -2,7 +2,7 @@
 
 namespace Sinch.SMS.Batches.List
 {
-    public class Response
+    public class ListBatchesResponse
     {
         /// <summary>
         ///     The requested page.

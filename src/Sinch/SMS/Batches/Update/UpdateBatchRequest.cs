@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Sinch.SMS.Batches.Update
 {
-    public class Request
+    public class UpdateBatchRequest
     {
         /// <summary>
         ///     Sender number. Must be valid phone number, short code or alphanumeric.

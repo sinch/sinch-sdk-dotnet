@@ -2,7 +2,7 @@
 
 namespace Sinch.SMS.Batches.DryRun
 {
-    public class Response
+    public class DryRunResponse
     {
         /// <summary>
         ///     The number of recipients in the batch

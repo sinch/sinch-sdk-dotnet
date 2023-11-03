@@ -13,7 +13,7 @@ using Request = Sinch.SMS.Groups.List.Request;
 
 namespace Sinch.SMS.Groups
 {
-    public interface IGroups
+    public interface ISinchSmsGroups
     {
         /// <summary>
         ///     With the list operation you can list all groups that you have created. This operation supports pagination.<br />
@@ -100,7 +100,7 @@ namespace Sinch.SMS.Groups
         Task<IEnumerable<string>> ListMembers(string groupId, CancellationToken cancellationToken = default);
     }
 
-    internal sealed class Groups : IGroups
+    internal sealed class Groups : ISinchSmsGroups
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

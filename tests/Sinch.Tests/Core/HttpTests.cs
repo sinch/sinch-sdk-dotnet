@@ -69,7 +69,7 @@ namespace Sinch.Tests.Core
 
             Func<Task<object>> response = () => http.Send<object>(uri, HttpMethod.Get);
 
-            var ex = await response.Should().ThrowAsync<ApiException>();
+            var ex = await response.Should().ThrowAsync<SinchApiException>();
             ex.Where(x => x.StatusCode == HttpStatusCode.Unauthorized);
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
@@ -93,7 +93,7 @@ namespace Sinch.Tests.Core
 
             Func<Task<object>> response = () => http.Send<object>(uri, HttpMethod.Get);
 
-            var ex = await response.Should().ThrowAsync<ApiException>();
+            var ex = await response.Should().ThrowAsync<SinchApiException>();
             ex.Which.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }

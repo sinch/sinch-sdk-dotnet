@@ -31,7 +31,7 @@ public class ReplyToInboundController : ControllerBase
             incomingSms.Body,
             incomingSms.From,
             incomingSms.To);
-        var _ = await _sinch.Sms.Batches.Send(new Request
+        var _ = await _sinch.Sms.Batches.Send(new SendBatchRequest
         {
             Body = incomingSms.Body,
             DeliveryReport = DeliveryReport.None,

@@ -10,7 +10,7 @@ using Sinch.SMS.DeliveryReports.Get;
 
 namespace Sinch.SMS.DeliveryReports
 {
-    public interface IDeliveryReports
+    public interface ISinchSmsDeliveryReports
     {
         /// <summary>
         ///     Delivery reports can be retrieved even if no callback was requested.
@@ -53,7 +53,7 @@ namespace Sinch.SMS.DeliveryReports
     }
 
     /// <inheritdoc />
-    internal class DeliveryReports : IDeliveryReports
+    internal class DeliveryReports : ISinchSmsDeliveryReports
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

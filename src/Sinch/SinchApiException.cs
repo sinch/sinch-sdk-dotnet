@@ -11,9 +11,9 @@ namespace Sinch
     /// <summary>
     ///     Contains the information about failed request
     /// </summary>
-    public sealed class ApiException : HttpRequestException
+    public sealed class SinchApiException : HttpRequestException
     {
-        private ApiException(string message, Exception inner, HttpStatusCode statusCode) : base(message, inner,
+        private SinchApiException(string message, Exception inner, HttpStatusCode statusCode) : base(message, inner,
             statusCode)
         {
 #if NET6_0_OR_GREATER
@@ -21,7 +21,7 @@ namespace Sinch
 #endif
         }
 
-        internal ApiException(HttpStatusCode statusCode, string message, Exception inner, ApiErrorResponse authApiError)
+        internal SinchApiException(HttpStatusCode statusCode, string message, Exception inner, ApiErrorResponse authApiError)
             : this($"{message}:{authApiError?.Error?.Message ?? authApiError?.Text}", inner, statusCode)
         {
             // https://developers.sinch.com/docs/sms/api-reference/status-codes/#4xx---user-errors
