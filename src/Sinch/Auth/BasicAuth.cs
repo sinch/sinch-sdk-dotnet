@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Sinch.Auth
 {
-    public class BasicAuth : IAuth
+    public class BasicAuth : ISinchAuth
     {
         private readonly string _appKey;
         private readonly string _appSecret;

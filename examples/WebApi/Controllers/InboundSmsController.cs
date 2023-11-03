@@ -11,10 +11,10 @@ namespace WebApiExamples.Controllers;
 [Route("reply")]
 public class InboundSmsController : ControllerBase
 {
-    private readonly ISinch _sinchClient;
+    private readonly ISinchClient _sinchClient;
     private readonly ILogger _logger;
 
-    public InboundSmsController(ISinch sinchClient, ILogger<InboundSmsController> logger)
+    public InboundSmsController(ISinchClient sinchClient, ILogger<InboundSmsController> logger)
     {
         _sinchClient = sinchClient;
         _logger = logger;

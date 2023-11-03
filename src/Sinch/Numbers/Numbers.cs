@@ -8,7 +8,7 @@ namespace Sinch.Numbers
     ///     You can use the Active Number API to manage numbers you own. Assign numbers to projects, release numbers from
     ///     projects, or list all numbers assigned to a project.
     /// </summary>
-    public interface INumbers
+    public interface ISinchNumbers
     {
         /// <summary>
         ///     You can use the Available Regions API to list all of the regions that have numbers assigned to a project.
@@ -27,7 +27,7 @@ namespace Sinch.Numbers
         public IActive Active { get; }
     }
 
-    public sealed class Numbers : INumbers
+    public sealed class Numbers : ISinchNumbers
     {
         internal Numbers(string projectId, Uri baseAddress,
             LoggerFactory loggerFactory, IHttp http)

@@ -5,7 +5,7 @@ namespace Sinch.Tests.Conversation
 {
     public class ConversationTestBase : TestBase
     {
-        internal readonly IConversation Conversation;
+        internal readonly ISinchConversation Conversation;
 
         protected ConversationTestBase()
         {

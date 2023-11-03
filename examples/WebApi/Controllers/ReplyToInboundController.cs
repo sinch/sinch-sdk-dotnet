@@ -10,10 +10,10 @@ namespace WebApiExamples.Controllers;
 [Route("reply")]
 public class ReplyToInboundController : ControllerBase
 {
-    private readonly ISinch _sinch;
+    private readonly ISinchClient _sinch;
     private readonly ILogger _logger;
 
-    public ReplyToInboundController(ISinch sinch, ILogger<ReplyToInboundController> logger)
+    public ReplyToInboundController(ISinchClient sinch, ILogger<ReplyToInboundController> logger)
     {
         _sinch = sinch;
         _logger = logger;

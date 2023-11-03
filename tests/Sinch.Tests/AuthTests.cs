@@ -20,7 +20,7 @@ namespace Sinch.Tests
         private readonly ILoggerAdapter<OAuth> _logger = Substitute.For<ILoggerAdapter<OAuth>>();
         private readonly MockHttpMessageHandler _messageHandlerMock = new();
         private readonly MockedRequest _mockedRequest;
-        private readonly IAuth _auth;
+        private readonly ISinchAuth _auth;
 
         public AuthTests()
         {

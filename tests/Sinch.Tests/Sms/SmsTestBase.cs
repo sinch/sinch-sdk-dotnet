@@ -5,7 +5,7 @@ namespace Sinch.Tests.Sms
 {
     public class SmsTestBase : TestBase
     {
-        internal readonly ISms Sms;
+        internal readonly ISinchSms Sms;
 
         protected SmsTestBase()
         {

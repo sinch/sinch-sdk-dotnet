@@ -14,12 +14,12 @@ namespace Sinch.Tests.Core
 {
     public class HttpTests
     {
-        private readonly IAuth _tokenManagerMock;
+        private readonly ISinchAuth _tokenManagerMock;
         private readonly MockHttpMessageHandler _httpMessageHandlerMock;
 
         public HttpTests()
         {
-            _tokenManagerMock = Substitute.For<IAuth>();
+            _tokenManagerMock = Substitute.For<ISinchAuth>();
             _tokenManagerMock.Scheme.Returns("Bearer");
             _httpMessageHandlerMock = new MockHttpMessageHandler();
         }

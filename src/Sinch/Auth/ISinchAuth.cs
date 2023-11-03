@@ -2,7 +2,7 @@
 
 namespace Sinch.Auth
 {
-    public interface IAuth
+    public interface ISinchAuth
     {
         /// <summary>
         ///     Get an auth token.

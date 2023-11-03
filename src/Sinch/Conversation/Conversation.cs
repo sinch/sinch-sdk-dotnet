@@ -13,7 +13,7 @@ namespace Sinch.Conversation
     ///     The Conversation API endpoint uses built-in transcoding to give you the power of conversation across all
     ///     supported channels and, if required, full control over channel specific features.
     /// </summary>
-    public interface IConversation
+    public interface ISinchConversation
     {
         /// <inheritdoc cref="IMessages" />
         IMessages Messages { get; }
@@ -23,7 +23,7 @@ namespace Sinch.Conversation
     }
 
     /// <inheritdoc />
-    internal class Conversation : IConversation
+    internal class Conversation : ISinchConversation
     {
         internal Conversation(string projectId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
         {

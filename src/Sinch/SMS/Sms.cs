@@ -12,7 +12,7 @@ namespace Sinch.SMS
     ///     Send and receive SMS through a single connection for timely and cost-efficient communications using the Sinch SMS
     ///     API.
     /// </summary>
-    public interface ISms
+    public interface ISinchSms
     {
         /// <summary>
         ///     Batches are sets of SMS messages. You can send a single message or many.
@@ -49,7 +49,7 @@ namespace Sinch.SMS
         IDeliveryReports DeliveryReports { get; }
     }
 
-    internal class Sms : ISms
+    internal class Sms : ISinchSms
     {
         internal Sms(string projectId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
         {

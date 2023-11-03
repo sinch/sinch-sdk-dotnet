@@ -11,7 +11,7 @@ using Sinch.Verification;
 
 namespace Sinch
 {
-    public interface ISinch
+    public interface ISinchClient
     {
         /// <summary>
         ///     An OAuth2.0 functionality for an SDK in case you want to fetch tokens.
@@ -19,7 +19,7 @@ namespace Sinch
         ///         Learn more.
         ///     </see>
         /// </summary>
-        public IAuth Auth { get; }
+        public ISinchAuth Auth { get; }
 
         /// <summary>
         ///     The Numbers API enables you to search for, view, and activate numbers.
@@ -38,7 +38,7 @@ namespace Sinch
         ///         Learn more.
         ///     </see>
         /// </summary>
-        public INumbers Numbers { get; }
+        public ISinchNumbers Numbers { get; }
 
         /// <summary>
         ///     Send and receive SMS through a single connection for timely and cost-efficient communications using
@@ -47,7 +47,7 @@ namespace Sinch
         ///         Learn more.
         ///     </see>
         /// </summary>
-        public ISms Sms { get; }
+        public ISinchSms Sms { get; }
 
         /// <summary>
         ///     Send and receive messages globally over SMS, RCS, WhatsApp, Viber Business,
@@ -56,7 +56,7 @@ namespace Sinch
         ///     across all supported channels and, if required, full control over channel specific features.<br/><br/>
         ///     <see href="https://developers.sinch.com/docs/conversation/api-reference/">Learn more.</see>
         /// </summary>
-        public IConversation Conversation { get; set; }
+        public ISinchConversation Conversation { get; set; }
 
         /// <summary>
         ///     Verify users with SMS, flash calls (missed calls), a regular call, or data verification.
@@ -85,12 +85,16 @@ namespace Sinch
         /// </summary>
         /// <param name="appKey"></param>
         /// <param name="appSecret"></param>
+        /// <param name="authStrategy">
+        ///     Choose which authentication to use.
+        ///     Defaults to Application Sign request and it's a recommended approach.
+        /// </param>
         /// <returns></returns>
         public ISinchVerificationClient Verification(string appKey, string appSecret,
             AuthStrategy authStrategy = AuthStrategy.ApplicationSign);
     }
 
-    public class SinchClient : ISinch
+    public class SinchClient : ISinchClient
     {
         private const string VerificationApiUrl = "https://verification.api.sinch.com/";
         private const string NumbersApiUrl = "https://numbers.api.sinch.com/";
@@ -137,7 +141,7 @@ namespace Sinch
             var logger = _loggerFactory?.Create<SinchClient>();
             logger?.LogInformation("Initializing SinchClient...");
 
-            IAuth auth =
+            ISinchAuth auth =
                 new OAuth(keyId, keySecret, optionsObj.HttpClient, _loggerFactory?.Create<OAuth>());
             var httpCamelCase = new Http(auth, optionsObj.HttpClient, _loggerFactory?.Create<Http>(),
                 JsonNamingPolicy.CamelCase);
@@ -189,17 +193,17 @@ namespace Sinch
         }
 
         /// <inheritdoc/>       
-        public INumbers Numbers { get; }
+        public ISinchNumbers Numbers { get; }
 
         /// <inheritdoc/>
-        public ISms Sms { get; }
+        public ISinchSms Sms { get; }
 
         /// <inheritdoc/>
-        public IConversation Conversation { get; set; }
+        public ISinchConversation Conversation { get; set; }
 
 
         /// <inheritdoc/>
-        public IAuth Auth { get; }
+        public ISinchAuth Auth { get; }
 
         /// <inheritdoc/>
         public ISinchVerificationClient Verification(string appKey, string appSecret,
@@ -215,7 +219,7 @@ namespace Sinch
                 throw new ArgumentNullException(nameof(appSecret), "The value should be present");
             }
 
-            IAuth auth;
+            ISinchAuth auth;
             if (authStrategy == AuthStrategy.ApplicationSign)
             {
                 auth = new ApplicationSignedAuth(appKey, appSecret);

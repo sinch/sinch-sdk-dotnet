@@ -8,9 +8,9 @@ namespace WebApiExamples.Controllers;
 [Route("[controller]")]
 public class Numbers : ControllerBase
 {
-    private readonly ISinch _sinch;
+    private readonly ISinchClient _sinch;
 
-    public Numbers(ISinch sinch)
+    public Numbers(ISinchClient sinch)
     {
         _sinch = sinch;
     }

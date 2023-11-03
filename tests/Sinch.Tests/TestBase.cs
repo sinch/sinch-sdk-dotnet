@@ -11,7 +11,7 @@ namespace Sinch.Tests
     {
         protected const string ProjectId = "MOCK_PROJECT_ID";
         protected const string Token = "to-ke-n";
-        private readonly IAuth _tokenManager = Substitute.For<IAuth>();
+        private readonly ISinchAuth _tokenManager = Substitute.For<ISinchAuth>();
         internal readonly Http HttpCamelCase;
         protected readonly MockHttpMessageHandler HttpMessageHandlerMock = new();
         internal readonly Http HttpSnakeCase;
