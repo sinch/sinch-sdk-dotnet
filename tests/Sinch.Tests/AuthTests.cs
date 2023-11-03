@@ -90,7 +90,7 @@ namespace Sinch.Tests
 
             Func<Task<string>> act = () => _auth.GetAuthToken();
 
-            await act.Should().ThrowAsync<AuthException>();
+            await act.Should().ThrowAsync<SinchAuthException>();
         }
 
         [Fact]
@@ -106,7 +106,7 @@ namespace Sinch.Tests
 
             Func<Task<string>> act = () => _auth.GetAuthToken();
 
-            await act.Should().ThrowAsync<AuthException>().Where(x =>
+            await act.Should().ThrowAsync<SinchAuthException>().Where(x =>
                 x.Error == "invalid_request"
                 && x.ErrorVerbose == "long_description"
                 && x.ErrorDescription == "super_long_description"

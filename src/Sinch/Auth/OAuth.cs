@@ -66,7 +66,7 @@ namespace Sinch.Auth
                 var authResponse = await result.TryGetJson<AuthApiError>();
                 _logger?.LogError("Failed to fetch a token with {status} dew to {reason}", result.StatusCode,
                     result.ReasonPhrase);
-                throw new AuthException(result.StatusCode, result.ReasonPhrase, null, authResponse);
+                throw new SinchAuthException(result.StatusCode, result.ReasonPhrase, null, authResponse);
             }
 
             var response = await result.Content.ReadFromJsonAsync<AuthResponse>();

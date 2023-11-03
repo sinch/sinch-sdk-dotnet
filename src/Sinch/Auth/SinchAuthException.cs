@@ -4,14 +4,14 @@ using System.Net.Http;
 
 namespace Sinch.Auth
 {
-    public sealed class AuthException : HttpRequestException
+    public sealed class SinchAuthException : HttpRequestException
     {
-        private AuthException(HttpStatusCode statusCode, string message, Exception inner) : base(message, inner,
+        private SinchAuthException(HttpStatusCode statusCode, string message, Exception inner) : base(message, inner,
             statusCode)
         {
         }
 
-        internal AuthException(HttpStatusCode statusCode, string message, Exception inner, AuthApiError authApiError)
+        internal SinchAuthException(HttpStatusCode statusCode, string message, Exception inner, AuthApiError authApiError)
             : this(statusCode, message, inner)
         {
             Error = authApiError?.Error;

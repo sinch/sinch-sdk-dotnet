@@ -3,7 +3,7 @@ using Sinch.Core;
 
 namespace Sinch.Conversation.Messages
 {
-    public class Identified : OneOf<Contact, Identified>, IRecipient
+    public class Identified : IRecipient
     {
         public IdentifiedBy IdentifiedBy { get; set; }
     }
@@ -16,7 +16,7 @@ namespace Sinch.Conversation.Messages
     public class ChannelIdentity
     {
         public string AppId { get; set; }
-        
+
         public string Identity { get; set; }
 
         public ConversationChannel Channel { get; set; }
