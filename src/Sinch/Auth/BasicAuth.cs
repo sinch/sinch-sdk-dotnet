@@ -9,7 +9,7 @@ namespace Sinch.Auth
         private readonly string _appKey;
         private readonly string _appSecret;
 
-        public string Scheme { get; } = "Basic";
+        public string Scheme { get; } = AuthSchemes.Basic;
 
         public BasicAuth(string appKey, string appSecret)
         {
@@ -17,7 +17,7 @@ namespace Sinch.Auth
             _appSecret = appSecret;
         }
 
-        public Task<string> GetAuthValue(bool force = false)
+        public Task<string> GetAuthToken(bool force = false)
         {
             var plainTextBytes = Encoding.UTF8.GetBytes($"{_appKey}:{_appSecret}");
             return Task.FromResult(Convert.ToBase64String(plainTextBytes));

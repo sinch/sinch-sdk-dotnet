@@ -15,7 +15,7 @@ namespace Sinch.Auth
         private string _requestPath;
         private string _timestamp;
 
-        public string Scheme { get; } = "Application";
+        public string Scheme { get; } = AuthSchemes.Application;
 
         public ApplicationSignedAuth(string appKey, string appSecret)
         {
@@ -31,11 +31,11 @@ namespace Sinch.Auth
             _requestPath = requestPath;
             _timestamp = timestamp;
             _requestContentType = contentType;
-            return GetAuthValue().GetAwaiter().GetResult();
+            return GetAuthToken().GetAwaiter().GetResult();
         }
 
 
-        public Task<string> GetAuthValue(bool force = false)
+        public Task<string> GetAuthToken(bool force = false)
         {
             var encodedBody = string.Empty;
             if (_jsonBodyInBytes is not null)

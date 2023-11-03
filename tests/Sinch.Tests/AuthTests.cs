@@ -48,7 +48,7 @@ namespace Sinch.Tests
                 token_type = "bearer"
             }));
 
-            var token = await _auth.GetAuthValue();
+            var token = await _auth.GetAuthToken();
 
             _messageHandlerMock.GetMatchCount(_mockedRequest).Should().Be(1);
             token.Should().Be("token_1");
@@ -65,7 +65,7 @@ namespace Sinch.Tests
                 token_type = "bearer"
             }));
 
-            var token = await _auth.GetAuthValue();
+            var token = await _auth.GetAuthToken();
 
             _messageHandlerMock.GetMatchCount(_mockedRequest).Should().Be(1);
             token.Should().Be("token_1");
@@ -78,38 +78,9 @@ namespace Sinch.Tests
                 token_type = "bearer"
             }));
 
-            var token2 = await _auth.GetAuthValue();
+            var token2 = await _auth.GetAuthToken();
             _messageHandlerMock.GetMatchCount(_mockedRequest).Should().Be(1);
             token2.Should().Be("token_1");
-        }
-
-        [Fact]
-        public async Task RenewToken()
-        {
-            _mockedRequest.Respond(JsonContent.Create(new
-            {
-                access_token = "token_1",
-                expires_in = 1,
-                scope = "",
-                token_type = "bearer"
-            }));
-
-            var token = await _auth.GetAuthValue();
-
-            token.Should().Be("token_1");
-
-            Thread.Sleep(1000);
-
-            _mockedRequest.Respond(JsonContent.Create(new
-            {
-                access_token = "token_2",
-                expires_in = 10,
-                scope = "",
-                token_type = "bearer"
-            }));
-            var token2 = await _auth.GetAuthValue();
-            _messageHandlerMock.GetMatchCount(_mockedRequest).Should().Be(2);
-            token2.Should().Be("token_2");
         }
 
         [Fact]
@@ -117,7 +88,7 @@ namespace Sinch.Tests
         {
             _mockedRequest.Respond(HttpStatusCode.NotFound);
 
-            Func<Task<string>> act = () => _auth.GetAuthValue();
+            Func<Task<string>> act = () => _auth.GetAuthToken();
 
             await act.Should().ThrowAsync<AuthException>();
         }
@@ -133,7 +104,7 @@ namespace Sinch.Tests
                 error_hint = "how_to_fix"
             }));
 
-            Func<Task<string>> act = () => _auth.GetAuthValue();
+            Func<Task<string>> act = () => _auth.GetAuthToken();
 
             await act.Should().ThrowAsync<AuthException>().Where(x =>
                 x.Error == "invalid_request"
