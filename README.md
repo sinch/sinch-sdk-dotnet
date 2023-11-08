@@ -32,7 +32,7 @@ collecting feedback, and should not be used in production environments.
 SinchSDK can be installed using the Nuget package manager or the `dotnet` CLI.
 
 ```
-dotnet add package Sinch
+dotnet add package Sinch --prerelease
 ```
 
 # Getting started
@@ -50,7 +50,7 @@ using Sinch;
 
 var sinch = new SinchClient(configuration["Sinch:KeyId"], configuration["Sinch:KeySecret"], configuration["Sinch:ProjectId"]);
 ```
-To configure Conversation and SMS regions, use `options`:
+To configure Conversation and SMS hosting regions, use `options`:
 ```csharp
 var sinch = new SinchClient(
     configuration["Sinch:KeyId"],
@@ -58,7 +58,7 @@ var sinch = new SinchClient(
     configuration["Sinch:ProjectId"],
     options =>
     {
-        options.SmsRegion = Sinch.SMS.SmsRegion.Eu;
+        options.SmsHostingRegion = Sinch.SMS.SmsHostingRegion.Eu;
         options.ConversationRegion = Sinch.Conversation.ConversationRegion.Eu;
     });
 ```
@@ -80,12 +80,15 @@ Sinch client provides access to the following Sinch products:
 
 - Numbers
 - SMS
-- Work-in-Progress Conversation API
+- Verification
+- Work-in-Progress Conversation
 
-Usage example of the `numbers` product:
+Usage example of the `numbers` product, assuming `sinch` is type of `SinchClient`:
 
 ```csharp
-Sinch.Numbers.Active.List.Response response = await sinch.Numbers.Active.List(new Sinch.Numbers.Active.List.Request
+using Sinch.Numbers.Active.List;
+
+ListActiveNumbersResponse response = await sinch.Numbers.Active.List(new ListActiveNumbersRequest
 {
     RegionCode = "US",
     Type = Types.Mobile
@@ -95,13 +98,14 @@ Sinch.Numbers.Active.List.Response response = await sinch.Numbers.Active.List(ne
 
 ## Handling exceptions
 
-For an unsuccessful API calls `ApiException` will be thrown.
+For an unsuccessful API calls `SinchApiException` will be thrown.
 
 ```csharp
 using Sinch;
+using Sinch.SMS.Batches.Send;
 
 try {
-    var batch = await sinch.Sms.Batches.Send(new Sinch.SMS.Batches.Send.Request
+    var batch = await sinch.Sms.Batches.Send(new SendBatchRequest
     {
         Body = "Hello, World!",
         DeliveryReport = DeliveryReport.None,
@@ -111,7 +115,7 @@ try {
         }
     });
 }
-catch(ApiException e) 
+catch(SinchApiException e) 
 {
     logger.LogError("Api Exception. Status: {status}. Detailed message: {message}", e.Status, e.DetailedMessage);
 }
@@ -122,6 +126,9 @@ catch(ApiException e)
 To configure logger, provide own `HttpClient`, and additional options utilize `SinchOptions` within constructor:
 
 ```csharp
+using Sinch;
+using Sinch.SMS;
+
 var sinch = new SinchClient(
     configuration["Sinch:KeyId"],
     configuration["Sinch:KeySecret"], 
@@ -135,8 +142,8 @@ var sinch = new SinchClient(
         });
         // Provide your http client here
         options.HttpClient = new HttpClient();
-        // Set a region for SMS product
-        options.SmsRegion = Sinch.SMS.SmsRegion.Eu;
+        // Set a hosting region for Sms
+        options.SmsHostingRegion = SmsHostingRegion.Eu;
     });
 ```
 
