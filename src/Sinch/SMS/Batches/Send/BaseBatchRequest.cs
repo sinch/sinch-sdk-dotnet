@@ -1,13 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Sinch.Verification.Common;
+using Sinch.Verification.Report.Response;
 
 namespace Sinch.SMS.Batches.Send
 {
     /// <summary>
-    /// Marker interface for batch messages
+    ///     Marker interface for batch messages
     /// </summary>
+    [JsonConverter(typeof(SendBatchRequestConverter))]
     public interface ISendBatchRequest
     {
+    }
+
+    public class SendBatchRequestConverter : JsonConverter<ISendBatchRequest>
+    {
+        public override ISendBatchRequest Read(ref Utf8JsonReader reader, Type typeToConvert,
+            JsonSerializerOptions options)
+        {
+            var elem = JsonElement.ParseValue(ref reader);
+            var descriptor = elem.EnumerateObject().FirstOrDefault(x => x.Name == "type");
+            var type = descriptor.Value.GetString();
+            if (type == SmsType.MtText.Value)
+            {
+                return elem.Deserialize<TextBatchRequest>(options);
+            }
+
+            if (type == SmsType.MtBinary.Value)
+            {
+                return elem.Deserialize<BinaryBatchRequest>(options);
+            }
+
+            if (type == SmsType.MtMedia.Value)
+            {
+                return elem.Deserialize<MediaBatchRequest>(options);
+            }
+
+            throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
+        }
+
+        public override void Write(Utf8JsonWriter writer, ISendBatchRequest value,
+            JsonSerializerOptions options)
+        {
+            switch (value)
+            {
+                case BinaryBatchRequest binaryBatchRequest:
+                    JsonSerializer.Serialize(writer, binaryBatchRequest, options);
+                    break;
+                case MediaBatchRequest mediaBatchRequest:
+                    JsonSerializer.Serialize(writer, mediaBatchRequest, options);
+                    break;
+                case TextBatchRequest textBatchRequest:
+                    JsonSerializer.Serialize(writer, textBatchRequest, options);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value),
+                        $"Cannot find a proper specific type for {nameof(ISendBatchRequest)}");
+            }
+        }
     }
 
     public abstract class BaseBatchRequest
@@ -30,15 +83,7 @@ namespace Sinch.SMS.Batches.Send
 
         public abstract SmsType Type { get; }
 
-        /// <summary>
-        ///     Request delivery report callback. Note that delivery reports can be fetched from the API regardless of this
-        ///     setting.
-        /// </summary>
-#if NET7_0_OR_GREATER
-        public required DeliveryReport DeliveryReport { get; set; }
-#else
         public DeliveryReport DeliveryReport { get; set; }
-#endif
 
         /// <summary>
         ///     If set in the future, the message will be delayed until send_at occurs. Must be before expire_at.

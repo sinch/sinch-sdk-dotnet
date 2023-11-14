@@ -23,7 +23,7 @@ namespace Sinch.Tests.e2e.Sms
                 To = new List<string>() { "+48 737532793" },
                 From = "447520650792",
             });
-            response.Type.Should().Be(SmsType.MtText);
+            response.Should().BeOfType<TextBatch>().Which.Type.Should().Be(SmsType.MtText);
         }
 
         [Fact]

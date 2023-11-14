@@ -21,14 +21,6 @@ namespace Sinch.Tests.Sms
             to = new[] { "15551231234", "15551256344" },
             from = "15551231234",
             canceled = false,
-            parameters = new
-            {
-                name = new
-                {
-                    msisdn = "123",
-                    default_value = "irythil"
-                }
-            },
             body = "Hi ${name}! How are you?",
             type = "mt_binary",
             created_at = "2019-08-24T14:15:22Z",
@@ -48,7 +40,7 @@ namespace Sinch.Tests.Sms
         };
 
         [Fact]
-        public async Task SendBatch()
+        public async Task SendTextBatch()
         {
             HttpMessageHandlerMock
                 .When(HttpMethod.Post, $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/batches")
@@ -86,14 +78,97 @@ namespace Sinch.Tests.Sms
 
             var response = await Sms.Batches.Send(request);
 
-            response.Should().NotBeNull();
-            response.Parameters["name"].Should().BeEquivalentTo(new Dictionary<string, string>
+            var textBatch = response.Should().BeOfType<BinaryBatch>().Which;
+
+            textBatch.DeliveryReport.Should().Be(DeliveryReport.Full);
+            textBatch.Type.Should().Be(SmsType.MtBinary);
+        }
+
+        [Fact]
+        public async Task SendMediaBatch()
+        {
+            HttpMessageHandlerMock
+                .When(HttpMethod.Post, $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/batches")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(new
+                {
+                    body = new
+                    {
+                        url = "http://hello.world",
+                        message = "HI"
+                    },
+                    to = new string[] { "123", "456" },
+                    strict_validation = true,
+                    type = "mt_media",
+                    feedback_enabled = false,
+                })
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    id = "1",
+                    strict_validation = true,
+                    type = "mt_media"
+                }));
+
+            var request = new MediaBatchRequest()
             {
-                { "msisdn", "123" },
-                { "default_value", "irythil" }
-            });
-            response.DeliveryReport.Should().Be(DeliveryReport.Full);
-            response.Type.Should().Be(SmsType.MtBinary);
+                Body = new MediaBody()
+                {
+                    Message = "HI",
+                    Url = new Uri("http://hello.world")
+                },
+                To = new List<string>()
+                {
+                    "123", "456",
+                },
+                StrictValidation = true,
+            };
+
+            var response = await Sms.Batches.Send(request);
+
+            var mediaBatch = response.Should().BeOfType<MediaBatch>().Which;
+
+            mediaBatch.Id.Should().Be("1");
+            mediaBatch.StrictValidation.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task SendBinaryBatch()
+        {
+            HttpMessageHandlerMock
+                .When(HttpMethod.Post, $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/batches")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(new
+                {
+                    body = "Holla!",
+                    to = new string[] { "123", "456" },
+                    type = "mt_binary",
+                    feedback_enabled = false,
+                    flash_message = true,
+                    truncate_concat = false,
+                })
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    id = "1",
+                    type = "mt_binary",
+                    flash_message = true,
+                }));
+
+            var request = new BinaryBatchRequest()
+            {
+                Body = "Holla!",
+                To = new List<string>()
+                {
+                    "123", "456",
+                },
+                FlashMessage = true
+            };
+
+            var response = await Sms.Batches.Send(request);
+
+            var mediaBatch = response.Should().BeOfType<BinaryBatch>().Which;
+
+            mediaBatch.Id.Should().Be("1");
+            mediaBatch.FlashMessage.Should().BeTrue();
         }
 
         [Fact]

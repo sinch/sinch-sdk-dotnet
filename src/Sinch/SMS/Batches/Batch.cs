@@ -1,8 +1,100 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Sinch.SMS.Batches.Send;
 
 namespace Sinch.SMS.Batches
 {
+    /// <summary>
+    ///     Marker interface for batch 
+    /// </summary>
+    [JsonConverter(typeof(BatchConverter))]
+    public interface IBatch
+    {
+        /// <summary>
+        ///     Unique identifier for batch
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
+        ///     Indicates if the batch has been canceled or not.
+        /// </summary>
+        public bool Canceled { get; set; }
+    }
+
+    internal class BatchConverter : JsonConverter<IBatch>
+    {
+        public override IBatch Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            var elem = JsonElement.ParseValue(ref reader);
+            var descriptor = elem.EnumerateObject().FirstOrDefault(x => x.Name == "type");
+            var type = descriptor.Value.GetString();
+            if (type == SmsType.MtText.Value)
+            {
+                return elem.Deserialize<TextBatch>(options);
+            }
+
+            if (type == SmsType.MtBinary.Value)
+            {
+                return elem.Deserialize<BinaryBatch>(options);
+            }
+
+            if (type == SmsType.MtMedia.Value)
+            {
+                return elem.Deserialize<MediaBatch>(options);
+            }
+
+            throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
+        }
+
+        public override void Write(Utf8JsonWriter writer, IBatch value, JsonSerializerOptions options)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class TextBatch : TextBatchRequest, IBatch
+    {
+        /// <summary>
+        ///     Unique identifier for batch
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
+        ///     Indicates if the batch has been canceled or not.
+        /// </summary>
+        public bool Canceled { get; set; }
+    }
+
+
+    public class BinaryBatch : BinaryBatchRequest, IBatch
+    {
+        /// <summary>
+        ///     Unique identifier for batch
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
+        ///     Indicates if the batch has been canceled or not.
+        /// </summary>
+        public bool Canceled { get; set; }
+    }
+
+    public class MediaBatch : MediaBatchRequest, IBatch
+    {
+        /// <summary>
+        ///     Unique identifier for batch
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
+        ///     Indicates if the batch has been canceled or not.
+        /// </summary>
+        public bool Canceled { get; set; }
+    }
+
     public class Batch
     {
         /// <summary>
