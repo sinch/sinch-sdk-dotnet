@@ -46,7 +46,7 @@ namespace Sinch.SMS.Batches
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        IAsyncEnumerable<Batch> ListAuto(ListBatchesRequest request, CancellationToken cancellationToken = default);
+        IAsyncEnumerable<IBatch> ListAuto(ListBatchesRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     This operation will perform a dry run of a batch which calculates
@@ -149,7 +149,7 @@ namespace Sinch.SMS.Batches
             return _http.Send<ListBatchesResponse>(uri, HttpMethod.Get, cancellationToken);
         }
 
-        public async IAsyncEnumerable<Batch> ListAuto(ListBatchesRequest request,
+        public async IAsyncEnumerable<IBatch> ListAuto(ListBatchesRequest request,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Listing batches...");
