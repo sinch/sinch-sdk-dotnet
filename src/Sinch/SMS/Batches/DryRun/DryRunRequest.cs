@@ -23,7 +23,7 @@ namespace Sinch.SMS.Batches.DryRun
         /// <summary>
         ///     The request to calculate based on.
         /// </summary>
-        public ISendBatchRequest BatchRequest { get; set; }
+        public IBatchRequest BatchRequest { get; set; }
 
         internal string GetQueryString()
         {

@@ -12,13 +12,13 @@ namespace Sinch.SMS.Batches.Send
     ///     Marker interface for batch messages
     /// </summary>
     [JsonConverter(typeof(SendBatchRequestConverter))]
-    public interface ISendBatchRequest
+    public interface IBatchRequest
     {
     }
 
-    public class SendBatchRequestConverter : JsonConverter<ISendBatchRequest>
+    public class SendBatchRequestConverter : JsonConverter<IBatchRequest>
     {
-        public override ISendBatchRequest Read(ref Utf8JsonReader reader, Type typeToConvert,
+        public override IBatchRequest Read(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)
         {
             var elem = JsonElement.ParseValue(ref reader);
@@ -42,7 +42,7 @@ namespace Sinch.SMS.Batches.Send
             throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
         }
 
-        public override void Write(Utf8JsonWriter writer, ISendBatchRequest value,
+        public override void Write(Utf8JsonWriter writer, IBatchRequest value,
             JsonSerializerOptions options)
         {
             switch (value)
@@ -58,7 +58,7 @@ namespace Sinch.SMS.Batches.Send
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value),
-                        $"Cannot find a proper specific type for {nameof(ISendBatchRequest)}");
+                        $"Cannot find a proper specific type for {nameof(IBatchRequest)}");
             }
         }
     }

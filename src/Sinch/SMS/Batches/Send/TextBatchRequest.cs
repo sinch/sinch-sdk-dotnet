@@ -2,7 +2,7 @@
 
 namespace Sinch.SMS.Batches.Send
 {
-    public class TextBatchRequest : BaseBatchRequest, ISendBatchRequest
+    public class TextBatchRequest : BaseBatchRequest, IBatchRequest
     {
         /// <summary>
         ///     The message content
@@ -54,7 +54,7 @@ namespace Sinch.SMS.Batches.Send
         public int? FromNpi { get; set; }
     }
 
-    public class BinaryBatchRequest : BaseBatchRequest, ISendBatchRequest
+    public class BinaryBatchRequest : BaseBatchRequest, IBatchRequest
     {
         /// <summary>
         ///       The UDH header of a binary message HEX encoded. Max 140 bytes including the <c>body</c>.  

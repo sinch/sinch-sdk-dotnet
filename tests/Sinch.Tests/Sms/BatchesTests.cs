@@ -238,7 +238,6 @@ namespace Sinch.Tests.Sms
                 NumberOfRecipients = 144,
                 BatchRequest = new BinaryBatch()
                 {
-                    
                     To = new List<string> { "1", "2" },
                     Body = "some_body",
                     From = "sender",
@@ -269,8 +268,8 @@ namespace Sinch.Tests.Sms
 
             var response = await Sms.Batches.Get("01FC66621XXXXX119Z8PMV1QPQ");
 
-            response.Should().NotBeNull();
-            response.Udh.Should().Be("udh_");
+            var binaryBatch = response.Should().BeOfType<BinaryBatch>().Which;
+            binaryBatch.Udh.Should().Be("udh_");
         }
 
         [Fact]
