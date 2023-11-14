@@ -314,16 +314,15 @@ namespace Sinch.Tests.Sms
                 .WithPartialContent("hi, {admin}")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(Batch));
 
-            var response = await Sms.Batches.Replace(new Batch
+            var response = await Sms.Batches.Replace(new BinaryBatch()
             {
                 Id = "01FC66621XXXXX119Z8PMV1QPQ",
                 To = new List<string> { "15551231234", "15551256344" },
-                Parameters = new Dictionary<string, Dictionary<string, string>>(),
                 Body = "hi, {admin}"
             });
 
-            response.Should().NotBeNull();
-            response.Body.Should().Be("Hi ${name}! How are you?");
+            var binaryBatch = response.Should().BeOfType<BinaryBatch>().Which;
+            binaryBatch.Body.Should().Be("Hi ${name}! How are you?");
         }
 
         [Fact]
@@ -336,8 +335,7 @@ namespace Sinch.Tests.Sms
 
             var response = await Sms.Batches.Cancel("01FC66621XXXXX119Z8PMV1QPQ");
 
-            response.Should().NotBeNull();
-            response.Body.Should().Be("Hi ${name}! How are you?");
+            response.Should().BeOfType<BinaryBatch>().Which.Body.Should().Be("Hi ${name}! How are you?");
         }
 
         [Fact]

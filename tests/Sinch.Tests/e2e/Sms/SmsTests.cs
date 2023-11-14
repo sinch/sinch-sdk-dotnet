@@ -76,7 +76,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task ReplaceBatch()
         {
-            var response = await SinchClientMockStudio.Sms.Batches.Replace(new Batch()
+            var response = await SinchClientMockStudio.Sms.Batches.Replace(new TextBatch()
             {
                 Id = "01GK6Y1B6X0JFJ1DT70PSK1GHV",
                 Body = "Replace SMS batch test",

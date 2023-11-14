@@ -51,7 +51,21 @@ namespace Sinch.SMS.Batches
 
         public override void Write(Utf8JsonWriter writer, IBatch value, JsonSerializerOptions options)
         {
-            throw new NotImplementedException();
+            switch (value)
+            {
+                case BinaryBatch batch:
+                    JsonSerializer.Serialize(writer, batch, options);
+                    break;
+                case MediaBatch batch:
+                    JsonSerializer.Serialize(writer, batch, options);
+                    break;
+                case TextBatchRequest batch:
+                    JsonSerializer.Serialize(writer, batch, options);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value),
+                        $"Cannot find a proper specific type for {nameof(IBatch)}");
+            }
         }
     }
 
