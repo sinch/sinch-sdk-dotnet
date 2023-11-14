@@ -26,7 +26,7 @@ namespace Sinch.SMS.Batches
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Batch> Send(SendBatchRequest request, CancellationToken cancellationToken = default);
+        Task<Batch> Send(ISendBatchRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     With the list operation you can list batch messages created in the last 14 days that you have created.
@@ -133,13 +133,13 @@ namespace Sinch.SMS.Batches
             _logger = logger;
         }
 
-        public Task<Batch> Send(SendBatchRequest request, CancellationToken cancellationToken = default)
+        public Task<Batch> Send(ISendBatchRequest request, CancellationToken cancellationToken = default)
         {
             if (request is null) throw new ArgumentNullException(nameof(request));
 
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches");
             _logger?.LogDebug("Making a request to {uri}", uri);
-            return _http.Send<SendBatchRequest, Batch>(uri, HttpMethod.Post, request, cancellationToken);
+            return _http.Send<ISendBatchRequest, Batch>(uri, HttpMethod.Post, request, cancellationToken);
         }
 
         public Task<ListBatchesResponse> List(ListBatchesRequest request, CancellationToken cancellationToken = default)

@@ -56,7 +56,7 @@ namespace Sinch.Tests.Sms
                 .WithPartialContent("irythil")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(Batch));
 
-            var request = new SendBatchRequest
+            var request = new TextBatchRequest()
             {
                 Body = "Hi ${name}! How are you?",
                 DeliveryReport = DeliveryReport.Full,
@@ -214,24 +214,25 @@ namespace Sinch.Tests.Sms
                 .WithPartialContent("31231323")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(Batch));
 
-            var response = await Sms.Batches.Update("01FC66621XXXXX119Z8PMV1QPQ", new SMS.Batches.Update.UpdateBatchRequest
-            {
-                Body = null,
-                From = "31231323",
-                CallbackUrl = new Uri("http://localhost:3452"),
-                DeliveryReport = DeliveryReport.Summary,
-                ExpireAt = DateTime.UtcNow.AddDays(3),
-                SendAt = DateTime.Now.AddDays(5),
-                ToAdd = new List<string>
+            var response = await Sms.Batches.Update("01FC66621XXXXX119Z8PMV1QPQ",
+                new SMS.Batches.Update.UpdateBatchRequest
                 {
-                    "123",
-                    "456"
-                },
-                ToRemove = new List<string>
-                {
-                    "987"
-                }
-            });
+                    Body = null,
+                    From = "31231323",
+                    CallbackUrl = new Uri("http://localhost:3452"),
+                    DeliveryReport = DeliveryReport.Summary,
+                    ExpireAt = DateTime.UtcNow.AddDays(3),
+                    SendAt = DateTime.Now.AddDays(5),
+                    ToAdd = new List<string>
+                    {
+                        "123",
+                        "456"
+                    },
+                    ToRemove = new List<string>
+                    {
+                        "987"
+                    }
+                });
 
             response.Should().NotBeNull();
             response.Udh.Should().Be("udh_");

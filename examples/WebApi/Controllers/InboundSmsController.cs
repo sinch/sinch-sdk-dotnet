@@ -67,7 +67,7 @@ public class InboundSmsController : ControllerBase
                 break;
         }
 
-        var response = await _sinchClient.Sms.Batches.Send(new SendBatchRequest
+        var response = await _sinchClient.Sms.Batches.Send(new TextBatchRequest()
         {
             Body = autoReply,
             DeliveryReport = DeliveryReport.None,
