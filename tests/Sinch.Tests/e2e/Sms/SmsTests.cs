@@ -31,11 +31,14 @@ namespace Sinch.Tests.e2e.Sms
         {
             var response = await SinchClientMockStudio.Sms.Batches.DryRun(new SMS.Batches.DryRun.DryRunRequest
             {
-                To = new List<string>() { "+48 737532793" },
-                Body = "Spanish Inquisition",
-                From = "447520650792",
                 PerRecipient = true,
                 NumberOfRecipients = 10,
+                BatchRequest = new TextBatch()
+                {
+                    To = new List<string>() { "+48 737532793" },
+                    Body = "Spanish Inquisition",
+                    From = "447520650792",
+                }
             });
             response.NumberOfMessages.Should().Be(1);
             response.NumberOfRecipients.Should().Be(1);

@@ -236,28 +236,21 @@ namespace Sinch.Tests.Sms
             {
                 PerRecipient = false,
                 NumberOfRecipients = 144,
-                To = new List<string> { "1", "2" },
-                Body = "some_body",
-                From = "sender",
-                Type = SmsType.MtBinary,
-                Udh = "ox213",
-                DeliveryReport = DeliveryReport.PerRecipient,
-                SendAt = DateTime.UtcNow.AddDays(1),
-                ExpireAt = DateTime.UtcNow.AddDays(2),
-                CallbackUrl = new Uri("https://localhost:2534"),
-                FlashMessage = false,
-                Parameters = new Dictionary<string, Dictionary<string, string>>
+                BatchRequest = new BinaryBatch()
                 {
-                    {
-                        "name", new Dictionary<string, string>
-                        {
-                            { "sid", "131321" },
-                            { "default", "ag" }
-                        }
-                    }
-                },
-                ClientReference = "admin",
-                MaxNumberOfMessageParts = 3
+                    
+                    To = new List<string> { "1", "2" },
+                    Body = "some_body",
+                    From = "sender",
+                    Udh = "ox213",
+                    DeliveryReport = DeliveryReport.PerRecipient,
+                    SendAt = DateTime.UtcNow.AddDays(1),
+                    ExpireAt = DateTime.UtcNow.AddDays(2),
+                    CallbackUrl = new Uri("https://localhost:2534"),
+                    FlashMessage = false,
+                    ClientReference = "admin",
+                    MaxNumberOfMessageParts = 3
+                }
             });
 
             response.Should().NotBeNull();

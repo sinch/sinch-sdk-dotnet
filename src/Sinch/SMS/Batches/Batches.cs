@@ -173,7 +173,8 @@ namespace Sinch.SMS.Batches
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches/dry_run?{request.GetQueryString()}");
             _logger?.LogDebug("Performing dry run...");
-            return _http.Send<DryRunRequest, DryRunResponse>(uri, HttpMethod.Post, request, cancellationToken);
+            return _http.Send<ISendBatchRequest, DryRunResponse>(uri, HttpMethod.Post, request.BatchRequest,
+                cancellationToken);
         }
 
         public Task<Batch> Get(string batchId, CancellationToken cancellationToken = default)
@@ -186,7 +187,8 @@ namespace Sinch.SMS.Batches
             return _http.Send<Batch>(uri, HttpMethod.Get, cancellationToken);
         }
 
-        public Task<Batch> Update(string batchId, UpdateBatchRequest request, CancellationToken cancellationToken = default)
+        public Task<Batch> Update(string batchId, UpdateBatchRequest request,
+            CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches/{batchId}");
             _logger?.LogDebug("Updating a batch with {id}...", batchId);
