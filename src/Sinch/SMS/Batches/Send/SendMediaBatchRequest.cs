@@ -6,7 +6,7 @@ namespace Sinch.SMS.Batches.Send
     /// <summary>
     ///    Only available in the US. Contact support if you wish to send MMS.
     /// </summary>
-    public class MediaBatchRequest : BatchBaseRequest, IBatchRequest
+    public class SendMediaBatchRequest : SendBatchBaseRequest, ISendBatchRequest
     {
         /// <summary>
         ///     The message content, including a URL to the media file

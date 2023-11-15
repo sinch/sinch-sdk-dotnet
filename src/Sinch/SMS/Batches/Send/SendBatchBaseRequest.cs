@@ -10,13 +10,13 @@ namespace Sinch.SMS.Batches.Send
     ///     Marker interface for batch messages
     /// </summary>
     [JsonConverter(typeof(SendBatchRequestConverter))]
-    public interface IBatchRequest
+    public interface ISendBatchRequest
     {
     }
 
-    public class SendBatchRequestConverter : JsonConverter<IBatchRequest>
+    public class SendBatchRequestConverter : JsonConverter<ISendBatchRequest>
     {
-        public override IBatchRequest Read(ref Utf8JsonReader reader, Type typeToConvert,
+        public override ISendBatchRequest Read(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)
         {
             var elem = JsonElement.ParseValue(ref reader);
@@ -24,44 +24,44 @@ namespace Sinch.SMS.Batches.Send
             var type = descriptor.Value.GetString();
             if (type == SmsType.MtText.Value)
             {
-                return elem.Deserialize<TextBatchRequest>(options);
+                return elem.Deserialize<SendTextBatchRequest>(options);
             }
 
             if (type == SmsType.MtBinary.Value)
             {
-                return elem.Deserialize<BinaryBatchRequest>(options);
+                return elem.Deserialize<SendBinaryBatchRequest>(options);
             }
 
             if (type == SmsType.MtMedia.Value)
             {
-                return elem.Deserialize<MediaBatchRequest>(options);
+                return elem.Deserialize<SendMediaBatchRequest>(options);
             }
 
             throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
         }
 
-        public override void Write(Utf8JsonWriter writer, IBatchRequest value,
+        public override void Write(Utf8JsonWriter writer, ISendBatchRequest value,
             JsonSerializerOptions options)
         {
             switch (value)
             {
-                case BinaryBatchRequest binaryBatchRequest:
+                case SendBinaryBatchRequest binaryBatchRequest:
                     JsonSerializer.Serialize(writer, binaryBatchRequest, options);
                     break;
-                case MediaBatchRequest mediaBatchRequest:
+                case SendMediaBatchRequest mediaBatchRequest:
                     JsonSerializer.Serialize(writer, mediaBatchRequest, options);
                     break;
-                case TextBatchRequest textBatchRequest:
+                case SendTextBatchRequest textBatchRequest:
                     JsonSerializer.Serialize(writer, textBatchRequest, options);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value),
-                        $"Cannot find a proper specific type for {nameof(IBatchRequest)}");
+                        $"Cannot find a proper specific type for {nameof(ISendBatchRequest)}");
             }
         }
     }
 
-    public abstract class BatchBaseRequest
+    public abstract class SendBatchBaseRequest
     {
         /// <summary>
         ///     List of Phone numbers and group IDs that will receive the batch.

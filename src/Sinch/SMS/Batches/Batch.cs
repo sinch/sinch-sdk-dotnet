@@ -59,7 +59,7 @@ namespace Sinch.SMS.Batches
                 case MediaBatch batch:
                     JsonSerializer.Serialize(writer, batch, options);
                     break;
-                case TextBatchRequest batch:
+                case SendTextBatchRequest batch:
                     JsonSerializer.Serialize(writer, batch, options);
                     break;
                 default:
@@ -69,7 +69,7 @@ namespace Sinch.SMS.Batches
         }
     }
 
-    public class TextBatch : TextBatchRequest, IBatch
+    public class TextBatch : SendTextBatchRequest, IBatch
     {
         /// <summary>
         ///     Unique identifier for batch
@@ -83,7 +83,7 @@ namespace Sinch.SMS.Batches
     }
 
 
-    public class BinaryBatch : BinaryBatchRequest, IBatch
+    public class BinaryBatch : SendBinaryBatchRequest, IBatch
     {
         /// <summary>
         ///     Unique identifier for batch
@@ -96,7 +96,7 @@ namespace Sinch.SMS.Batches
         public bool Canceled { get; set; }
     }
 
-    public class MediaBatch : MediaBatchRequest, IBatch
+    public class MediaBatch : SendMediaBatchRequest, IBatch
     {
         /// <summary>
         ///     Unique identifier for batch

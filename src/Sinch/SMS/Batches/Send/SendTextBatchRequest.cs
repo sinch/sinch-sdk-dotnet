@@ -1,11 +1,32 @@
-﻿namespace Sinch.SMS.Batches.Send
+﻿using System.Collections.Generic;
+
+namespace Sinch.SMS.Batches.Send
 {
-    public class BinaryBatchRequest : BatchBaseRequest, IBatchRequest
+    public class SendTextBatchRequest : SendBatchBaseRequest, ISendBatchRequest
     {
         /// <summary>
-        ///       The UDH header of a binary message HEX encoded. Max 140 bytes including the <c>body</c>.  
+        ///     The message content
         /// </summary>
-        public string Udh { get; set; }
+#if NET7_0_OR_GREATER
+        public required string Body { get; set; }
+
+#else
+        public string Body { get; set; }
+#endif
+
+        /// <summary>
+        ///     Contains the parameters that will be used for customizing the message for each recipient.<br /><br />
+        ///     <see href="https://developers.sinch.com/docs/sms/resources/message-info/message-parameterization">
+        ///         Click here to
+        ///         learn more about parameterization.
+        ///     </see>
+        /// </summary>
+        public Dictionary<string, Dictionary<string, string>> Parameters { get; set; }
+
+        /// <summary>
+        ///     Regular SMS
+        /// </summary>
+        public override SmsType Type { get; } = SmsType.MtText;
 
         /// <summary>
         ///     Shows message on screen without user interaction while not saving the message to the inbox.
@@ -31,19 +52,5 @@
         ///     Number Plan Indicator for the sender number. Use to override the automatic detection.
         /// </summary>
         public int? FromNpi { get; set; }
-
-        /// <summary>
-        ///     The message content Base64 encoded.<br/><br/>
-        ///     Max 140 bytes including <see cref="Udh"/>.
-        /// </summary>
-#if NET7_0_OR_GREATER
-        public required string Body { get; set; }
-#else
-        public string Body { get; set; }
-#endif
-        /// <summary>
-        ///         SMS in binary format.
-        /// </summary>
-        public override SmsType Type { get; } = SmsType.MtBinary;
     }
 }

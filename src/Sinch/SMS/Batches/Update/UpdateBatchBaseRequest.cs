@@ -54,7 +54,7 @@ namespace Sinch.SMS.Batches.Update
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value),
-                        $"Cannot find a proper specific type for {nameof(IBatchRequest)}");
+                        $"Cannot find a proper specific type for {nameof(ISendBatchRequest)}");
             }
         }
     }

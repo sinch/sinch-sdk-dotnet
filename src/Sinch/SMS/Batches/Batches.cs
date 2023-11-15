@@ -26,7 +26,7 @@ namespace Sinch.SMS.Batches
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IBatch> Send(IBatchRequest request, CancellationToken cancellationToken = default);
+        Task<IBatch> Send(ISendBatchRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     With the list operation you can list batch messages created in the last 14 days that you have created.
@@ -133,13 +133,13 @@ namespace Sinch.SMS.Batches
             _logger = logger;
         }
 
-        public Task<IBatch> Send(IBatchRequest request, CancellationToken cancellationToken = default)
+        public Task<IBatch> Send(ISendBatchRequest request, CancellationToken cancellationToken = default)
         {
             if (request is null) throw new ArgumentNullException(nameof(request));
 
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches");
             _logger?.LogDebug("Making a request to {uri}", uri);
-            return _http.Send<IBatchRequest, IBatch>(uri, HttpMethod.Post, request, cancellationToken);
+            return _http.Send<ISendBatchRequest, IBatch>(uri, HttpMethod.Post, request, cancellationToken);
         }
 
         public Task<ListBatchesResponse> List(ListBatchesRequest request, CancellationToken cancellationToken = default)
@@ -173,7 +173,7 @@ namespace Sinch.SMS.Batches
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches/dry_run?{request.GetQueryString()}");
             _logger?.LogDebug("Performing dry run...");
-            return _http.Send<IBatchRequest, DryRunResponse>(uri, HttpMethod.Post, request.BatchRequest,
+            return _http.Send<ISendBatchRequest, DryRunResponse>(uri, HttpMethod.Post, request.BatchRequest,
                 cancellationToken);
         }
 

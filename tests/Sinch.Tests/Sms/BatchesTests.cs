@@ -51,7 +51,7 @@ namespace Sinch.Tests.Sms
                 .WithPartialContent("irythil")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(Batch));
 
-            var request = new TextBatchRequest()
+            var request = new SendTextBatchRequest()
             {
                 Body = "Hi ${name}! How are you?",
                 DeliveryReport = DeliveryReport.Full,
@@ -112,7 +112,7 @@ namespace Sinch.Tests.Sms
                     type = "mt_media"
                 }));
 
-            var request = new MediaBatchRequest()
+            var request = new SendMediaBatchRequest()
             {
                 Body = new MediaBody()
                 {
@@ -156,7 +156,7 @@ namespace Sinch.Tests.Sms
                     flash_message = true,
                 }));
 
-            var request = new BinaryBatchRequest()
+            var request = new SendBinaryBatchRequest()
             {
                 Body = "Holla!",
                 To = new List<string>()

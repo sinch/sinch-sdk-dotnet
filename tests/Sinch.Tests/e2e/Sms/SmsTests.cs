@@ -16,7 +16,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task SendBatch()
         {
-            var response = await SinchClientMockStudio.Sms.Batches.Send(new TextBatchRequest()
+            var response = await SinchClientMockStudio.Sms.Batches.Send(new SendTextBatchRequest()
             {
                 Body = "Asynchronous Spanish Inquisition",
                 DeliveryReport = DeliveryReport.Summary,
