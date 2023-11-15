@@ -34,7 +34,7 @@ namespace Sinch.Tests.e2e.Sms
             {
                 PerRecipient = true,
                 NumberOfRecipients = 10,
-                BatchRequest = new TextBatch()
+                BatchRequest = new SendTextBatchRequest()
                 {
                     To = new List<string>() { "+48 737532793" },
                     Body = "Spanish Inquisition",
@@ -77,15 +77,15 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task ReplaceBatch()
         {
-            var response = await SinchClientMockStudio.Sms.Batches.Replace(new TextBatch()
-            {
-                Id = "01GK6Y1B6X0JFJ1DT70PSK1GHV",
-                Body = "Replace SMS batch test",
-                To = new List<string>()
+            var response = await SinchClientMockStudio.Sms.Batches.Replace("01GK6Y1B6X0JFJ1DT70PSK1GHV",
+                new SendTextBatchRequest()
                 {
-                    "+48 737532793"
-                }
-            });
+                    Body = "Replace SMS batch test",
+                    To = new List<string>()
+                    {
+                        "+48 737532793"
+                    }
+                });
             response.Should().NotBeNull();
         }
 

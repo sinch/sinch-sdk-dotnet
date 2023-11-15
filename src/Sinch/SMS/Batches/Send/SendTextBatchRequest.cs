@@ -2,7 +2,7 @@
 
 namespace Sinch.SMS.Batches.Send
 {
-    public class SendTextBatchRequest : SendBatchBaseRequest, ISendBatchRequest
+    public class SendTextBatchRequest : BatchBase, ISendBatchRequest
     {
         /// <summary>
         ///     The message content

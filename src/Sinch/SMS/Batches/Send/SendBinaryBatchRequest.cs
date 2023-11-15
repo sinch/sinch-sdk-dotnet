@@ -1,6 +1,6 @@
 ﻿namespace Sinch.SMS.Batches.Send
 {
-    public class SendBinaryBatchRequest : SendBatchBaseRequest, ISendBatchRequest
+    public class SendBinaryBatchRequest : BatchBase, ISendBatchRequest
     {
         /// <summary>
         ///       The UDH header of a binary message HEX encoded. Max 140 bytes including the <c>body</c>.  

@@ -61,7 +61,7 @@ namespace Sinch.SMS.Batches.Send
         }
     }
 
-    public abstract class SendBatchBaseRequest
+    public abstract class BatchBase
     {
         /// <summary>
         ///     List of Phone numbers and group IDs that will receive the batch.

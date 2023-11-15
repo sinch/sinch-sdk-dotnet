@@ -78,10 +78,11 @@ namespace Sinch.SMS.Batches
         ///     This operation will replace all the parameters of a batch with the provided values.
         ///     It is the same as cancelling a batch and sending a new one instead.
         /// </summary>
+        /// <param name="batchId"></param>
         /// <param name="batch"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IBatch> Replace(IBatch batch, CancellationToken cancellationToken = default);
+        Task<IBatch> Replace(string batchId, ISendBatchRequest batch, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     A batch can be canceled at any point.
@@ -195,11 +196,11 @@ namespace Sinch.SMS.Batches
             return _http.Send<IUpdateBatchRequest, IBatch>(uri, HttpMethod.Post, request, cancellationToken);
         }
 
-        public Task<IBatch> Replace(IBatch batch, CancellationToken cancellationToken = default)
+        public Task<IBatch> Replace(string batchId, ISendBatchRequest batch, CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches/{batch.Id}");
-            _logger?.LogDebug("Replacing a batch with {id}...", batch.Id);
-            return _http.Send<IBatch, IBatch>(uri, HttpMethod.Put, batch, cancellationToken);
+            var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches/{batchId}");
+            _logger?.LogDebug("Replacing a batch with {id}...", batchId);
+            return _http.Send<ISendBatchRequest, IBatch>(uri, HttpMethod.Put, batch, cancellationToken);
         }
 
         public Task<IBatch> Cancel(string batchId, CancellationToken cancellationToken = default)
@@ -214,7 +215,7 @@ namespace Sinch.SMS.Batches
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches/{batchId}/delivery_feedback");
             _logger?.LogDebug("Sending delivery feedback for batch {id}...", batchId);
-            return _http.Send<object, Batch>(uri, HttpMethod.Post, new
+            return _http.Send<object, object>(uri, HttpMethod.Post, new
             {
                 recipients = recipients ?? Array.Empty<string>()
             }, cancellationToken);

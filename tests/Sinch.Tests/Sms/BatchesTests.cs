@@ -109,7 +109,13 @@ namespace Sinch.Tests.Sms
                 {
                     id = "1",
                     strict_validation = true,
-                    type = "mt_media"
+                    type = "mt_media",
+                    body  = new
+                    {
+                        url = "http://hello.world",
+                        message = "HI"
+                    },
+                    to = new[] { "123", "456" },
                 }));
 
             var request = new SendMediaBatchRequest()
@@ -154,6 +160,8 @@ namespace Sinch.Tests.Sms
                     id = "1",
                     type = "mt_binary",
                     flash_message = true,
+                    body = "Holla!",
+                    to = new[] { "123", "456" }
                 }));
 
             var request = new SendBinaryBatchRequest()
@@ -239,7 +247,7 @@ namespace Sinch.Tests.Sms
             {
                 PerRecipient = false,
                 NumberOfRecipients = 144,
-                BatchRequest = new BinaryBatch()
+                BatchRequest = new SendBinaryBatchRequest()
                 {
                     To = new List<string> { "1", "2" },
                     Body = "some_body",
@@ -316,9 +324,8 @@ namespace Sinch.Tests.Sms
                 .WithPartialContent("hi, {admin}")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(Batch));
 
-            var response = await Sms.Batches.Replace(new BinaryBatch()
+            var response = await Sms.Batches.Replace("01FC66621XXXXX119Z8PMV1QPQ", new SendBinaryBatchRequest()
             {
-                Id = "01FC66621XXXXX119Z8PMV1QPQ",
                 To = new List<string> { "15551231234", "15551256344" },
                 Body = "hi, {admin}"
             });
