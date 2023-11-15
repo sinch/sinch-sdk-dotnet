@@ -171,7 +171,8 @@ namespace Sinch.Tests.Sms
                 {
                     "123", "456",
                 },
-                FlashMessage = true
+                FlashMessage = true,
+                TruncateConcat = false,
             };
 
             var response = await Sms.Batches.Send(request);
