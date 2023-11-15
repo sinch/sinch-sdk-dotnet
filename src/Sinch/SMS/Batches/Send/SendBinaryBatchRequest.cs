@@ -10,12 +10,12 @@
         /// <summary>
         ///     Shows message on screen without user interaction while not saving the message to the inbox.
         /// </summary>
-        public bool FlashMessage { get; set; } = false;
+        public bool? FlashMessage { get; set; }
 
         /// <summary>
         ///     If set to true the message will be shortened when exceeding one part.
         /// </summary>
-        public bool TruncateConcat { get; set; }
+        public bool? TruncateConcat { get; set; }
 
         /// <summary>
         ///     Message will be dispatched only if it is not split to more parts than Max Number of Message Parts
