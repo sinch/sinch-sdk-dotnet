@@ -41,7 +41,7 @@ namespace Sinch.Tests.e2e.Verification
         {
             var response =
                 await VerificationClient.VerificationStatus.GetByIdentity("123",
-                    Sinch.Verification.Common.VerificationMethod.Sms);
+                    VerificationMethod.Sms);
 
             response.Should().BeOfType<SmsVerificationReportResponse>().Which.Should()
                 .BeEquivalentTo(_smsVerificationReportResponse);
@@ -86,7 +86,7 @@ namespace Sinch.Tests.e2e.Verification
         {
             var response =
                 await VerificationClient.VerificationStatus.GetByIdentity("+49342432",
-                    Sinch.Verification.Common.VerificationMethod.Callout);
+                    VerificationMethod.Callout);
 
             response.Should().BeOfType<PhoneCallVerificationReportResponse>().Which.Should().BeEquivalentTo(
                 new PhoneCallVerificationReportResponse()

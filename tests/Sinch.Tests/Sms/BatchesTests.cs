@@ -8,7 +8,10 @@ using FluentAssertions;
 using RichardSzalay.MockHttp;
 using Sinch.SMS;
 using Sinch.SMS.Batches;
+using Sinch.SMS.Batches.DryRun;
+using Sinch.SMS.Batches.List;
 using Sinch.SMS.Batches.Send;
+using Sinch.SMS.Batches.Update;
 using Xunit;
 
 namespace Sinch.Tests.Sms
@@ -97,7 +100,7 @@ namespace Sinch.Tests.Sms
                         url = "http://hello.world",
                         message = "HI"
                     },
-                    to = new string[] { "123", "456" },
+                    to = new[] { "123", "456" },
                     strict_validation = true,
                     type = "mt_media",
                     feedback_enabled = false,
@@ -140,7 +143,7 @@ namespace Sinch.Tests.Sms
                 .WithJson(new
                 {
                     body = "Holla!",
-                    to = new string[] { "123", "456" },
+                    to = new[] { "123", "456" },
                     type = "mt_binary",
                     feedback_enabled = false,
                     flash_message = true,
@@ -195,7 +198,7 @@ namespace Sinch.Tests.Sms
                     }
                 }));
 
-            var request = new SMS.Batches.List.ListBatchesRequest
+            var request = new ListBatchesRequest
             {
                 PageSize = 11,
                 ClientReference = "havel",
@@ -232,7 +235,7 @@ namespace Sinch.Tests.Sms
                     }
                 }));
 
-            var response = await Sms.Batches.DryRun(new SMS.Batches.DryRun.DryRunRequest
+            var response = await Sms.Batches.DryRun(new DryRunRequest
             {
                 PerRecipient = false,
                 NumberOfRecipients = 144,
@@ -282,7 +285,7 @@ namespace Sinch.Tests.Sms
                 .Respond(HttpStatusCode.OK, JsonContent.Create(Batch));
 
             var response = await Sms.Batches.Update("01FC66621XXXXX119Z8PMV1QPQ",
-                new SMS.Batches.Update.UpdateBatchRequest
+                new UpdateTextBatchRequest()
                 {
                     Body = null,
                     From = "31231323",
@@ -301,8 +304,7 @@ namespace Sinch.Tests.Sms
                     }
                 });
 
-            response.Should().NotBeNull();
-            response.Udh.Should().Be("udh_");
+            response.Should().BeOfType<BinaryBatch>().Which.Udh.Should().Be("udh_");
         }
 
         [Fact]
@@ -400,7 +402,7 @@ namespace Sinch.Tests.Sms
                         Batch
                     }
                 }));
-            var request = new SMS.Batches.List.ListBatchesRequest();
+            var request = new ListBatchesRequest();
             var response = Sms.Batches.ListAuto(request);
             await foreach (var batch in response)
             {

@@ -72,7 +72,7 @@ namespace Sinch.SMS.Batches
         /// <param name="batchId">The batch ID you received from sending a message.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Batch> Update(string batchId, UpdateBatchRequest request, CancellationToken cancellationToken = default);
+        Task<IBatch> Update(string batchId, IUpdateBatchRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     This operation will replace all the parameters of a batch with the provided values.
@@ -187,12 +187,12 @@ namespace Sinch.SMS.Batches
             return _http.Send<IBatch>(uri, HttpMethod.Get, cancellationToken);
         }
 
-        public Task<Batch> Update(string batchId, UpdateBatchRequest request,
+        public Task<IBatch> Update(string batchId, IUpdateBatchRequest request,
             CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches/{batchId}");
             _logger?.LogDebug("Updating a batch with {id}...", batchId);
-            return _http.Send<UpdateBatchRequest, Batch>(uri, HttpMethod.Post, request, cancellationToken);
+            return _http.Send<IUpdateBatchRequest, IBatch>(uri, HttpMethod.Post, request, cancellationToken);
         }
 
         public Task<IBatch> Replace(IBatch batch, CancellationToken cancellationToken = default)

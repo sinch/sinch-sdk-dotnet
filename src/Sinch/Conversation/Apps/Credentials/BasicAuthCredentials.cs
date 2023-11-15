@@ -1,7 +1,6 @@
-﻿using System.Text;
-
-namespace Sinch.Conversation.Apps.Credentials
-{   /// <summary>
+﻿namespace Sinch.Conversation.Apps.Credentials
+{
+    /// <summary>
     ///     It consists of a username and a password.
     /// </summary>
     public sealed class BasicAuthCredential
@@ -14,7 +13,7 @@ namespace Sinch.Conversation.Apps.Credentials
 #else
         public string Password { get; set; }
 #endif
-        
+
 
         /// <summary>
         ///     Basic auth username.

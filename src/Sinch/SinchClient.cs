@@ -103,7 +103,7 @@ namespace Sinch
 
         private readonly LoggerFactory _loggerFactory;
         private readonly HttpClient _httpClient;
-        private readonly Uri _verificationBaseAddress = null;
+        private readonly Uri _verificationBaseAddress;
 
         /// <summary>
         ///     Initialize a new <see cref="SinchClient"/>

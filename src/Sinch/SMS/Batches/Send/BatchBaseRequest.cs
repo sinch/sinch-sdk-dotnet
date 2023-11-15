@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Sinch.Verification.Common;
-using Sinch.Verification.Report.Response;
 
 namespace Sinch.SMS.Batches.Send
 {
@@ -63,7 +61,7 @@ namespace Sinch.SMS.Batches.Send
         }
     }
 
-    public abstract class BaseBatchRequest
+    public abstract class BatchBaseRequest
     {
         /// <summary>
         ///     List of Phone numbers and group IDs that will receive the batch.
@@ -83,6 +81,10 @@ namespace Sinch.SMS.Batches.Send
 
         public abstract SmsType Type { get; }
 
+        /// <summary>
+        ///     Request delivery report callback.<br/><br/>
+        ///     Note that delivery reports can be fetched from the API regardless of this setting.
+        /// </summary>
         public DeliveryReport DeliveryReport { get; set; }
 
         /// <summary>

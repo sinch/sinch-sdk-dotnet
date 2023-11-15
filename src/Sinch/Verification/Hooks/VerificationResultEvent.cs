@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
-using Sinch.Verification.Report.Response;
 
 namespace Sinch.Verification.Hooks
 {

@@ -6,6 +6,7 @@ using FluentAssertions;
 using Sinch.SMS;
 using Sinch.SMS.Batches;
 using Sinch.SMS.Batches.Send;
+using Sinch.SMS.Batches.Update;
 using Xunit;
 
 namespace Sinch.Tests.e2e.Sms
@@ -66,11 +67,11 @@ namespace Sinch.Tests.e2e.Sms
         public async Task UpdateBatch()
         {
             var response = await SinchClientMockStudio.Sms.Batches.Update("01GK6ZMBRR3MQA0S2HA3K81EJJ",
-                new SMS.Batches.Update.UpdateBatchRequest()
+                new UpdateTextBatchRequest()
                 {
                     Body = "Update Batch Test After Update"
                 });
-            response.DeliveryReport.Should().Be(DeliveryReport.None);
+            response.Should().BeOfType<TextBatch>().Which.DeliveryReport.Should().Be(DeliveryReport.None);
         }
 
         [Fact]

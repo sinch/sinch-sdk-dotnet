@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
-using Sinch.Verification.Report;
 using Sinch.Verification.Report.Request;
 using Sinch.Verification.Report.Response;
 using Sinch.Verification.Start.Request;
