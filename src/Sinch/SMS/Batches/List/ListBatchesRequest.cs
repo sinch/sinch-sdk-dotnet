@@ -10,7 +10,7 @@ namespace Sinch.SMS.Batches.List
         /// <summary>
         ///     The page number starting from 0.
         /// </summary>
-        public int Page { get; set; } = 0;
+        public int? Page { get; set; }
 
         /// <summary>
         ///     Determines the size of a page.
@@ -41,7 +41,12 @@ namespace Sinch.SMS.Batches.List
         internal string GetQueryString()
         {
             var kvp = new List<KeyValuePair<string, string>>();
-            kvp.Add(new KeyValuePair<string, string>("page", Page.ToString()));
+            
+            if (Page.HasValue)
+            {
+                kvp.Add(new KeyValuePair<string, string>("page", Page.ToString()));
+            }
+            
             
             if (PageSize.HasValue)
             {
