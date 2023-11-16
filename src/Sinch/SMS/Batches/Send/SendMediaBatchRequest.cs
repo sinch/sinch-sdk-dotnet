@@ -28,7 +28,7 @@ namespace Sinch.SMS.Batches.Send
         ///     If set to true, your message will be rejected if it doesn't conform to the listed
         ///     recommendations, otherwise no validation will be performed.
         /// </summary>
-        public bool StrictValidation { get; set; } = false;
+        public bool? StrictValidation { get; set; } 
         
         /// <summary>
         ///     Contains the parameters that will be used for customizing the message for each recipient.<br /><br />
