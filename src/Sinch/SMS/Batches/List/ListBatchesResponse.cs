@@ -22,6 +22,6 @@ namespace Sinch.SMS.Batches.List
         /// <summary>
         ///     The page of batches matching the given filters
         /// </summary>
-        public List<Batch> Batches { get; set; }
+        public List<IBatch> Batches { get; set; }
     }
 }

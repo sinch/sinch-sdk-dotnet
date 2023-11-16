@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Sinch;
+using Sinch.SMS.Batches;
 using Sinch.SMS.Batches.Send;
 using Sinch.SMS.Groups.Create;
 using Sinch.SMS.Groups.Update;
@@ -67,7 +68,7 @@ public class InboundSmsController : ControllerBase
                 break;
         }
 
-        var response = await _sinchClient.Sms.Batches.Send(new SendBatchRequest
+        var response = await _sinchClient.Sms.Batches.Send(new SendTextBatchRequest()
         {
             Body = autoReply,
             DeliveryReport = DeliveryReport.None,

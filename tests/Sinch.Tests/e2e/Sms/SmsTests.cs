@@ -6,6 +6,7 @@ using FluentAssertions;
 using Sinch.SMS;
 using Sinch.SMS.Batches;
 using Sinch.SMS.Batches.Send;
+using Sinch.SMS.Batches.Update;
 using Xunit;
 
 namespace Sinch.Tests.e2e.Sms
@@ -15,7 +16,7 @@ namespace Sinch.Tests.e2e.Sms
         [Fact]
         public async Task SendBatch()
         {
-            var response = await SinchClientMockStudio.Sms.Batches.Send(new SendBatchRequest
+            var response = await SinchClientMockStudio.Sms.Batches.Send(new SendTextBatchRequest()
             {
                 Body = "Asynchronous Spanish Inquisition",
                 DeliveryReport = DeliveryReport.Summary,
@@ -23,7 +24,7 @@ namespace Sinch.Tests.e2e.Sms
                 To = new List<string>() { "+48 737532793" },
                 From = "447520650792",
             });
-            response.Type.Should().Be(SmsType.MtText);
+            response.Should().BeOfType<TextBatch>().Which.Type.Should().Be(SmsType.MtText);
         }
 
         [Fact]
@@ -31,11 +32,14 @@ namespace Sinch.Tests.e2e.Sms
         {
             var response = await SinchClientMockStudio.Sms.Batches.DryRun(new SMS.Batches.DryRun.DryRunRequest
             {
-                To = new List<string>() { "+48 737532793" },
-                Body = "Spanish Inquisition",
-                From = "447520650792",
                 PerRecipient = true,
                 NumberOfRecipients = 10,
+                BatchRequest = new SendTextBatchRequest()
+                {
+                    To = new List<string>() { "+48 737532793" },
+                    Body = "Spanish Inquisition",
+                    From = "447520650792",
+                }
             });
             response.NumberOfMessages.Should().Be(1);
             response.NumberOfRecipients.Should().Be(1);
@@ -63,25 +67,25 @@ namespace Sinch.Tests.e2e.Sms
         public async Task UpdateBatch()
         {
             var response = await SinchClientMockStudio.Sms.Batches.Update("01GK6ZMBRR3MQA0S2HA3K81EJJ",
-                new SMS.Batches.Update.UpdateBatchRequest()
+                new UpdateTextBatchRequest()
                 {
                     Body = "Update Batch Test After Update"
                 });
-            response.DeliveryReport.Should().Be(DeliveryReport.None);
+            response.Should().BeOfType<TextBatch>().Which.DeliveryReport.Should().Be(DeliveryReport.None);
         }
 
         [Fact]
         public async Task ReplaceBatch()
         {
-            var response = await SinchClientMockStudio.Sms.Batches.Replace(new Batch()
-            {
-                Id = "01GK6Y1B6X0JFJ1DT70PSK1GHV",
-                Body = "Replace SMS batch test",
-                To = new List<string>()
+            var response = await SinchClientMockStudio.Sms.Batches.Replace("01GK6Y1B6X0JFJ1DT70PSK1GHV",
+                new SendTextBatchRequest()
                 {
-                    "+48 737532793"
-                }
-            });
+                    Body = "Replace SMS batch test",
+                    To = new List<string>()
+                    {
+                        "+48 737532793"
+                    }
+                });
             response.Should().NotBeNull();
         }
 

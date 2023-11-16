@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Sinch.Core;
 
 namespace Sinch.Conversation.Messages
 {

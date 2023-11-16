@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Sinch.Conversation.Apps.Credentials
+﻿namespace Sinch.Conversation.Apps.Credentials
 {
     /// <summary>
     ///     This object is required for channels which use a static token credential for authentication.

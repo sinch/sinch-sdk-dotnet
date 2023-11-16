@@ -26,7 +26,7 @@ namespace Sinch.SMS.Batches
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Batch> Send(SendBatchRequest request, CancellationToken cancellationToken = default);
+        Task<IBatch> Send(ISendBatchRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     With the list operation you can list batch messages created in the last 14 days that you have created.
@@ -46,7 +46,7 @@ namespace Sinch.SMS.Batches
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        IAsyncEnumerable<Batch> ListAuto(ListBatchesRequest request, CancellationToken cancellationToken = default);
+        IAsyncEnumerable<IBatch> ListAuto(ListBatchesRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     This operation will perform a dry run of a batch which calculates
@@ -63,7 +63,7 @@ namespace Sinch.SMS.Batches
         /// <param name="batchId">The batch ID you received from sending a message.</param>
         /// <param name="cancellationToken"></param>
         /// <returns>Batch</returns>
-        Task<Batch> Get(string batchId, CancellationToken cancellationToken = default);
+        Task<IBatch> Get(string batchId, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     This operation updates all specified parameters of a batch that matches the provided batch ID.
@@ -72,16 +72,17 @@ namespace Sinch.SMS.Batches
         /// <param name="batchId">The batch ID you received from sending a message.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Batch> Update(string batchId, UpdateBatchRequest request, CancellationToken cancellationToken = default);
+        Task<IBatch> Update(string batchId, IUpdateBatchRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     This operation will replace all the parameters of a batch with the provided values.
         ///     It is the same as cancelling a batch and sending a new one instead.
         /// </summary>
+        /// <param name="batchId"></param>
         /// <param name="batch"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Batch> Replace(Batch batch, CancellationToken cancellationToken = default);
+        Task<IBatch> Replace(string batchId, ISendBatchRequest batch, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     A batch can be canceled at any point.
@@ -94,7 +95,7 @@ namespace Sinch.SMS.Batches
         /// <param name="batchId"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Batch> Cancel(string batchId, CancellationToken cancellationToken = default);
+        Task<IBatch> Cancel(string batchId, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Send feedback if your system can confirm successful message delivery. <br /><br />
@@ -133,13 +134,13 @@ namespace Sinch.SMS.Batches
             _logger = logger;
         }
 
-        public Task<Batch> Send(SendBatchRequest request, CancellationToken cancellationToken = default)
+        public Task<IBatch> Send(ISendBatchRequest request, CancellationToken cancellationToken = default)
         {
             if (request is null) throw new ArgumentNullException(nameof(request));
 
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches");
             _logger?.LogDebug("Making a request to {uri}", uri);
-            return _http.Send<SendBatchRequest, Batch>(uri, HttpMethod.Post, request, cancellationToken);
+            return _http.Send<ISendBatchRequest, IBatch>(uri, HttpMethod.Post, request, cancellationToken);
         }
 
         public Task<ListBatchesResponse> List(ListBatchesRequest request, CancellationToken cancellationToken = default)
@@ -149,14 +150,21 @@ namespace Sinch.SMS.Batches
             return _http.Send<ListBatchesResponse>(uri, HttpMethod.Get, cancellationToken);
         }
 
-        public async IAsyncEnumerable<Batch> ListAuto(ListBatchesRequest request,
+        public async IAsyncEnumerable<IBatch> ListAuto(ListBatchesRequest request,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Listing batches...");
             bool lastPage;
             do
             {
-                var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches?{request.GetQueryString()}");
+                var query = request.GetQueryString();
+                var relative = $"xms/v1/{_projectId}/batches";
+                if (!string.IsNullOrEmpty(query))
+                {
+                    relative += "?" + query;
+                }
+
+                var uri = new Uri(_baseAddress, relative);
                 var response = await _http.Send<ListBatchesResponse>(uri, HttpMethod.Get, cancellationToken);
 
                 foreach (var batch in response.Batches)
@@ -165,6 +173,7 @@ namespace Sinch.SMS.Batches
                 }
 
                 lastPage = Utils.IsLastPage(response.Page, response.PageSize, response.Count);
+                request.Page ??= response.Page;
                 request.Page++;
             } while (!lastPage);
         }
@@ -173,38 +182,41 @@ namespace Sinch.SMS.Batches
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches/dry_run?{request.GetQueryString()}");
             _logger?.LogDebug("Performing dry run...");
-            return _http.Send<DryRunRequest, DryRunResponse>(uri, HttpMethod.Post, request, cancellationToken);
+            return _http.Send<ISendBatchRequest, DryRunResponse>(uri, HttpMethod.Post, request.BatchRequest,
+                cancellationToken);
         }
 
-        public Task<Batch> Get(string batchId, CancellationToken cancellationToken = default)
+        public Task<IBatch> Get(string batchId, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(batchId))
                 throw new ArgumentNullException(nameof(batchId), "BatchId could not be empty");
 
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches/{batchId}");
             _logger?.LogDebug("Getting batch...");
-            return _http.Send<Batch>(uri, HttpMethod.Get, cancellationToken);
+            return _http.Send<IBatch>(uri, HttpMethod.Get, cancellationToken);
         }
 
-        public Task<Batch> Update(string batchId, UpdateBatchRequest request, CancellationToken cancellationToken = default)
+        public Task<IBatch> Update(string batchId, IUpdateBatchRequest request,
+            CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches/{batchId}");
             _logger?.LogDebug("Updating a batch with {id}...", batchId);
-            return _http.Send<UpdateBatchRequest, Batch>(uri, HttpMethod.Post, request, cancellationToken);
+            return _http.Send<IUpdateBatchRequest, IBatch>(uri, HttpMethod.Post, request, cancellationToken);
         }
 
-        public Task<Batch> Replace(Batch batch, CancellationToken cancellationToken = default)
+        public Task<IBatch> Replace(string batchId, ISendBatchRequest batch,
+            CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches/{batch.Id}");
-            _logger?.LogDebug("Replacing a batch with {id}...", batch.Id);
-            return _http.Send<Batch, Batch>(uri, HttpMethod.Put, batch, cancellationToken);
+            var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches/{batchId}");
+            _logger?.LogDebug("Replacing a batch with {id}...", batchId);
+            return _http.Send<ISendBatchRequest, IBatch>(uri, HttpMethod.Put, batch, cancellationToken);
         }
 
-        public Task<Batch> Cancel(string batchId, CancellationToken cancellationToken = default)
+        public Task<IBatch> Cancel(string batchId, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches/{batchId}");
             _logger?.LogDebug("Cancelling batch with {id}...", batchId);
-            return _http.Send<Batch>(uri, HttpMethod.Delete, cancellationToken);
+            return _http.Send<IBatch>(uri, HttpMethod.Delete, cancellationToken);
         }
 
         public Task SendDeliveryFeedback(string batchId, IEnumerable<string> recipients,
@@ -212,7 +224,7 @@ namespace Sinch.SMS.Batches
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches/{batchId}/delivery_feedback");
             _logger?.LogDebug("Sending delivery feedback for batch {id}...", batchId);
-            return _http.Send<object, Batch>(uri, HttpMethod.Post, new
+            return _http.Send<object, object>(uri, HttpMethod.Post, new
             {
                 recipients = recipients ?? Array.Empty<string>()
             }, cancellationToken);

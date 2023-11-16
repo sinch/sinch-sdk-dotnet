@@ -8,7 +8,10 @@ using FluentAssertions;
 using RichardSzalay.MockHttp;
 using Sinch.SMS;
 using Sinch.SMS.Batches;
+using Sinch.SMS.Batches.DryRun;
+using Sinch.SMS.Batches.List;
 using Sinch.SMS.Batches.Send;
+using Sinch.SMS.Batches.Update;
 using Xunit;
 
 namespace Sinch.Tests.Sms
@@ -21,14 +24,6 @@ namespace Sinch.Tests.Sms
             to = new[] { "15551231234", "15551256344" },
             from = "15551231234",
             canceled = false,
-            parameters = new
-            {
-                name = new
-                {
-                    msisdn = "123",
-                    default_value = "irythil"
-                }
-            },
             body = "Hi ${name}! How are you?",
             type = "mt_binary",
             created_at = "2019-08-24T14:15:22Z",
@@ -48,7 +43,7 @@ namespace Sinch.Tests.Sms
         };
 
         [Fact]
-        public async Task SendBatch()
+        public async Task SendTextBatch()
         {
             HttpMessageHandlerMock
                 .When(HttpMethod.Post, $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/batches")
@@ -56,7 +51,7 @@ namespace Sinch.Tests.Sms
                 .WithPartialContent("irythil")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(Batch));
 
-            var request = new SendBatchRequest
+            var request = new SendTextBatchRequest()
             {
                 Body = "Hi ${name}! How are you?",
                 DeliveryReport = DeliveryReport.Full,
@@ -86,14 +81,108 @@ namespace Sinch.Tests.Sms
 
             var response = await Sms.Batches.Send(request);
 
-            response.Should().NotBeNull();
-            response.Parameters["name"].Should().BeEquivalentTo(new Dictionary<string, string>
+            var textBatch = response.Should().BeOfType<BinaryBatch>().Which;
+
+            textBatch.DeliveryReport.Should().Be(DeliveryReport.Full);
+            textBatch.Type.Should().Be(SmsType.MtBinary);
+        }
+
+        [Fact]
+        public async Task SendMediaBatch()
+        {
+            HttpMessageHandlerMock
+                .When(HttpMethod.Post, $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/batches")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(new
+                {
+                    body = new
+                    {
+                        url = "http://hello.world",
+                        message = "HI"
+                    },
+                    to = new[] { "123", "456" },
+                    strict_validation = true,
+                    type = "mt_media",
+                    feedback_enabled = false,
+                })
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    id = "1",
+                    strict_validation = true,
+                    type = "mt_media",
+                    body = new
+                    {
+                        url = "http://hello.world",
+                        message = "HI"
+                    },
+                    to = new[] { "123", "456" },
+                }));
+
+            var request = new SendMediaBatchRequest()
             {
-                { "msisdn", "123" },
-                { "default_value", "irythil" }
-            });
-            response.DeliveryReport.Should().Be(DeliveryReport.Full);
-            response.Type.Should().Be(SmsType.MtBinary);
+                Body = new MediaBody()
+                {
+                    Message = "HI",
+                    Url = new Uri("http://hello.world")
+                },
+                To = new List<string>()
+                {
+                    "123", "456",
+                },
+                StrictValidation = true,
+                FeedbackEnabled = false,
+            };
+
+            var response = await Sms.Batches.Send(request);
+
+            var mediaBatch = response.Should().BeOfType<MediaBatch>().Which;
+
+            mediaBatch.Id.Should().Be("1");
+            mediaBatch.StrictValidation.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task SendBinaryBatch()
+        {
+            HttpMessageHandlerMock
+                .When(HttpMethod.Post, $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/batches")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(new
+                {
+                    body = "Holla!",
+                    to = new[] { "123", "456" },
+                    type = "mt_binary",
+                    feedback_enabled = false,
+                    flash_message = true,
+                    truncate_concat = false,
+                })
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    id = "1",
+                    type = "mt_binary",
+                    flash_message = true,
+                    body = "Holla!",
+                    to = new[] { "123", "456" }
+                }));
+
+            var request = new SendBinaryBatchRequest()
+            {
+                Body = "Holla!",
+                To = new List<string>()
+                {
+                    "123", "456",
+                },
+                FlashMessage = true,
+                TruncateConcat = false,
+                FeedbackEnabled = false,
+            };
+
+            var response = await Sms.Batches.Send(request);
+
+            var mediaBatch = response.Should().BeOfType<BinaryBatch>().Which;
+
+            mediaBatch.Id.Should().Be("1");
+            mediaBatch.FlashMessage.Should().BeTrue();
         }
 
         [Fact]
@@ -120,7 +209,7 @@ namespace Sinch.Tests.Sms
                     }
                 }));
 
-            var request = new SMS.Batches.List.ListBatchesRequest
+            var request = new ListBatchesRequest
             {
                 PageSize = 11,
                 ClientReference = "havel",
@@ -157,32 +246,24 @@ namespace Sinch.Tests.Sms
                     }
                 }));
 
-            var response = await Sms.Batches.DryRun(new SMS.Batches.DryRun.DryRunRequest
+            var response = await Sms.Batches.DryRun(new DryRunRequest
             {
                 PerRecipient = false,
                 NumberOfRecipients = 144,
-                To = new List<string> { "1", "2" },
-                Body = "some_body",
-                From = "sender",
-                Type = SmsType.MtBinary,
-                Udh = "ox213",
-                DeliveryReport = DeliveryReport.PerRecipient,
-                SendAt = DateTime.UtcNow.AddDays(1),
-                ExpireAt = DateTime.UtcNow.AddDays(2),
-                CallbackUrl = new Uri("https://localhost:2534"),
-                FlashMessage = false,
-                Parameters = new Dictionary<string, Dictionary<string, string>>
+                BatchRequest = new SendBinaryBatchRequest()
                 {
-                    {
-                        "name", new Dictionary<string, string>
-                        {
-                            { "sid", "131321" },
-                            { "default", "ag" }
-                        }
-                    }
-                },
-                ClientReference = "admin",
-                MaxNumberOfMessageParts = 3
+                    To = new List<string> { "1", "2" },
+                    Body = "some_body",
+                    From = "sender",
+                    Udh = "ox213",
+                    DeliveryReport = DeliveryReport.PerRecipient,
+                    SendAt = DateTime.UtcNow.AddDays(1),
+                    ExpireAt = DateTime.UtcNow.AddDays(2),
+                    CallbackUrl = new Uri("https://localhost:2534"),
+                    FlashMessage = false,
+                    ClientReference = "admin",
+                    MaxNumberOfMessageParts = 3
+                }
             });
 
             response.Should().NotBeNull();
@@ -201,8 +282,8 @@ namespace Sinch.Tests.Sms
 
             var response = await Sms.Batches.Get("01FC66621XXXXX119Z8PMV1QPQ");
 
-            response.Should().NotBeNull();
-            response.Udh.Should().Be("udh_");
+            var binaryBatch = response.Should().BeOfType<BinaryBatch>().Which;
+            binaryBatch.Udh.Should().Be("udh_");
         }
 
         [Fact]
@@ -214,27 +295,27 @@ namespace Sinch.Tests.Sms
                 .WithPartialContent("31231323")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(Batch));
 
-            var response = await Sms.Batches.Update("01FC66621XXXXX119Z8PMV1QPQ", new SMS.Batches.Update.UpdateBatchRequest
-            {
-                Body = null,
-                From = "31231323",
-                CallbackUrl = new Uri("http://localhost:3452"),
-                DeliveryReport = DeliveryReport.Summary,
-                ExpireAt = DateTime.UtcNow.AddDays(3),
-                SendAt = DateTime.Now.AddDays(5),
-                ToAdd = new List<string>
+            var response = await Sms.Batches.Update("01FC66621XXXXX119Z8PMV1QPQ",
+                new UpdateTextBatchRequest()
                 {
-                    "123",
-                    "456"
-                },
-                ToRemove = new List<string>
-                {
-                    "987"
-                }
-            });
+                    Body = null,
+                    From = "31231323",
+                    CallbackUrl = new Uri("http://localhost:3452"),
+                    DeliveryReport = DeliveryReport.Summary,
+                    ExpireAt = DateTime.UtcNow.AddDays(3),
+                    SendAt = DateTime.Now.AddDays(5),
+                    ToAdd = new List<string>
+                    {
+                        "123",
+                        "456"
+                    },
+                    ToRemove = new List<string>
+                    {
+                        "987"
+                    }
+                });
 
-            response.Should().NotBeNull();
-            response.Udh.Should().Be("udh_");
+            response.Should().BeOfType<BinaryBatch>().Which.Udh.Should().Be("udh_");
         }
 
         [Fact]
@@ -246,16 +327,14 @@ namespace Sinch.Tests.Sms
                 .WithPartialContent("hi, {admin}")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(Batch));
 
-            var response = await Sms.Batches.Replace(new Batch
+            var response = await Sms.Batches.Replace("01FC66621XXXXX119Z8PMV1QPQ", new SendBinaryBatchRequest()
             {
-                Id = "01FC66621XXXXX119Z8PMV1QPQ",
                 To = new List<string> { "15551231234", "15551256344" },
-                Parameters = new Dictionary<string, Dictionary<string, string>>(),
                 Body = "hi, {admin}"
             });
 
-            response.Should().NotBeNull();
-            response.Body.Should().Be("Hi ${name}! How are you?");
+            var binaryBatch = response.Should().BeOfType<BinaryBatch>().Which;
+            binaryBatch.Body.Should().Be("Hi ${name}! How are you?");
         }
 
         [Fact]
@@ -268,8 +347,7 @@ namespace Sinch.Tests.Sms
 
             var response = await Sms.Batches.Cancel("01FC66621XXXXX119Z8PMV1QPQ");
 
-            response.Should().NotBeNull();
-            response.Body.Should().Be("Hi ${name}! How are you?");
+            response.Should().BeOfType<BinaryBatch>().Which.Body.Should().Be("Hi ${name}! How are you?");
         }
 
         [Fact]
@@ -297,7 +375,6 @@ namespace Sinch.Tests.Sms
             var uri = $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/batches";
             HttpMessageHandlerMock
                 .Expect(HttpMethod.Get, uri)
-                .WithQueryString("page", "0")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(new
                 {
                     page = 0,
@@ -334,7 +411,7 @@ namespace Sinch.Tests.Sms
                         Batch
                     }
                 }));
-            var request = new SMS.Batches.List.ListBatchesRequest();
+            var request = new ListBatchesRequest();
             var response = Sms.Batches.ListAuto(request);
             await foreach (var batch in response)
             {
