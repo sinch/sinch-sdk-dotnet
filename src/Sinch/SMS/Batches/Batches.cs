@@ -157,7 +157,14 @@ namespace Sinch.SMS.Batches
             bool lastPage;
             do
             {
-                var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches?{request.GetQueryString()}");
+                var query = request.GetQueryString();
+                var relative = $"xms/v1/{_projectId}/batches";
+                if (!string.IsNullOrEmpty(query))
+                {
+                    relative += "?" + query;
+                }
+
+                var uri = new Uri(_baseAddress, relative);
                 var response = await _http.Send<ListBatchesResponse>(uri, HttpMethod.Get, cancellationToken);
 
                 foreach (var batch in response.Batches)
@@ -166,6 +173,7 @@ namespace Sinch.SMS.Batches
                 }
 
                 lastPage = Utils.IsLastPage(response.Page, response.PageSize, response.Count);
+                request.Page ??= response.Page;
                 request.Page++;
             } while (!lastPage);
         }
@@ -196,7 +204,8 @@ namespace Sinch.SMS.Batches
             return _http.Send<IUpdateBatchRequest, IBatch>(uri, HttpMethod.Post, request, cancellationToken);
         }
 
-        public Task<IBatch> Replace(string batchId, ISendBatchRequest batch, CancellationToken cancellationToken = default)
+        public Task<IBatch> Replace(string batchId, ISendBatchRequest batch,
+            CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/batches/{batchId}");
             _logger?.LogDebug("Replacing a batch with {id}...", batchId);

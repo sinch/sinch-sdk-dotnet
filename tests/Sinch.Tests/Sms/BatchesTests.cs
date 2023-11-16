@@ -375,7 +375,6 @@ namespace Sinch.Tests.Sms
             var uri = $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/batches";
             HttpMessageHandlerMock
                 .Expect(HttpMethod.Get, uri)
-                .WithQueryString("page", "0")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(new
                 {
                     page = 0,
