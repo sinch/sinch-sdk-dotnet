@@ -110,7 +110,7 @@ namespace Sinch.Tests.Sms
                     id = "1",
                     strict_validation = true,
                     type = "mt_media",
-                    body  = new
+                    body = new
                     {
                         url = "http://hello.world",
                         message = "HI"
@@ -130,6 +130,7 @@ namespace Sinch.Tests.Sms
                     "123", "456",
                 },
                 StrictValidation = true,
+                FeedbackEnabled = false,
             };
 
             var response = await Sms.Batches.Send(request);
@@ -173,6 +174,7 @@ namespace Sinch.Tests.Sms
                 },
                 FlashMessage = true,
                 TruncateConcat = false,
+                FeedbackEnabled = false,
             };
 
             var response = await Sms.Batches.Send(request);

@@ -121,6 +121,6 @@ namespace Sinch.SMS.Batches.Send
         ///     </see>
         ///     is expected after successful delivery.
         /// </summary>
-        public bool FeedbackEnabled { get; set; } = false;
+        public bool? FeedbackEnabled { get; set; }
     }
 }
