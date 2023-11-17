@@ -8,6 +8,7 @@ using Sinch.Logger;
 using Sinch.Numbers;
 using Sinch.SMS;
 using Sinch.Verification;
+using Sinch.Voice;
 
 namespace Sinch
 {
@@ -100,6 +101,7 @@ namespace Sinch
         private const string NumbersApiUrl = "https://numbers.api.sinch.com/";
         private const string SmsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
         private const string ConversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
+        private const string VoiceApiUrl = "https://callingapi.sinch.com/";
 
         private readonly LoggerFactory _loggerFactory;
         private readonly HttpClient _httpClient;
@@ -233,6 +235,13 @@ namespace Sinch
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(), JsonNamingPolicy.CamelCase);
             return new SinchVerificationClient(_verificationBaseAddress ?? new Uri(VerificationApiUrl),
                 _loggerFactory, http);
+        }
+
+        public ISinchVoiceClient Voice(string appKey, string appSecret,
+            AuthStrategy authStrategy = AuthStrategy.ApplicationSign)
+        {
+
+            return new SinchVoiceClient();
         }
     }
 }
