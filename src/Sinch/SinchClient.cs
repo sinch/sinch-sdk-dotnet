@@ -93,6 +93,26 @@ namespace Sinch
         /// <returns></returns>
         public ISinchVerificationClient Verification(string appKey, string appSecret,
             AuthStrategy authStrategy = AuthStrategy.ApplicationSign);
+        
+        /// <summary>
+        ///     When using Sinch for voice calling, the Sinch dashboard works as a big telephony switch.
+        ///     The dashboard handles incoming phone calls (also known as incoming call “legs”),
+        ///     sets up outgoing phone calls (or outgoing call “legs”), and bridges the two.
+        ///     The incoming call leg may come in over a data connection
+        ///     (from a smartphone or web application using the Sinch SDKs)
+        ///     or through a local phone number (from the PSTN network).
+        ///     Similarly, the outgoing call leg can be over
+        ///     data (to another smartphone or web application using the Sinch SDKs) or the PSTN network.
+        /// </summary>
+        /// <param name="appKey"></param>
+        /// <param name="appSecret"></param>
+        /// <param name="authStrategy">
+        ///     Choose which authentication to use.
+        ///     Defaults to Application Sign request and it's a recommended approach.
+        /// </param>
+        /// <returns></returns>
+        public ISinchVoiceClient Voice(string appKey, string appSecret,
+            AuthStrategy authStrategy = AuthStrategy.ApplicationSign);
     }
 
     public class SinchClient : ISinchClient
@@ -106,6 +126,7 @@ namespace Sinch
         private readonly LoggerFactory _loggerFactory;
         private readonly HttpClient _httpClient;
         private readonly Uri _verificationBaseAddress;
+        private readonly Uri _voiceBaseAddress;
 
         /// <summary>
         ///     Initialize a new <see cref="SinchClient"/>
@@ -180,8 +201,9 @@ namespace Sinch
         /// <param name="numbersBaseAddress"></param>
         /// <param name="smsBaseAddress"></param>
         /// <param name="verificationBaseAddress"></param>
+        /// <param name="voiceBaseAddress"></param>
         internal SinchClient(string projectId, Uri authUri, Uri numbersBaseAddress, Uri smsBaseAddress,
-            Uri verificationBaseAddress)
+            Uri verificationBaseAddress, Uri voiceBaseAddress)
         {
             _httpClient = new HttpClient();
             Auth = new OAuth(authUri, _httpClient);
@@ -192,6 +214,7 @@ namespace Sinch
             Numbers = new Numbers.Numbers(projectId, numbersBaseAddress, null, httpCamelCase);
             Sms = new Sms(projectId, smsBaseAddress, null, httpSnakeCase);
             _verificationBaseAddress = verificationBaseAddress;
+            _voiceBaseAddress = voiceBaseAddress;
         }
 
         /// <inheritdoc/>       
@@ -231,7 +254,6 @@ namespace Sinch
                 auth = new BasicAuth(appKey, appSecret);
             }
 
-            // TODO: implement application signed authentication, create IHttp just before the request with SignedRequestAuth
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(), JsonNamingPolicy.CamelCase);
             return new SinchVerificationClient(_verificationBaseAddress ?? new Uri(VerificationApiUrl),
                 _loggerFactory, http);
@@ -240,8 +262,29 @@ namespace Sinch
         public ISinchVoiceClient Voice(string appKey, string appSecret,
             AuthStrategy authStrategy = AuthStrategy.ApplicationSign)
         {
+            if (string.IsNullOrEmpty(appKey))
+            {
+                throw new ArgumentNullException(nameof(appKey), "The value should be present");
+            }
 
-            return new SinchVoiceClient();
+            if (string.IsNullOrEmpty(appSecret))
+            {
+                throw new ArgumentNullException(nameof(appSecret), "The value should be present");
+            }
+
+            ISinchAuth auth;
+            if (authStrategy == AuthStrategy.ApplicationSign)
+            {
+                auth = new ApplicationSignedAuth(appKey, appSecret);
+            }
+            else
+            {
+                auth = new BasicAuth(appKey, appSecret);
+            }
+            
+            var http = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(), JsonNamingPolicy.CamelCase);
+            return new SinchVoiceClient(_voiceBaseAddress ?? new Uri(VoiceApiUrl),
+                _loggerFactory, http);
         }
     }
 }
