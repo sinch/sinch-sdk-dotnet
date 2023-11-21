@@ -31,7 +31,7 @@ namespace Sinch
         ///         SMS
         ///     </see>
         ///     or
-        ///     <see href="">
+        ///     <see href="https://developers.sinch.com/docs/voice/api-reference/">
         ///         Voice
         ///     </see>
         ///     , to assign and use those numbers. <br/><br/>
@@ -93,7 +93,7 @@ namespace Sinch
         /// <returns></returns>
         public ISinchVerificationClient Verification(string appKey, string appSecret,
             AuthStrategy authStrategy = AuthStrategy.ApplicationSign);
-        
+
         /// <summary>
         ///     When using Sinch for voice calling, the Sinch dashboard works as a big telephony switch.
         ///     The dashboard handles incoming phone calls (also known as incoming call “legs”),
@@ -106,12 +106,13 @@ namespace Sinch
         /// </summary>
         /// <param name="appKey"></param>
         /// <param name="appSecret"></param>
+        /// <param name="callingRegion">See <see cref="CallingRegion"/>. Defaults to <see cref="CallingRegion.Global"/></param>
         /// <param name="authStrategy">
         ///     Choose which authentication to use.
         ///     Defaults to Application Sign request and it's a recommended approach.
         /// </param>
         /// <returns></returns>
-        public ISinchVoiceClient Voice(string appKey, string appSecret,
+        public ISinchVoiceClient Voice(string appKey, string appSecret, CallingRegion callingRegion = null,
             AuthStrategy authStrategy = AuthStrategy.ApplicationSign);
     }
 
@@ -121,7 +122,7 @@ namespace Sinch
         private const string NumbersApiUrl = "https://numbers.api.sinch.com/";
         private const string SmsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
         private const string ConversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
-        private const string VoiceApiUrl = "https://callingapi.sinch.com/";
+        private const string VoiceApiUrlTemplate = "https://{0}.api.sinch.com/";
 
         private readonly LoggerFactory _loggerFactory;
         private readonly HttpClient _httpClient;
@@ -259,7 +260,9 @@ namespace Sinch
                 _loggerFactory, http);
         }
 
+        /// <inheritdoc />
         public ISinchVoiceClient Voice(string appKey, string appSecret,
+            CallingRegion callingRegion = default,
             AuthStrategy authStrategy = AuthStrategy.ApplicationSign)
         {
             if (string.IsNullOrEmpty(appKey))
@@ -281,9 +284,12 @@ namespace Sinch
             {
                 auth = new BasicAuth(appKey, appSecret);
             }
-            
+
+            callingRegion ??= CallingRegion.Global;
+
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(), JsonNamingPolicy.CamelCase);
-            return new SinchVoiceClient(_voiceBaseAddress ?? new Uri(VoiceApiUrl),
+            return new SinchVoiceClient(
+                _voiceBaseAddress ?? new Uri(string.Format(VoiceApiUrlTemplate, callingRegion.Value)),
                 _loggerFactory, http);
         }
     }

@@ -1,6 +1,6 @@
 using Sinch.Core;
 
-namespace Sinch.Voice.Callout
+namespace Sinch.Voice.Callouts
 {
     /// <summary>
     ///     Can be of type number for PSTN endpoints or of type username for data endpoints.

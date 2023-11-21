@@ -1,4 +1,5 @@
-﻿using Sinch.Verification;
+﻿using Sinch.Auth;
+using Sinch.Verification;
 
 namespace Sinch.Tests.e2e.Verification
 {

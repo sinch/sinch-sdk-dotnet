@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Voice.Callout
+namespace Sinch.Voice.Callouts
 {
     public class TtsCalloutRequest
     {

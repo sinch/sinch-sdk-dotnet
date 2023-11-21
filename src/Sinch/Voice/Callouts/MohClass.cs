@@ -1,6 +1,6 @@
 using Sinch.Core;
 
-namespace Sinch.Voice.Callout
+namespace Sinch.Voice.Callouts
 {
     /// <summary>
     ///     Means "music-on-hold." It's an optional parameter that specifies what the first participant should listen to while

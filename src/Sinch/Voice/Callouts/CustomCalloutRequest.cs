@@ -1,6 +1,6 @@
 using System.Security.AccessControl;
 
-namespace Sinch.Voice.Callout
+namespace Sinch.Voice.Callouts
 {
     public class CustomCalloutRequest
     {

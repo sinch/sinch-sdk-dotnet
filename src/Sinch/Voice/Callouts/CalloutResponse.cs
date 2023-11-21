@@ -1,4 +1,4 @@
-namespace Sinch.Voice.Callout
+namespace Sinch.Voice.Callouts
 {
     public class CalloutResponse
     {

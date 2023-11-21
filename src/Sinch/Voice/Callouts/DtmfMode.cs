@@ -1,6 +1,6 @@
 using Sinch.Core;
 
-namespace Sinch.Voice.Callout
+namespace Sinch.Voice.Callouts
 {
     /// <summary>
     ///     Determines what DTMF mode the participant will use in the call.
