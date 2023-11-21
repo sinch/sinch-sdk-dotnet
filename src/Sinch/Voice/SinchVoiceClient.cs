@@ -21,6 +21,7 @@ namespace Sinch.Voice
             Callout = new SinchCallout(loggerFactory?.Create<SinchCallout>(), baseAddress, http);
         }
 
+        /// <inheritdoc />
         public ISinchVoiceCallout Callout { get; }
     }
 }
