@@ -37,39 +37,8 @@ namespace Sinch.Voice.Callouts
         ///     instance require a conference PIN code or an extension to be entered.
         /// </summary>
         public string Dtmf { get; set; }
-    }
-
-    /// <summary>
-    ///     Options to control how DTMF signals are used by the participant in the conference.
-    ///     For information on how to use this feature, read more
-    ///     <see href="https://developers.sinch.com/docs/voice/api-reference/conference-dtmf">here.</see>
-    /// </summary>
-    public class ConferenceDtmfOptions
-    {
-        /// <summary>
-        ///     Determines what DTMF mode the participant will use in the call.
-        /// </summary>
-        public DtmfMode Mode { get; set; }
-
-        /// <summary>
-        ///     The maximum number of accepted digits before sending the collected input via a PIE callback.
-        ///     The default value is 1. If the value is greater than 1,
-        ///     the PIE callback is triggered by one of the three following events:
-        ///     <list type="bullet">
-        ///         <item>No additional digit is entered before the <c>timeoutMills</c> timeout period has elapsed.</item>
-        ///         <item>The <c>#</c> character is entered.</item>
-        ///         <item>The maximum number of digits has been entered.</item>
-        ///     </list>
-        /// </summary>
-        public int? MaxDigits { get; set; }
-
-        /// <summary>
-        ///     The number of milliseconds that the system will wait between entered digits before triggering the PIE callback.
-        ///     The default value is <c>3000</c>.
-        /// </summary>
-        public int? TimeoutMills { get; set; }
-
-        // TODO: add description when updated in docs: https://developers.sinch.com/docs/voice/api-reference/voice/tag/Callouts/#tag/Callouts/operation/Callouts!path=conferenceCallout/maxDuration&t=request
+        
+            // TODO: add description when updated in docs: https://developers.sinch.com/docs/voice/api-reference/voice/tag/Callouts/#tag/Callouts/operation/Callouts!path=conferenceCallout/maxDuration&t=request
         public int? MaxDuration { get; set; }
 
         /// <summary>
@@ -122,5 +91,36 @@ namespace Sinch.Voice.Callouts
         ///     Can be either pstn for PSTN endpoint or mxp for data (app or web) clients.
         /// </summary>
         public Domain Domain { get; set; }
+    }
+
+    /// <summary>
+    ///     Options to control how DTMF signals are used by the participant in the conference.
+    ///     For information on how to use this feature, read more
+    ///     <see href="https://developers.sinch.com/docs/voice/api-reference/conference-dtmf">here.</see>
+    /// </summary>
+    public class ConferenceDtmfOptions
+    {
+        /// <summary>
+        ///     Determines what DTMF mode the participant will use in the call.
+        /// </summary>
+        public DtmfMode Mode { get; set; }
+
+        /// <summary>
+        ///     The maximum number of accepted digits before sending the collected input via a PIE callback.
+        ///     The default value is 1. If the value is greater than 1,
+        ///     the PIE callback is triggered by one of the three following events:
+        ///     <list type="bullet">
+        ///         <item>No additional digit is entered before the <c>timeoutMills</c> timeout period has elapsed.</item>
+        ///         <item>The <c>#</c> character is entered.</item>
+        ///         <item>The maximum number of digits has been entered.</item>
+        ///     </list>
+        /// </summary>
+        public int? MaxDigits { get; set; }
+
+        /// <summary>
+        ///     The number of milliseconds that the system will wait between entered digits before triggering the PIE callback.
+        ///     The default value is <c>3000</c>.
+        /// </summary>
+        public int? TimeoutMills { get; set; }
     }
 }

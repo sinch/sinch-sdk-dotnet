@@ -77,7 +77,7 @@ namespace Sinch.Voice.Callouts
             return _http.Send<object, CalloutResponse>(uri, HttpMethod.Post, new
                 {
                     method = CalloutType.Conference.Value,
-                    conferenceCalllout = request
+                    conferenceCallout = request
                 },
                 cancellationToken: cancellationToken);
         }

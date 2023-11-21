@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Voice.Callouts
@@ -9,6 +10,7 @@ namespace Sinch.Voice.Callouts
     ///     If no “music-on-hold” is specified, the user will only hear silence.
     /// </summary>
     /// <param name="Value"></param>
+    [JsonConverter(typeof(EnumRecordJsonConverter<MohClass>))]
     public record MohClass(string Value) : EnumRecord(Value)
     {
         /// <summary>

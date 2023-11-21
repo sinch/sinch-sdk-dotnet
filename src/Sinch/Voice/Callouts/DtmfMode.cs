@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Voice.Callouts
@@ -6,6 +7,7 @@ namespace Sinch.Voice.Callouts
     ///     Determines what DTMF mode the participant will use in the call.
     /// </summary>
     /// <param name="Value"></param>
+    [JsonConverter(typeof(EnumRecordJsonConverter<DtmfMode>))]
     public record DtmfMode(string Value) : EnumRecord(Value)
     {
         /// <summary>
