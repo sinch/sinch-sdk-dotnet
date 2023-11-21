@@ -62,5 +62,26 @@ namespace Sinch.Tests.e2e.Voice
             });
             response.CallId.Should().BeEquivalentTo("330");
         }
+        
+        [Fact]
+        public async Task CustomRequest()
+        {
+            var response = await VoiceClient.Callout.Custom(new CustomCalloutRequest()                            
+            {                                                                                                     
+                Cli = "+3033",                                                                                    
+                Destination = new Destination()                                                                   
+                {                                                                                                 
+                    Endpoint = "+2022",                                                                           
+                    Type = DestinationType.Username,                                                              
+                },                                                                                                
+                Dtmf = "w9",                                                                                      
+                Custom = "arigato",                                                                               
+                MaxDuration = 300,                                                                                
+                Ice = "{\"action\":{\"name\":\"connectPstn\",\"number\":\"46000000001\",\"maxDuration\":90}}",    
+                Ace = "{}",                                                                                       
+                Pie = "https://your-application-server-host/application"                                          
+            });                                                                                                    
+            response.CallId.Should().BeEquivalentTo("440");                                                       
+        }
     }
 }
