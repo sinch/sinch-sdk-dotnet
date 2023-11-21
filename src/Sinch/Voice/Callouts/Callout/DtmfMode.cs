@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Voice.Callouts
+namespace Sinch.Voice.Callouts.Callout
 {
     /// <summary>
     ///     Determines what DTMF mode the participant will use in the call.

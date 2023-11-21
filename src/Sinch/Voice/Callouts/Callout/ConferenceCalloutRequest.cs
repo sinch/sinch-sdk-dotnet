@@ -1,4 +1,4 @@
-namespace Sinch.Voice.Callouts
+namespace Sinch.Voice.Callouts.Callout
 {
     public class ConferenceCalloutRequest
     {

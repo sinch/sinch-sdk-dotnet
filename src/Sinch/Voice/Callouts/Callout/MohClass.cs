@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Voice.Callouts
+namespace Sinch.Voice.Callouts.Callout
 {
     /// <summary>
     ///     Means "music-on-hold." It's an optional parameter that specifies what the first participant should listen to while

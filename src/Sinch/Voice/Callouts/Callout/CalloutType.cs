@@ -1,6 +1,6 @@
 ﻿using Sinch.Core;
 
-namespace Sinch.Voice.Callouts
+namespace Sinch.Voice.Callouts.Callout
 {
     internal record CalloutType(string Value) : EnumRecord(Value)
     {

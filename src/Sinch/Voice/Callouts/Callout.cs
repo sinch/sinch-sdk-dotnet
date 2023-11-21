@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
+using Sinch.Voice.Callouts.Callout;
 
 namespace Sinch.Voice.Callouts
 {
