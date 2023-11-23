@@ -5,12 +5,12 @@ using Xunit;
 
 namespace Sinch.Tests
 {
-    public class SinchClient
+    public class SinchClientTests
     {
         [Fact]
         public void Should_instantiate_sinch_client_with_provided_required_params()
         {
-            var sinch = new Sinch.SinchClient("TEST_KEY", "TEST_KEY_SECRET", "TEST_PROJECT_ID");
+            var sinch = new SinchClient("TEST_KEY", "TEST_KEY_SECRET", "TEST_PROJECT_ID");
             sinch.Should().NotBeNull();
             sinch.Numbers.Should().NotBeNull();
         }
@@ -19,7 +19,7 @@ namespace Sinch.Tests
         public void Should_instantiate_sinch_client_with_custom_http_client()
         {
             var httpClient = new HttpClient();
-            var sinch = new Sinch.SinchClient("TEST_KEY", "TEST_KEY_SECRET", "TEST_PROJECT_ID",
+            var sinch = new SinchClient("TEST_KEY", "TEST_KEY_SECRET", "TEST_PROJECT_ID",
                 options => { options.HttpClient = httpClient; });
             sinch.Should().NotBeNull();
         }
@@ -27,21 +27,21 @@ namespace Sinch.Tests
         [Fact]
         public void ThrowNullKeyId()
         {
-            Func<ISinchClient> initAction = () => new Sinch.SinchClient(null, "secret", "project");
+            Func<ISinchClient> initAction = () => new SinchClient(null, "secret", "project");
             initAction.Should().Throw<ArgumentNullException>("Should have a value");
         }
 
         [Fact]
         public void ThrowNullKeySecret()
         {
-            Func<ISinchClient> initAction = () => new Sinch.SinchClient("secret", null, "project");
+            Func<ISinchClient> initAction = () => new SinchClient("secret", null, "project");
             initAction.Should().Throw<ArgumentNullException>("Should have a value");
         }
 
         [Fact]
         public void ThrowNullProjectId()
         {
-            Func<ISinchClient> initAction = () => new Sinch.SinchClient("id", "secret", null);
+            Func<ISinchClient> initAction = () => new SinchClient("id", "secret", null);
             initAction.Should().Throw<ArgumentNullException>("Should have a value");
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace Sinch.Verification
+﻿namespace Sinch.Auth
 {
     public enum AuthStrategy
     {

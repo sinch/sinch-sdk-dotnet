@@ -1,6 +1,6 @@
 ﻿using DotNetEnv;
 using Sinch;
-using Sinch.Verification;
+using Sinch.Auth;
 
 // Assume .env file is present in your output directory
 Env.Load();

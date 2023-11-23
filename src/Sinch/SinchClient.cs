@@ -8,6 +8,7 @@ using Sinch.Logger;
 using Sinch.Numbers;
 using Sinch.SMS;
 using Sinch.Verification;
+using Sinch.Voice;
 
 namespace Sinch
 {
@@ -30,7 +31,7 @@ namespace Sinch
         ///         SMS
         ///     </see>
         ///     or
-        ///     <see href="">
+        ///     <see href="https://developers.sinch.com/docs/voice/api-reference/">
         ///         Voice
         ///     </see>
         ///     , to assign and use those numbers. <br/><br/>
@@ -92,6 +93,27 @@ namespace Sinch
         /// <returns></returns>
         public ISinchVerificationClient Verification(string appKey, string appSecret,
             AuthStrategy authStrategy = AuthStrategy.ApplicationSign);
+
+        /// <summary>
+        ///     When using Sinch for voice calling, the Sinch dashboard works as a big telephony switch.
+        ///     The dashboard handles incoming phone calls (also known as incoming call “legs”),
+        ///     sets up outgoing phone calls (or outgoing call “legs”), and bridges the two.
+        ///     The incoming call leg may come in over a data connection
+        ///     (from a smartphone or web application using the Sinch SDKs)
+        ///     or through a local phone number (from the PSTN network).
+        ///     Similarly, the outgoing call leg can be over
+        ///     data (to another smartphone or web application using the Sinch SDKs) or the PSTN network.
+        /// </summary>
+        /// <param name="appKey"></param>
+        /// <param name="appSecret"></param>
+        /// <param name="callingRegion">See <see cref="CallingRegion"/>. Defaults to <see cref="CallingRegion.Global"/></param>
+        /// <param name="authStrategy">
+        ///     Choose which authentication to use.
+        ///     Defaults to Application Sign request and it's a recommended approach.
+        /// </param>
+        /// <returns></returns>
+        public ISinchVoiceClient Voice(string appKey, string appSecret, CallingRegion callingRegion = null,
+            AuthStrategy authStrategy = AuthStrategy.ApplicationSign);
     }
 
     public class SinchClient : ISinchClient
@@ -100,10 +122,12 @@ namespace Sinch
         private const string NumbersApiUrl = "https://numbers.api.sinch.com/";
         private const string SmsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
         private const string ConversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
+        private const string VoiceApiUrlTemplate = "https://{0}.api.sinch.com/";
 
         private readonly LoggerFactory _loggerFactory;
         private readonly HttpClient _httpClient;
         private readonly Uri _verificationBaseAddress;
+        private readonly Uri _voiceBaseAddress;
 
         /// <summary>
         ///     Initialize a new <see cref="SinchClient"/>
@@ -178,8 +202,9 @@ namespace Sinch
         /// <param name="numbersBaseAddress"></param>
         /// <param name="smsBaseAddress"></param>
         /// <param name="verificationBaseAddress"></param>
+        /// <param name="voiceBaseAddress"></param>
         internal SinchClient(string projectId, Uri authUri, Uri numbersBaseAddress, Uri smsBaseAddress,
-            Uri verificationBaseAddress)
+            Uri verificationBaseAddress, Uri voiceBaseAddress)
         {
             _httpClient = new HttpClient();
             Auth = new OAuth(authUri, _httpClient);
@@ -190,6 +215,7 @@ namespace Sinch
             Numbers = new Numbers.Numbers(projectId, numbersBaseAddress, null, httpCamelCase);
             Sms = new Sms(projectId, smsBaseAddress, null, httpSnakeCase);
             _verificationBaseAddress = verificationBaseAddress;
+            _voiceBaseAddress = voiceBaseAddress;
         }
 
         /// <inheritdoc/>       
@@ -229,9 +255,41 @@ namespace Sinch
                 auth = new BasicAuth(appKey, appSecret);
             }
 
-            // TODO: implement application signed authentication, create IHttp just before the request with SignedRequestAuth
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(), JsonNamingPolicy.CamelCase);
             return new SinchVerificationClient(_verificationBaseAddress ?? new Uri(VerificationApiUrl),
+                _loggerFactory, http);
+        }
+
+        /// <inheritdoc />
+        public ISinchVoiceClient Voice(string appKey, string appSecret,
+            CallingRegion callingRegion = default,
+            AuthStrategy authStrategy = AuthStrategy.ApplicationSign)
+        {
+            if (string.IsNullOrEmpty(appKey))
+            {
+                throw new ArgumentNullException(nameof(appKey), "The value should be present");
+            }
+
+            if (string.IsNullOrEmpty(appSecret))
+            {
+                throw new ArgumentNullException(nameof(appSecret), "The value should be present");
+            }
+
+            ISinchAuth auth;
+            if (authStrategy == AuthStrategy.ApplicationSign)
+            {
+                auth = new ApplicationSignedAuth(appKey, appSecret);
+            }
+            else
+            {
+                auth = new BasicAuth(appKey, appSecret);
+            }
+
+            callingRegion ??= CallingRegion.Global;
+
+            var http = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(), JsonNamingPolicy.CamelCase);
+            return new SinchVoiceClient(
+                _voiceBaseAddress ?? new Uri(string.Format(VoiceApiUrlTemplate, callingRegion.Value)),
                 _loggerFactory, http);
         }
     }
