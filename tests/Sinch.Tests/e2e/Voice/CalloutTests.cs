@@ -10,7 +10,7 @@ namespace Sinch.Tests.e2e.Voice
         [Fact]
         public async Task TtsRequest()
         {
-            var response = await VoiceClient.Callout.Tts(new TtsCalloutRequest()
+            var response = await VoiceClient.Callouts.Tts(new TtsCalloutRequest()
             {
                 Destination = new Destination()
                 {
@@ -34,7 +34,7 @@ namespace Sinch.Tests.e2e.Voice
         [Fact]
         public async Task ConferenceRequest()
         {
-            var response = await VoiceClient.Callout.Conference(new ConferenceCalloutRequest()
+            var response = await VoiceClient.Callouts.Conference(new ConferenceCalloutRequest()
             {
                 Destination = new Destination()
                 {
@@ -66,7 +66,7 @@ namespace Sinch.Tests.e2e.Voice
         [Fact]
         public async Task CustomRequest()
         {
-            var response = await VoiceClient.Callout.Custom(new CustomCalloutRequest()
+            var response = await VoiceClient.Callouts.Custom(new CustomCalloutRequest()
             {
                 Cli = "+3033",
                 Destination = new Destination()

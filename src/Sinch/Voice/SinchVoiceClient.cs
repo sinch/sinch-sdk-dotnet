@@ -10,7 +10,7 @@ namespace Sinch.Voice
         /// <summary>
         ///     A callout is a call made to a phone number or app using the API.
         /// </summary>
-        ISinchVoiceCallout Callout { get; }
+        ISinchVoiceCallout Callouts { get; }
     }
 
     internal class SinchVoiceClient : ISinchVoiceClient
@@ -18,10 +18,10 @@ namespace Sinch.Voice
         public SinchVoiceClient(Uri baseAddress, LoggerFactory loggerFactory,
             IHttp http)
         {
-            Callout = new SinchCallout(loggerFactory?.Create<SinchCallout>(), baseAddress, http);
+            Callouts = new SinchCallout(loggerFactory?.Create<SinchCallout>(), baseAddress, http);
         }
 
         /// <inheritdoc />
-        public ISinchVoiceCallout Callout { get; }
+        public ISinchVoiceCallout Callouts { get; }
     }
 }
