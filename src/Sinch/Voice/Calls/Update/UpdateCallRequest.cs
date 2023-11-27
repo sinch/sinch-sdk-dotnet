@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sinch.Voice.Calls.Actions;
 
-namespace Sinch.Voice.Calls
+namespace Sinch.Voice.Calls.Update
 {
     public class UpdateCallRequest
     {
