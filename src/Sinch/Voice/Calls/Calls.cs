@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Sinch.Core;
+using Sinch.Logger;
 using Sinch.Voice.Calls.Manage;
 using Sinch.Voice.Calls.Update;
 
@@ -53,25 +56,49 @@ namespace Sinch.Voice.Calls
 
 
     /// <inheritdoc />
-    internal class Calls : ISinchVoiceCalls
+    internal class SinchCalls : ISinchVoiceCalls
     {
+        private readonly ILoggerAdapter<ISinchVoiceCalls> _logger;
+        private readonly Uri _baseAddress;
+        private readonly IHttp _http;
+
+        public SinchCalls(ILoggerAdapter<ISinchVoiceCalls> logger, Uri baseAddress, IHttp http)
+        {
+            _logger = logger;
+            _baseAddress = baseAddress;
+            _http = http;
+        }
+
         /// <inheritdoc />
         public Task Update(UpdateCallRequest request, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var uri = new Uri(_baseAddress, $"calling/v1/calls/id/{request.CallId}");
+            _logger?.LogDebug("Updating a call with {id}", request.CallId);
+            return _http.Send<object, object>(uri, HttpMethod.Patch, new
+                {
+                    instructions = request.Instructions,
+                    action = request.Action
+                },
+                cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
         public Task<Call> Get(string callId, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var uri = new Uri(_baseAddress, $"calling/v1/calls/id/{callId}");
+            _logger?.LogDebug("Getting info about a call with {id}", callId);
+            return _http.Send<Call>(uri, HttpMethod.Get,
+                cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
         public Task ManageWithCallLeg(string callId, CallLeg callLeg, ManageWithCallLegRequest request,
             CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var uri = new Uri(_baseAddress, $"calling/v1/calls/id/{callId}/leg/{callLeg.Value}");
+            _logger?.LogDebug("Managing call with {id} and {callLeg}", callId, callLeg);
+            return _http.Send<ManageWithCallLegRequest, object>(uri, HttpMethod.Patch, request,
+                cancellationToken: cancellationToken);
         }
     }
 }
