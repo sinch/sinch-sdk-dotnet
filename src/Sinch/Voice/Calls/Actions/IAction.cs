@@ -2,6 +2,9 @@
 
 namespace Sinch.Voice.Calls.Actions
 {
+    /// <summary>
+    ///     Marker interface for Call Actions.
+    /// </summary>
     [JsonDerivedType(typeof(ConnectConf))]
     [JsonDerivedType(typeof(ConnectMxp))]
     [JsonDerivedType(typeof(ConnectPstn))]

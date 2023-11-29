@@ -4,8 +4,6 @@ namespace Sinch.Voice.Calls.Actions
 {
     public class ConnectConf : IAction
     {
-        public string Name { get; } = "connectConf";
-        
         /// <summary>
         ///     The unique identifier of the conference. Shouldn&#39;t exceed 64 characters.
         /// </summary>
@@ -14,19 +12,23 @@ namespace Sinch.Voice.Calls.Actions
 #else
         public string ConferenceId { get; set; }
 #endif
-        
+
 
         /// <summary>
         ///     Gets or Sets ConferenceDtmfOptions
         /// </summary>
         public ConferenceDtmfOptions ConferenceDtmfOptions { get; set; }
-        
+
 
         /// <summary>
-        ///     Means \&quot;music on hold\&quot;. If this optional parameter is included, plays music to the first participant in a conference while they&#39;re alone and waiting for other participants to join. If &#x60;moh&#x60; isn&#39;t specified, the user will only hear silence while alone in the conference.
+        ///     Means \&quot;music on hold\&quot;. If this optional parameter is included, plays music to the first participant in
+        ///     a conference while they&#39;re alone and waiting for other participants to join. If &#x60;moh&#x60; isn&#39;t
+        ///     specified, the user will only hear silence while alone in the conference.
         /// </summary>
         public MohClass Moh { get; set; }
-        
+
+        public string Name { get; } = "connectConf";
+
 
         /// <summary>
         ///     Returns the string presentation of the object

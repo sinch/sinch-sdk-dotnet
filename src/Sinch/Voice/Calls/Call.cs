@@ -74,8 +74,6 @@ namespace Sinch.Voice.Calls
         /// </summary>
         public string Debit { get; set; }
 
-        public object Should { get; set; }
-
 
         /// <summary>
         ///     Returns the string presentation of the object

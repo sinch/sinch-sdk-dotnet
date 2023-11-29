@@ -7,8 +7,6 @@ namespace Sinch.Voice.Calls.Actions
 {
     public class ConnectSip : IAction
     {
-        public string Name { get; } = "connectSip";
-
         /// <summary>
         ///     Gets or Sets Destination
         /// </summary>
@@ -40,8 +38,17 @@ namespace Sinch.Voice.Calls.Actions
 
 
         /// <summary>
-        ///     If enabled, suppresses <see href="https://developers.sinch.com/docs/voice/api-reference/voice/voice/tag/Callbacks/#tag/Callbacks/operation/ace">ACE</see> and
-        ///     <see href="https://developers.sinch.com/docs/voice/api-reference/voice/voice/tag/Callbacks/#tag/Callbacks/operation/dice">DICE</see> callbacks for the call.
+        ///     If enabled, suppresses
+        ///     <see
+        ///         href="https://developers.sinch.com/docs/voice/api-reference/voice/voice/tag/Callbacks/#tag/Callbacks/operation/ace">
+        ///         ACE
+        ///     </see>
+        ///     and
+        ///     <see
+        ///         href="https://developers.sinch.com/docs/voice/api-reference/voice/voice/tag/Callbacks/#tag/Callbacks/operation/dice">
+        ///         DICE
+        ///     </see>
+        ///     callbacks for the call.
         /// </summary>
         public bool? SuppressCallbacks { get; set; }
 
@@ -63,6 +70,8 @@ namespace Sinch.Voice.Calls.Actions
         ///     user will only hear silence while during the holding period .
         /// </summary>
         public MohClass Moh { get; set; }
+
+        public string Name { get; } = "connectSip";
 
 
         /// <summary>

@@ -7,8 +7,6 @@ namespace Sinch.Voice.Calls.Actions
 {
     public sealed class RunMenu : IAction
     {
-        public string Name { get; } = "runMenu";
-
         /// <summary>
         ///     &#39;Barging&#39; means that the user can press a DTMF digit before the prompt has finished playing. If a valid
         ///     input is pressed, the message will stop playing and accept the input. If &#x60;barge&#x60; is disabled, the user
@@ -20,7 +18,7 @@ namespace Sinch.Voice.Calls.Actions
         /// <summary>
         ///     The voice and language you want to use for the text-to-speech message. This can either be defined by the ISO 639
         ///     locale and language code or by specifying a particular voice. Supported languages and voices are detailed
-        ///     [here](../../voice-locales). If using the &#x60;enableVoice&#x60; to enable voice detection, the &#x60;locale&#x60;
+        ///     [here](https://developers.sinch.com/docs/voice/api-reference/voice/voice-locales). If using the &#x60;enableVoice&#x60; to enable voice detection, the &#x60;locale&#x60;
         ///     property is required in order to select the input language.
         /// </summary>
         public string Locale { get; set; }
@@ -44,6 +42,8 @@ namespace Sinch.Voice.Calls.Actions
         ///     no menu has an &#x60;id&#x60; value of &#x60;main&#x60;, an error is returned.
         /// </summary>
         public List<Menu> Menus { get; set; }
+
+        public string Name { get; } = "runMenu";
 
 
         /// <summary>
