@@ -5,6 +5,19 @@ using Sinch.Core;
 
 namespace Sinch.Voice.Calls.Actions
 {
+    /// <summary>
+    ///     Plays an interactive voice response (IVR) menu to the callee. This menu can play pre-recorded files or
+    ///     text-to-speech messages, collect DTMF tones, and trigger the [Prompt Input
+    ///     Event](https://developers.sinch.com/docs/voice/api-reference/voice/tag/Callbacks/#tag/Callbacks/operation/pie)
+    ///     (PIE) callback towards your backend, notifying you of the actions the callee took. Available to use in a response
+    ///     to an [Incoming Call
+    ///     Event](https://developers.sinch.com/docs/voice/api-reference/voice/tag/Callbacks/#tag/Callbacks/operation/ice)
+    ///     callback or an [Answered Call
+    ///     Event](https://developers.sinch.com/docs/voice/api-reference/voice/tag/Callbacks/#tag/Callbacks/operation/ace)
+    ///     callback. Also be used in combination with the
+    ///     [Conferences](https://developers.sinch.com/docs/voice/api-reference/voice/tag/Conferences/) endpoint of the Calling
+    ///     API.
+    /// </summary>
     public sealed class RunMenu : IAction
     {
         /// <summary>
@@ -18,7 +31,8 @@ namespace Sinch.Voice.Calls.Actions
         /// <summary>
         ///     The voice and language you want to use for the text-to-speech message. This can either be defined by the ISO 639
         ///     locale and language code or by specifying a particular voice. Supported languages and voices are detailed
-        ///     [here](https://developers.sinch.com/docs/voice/api-reference/voice/voice-locales). If using the &#x60;enableVoice&#x60; to enable voice detection, the &#x60;locale&#x60;
+        ///     [here](https://developers.sinch.com/docs/voice/api-reference/voice/voice-locales). If using the &#x60;enableVoice
+        ///     &#x60; to enable voice detection, the &#x60;locale&#x60;
         ///     property is required in order to select the input language.
         /// </summary>
         public string Locale { get; set; }

@@ -5,7 +5,10 @@ using Sinch.Core;
 
 namespace Sinch.Voice.Calls.Actions
 {
-    public class ConnectSip : IAction
+    /// <summary>
+    ///     Determines how to route a call to a SIP server. 
+    /// </summary>
+    public sealed class ConnectSip : IAction
     {
         /// <summary>
         ///     Gets or Sets Destination

@@ -2,7 +2,10 @@
 
 namespace Sinch.Voice.Calls.Actions
 {
-    public class ConnectConf : IAction
+    /// <summary>
+    ///     Connects an incoming call to a conference.
+    /// </summary>
+    public sealed class ConnectConf : IAction
     {
         /// <summary>
         ///     The unique identifier of the conference. Shouldn&#39;t exceed 64 characters.
