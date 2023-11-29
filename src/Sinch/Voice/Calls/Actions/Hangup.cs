@@ -1,7 +1,7 @@
 ﻿namespace Sinch.Voice.Calls.Actions
 {
-    public class Hangup : Action
+    public class Hangup : IAction
     {
-        public override string Name { get; } = "hangup";
+        public string Name { get; } = "hangup";
     }
 }

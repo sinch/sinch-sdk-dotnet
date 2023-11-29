@@ -3,9 +3,9 @@ using System.Text;
 
 namespace Sinch.Voice.Calls.Instructions
 {
-    public class PlayFiles : Instruction
+    public class PlayFiles : IInstruction
     {
-        public override string Name { get; } = "playFiles";
+        public string Name { get; } = "playFiles";
 
         /// <summary>
         ///     The IDs of the files which will be played. These can be a URL to a file, SSML commands using the &#x60;#ssml[]

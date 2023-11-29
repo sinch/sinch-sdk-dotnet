@@ -5,9 +5,9 @@ namespace Sinch.Voice.Calls.Instructions
     /// <summary>
     ///     Creates a cookie for the duration of the call.
     /// </summary>
-    public class SetCookie : Instruction
+    public class SetCookie : IInstruction
     {
-        public override string Name { get; } = "setCookie";
+        public string Name { get; } = "setCookie";
 
         /// <summary>
         ///     The name of the cookie you want to set.

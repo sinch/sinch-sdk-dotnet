@@ -8,9 +8,9 @@ namespace Sinch.Voice.Calls.Actions
     /// <summary>
     ///     Determines how an application-to-application call is connected.
     /// </summary>
-    public sealed class ConnectMxp : Action
+    public sealed class ConnectMxp : IAction
     {
-        public override string Name { get; } = "connectMxp";
+        public string Name { get; } = "connectMxp";
 
         /// <inheritdoc cref="Destination" />
         public Destination Destination { get; set; }

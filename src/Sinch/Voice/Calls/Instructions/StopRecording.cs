@@ -3,8 +3,8 @@
     /// <summary>
     ///     Stops the recording of the call.
     /// </summary>
-    public sealed class StopRecording : Instruction
+    public sealed class StopRecording : IInstruction
     {
-        public override string Name { get; } = "stopRecording";
+        public string Name { get; } = "stopRecording";
     }
 }

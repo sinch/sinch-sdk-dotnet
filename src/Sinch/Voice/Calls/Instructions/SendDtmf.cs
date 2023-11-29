@@ -5,9 +5,9 @@ namespace Sinch.Voice.Calls.Instructions
     /// <summary>
     ///     Plays DTMF tones in the call.
     /// </summary>
-    public class SendDtmf : Instruction
+    public class SendDtmf : IInstruction
     {
-        public override string Name { get; } = "sendDtmf";
+        public string Name { get; } = "sendDtmf";
 
         /// <summary>
         ///     A string that determines the DTMF tones to play to the callee when the call is picked up. Valid characters are:

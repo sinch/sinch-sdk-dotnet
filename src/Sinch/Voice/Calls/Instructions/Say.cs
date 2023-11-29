@@ -5,9 +5,9 @@ namespace Sinch.Voice.Calls.Instructions
     /// <summary>
     ///     Plays a synthesized text-to-speech message to the end user. The message is provided in the text field.
     /// </summary>
-    public sealed class Say : Instruction
+    public sealed class Say : IInstruction
     {
-        public override string Name { get; } = "say";
+        public string Name { get; } = "say";
 
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using Sinch.Voice.Calls.Actions;
+using Sinch.Voice.Calls.Instructions;
 
 namespace Sinch.Voice.Calls.Manage
 {
@@ -14,13 +15,13 @@ namespace Sinch.Voice.Calls.Manage
         /// <summary>
         ///     The collection of instructions that can perform various tasks during the call. You can include as many instructions as necessary.
         /// </summary>
-        public List<Instruction> Instructions { get; set; }
+        public List<IInstruction> Instructions { get; set; }
         
 
         /// <summary>
         ///     Gets or Sets Action
         /// </summary>
-        public Action Action { get; set; }
+        public IAction Action { get; set; }
         
 
         /// <summary>

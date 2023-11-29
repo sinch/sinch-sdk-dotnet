@@ -5,9 +5,9 @@ using Sinch.Core;
 
 namespace Sinch.Voice.Calls.Actions
 {
-    public class ConnectSip : Action
+    public class ConnectSip : IAction
     {
-        public override string Name { get; } = "connectSip";
+        public string Name { get; } = "connectSip";
 
         /// <summary>
         ///     Gets or Sets Destination

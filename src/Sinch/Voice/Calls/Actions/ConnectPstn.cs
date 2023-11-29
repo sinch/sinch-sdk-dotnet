@@ -5,12 +5,12 @@ namespace Sinch.Voice.Calls.Actions
     /// <summary>
     ///     Determines how a PSTN call is connected.
     /// </summary>
-    public class ConnectPstn : Action
+    public class ConnectPstn : IAction
     {
         /// <summary>
         ///     The name property. 
         /// </summary>
-        public override string Name { get; } = "connectPstn";
+        public string Name { get; } = "connectPstn";
 
 
         /// <summary>

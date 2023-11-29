@@ -5,9 +5,9 @@ namespace Sinch.Voice.Calls.Instructions
     /// <summary>
     ///     Forces the callee to answer the call.
     /// </summary>
-    public class Answer : Instruction
+    public class Answer : IInstruction
     {
-        public override string Name { get; } = "Answer";
+        public string Name { get; } = "Answer";
         
         /// <summary>
         ///     Returns the string presentation of the object

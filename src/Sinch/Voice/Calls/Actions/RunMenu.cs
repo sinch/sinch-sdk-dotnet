@@ -5,9 +5,9 @@ using Sinch.Core;
 
 namespace Sinch.Voice.Calls.Actions
 {
-    public sealed class RunMenu : Action
+    public sealed class RunMenu : IAction
     {
-        public override string Name { get; } = "runMenu";
+        public string Name { get; } = "runMenu";
 
         /// <summary>
         ///     &#39;Barging&#39; means that the user can press a DTMF digit before the prompt has finished playing. If a valid

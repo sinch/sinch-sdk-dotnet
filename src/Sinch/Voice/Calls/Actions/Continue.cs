@@ -1,7 +1,7 @@
 ﻿namespace Sinch.Voice.Calls.Actions
 {
-    public class Continue : Action
+    public class Continue : IAction
     {
-        public override string Name { get; } = "continue";
+        public string Name { get; } = "continue";
     }
 }

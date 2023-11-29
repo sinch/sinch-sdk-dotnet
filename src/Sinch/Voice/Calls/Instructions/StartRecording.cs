@@ -3,9 +3,9 @@
     /// <summary>
     ///     Starts a recording of the call.
     /// </summary>
-    public sealed class StartRecording : Instruction
+    public sealed class StartRecording : IInstruction
     {
-        public override string Name { get; } = "startRecording";
+        public string Name { get; } = "startRecording";
 
         /// <summary>
         ///     An object that specifies details about the recording. For more details, see

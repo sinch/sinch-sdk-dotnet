@@ -1,11 +1,10 @@
 ﻿using System.Text;
-using Sinch.Voice.Callouts.Callout;
 
 namespace Sinch.Voice.Calls.Actions
 {
-    public class ConnectConf : Action
+    public class ConnectConf : IAction
     {
-        public override string Name { get; } = "connectConf";
+        public string Name { get; } = "connectConf";
         
         /// <summary>
         ///     The unique identifier of the conference. Shouldn&#39;t exceed 64 characters.

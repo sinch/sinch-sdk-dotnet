@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Voice.Calls;
+using Sinch.Voice.Calls.Actions;
+using Sinch.Voice.Calls.Instructions;
+using Sinch.Voice.Calls.Update;
 using Xunit;
 
 namespace Sinch.Tests.e2e.Voice
@@ -26,6 +30,25 @@ namespace Sinch.Tests.e2e.Voice
                 Custom = new object(),
                 UserRate = "39",
                 Debit = "138",
+            });
+        }
+
+        [Fact]
+        public async Task UpdateCall()
+        {
+            await VoiceClient.Calls.Update(new UpdateCallRequest
+            {
+                CallId = "123",
+                Action = new Hangup(),
+                Instructions = new List<IInstruction>()
+                {
+                    new Say()
+                    {
+                        Text = "Hello!",
+                        Locale = "en-US"
+                    },
+                    new StopRecording()
+                }
             });
         }
     }
