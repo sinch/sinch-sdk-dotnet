@@ -7,7 +7,7 @@ namespace Sinch.Voice.Calls.Instructions
     /// </summary>
     public class Answer : IInstruction
     {
-        public string Name { get; } = "Answer";
+        public string Name { get; } = "answer";
         
         /// <summary>
         ///     Returns the string presentation of the object
