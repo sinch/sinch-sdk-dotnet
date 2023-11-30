@@ -166,10 +166,10 @@ namespace Sinch
             logger?.LogInformation("Initializing SinchClient...");
 
             ISinchAuth auth =
-                new OAuth(keyId, keySecret, optionsObj.HttpClient, _loggerFactory?.Create<OAuth>());
-            var httpCamelCase = new Http(auth, optionsObj.HttpClient, _loggerFactory?.Create<Http>(),
+                new OAuth(keyId, keySecret, _httpClient, _loggerFactory?.Create<OAuth>());
+            var httpCamelCase = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(),
                 JsonNamingPolicy.CamelCase);
-            var httpSnakeCase = new Http(auth, optionsObj.HttpClient, _loggerFactory?.Create<Http>(),
+            var httpSnakeCase = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(),
                 SnakeCaseNamingPolicy.Instance);
 
             Numbers = new Numbers.Numbers(projectId, new Uri(NumbersApiUrl),

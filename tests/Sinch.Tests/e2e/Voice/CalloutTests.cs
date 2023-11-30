@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using FluentAssertions;
+using Sinch.Voice;
 using Sinch.Voice.Callouts.Callout;
 using Xunit;
 

@@ -16,12 +16,13 @@ namespace Sinch.Tests
         }
 
         [Fact]
-        public void Should_instantiate_sinch_client_with_custom_http_client()
+        public void InitSinchClientWithCustomHttpClient()
         {
             var httpClient = new HttpClient();
             var sinch = new SinchClient("TEST_KEY", "TEST_KEY_SECRET", "TEST_PROJECT_ID",
                 options => { options.HttpClient = httpClient; });
             sinch.Should().NotBeNull();
+            Helpers.GetPrivateField<HttpClient, SinchClient>(sinch, "_httpClient").Should().Be(httpClient);
         }
 
         [Fact]
@@ -43,6 +44,13 @@ namespace Sinch.Tests
         {
             Func<ISinchClient> initAction = () => new SinchClient("id", "secret", null);
             initAction.Should().Throw<ArgumentNullException>("Should have a value");
+        }
+
+        [Fact]
+        public void InitializeOwnHttpIfNotPassed()
+        {
+            var sinch = new SinchClient("id", "secret", "proj");
+            Helpers.GetPrivateField<HttpClient, SinchClient>(sinch, "_httpClient").Should().NotBeNull();
         }
     }
 }
