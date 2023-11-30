@@ -75,8 +75,6 @@ namespace Sinch.Tests.Conversation
             response.AcceptedTime.Should().HaveMinute(15);
         }
 
-        //net 5.0 have a weird bug with floats
-#if NET6_0_OR_GREATER
         [Fact]
         public async Task SendLocation()
         {
@@ -111,7 +109,6 @@ namespace Sinch.Tests.Conversation
 
             response.Should().NotBeNull();
         }
-#endif
 
         [Fact]
         public async Task SendCarousel()
@@ -344,8 +341,6 @@ namespace Sinch.Tests.Conversation
             response.Should().NotBeNull();
         }
 
-        // net5 have a weird bug with floats in objects
-#if NET6_0_OR_GREATER
         [Fact]
         public async Task SendList()
         {
@@ -440,7 +435,7 @@ namespace Sinch.Tests.Conversation
 
             response.Should().NotBeNull();
         }
-#endif
+        
         [Fact]
         public async Task SendAllParams()
         {
