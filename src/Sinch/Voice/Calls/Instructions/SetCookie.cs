@@ -28,7 +28,7 @@ namespace Sinch.Voice.Calls.Instructions
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class SvamlInstructionSetCookie {\n");
+            sb.Append("class SetCookie {\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Key: ").Append(Key).Append("\n");
             sb.Append("  Value: ").Append(Value).Append("\n");

@@ -67,7 +67,7 @@ namespace Sinch.Voice.Calls.Actions
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class SvamlActionRunMenu {\n");
+            sb.Append("class RunMenu {\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Barge: ").Append(Barge).Append("\n");
             sb.Append("  Locale: ").Append(Locale).Append("\n");

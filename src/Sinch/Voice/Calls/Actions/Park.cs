@@ -47,7 +47,7 @@ namespace Sinch.Voice.Calls.Actions
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class SvamlActionPark {\n");
+            sb.Append("class Park {\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Locale: ").Append(Locale).Append("\n");
             sb.Append("  IntroPrompt: ").Append(IntroPrompt).Append("\n");

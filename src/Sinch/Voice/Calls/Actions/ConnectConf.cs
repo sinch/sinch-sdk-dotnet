@@ -40,7 +40,7 @@ namespace Sinch.Voice.Calls.Actions
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class SvamlActionConnectConf {\n");
+            sb.Append("class ConnectConf {\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  ConferenceId: ").Append(ConferenceId).Append("\n");
             sb.Append("  ConferenceDtmfOptions: ").Append(ConferenceDtmfOptions).Append("\n");

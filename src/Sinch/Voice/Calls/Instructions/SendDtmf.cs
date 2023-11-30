@@ -27,7 +27,7 @@ namespace Sinch.Voice.Calls.Instructions
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class SvamlInstructionSendDtmf {\n");
+            sb.Append("class SendDtmf {\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Value: ").Append(Value).Append("\n");
             sb.Append("}\n");

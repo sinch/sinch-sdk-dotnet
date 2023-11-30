@@ -29,7 +29,7 @@ namespace Sinch.Voice.Calls.Instructions
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class SvamlInstructionSay {\n");
+            sb.Append("class Say {\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Text: ").Append(Text).Append("\n");
             sb.Append("  Locale: ").Append(Locale).Append("\n");

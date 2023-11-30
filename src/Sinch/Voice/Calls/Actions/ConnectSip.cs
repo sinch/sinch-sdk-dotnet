@@ -84,7 +84,7 @@ namespace Sinch.Voice.Calls.Actions
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class SvamlActionConnectSip {\n");
+            sb.Append("class ConnectSip {\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Destination: ").Append(Destination).Append("\n");
             sb.Append("  MaxDuration: ").Append(MaxDuration).Append("\n");
