@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-#if NET6_0_OR_GREATER
 using System.Collections.Generic;
 using System.Text.Json.Nodes;
-#endif
 
 namespace Sinch
 {
@@ -16,9 +14,7 @@ namespace Sinch
         private SinchApiException(string message, Exception inner, HttpStatusCode statusCode) : base(message, inner,
             statusCode)
         {
-#if NET6_0_OR_GREATER
             Details = new List<JsonNode>();
-#endif
         }
 
         internal SinchApiException(HttpStatusCode statusCode, string message, Exception inner, ApiErrorResponse authApiError)
@@ -30,18 +26,13 @@ namespace Sinch
             var details = authApiError?.Error;
             Status = details?.Status ?? authApiError?.Code;
             DetailedMessage = details?.Message ?? authApiError?.Text;
-
-#if NET6_0_OR_GREATER
             Details = details?.Details ?? new List<JsonNode>();
-#endif
         }
 
         public string DetailedMessage { get; init; }
 
         public string Status { get; init; }
 
-#if NET6_0_OR_GREATER
         public List<JsonNode> Details { get; init; }
-#endif
     }
 }

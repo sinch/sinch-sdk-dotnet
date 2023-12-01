@@ -1,8 +1,5 @@
-﻿#if NET6_0_OR_GREATER
+﻿using System.Collections.Generic;
 using System.Text.Json.Nodes;
-using System.Collections.Generic;
-#endif
-
 
 namespace Sinch
 {
@@ -22,8 +19,7 @@ namespace Sinch
         public string Message { get; set; }
 
         public string Status { get; set; }
-#if NET6_0_OR_GREATER
+
         public List<JsonNode> Details { get; set; }
-#endif
     }
 }

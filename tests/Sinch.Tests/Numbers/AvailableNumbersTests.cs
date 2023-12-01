@@ -155,14 +155,12 @@ namespace Sinch.Tests.Numbers
             Func<Task<AvailableNumber>> response = () => Numbers.Available.CheckAvailability("+12025550");
 
             var exception = await response.Should().ThrowAsync<SinchApiException>();
-#if NET6_0_OR_GREATER
             var node = exception.And.Details!.First();
             node["type"]!.GetValue<string>().Should().Be("ResourceInfo");
             node["resourceType"]!.GetValue<string>().Should().Be("AvailableNumber");
             node["resourceName"]!.GetValue<string>().Should().Be("+341123");
             node["owner"]!.GetValue<string>().Should().Be("");
             node["description"]!.GetValue<string>().Should().Be("");
-#endif
         }
     }
 }
