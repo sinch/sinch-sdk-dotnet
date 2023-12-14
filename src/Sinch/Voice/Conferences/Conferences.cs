@@ -1,5 +1,9 @@
-﻿using System.Threading;
+﻿using System;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
+using Sinch.Core;
+using Sinch.Logger;
 using Sinch.Voice.Conferences.Get;
 using Sinch.Voice.Conferences.ManageParticipants;
 
@@ -49,7 +53,55 @@ namespace Sinch.Voice.Conferences
     }
 
 
-    internal class Conferences
+    /// <inheritdoc />
+    internal class SinchConferences : ISinchVoiceConferences
     {
+        private readonly Uri _baseAddress;
+        private readonly IHttp _http;
+        private readonly ILoggerAdapter<ISinchVoiceConferences> _logger;
+
+        public SinchConferences(ILoggerAdapter<ISinchVoiceConferences> logger, Uri baseAddress, IHttp http)
+        {
+            _logger = logger;
+            _baseAddress = baseAddress;
+            _http = http;
+        }
+
+        /// <inheritdoc />
+        public Task<GetConferenceResponse> Get(string conferenceId, CancellationToken cancellationToken = default)
+        {
+            var uri = new Uri(_baseAddress, $"calling/v1/conferences/id/{conferenceId}");
+            _logger?.LogDebug("Getting info about a conference with {conferenceId}", conferenceId);
+            return _http.Send<GetConferenceResponse>(uri, HttpMethod.Get,
+                cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task KickAll(string conferenceId, CancellationToken cancellationToken = default)
+        {
+            var uri = new Uri(_baseAddress, $"calling/v1/conferences/id/{conferenceId}");
+            _logger?.LogDebug("Kicking all from a conference with {conferenceId}", conferenceId);
+            return _http.Send<object>(uri, HttpMethod.Delete,
+                cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task ManageParticipant(string callId, string conferenceId, ManageParticipantRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var uri = new Uri(_baseAddress, $"calling/v1/conferences/id/{conferenceId}/{callId}");
+            _logger?.LogDebug("Managing {callId} of {conferenceId}", callId, conferenceId);
+            return _http.Send<object, ManageParticipantRequest>(uri, HttpMethod.Patch, request,
+                cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task KickParticipant(string callId, string conferenceId, CancellationToken cancellationToken = default)
+        {
+            var uri = new Uri(_baseAddress, $"calling/v1/conferences/id/{conferenceId}/{callId}");
+            _logger?.LogDebug("Kicking {callId} from {conferenceId}", callId, conferenceId);
+            return _http.Send<object>(uri, HttpMethod.Delete,
+                cancellationToken);
+        }
     }
 }
