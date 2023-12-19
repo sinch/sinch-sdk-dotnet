@@ -9,7 +9,7 @@ using Sinch.Voice.Callouts.Callout;
 namespace Sinch.Voice.Callouts
 {
     /// <summary>
-    ///     A callout is a call made to a phone number or app using the API.<br/><br/>
+    ///     A callout is a call made to a phone number or app using the API.<br /><br />
     ///     Makes a call out to a phone number. The types of callouts currently supported are conference callouts,
     ///     text-to-speech callouts, and custom callouts. The custom callout is the most flexible,
     ///     but text-to-speech and conference callouts are more convenient.
@@ -24,7 +24,7 @@ namespace Sinch.Voice.Callouts
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<CalloutResponse> Tts(TtsCalloutRequest request, CancellationToken cancellationToken = default);
-        
+
         /// <summary>
         ///     The conference callout calls a phone number or a user.
         ///     When the call is answered, it's connected to a conference room.
@@ -32,7 +32,8 @@ namespace Sinch.Voice.Callouts
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<CalloutResponse> Conference(ConferenceCalloutRequest request, CancellationToken cancellationToken = default);
+        Task<CalloutResponse> Conference(ConferenceCalloutRequest request,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     The custom callout, the server initiates a call from the servers that can be controlled
@@ -46,9 +47,9 @@ namespace Sinch.Voice.Callouts
 
     internal class SinchCallout : ISinchVoiceCallout
     {
-        private readonly ILoggerAdapter<ISinchVoiceCallout> _logger;
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
+        private readonly ILoggerAdapter<ISinchVoiceCallout> _logger;
 
         public SinchCallout(ILoggerAdapter<ISinchVoiceCallout> logger, Uri baseAddress, IHttp http)
         {
@@ -67,11 +68,12 @@ namespace Sinch.Voice.Callouts
                     method = CalloutType.Tts.Value,
                     ttsCallout = request
                 },
-                cancellationToken: cancellationToken);
+                cancellationToken);
         }
 
         /// <inheritdoc />
-        public Task<CalloutResponse> Conference(ConferenceCalloutRequest request, CancellationToken cancellationToken = default)
+        public Task<CalloutResponse> Conference(ConferenceCalloutRequest request,
+            CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, "calling/v1/callouts");
             _logger?.LogDebug("Making Conference callout request...");
@@ -80,7 +82,7 @@ namespace Sinch.Voice.Callouts
                     method = CalloutType.Conference.Value,
                     conferenceCallout = request
                 },
-                cancellationToken: cancellationToken);
+                cancellationToken);
         }
 
         /// <inheritdoc />
@@ -93,7 +95,7 @@ namespace Sinch.Voice.Callouts
                     method = CalloutType.Custom.Value,
                     customCallout = request
                 },
-                cancellationToken: cancellationToken);
+                cancellationToken);
         }
     }
 }

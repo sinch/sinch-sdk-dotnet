@@ -69,11 +69,11 @@ namespace Sinch.Voice.Applications
     }
 
     /// <inheritdoc />
-    sealed class SinchApplications : ISinchVoiceApplications
+    internal sealed class SinchApplications : ISinchVoiceApplications
     {
-        private readonly ILoggerAdapter<ISinchVoiceApplications> _logger;
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
+        private readonly ILoggerAdapter<ISinchVoiceApplications> _logger;
 
         public SinchApplications(ILoggerAdapter<ISinchVoiceApplications> logger, Uri baseAddress, IHttp http)
         {
@@ -88,7 +88,7 @@ namespace Sinch.Voice.Applications
             var uri = new Uri(_baseAddress, "v1/configuration/numbers");
             _logger?.LogDebug("Getting a numbers...");
             return _http.Send<GetNumbersResponse>(uri, HttpMethod.Get,
-                cancellationToken: cancellationToken);
+                cancellationToken);
         }
 
         /// <inheritdoc />
@@ -97,7 +97,7 @@ namespace Sinch.Voice.Applications
             var uri = new Uri(_baseAddress, "v1/configuration/numbers");
             _logger?.LogDebug("Assigning a numbers to {applicationKey}", request.ApplicationKey);
             return _http.Send<AssignNumbersRequest, object>(uri, HttpMethod.Post, request,
-                cancellationToken: cancellationToken);
+                cancellationToken);
         }
 
         /// <inheritdoc />
@@ -106,7 +106,7 @@ namespace Sinch.Voice.Applications
             var uri = new Uri(_baseAddress, "v1/configuration/numbers");
             _logger?.LogDebug("Un-assigning a {number}", request.Number);
             return _http.Send<UnassignNumberRequest, object>(uri, HttpMethod.Delete, request,
-                cancellationToken: cancellationToken);
+                cancellationToken);
         }
 
         /// <inheritdoc />
@@ -115,7 +115,7 @@ namespace Sinch.Voice.Applications
             var uri = new Uri(_baseAddress, $"v1/configuration/callbacks/applications/{applicationKey}");
             _logger?.LogDebug("Getting callback urls...");
             return _http.Send<Callbacks>(uri, HttpMethod.Get,
-                cancellationToken: cancellationToken);
+                cancellationToken);
         }
 
         /// <inheritdoc />
@@ -128,7 +128,7 @@ namespace Sinch.Voice.Applications
                 {
                     url = request.Url
                 },
-                cancellationToken: cancellationToken);
+                cancellationToken);
         }
 
         public Task<QueryNumberResponse> QueryNumber(string number, CancellationToken cancellationToken = default)
@@ -136,7 +136,7 @@ namespace Sinch.Voice.Applications
             var uri = new Uri(_baseAddress, $"v1/calling/query/number/{number}");
             _logger?.LogDebug("Querying a {number}", number);
             return _http.Send<QueryNumberResponse>(uri, HttpMethod.Get,
-                cancellationToken: cancellationToken);
+                cancellationToken);
         }
     }
 }

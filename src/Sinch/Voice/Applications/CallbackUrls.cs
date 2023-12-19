@@ -6,7 +6,7 @@ namespace Sinch.Voice.Applications
     {
         public CallbackUrls Url { get; set; }
     }
-    
+
     /// <summary>
     ///     Gets primary and if configured fallback callback URLs
     /// </summary>
