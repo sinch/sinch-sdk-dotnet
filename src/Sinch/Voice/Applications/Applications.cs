@@ -32,7 +32,7 @@ namespace Sinch.Voice.Applications
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task AssignNumbers(UpdateNumbersRequest request, CancellationToken cancellationToken = default);
+        Task AssignNumbers(AssignNumbersRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Un-assign a number from an application.
@@ -40,7 +40,7 @@ namespace Sinch.Voice.Applications
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task UnassignNumbers(UnassignNumbersRequest request, CancellationToken cancellationToken = default);
+        Task UnassignNumbers(UnassignNumberRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Returns any callback URLs configured for the specified application.
@@ -87,19 +87,27 @@ namespace Sinch.Voice.Applications
         public Task<GetNumbersResponse> GetNumbers(CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, "v1/configuration/numbers");
-            _logger?.LogDebug("Making Tts callout request...");
+            _logger?.LogDebug("Getting a numbers...");
             return _http.Send<GetNumbersResponse>(uri, HttpMethod.Get,
                 cancellationToken: cancellationToken);
         }
 
-        public Task AssignNumbers(UpdateNumbersRequest request, CancellationToken cancellationToken = default)
+        /// <inheritdoc />
+        public Task AssignNumbers(AssignNumbersRequest request, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var uri = new Uri(_baseAddress, "v1/configuration/numbers");
+            _logger?.LogDebug("Assigning a numbers to {applicationKey}", request.ApplicationKey);
+            return _http.Send<AssignNumbersRequest, object>(uri, HttpMethod.Post, request,
+                cancellationToken: cancellationToken);
         }
 
-        public Task UnassignNumbers(UnassignNumbersRequest request, CancellationToken cancellationToken = default)
+        /// <inheritdoc />
+        public Task UnassignNumbers(UnassignNumberRequest request, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var uri = new Uri(_baseAddress, "v1/configuration/numbers");
+            _logger?.LogDebug("un-assigning a {number}", request.Number);
+            return _http.Send<UnassignNumberRequest, object>(uri, HttpMethod.Delete, request,
+                cancellationToken: cancellationToken);
         }
 
         public Task<CallbackUrls> GetCallbackUrls(string applicationKey, CancellationToken cancellationToken = default)
