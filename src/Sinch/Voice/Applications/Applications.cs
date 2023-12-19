@@ -1,5 +1,9 @@
-﻿using System.Threading;
+﻿using System;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
+using Sinch.Core;
+using Sinch.Logger;
 using Sinch.Voice.Applications.GetCallbackUrls;
 using Sinch.Voice.Applications.GetNumbers;
 using Sinch.Voice.Applications.QueryNumber;
@@ -63,5 +67,55 @@ namespace Sinch.Voice.Applications
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<QueryNumberResponse> QueryNumber(string number, CancellationToken cancellationToken = default);
+    }
+
+    /// <inheritdoc />
+    sealed class SinchApplications : ISinchVoiceApplications
+    {
+        private readonly ILoggerAdapter<ISinchVoiceApplications> _logger;
+        private readonly Uri _baseAddress;
+        private readonly IHttp _http;
+
+        public SinchApplications(ILoggerAdapter<ISinchVoiceApplications> logger, Uri baseAddress, IHttp http)
+        {
+            _logger = logger;
+            _baseAddress = baseAddress;
+            _http = http;
+        }
+
+        /// <inheritdoc />
+        public Task<GetNumbersResponse> GetNumbers(CancellationToken cancellationToken = default)
+        {
+            var uri = new Uri(_baseAddress, "v1/configuration/numbers");
+            _logger?.LogDebug("Making Tts callout request...");
+            return _http.Send<GetNumbersResponse>(uri, HttpMethod.Get,
+                cancellationToken: cancellationToken);
+        }
+
+        public Task AssignNumbers(UpdateNumbersRequest request, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UnassignNumbers(UnassignNumbersRequest request, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<CallbackUrls> GetCallbackUrls(string applicationKey, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<CallbackUrls> UpdateCallbackUrls(UpdateCallbackUrlsRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<QueryNumberResponse> QueryNumber(string number, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

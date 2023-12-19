@@ -1,6 +1,7 @@
 using System;
 using Sinch.Core;
 using Sinch.Logger;
+using Sinch.Voice.Applications;
 using Sinch.Voice.Callouts;
 using Sinch.Voice.Calls;
 using Sinch.Voice.Conferences;
@@ -24,6 +25,11 @@ namespace Sinch.Voice
         ///     muting or unmuting participants, or removing participants from a conference.
         /// </summary>
         ISinchVoiceConferences Conferences { get; }
+
+        /// <summary>
+        ///     You can use the API to manage features of applications in your project.
+        /// </summary>
+        ISinchVoiceApplications Applications { get; }
     }
 
     /// <inheritdoc />
@@ -35,6 +41,7 @@ namespace Sinch.Voice
             Callouts = new SinchCallout(loggerFactory?.Create<SinchCallout>(), baseAddress, http);
             Calls = new SinchCalls(loggerFactory?.Create<ISinchVoiceCalls>(), baseAddress, http);
             Conferences = new SinchConferences(loggerFactory?.Create<ISinchVoiceConferences>(), baseAddress, http);
+            Applications = new SinchApplications(loggerFactory?.Create<ISinchVoiceApplications>(), baseAddress, http);
         }
 
         /// <inheritdoc />
@@ -45,5 +52,8 @@ namespace Sinch.Voice
 
         /// <inheritdoc />
         public ISinchVoiceConferences Conferences { get; }
+
+        /// <inheritdoc />
+        public ISinchVoiceApplications Applications { get; }
     }
 }
