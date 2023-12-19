@@ -57,7 +57,7 @@ namespace Sinch
         ///     across all supported channels and, if required, full control over channel specific features.<br/><br/>
         ///     <see href="https://developers.sinch.com/docs/conversation/api-reference/">Learn more.</see>
         /// </summary>
-        public ISinchConversation Conversation { get; set; }
+        public ISinchConversation Conversation { get; }
 
         /// <summary>
         ///     Verify users with SMS, flash calls (missed calls), a regular call, or data verification.
