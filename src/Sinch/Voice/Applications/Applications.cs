@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
-using Sinch.Voice.Applications.GetCallbackUrls;
 using Sinch.Voice.Applications.GetNumbers;
 using Sinch.Voice.Applications.QueryNumber;
 using Sinch.Voice.Applications.UnassignNumbers;
@@ -48,7 +47,7 @@ namespace Sinch.Voice.Applications
         /// <param name="applicationKey"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<CallbackUrls> GetCallbackUrls(string applicationKey,
+        Task<Callbacks> GetCallbackUrls(string applicationKey,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -57,7 +56,7 @@ namespace Sinch.Voice.Applications
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<CallbackUrls> UpdateCallbackUrls(UpdateCallbackUrlsRequest request,
+        Task UpdateCallbackUrls(UpdateCallbackUrlsRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -105,25 +104,39 @@ namespace Sinch.Voice.Applications
         public Task UnassignNumbers(UnassignNumberRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, "v1/configuration/numbers");
-            _logger?.LogDebug("un-assigning a {number}", request.Number);
+            _logger?.LogDebug("Un-assigning a {number}", request.Number);
             return _http.Send<UnassignNumberRequest, object>(uri, HttpMethod.Delete, request,
                 cancellationToken: cancellationToken);
         }
 
-        public Task<CallbackUrls> GetCallbackUrls(string applicationKey, CancellationToken cancellationToken = default)
+        /// <inheritdoc />
+        public Task<Callbacks> GetCallbackUrls(string applicationKey, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var uri = new Uri(_baseAddress, $"v1/configuration/callbacks/applications/{applicationKey}");
+            _logger?.LogDebug("Getting callback urls...");
+            return _http.Send<Callbacks>(uri, HttpMethod.Get,
+                cancellationToken: cancellationToken);
         }
 
-        public Task<CallbackUrls> UpdateCallbackUrls(UpdateCallbackUrlsRequest request,
+        /// <inheritdoc />
+        public Task UpdateCallbackUrls(UpdateCallbackUrlsRequest request,
             CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var uri = new Uri(_baseAddress, $"v1/configuration/callbacks/applications/{request.ApplicationKey}");
+            _logger?.LogDebug("Updating callback urls...");
+            return _http.Send<object, object>(uri, HttpMethod.Post, new
+                {
+                    url = request.Url
+                },
+                cancellationToken: cancellationToken);
         }
 
         public Task<QueryNumberResponse> QueryNumber(string number, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var uri = new Uri(_baseAddress, $"v1/calling/query/number/{number}");
+            _logger?.LogDebug("Querying a {number}", number);
+            return _http.Send<QueryNumberResponse>(uri, HttpMethod.Get,
+                cancellationToken: cancellationToken);
         }
     }
 }

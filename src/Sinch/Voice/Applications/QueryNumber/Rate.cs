@@ -2,18 +2,21 @@
 
 namespace Sinch.Voice.Applications.QueryNumber
 {
-    public class QueryNumberResponse
+    /// <summary>
+    ///     The cost per minute to call the destination number.
+    /// </summary>
+    public sealed class Rate
     {
         /// <summary>
-        ///     The type of method.
+        ///     The currency ID of the rate, for example, &#x60;USD&#x60;.
         /// </summary>
-        public string Method { get; set; }
+        public string CurrencyId { get; set; }
 
 
         /// <summary>
-        ///     Gets or Sets NumberItem
+        ///     The amount.
         /// </summary>
-        public NumberItem NumberItem { get; set; }
+        public decimal Amount { get; set; }
 
 
         /// <summary>
@@ -23,9 +26,9 @@ namespace Sinch.Voice.Applications.QueryNumber
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class QueryNumberResponse {\n");
-            sb.Append("  Method: ").Append(Method).Append("\n");
-            sb.Append("  NumberItem: ").Append(NumberItem).Append("\n");
+            sb.Append("class Rate {\n");
+            sb.Append("  CurrencyId: ").Append(CurrencyId).Append("\n");
+            sb.Append("  Amount: ").Append(Amount).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
