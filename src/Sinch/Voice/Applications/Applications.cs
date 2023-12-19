@@ -39,7 +39,7 @@ namespace Sinch.Voice.Applications
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task UnassignNumbers(UnassignNumberRequest request, CancellationToken cancellationToken = default);
+        Task UnassignNumber(UnassignNumberRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Returns any callback URLs configured for the specified application.
@@ -101,7 +101,7 @@ namespace Sinch.Voice.Applications
         }
 
         /// <inheritdoc />
-        public Task UnassignNumbers(UnassignNumberRequest request, CancellationToken cancellationToken = default)
+        public Task UnassignNumber(UnassignNumberRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, "v1/configuration/numbers");
             _logger?.LogDebug("Un-assigning a {number}", request.Number);

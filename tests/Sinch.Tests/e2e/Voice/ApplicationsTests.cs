@@ -48,9 +48,9 @@ namespace Sinch.Tests.e2e.Voice
         }
 
         [Fact]
-        public async Task UnAssignNumbers()
+        public async Task UnAssignNumber()
         {
-            var op = () => VoiceClient.Applications.UnassignNumbers(new UnassignNumberRequest
+            var op = () => VoiceClient.Applications.UnassignNumber(new UnassignNumberRequest
             {
                 Capability = Capability.Voice,
                 Number = "+123",
