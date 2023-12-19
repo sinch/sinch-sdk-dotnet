@@ -38,7 +38,7 @@ namespace Sinch.Voice
         public SinchVoiceClient(Uri baseAddress, LoggerFactory loggerFactory,
             IHttp http)
         {
-            Callouts = new SinchCallout(loggerFactory?.Create<SinchCallout>(), baseAddress, http);
+            Callouts = new SinchCallout(loggerFactory?.Create<ISinchVoiceCallout>(), baseAddress, http);
             Calls = new SinchCalls(loggerFactory?.Create<ISinchVoiceCalls>(), baseAddress, http);
             Conferences = new SinchConferences(loggerFactory?.Create<ISinchVoiceConferences>(), baseAddress, http);
             Applications = new SinchApplications(loggerFactory?.Create<ISinchVoiceApplications>(), baseAddress, http);

@@ -46,11 +46,11 @@ namespace Sinch.Voice.Callouts
 
     internal class SinchCallout : ISinchVoiceCallout
     {
-        private readonly ILoggerAdapter<SinchCallout> _logger;
+        private readonly ILoggerAdapter<ISinchVoiceCallout> _logger;
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
 
-        public SinchCallout(ILoggerAdapter<SinchCallout> logger, Uri baseAddress, IHttp http)
+        public SinchCallout(ILoggerAdapter<ISinchVoiceCallout> logger, Uri baseAddress, IHttp http)
         {
             _logger = logger;
             _baseAddress = baseAddress;
