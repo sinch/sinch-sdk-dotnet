@@ -43,7 +43,6 @@ namespace Sinch.Voice.Applications.GetNumbers
             var sb = new StringBuilder();
             sb.Append("class GetNumbersResponseObjNumbersInner {\n");
             sb.Append("  Number: ").Append(Number).Append("\n");
-            sb.Append("  Applicationkey: ").Append(Applicationkey).Append("\n");
             sb.Append("  Capability: ").Append(Capability).Append("\n");
             sb.Append("}\n");
             return sb.ToString();

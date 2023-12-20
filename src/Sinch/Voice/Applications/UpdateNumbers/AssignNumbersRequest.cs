@@ -11,7 +11,7 @@ namespace Sinch.Voice.Applications.UpdateNumbers
         ///     Indicates the DID capability that needs to be assigned to the chosen application. Valid values are &#39;voice&#39;
         ///     and &#39;sms&#39;. Please note that the DID needs to support the selected capability.
         /// </summary>
-        public Capability? Capability { get; set; }
+        public Capability Capability { get; set; }
 
         /// <summary>
         ///     The phone number or list of numbers in E.164 format.
@@ -36,7 +36,6 @@ namespace Sinch.Voice.Applications.UpdateNumbers
             var sb = new StringBuilder();
             sb.Append("class AssignNumbersRequest {\n");
             sb.Append("  Numbers: ").Append(Numbers).Append("\n");
-            sb.Append("  Applicationkey: ").Append(ApplicationKey).Append("\n");
             sb.Append("  Capability: ").Append(Capability).Append("\n");
             sb.Append("}\n");
             return sb.ToString();

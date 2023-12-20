@@ -35,7 +35,6 @@ namespace Sinch.Voice.Applications.UnassignNumbers
             var sb = new StringBuilder();
             sb.Append("class UnassignNumberRequest {\n");
             sb.Append("  Number: ").Append(Number).Append("\n");
-            sb.Append("  ApplicationKey: ").Append(ApplicationKey).Append("\n");
             sb.Append("  Capability: ").Append(Capability).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
