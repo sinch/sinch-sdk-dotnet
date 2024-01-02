@@ -145,12 +145,13 @@ namespace Sinch.Tests.Core
 
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer first_token")
-                // somehow the matchers split header on whitespaces and check it by parts
-                // so,  .WithHeaders("User-Agent", $"sinch-sdk/{sdkVersion} (csharp/{RuntimeInformation.FrameworkDescription};;)")
-                // not working
-                .WithHeaders("User-Agent",
-                    $"sinch-sdk/{sdkVersion}")
-                .WithHeaders("User-Agent", $"(csharp/{RuntimeInformation.FrameworkDescription};;)")
+                // net framework splits header value at whitespace and returns list of values
+                // so we check for exact sequence of header value
+                .WithHeaderExact("User-Agent", new[]
+                {
+                    $"sinch-sdk/{sdkVersion}",
+                    $"(csharp/{RuntimeInformation.FrameworkDescription};;)"
+                })
                 .Respond(HttpStatusCode.OK);
 
             var httpClient = new HttpClient(_httpMessageHandlerMock);

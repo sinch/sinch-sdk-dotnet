@@ -1,4 +1,5 @@
-﻿using RichardSzalay.MockHttp;
+﻿using System.Collections.Generic;
+using RichardSzalay.MockHttp;
 
 namespace Sinch.Tests
 {
@@ -20,6 +21,14 @@ namespace Sinch.Tests
         public static MockedRequest WithJson(this MockedRequest source, object obj)
         {
             source.With(new JsonMatcher(obj));
+
+            return source;
+        }
+
+        public static MockedRequest WithHeaderExact(this MockedRequest source, string headerKey,
+            IEnumerable<string> headerValues)
+        {
+            source.With(new HeaderExactMatcher(headerKey, headerValues));
 
             return source;
         }
