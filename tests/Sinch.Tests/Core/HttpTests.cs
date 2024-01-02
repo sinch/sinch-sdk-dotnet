@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
@@ -109,14 +111,14 @@ namespace Sinch.Tests.Core
                 .Returns("second_token");
 
             var uri = new Uri("http://sinch.com/items");
-            
+
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer first_token")
                 .Respond(HttpStatusCode.Unauthorized, new KeyValuePair<string, string>[]
                 {
                     new("www-authenticate", "expired")
                 }, (HttpContent)null);
-            
+
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer second_token")
                 .Respond(HttpStatusCode.OK);
@@ -127,6 +129,36 @@ namespace Sinch.Tests.Core
             Func<Task<object>> response = () => http.Send<object>(uri, HttpMethod.Get);
 
             await response.Should().NotThrowAsync();
+            _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
+        public async Task SendSinchHeader()
+        {
+            _tokenManagerMock
+                .GetAuthToken(Arg.Any<bool>())
+                .Returns("first_token");
+
+            var uri = new Uri("http://sinch.com/items");
+
+            var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo().Assembly.FullName).Version.ToString();
+
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                // net framework splits header value at whitespace and returns list of values
+                // so we check for exact sequence of header value
+                .WithHeaderExact("User-Agent", new[]
+                {
+                    $"sinch-sdk/{sdkVersion}",
+                    $"(csharp/{RuntimeInformation.FrameworkDescription};;)"
+                })
+                .Respond(HttpStatusCode.OK);
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+
+            await http.Send<object>(uri, HttpMethod.Get);
+
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
     }

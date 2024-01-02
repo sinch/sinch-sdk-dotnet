@@ -6,6 +6,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
@@ -52,6 +54,8 @@ namespace Sinch.Core
         private readonly JsonSerializerOptions _jsonSerializerOptions;
         private readonly ILoggerAdapter<Http> _logger;
         private readonly ISinchAuth _auth;
+        private readonly string _userAgentHeaderValue;
+
 
         public Http(ISinchAuth auth, HttpClient httpClient, ILoggerAdapter<Http> logger,
             JsonNamingPolicy jsonNamingPolicy)
@@ -64,6 +68,9 @@ namespace Sinch.Core
                 PropertyNamingPolicy = jsonNamingPolicy,
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             };
+            var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo()!.Assembly!.FullName!).Version!.ToString();
+            _userAgentHeaderValue =
+                $"sinch-sdk/{sdkVersion} (csharp/{RuntimeInformation.FrameworkDescription};;)";
         }
 
         public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
@@ -87,12 +94,10 @@ namespace Sinch.Core
                 Debug.WriteLine($"Request body: {httpContent?.ReadAsStringAsync(cancellationToken).Result}");
 #endif
 
-                using var msg = new HttpRequestMessage
-                {
-                    RequestUri = uri,
-                    Method = httpMethod,
-                    Content = httpContent,
-                };
+                using var msg = new HttpRequestMessage();
+                msg.RequestUri = uri;
+                msg.Method = httpMethod;
+                msg.Content = httpContent;
 
                 string token;
                 // Due to all the additional params appSignAuth is requiring,
@@ -117,6 +122,7 @@ namespace Sinch.Core
 
                 msg.Headers.Authorization = new AuthenticationHeaderValue(_auth.Scheme, token);
 
+                msg.Headers.Add("User-Agent", _userAgentHeaderValue);
 
                 var result = await _httpClient.SendAsync(msg, cancellationToken);
 
