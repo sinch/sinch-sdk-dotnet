@@ -25,6 +25,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     input is pressed, the message will stop playing and accept the input. If &#x60;barge&#x60; is disabled, the user
         ///     must listen to the entire prompt before input is accepted. By default, barging is enabled.
         /// </summary>
+        [JsonPropertyName("badge")]
         public bool? Barge { get; set; }
 
 
@@ -35,12 +36,14 @@ namespace Sinch.Voice.Calls.Actions
         ///     &#x60; to enable voice detection, the &#x60;locale&#x60;
         ///     property is required in order to select the input language.
         /// </summary>
+        [JsonPropertyName("locale")]
         public string Locale { get; set; }
 
 
         /// <summary>
         ///     Selects the menu item from the &#x60;menus&#x60; array to play first.
         /// </summary>
+        [JsonPropertyName("mainMenu")]
         public string MainMenu { get; set; }
 
 
@@ -48,6 +51,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     Enables voice detection. If enabled, users can say their answers to prompts in addition to entering them using the
         ///     keypad.
         /// </summary>
+        [JsonPropertyName("enableVoice")]
         public bool? EnableVoice { get; set; }
 
 
@@ -55,6 +59,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     The list of menus available. The menu with the &#x60;id&#x60; value of &#x60;main&#x60; will always play first. If
         ///     no menu has an &#x60;id&#x60; value of &#x60;main&#x60;, an error is returned.
         /// </summary>
+        [JsonPropertyName("menus")]
         public List<Menu> Menus { get; set; }
 
         public string Name { get; } = "runMenu";
@@ -87,6 +92,7 @@ namespace Sinch.Voice.Calls.Actions
         /// <summary>
         ///     The identifier of a menu. One menu must have the ID value of &#x60;main&#x60;.
         /// </summary>
+        [JsonPropertyName("id")]
 #if NET7_0_OR_GREATER
         public required string Id { get; set; }
 #else
@@ -105,6 +111,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     section for
         ///     more information.
         /// </summary>
+        [JsonPropertyName("mainPrompt")]
         public string MainPrompt { get; set; }
 
 
@@ -119,12 +126,14 @@ namespace Sinch.Voice.Calls.Actions
         ///     section for
         ///     more information.
         /// </summary>
+        [JsonPropertyName("repeatPrompt")]
         public string RepeatPrompt { get; set; }
 
 
         /// <summary>
         ///     The number of times that the &#x60;repeatPrompt&#x60; is played.
         /// </summary>
+        [JsonPropertyName("repeats")]
         public int? Repeats { get; set; }
 
 
@@ -137,6 +146,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     </see>
         ///     is triggered containing these digits.
         /// </summary>
+        [JsonPropertyName("maxDigits")]
         public int? MaxDigits { get; set; }
 
 
@@ -144,18 +154,21 @@ namespace Sinch.Voice.Calls.Actions
         ///     Determines silence for the purposes of collecting a DTMF or voice response in milliseconds. If the timeout is
         ///     reached, the response is considered completed and will be submitted.
         /// </summary>
+        [JsonPropertyName("timeoutMills")]
         public int? TimeoutMills { get; set; }
 
 
         /// <summary>
         ///     Sets a limit for the maximum amount of time allowed to collect voice input.
         /// </summary>
+        [JsonPropertyName("maxTimeoutMills")]
         public int? MaxTimeoutMills { get; set; }
 
 
         /// <summary>
         ///     The set of options available in the menu.
         /// </summary>
+        [JsonPropertyName("options")]
         public List<Option> Options { get; set; }
 
 
@@ -188,6 +201,7 @@ namespace Sinch.Voice.Calls.Actions
         /// <summary>
         ///     A DTMF digit the user can press to trigger the configured action.
         /// </summary>
+        [JsonPropertyName("dtmf")]
 #if NET7_0_OR_GREATER
         public required string Dtmf { get; set; }
 #else
@@ -198,6 +212,7 @@ namespace Sinch.Voice.Calls.Actions
         /// <summary>
         ///     Determines which action is taken when the DTMF digit is pressed.
         /// </summary>
+        [JsonPropertyName("action")]
 #if NET7_0_OR_GREATER
         public required DtmfAction Action { get; set; }
 #else

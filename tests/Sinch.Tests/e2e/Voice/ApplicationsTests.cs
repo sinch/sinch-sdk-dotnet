@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Sinch.Voice;
 using Sinch.Voice.Applications;
 using Sinch.Voice.Applications.GetNumbers;
 using Sinch.Voice.Applications.QueryNumber;

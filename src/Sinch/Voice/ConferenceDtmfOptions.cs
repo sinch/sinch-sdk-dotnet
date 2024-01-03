@@ -1,4 +1,6 @@
-﻿namespace Sinch.Voice
+﻿using System.Text.Json.Serialization;
+
+namespace Sinch.Voice
 {
     /// <summary>
     ///     Options to control how DTMF signals are used by the participant in the conference.
@@ -10,6 +12,7 @@
         /// <summary>
         ///     Determines what DTMF mode the participant will use in the call.
         /// </summary>
+        [JsonPropertyName("mode")]
         public DtmfMode Mode { get; set; }
 
         /// <summary>
@@ -22,12 +25,14 @@
         ///         <item>The maximum number of digits has been entered.</item>
         ///     </list>
         /// </summary>
+        [JsonPropertyName("maxDigits")]
         public int? MaxDigits { get; set; }
 
         /// <summary>
         ///     The number of milliseconds that the system will wait between entered digits before triggering the PIE callback.
         ///     The default value is <c>3000</c>.
         /// </summary>
+        [JsonPropertyName("timeoutMills")]
         public int? TimeoutMills { get; set; }
     }
 }

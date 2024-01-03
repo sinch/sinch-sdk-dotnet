@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Voice.Calls.Actions
 {
@@ -16,6 +17,7 @@ namespace Sinch.Voice.Calls.Actions
         /// <summary>
         ///     Used to override where PSTN call is connected. If not specified, the extension the client called is used.
         /// </summary>
+        [JsonPropertyName("number")]
         public string Number { get; set; }
 
 
@@ -24,6 +26,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     country code according to &#x60;ISO 3166-1 alpha-2&#x60;. If not specified, the default locale of &#x60;en-US&#x60;
         ///     is used.
         /// </summary>
+        [JsonPropertyName("locale")]
         public string Locale { get; set; }
 
 
@@ -31,6 +34,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     The max duration of the call in seconds (max 14400 seconds). If the call is still connected at that time, it will
         ///     be automatically disconnected.
         /// </summary>
+        [JsonPropertyName("maxDuration")]
         public int? MaxDuration { get; set; }
 
 
@@ -38,6 +42,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     The max duration the call will wait in ringing unanswered state before terminating with &#x60;&#x60;&#x60;
         ///     TIMEOUT/NO ANSWER&#x60;&#x60;&#x60; on PSTN leg and &#x60;&#x60;&#x60;NA/BUSY&#x60;&#x60;&#x60;on MXP leg.
         /// </summary>
+        [JsonPropertyName("dialTimeout")]
         public int? DialTimeout { get; set; }
 
 
@@ -45,6 +50,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     Used to override the CLI (or caller ID) of the client. The phone number of the person who initiated the call is
         ///     shown as the CLI. To set your own CLI, you may use your verified number or your Dashboard virtual number.
         /// </summary>
+        [JsonPropertyName("cli")]
         public string Cli { get; set; }
 
 
@@ -52,6 +58,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     If enabled, suppresses <see href="https://developers.sinch.com/docs/voice/api-reference/voice/voice/tag/Callbacks/#tag/Callbacks/operation/ace">ACE</see> and
         ///     <see href="https://developers.sinch.com/docs/voice/api-reference/voice/voice/tag/Callbacks/#tag/Callbacks/operation/dice">DICE</see> callbacks for the call.
         /// </summary>
+        [JsonPropertyName("suppressCallbacks")]
         public bool? SuppressCallbacks { get; set; }
 
 
@@ -63,18 +70,21 @@ namespace Sinch.Voice.Calls.Actions
         ///     the callout destination requires a conference PIN code or an extension. If there is a calling party, it will hear
         ///     progress while the DTMF is sent.
         /// </summary>
+        [JsonPropertyName("dtmf")]
         public string Dtmf { get; set; }
 
 
         /// <summary>
         ///     The locale&#39;s tone to play while ringing.
         /// </summary>
+        [JsonPropertyName("indications")]
         public string Indications { get; set; }
 
 
         /// <summary>
         ///     An optional property used to enable <see href="https://developers.sinch.com/docs/voice/api-reference/amd_v2">Answering Machine Detection (AMD).</see>
         /// </summary>
+        [JsonPropertyName("amd")]
         public Amd Amd { get; set; }
 
 
@@ -107,6 +117,7 @@ namespace Sinch.Voice.Calls.Actions
         /// <summary>
         ///     Sets whether AMD is enabled.
         /// </summary>
+        [JsonPropertyName("enabled")]
         public bool? Enabled { get; set; }
     }
 }

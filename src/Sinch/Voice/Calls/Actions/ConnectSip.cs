@@ -13,6 +13,7 @@ namespace Sinch.Voice.Calls.Actions
         /// <summary>
         ///     Gets or Sets Destination
         /// </summary>
+        [JsonPropertyName("destination")]
 #if NET7_0_OR_GREATER
         public required ConnectSipDestination Destination { get; set; }
 #else
@@ -24,6 +25,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     The max duration of the call in seconds (max 14400 seconds). If the call is still connected at that time, it will
         ///     be automatically disconnected.
         /// </summary>
+        [JsonPropertyName("maxDuration")]
         public int? MaxDuration { get; set; }
 
 
@@ -31,12 +33,14 @@ namespace Sinch.Voice.Calls.Actions
         ///     Used to override the CLI (or caller ID) of the client. The phone number of the person who initiated the call is
         ///     shown as the CLI. To set your own CLI, you may use your verified number or your Dashboard virtual number.
         /// </summary>
+        [JsonPropertyName("cli")]
         public string Cli { get; set; }
 
 
         /// <summary>
         ///     An optional parameter to specify the SIP transport protocol. If unspecified, UDP is used.
         /// </summary>
+        [JsonPropertyName("transport")]
         public Transport Transport { get; set; }
 
 
@@ -53,6 +57,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     </see>
         ///     callbacks for the call.
         /// </summary>
+        [JsonPropertyName("suppressCallbacks")]
         public bool? SuppressCallbacks { get; set; }
 
 
@@ -64,6 +69,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     </see>
         ///     to send with the call.
         /// </summary>
+        [JsonPropertyName("callHeaders")]
         public List<CallHeader> CallHeaders { get; set; }
 
 
@@ -72,6 +78,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     if the SIP call is placed on hold. If &#x60;moh&#x60; isn&#39;t specified and the SIP call is placed on hold, the
         ///     user will only hear silence while during the holding period .
         /// </summary>
+        [JsonPropertyName("moh")]
         public MohClass Moh { get; set; }
 
         public string Name { get; } = "connectSip";
@@ -114,6 +121,7 @@ namespace Sinch.Voice.Calls.Actions
         /// <summary>
         ///     The SIP address.
         /// </summary>
+        [JsonPropertyName("endpoint")]
 #if NET7_0_OR_GREATER
         public required string Endpoint { get; set; }
 #else

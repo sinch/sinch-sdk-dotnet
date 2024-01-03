@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Voice.Calls.Actions
 {
@@ -16,6 +17,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     locale and language code or by specifying a particular voice. Supported languages and voices are detailed
         ///     <see href="https://developers.sinch.com/docs/voice/api-reference/voice/voice-locales">here</see>.
         /// </summary>
+        [JsonPropertyName("locale")]
         public string Locale { get; set; }
 
 
@@ -23,6 +25,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     That prompt that is played when the call is first answered. You can use text-to-speech using the &#x60;#tts[]&#x60;
         ///     element, SSML commands using the &#x60;#ssml[]&#x60; element.
         /// </summary>
+        [JsonPropertyName("introPromt")]
         public string IntroPrompt { get; set; }
 
 
@@ -31,12 +34,14 @@ namespace Sinch.Voice.Calls.Actions
         ///     reached. You can use text-to-speech using the &#x60;#tts[]&#x60; element, SSML commands using the &#x60;#ssml[]
         ///     &#x60; element.
         /// </summary>
+        [JsonPropertyName("holdPrompt")]
         public string HoldPrompt { get; set; }
 
 
         /// <summary>
         ///     The maximum amount of time in seconds that the &#x60;holdPrompt&#x60; will be played.
         /// </summary>
+        [JsonPropertyName("maxDuration")]
         public int? MaxDuration { get; set; }
 
 

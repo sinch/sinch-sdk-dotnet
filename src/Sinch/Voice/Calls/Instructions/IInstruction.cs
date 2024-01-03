@@ -14,6 +14,7 @@ namespace Sinch.Voice.Calls.Instructions
     [JsonDerivedType(typeof(StopRecording))]
     public interface IInstruction
     {
+        [JsonPropertyName("name")]
         public string Name { get; }
     }
 }

@@ -15,6 +15,7 @@ namespace Sinch.Voice.Calls.Actions
     [JsonDerivedType(typeof(RunMenu))]
     public interface IAction
     {
+        [JsonPropertyName("name")]
         public string Name { get; }
     }
 }
