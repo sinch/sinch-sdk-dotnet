@@ -1,6 +1,7 @@
 ﻿using System.Text;
+using System.Text.Json.Serialization;
 
-namespace Sinch.Voice.Applications.QueryNumber
+namespace Sinch.Voice
 {
     /// <summary>
     ///     The cost per minute to call the destination number.
@@ -10,12 +11,14 @@ namespace Sinch.Voice.Applications.QueryNumber
         /// <summary>
         ///     The currency ID of the rate, for example, &#x60;USD&#x60;.
         /// </summary>
+        [JsonPropertyName("currencyId")]
         public string CurrencyId { get; set; }
 
 
         /// <summary>
         ///     The amount.
         /// </summary>
+        [JsonPropertyName("amount")]
         public decimal Amount { get; set; }
 
 

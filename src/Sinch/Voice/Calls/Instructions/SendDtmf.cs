@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Voice.Calls.Instructions
 {
@@ -17,6 +18,7 @@ namespace Sinch.Voice.Calls.Instructions
         ///     the callout destination requires a conference PIN code or an extension. If there is a calling party, it will hear
         ///     progress while the DTMF is sent.
         /// </summary>
+        [JsonPropertyName("value")]
         public string Value { get; set; }
 
 

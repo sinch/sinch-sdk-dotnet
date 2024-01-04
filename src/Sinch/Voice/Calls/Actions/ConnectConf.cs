@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Voice.Calls.Actions
 {
@@ -10,6 +11,7 @@ namespace Sinch.Voice.Calls.Actions
         /// <summary>
         ///     The unique identifier of the conference. Shouldn&#39;t exceed 64 characters.
         /// </summary>
+        [JsonPropertyName("conferenceId")]
 #if NET7_0_OR_GREATER
         public required string ConferenceId { get; set; }
 #else
@@ -20,6 +22,7 @@ namespace Sinch.Voice.Calls.Actions
         /// <summary>
         ///     Gets or Sets ConferenceDtmfOptions
         /// </summary>
+        [JsonPropertyName("conferenceDtmfOptions")]
         public ConferenceDtmfOptions ConferenceDtmfOptions { get; set; }
 
 
@@ -28,6 +31,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     a conference while they&#39;re alone and waiting for other participants to join. If &#x60;moh&#x60; isn&#39;t
         ///     specified, the user will only hear silence while alone in the conference.
         /// </summary>
+        [JsonPropertyName("moh")]
         public MohClass Moh { get; set; }
 
         public string Name { get; } = "connectConf";

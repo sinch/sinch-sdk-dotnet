@@ -13,6 +13,7 @@ namespace Sinch.Voice.Calls.Actions
         public string Name { get; } = "connectMxp";
 
         /// <inheritdoc cref="Destination" />
+        [JsonPropertyName("destination")]
         public Destination Destination { get; set; }
 
         /// <summary>
@@ -20,6 +21,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     client. Read more about call headers
         ///     <see href="https://developers.sinch.com/docs/voice/api-reference/voice/call-headers/">here</see>.
         /// </summary>
+        [JsonPropertyName("callheaders")]
         public List<CallHeader> Callheaders { get; set; }
     }
 
@@ -32,6 +34,7 @@ namespace Sinch.Voice.Calls.Actions
         /// <summary>
         ///     The type of the definition.
         /// </summary>
+        [JsonPropertyName("type")]
 #if NET7_0_OR_GREATER
         public required DestinationType Type { get; set; }
 #else
@@ -41,6 +44,7 @@ namespace Sinch.Voice.Calls.Actions
         /// <summary>
         ///     The phone number or username of the desired call destination.
         /// </summary>
+        [JsonPropertyName("endpoint")]
 #if NET7_0_OR_GREATER
         public required string Endpoint { get; set; }
 #else

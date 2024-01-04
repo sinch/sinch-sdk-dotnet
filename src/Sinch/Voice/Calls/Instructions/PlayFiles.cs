@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Voice.Calls.Instructions
 {
@@ -14,6 +15,7 @@ namespace Sinch.Voice.Calls.Instructions
         ///     &#x60; element, or text using the &#x60;#tts[]&#x60; element.
         ///     <example>[ ["Welcome","https://path/to/file"], ["#ssml[Thank you for calling Sinch!]"] ]</example>
         /// </summary>
+        [JsonPropertyName("ids")]
 #if NET7_0_OR_GREATER
         public required List<List<string>> Ids { get; set; }
 #else
@@ -27,6 +29,7 @@ namespace Sinch.Voice.Calls.Instructions
         ///     Supported languages and voices are detailed here:
         ///     https://developers.sinch.com/docs/voice/api-reference/voice/voice-locales
         /// </summary>
+        [JsonPropertyName("locale")]
 #if NET7_0_OR_GREATER
         public required string Locale { get; set; }
 #else

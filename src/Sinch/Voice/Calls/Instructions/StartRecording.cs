@@ -1,4 +1,6 @@
-﻿namespace Sinch.Voice.Calls.Instructions
+﻿using System.Text.Json.Serialization;
+
+namespace Sinch.Voice.Calls.Instructions
 {
     /// <summary>
     ///     Starts a recording of the call.
@@ -12,6 +14,7 @@
         ///     https://developers.sinch.com/docs/in-app-calling/voice-recording/#recording-options
         /// </summary>
         // TODO: check if class is correct
+        [JsonPropertyName("options")]
         public StartRecordingOptions Options { get; set; }
     }
 
@@ -30,17 +33,20 @@
         ///     To read more about how to configure each of these destinations, see the
         ///     DestinationURL(https://developers.sinch.com/docs/in-app-calling/voice-recording/#destinationurl) section.
         /// </summary>
+        [JsonPropertyName("destinationUrl")]
         public string DestinationUrl { get; set; }
 
         /// <summary>
         ///     Specifies the information required for the Sinch platform to authenticate and/or authorize in the destination
         ///     service in order to be able to store the file.
         /// </summary>
+        [JsonPropertyName("credentials")]
         public string Credentials { get; set; }
 
         /// <summary>
         ///     An optional property that specifies the format of the recording file. Default value is mp3.
         /// </summary>
+        [JsonPropertyName("format")]
         public string Format { get; set; }
 
         /// <summary>
@@ -49,6 +55,7 @@
         ///     see the Notification Events (https://developers.sinch.com/docs/in-app-calling/voice-recording/#notification-events)
         ///     section. Default value is “true”
         /// </summary>
+        [JsonPropertyName("notificationEvents")]
         public bool? NotificationEvents { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Voice.Calls.Actions
 {
@@ -12,12 +13,14 @@ namespace Sinch.Voice.Calls.Actions
         /// <summary>
         ///     The call header key of the key value pair.
         /// </summary>
+        [JsonPropertyName("key")]
         public string Key { get; set; }
 
 
         /// <summary>
         ///     The call header value of the key value pair.
         /// </summary>
+        [JsonPropertyName("value")]
         public string Value { get; set; }
 
 
