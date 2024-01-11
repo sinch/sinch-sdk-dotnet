@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
@@ -53,19 +55,20 @@ namespace Sinch.Conversation.Contact
         ///     on the server and the display_name field has not been overwritten by the user).
         /// </summary>
         /// <param name="contactId">The unique ID of the contact.</param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Contact> Get(string contactId);
+        Task<Contact> Get(string contactId, CancellationToken cancellationToken = default);
     }
 
     internal class Contacts : ISinchConversationContacts
     {
-        
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
         private readonly ILoggerAdapter<ISinchConversationContacts> _logger;
         private readonly string _projectId;
 
-        public Contacts(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationContacts> logger, IHttp http)
+        public Contacts(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationContacts> logger,
+            IHttp http)
         {
             _projectId = projectId;
             _baseAddress = baseAddress;
@@ -74,9 +77,12 @@ namespace Sinch.Conversation.Contact
         }
 
         /// <inheritdoc />
-        public Task<Contact> Get(string contactId)
+        public Task<Contact> Get(string contactId, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{contactId}");
+            _logger?.LogDebug("Getting a {contactId} for a {projectId}", contactId, _projectId);
+            return _http.Send<Contact>(uri, HttpMethod.Get,
+                cancellationToken: cancellationToken);
         }
     }
 }
