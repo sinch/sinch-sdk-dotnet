@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Sinch.Conversation.Contact.Create;
 using Sinch.Core;
 using Sinch.Logger;
 
@@ -58,6 +59,12 @@ namespace Sinch.Conversation.Contact
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<Contact> Get(string contactId, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Most Conversation API contacts are [created automatically](https://developers.sinch.com/docs/conversation/contact-management/) when a message is sent to a new recipient. You can also create a new contact manually using this API call.
+        /// </summary>
+        /// <returns></returns>
+        Task<Contact> Create(CreateContactRequest request, CancellationToken cancellationToken = default);
     }
 
     internal class Contacts : ISinchConversationContacts
@@ -82,6 +89,15 @@ namespace Sinch.Conversation.Contact
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{contactId}");
             _logger?.LogDebug("Getting a {contactId} for a {projectId}", contactId, _projectId);
             return _http.Send<Contact>(uri, HttpMethod.Get,
+                cancellationToken: cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<Contact> Create(CreateContactRequest request, CancellationToken cancellationToken = default)
+        {
+            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts");
+            _logger?.LogDebug("Creating a contact for a {projectId}", _projectId);
+            return _http.Send<CreateContactRequest, Contact>(uri, HttpMethod.Post, request,
                 cancellationToken: cancellationToken);
         }
     }
