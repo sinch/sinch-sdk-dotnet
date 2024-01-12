@@ -23,19 +23,18 @@ namespace Sinch.Faxes
     {
         private readonly string projectId;
         private readonly Uri uri;
-        
+
         private readonly Http http;
         private ILoggerAdapter<Faxes> loggerAdapter;
-        private Http httpSnakeCase1;
         private FileExtensionContentTypeProvider mimeMapper;
 
 
-        internal Faxes(string projectId, Uri uri, ILoggerAdapter<Faxes> loggerAdapter, Http httpCamelCase)
+        internal Faxes(string projectId, Uri uri, ILoggerAdapter<Faxes> loggerAdapter, Http httpClient)
         {
             this.projectId = projectId;
             this.uri = uri;
             this.loggerAdapter = loggerAdapter;
-            this.http = httpCamelCase;
+            this.http = httpClient;
             mimeMapper = new FileExtensionContentTypeProvider();
             uri = new Uri(uri, $"/v3/projects/{projectId}/faxes");
         }
@@ -46,7 +45,7 @@ namespace Sinch.Faxes
             var fileName = Path.GetFileName(filePath);
             return await Send(to, fileContent, fileName, from);
         }
-        public async Task<Fax> Send(string to, StreamContent file, string fileName, string from="")
+        public async Task<Fax> Send(string to, StreamContent file, string fileName, string from = "")
         {
             var fax = new Fax
             {
@@ -75,7 +74,7 @@ namespace Sinch.Faxes
         /// <param name="serviceId"></param>
         /// <param name="maxRetries"></param>
         /// <returns></returns>
-        public async Task<Fax> Send(string to, string filePath, string from = "", string headerText = "", string contentUrl="", bool headerPageNumbers = true, string headerTimeZone = "", int retryDelaySeconds = 60, int cancelTimeoutMinutes = 3, Dictionary<string, string> labels = null, string callbackUrl = "", string callbackContentType = "", ImageConversionMethod imageConversionMethod = ImageConversionMethod.HALFTONE, string serviceId = "", int maxRetries = 0)
+        public async Task<Fax> Send(string to, string filePath, string from = "", string headerText = "", string contentUrl = "", bool headerPageNumbers = true, string headerTimeZone = "", int retryDelaySeconds = 60, int cancelTimeoutMinutes = 3, Dictionary<string, string> labels = null, string callbackUrl = "", string callbackContentType = "", ImageConversionMethod imageConversionMethod = ImageConversionMethod.HALFTONE, string serviceId = "", int maxRetries = 0)
         {
             var fileContent = new StreamContent(File.OpenRead(filePath));
             var fileName = System.IO.Path.GetFileName(filePath);
@@ -95,7 +94,7 @@ namespace Sinch.Faxes
                 ImageConversionMethod = imageConversionMethod,
                 ServiceId = serviceId,
                 MaxRetries = maxRetries
-            };  
+            };
             return await Send(fax, fileContent, fileName);
         }
 
@@ -115,7 +114,7 @@ namespace Sinch.Faxes
             }
             return content;
         }
-        public async Task<Fax> Send(Fax fax, StreamContent fileContent,string fileName)
+        public async Task<Fax> Send(Fax fax, StreamContent fileContent, string fileName)
         {
             var content = SerializeFaxToMultipart(fax);
             string contentType;
