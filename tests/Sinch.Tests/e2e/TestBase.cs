@@ -17,7 +17,7 @@ namespace Sinch.Tests.e2e
             Env.Load();
             SinchClientMockStudio = new Sinch.SinchClient(ProjectId, new Uri("http://localhost:8001"),
                 new Uri("http://localhost:8000"),
-                new Uri("http://localhost:8002"), null, null);
+                new Uri("http://localhost:8002"), null, null, null);
             var authUri = new Uri($"http://localhost:{Environment.GetEnvironmentVariable("MOCK_AUTH_PORT")}");
             var smsUri = new Uri($"http://localhost:{Environment.GetEnvironmentVariable("MOCK_SMS_PORT")}");
             // TODO: use mock server endpoints
@@ -26,9 +26,11 @@ namespace Sinch.Tests.e2e
                 new Uri($"http://localhost:{Environment.GetEnvironmentVariable("MOCK_VERIFICATION_PORT")}");
             var voiceBaseUri =
                 new Uri($"http://localhost:{Environment.GetEnvironmentVariable("MOCK_VOICE_PORT")}");
+            var conversationBaseUri =
+                new Uri($"http://localhost:{Environment.GetEnvironmentVariable("MOCK_CONVERSATION_PORT")}");
             SinchClientMockServer = new Sinch.SinchClient(ProjectId, authUri,
                 new Uri("http://localhost:8000"),
-                smsUri, verificationBaseUri, voiceBaseUri);
+                smsUri, verificationBaseUri, voiceBaseUri, conversationBaseUri);
         }
     }
 }

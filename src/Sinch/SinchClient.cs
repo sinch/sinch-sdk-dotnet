@@ -203,8 +203,9 @@ namespace Sinch
         /// <param name="smsBaseAddress"></param>
         /// <param name="verificationBaseAddress"></param>
         /// <param name="voiceBaseAddress"></param>
+        // TODO: remove the constructor and allow override of api urls with main constructor options
         internal SinchClient(string projectId, Uri authUri, Uri numbersBaseAddress, Uri smsBaseAddress,
-            Uri verificationBaseAddress, Uri voiceBaseAddress)
+            Uri verificationBaseAddress, Uri voiceBaseAddress, Uri conversationBaseAddress)
         {
             _httpClient = new HttpClient();
             Auth = new OAuth(authUri, _httpClient);
@@ -214,6 +215,7 @@ namespace Sinch
                 SnakeCaseNamingPolicy.Instance);
             Numbers = new Numbers.Numbers(projectId, numbersBaseAddress, null, httpCamelCase);
             Sms = new Sms(projectId, smsBaseAddress, null, httpSnakeCase);
+            Conversation = new Conversation.Conversation(projectId, conversationBaseAddress, null, httpSnakeCase);
             _verificationBaseAddress = verificationBaseAddress;
             _voiceBaseAddress = voiceBaseAddress;
         }
