@@ -111,5 +111,26 @@ namespace Sinch.Tests.e2e.Conversation
             response.Contacts.Should().HaveCount(2);
             response.NextPageToken.Should().BeEquivalentTo("next");
         }
+        
+        [Fact]
+        public async Task ListAuto()
+        {
+            var response = SinchClientMockServer.Conversation.Contacts.ListAuto(new ListContactsRequest()
+            {
+                Channel = ConversationChannel.Instagram,
+                ExternalId = "@nice",
+                Identity = "nice",
+                PageSize = 10,
+                PageToken = "tin",
+            });
+            var counter = 0;
+            await foreach (var contact in response)
+            {
+                contact.Should().NotBeNull();
+                counter++;
+            }
+
+            counter.Should().Be(4);
+        }
     }
 }

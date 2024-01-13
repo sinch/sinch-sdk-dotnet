@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Conversation.Contacts.Create;
@@ -124,17 +125,31 @@ namespace Sinch.Conversation.Contacts
         }
 
         /// <inheritdoc />
-        public Task<ListContactsResponse> List(ListContactsRequest request, CancellationToken cancellationToken = default)
+        public Task<ListContactsResponse> List(ListContactsRequest request,
+            CancellationToken cancellationToken = default)
         {
             var query = Utils.ToSnakeCaseQueryString(request);
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts?{query}");
+            _logger?.LogDebug("Listing contacts for {projectId}", _projectId);
             return _http.Send<ListContactsResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
-        public IAsyncEnumerable<Contact> ListAuto(ListContactsRequest request, CancellationToken cancellationToken = default)
+        public async IAsyncEnumerable<Contact> ListAuto(ListContactsRequest request,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            _logger?.LogDebug("Auto Listing contacts for {projectId}", _projectId);
+            do
+            {
+                var query = Utils.ToSnakeCaseQueryString(request);
+                var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts?{query}");
+                var response = await _http.Send<ListContactsResponse>(uri, HttpMethod.Get, cancellationToken);
+                request.PageToken = response.NextPageToken;
+                foreach (var contact in response.Contacts)
+                {
+                    yield return contact;
+                }
+            } while (request.PageToken is not null);
         }
     }
 }
