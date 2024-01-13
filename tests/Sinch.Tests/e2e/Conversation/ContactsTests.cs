@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Sinch.Conversation.Contact.Create;
+using Sinch.Conversation;
+using Sinch.Conversation.Contacts.Create;
+using Sinch.Conversation.Contacts.List;
 using Sinch.Conversation.Messages;
 using Xunit;
-using Contact = Sinch.Conversation.Contact.Contact;
+using Contact = Sinch.Conversation.Contacts.Contact;
 
 namespace Sinch.Tests.e2e.Conversation
 {
@@ -69,7 +71,7 @@ namespace Sinch.Tests.e2e.Conversation
                 Metadata = "rogue",
                 ExternalId = "plan"
             });
-            
+
             response.Should().BeEquivalentTo(new Contact
             {
                 ChannelIdentities = new List<ChannelIdentity>()
@@ -92,6 +94,22 @@ namespace Sinch.Tests.e2e.Conversation
                 Language = "EN_US",
                 Metadata = "no"
             });
+        }
+
+        [Fact]
+        public async Task List()
+        {
+            var response = await SinchClientMockServer.Conversation.Contacts.List(new ListContactsRequest()
+            {
+                Channel = ConversationChannel.Instagram,
+                ExternalId = "@nice",
+                Identity = "nice",
+                PageSize = 10,
+                PageToken = "tin",
+            });
+
+            response.Contacts.Should().HaveCount(2);
+            response.NextPageToken.Should().BeEquivalentTo("next");
         }
     }
 }

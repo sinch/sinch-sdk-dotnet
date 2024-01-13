@@ -2,7 +2,7 @@
 using System.Text;
 using Sinch.Conversation.Messages;
 
-namespace Sinch.Conversation.Contact
+namespace Sinch.Conversation.Contacts
 {
     public class Contact
     {

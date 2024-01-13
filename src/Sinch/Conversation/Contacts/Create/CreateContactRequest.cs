@@ -2,7 +2,7 @@
 using System.Text;
 using Sinch.Conversation.Messages;
 
-namespace Sinch.Conversation.Contact.Create
+namespace Sinch.Conversation.Contacts.Create
 {
     public class CreateContactRequest
     {

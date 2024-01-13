@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Sinch.Conversation.Contact.Create;
+using Sinch.Conversation.Contacts.Create;
+using Sinch.Conversation.Contacts.List;
 using Sinch.Core;
 using Sinch.Logger;
 
-namespace Sinch.Conversation.Contact
+namespace Sinch.Conversation.Contacts
 {
     /// <summary>
     ///     A contact is a collection that groups together underlying connected channel recipient identities. It's tied to a
@@ -61,10 +63,30 @@ namespace Sinch.Conversation.Contact
         Task<Contact> Get(string contactId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Most Conversation API contacts are [created automatically](https://developers.sinch.com/docs/conversation/contact-management/) when a message is sent to a new recipient. You can also create a new contact manually using this API call.
+        ///     Most Conversation API contacts are [created
+        ///     automatically](https://developers.sinch.com/docs/conversation/contact-management/) when a message is sent to a new
+        ///     recipient. You can also create a new contact manually using this API call.
         /// </summary>
         /// <returns></returns>
         Task<Contact> Create(CreateContactRequest request, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     List all contacts in the project. Note that, if a WhatsApp contact is returned, the display_name field of that
+        ///     contact may be populated with the WhatsApp display name (if the name is already stored on the server and the
+        ///     display_name field has not been overwritten by the user).
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ListContactsResponse> List(ListContactsRequest request, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     See <see cref="List" />, but lists all contacts automatically.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        IAsyncEnumerable<Contact> ListAuto(ListContactsRequest request, CancellationToken cancellationToken = default);
     }
 
     internal class Contacts : ISinchConversationContacts
@@ -89,7 +111,7 @@ namespace Sinch.Conversation.Contact
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{contactId}");
             _logger?.LogDebug("Getting a {contactId} for a {projectId}", contactId, _projectId);
             return _http.Send<Contact>(uri, HttpMethod.Get,
-                cancellationToken: cancellationToken);
+                cancellationToken);
         }
 
         /// <inheritdoc />
@@ -98,7 +120,21 @@ namespace Sinch.Conversation.Contact
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts");
             _logger?.LogDebug("Creating a contact for a {projectId}", _projectId);
             return _http.Send<CreateContactRequest, Contact>(uri, HttpMethod.Post, request,
-                cancellationToken: cancellationToken);
+                cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<ListContactsResponse> List(ListContactsRequest request, CancellationToken cancellationToken = default)
+        {
+            var query = Utils.ToSnakeCaseQueryString(request);
+            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts?{query}");
+            return _http.Send<ListContactsResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public IAsyncEnumerable<Contact> ListAuto(ListContactsRequest request, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
         }
     }
 }

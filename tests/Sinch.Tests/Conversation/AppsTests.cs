@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
+using Sinch.Conversation;
 using Sinch.Conversation.Apps;
 using Sinch.Conversation.Apps.Create;
 using Sinch.Conversation.Apps.Credentials;
-using Sinch.Conversation.Messages;
+using Sinch.Conversation.Apps.Update;
 using Xunit;
 
 namespace Sinch.Tests.Conversation
@@ -377,7 +378,7 @@ namespace Sinch.Tests.Conversation
                 .WithQueryString("update_mask.paths", "b")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(_app));
 
-            var request = new Sinch.Conversation.Apps.Update.UpdateAppRequest()
+            var request = new UpdateAppRequest()
             {
                 DisplayName = "abc",
                 UpdateMaskPaths = new List<string>()

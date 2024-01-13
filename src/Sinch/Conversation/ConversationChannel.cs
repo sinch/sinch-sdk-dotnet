@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Conversation.Messages
+namespace Sinch.Conversation
 {
     /// <summary>
     ///     Represents the identifier of the channel you want to include.
