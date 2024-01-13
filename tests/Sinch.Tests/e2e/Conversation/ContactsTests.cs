@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Conversation;
 using Sinch.Conversation.Contacts.Create;
+using Sinch.Conversation.Contacts.GetChannelProfile;
 using Sinch.Conversation.Contacts.List;
 using Sinch.Conversation.Messages;
 using Xunit;
@@ -111,7 +112,7 @@ namespace Sinch.Tests.e2e.Conversation
             response.Contacts.Should().HaveCount(2);
             response.NextPageToken.Should().BeEquivalentTo("next");
         }
-        
+
         [Fact]
         public async Task ListAuto()
         {
@@ -138,6 +139,40 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var op = () => SinchClientMockServer.Conversation.Contacts.Delete("123ABC");
             await op.Should().NotThrowAsync();
+        }
+
+        [Fact]
+        public async Task GetChannelProfile()
+        {
+            var response = await SinchClientMockServer.Conversation.Contacts.GetChannelProfile(
+                new GetChannelProfileRequest()
+                {
+                    AppId = "123",
+                    Channel = ChannelProfileConversationChannel.Line,
+                    Recipient = new Identified()
+                    {
+                        IdentifiedBy = new IdentifiedBy()
+                        {
+                            ChannelIdentities = new List<ChannelIdentity>()
+                            {
+                                new ChannelIdentity()
+                                {
+                                    Identity = "a",
+                                    Channel = ConversationChannel.Rcs,
+                                },
+                                new ChannelIdentity()
+                                {
+                                    Identity = "b",
+                                    Channel = ConversationChannel.Messenger,
+                                }
+                            }
+                        }
+                    }
+                });
+            response.Should().BeEquivalentTo(new ChannelProfile()
+            {
+                ProfileName = "beast"
+            });
         }
     }
 }

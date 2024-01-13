@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Conversation.Contacts.Create;
+using Sinch.Conversation.Contacts.GetChannelProfile;
 using Sinch.Conversation.Contacts.List;
 using Sinch.Core;
 using Sinch.Logger;
@@ -96,6 +97,15 @@ namespace Sinch.Conversation.Contacts
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task Delete(string contactId, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Get user profile from a specific channel. Only supported on MESSENGER, INSTAGRAM, VIBER and LINE channels. Note that, in order to retrieve a WhatsApp display name, you can use the Get a Contact or List Contacts operations, which will populate the display_name field of each returned contact with the WhatsApp display name (if the name is already stored on the server and the display_name field has not been overwritten by the user).
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ChannelProfile> GetChannelProfile(GetChannelProfileRequest request,
+            CancellationToken cancellationToken = default);
     }
 
     internal class Contacts : ISinchConversationContacts
@@ -151,7 +161,8 @@ namespace Sinch.Conversation.Contacts
             {
                 var query = Utils.ToSnakeCaseQueryString(request);
                 var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts?{query}");
-                var response = await _http.Send<ListContactsResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
+                var response =
+                    await _http.Send<ListContactsResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
                 request.PageToken = response.NextPageToken;
                 foreach (var contact in response.Contacts) yield return contact;
             } while (request.PageToken is not null);
@@ -163,6 +174,16 @@ namespace Sinch.Conversation.Contacts
             _logger?.LogDebug("Deleting a {contactId} from {projectId}", contactId, _projectId);
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{contactId}");
             return _http.Send<object>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<ChannelProfile> GetChannelProfile(GetChannelProfileRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            _logger?.LogDebug("Getting a profile for {projectId} of {channel}", _projectId, request.Channel);
+            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts:getChannelProfile");
+            return _http.Send<GetChannelProfileRequest, ChannelProfile>(uri, HttpMethod.Post, request,
+                cancellationToken: cancellationToken);
         }
     }
 }

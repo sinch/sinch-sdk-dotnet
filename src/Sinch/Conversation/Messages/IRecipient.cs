@@ -1,8 +1,9 @@
-using Sinch.Core;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages
 {
-    [JsonInterfaceConverter(typeof(InterfaceConverter<IRecipient>))]
+    [JsonDerivedType(typeof(Contact))]
+    [JsonDerivedType(typeof(Identified))]
     public interface IRecipient
     {
     }
