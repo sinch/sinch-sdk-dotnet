@@ -88,6 +88,14 @@ namespace Sinch.Conversation.Contacts
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         IAsyncEnumerable<Contact> ListAuto(ListContactsRequest request, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Delete a contact as specified by the contact ID.
+        /// </summary>
+        /// <param name="contactId">The unique ID of the contact.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task Delete(string contactId, CancellationToken cancellationToken = default);
     }
 
     internal class Contacts : ISinchConversationContacts
@@ -131,7 +139,7 @@ namespace Sinch.Conversation.Contacts
             var query = Utils.ToSnakeCaseQueryString(request);
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts?{query}");
             _logger?.LogDebug("Listing contacts for {projectId}", _projectId);
-            return _http.Send<ListContactsResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
+            return _http.Send<ListContactsResponse>(uri, HttpMethod.Get, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -143,13 +151,18 @@ namespace Sinch.Conversation.Contacts
             {
                 var query = Utils.ToSnakeCaseQueryString(request);
                 var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts?{query}");
-                var response = await _http.Send<ListContactsResponse>(uri, HttpMethod.Get, cancellationToken);
+                var response = await _http.Send<ListContactsResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
                 request.PageToken = response.NextPageToken;
-                foreach (var contact in response.Contacts)
-                {
-                    yield return contact;
-                }
+                foreach (var contact in response.Contacts) yield return contact;
             } while (request.PageToken is not null);
+        }
+
+        /// <inheritdoc />
+        public Task Delete(string contactId, CancellationToken cancellationToken = default)
+        {
+            _logger?.LogDebug("Deleting a {contactId} from {projectId}", contactId, _projectId);
+            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{contactId}");
+            return _http.Send<object>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
         }
     }
 }

@@ -132,5 +132,12 @@ namespace Sinch.Tests.e2e.Conversation
 
             counter.Should().Be(4);
         }
+
+        [Fact]
+        public async Task Delete()
+        {
+            var op = () => SinchClientMockServer.Conversation.Contacts.Delete("123ABC");
+            await op.Should().NotThrowAsync();
+        }
     }
 }
