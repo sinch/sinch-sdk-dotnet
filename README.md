@@ -81,9 +81,10 @@ Sinch client provides access to the following Sinch products:
 - Numbers
 - SMS
 - Verification
+- Voice
 - Work-in-Progress Conversation
 
-Usage example of the `numbers` product, assuming `sinch` is type of `SinchClient`:
+Usage example of the `numbers` product, assuming `sinch` is a type of `ISinchClient`:
 
 ```csharp
 using Sinch.Numbers.Active.List;
