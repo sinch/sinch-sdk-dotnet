@@ -174,5 +174,34 @@ namespace Sinch.Tests.e2e.Conversation
                 ProfileName = "beast"
             });
         }
+
+        [Fact]
+        public async Task Update()
+        {
+            var contact = new Contact()
+            {
+                Id = "123ABC",
+                DisplayName = "Unknown",
+                ExternalId = "",
+                Email = "new.contact@email.com",
+                Metadata = "",
+                Language = "EN_US",
+                ChannelPriority = new List<ConversationChannel>()
+                {
+                    ConversationChannel.Telegram
+                },
+                ChannelIdentities = new List<ChannelIdentity>()
+                {
+                    new ChannelIdentity()
+                    {
+                        Channel = ConversationChannel.Telegram,
+                        Identity = "@ora",
+                        AppId = "",
+                    }
+                }
+            };
+            var response = await SinchClientMockServer.Conversation.Contacts.Update(contact);
+            response.Should().BeEquivalentTo(contact);
+        }
     }
 }

@@ -106,6 +106,14 @@ namespace Sinch.Conversation.Contacts
         /// <returns></returns>
         Task<ChannelProfile> GetChannelProfile(GetChannelProfileRequest request,
             CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Updates a contact as specified by the contact ID.
+        /// </summary>
+        /// <param name="contact"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<Contact> Update(Contact contact, CancellationToken cancellationToken = default);
     }
 
     internal class Contacts : ISinchConversationContacts
@@ -183,6 +191,15 @@ namespace Sinch.Conversation.Contacts
             _logger?.LogDebug("Getting a profile for {projectId} of {channel}", _projectId, request.Channel);
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts:getChannelProfile");
             return _http.Send<GetChannelProfileRequest, ChannelProfile>(uri, HttpMethod.Post, request,
+                cancellationToken: cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<Contact> Update(Contact contact, CancellationToken cancellationToken = default)
+        {
+            _logger?.LogDebug("Updating a {contactId} of {projectId}", contact.Id, _projectId);
+            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{contact.Id}");
+            return _http.Send<Contact, Contact>(uri, HttpMethod.Patch, contact,
                 cancellationToken: cancellationToken);
         }
     }
