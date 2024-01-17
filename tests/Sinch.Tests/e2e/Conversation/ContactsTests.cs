@@ -203,5 +203,13 @@ namespace Sinch.Tests.e2e.Conversation
             var response = await SinchClientMockServer.Conversation.Contacts.Update(contact);
             response.Should().BeEquivalentTo(contact);
         }
+
+
+        [Fact]
+        public async Task Merge()
+        {
+            var response = await SinchClientMockServer.Conversation.Contacts.Merge("123ABC", "456EDF");
+            response.Should().NotBeNull();
+        }
     }
 }

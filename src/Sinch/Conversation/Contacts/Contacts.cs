@@ -99,7 +99,10 @@ namespace Sinch.Conversation.Contacts
         Task Delete(string contactId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Get user profile from a specific channel. Only supported on MESSENGER, INSTAGRAM, VIBER and LINE channels. Note that, in order to retrieve a WhatsApp display name, you can use the Get a Contact or List Contacts operations, which will populate the display_name field of each returned contact with the WhatsApp display name (if the name is already stored on the server and the display_name field has not been overwritten by the user).
+        ///     Get user profile from a specific channel. Only supported on MESSENGER, INSTAGRAM, VIBER and LINE channels. Note
+        ///     that, in order to retrieve a WhatsApp display name, you can use the Get a Contact or List Contacts operations,
+        ///     which will populate the display_name field of each returned contact with the WhatsApp display name (if the name is
+        ///     already stored on the server and the display_name field has not been overwritten by the user).
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
@@ -114,6 +117,21 @@ namespace Sinch.Conversation.Contacts
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<Contact> Update(Contact contact, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Merge two contacts. The remaining contact will contain all conversations that the removed contact did. If both
+        ///     contacts had conversations within the same App, messages from the removed contact will be merged into corresponding
+        ///     active conversations in the destination contact. Channel identities will be moved from the source contact to the
+        ///     destination contact only for channels that weren't present there before. Moved channel identities will be placed at
+        ///     the bottom of the channel priority list. Optional fields from the source contact will be copied only if
+        ///     corresponding fields in the destination contact are empty The contact being removed cannot be referenced after this
+        ///     call.
+        /// </summary>
+        /// <param name="destinationId">The unique ID of the contact that should be kept when merging two contacts.</param>
+        /// <param name="sourceId">The ID of the contact that should be removed.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<Contact> Merge(string destinationId, string sourceId, CancellationToken cancellationToken = default);
     }
 
     internal class Contacts : ISinchConversationContacts
@@ -170,7 +188,7 @@ namespace Sinch.Conversation.Contacts
                 var query = Utils.ToSnakeCaseQueryString(request);
                 var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts?{query}");
                 var response =
-                    await _http.Send<ListContactsResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
+                    await _http.Send<ListContactsResponse>(uri, HttpMethod.Get, cancellationToken);
                 request.PageToken = response.NextPageToken;
                 foreach (var contact in response.Contacts) yield return contact;
             } while (request.PageToken is not null);
@@ -181,7 +199,7 @@ namespace Sinch.Conversation.Contacts
         {
             _logger?.LogDebug("Deleting a {contactId} from {projectId}", contactId, _projectId);
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{contactId}");
-            return _http.Send<object>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
+            return _http.Send<object>(uri, HttpMethod.Delete, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -191,7 +209,7 @@ namespace Sinch.Conversation.Contacts
             _logger?.LogDebug("Getting a profile for {projectId} of {channel}", _projectId, request.Channel);
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts:getChannelProfile");
             return _http.Send<GetChannelProfileRequest, ChannelProfile>(uri, HttpMethod.Post, request,
-                cancellationToken: cancellationToken);
+                cancellationToken);
         }
 
         /// <inheritdoc />
@@ -200,7 +218,22 @@ namespace Sinch.Conversation.Contacts
             _logger?.LogDebug("Updating a {contactId} of {projectId}", contact.Id, _projectId);
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{contact.Id}");
             return _http.Send<Contact, Contact>(uri, HttpMethod.Patch, contact,
-                cancellationToken: cancellationToken);
+                cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<Contact> Merge(string destinationId, string sourceId, CancellationToken cancellationToken = default)
+        {
+            _logger?.LogDebug("Merging contacts from {sourceId} to {destinationId} for {projectId}", sourceId,
+                destinationId, _projectId);
+            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{destinationId}:merge");
+            return _http.Send<object, Contact>(uri, HttpMethod.Post, new
+                {
+                    source_id = sourceId,
+                    // NOTE: keep in mind while this enum has only one value, it can change in the future.
+                    strategy = "MERGE"
+                },
+                cancellationToken);
         }
     }
 }

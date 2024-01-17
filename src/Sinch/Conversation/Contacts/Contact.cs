@@ -7,9 +7,24 @@ namespace Sinch.Conversation.Contacts
     public class Contact
     {
         /// <summary>
+        ///     Tracks the fields which where initialized. 
+        /// </summary>
+        private readonly ISet<string> _setFields = new HashSet<string>();
+        
+        private List<ChannelIdentity> _channelIdentities;
+
+        /// <summary>
         ///     List of channel identities.
         /// </summary>
-        public List<ChannelIdentity> ChannelIdentities { get; set; }
+        public List<ChannelIdentity> ChannelIdentities
+        {
+            get => _channelIdentities;
+            set
+            {
+                _setFields.Add(nameof(ChannelIdentities));
+                _channelIdentities = value;
+            }
+        }
 
 
         /// <summary>
