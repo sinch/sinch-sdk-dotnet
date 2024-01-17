@@ -13,7 +13,7 @@ namespace Sinch.Faxes
         private readonly string projectId;
         private readonly Uri uri;
         private readonly LoggerFactory loggerFactory;
-        private Http httpClient;
+        private readonly Http httpClient;
 
         internal FaxClient(string projectId, Uri uri, Logger.LoggerFactory _loggerFactory, Core.Http httpClient) {
             this.projectId = projectId;
