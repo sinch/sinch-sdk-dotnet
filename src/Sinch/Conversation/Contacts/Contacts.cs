@@ -216,7 +216,10 @@ namespace Sinch.Conversation.Contacts
         public Task<Contact> Update(Contact contact, CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Updating a {contactId} of {projectId}", contact.Id, _projectId);
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{contact.Id}");
+            // the update_mask param will regulate which properties to set.
+            // Keep in mind that no depth is supported: for example, you cannot mask channel_identities.identity 
+            var uri = new Uri(_baseAddress,
+                $"/v1/projects/{_projectId}/contacts/{contact.Id}?update_mask={contact.GetPropertiesMask()}");
             return _http.Send<Contact, Contact>(uri, HttpMethod.Patch, contact,
                 cancellationToken);
         }

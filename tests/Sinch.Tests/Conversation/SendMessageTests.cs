@@ -29,7 +29,7 @@ namespace Sinch.Tests.Conversation
                 ExplicitChannelMessage = null,
                 AdditionalProperties = null
             },
-            Recipient = new Contact()
+            Recipient = new ContactRecipient()
             {
                 ContactId = "ContactEasy"
             }
