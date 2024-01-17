@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sinch.Faxes
 {
-    public class FileExtensionContentTypeProvider 
+    internal class FileExtensionContentTypeProvider 
     {
         //
         // Summary:
