@@ -4,6 +4,7 @@ using System.Text.Json;
 using Sinch.Auth;
 using Sinch.Conversation;
 using Sinch.Core;
+using Sinch.Faxes;
 using Sinch.Logger;
 using Sinch.Numbers;
 using Sinch.SMS;
@@ -114,12 +115,15 @@ namespace Sinch
         /// <returns></returns>
         public ISinchVoiceClient Voice(string appKey, string appSecret, CallingRegion callingRegion = null,
             AuthStrategy authStrategy = AuthStrategy.ApplicationSign);
+
+        public FaxClient Faxes { get; init; }
     }
 
     public class SinchClient : ISinchClient
     {
         private const string VerificationApiUrl = "https://verification.api.sinch.com/";
         private const string NumbersApiUrl = "https://numbers.api.sinch.com/";
+        private const string FaxApiUrl = "https://fax.api.sinch.com/";
         private const string SmsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
         private const string ConversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
         private const string VoiceApiUrlTemplate = "https://{0}.api.sinch.com/";
@@ -179,7 +183,7 @@ namespace Sinch
             Conversation = new Conversation.Conversation(projectId,
                 new Uri(string.Format(ConversationApiUrlTemplate, optionsObj.ConversationRegion.Value)),
                 _loggerFactory, httpSnakeCase);
-
+            Faxes = new FaxClient(projectId, new Uri(FaxApiUrl), _loggerFactory, httpCamelCase);
             Auth = auth;
 
             logger?.LogInformation("SinchClient initialized.");
@@ -226,11 +230,12 @@ namespace Sinch
 
         /// <inheritdoc/>
         public ISinchConversation Conversation { get; set; }
+        public FaxClient Faxes { get; init; }
 
 
         /// <inheritdoc/>
         public ISinchAuth Auth { get; }
-
+        
         /// <inheritdoc/>
         public ISinchVerificationClient Verification(string appKey, string appSecret,
             AuthStrategy authStrategy)
