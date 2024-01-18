@@ -38,90 +38,36 @@ namespace Sinch.Faxes
             mimeMapper = new FileExtensionContentTypeProvider();
             uri = new Uri(uri, $"/v3/projects/{projectId}/faxes");
         }
-
-        public async Task<Fax> Send(string to, string filePath, string from = "")
-        {
-            var fileContent = new StreamContent(File.OpenRead(filePath));
-            var fileName = Path.GetFileName(filePath);
-            return await Send(to, fileContent, fileName, from);
-        }
-        public async Task<Fax> Send(string to, StreamContent file, string fileName, string from = "")
-        {
-            var fax = new Fax
-            {
-                To = to,
-                From = from
-            };
-            return await Send(fax, file, fileName);
-
-        }
-
         /// <summary>
-        /// 
+        /// Send a fax
         /// </summary>
         /// <param name="to">Number to send to</param>
         /// <param name="filePath">Path to file to fax</param>
         /// <param name="from">Sinch number you want to set as from </param>
-        /// <param name="headerText">Header text of fax</param>
-        /// <param name="headerPageNumbers">Print page number on fax default true</param>
-        /// <param name="headerTimeZone">Set specific timezone</param>
-        /// <param name="retryDelaySeconds">Duration between retries</param>
-        /// <param name="cancelTimeoutMinutes">Cancel retries or fax transmission after x minutes</param>
-        /// <param name="labels">Custom labels you can tag a fax with</param>
-        /// <param name="callbackUrl">Call back url to notify when fax is completed or failed</param>
-        /// <param name="callbackContentType">JSON or multipart</param>
-        /// <param name="imageConversionMethod">defautl halftone and best in most scenarios</param>
-        /// <param name="serviceId"></param>
-        /// <param name="maxRetries"></param>
-        /// <returns></returns>
-        public async Task<Fax> Send(string to, string filePath, string from = "", string headerText = "", string contentUrl = "", bool headerPageNumbers = true, string headerTimeZone = "", int retryDelaySeconds = 60, int cancelTimeoutMinutes = 3, Dictionary<string, string> labels = null, string callbackUrl = "", string callbackContentType = "", ImageConversionMethod imageConversionMethod = ImageConversionMethod.HALFTONE, string serviceId = "", int maxRetries = 0)
+        /// /// <param name="contentUrls">content Urls to fax</param>
+        /// <param name="callbackUrl">Callback url to notify when fax is completed or failed</param>
+        public async Task<Fax> Send(string to, string filePath, string from = "", string CallbackUrl=null, string[] contentUrl = null)
         {
-            var fileContent = new StreamContent(File.OpenRead(filePath));
-            var fileName = System.IO.Path.GetFileName(filePath);
+            var fileContent = File.OpenRead(filePath);
+            var fileName = Path.GetFileName(filePath);
             var fax = new Fax
             {
                 To = to,
                 From = from,
-                HeaderText = headerText,
-                ContentUrl = contentUrl,
-                HeaderPageNumbers = headerPageNumbers,
-                HeaderTimeZone = headerTimeZone,
-                RetryDelaySeconds = retryDelaySeconds,
-                CancelTimeoutMinutes = cancelTimeoutMinutes,
-                Labels = labels,
-                CallbackUrl = callbackUrl,
-                CallbackContentType = callbackContentType,
-                ImageConversionMethod = imageConversionMethod,
-                ServiceId = serviceId,
-                MaxRetries = maxRetries
+                CallbackUrl = CallbackUrl,
+                ContentUrl = contentUrl
             };
             return await Send(fax, fileContent, fileName);
         }
+        
 
+        
 
-        private MultipartFormDataContent SerializeFaxToMultipart(Fax fax)
+      
+        public async Task<Fax> Send(Fax fax, Stream fileContent, string fileName)
         {
-            var content = new MultipartFormDataContent();
-            var props = typeof(Fax).GetProperties(BindingFlags.Instance | BindingFlags.Public |
-                                                BindingFlags.DeclaredOnly);
-            foreach (var prop in props)
-            {
-                var value = prop.GetValue(fax);
-                if (value != null)
-                {
-                    content.Add(new StringContent(value.ToString()), prop.Name);
-                }
-            }
-            return content;
-        }
-        public async Task<Fax> Send(Fax fax, StreamContent fileContent, string fileName)
-        {
-            var content = SerializeFaxToMultipart(fax);
-            string contentType;
-            mimeMapper.TryGetContentType(fileName, out contentType);
-            fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse(contentType ?? "application/octet-stream");
-            content.Add(fileContent, "file", fileName);
-            var result = await http.Send<Fax>(uri, HttpMethod.Post, content, default);
+            
+            Fax result = await http.SendMultipart<Fax,Fax>(uri, fax, fileContent, fileName);
             return result;
         }
 

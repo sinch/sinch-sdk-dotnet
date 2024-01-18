@@ -27,7 +27,7 @@ namespace Sinch.Faxes
             public string To { get; set; }
 
             [DataType(DataType.Url)]
-            public string ContentUrl { get; set; }
+            public string[] ContentUrl { get; set; }
             [ReadOnly(true)]
             public int NumberOfPages { get; init; }
             [ReadOnly(true)]
