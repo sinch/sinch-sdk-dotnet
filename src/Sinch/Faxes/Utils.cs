@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Sinch.Faxes
 {
-    public class FileExtensionContentTypeProvider 
+    internal class FileExtensionContentTypeProvider 
     {
         //
         // Summary:
         //     The cross reference table of file extensions and content-types.
-        public IDictionary<string, string> Mappings { get; private set; }
+        private IDictionary<string, string> Mappings { get; private set; }
 
         //
         // Summary:
