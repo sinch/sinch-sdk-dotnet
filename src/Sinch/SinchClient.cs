@@ -123,11 +123,12 @@ namespace Sinch
         private const string SmsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
         private const string ConversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
         private const string VoiceApiUrlTemplate = "https://{0}.api.sinch.com/";
+        private const string AuthApiUrl = "https://auth.sinch.com";
 
         private readonly LoggerFactory _loggerFactory;
         private readonly HttpClient _httpClient;
-        private readonly Uri _verificationBaseAddress;
-        private readonly Uri _voiceBaseAddress;
+
+        private readonly ApiUrlOverrides _apiUrlOverrides;
 
         /// <summary>
         ///     Initialize a new <see cref="SinchClient"/>
@@ -165,57 +166,42 @@ namespace Sinch
             var logger = _loggerFactory?.Create<SinchClient>();
             logger?.LogInformation("Initializing SinchClient...");
 
+            _apiUrlOverrides = optionsObj?.ApiUrlOverrides;
+
             ISinchAuth auth =
-                new OAuth(keyId, keySecret, _httpClient, _loggerFactory?.Create<OAuth>());
+                new OAuth(keyId, keySecret, _httpClient, _loggerFactory?.Create<OAuth>(),
+                    new Uri(_apiUrlOverrides?.AuthUrl ?? AuthApiUrl));
+            Auth = auth;
             var httpCamelCase = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(),
                 JsonNamingPolicy.CamelCase);
             var httpSnakeCase = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(),
                 SnakeCaseNamingPolicy.Instance);
 
-            Numbers = new Numbers.Numbers(projectId, new Uri(NumbersApiUrl),
+            Numbers = new Numbers.Numbers(projectId, new Uri(_apiUrlOverrides?.NumbersUrl ?? NumbersApiUrl),
                 _loggerFactory, httpCamelCase);
-            Sms = new Sms(projectId, GetSmsBaseAddress(optionsObj.SmsHostingRegion), _loggerFactory,
+            Sms = new Sms(projectId, GetSmsBaseAddress(optionsObj.SmsHostingRegion, _apiUrlOverrides?.SmsUrl),
+                _loggerFactory,
                 httpSnakeCase);
             Conversation = new Conversation.Conversation(projectId,
-                new Uri(string.Format(ConversationApiUrlTemplate, optionsObj.ConversationRegion.Value)),
+                new Uri(_apiUrlOverrides?.ConversationUrl ??
+                        string.Format(ConversationApiUrlTemplate, optionsObj.ConversationRegion.Value)),
                 _loggerFactory, httpSnakeCase);
-
-            Auth = auth;
 
             logger?.LogInformation("SinchClient initialized.");
         }
 
-        private static Uri GetSmsBaseAddress(SmsHostingRegion smsHostingRegion)
+        private static Uri GetSmsBaseAddress(SmsHostingRegion smsHostingRegion, string smsUrlOverride)
         {
+            if (smsUrlOverride != null)
+            {
+                return new Uri(smsUrlOverride);
+            }
+
             // General SMS rest api uses service_plan_id to performs calls
             // But SDK is based on single-account model which uses project_id
             // Thus, baseAddress for sms api is using a special endpoint where service_plan_id is replaced with projectId
             // for each provided endpoint
             return new Uri(string.Format(SmsApiUrlTemplate, smsHostingRegion.Value.ToLowerInvariant()));
-        }
-
-        /// <summary>
-        ///     For E2E tests only. Here you can override base addresses.
-        /// </summary>
-        /// <param name="projectId"></param>
-        /// <param name="authUri"></param>
-        /// <param name="numbersBaseAddress"></param>
-        /// <param name="smsBaseAddress"></param>
-        /// <param name="verificationBaseAddress"></param>
-        /// <param name="voiceBaseAddress"></param>
-        internal SinchClient(string projectId, Uri authUri, Uri numbersBaseAddress, Uri smsBaseAddress,
-            Uri verificationBaseAddress, Uri voiceBaseAddress)
-        {
-            _httpClient = new HttpClient();
-            Auth = new OAuth(authUri, _httpClient);
-            var httpCamelCase = new Http(Auth, _httpClient, null,
-                JsonNamingPolicy.CamelCase);
-            var httpSnakeCase = new Http(Auth, _httpClient, null,
-                SnakeCaseNamingPolicy.Instance);
-            Numbers = new Numbers.Numbers(projectId, numbersBaseAddress, null, httpCamelCase);
-            Sms = new Sms(projectId, smsBaseAddress, null, httpSnakeCase);
-            _verificationBaseAddress = verificationBaseAddress;
-            _voiceBaseAddress = voiceBaseAddress;
         }
 
         /// <inheritdoc/>       
@@ -256,7 +242,7 @@ namespace Sinch
             }
 
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(), JsonNamingPolicy.CamelCase);
-            return new SinchVerificationClient(_verificationBaseAddress ?? new Uri(VerificationApiUrl),
+            return new SinchVerificationClient(new Uri(_apiUrlOverrides?.VerificationUrl ?? VerificationApiUrl),
                 _loggerFactory, http);
         }
 
@@ -289,7 +275,7 @@ namespace Sinch
 
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(), JsonNamingPolicy.CamelCase);
             return new SinchVoiceClient(
-                _voiceBaseAddress ?? new Uri(string.Format(VoiceApiUrlTemplate, callingRegion.Value)),
+                new Uri(_apiUrlOverrides?.VoiceUrl ?? string.Format(VoiceApiUrlTemplate, callingRegion.Value)),
                 _loggerFactory, http);
         }
     }

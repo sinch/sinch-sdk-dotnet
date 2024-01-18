@@ -15,20 +15,32 @@ namespace Sinch.Tests.e2e
         protected TestBase()
         {
             Env.Load();
-            SinchClientMockStudio = new Sinch.SinchClient(ProjectId, new Uri("http://localhost:8001"),
-                new Uri("http://localhost:8000"),
-                new Uri("http://localhost:8002"), null, null);
-            var authUri = new Uri($"http://localhost:{Environment.GetEnvironmentVariable("MOCK_AUTH_PORT")}");
-            var smsUri = new Uri($"http://localhost:{Environment.GetEnvironmentVariable("MOCK_SMS_PORT")}");
-            // TODO: use mock server endpoints
-            var numbersUri = new Uri($"http://localhost:{Environment.GetEnvironmentVariable("MOCK_NUMBERS_PORT")}");
-            var verificationBaseUri =
-                new Uri($"http://localhost:{Environment.GetEnvironmentVariable("MOCK_VERIFICATION_PORT")}");
-            var voiceBaseUri =
-                new Uri($"http://localhost:{Environment.GetEnvironmentVariable("MOCK_VOICE_PORT")}");
-            SinchClientMockServer = new Sinch.SinchClient(ProjectId, authUri,
-                new Uri("http://localhost:8000"),
-                smsUri, verificationBaseUri, voiceBaseUri);
+            SinchClientMockStudio = new SinchClient("key_id", "key_secret", ProjectId,
+                options =>
+                {
+                    options.ApiUrlOverrides = new ApiUrlOverrides()
+                    {
+                        AuthUrl = "http://localhost:8001",
+                        NumbersUrl = "http://localhost:8000",
+                        SmsUrl = "http://localhost:8002"
+                    };
+                });
+
+            SinchClientMockServer = new SinchClient("key_id", "key_secret", ProjectId, options =>
+            {
+                options.ApiUrlOverrides = new ApiUrlOverrides()
+                {
+                    AuthUrl = GetTestUrl("MOCK_AUTH_PORT"),
+                    SmsUrl = GetTestUrl("MOCK_SMS_PORT"),
+                    ConversationUrl = GetTestUrl("MOCK_CONVERSATION_PORT"),
+                    NumbersUrl = GetTestUrl("MOCK_NUMBERS_PORT"),
+                    VoiceUrl = GetTestUrl("MOCK_VOICE_PORT"),
+                    VerificationUrl = GetTestUrl("MOCK_VERIFICATION_PORT"),
+                };
+            });
         }
+
+        private string GetTestUrl(string portEnvVar) =>
+            $"http://localhost:{Environment.GetEnvironmentVariable(portEnvVar)}";
     }
 }
