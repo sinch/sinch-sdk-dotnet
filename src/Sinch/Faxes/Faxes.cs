@@ -21,21 +21,21 @@ namespace Sinch.Faxes
 {
     public partial class Faxes
     {
-        private readonly string projectId;
-        private readonly Uri uri;
+        private readonly string _projectId;
+        private readonly Uri _uri;
 
-        private readonly Http http;
-        private ILoggerAdapter<Faxes> loggerAdapter;
-        private FileExtensionContentTypeProvider mimeMapper;
+        private readonly Http _http;
+        private ILoggerAdapter<Faxes> _loggerAdapter;
+        private FileExtensionContentTypeProvider _mimeMapper;
 
 
         internal Faxes(string projectId, Uri uri, ILoggerAdapter<Faxes> loggerAdapter, Http httpClient)
         {
-            this.projectId = projectId;
-            this.uri = uri;
-            this.loggerAdapter = loggerAdapter;
-            this.http = httpClient;
-            mimeMapper = new FileExtensionContentTypeProvider();
+            this._projectId = projectId;
+            this._uri = uri;
+            this._loggerAdapter = loggerAdapter;
+            this._http = httpClient;
+            _mimeMapper = new FileExtensionContentTypeProvider();
             uri = new Uri(uri, $"/v3/projects/{projectId}/faxes");
         }
         /// <summary>
@@ -67,7 +67,7 @@ namespace Sinch.Faxes
         public async Task<Fax> Send(Fax fax, Stream fileContent, string fileName)
         {
             
-            Fax result = await http.SendMultipart<Fax,Fax>(uri, fax, fileContent, fileName);
+            Fax result = await _http.SendMultipart<Fax,Fax>(_uri, fax, fileContent, fileName);
             return result;
         }
 

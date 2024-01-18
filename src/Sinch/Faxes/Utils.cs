@@ -8,10 +8,10 @@ namespace Sinch.Faxes
 {
     internal class FileExtensionContentTypeProvider 
     {
-        //
+        
         // Summary:
         //     The cross reference table of file extensions and content-types.
-        private IDictionary<string, string> Mappings { get; private set; }
+        private IDictionary<string, string> Mappings { get; set; }
 
         //
         // Summary:
