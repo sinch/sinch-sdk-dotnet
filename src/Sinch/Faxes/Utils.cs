@@ -9,14 +9,11 @@ namespace Sinch.Faxes
     internal class FileExtensionContentTypeProvider 
     {
         
-        // Summary:
-        //     The cross reference table of file extensions and content-types.
+      
         private IDictionary<string, string> Mappings { get; set; }
 
-        //
-        // Summary:
-        //     Creates a new provider with a set of default mappings.
-        public FileExtensionContentTypeProvider()
+
+        internal FileExtensionContentTypeProvider()
             : this(new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
             { ".323", "text/h323" },
@@ -401,14 +398,8 @@ namespace Sinch.Faxes
         {
         }
 
-        //
-        // Summary:
-        //     Creates a lookup engine using the provided mapping. It is recommended that the
-        //     IDictionary instance use StringComparer.OrdinalIgnoreCase.
-        //
-        // Parameters:
-        //   mapping:
-        public FileExtensionContentTypeProvider(IDictionary<string, string> mapping)
+
+        internal FileExtensionContentTypeProvider(IDictionary<string, string> mapping)
         {
             if (mapping == null)
             {
@@ -418,20 +409,8 @@ namespace Sinch.Faxes
             Mappings = mapping;
         }
 
-        //
-        // Summary:
-        //     Given a file path, determine the MIME type
-        //
-        // Parameters:
-        //   subpath:
-        //     A file path
-        //
-        //   contentType:
-        //     The resulting MIME type
-        //
-        // Returns:
-        //     True if MIME type could be determined
-        public bool TryGetContentType(string subpath, out string contentType)
+
+        internal bool TryGetContentType(string subpath, out string contentType)
         {
             string extension = GetExtension(subpath);
             if (extension == null)
@@ -443,7 +422,7 @@ namespace Sinch.Faxes
             return Mappings.TryGetValue(extension, out contentType);
         }
 
-        private static string GetExtension(string path)
+        internal static string GetExtension(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
