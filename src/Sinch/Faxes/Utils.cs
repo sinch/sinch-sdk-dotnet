@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sinch.Faxes
 {
-    internal class FileExtensionContentTypeProvider 
+    internal class FileExtensionContentTypeProvider
     {
-        
-      
+
+
         private IDictionary<string, string> Mappings { get; set; }
 
 

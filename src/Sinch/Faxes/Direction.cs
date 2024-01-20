@@ -7,7 +7,7 @@
     /// </summary>
     /// 
     public enum Direction
-        {
+    {
         /// <summary>
         /// The fax was received on one of your sinch numbers.
         /// </summary>
@@ -17,5 +17,5 @@
         /// </summary>
         OUTBOUND
     }
-    
+
 }

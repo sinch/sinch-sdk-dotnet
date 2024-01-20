@@ -1,20 +1,7 @@
 ﻿using Sinch.Core;
 using Sinch.Logger;
-using Sinch.SMS.Batches.Send;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.IO.Enumeration;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Mime;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Sinch.Faxes
@@ -46,7 +33,7 @@ namespace Sinch.Faxes
         /// <param name="from">Sinch number you want to set as from </param>
         /// /// <param name="contentUrls">content Urls to fax</param>
         /// <param name="callbackUrl">Callback url to notify when fax is completed or failed</param>
-        public async Task<Fax> Send(string to, string filePath, string from = "", string CallbackUrl=null, string[] contentUrl = null)
+        public async Task<Fax> Send(string to, string filePath, string from = "", string CallbackUrl = null, string[] contentUrl = null)
         {
             var fileContent = File.OpenRead(filePath);
             var fileName = Path.GetFileName(filePath);
@@ -58,16 +45,54 @@ namespace Sinch.Faxes
                 ContentUrl = contentUrl
             };
             return await Send(fax, fileContent, fileName);
+
+            /* Unmerged change from project 'Sinch (net6.0)'
+            Before:
+                    }
+
+
+
+
+
+                    public async Task<Fax> Send(Fax fax, Stream fileContent, string fileName)
+            After:
+                    }
+
+
+
+
+
+                    public async Task<Fax> Send(Fax fax, Stream fileContent, string fileName)
+            */
+
+            /* Unmerged change from project 'Sinch (net8.0)'
+            Before:
+                    }
+
+
+
+
+
+                    public async Task<Fax> Send(Fax fax, Stream fileContent, string fileName)
+            After:
+                    }
+
+
+
+
+
+                    public async Task<Fax> Send(Fax fax, Stream fileContent, string fileName)
+            */
         }
-        
 
-        
 
-      
+
+
+
         public async Task<Fax> Send(Fax fax, Stream fileContent, string fileName)
         {
-            
-            Fax result = await _http.SendMultipart<Fax,Fax>(_uri, fax, fileContent, fileName);
+
+            Fax result = await _http.SendMultipart<Fax, Fax>(_uri, fax, fileContent, fileName);
             return result;
         }
 
