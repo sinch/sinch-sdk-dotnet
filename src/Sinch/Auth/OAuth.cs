@@ -22,17 +22,12 @@ namespace Sinch.Auth
 
         public string Scheme { get; } = AuthSchemes.Bearer;
 
-        public OAuth(string keyId, string keySecret, HttpClient httpClient, ILoggerAdapter<OAuth> logger)
+        public OAuth(string keyId, string keySecret, HttpClient httpClient, ILoggerAdapter<OAuth> logger, Uri baseAddress)
         {
             _keyId = keyId;
             _keySecret = keySecret;
             _httpClient = httpClient;
             _logger = logger;
-            _baseAddress = new Uri("https://auth.sinch.com");
-        }
-
-        internal OAuth(Uri baseAddress, HttpClient httpClient) : this("", "", httpClient, null)
-        {
             _baseAddress = baseAddress;
         }
 
