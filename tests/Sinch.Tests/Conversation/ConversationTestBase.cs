@@ -9,7 +9,7 @@ namespace Sinch.Tests.Conversation
 
         protected ConversationTestBase()
         {
-            Conversation = new Sinch.Conversation.Conversation(ProjectId, new Uri("https://us.conversation.api.sinch.com"),
+            Conversation = new Sinch.Conversation.SinchConversationClient(ProjectId, new Uri("https://us.conversation.api.sinch.com"),
                 default, HttpSnakeCase);
         }
     }
