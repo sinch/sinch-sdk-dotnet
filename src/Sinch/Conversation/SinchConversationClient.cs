@@ -31,15 +31,15 @@ namespace Sinch.Conversation
     }
 
     /// <inheritdoc />
-    internal class Conversation : ISinchConversation
+    internal class SinchConversationClient : ISinchConversation
     {
-        internal Conversation(string projectId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
+        internal SinchConversationClient(string projectId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
         {
             Messages = new Messages.Messages(projectId, baseAddress, loggerFactory?.Create<Messages.Messages>(),
                 http);
             Apps = new Apps.Apps(projectId, baseAddress, loggerFactory?.Create<Apps.Apps>(), http);
             Contacts = new Contacts.Contacts(projectId, baseAddress, loggerFactory?.Create<ISinchConversationContacts>(), http);
-            Conversations = new Conversations.Conversations(projectId, baseAddress,
+            Conversations = new Conversations.ConversationsClient(projectId, baseAddress,
                 loggerFactory?.Create<ISinchConversationConversations>(), http);
         }
 
