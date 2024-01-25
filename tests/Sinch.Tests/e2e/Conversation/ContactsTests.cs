@@ -37,7 +37,7 @@ namespace Sinch.Tests.e2e.Conversation
                 Email = "new.contact@email.com",
                 ExternalId = "yes",
                 Id = "01HKWT3XRVH6RP17S8KSBC4PYR",
-                Language = "EN_US",
+                Language = ConversationLanguage.EnglishUS,
                 Metadata = "no"
             });
         }
@@ -92,7 +92,7 @@ namespace Sinch.Tests.e2e.Conversation
                 Email = "new.contact@email.com",
                 ExternalId = "yes",
                 Id = "01HKWT3XRVH6RP17S8KSBC4PYR",
-                Language = "EN_US",
+                Language = ConversationLanguage.EnglishUS,
                 Metadata = "no"
             });
         }
@@ -185,7 +185,7 @@ namespace Sinch.Tests.e2e.Conversation
                 ExternalId = "",
                 Email = "new.contact@email.com",
                 Metadata = "",
-                Language = "EN_US",
+                Language = ConversationLanguage.EnglishUS,
                 ChannelPriority = new List<ConversationChannel>()
                 {
                     ConversationChannel.Telegram

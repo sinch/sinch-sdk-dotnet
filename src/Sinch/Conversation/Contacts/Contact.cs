@@ -19,7 +19,7 @@ namespace Sinch.Conversation.Contacts
         private string _email;
         private string _externalId;
         private string _id;
-        private string _language;
+        private ConversationLanguage _language;
         private string _metadata;
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Sinch.Conversation.Contacts
         /// <summary>
         ///     Gets or Sets Language
         /// </summary>
-        public string Language
+        public ConversationLanguage Language
         {
             get => _language;
             set

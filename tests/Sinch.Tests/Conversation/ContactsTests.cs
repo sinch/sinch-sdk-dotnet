@@ -31,7 +31,7 @@ namespace Sinch.Tests.Conversation
                 ChannelPriority = new List<ConversationChannel>(),
                 Email = "mail",
                 ChannelIdentities = new List<ChannelIdentity>(),
-                Language = "lang",
+                Language = ConversationLanguage.Arabic,
                 Id = "id",
             };
             contact.GetPropertiesMask().Should()
