@@ -1,64 +1,128 @@
 ﻿using System;
 using System.Text;
 using System.Text.Json.Nodes;
-using Sinch.Conversation.Messages;
+using System.Text.Json.Serialization;
+using Sinch.Core;
 
 namespace Sinch.Conversation.Conversations
 {
     /// <summary>
-    ///     A collection of messages exchanged between a contact and an app. Conversations are normally created on the fly by Conversation API once a message is sent and there is no active conversation already. There can be only one active conversation at any given time between a particular contact and an app.
+    ///     A collection of messages exchanged between a contact and an app. Conversations are normally created on the fly by
+    ///     Conversation API once a message is sent and there is no active conversation already. There can be only one active
+    ///     conversation at any given time between a particular contact and an app.
     /// </summary>
-    public sealed class Conversation
+    public sealed class Conversation : PropertyMaskQuery
     {
+        private bool? _active;
+        private ConversationChannel _activeChannel;
+        private string _appId;
+        private string _contactId;
+        private string _correlationId;
+        private string _metadata;
+        private JsonObject _metadataJson;
 
         /// <summary>
-        /// Gets or Sets ActiveChannel
+        ///     Gets or Sets ActiveChannel
         /// </summary>
-        public ConversationChannel ActiveChannel { get; set; }
+        public ConversationChannel ActiveChannel
+        {
+            get => _activeChannel;
+            set
+            {
+                SetFields.Add(nameof(ActiveChannel));
+                _activeChannel = value;
+            }
+        }
+
 
         /// <summary>
         ///     Flag for whether this conversation is active.
         /// </summary>
-        public bool? Active { get; set; }
-        
+        public bool? Active
+        {
+            get => _active;
+            set
+            {
+                SetFields.Add(nameof(Active));
+                _active = value;
+            }
+        }
 
         /// <summary>
         ///     The ID of the participating app.
         /// </summary>
-        public string AppId { get; set; }
-        
+        public string AppId
+        {
+            get => _appId;
+            set
+            {
+                SetFields.Add(nameof(AppId));
+                _appId = value;
+            }
+        }
 
         /// <summary>
         ///     The ID of the participating contact.
         /// </summary>
-        public string ContactId { get; set; }
-        
+        public string ContactId
+        {
+            get => _contactId;
+            set
+            {
+                SetFields.Add(nameof(ContactId));
+                _contactId = value;
+            }
+        }
 
         /// <summary>
         ///     The ID of the conversation.
         /// </summary>
         public string Id { get; set; }
-        
 
         /// <summary>
-        ///     The timestamp of the latest message in the conversation. The timestamp will be Thursday January 01, 1970 00:00:00 UTC if the conversation contains no messages.
+        ///     The timestamp of the latest message in the conversation.
         /// </summary>
-        public DateTime LastReceived { get; set; }
-        
+        [JsonInclude]
+        public DateTime? LastReceived { get; private set; }
 
         /// <summary>
         ///     Arbitrary data set by the Conversation API clients. Up to 1024 characters long.
         /// </summary>
-        public string Metadata { get; set; }
-        
+        public string Metadata
+        {
+            get => _metadata;
+            set
+            {
+                SetFields.Add(nameof(Metadata));
+                _metadata = value;
+            }
+        }
 
         /// <summary>
-        ///     Arbitrary data set by the Conversation API clients and/or provided in the &#x60;conversation_metadata&#x60; field of a SendMessageRequest. A valid JSON object.
+        ///     Arbitrary data set by the Conversation API clients and/or provided in the conversation_metadata field of a
+        ///     SendMessageRequest. A valid JSON object.
         /// </summary>
-        public JsonObject MetadataJson { get; set; }
+        public JsonObject MetadataJson
+        {
+            get => _metadataJson;
+            set
+            {
+                SetFields.Add(nameof(MetadataJson));
+                _metadataJson = value;
+            }
+        }
 
-        public string CorrelationId { get; set; }
-        
+        public string CorrelationId
+        {
+            get => _correlationId;
+            set
+            {
+                SetFields.Add(nameof(CorrelationId));
+                _correlationId = value;
+            }
+        }
+
+
         /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>
@@ -75,9 +139,9 @@ namespace Sinch.Conversation.Conversations
             sb.Append("  LastReceived: ").Append(LastReceived).Append("\n");
             sb.Append("  Metadata: ").Append(Metadata).Append("\n");
             sb.Append("  MetadataJson: ").Append(MetadataJson).Append("\n");
+            sb.Append("  CorrelationId: ").Append(CorrelationId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
-
     }
 }
