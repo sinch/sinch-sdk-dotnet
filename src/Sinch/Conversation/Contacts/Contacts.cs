@@ -191,7 +191,7 @@ namespace Sinch.Conversation.Contacts
                     await _http.Send<ListContactsResponse>(uri, HttpMethod.Get, cancellationToken);
                 request.PageToken = response.NextPageToken;
                 foreach (var contact in response.Contacts) yield return contact;
-            } while (request.PageToken is not null);
+            } while (!string.IsNullOrEmpty(request.PageToken));
         }
 
         /// <inheritdoc />
