@@ -41,6 +41,8 @@ namespace Sinch.Conversation.Conversations
         /// <returns></returns>
         IAsyncEnumerable<Conversation> ListAuto(ListConversationsRequest request,
             CancellationToken cancellationToken = default);
+        
+        
     }
 
     internal class ConversationsClient : ISinchConversationConversations
