@@ -219,7 +219,7 @@ namespace Sinch
 
         /// <inheritdoc/>
         public ISinchVerificationClient Verification(string appKey, string appSecret,
-            AuthStrategy authStrategy)
+            AuthStrategy authStrategy = AuthStrategy.ApplicationSign)
         {
             if (string.IsNullOrEmpty(appKey))
             {

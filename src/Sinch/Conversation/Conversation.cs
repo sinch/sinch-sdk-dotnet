@@ -1,5 +1,6 @@
 ﻿using System;
 using Sinch.Conversation.Apps;
+using Sinch.Conversation.Contacts;
 using Sinch.Conversation.Messages;
 using Sinch.Core;
 using Sinch.Logger;
@@ -18,8 +19,11 @@ namespace Sinch.Conversation
         /// <inheritdoc cref="ISinchConversationMessages" />
         ISinchConversationMessages Messages { get; }
 
-        /// <inheritdoc cref="ISinchConversationApp" />
-        ISinchConversationApp App { get; }
+        /// <inheritdoc cref="ISinchConversationApps" />
+        ISinchConversationApps Apps { get; }
+
+        /// <inheritdoc cref="ISinchConversationContacts" />
+        ISinchConversationContacts Contacts { get; }
     }
 
     /// <inheritdoc />
@@ -29,13 +33,17 @@ namespace Sinch.Conversation
         {
             Messages = new Messages.Messages(projectId, baseAddress, loggerFactory?.Create<Messages.Messages>(),
                 http);
-            App = new Apps.Apps(projectId, baseAddress, loggerFactory?.Create<Apps.Apps>(), http);
+            Apps = new Apps.Apps(projectId, baseAddress, loggerFactory?.Create<Apps.Apps>(), http);
+            Contacts = new Contacts.Contacts(projectId, baseAddress, loggerFactory?.Create<ISinchConversationContacts>(), http);
         }
 
         /// <inheritdoc />
         public ISinchConversationMessages Messages { get; }
 
         /// <inheritdoc />
-        public ISinchConversationApp App { get; }
+        public ISinchConversationApps Apps { get; }
+
+        /// <inheritdoc />
+        public ISinchConversationContacts Contacts { get; }
     }
 }

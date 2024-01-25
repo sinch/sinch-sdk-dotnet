@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
+using Sinch.Conversation;
 using Sinch.Conversation.Apps;
 using Sinch.Conversation.Apps.Create;
 using Sinch.Conversation.Apps.Credentials;
-using Sinch.Conversation.Messages;
+using Sinch.Conversation.Apps.Update;
 using Xunit;
 
 namespace Sinch.Tests.Conversation
@@ -243,7 +244,7 @@ namespace Sinch.Tests.Conversation
                 .Respond(HttpStatusCode.OK, JsonContent.Create(_app));
 
 
-            var response = await Conversation.App.Create(_createRequest);
+            var response = await Conversation.Apps.Create(_createRequest);
 
             response.DisplayName.Should().Be("Sinch Conversation API Demo App 001");
             response.QueueStats.Should().BeEquivalentTo(new QueueStats()
@@ -332,7 +333,7 @@ namespace Sinch.Tests.Conversation
                     }
                 }));
 
-            var response = await Conversation.App.List();
+            var response = await Conversation.Apps.List();
 
             response.Should().HaveCount(2);
         }
@@ -345,7 +346,7 @@ namespace Sinch.Tests.Conversation
                     $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/apps/123")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(_app));
 
-            var response = await Conversation.App.Get("123");
+            var response = await Conversation.Apps.Get("123");
 
             response.DisplayName.Should().Be("Sinch Conversation API Demo App 001");
         }
@@ -358,7 +359,7 @@ namespace Sinch.Tests.Conversation
                     $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/apps/123")
                 .Respond(HttpStatusCode.OK);
 
-            Func<Task> response = () => Conversation.App.Delete("123");
+            Func<Task> response = () => Conversation.Apps.Delete("123");
 
             await response.Should().NotThrowAsync();
         }
@@ -377,7 +378,7 @@ namespace Sinch.Tests.Conversation
                 .WithQueryString("update_mask.paths", "b")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(_app));
 
-            var request = new Sinch.Conversation.Apps.Update.UpdateAppRequest()
+            var request = new UpdateAppRequest()
             {
                 DisplayName = "abc",
                 UpdateMaskPaths = new List<string>()
@@ -386,7 +387,7 @@ namespace Sinch.Tests.Conversation
                 },
             };
 
-            var response = await Conversation.App.Update("123", request);
+            var response = await Conversation.Apps.Update("123", request);
 
             response.Should().NotBeNull();
         }
