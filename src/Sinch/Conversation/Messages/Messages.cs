@@ -96,6 +96,8 @@ namespace Sinch.Conversation.Messages
             _logger?.LogDebug("Sending a message...");
             return _http.Send<SendMessageRequest, SendMessageResponse>(uri, HttpMethod.Post, request, cancellationToken: cancellationToken);
         }
+        
+        //TODO: add simplified send text to app of recipient
 
         /// <inheritdoc/>  
         public Task<ConversationMessage> Get(string messageId, MessageSource messagesSource = default,

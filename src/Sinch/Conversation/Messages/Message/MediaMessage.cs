@@ -6,7 +6,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     A message containing a media component, such as an image, document, or video.
     /// </summary>
-    public sealed class MediaMessage : IMessage
+    public sealed class MediaMessage
     {
         /// <summary>
         ///     An optional parameter. Will be used where it is natively supported.
