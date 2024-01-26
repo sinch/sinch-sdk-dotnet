@@ -6,8 +6,8 @@ namespace Sinch.Conversation.Messages.Message
 {
     public class ConversationMessage
     {
-             /// <summary>
-        /// Gets or Sets Direction
+        /// <summary>
+        ///     Gets or Sets Direction
         /// </summary>
         public ConversationDirection Direction { get; set; }
 
@@ -16,56 +16,56 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         public DateTime AcceptTime { get; private set; }
-        
+
 
         /// <summary>
         ///     Gets or Sets AppMessage
         /// </summary>
 
         public AppMessage AppMessage { get; set; }
-        
+
 
         /// <summary>
         ///     Gets or Sets ChannelIdentity
         /// </summary>
         public ChannelIdentity ChannelIdentity { get; set; }
-        
+
 
         /// <summary>
         ///     The ID of the contact.
         /// </summary>
         public string ContactId { get; set; }
-        
+
 
         /// <summary>
         ///     Gets or Sets ContactMessage
         /// </summary>
         public ContactMessage ContactMessage { get; set; }
-        
+
 
         /// <summary>
         ///     The ID of the conversation.
         /// </summary>
         public string ConversationId { get; set; }
-        
+
 
         /// <summary>
         ///     The ID of the message.
         /// </summary>
         public string Id { get; set; }
-        
+
 
         /// <summary>
         ///     Optional. Metadata associated with the contact. Up to 1024 characters long.
         /// </summary>
         public string Metadata { get; set; }
-        
+
 
         /// <summary>
         ///     Flag for whether this message was injected.
         /// </summary>
-        public bool Injected { get; private set; }
-        
+        public bool Injected { get; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object
