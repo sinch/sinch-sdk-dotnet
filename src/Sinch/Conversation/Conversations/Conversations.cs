@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Sinch.Conversation.Conversations.Create;
+using Sinch.Conversation.Conversations.InjectMessages;
 using Sinch.Conversation.Conversations.List;
 using Sinch.Core;
 using Sinch.Logger;
@@ -82,6 +83,14 @@ namespace Sinch.Conversation.Conversations
         Task<Conversation> Update(Conversation conversation,
             MetadataUpdateStrategy metadataUpdateStrategy = null,
             CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     This operation injects a conversation message in to a specific conversation.
+        /// </summary>
+        /// <param name="injectMessageRequest"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task InjectMessage(InjectMessageRequest injectMessageRequest, CancellationToken cancellationToken = default);
     }
 
     internal class ConversationsClient : ISinchConversationConversations
@@ -210,6 +219,21 @@ namespace Sinch.Conversation.Conversations
 
             _logger?.LogDebug("Updating a {conversationId} of {project}", conversation.Id, _projectId);
             return _http.Send<Conversation, Conversation>(builder.Uri, HttpMethod.Patch, conversation,
+                cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task InjectMessage(InjectMessageRequest injectMessageRequest,
+            CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrEmpty(injectMessageRequest.ConversationId))
+                throw new NullReferenceException(
+                    $"{nameof(injectMessageRequest)}.{nameof(injectMessageRequest.ConversationId)} should have a value");
+
+            var uri = new Uri(_baseAddress,
+                $"v1/projects/{_projectId}/conversations/{injectMessageRequest.ConversationId}:conversation_id");
+            _logger?.LogDebug("Injecting a message into {conversationId} of {project}", injectMessageRequest.ConversationId, _projectId);
+            return _http.Send<Conversation>(uri, HttpMethod.Post,
                 cancellationToken);
         }
     }

@@ -83,7 +83,8 @@ namespace Sinch.Conversation.Conversations
         ///     The timestamp of the latest message in the conversation.
         /// </summary>
         [JsonInclude]
-        public DateTime? LastReceived { get; private set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public DateTime LastReceived { get; private set; }
 
         /// <summary>
         ///     Arbitrary data set by the Conversation API clients. Up to 1024 characters long.
