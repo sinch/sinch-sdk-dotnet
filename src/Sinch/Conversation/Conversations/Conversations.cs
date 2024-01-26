@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Sinch.Conversation.Conversations.Create;
-using Sinch.Conversation.Conversations.InjectMessages;
+using Sinch.Conversation.Conversations.InjectMessage;
 using Sinch.Conversation.Conversations.List;
 using Sinch.Core;
 using Sinch.Logger;
@@ -74,7 +74,8 @@ namespace Sinch.Conversation.Conversations
         Task Stop(string conversationId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// This operation updates a conversation which can, for instance, be used to update the metadata associated with a conversation.
+        ///     This operation updates a conversation which can, for instance, be used to update the metadata associated with a
+        ///     conversation.
         /// </summary>
         /// <param name="conversation">A conversation to update, Id should be set.</param>
         /// <param name="metadataUpdateStrategy">Update strategy for the conversation_metadata field.</param>
@@ -191,29 +192,20 @@ namespace Sinch.Conversation.Conversations
             CancellationToken cancellationToken = default)
         {
             if (conversation == null)
-            {
                 throw new ArgumentNullException(nameof(conversation), "Conversation shouldn't be null");
-            }
 
             if (string.IsNullOrEmpty(conversation.Id))
-            {
                 throw new NullReferenceException($"{nameof(conversation.Id)} should have a value");
-            }
 
             var builder = new UriBuilder(new Uri(_baseAddress,
                 $"v1/projects/{_projectId}/conversations/{conversation.Id}"));
 
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             var propMask = conversation.GetPropertiesMask();
-            if (!string.IsNullOrEmpty(propMask))
-            {
-                queryString.Add("update_mask", propMask);
-            }
+            if (!string.IsNullOrEmpty(propMask)) queryString.Add("update_mask", propMask);
 
             if (metadataUpdateStrategy is not null)
-            {
                 queryString.Add("metadata_update_strategy", metadataUpdateStrategy.Value);
-            }
 
             builder.Query = queryString?.ToString()!; // it's okay to pass null.
 
@@ -231,9 +223,10 @@ namespace Sinch.Conversation.Conversations
                     $"{nameof(injectMessageRequest)}.{nameof(injectMessageRequest.ConversationId)} should have a value");
 
             var uri = new Uri(_baseAddress,
-                $"v1/projects/{_projectId}/conversations/{injectMessageRequest.ConversationId}:conversation_id");
-            _logger?.LogDebug("Injecting a message into {conversationId} of {project}", injectMessageRequest.ConversationId, _projectId);
-            return _http.Send<Conversation>(uri, HttpMethod.Post,
+                $"v1/projects/{_projectId}/conversations/{injectMessageRequest.ConversationId}:inject-message");
+            _logger?.LogDebug("Injecting a message into {conversationId} of {project}",
+                injectMessageRequest.ConversationId, _projectId);
+            return _http.Send<InjectMessageRequest, object>(uri, HttpMethod.Post, injectMessageRequest,
                 cancellationToken);
         }
     }

@@ -5,18 +5,8 @@ using Sinch.Conversation.Messages;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Core;
 
-namespace Sinch.Conversation.Conversations.InjectMessages
+namespace Sinch.Conversation.Conversations.InjectMessage
 {
-    /// <summary>
-    /// Defines ConversationDirection
-    /// </summary>
-    [JsonConverter(typeof(EnumRecordJsonConverter<ConversationDirection>))]
-    public record ConversationDirection(string Value) : EnumRecord(Value)
-    {
-        public static readonly ConversationDirection UndefinedDirection = new("UNDEFINED_DIRECTION");
-        public static readonly ConversationDirection ToApp = new("TO_APP");
-        public static readonly ConversationDirection ToContact = new("TO_CONTACT");
-    }
 
     /// <summary>
     ///     A message on a particular channel.
@@ -34,7 +24,12 @@ namespace Sinch.Conversation.Conversations.InjectMessages
         /// <summary>
         ///     The processed time of the message in UTC timezone. Must be less than current_time and greater than (current_time - 30 days)
         /// </summary>
-        public DateTime? AcceptTime { get; set; }
+#if NET7_0_OR_GREATER
+        public required DateTime AcceptTime { get; set; }
+#else
+        public DateTime AcceptTime { get; set; }
+#endif
+        
 
 
         /// <summary>
