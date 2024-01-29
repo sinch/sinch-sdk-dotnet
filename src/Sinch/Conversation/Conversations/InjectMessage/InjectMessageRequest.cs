@@ -3,11 +3,9 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Messages;
 using Sinch.Conversation.Messages.Message;
-using Sinch.Core;
 
 namespace Sinch.Conversation.Conversations.InjectMessage
 {
-
     /// <summary>
     ///     A message on a particular channel.
     /// </summary>
@@ -17,20 +15,19 @@ namespace Sinch.Conversation.Conversations.InjectMessage
         public string ConversationId { get; set; }
 
         /// <summary>
-        /// Gets or Sets Direction
+        ///     Gets or Sets Direction
         /// </summary>
         public ConversationDirection Direction { get; set; }
 
         /// <summary>
-        ///     The processed time of the message in UTC timezone. Must be less than current_time and greater than (current_time - 30 days)
+        ///     The processed time of the message in UTC timezone. Must be less than current_time and greater than (current_time -
+        ///     30 days)
         /// </summary>
 #if NET7_0_OR_GREATER
         public required DateTime AcceptTime { get; set; }
 #else
         public DateTime AcceptTime { get; set; }
 #endif
-        
-
 
         /// <summary>
         ///     Gets or Sets AppMessage

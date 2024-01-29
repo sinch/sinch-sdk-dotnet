@@ -182,7 +182,7 @@ namespace Sinch.Conversation.Conversations
             var uri = new Uri(_baseAddress,
                 $"v1/projects/{_projectId}/conversations/{conversationId}:stop");
             _logger?.LogDebug("Stopping a {conversationId} of {project}", conversationId, _projectId);
-            return _http.Send<Conversation>(uri, HttpMethod.Delete,
+            return _http.Send<Conversation>(uri, HttpMethod.Post,
                 cancellationToken);
         }
 
