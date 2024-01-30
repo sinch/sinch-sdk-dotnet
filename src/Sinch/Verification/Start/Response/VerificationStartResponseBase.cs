@@ -45,24 +45,24 @@ namespace Sinch.Verification.Start.Response
 
             if (VerificationMethodEx.Seamless.Value == method)
             {
-                return elem.Deserialize<DataVerificationStartResponse>(options);
+                return elem.Deserialize<StartDataVerificationResponse>(options);
             }
 
             if (VerificationMethodEx.Sms.Value == method)
             {
                 return
-                    elem.Deserialize<SmsVerificationStartResponse>(
+                    elem.Deserialize<StartSmsVerificationResponse>(
                         options);
             }
 
             if (VerificationMethodEx.FlashCall.Value == method)
             {
-                return elem.Deserialize<FlashCallVerificationStartResponse>(options);
+                return elem.Deserialize<StartFlashCallVerificationResponse>(options);
             }
 
             if (VerificationMethodEx.Callout.Value == method)
             {
-                return elem.Deserialize<PhoneCallVerificationStartResponse>(options);
+                return elem.Deserialize<StartPhoneCallVerificationResponse>(options);
             }
 
             throw new JsonException(

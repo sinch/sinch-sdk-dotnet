@@ -20,7 +20,43 @@ namespace Sinch.Verification
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IVerificationStartResponse> Start(VerificationStartRequest request,
+        Task<IVerificationStartResponse> Start(StartVerificationRequest request,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Starts an SMS Verification. Verification by SMS message with a PIN code.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<StartSmsVerificationResponse> StartSms(StartSmsVerificationRequest request,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Starts a Flash Call verification. Verification by placing a flashcall (missed call) and detecting the incoming calling number (CLI).
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<StartFlashCallVerificationResponse> StartFlashCall(StartFlashCallVerificationRequest request,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Starts a Phone Call verification.Verification by placing a PSTN call to the user's phone and playing an announcement, asking the user to press a particular digit to verify the phone number
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<StartPhoneCallVerificationResponse> StartPhoneCall(StartPhoneCallVerificationRequest request,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Starts a Data verification. Verification by accessing internal infrastructure of mobile carriers to verify if given verification attempt was originated from device with matching phone number.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<StartDataVerificationResponse> StartSeamless(StartDataVerificationRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -61,14 +97,70 @@ namespace Sinch.Verification
         }
 
         /// <inheritdoc />
-        public Task<IVerificationStartResponse> Start(VerificationStartRequest request,
+        public Task<IVerificationStartResponse> Start(StartVerificationRequest request,
             CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"verification/v1/verifications");
             _logger?.LogDebug("Starting verification...");
-            return _http.Send<VerificationStartRequest, IVerificationStartResponse>(uri, HttpMethod.Post, request,
+            return _http.Send<StartVerificationRequest, IVerificationStartResponse>(uri, HttpMethod.Post, request,
                 cancellationToken: cancellationToken);
         }
+
+        /// <inheritdoc />
+        public async Task<StartSmsVerificationResponse> StartSms(StartSmsVerificationRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var result = await Start(new StartVerificationRequest()
+            {
+                Custom = request.Custom,
+                Identity = request.Identity,
+                Method = request.Method,
+                Reference = request.Reference
+            }, cancellationToken);
+            return result as StartSmsVerificationResponse;
+        }
+
+        /// <inheritdoc />
+        public async Task<StartFlashCallVerificationResponse> StartFlashCall(StartFlashCallVerificationRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var result = await Start(new StartVerificationRequest()
+            {
+                Custom = request.Custom,
+                Identity = request.Identity,
+                Method = request.Method,
+                Reference = request.Reference,
+                FlashCallOptions = request.FlashCallOptions
+            }, cancellationToken);
+            return result as StartFlashCallVerificationResponse;
+        }
+
+        /// <inheritdoc />
+        public async Task<StartPhoneCallVerificationResponse> StartPhoneCall(StartPhoneCallVerificationRequest request, CancellationToken cancellationToken = default)
+        {
+            var result = await Start(new StartVerificationRequest()
+            {
+                Custom = request.Custom,
+                Identity = request.Identity,
+                Method = request.Method,
+                Reference = request.Reference,
+            }, cancellationToken);
+            return result as StartPhoneCallVerificationResponse;
+        }
+
+        /// <inheritdoc />  
+        public async Task<StartDataVerificationResponse> StartSeamless(StartDataVerificationRequest request, CancellationToken cancellationToken = default)
+        {
+            var result = await Start(new StartVerificationRequest()
+            {
+                Custom = request.Custom,
+                Identity = request.Identity,
+                Method = request.Method,
+                Reference = request.Reference,
+            }, cancellationToken);
+            return result as StartDataVerificationResponse;
+        }
+
 
         public Task<IVerificationReportResponse> ReportIdentity(string endpoint, VerifyReportRequest request,
             CancellationToken cancellationToken = default)

@@ -31,7 +31,7 @@ namespace Sinch.Tests.e2e.Verification
         [Fact]
         public async Task StartSmsVerification()
         {
-            var response = await VerificationClient.Verification.Start(new VerificationStartRequest()
+            var response = await VerificationClient.Verification.Start(new StartVerificationRequest()
             {
                 Custom = "456",
                 Reference = "123",
@@ -43,8 +43,8 @@ namespace Sinch.Tests.e2e.Verification
                 },
             });
 
-            response.Should().BeOfType<SmsVerificationStartResponse>().Which.Should().BeEquivalentTo(
-                new SmsVerificationStartResponse()
+            response.Should().BeOfType<StartSmsVerificationResponse>().Which.Should().BeEquivalentTo(
+                new StartSmsVerificationResponse()
                 {
                     Id = "1234567890",
                     Method = VerificationMethodEx.Sms,
@@ -68,7 +68,7 @@ namespace Sinch.Tests.e2e.Verification
         [Fact]
         public async Task StartFlashCallVerification()
         {
-            var response = await VerificationClient.Verification.Start(new VerificationStartRequest()
+            var response = await VerificationClient.Verification.Start(new StartVerificationRequest()
             {
                 Identity = _identity,
                 Method = VerificationMethodEx.FlashCall,
@@ -77,8 +77,8 @@ namespace Sinch.Tests.e2e.Verification
                     DialTimeout = 12,
                 }
             });
-            response.Should().BeOfType<FlashCallVerificationStartResponse>().Which.Should().BeEquivalentTo(
-                new FlashCallVerificationStartResponse()
+            response.Should().BeOfType<StartFlashCallVerificationResponse>().Which.Should().BeEquivalentTo(
+                new StartFlashCallVerificationResponse()
                 {
                     Id = _id,
                     Method = VerificationMethodEx.FlashCall,
@@ -96,13 +96,13 @@ namespace Sinch.Tests.e2e.Verification
         [Fact]
         public async Task StartPhoneCallVerification()
         {
-            var response = await VerificationClient.Verification.Start(new VerificationStartRequest()
+            var response = await VerificationClient.Verification.Start(new StartVerificationRequest()
             {
                 Identity = _identity,
                 Method = VerificationMethodEx.Callout,
             });
-            response.Should().BeOfType<PhoneCallVerificationStartResponse>().Which.Should().BeEquivalentTo(
-                new PhoneCallVerificationStartResponse()
+            response.Should().BeOfType<StartPhoneCallVerificationResponse>().Which.Should().BeEquivalentTo(
+                new StartPhoneCallVerificationResponse()
                 {
                     Id = _id,
                     Method = VerificationMethodEx.Callout,
@@ -113,13 +113,13 @@ namespace Sinch.Tests.e2e.Verification
         [Fact]
         public async Task StartSeamlessVerification()
         {
-            var response = await VerificationClient.Verification.Start(new VerificationStartRequest()
+            var response = await VerificationClient.Verification.Start(new StartVerificationRequest()
             {
                 Identity = _identity,
                 Method = VerificationMethodEx.Seamless,
             });
-            response.Should().BeOfType<DataVerificationStartResponse>().Which.Should().BeEquivalentTo(
-                new DataVerificationStartResponse()
+            response.Should().BeOfType<StartDataVerificationResponse>().Which.Should().BeEquivalentTo(
+                new StartDataVerificationResponse()
                 {
                     Id = _id,
                     Method = VerificationMethodEx.Seamless,

@@ -2,7 +2,7 @@
 
 namespace Sinch.Verification.Start.Request
 {
-    public class VerificationStartRequest
+    public class StartVerificationRequest
     {
         /// <summary>
         ///     Specifies the type of endpoint that will be verified and the particular endpoint.
