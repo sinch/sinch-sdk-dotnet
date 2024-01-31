@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
+using Sinch.Verification.Common;
 using Sinch.Verification.Report.Request;
 using Sinch.Verification.Report.Response;
 using Sinch.Verification.Start.Request;
@@ -30,6 +31,15 @@ namespace Sinch.Verification
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<StartSmsVerificationResponse> StartSms(StartSmsVerificationRequest request,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Starts an SMS Verification for the specified E.164-compatible phone number. Verification by SMS message with a PIN code.
+        /// </summary>
+        /// <param name="phoneNumber">A E.164-compatible phone number</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<StartSmsVerificationResponse> StartSms(string phoneNumber,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -121,6 +131,18 @@ namespace Sinch.Verification
         }
 
         /// <inheritdoc />
+        public async Task<StartSmsVerificationResponse> StartSms(string phoneNumber,
+            CancellationToken cancellationToken = default)
+        {
+            var result = await Start(new StartVerificationRequest()
+            {
+                Identity = Identity.Number(phoneNumber),
+                Method = VerificationMethodEx.Sms
+            }, cancellationToken);
+            return result as StartSmsVerificationResponse;
+        }
+
+        /// <inheritdoc />
         public async Task<StartFlashCallVerificationResponse> StartFlashCall(StartFlashCallVerificationRequest request,
             CancellationToken cancellationToken = default)
         {
@@ -136,7 +158,8 @@ namespace Sinch.Verification
         }
 
         /// <inheritdoc />
-        public async Task<StartPhoneCallVerificationResponse> StartPhoneCall(StartPhoneCallVerificationRequest request, CancellationToken cancellationToken = default)
+        public async Task<StartPhoneCallVerificationResponse> StartPhoneCall(StartPhoneCallVerificationRequest request,
+            CancellationToken cancellationToken = default)
         {
             var result = await Start(new StartVerificationRequest()
             {
@@ -149,7 +172,8 @@ namespace Sinch.Verification
         }
 
         /// <inheritdoc />  
-        public async Task<StartDataVerificationResponse> StartSeamless(StartDataVerificationRequest request, CancellationToken cancellationToken = default)
+        public async Task<StartDataVerificationResponse> StartSeamless(StartDataVerificationRequest request,
+            CancellationToken cancellationToken = default)
         {
             var result = await Start(new StartVerificationRequest()
             {
