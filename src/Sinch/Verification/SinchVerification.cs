@@ -25,7 +25,7 @@ namespace Sinch.Verification
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Starts an SMS Verification. Verification by SMS message with a PIN code.
+        ///     Starts an SMS Verification. Verification by SMS message with a PIN code.
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
@@ -34,7 +34,8 @@ namespace Sinch.Verification
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Starts an SMS Verification for the specified E.164-compatible phone number. Verification by SMS message with a PIN code.
+        ///     Starts an SMS Verification for the specified E.164-compatible phone number. Verification by SMS message with a PIN
+        ///     code.
         /// </summary>
         /// <param name="phoneNumber">A E.164-compatible phone number</param>
         /// <param name="cancellationToken"></param>
@@ -43,7 +44,8 @@ namespace Sinch.Verification
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Starts a Flash Call verification. Verification by placing a flashcall (missed call) and detecting the incoming calling number (CLI).
+        ///     Starts a Flash Call verification. Verification by placing a flashcall (missed call) and detecting the incoming
+        ///     calling number (CLI).
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
@@ -52,7 +54,8 @@ namespace Sinch.Verification
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Starts a Phone Call verification.Verification by placing a PSTN call to the user's phone and playing an announcement, asking the user to press a particular digit to verify the phone number
+        ///     Starts a Phone Call verification.Verification by placing a PSTN call to the user's phone and playing an
+        ///     announcement, asking the user to press a particular digit to verify the phone number
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
@@ -61,7 +64,8 @@ namespace Sinch.Verification
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Starts a Data verification. Verification by accessing internal infrastructure of mobile carriers to verify if given verification attempt was originated from device with matching phone number.
+        ///     Starts a Data verification. Verification by accessing internal infrastructure of mobile carriers to verify if given
+        ///     verification attempt was originated from device with matching phone number.
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
@@ -83,7 +87,7 @@ namespace Sinch.Verification
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Report the received verification code to verify it, using the Verification ID of the Verification request.
+        ///     Report the received verification code to verify it, using the Verification ID of the Verification request.
         /// </summary>
         /// <param name="id"></param>
         /// <param name="request"></param>
@@ -95,9 +99,9 @@ namespace Sinch.Verification
 
     internal class SinchVerification : ISinchVerification
     {
-        private readonly ILoggerAdapter<SinchVerification> _logger;
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
+        private readonly ILoggerAdapter<SinchVerification> _logger;
 
         public SinchVerification(ILoggerAdapter<SinchVerification> logger, Uri baseAddress, IHttp http)
         {
@@ -110,17 +114,17 @@ namespace Sinch.Verification
         public Task<IStartVerificationResponse> Start(StartVerificationRequest request,
             CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"verification/v1/verifications");
+            var uri = new Uri(_baseAddress, "verification/v1/verifications");
             _logger?.LogDebug("Starting verification...");
             return _http.Send<StartVerificationRequest, IStartVerificationResponse>(uri, HttpMethod.Post, request,
-                cancellationToken: cancellationToken);
+                cancellationToken);
         }
 
         /// <inheritdoc />
         public async Task<StartSmsVerificationResponse> StartSms(StartSmsVerificationRequest request,
             CancellationToken cancellationToken = default)
         {
-            var result = await Start(new StartVerificationRequest()
+            var result = await Start(new StartVerificationRequest
             {
                 Custom = request.Custom,
                 Identity = request.Identity,
@@ -134,7 +138,7 @@ namespace Sinch.Verification
         public async Task<StartSmsVerificationResponse> StartSms(string phoneNumber,
             CancellationToken cancellationToken = default)
         {
-            var result = await Start(new StartVerificationRequest()
+            var result = await Start(new StartVerificationRequest
             {
                 Identity = Identity.Number(phoneNumber),
                 Method = VerificationMethodEx.Sms
@@ -146,7 +150,7 @@ namespace Sinch.Verification
         public async Task<StartFlashCallVerificationResponse> StartFlashCall(StartFlashCallVerificationRequest request,
             CancellationToken cancellationToken = default)
         {
-            var result = await Start(new StartVerificationRequest()
+            var result = await Start(new StartVerificationRequest
             {
                 Custom = request.Custom,
                 Identity = request.Identity,
@@ -161,26 +165,26 @@ namespace Sinch.Verification
         public async Task<StartPhoneCallVerificationResponse> StartPhoneCall(StartPhoneCallVerificationRequest request,
             CancellationToken cancellationToken = default)
         {
-            var result = await Start(new StartVerificationRequest()
+            var result = await Start(new StartVerificationRequest
             {
                 Custom = request.Custom,
                 Identity = request.Identity,
                 Method = request.Method,
-                Reference = request.Reference,
+                Reference = request.Reference
             }, cancellationToken);
             return result as StartPhoneCallVerificationResponse;
         }
 
-        /// <inheritdoc />  
+        /// <inheritdoc />
         public async Task<StartDataVerificationResponse> StartSeamless(StartDataVerificationRequest request,
             CancellationToken cancellationToken = default)
         {
-            var result = await Start(new StartVerificationRequest()
+            var result = await Start(new StartVerificationRequest
             {
                 Custom = request.Custom,
                 Identity = request.Identity,
                 Method = request.Method,
-                Reference = request.Reference,
+                Reference = request.Reference
             }, cancellationToken);
             return result as StartDataVerificationResponse;
         }
@@ -212,16 +216,16 @@ namespace Sinch.Verification
                 FlashCallVerificationReportRequest flashCallVerificationReportRequest =>
                     _http.Send<FlashCallVerificationReportRequest, IVerificationReportResponse>(uri, HttpMethod.Put,
                         flashCallVerificationReportRequest,
-                        cancellationToken: cancellationToken),
+                        cancellationToken),
                 SmsVerificationReportRequest smsVerificationRequest => _http
                     .Send<SmsVerificationReportRequest, IVerificationReportResponse>(
                         uri, HttpMethod.Put,
                         smsVerificationRequest,
-                        cancellationToken: cancellationToken),
+                        cancellationToken),
                 PhoneCallVerificationReportRequest phoneRequest => _http
                     .Send<PhoneCallVerificationReportRequest, IVerificationReportResponse>(uri, HttpMethod.Put,
                         phoneRequest,
-                        cancellationToken: cancellationToken),
+                        cancellationToken),
                 _ => throw new ArgumentOutOfRangeException(nameof(request))
             };
         }
