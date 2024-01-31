@@ -218,6 +218,9 @@ namespace Sinch.Conversation.Conversations
         public Task InjectMessage(InjectMessageRequest injectMessageRequest,
             CancellationToken cancellationToken = default)
         {
+            if (injectMessageRequest == null)
+                throw new ArgumentNullException(nameof(injectMessageRequest), "Shouldn't be null");
+            
             if (string.IsNullOrEmpty(injectMessageRequest.ConversationId))
                 throw new NullReferenceException(
                     $"{nameof(injectMessageRequest)}.{nameof(injectMessageRequest.ConversationId)} should have a value");
