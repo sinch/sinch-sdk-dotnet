@@ -32,15 +32,15 @@ namespace Sinch.Verification.Start.Response
     // Note about JsonDerivedType - it works if class has an interface property, but don't work if you try to deserialize interface itself. So, httpContent.ReadAsJson<IInterface>() will not work.
     // So I'm using JsonConverter for that
     [JsonConverter(typeof(VerificationResponseConverter))]
-    public interface IVerificationStartResponse
+    public interface IStartVerificationResponse
     {
         [JsonPropertyName("method")]
         public VerificationMethodEx Method { get; set; }
     }
 
-    public class VerificationResponseConverter : JsonConverter<IVerificationStartResponse>
+    public class VerificationResponseConverter : JsonConverter<IStartVerificationResponse>
     {
-        public override IVerificationStartResponse Read(ref Utf8JsonReader reader, Type typeToConvert,
+        public override IStartVerificationResponse Read(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)
         {
             var elem = JsonElement.ParseValue(ref reader);
@@ -65,7 +65,7 @@ namespace Sinch.Verification.Start.Response
                 $"Failed to match verification method object, got prop `{descriptor.Name}` with value `{method}`");
         }
 
-        public override void Write(Utf8JsonWriter writer, IVerificationStartResponse value,
+        public override void Write(Utf8JsonWriter writer, IStartVerificationResponse value,
             JsonSerializerOptions options)
         {
             switch (value)
@@ -84,7 +84,7 @@ namespace Sinch.Verification.Start.Response
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value),
-                        $"Cannot find a matching class for the interface {nameof(IVerificationStartResponse)}");
+                        $"Cannot find a matching class for the interface {nameof(IStartVerificationResponse)}");
             }
         }
     }

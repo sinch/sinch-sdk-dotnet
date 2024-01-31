@@ -1,6 +1,6 @@
 ﻿namespace Sinch.Verification.Start.Response
 {
-    public class StartDataVerificationResponse : VerificationStartResponseBase, IVerificationStartResponse
+    public class StartDataVerificationResponse : VerificationStartResponseBase, IStartVerificationResponse
     {
         /// <summary>
         ///     The response contains the target URI.
