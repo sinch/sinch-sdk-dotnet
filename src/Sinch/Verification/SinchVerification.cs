@@ -20,7 +20,7 @@ namespace Sinch.Verification
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IVerificationStartResponse> Start(StartVerificationRequest request,
+        Task<IStartVerificationResponse> Start(StartVerificationRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -97,12 +97,12 @@ namespace Sinch.Verification
         }
 
         /// <inheritdoc />
-        public Task<IVerificationStartResponse> Start(StartVerificationRequest request,
+        public Task<IStartVerificationResponse> Start(StartVerificationRequest request,
             CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"verification/v1/verifications");
             _logger?.LogDebug("Starting verification...");
-            return _http.Send<StartVerificationRequest, IVerificationStartResponse>(uri, HttpMethod.Post, request,
+            return _http.Send<StartVerificationRequest, IStartVerificationResponse>(uri, HttpMethod.Post, request,
                 cancellationToken: cancellationToken);
         }
 
