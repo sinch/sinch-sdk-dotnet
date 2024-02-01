@@ -62,11 +62,6 @@ namespace Sinch.Tests.e2e.Verification
                 }
             };
 
-
-            var responseGeneric = await VerificationClient.Verification.Start(startVerificationRequest);
-            responseGeneric.Should().BeOfType<StartSmsVerificationResponse>().Which.Should().BeEquivalentTo(
-                startSmsVerificationResponse);
-
             var response = await VerificationClient.Verification.StartSms(new StartSmsVerificationRequest
             {
                 Custom = startVerificationRequest.Custom,
@@ -102,10 +97,6 @@ namespace Sinch.Tests.e2e.Verification
                 Links = _links
             };
 
-            var responseGeneric = await VerificationClient.Verification.Start(startVerificationRequest);
-            responseGeneric.Should().BeOfType<StartFlashCallVerificationResponse>().Which.Should().BeEquivalentTo(
-                startFlashCallVerificationResponse);
-
             var response = await VerificationClient.Verification.StartFlashCall(new StartFlashCallVerificationRequest
             {
                 Identity = startVerificationRequest.Identity,
@@ -130,10 +121,6 @@ namespace Sinch.Tests.e2e.Verification
                 Method = VerificationMethodEx.Callout,
                 Links = _links
             };
-
-            var responseGeneric = await VerificationClient.Verification.Start(startVerificationRequest);
-            responseGeneric.Should().BeOfType<StartPhoneCallVerificationResponse>().Which.Should().BeEquivalentTo(
-                startPhoneCallVerificationResponse);
 
             var response = await VerificationClient.Verification.StartPhoneCall(new StartPhoneCallVerificationRequest
             {
@@ -162,10 +149,6 @@ namespace Sinch.Tests.e2e.Verification
                     TargetUri = "uri-target"
                 }
             };
-
-            var responseGeneric = await VerificationClient.Verification.Start(startVerificationRequest);
-            responseGeneric.Should().BeOfType<StartDataVerificationResponse>().Which.Should().BeEquivalentTo(
-                startDataVerificationResponse);
 
             var response = await VerificationClient.Verification.StartSeamless(new StartDataVerificationRequest
             {

@@ -15,16 +15,6 @@ namespace Sinch.Verification
     public interface ISinchVerification
     {
         /// <summary>
-        ///     This method is used by the mobile and web Verification SDKs to start a verification.
-        ///     It can also be used to request a verification from your backend, by making an request.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<IStartVerificationResponse> Start(StartVerificationRequest request,
-            CancellationToken cancellationToken = default);
-
-        /// <summary>
         ///     Starts an SMS Verification. Verification by SMS message with a PIN code.
         /// </summary>
         /// <param name="request"></param>
@@ -110,8 +100,7 @@ namespace Sinch.Verification
             _http = http;
         }
 
-        /// <inheritdoc />
-        public Task<IStartVerificationResponse> Start(StartVerificationRequest request,
+        private Task<IStartVerificationResponse> Start(StartVerificationRequest request,
             CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, "verification/v1/verifications");
