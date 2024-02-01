@@ -1,6 +1,6 @@
 ﻿using Sinch;
-using Sinch.Verification.Start.Request;
-using Sinch.Verification.Start.Response;
+using Sinch.Verification.Report.Request;
+using Sinch.Verification.Report.Response;
 
 namespace Examples
 {
@@ -9,19 +9,25 @@ namespace Examples
         public static void Example()
         {
             var sinchClient = new SinchClient("KEY_ID", "KEY_SECRET", "PROJECT_ID");
-            var verificationStartResponse = sinchClient.Verification("APP_KEY", "APP_SECRET").Verification
-                .Start(new VerificationStartRequest()).Result;
-            var verificationStartId = verificationStartResponse switch
+            var response = sinchClient.Verification("APP_KEY", "APP_SECRET").Verification
+                .ReportId("id", new SmsVerificationReportRequest()
+                {
+                    Sms = new SmsVerify()
+                    {
+                        Code = "123",
+                        Cli = "it's a cli"
+                    }
+                }).Result;
+            var id = response switch
             {
-                DataVerificationStartResponse dataVerificationStartResponse => dataVerificationStartResponse.Id,
-                FlashCallVerificationStartResponse flashCallVerificationStartResponse =>
-                    flashCallVerificationStartResponse.Id,
-                PhoneCallVerificationStartResponse phoneCallVerificationStartResponse =>
-                    phoneCallVerificationStartResponse.Id,
-                SmsVerificationStartResponse smsVerificationStartResponse => smsVerificationStartResponse.Id,
-                _ => throw new ArgumentOutOfRangeException(nameof(verificationStartResponse))
+                FlashCallVerificationReportResponse flashCallVerificationReportResponse =>
+                    flashCallVerificationReportResponse.Id,
+                PhoneCallVerificationReportResponse phoneCallVerificationReportResponse =>
+                    phoneCallVerificationReportResponse.Id,
+                SmsVerificationReportResponse smsVerificationReportResponse => smsVerificationReportResponse.Id,
+                _ => throw new ArgumentOutOfRangeException(nameof(response))
             };
-            Console.WriteLine(verificationStartId);
+            Console.WriteLine(id);
         }
     }
 }
