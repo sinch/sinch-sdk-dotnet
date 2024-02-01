@@ -1,6 +1,6 @@
 ﻿namespace Sinch.Verification.Start.Response
 {
-    public class FlashCallVerificationStartResponse : VerificationStartResponseBase, IVerificationStartResponse
+    public class StartFlashCallVerificationResponse : VerificationStartResponseBase, IStartVerificationResponse
     {
         /// <summary>
         ///     The response contains the cliFilter and interceptionTimeout properties.

@@ -46,10 +46,10 @@ namespace Sinch.Tests.Verification
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             };
-            var smsResponse = JsonSerializer.Deserialize<IVerificationStartResponse>(jData, _jsonSerializerOptions);
+            var smsResponse = JsonSerializer.Deserialize<IStartVerificationResponse>(jData, _jsonSerializerOptions);
 
-            smsResponse.Should().BeOfType<SmsVerificationStartResponse>().Which.Should().BeEquivalentTo(
-                new SmsVerificationStartResponse()
+            smsResponse.Should().BeOfType<StartSmsVerificationResponse>().Which.Should().BeEquivalentTo(
+                new StartSmsVerificationResponse()
                 {
                     Id = "1234567890",
                     Method = VerificationMethodEx.Sms,
