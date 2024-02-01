@@ -23,9 +23,8 @@ namespace Sinch.Tests.Conversation
         private readonly SendMessageRequest _baseRequest = new SendMessageRequest
         {
             AppId = "123",
-            Message = new AppMessage()
+            Message = new AppMessage(new TextMessage("I'm a texter"))
             {
-                Message = new TextMessage("I'm a texter"),
                 ExplicitChannelMessage = null,
                 AdditionalProperties = null
             },
@@ -58,7 +57,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public async Task SendText()
         {
-            _baseMessageExpected.message.message = new
+            _baseMessageExpected.message.text_message = new
             {
                 text = "I'm a texter"
             };
@@ -78,7 +77,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public async Task SendLocation()
         {
-            _baseMessageExpected.message.message = new
+            _baseMessageExpected.message.location_message = new
             {
                 label = "label",
                 title = "title",
@@ -88,15 +87,12 @@ namespace Sinch.Tests.Conversation
                     longitude = 4.20f,
                 }
             };
-            _baseRequest.Message = new AppMessage()
+            _baseRequest.Message = new AppMessage(new LocationMessage
             {
-                Message = new LocationMessage
-                {
-                    Coordinates = new Coordinates(3.18f, 4.20f),
-                    Label = "label",
-                    Title = "title"
-                }
-            };
+                Coordinates = new Coordinates(3.18f, 4.20f),
+                Label = "label",
+                Title = "title"
+            });
 
             HttpMessageHandlerMock
                 .When(HttpMethod.Post,
@@ -113,7 +109,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public async Task SendCarousel()
         {
-            _baseMessageExpected.message.message = new
+            _baseMessageExpected.message.carousel_message = new
             {
                 cards = new[]
                 {
@@ -151,40 +147,37 @@ namespace Sinch.Tests.Conversation
                     }
                 }
             };
-            _baseRequest.Message = new AppMessage()
+            _baseRequest.Message = new AppMessage(new CarouselMessage()
             {
-                Message = new CarouselMessage()
+                Cards = new List<CardMessage>()
                 {
-                    Cards = new List<CardMessage>()
+                    new()
                     {
-                        new()
+                        Description = "card description",
+                        Title = "Title Card",
+                        Height = CardHeight.Tall,
+                        MediaMessage = new MediaCarouselMessage()
                         {
-                            Description = "card description",
-                            Title = "Title Card",
-                            Height = CardHeight.Tall,
-                            MediaMessage = new MediaCarouselMessage()
+                            Caption = "cap",
+                            Url = new Uri("https://localmob"),
+                        },
+                        Choices = new List<Choice>
+                        {
+                            new Choice
                             {
-                                Caption = "cap",
-                                Url = new Uri("https://localmob"),
-                            },
-                            Choices = new List<Choice>
-                            {
-                                new Choice
-                                {
-                                    CallMessage = new("123", "Jhon"),
-                                }
+                                CallMessage = new("123", "Jhon"),
                             }
                         }
-                    },
-                    Choices = new List<Choice>()
+                    }
+                },
+                Choices = new List<Choice>()
+                {
+                    new Choice()
                     {
-                        new Choice()
-                        {
-                            TextMessage = new TextMessage("123")
-                        }
+                        TextMessage = new TextMessage("123")
                     }
                 }
-            };
+            });
             HttpMessageHandlerMock
                 .When(HttpMethod.Post,
                     _sendUrl)
@@ -199,7 +192,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public async Task SendChoice()
         {
-            _baseMessageExpected.message.message = new
+            _baseMessageExpected.message.choice_message = new
             {
                 choices = new[]
                 {
@@ -217,21 +210,18 @@ namespace Sinch.Tests.Conversation
                     text = "123",
                 }
             };
-            _baseRequest.Message = new AppMessage()
+            _baseRequest.Message = new AppMessage(new ChoiceMessage()
             {
-                Message = new ChoiceMessage()
+                Choices = new List<Choice>()
                 {
-                    Choices = new List<Choice>()
+                    new Choice()
                     {
-                        new Choice()
-                        {
-                            TextMessage = new TextMessage("123"),
-                            PostbackData = "postback"
-                        }
-                    },
-                    TextMessage = new TextMessage("123")
-                }
-            };
+                        TextMessage = new TextMessage("123"),
+                        PostbackData = "postback"
+                    }
+                },
+                TextMessage = new TextMessage("123")
+            });
             HttpMessageHandlerMock
                 .When(HttpMethod.Post,
                     _sendUrl)
@@ -246,19 +236,16 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public async Task SendMedia()
         {
-            _baseMessageExpected.message.message = new
+            _baseMessageExpected.message.media_message = new
             {
                 url = "http://yup/ls",
                 thumbnail_url = "https://img.c",
             };
-            _baseRequest.Message = new AppMessage()
+            _baseRequest.Message = new AppMessage(new MediaMessage
             {
-                Message = new MediaMessage
-                {
-                    Url = new Uri("http://yup/ls"),
-                    ThumbnailUrl = new Uri("https://img.c")
-                }
-            };
+                Url = new Uri("http://yup/ls"),
+                ThumbnailUrl = new Uri("https://img.c")
+            });
             HttpMessageHandlerMock
                 .When(HttpMethod.Post,
                     _sendUrl)
@@ -273,7 +260,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public async Task SendTemplate()
         {
-            _baseMessageExpected.message.message = new
+            _baseMessageExpected.message.template_message = new
             {
                 omni_template = new
                 {
@@ -299,37 +286,34 @@ namespace Sinch.Tests.Conversation
                     }
                 }
             };
-            _baseRequest.Message = new AppMessage()
+            _baseRequest.Message = new AppMessage(new TemplateMessage()
             {
-                Message = new TemplateMessage()
+                OmniTemplate = new TemplateReference
                 {
-                    OmniTemplate = new TemplateReference
+                    LanguageCode = "es",
+                    Parameters = new Dictionary<string, string>()
                     {
-                        LanguageCode = "es",
-                        Parameters = new Dictionary<string, string>()
-                        {
-                            { "key", "val" }
-                        },
-                        TemplateId = "tempid",
-                        Version = "1.0"
+                        { "key", "val" }
                     },
-                    ChannelTemplate = new Dictionary<string, TemplateReference>()
+                    TemplateId = "tempid",
+                    Version = "1.0"
+                },
+                ChannelTemplate = new Dictionary<string, TemplateReference>()
+                {
                     {
+                        "test", new TemplateReference
                         {
-                            "test", new TemplateReference
+                            TemplateId = "abc",
+                            Version = "305",
+                            Parameters = new Dictionary<string, string>()
                             {
-                                TemplateId = "abc",
-                                Version = "305",
-                                Parameters = new Dictionary<string, string>()
-                                {
-                                    { "tarnished", "order" }
-                                },
-                                LanguageCode = "de"
-                            }
+                                { "tarnished", "order" }
+                            },
+                            LanguageCode = "de"
                         }
                     }
                 }
-            };
+            });
             HttpMessageHandlerMock
                 .When(HttpMethod.Post,
                     _sendUrl)
@@ -344,7 +328,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public async Task SendList()
         {
-            _baseMessageExpected.message.message = new
+            _baseMessageExpected.message.list_message = new
             {
                 title = "list_title",
                 description = "description",
@@ -383,48 +367,45 @@ namespace Sinch.Tests.Conversation
                     }
                 }
             };
-            _baseRequest.Message = new AppMessage()
+            _baseRequest.Message = new AppMessage(new ListMessage
             {
-                Message = new ListMessage
+                Title = "list_title",
+                Description = "description",
+                Sections = new List<ListSection>()
                 {
-                    Title = "list_title",
-                    Description = "description",
-                    Sections = new List<ListSection>()
+                    new ListSection()
                     {
-                        new ListSection()
+                        Title = "item1",
+                        Items = new List<IListItem>()
                         {
-                            Title = "item1",
-                            Items = new List<IListItem>()
+                            new ListItemChoice()
                             {
-                                new ListItemChoice()
+                                Title = "listitemchoice",
+                                PostbackData = "postno",
+                                Description = "desc",
+                                Media = new MediaMessage()
                                 {
-                                    Title = "listitemchoice",
-                                    PostbackData = "postno",
-                                    Description = "desc",
-                                    Media = new MediaMessage()
-                                    {
-                                        Url = new Uri("https://nolocalhost"),
-                                        ThumbnailUrl = new Uri("https://knowyourmeme.com/photos/377946")
-                                    }
-                                },
-                                new ListItemProduct
-                                {
-                                    Id = "prod_id",
-                                    Marketplace = "amazon",
-                                    Currency = "eur",
-                                    Quantity = 20,
-                                    ItemPrice = 12.1000004f,
+                                    Url = new Uri("https://nolocalhost"),
+                                    ThumbnailUrl = new Uri("https://knowyourmeme.com/photos/377946")
                                 }
+                            },
+                            new ListItemProduct
+                            {
+                                Id = "prod_id",
+                                Marketplace = "amazon",
+                                Currency = "eur",
+                                Quantity = 20,
+                                ItemPrice = 12.1000004f,
                             }
                         }
-                    },
-                    MessageProperties = new ListMessageMessageProperties()
-                    {
-                        Menu = "omenu",
-                        CatalogId = "id1"
                     }
+                },
+                MessageProperties = new ListMessageMessageProperties()
+                {
+                    Menu = "omenu",
+                    CatalogId = "id1"
                 }
-            };
+            });
             HttpMessageHandlerMock
                 .When(HttpMethod.Post,
                     _sendUrl)
@@ -439,7 +420,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public async Task SendAllParams()
         {
-            _baseMessageExpected.message.message = new
+            _baseMessageExpected.message.text_message = new
             {
                 text = "I'm a texter"
             };

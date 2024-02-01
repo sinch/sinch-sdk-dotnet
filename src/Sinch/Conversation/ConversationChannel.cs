@@ -73,5 +73,10 @@ namespace Sinch.Conversation
         ///     WeChat channel.
         /// </summary>
         public static readonly ConversationChannel WeChat = new("WECHAT");
+        
+        /// <summary>
+        ///     Channel has not been specified
+        /// </summary>
+        public static readonly ConversationChannel Unspecified = new("CHANNEL_UNSPECIFIED");
     }
 }

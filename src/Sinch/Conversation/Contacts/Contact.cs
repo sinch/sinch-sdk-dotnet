@@ -6,13 +6,8 @@ using Sinch.Core;
 
 namespace Sinch.Conversation.Contacts
 {
-    public sealed class Contact
+    public sealed class Contact : PropertyMaskQuery
     {
-        /// <summary>
-        ///     Tracks the fields which where initialized. 
-        /// </summary>
-        private readonly ISet<string> _setFields = new HashSet<string>();
-
         private List<ChannelIdentity> _channelIdentities;
         private List<ConversationChannel> _channelPriority;
         private string _displayName;
@@ -30,7 +25,7 @@ namespace Sinch.Conversation.Contacts
             get => _channelIdentities;
             set
             {
-                _setFields.Add(nameof(ChannelIdentities));
+                SetFields.Add(nameof(ChannelIdentities));
                 _channelIdentities = value;
             }
         }
@@ -44,7 +39,7 @@ namespace Sinch.Conversation.Contacts
             get => _channelPriority;
             set
             {
-                _setFields.Add(nameof(ChannelPriority));
+                SetFields.Add(nameof(ChannelPriority));
                 _channelPriority = value;
             }
         }
@@ -58,7 +53,7 @@ namespace Sinch.Conversation.Contacts
             get => _displayName;
             set
             {
-                _setFields.Add(nameof(DisplayName));
+                SetFields.Add(nameof(DisplayName));
                 _displayName = value;
             }
         }
@@ -72,7 +67,7 @@ namespace Sinch.Conversation.Contacts
             get => _email;
             set
             {
-                _setFields.Add(nameof(Email));
+                SetFields.Add(nameof(Email));
                 _email = value;
             }
         }
@@ -86,7 +81,7 @@ namespace Sinch.Conversation.Contacts
             get => _externalId;
             set
             {
-                _setFields.Add(nameof(ExternalId));
+                SetFields.Add(nameof(ExternalId));
                 _externalId = value;
             }
         }
@@ -100,7 +95,7 @@ namespace Sinch.Conversation.Contacts
             get => _id;
             set
             {
-                _setFields.Add(nameof(Id));
+                SetFields.Add(nameof(Id));
                 _id = value;
             }
         }
@@ -114,7 +109,7 @@ namespace Sinch.Conversation.Contacts
             get => _language;
             set
             {
-                _setFields.Add(nameof(Language));
+                SetFields.Add(nameof(Language));
                 _language = value;
             }
         }
@@ -128,20 +123,12 @@ namespace Sinch.Conversation.Contacts
             get => _metadata;
             set
             {
-                _setFields.Add(nameof(Metadata));
+                SetFields.Add(nameof(Metadata));
                 _metadata = value;
             }
         }
 
-        /// <summary>
-        ///     Get the comma separated snake_case list of properties which were directly initialized in this object.
-        ///     If, for example, DisplayName and Metadata were set, will return <example>display_name,metadata</example>
-        /// </summary>
-        /// <returns></returns>
-        internal string GetPropertiesMask()
-        {
-            return string.Join(',', _setFields.Select(StringUtils.ToSnakeCase));
-        }
+
 
         /// <summary>
         ///     Returns the string presentation of the object

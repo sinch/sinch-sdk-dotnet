@@ -182,7 +182,7 @@ namespace Sinch
             Sms = new Sms(projectId, GetSmsBaseAddress(optionsObj.SmsHostingRegion, _apiUrlOverrides?.SmsUrl),
                 _loggerFactory,
                 httpSnakeCase);
-            Conversation = new Conversation.Conversation(projectId,
+            Conversation = new Conversation.SinchConversationClient(projectId,
                 new Uri(_apiUrlOverrides?.ConversationUrl ??
                         string.Format(ConversationApiUrlTemplate, optionsObj.ConversationRegion.Value)),
                 _loggerFactory, httpSnakeCase);

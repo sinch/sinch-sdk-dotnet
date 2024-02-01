@@ -7,7 +7,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     TemplateMessage
     /// </summary>
-    public sealed class TemplateMessage : IMessage
+    public sealed class TemplateMessage 
     {
         /// <summary>
         ///     Optional. Channel specific template reference with parameters per channel.

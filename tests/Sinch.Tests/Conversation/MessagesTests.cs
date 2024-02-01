@@ -31,43 +31,42 @@ namespace Sinch.Tests.Conversation
             var response = await Conversation.Messages.Get(messageId, MessageSource.ConversationSource);
 
             response.Should().NotBeNull();
-            response.AppMessage.Message.Should().BeOfType<ListMessage>()
-                .Which.Should().BeEquivalentTo(new ListMessage
+            response.AppMessage.ListMessage.Should().BeEquivalentTo(new ListMessage
+            {
+                Title = "title",
+                Sections = new List<ListSection>()
                 {
-                    Title = "title",
-                    Sections = new List<ListSection>()
+                    new ListSection()
                     {
-                        new ListSection()
+                        Title = "sec1",
+                        Items = new List<IListItem>()
                         {
-                            Title = "sec1",
-                            Items = new List<IListItem>()
+                            new ListItemChoice()
                             {
-                                new ListItemChoice()
+                                Title = "title",
+                                Description = "desc",
+                                Media = new MediaMessage()
                                 {
-                                    Title = "title",
-                                    Description = "desc",
-                                    Media = new MediaMessage()
-                                    {
-                                        Url = new Uri("http://localhost")
-                                    },
-                                    PostbackData = "postback"
-                                }
+                                    Url = new Uri("http://localhost")
+                                },
+                                PostbackData = "postback"
                             }
-                        },
-                        new ListSection()
+                        }
+                    },
+                    new ListSection()
+                    {
+                        Title = "sec2",
+                        Items = new List<IListItem>()
                         {
-                            Title = "sec2",
-                            Items = new List<IListItem>()
+                            new ListItemProduct()
                             {
-                                new ListItemProduct()
-                                {
-                                    Id = "id",
-                                    Marketplace = "amazon"
-                                }
+                                Id = "id",
+                                Marketplace = "amazon"
                             }
                         }
                     }
-                });
+                }
+            });
             response.Direction.Should().Be(ConversationDirection.UndefinedDirection);
             response.ContactMessage.ReplyTo.MessageId.Should().Be("string");
             response.ChannelIdentity.Should().BeEquivalentTo(new ChannelIdentity()
@@ -193,7 +192,7 @@ namespace Sinch.Tests.Conversation
                 accept_time = "2019-08-24T14:15:22Z",
                 app_message = new
                 {
-                    message = new
+                    list_message = new
                     {
                         title = "title",
                         sections = new dynamic[]
