@@ -14,6 +14,8 @@
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageTags>sinch,sms,numbers,verification,messaging,voice</PackageTags>
         <RepositoryType>git</RepositoryType>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
