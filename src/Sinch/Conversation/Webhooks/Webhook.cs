@@ -1,75 +1,133 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using System.Text.Json.Serialization;
+using Sinch.Core;
 
 namespace Sinch.Conversation.Webhooks
 {
     /// <summary>
     ///     Represents a destination for receiving callbacks from the Conversation API.
     /// </summary>
-    public class Webhook
+    public class Webhook : PropertyMaskQuery
     {
+        private WebhookTargetType _targetType;
+        private string _appId;
+        private ClientCredentials _clientCredentials;
+        private string _id;
+        private string _secret;
+        private string _target;
+        private List<WebhookTrigger> _triggers;
+
         /// <summary>
-        ///     Gets or Sets TargetType
+        ///     Gets or sets the target type.
         /// </summary>
-        public WebhookTargetType TargetType { get; set; }
+        public WebhookTargetType TargetType
+        {
+            get => _targetType;
+            set
+            {
+                SetFields.Add(nameof(TargetType));
+                _targetType = value;
+            }
+        }
 
         /// <summary>
         ///     The app that this webhook belongs to.
         /// </summary>
 #if NET7_0_OR_GREATER
-        public required string AppId { get; set; }
+        public required string AppId
 #else
-        public string AppId { get; set; }
+        public string AppId
 #endif
-
+        {
+            get => _appId;
+            set
+            {
+                SetFields.Add(nameof(AppId));
+                _appId = value;
+            }
+        }
 
         /// <summary>
-        ///     Gets or Sets ClientCredentials
+        ///     Gets or sets the client credentials.
         /// </summary>
-        public ClientCredentials ClientCredentials { get; set; }
-
+        public ClientCredentials ClientCredentials
+        {
+            get => _clientCredentials;
+            set
+            {
+                SetFields.Add(nameof(ClientCredentials));
+                _clientCredentials = value;
+            }
+        }
 
         /// <summary>
-        ///     The ID of the webhook.
+        ///     Gets or sets the ID of the webhook.
         /// </summary>
-        [JsonIgnore]
-        public string Id { get; set; }
-
+        public string Id
+        {
+            get => _id;
+            set
+            {
+                SetFields.Add(nameof(Id));
+                _id = value;
+            }
+        }
 
         /// <summary>
-        ///     Optional secret be used to sign contents of webhooks sent by the Conversation API. You can then use the secret to
-        ///     verify the signature.
+        ///     Optional secret to be used to sign contents of webhooks sent by the Conversation API.
+        ///     You can then use the secret to verify the signature.
         /// </summary>
-        public string Secret { get; set; }
-
+        public string Secret
+        {
+            get => _secret;
+            set
+            {
+                SetFields.Add(nameof(Secret));
+                _secret = value;
+            }
+        }
 
         /// <summary>
-        ///     The target url where events should be sent to. Maximum URL length is 742. The conversation-api.*.sinch.com
-        ///     subdomains are forbidden.
+        ///     Gets or sets the target URL where events should be sent to.
+        ///     Maximum URL length is 742. The conversation-api.*.sinch.com subdomains are forbidden.
         /// </summary>
 #if NET7_0_OR_GREATER
-        public required string Target { get; set; }
+    public required string Target
 #else
-        public string Target { get; set; }
+        public string Target
 #endif
-
+        {
+            get => _target;
+            set
+            {
+                SetFields.Add(nameof(Target));
+                _target = value;
+            }
+        }
 
         /// <summary>
-        ///     An array of triggers that should trigger the webhook and result in an event being sent to the target url. Refer to
-        ///     the list of [Webhook Triggers](/docs/conversation/callbacks#webhook-triggers) for a complete list.
+        ///     An array of triggers that should trigger the webhook and result in an event being sent to the target URL.
+        ///     Refer to the list of [Webhook Triggers](https://developers.sinch.com/docs/conversation/callbacks#webhook-triggers)
+        ///     for a complete list.
         /// </summary>
 #if NET7_0_OR_GREATER
-        public required List<WebhookTrigger> Triggers { get; set; }
+        public required List<WebhookTrigger> Triggers
 #else
-        public List<WebhookTrigger> Triggers { get; set; }
+        public List<WebhookTrigger> Triggers
 #endif
-
+        {
+            get => _triggers;
+            set
+            {
+                SetFields.Add(nameof(Triggers));
+                _triggers = value;
+            }
+        }
 
         /// <summary>
-        ///     Returns the string presentation of the object
+        ///     Returns the string presentation of the object.
         /// </summary>
-        /// <returns>String presentation of the object</returns>
+        /// <returns>String presentation of the object.</returns>
         public override string ToString()
         {
             var sb = new StringBuilder();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using Sinch.Core;
 using Sinch.Logger;
 
@@ -121,10 +122,19 @@ namespace Sinch.Conversation.Webhooks
             }
             
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{webhook.Id}");
+            
+            var builder = new UriBuilder(uri);
+            var queryString = HttpUtility.ParseQueryString(string.Empty);
+            var propMask = webhook.GetPropertiesMask();
+            if (!string.IsNullOrEmpty(propMask)) queryString.Add("update_mask", propMask);
+            builder.Query = queryString?.ToString()!;
+            
             _logger?.LogDebug("Updating a webhook with {id}...", webhook.Id);
-            return _http.Send<Webhook>(uri, HttpMethod.Patch,
+            return _http.Send<Webhook, Webhook>(builder.Uri, HttpMethod.Patch, webhook,
                 cancellationToken);
         }
+        
+        
 
         /// <inheritdoc />
         public Task Delete(string webhookId, CancellationToken cancellationToken = default)
@@ -140,10 +150,9 @@ namespace Sinch.Conversation.Webhooks
         }
     }
 
-    // ReSharper disable once ClassNeverInstantiated.Local
     internal class ListWebhooksResponse
     {
-        // ReSharper disable once CollectionNeverUpdated.Local
+        // ReSharper disable once CollectionNeverUpdated.Global
         public List<Webhook> Webhooks { get; set; }
     }
 }
