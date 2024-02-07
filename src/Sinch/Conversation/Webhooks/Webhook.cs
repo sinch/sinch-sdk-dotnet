@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Webhooks
 {
@@ -32,7 +33,8 @@ namespace Sinch.Conversation.Webhooks
         /// <summary>
         ///     The ID of the webhook.
         /// </summary>
-        public string Id { get; }
+        [JsonIgnore]
+        public string Id { get; set; }
 
 
         /// <summary>
