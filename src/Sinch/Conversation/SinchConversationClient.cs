@@ -34,7 +34,8 @@ namespace Sinch.Conversation
     {
         internal SinchConversationClient(string projectId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
         {
-            Messages = new Messages.Messages(projectId, baseAddress, loggerFactory?.Create<Messages.Messages>(),
+            Messages = new Messages.Messages(projectId, baseAddress,
+                loggerFactory?.Create<ISinchConversationMessages>(),
                 http);
             Apps = new Apps.Apps(projectId, baseAddress, loggerFactory?.Create<Apps.Apps>(), http);
             Contacts = new Contacts.Contacts(projectId, baseAddress,
