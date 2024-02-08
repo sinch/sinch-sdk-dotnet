@@ -48,7 +48,6 @@ namespace Sinch.Conversation.Webhooks
             var sb = new StringBuilder();
             sb.Append("class ClientCredentials {\n");
             sb.Append("  ClientId: ").Append(ClientId).Append("\n");
-            sb.Append("  ClientSecret: ").Append(ClientSecret).Append("\n");
             sb.Append("  Endpoint: ").Append(Endpoint).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
