@@ -135,7 +135,6 @@ namespace Sinch.Conversation.Webhooks
             sb.Append("  AppId: ").Append(AppId).Append("\n");
             sb.Append("  ClientCredentials: ").Append(ClientCredentials).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
-            sb.Append("  Secret: ").Append(Secret).Append("\n");
             sb.Append("  Target: ").Append(Target).Append("\n");
             sb.Append("  TargetType: ").Append(TargetType).Append("\n");
             sb.Append("  Triggers: ").Append(Triggers).Append("\n");
