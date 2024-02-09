@@ -49,22 +49,22 @@ namespace Sinch.Verification.Report.Response
             var method = descriptor.Value.GetString();
             if (method == VerificationMethod.Sms.Value)
             {
-                return (SmsVerificationReportResponse)elem.Deserialize(
-                    typeof(SmsVerificationReportResponse),
+                return (ReportSmsVerificationResponse)elem.Deserialize(
+                    typeof(ReportSmsVerificationResponse),
                     options);
             }
 
             if (method == VerificationMethod.Callout.Value)
             {
-                return (PhoneCallVerificationReportResponse)elem.Deserialize(
-                    typeof(PhoneCallVerificationReportResponse),
+                return (ReportPhoneCallVerificationResponse)elem.Deserialize(
+                    typeof(ReportPhoneCallVerificationResponse),
                     options);
             }
 
             if (method == VerificationMethod.FlashCall.Value)
             {
-                return (FlashCallVerificationReportResponse)elem.Deserialize(
-                    typeof(FlashCallVerificationReportResponse), options);
+                return (ReportFlashCallVerificationResponse)elem.Deserialize(
+                    typeof(ReportFlashCallVerificationResponse), options);
             }
 
             throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
@@ -75,15 +75,15 @@ namespace Sinch.Verification.Report.Response
         {
             switch (value)
             {
-                case FlashCallVerificationReportResponse flashCallVerificationReportResponse:
+                case ReportFlashCallVerificationResponse flashCallVerificationReportResponse:
                     JsonSerializer.Serialize(
                         writer, flashCallVerificationReportResponse, options);
                     break;
-                case PhoneCallVerificationReportResponse phoneCallVerificationReportResponse:
+                case ReportPhoneCallVerificationResponse phoneCallVerificationReportResponse:
                     JsonSerializer.Serialize(
                         writer, phoneCallVerificationReportResponse, options);
                     break;
-                case SmsVerificationReportResponse smsVerificationReportResponse:
+                case ReportSmsVerificationResponse smsVerificationReportResponse:
                     JsonSerializer.Serialize(
                         writer, smsVerificationReportResponse, options);
                     break;
