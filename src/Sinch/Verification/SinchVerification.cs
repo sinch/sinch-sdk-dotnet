@@ -66,14 +66,12 @@ namespace Sinch.Verification
         /// <summary>
         ///     Report the received verification code to verify it,
         ///     using the identity of the user (in most cases, the phone number).
-        ///     For an SMS PIN verification or Phone Call verification, this is the OTP code.
-        ///     For flashcalls, this is the CLI.
         /// </summary>
         /// <param name="endpoint">For type number use a E.164-compatible phone number.</param>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IVerificationReportResponse> ReportIdentity(string endpoint, VerifyReportRequest request,
+        Task<SmsVerificationReportResponse> ReportSmsIdentity(string endpoint, SmsVerificationReportRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -84,18 +82,7 @@ namespace Sinch.Verification
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<SmsVerificationReportResponse> ReportIdentitySms(string endpoint, SmsVerificationReportRequest request,
-            CancellationToken cancellationToken = default);
-
-        /// <summary>
-        ///     Report the received verification code to verify it,
-        ///     using the identity of the user (in most cases, the phone number).
-        /// </summary>
-        /// <param name="endpoint">For type number use a E.164-compatible phone number.</param>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<FlashCallVerificationReportResponse> ReportIdentityFlashCall(string endpoint,
+        Task<FlashCallVerificationReportResponse> ReportFlashCallIdentity(string endpoint,
             FlashCallVerificationReportRequest request,
             CancellationToken cancellationToken = default);
 
@@ -107,18 +94,8 @@ namespace Sinch.Verification
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<PhoneCallVerificationReportResponse> ReportIdentityPhoneCall(string endpoint,
+        Task<PhoneCallVerificationReportResponse> ReportPhoneCallIdentity(string endpoint,
             PhoneCallVerificationReportRequest request,
-            CancellationToken cancellationToken = default);
-
-        /// <summary>
-        ///     Report the received verification code to verify it, using the Verification ID of the Verification request.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<IVerificationReportResponse> ReportId(string id, VerifyReportRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -237,7 +214,7 @@ namespace Sinch.Verification
         }
 
 
-        public Task<IVerificationReportResponse> ReportIdentity(string endpoint, VerifyReportRequest request,
+        private Task<IVerificationReportResponse> ReportIdentity(string endpoint, VerifyReportRequest request,
             CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"verification/v1/verifications/number/{endpoint}");
@@ -246,28 +223,28 @@ namespace Sinch.Verification
             return Report(request, uri, cancellationToken);
         }
 
-        public async Task<SmsVerificationReportResponse> ReportIdentitySms(string endpoint, SmsVerificationReportRequest request,
+        public async Task<SmsVerificationReportResponse> ReportSmsIdentity(string endpoint, SmsVerificationReportRequest request,
             CancellationToken cancellationToken = default)
         {
             var result = await ReportIdentity(endpoint, request, cancellationToken);
             return result as SmsVerificationReportResponse;
         }
 
-        public async Task<FlashCallVerificationReportResponse> ReportIdentityFlashCall(string endpoint, FlashCallVerificationReportRequest request,
+        public async Task<FlashCallVerificationReportResponse> ReportFlashCallIdentity(string endpoint, FlashCallVerificationReportRequest request,
             CancellationToken cancellationToken = default)
         {
             var result = await ReportIdentity(endpoint, request, cancellationToken);
             return result as FlashCallVerificationReportResponse;
         }
 
-        public async Task<PhoneCallVerificationReportResponse> ReportIdentityPhoneCall(string endpoint, PhoneCallVerificationReportRequest request,
+        public async Task<PhoneCallVerificationReportResponse> ReportPhoneCallIdentity(string endpoint, PhoneCallVerificationReportRequest request,
             CancellationToken cancellationToken = default)
         {
             var result = await ReportIdentity(endpoint, request, cancellationToken);
             return result as PhoneCallVerificationReportResponse;
         }
 
-        public Task<IVerificationReportResponse> ReportId(string id, VerifyReportRequest request,
+        private Task<IVerificationReportResponse> ReportId(string id, VerifyReportRequest request,
             CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Reporting the the code with id...");

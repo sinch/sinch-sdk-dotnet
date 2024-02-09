@@ -12,7 +12,7 @@ namespace Sinch.Tests.e2e.Verification
         [Fact]
         public async Task ReportSmsByIdentity()
         {
-            var response = await VerificationClient.Verification.ReportIdentity("+48123123",
+            var response = await VerificationClient.Verification.ReportSmsIdentity("+48123123",
                 new SmsVerificationReportRequest()
                 {
                     Sms = new SmsVerify()
@@ -45,7 +45,7 @@ namespace Sinch.Tests.e2e.Verification
         [Fact]
         public async Task ReportFlashCallByIdentity()
         {
-            var response = await VerificationClient.Verification.ReportIdentity("+48123123",
+            var response = await VerificationClient.Verification.ReportFlashCallIdentity("+48123123",
                 new FlashCallVerificationReportRequest()
                 {
                     FlashCall = new FlashCall()
@@ -80,7 +80,7 @@ namespace Sinch.Tests.e2e.Verification
         [Fact]
         public async Task ReportPhoneCallByIdentity()
         {
-            var response = await VerificationClient.Verification.ReportIdentity("+48123123",
+            var response = await VerificationClient.Verification.ReportPhoneCallIdentity("+48123123",
                 new PhoneCallVerificationReportRequest
                 {
                     Callout = new Callout()
@@ -117,7 +117,7 @@ namespace Sinch.Tests.e2e.Verification
         [Fact]
         public async Task ReportSmsById()
         {
-            var response = await VerificationClient.Verification.ReportId("123",
+            var response = await VerificationClient.Verification.ReportSmsIdentity("123",
                 new SmsVerificationReportRequest()
                 {
                     Sms = new SmsVerify()
