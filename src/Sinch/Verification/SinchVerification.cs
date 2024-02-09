@@ -85,6 +85,38 @@ namespace Sinch.Verification
         /// <returns></returns>
         Task<IVerificationReportResponse> ReportId(string id, VerifyReportRequest request,
             CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Report the received verification code to verify it, using the Verification ID of the Verification request.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<SmsVerificationReportResponse> ReportSmsId(string id, SmsVerificationReportRequest request,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Report the received verification code to verify it, using the Verification ID of the Verification request.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<FlashCallVerificationReportResponse> ReportFlashCallId(string id,
+            FlashCallVerificationReportRequest request,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Report the received verification code to verify it, using the Verification ID of the Verification request.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<PhoneCallVerificationReportResponse> ReportPhoneCallId(string id,
+            PhoneCallVerificationReportRequest request,
+            CancellationToken cancellationToken = default);
     }
 
     internal class SinchVerification : ISinchVerification
@@ -195,6 +227,31 @@ namespace Sinch.Verification
             var uri = new Uri(_baseAddress, $"verification/v1/verifications/id/{id}");
 
             return Report(request, uri, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public async Task<SmsVerificationReportResponse> ReportSmsId(string id, SmsVerificationReportRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var result = await ReportId(id, request, cancellationToken);
+            return result as SmsVerificationReportResponse;
+        }
+
+        /// <inheritdoc />
+        public async Task<FlashCallVerificationReportResponse> ReportFlashCallId(string id,
+            FlashCallVerificationReportRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var result = await ReportId(id, request, cancellationToken);
+            return result as FlashCallVerificationReportResponse;
+        }
+
+        /// <inheritdoc />
+        public async Task<PhoneCallVerificationReportResponse> ReportPhoneCallId(string id, PhoneCallVerificationReportRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var result = await ReportId(id, request, cancellationToken);
+            return result as PhoneCallVerificationReportResponse;
         }
 
         private Task<IVerificationReportResponse> Report(VerifyReportRequest request,
