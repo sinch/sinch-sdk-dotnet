@@ -115,14 +115,14 @@ namespace Sinch.Tests.e2e.Verification
                 Identity = _identity,
                 Method = VerificationMethodEx.Callout
             };
-            var startPhoneCallVerificationResponse = new StartPhoneCallVerificationResponse
+            var startPhoneCallVerificationResponse = new StartCalloutVerificationResponse
             {
                 Id = _id,
                 Method = VerificationMethodEx.Callout,
                 Links = _links
             };
 
-            var response = await VerificationClient.Verification.StartPhoneCall(new StartPhoneCallVerificationRequest
+            var response = await VerificationClient.Verification.StartCallout(new StartCalloutVerificationRequest
             {
                 Identity = startVerificationRequest.Identity,
                 Reference = startVerificationRequest.Reference,

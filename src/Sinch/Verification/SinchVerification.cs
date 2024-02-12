@@ -50,7 +50,7 @@ namespace Sinch.Verification
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<StartPhoneCallVerificationResponse> StartPhoneCall(StartPhoneCallVerificationRequest request,
+        Task<StartCalloutVerificationResponse> StartCallout(StartCalloutVerificationRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -94,8 +94,8 @@ namespace Sinch.Verification
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ReportPhoneCallVerificationResponse> ReportPhoneCallByIdentity(string endpoint,
-            ReportPhoneCallVerificationRequest request,
+        Task<ReportCalloutVerificationResponse> ReportCalloutByIdentity(string endpoint,
+            ReportCalloutVerificationRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -126,8 +126,8 @@ namespace Sinch.Verification
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ReportPhoneCallVerificationResponse> ReportPhoneCallById(string id,
-            ReportPhoneCallVerificationRequest request,
+        Task<ReportCalloutVerificationResponse> ReportCalloutById(string id,
+            ReportCalloutVerificationRequest request,
             CancellationToken cancellationToken = default);
     }
 
@@ -186,7 +186,7 @@ namespace Sinch.Verification
         }
 
         /// <inheritdoc />
-        public async Task<StartPhoneCallVerificationResponse> StartPhoneCall(StartPhoneCallVerificationRequest request,
+        public async Task<StartCalloutVerificationResponse> StartCallout(StartCalloutVerificationRequest request,
             CancellationToken cancellationToken = default)
         {
             var result = await Start(new StartVerificationRequest
@@ -196,7 +196,7 @@ namespace Sinch.Verification
                 Method = request.Method,
                 Reference = request.Reference
             }, cancellationToken);
-            return result as StartPhoneCallVerificationResponse;
+            return result as StartCalloutVerificationResponse;
         }
 
         /// <inheritdoc />
@@ -239,12 +239,12 @@ namespace Sinch.Verification
             return result as ReportFlashCallVerificationResponse;
         }
 
-        public async Task<ReportPhoneCallVerificationResponse> ReportPhoneCallByIdentity(string endpoint,
-            ReportPhoneCallVerificationRequest request,
+        public async Task<ReportCalloutVerificationResponse> ReportCalloutByIdentity(string endpoint,
+            ReportCalloutVerificationRequest request,
             CancellationToken cancellationToken = default)
         {
             var result = await ReportIdentity(endpoint, request, cancellationToken);
-            return result as ReportPhoneCallVerificationResponse;
+            return result as ReportCalloutVerificationResponse;
         }
 
         private Task<IVerificationReportResponse> ReportId(string id, VerifyReportRequest request,
@@ -274,12 +274,12 @@ namespace Sinch.Verification
         }
 
         /// <inheritdoc />
-        public async Task<ReportPhoneCallVerificationResponse> ReportPhoneCallById(string id,
-            ReportPhoneCallVerificationRequest request,
+        public async Task<ReportCalloutVerificationResponse> ReportCalloutById(string id,
+            ReportCalloutVerificationRequest request,
             CancellationToken cancellationToken = default)
         {
             var result = await ReportId(id, request, cancellationToken);
-            return result as ReportPhoneCallVerificationResponse;
+            return result as ReportCalloutVerificationResponse;
         }
 
         private Task<IStartVerificationResponse> Start(StartVerificationRequest request,
@@ -305,8 +305,8 @@ namespace Sinch.Verification
                         uri, HttpMethod.Put,
                         smsVerificationRequest,
                         cancellationToken),
-                ReportPhoneCallVerificationRequest phoneRequest => _http
-                    .Send<ReportPhoneCallVerificationRequest, IVerificationReportResponse>(uri, HttpMethod.Put,
+                ReportCalloutVerificationRequest phoneRequest => _http
+                    .Send<ReportCalloutVerificationRequest, IVerificationReportResponse>(uri, HttpMethod.Put,
                         phoneRequest,
                         cancellationToken),
                 _ => throw new ArgumentOutOfRangeException(nameof(request))

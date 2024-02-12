@@ -59,7 +59,7 @@ namespace Sinch.Verification.Start.Response
                 return elem.Deserialize<StartFlashCallVerificationResponse>(options);
 
             if (VerificationMethodEx.Callout.Value == method)
-                return elem.Deserialize<StartPhoneCallVerificationResponse>(options);
+                return elem.Deserialize<StartCalloutVerificationResponse>(options);
 
             throw new JsonException(
                 $"Failed to match verification method object, got prop `{descriptor.Name}` with value `{method}`");
@@ -73,8 +73,8 @@ namespace Sinch.Verification.Start.Response
                 case StartFlashCallVerificationResponse startFlashCallVerificationResponse:
                     JsonSerializer.Serialize(writer, startFlashCallVerificationResponse, options);
                     break;
-                case StartPhoneCallVerificationResponse startPhoneCallVerificationResponse:
-                    JsonSerializer.Serialize(writer, startPhoneCallVerificationResponse, options);
+                case StartCalloutVerificationResponse startCalloutVerificationResponse:
+                    JsonSerializer.Serialize(writer, startCalloutVerificationResponse, options);
                     break;
                 case StartSmsVerificationResponse startSmsVerificationResponse:
                     JsonSerializer.Serialize(writer, startSmsVerificationResponse, options);

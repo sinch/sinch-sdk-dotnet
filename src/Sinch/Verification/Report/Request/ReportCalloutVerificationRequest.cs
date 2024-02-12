@@ -2,7 +2,7 @@
 
 namespace Sinch.Verification.Report.Request
 {
-    public class ReportPhoneCallVerificationRequest : VerifyReportRequest
+    public class ReportCalloutVerificationRequest : VerifyReportRequest
     {
         public override string Method { get; } = VerificationMethod.Callout.Value;
         

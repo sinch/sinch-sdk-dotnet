@@ -88,8 +88,8 @@ namespace Sinch.Tests.e2e.Verification
                 await VerificationClient.VerificationStatus.GetByIdentity("+49342432",
                     VerificationMethod.Callout);
 
-            response.Should().BeOfType<ReportPhoneCallVerificationResponse>().Which.Should().BeEquivalentTo(
-                new ReportPhoneCallVerificationResponse()
+            response.Should().BeOfType<ReportCalloutVerificationResponse>().Which.Should().BeEquivalentTo(
+                new ReportCalloutVerificationResponse()
                 {
                     Method = VerificationMethod.Callout,
                     Id = "_id",

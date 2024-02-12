@@ -80,8 +80,8 @@ namespace Sinch.Tests.e2e.Verification
         [Fact]
         public async Task ReportPhoneCallByIdentity()
         {
-            var response = await VerificationClient.Verification.ReportPhoneCallByIdentity("+48123123",
-                new ReportPhoneCallVerificationRequest
+            var response = await VerificationClient.Verification.ReportCalloutByIdentity("+48123123",
+                new ReportCalloutVerificationRequest
                 {
                     Callout = new Callout()
                     {
@@ -89,8 +89,8 @@ namespace Sinch.Tests.e2e.Verification
                     }
                 });
 
-            response.Should().BeOfType<ReportPhoneCallVerificationResponse>().Which.Should().BeEquivalentTo(
-                new ReportPhoneCallVerificationResponse()
+            response.Should().BeOfType<ReportCalloutVerificationResponse>().Which.Should().BeEquivalentTo(
+                new ReportCalloutVerificationResponse()
                 {
                     Method = VerificationMethod.Callout,
                     Id = "_id",

@@ -1,6 +1,6 @@
 ﻿namespace Sinch.Verification.Report.Response
 {
-    public class ReportPhoneCallVerificationResponse : VerificationReportResponseBase, IVerificationReportResponse
+    public class ReportCalloutVerificationResponse : VerificationReportResponseBase, IVerificationReportResponse
     {
         /// <summary>
         ///     Shows whether the call is complete or not.
