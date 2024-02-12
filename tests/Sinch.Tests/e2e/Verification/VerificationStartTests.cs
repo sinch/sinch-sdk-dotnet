@@ -108,18 +108,12 @@ namespace Sinch.Tests.e2e.Verification
         }
 
         [Fact]
-        public async Task StartPhoneCallVerification()
+        public async Task StartCalloutVerification()
         {
             var startVerificationRequest = new StartVerificationRequest
             {
                 Identity = _identity,
                 Method = VerificationMethodEx.Callout
-            };
-            var startPhoneCallVerificationResponse = new StartCalloutVerificationResponse
-            {
-                Id = _id,
-                Method = VerificationMethodEx.Callout,
-                Links = _links
             };
 
             var response = await VerificationClient.Verification.StartCallout(new StartCalloutVerificationRequest
@@ -128,7 +122,12 @@ namespace Sinch.Tests.e2e.Verification
                 Reference = startVerificationRequest.Reference,
                 Custom = startVerificationRequest.Custom
             });
-            response.Should().BeEquivalentTo(startPhoneCallVerificationResponse);
+            response.Should().BeEquivalentTo(new StartCalloutVerificationResponse
+            {
+                Id = _id,
+                Method = VerificationMethodEx.Callout,
+                Links = _links
+            });
         }
 
         [Fact]

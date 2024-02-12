@@ -78,7 +78,7 @@ namespace Sinch.Tests.e2e.Verification
         }
 
         [Fact]
-        public async Task ReportPhoneCallByIdentity()
+        public async Task ReportCalloutByIdentity()
         {
             var response = await VerificationClient.Verification.ReportCalloutByIdentity("+48123123",
                 new ReportCalloutVerificationRequest
