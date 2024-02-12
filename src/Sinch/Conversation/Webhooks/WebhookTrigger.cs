@@ -51,6 +51,5 @@ namespace Sinch.Conversation.Webhooks
         public static readonly WebhookTrigger ChannelEvent = new("CHANNEL_EVENT");
         public static readonly WebhookTrigger ConversationDelete = new("CONVERSATION_DELETE");
         public static readonly WebhookTrigger ContactIdentitiesDuplication = new("CONTACT_IDENTITIES_DUPLICATION");
-        public static readonly WebhookTrigger SmartConversations = new("SMART_CONVERSATIONS");
     }
 }
