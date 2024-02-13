@@ -78,10 +78,10 @@ namespace Sinch.Conversation.Messages
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<Messages> _logger;
+        private readonly ILoggerAdapter<ISinchConversationMessages> _logger;
         private readonly string _projectId;
 
-        public Messages(string projectId, Uri baseAddress, ILoggerAdapter<Messages> logger, IHttp http)
+        public Messages(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationMessages> logger, IHttp http)
         {
             _projectId = projectId;
             _baseAddress = baseAddress;
