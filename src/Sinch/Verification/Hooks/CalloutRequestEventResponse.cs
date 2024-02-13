@@ -2,7 +2,7 @@
 
 namespace Sinch.Verification.Hooks
 {
-    public class PhoneCallRequestEventResponse : RequestEventResponseBase
+    public class CalloutRequestEventResponse : RequestEventResponseBase
     {
         [JsonPropertyName("callout")]
         public Callout Callout { get; set; }

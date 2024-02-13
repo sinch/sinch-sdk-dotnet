@@ -12,8 +12,8 @@ namespace Sinch.Tests.e2e.Verification
         [Fact]
         public async Task ReportSmsByIdentity()
         {
-            var response = await VerificationClient.Verification.ReportIdentity("+48123123",
-                new SmsVerificationReportRequest()
+            var response = await VerificationClient.Verification.ReportSmsByIdentity("+48123123",
+                new ReportSmsVerificationRequest()
                 {
                     Sms = new SmsVerify()
                     {
@@ -22,8 +22,8 @@ namespace Sinch.Tests.e2e.Verification
                     }
                 });
 
-            response.Should().BeOfType<SmsVerificationReportResponse>().Which.Should().BeEquivalentTo(
-                new SmsVerificationReportResponse()
+            response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should().BeEquivalentTo(
+                new ReportSmsVerificationResponse()
                 {
                     Method = VerificationMethod.Sms,
                     Reference = "ref",
@@ -45,8 +45,8 @@ namespace Sinch.Tests.e2e.Verification
         [Fact]
         public async Task ReportFlashCallByIdentity()
         {
-            var response = await VerificationClient.Verification.ReportIdentity("+48123123",
-                new FlashCallVerificationReportRequest()
+            var response = await VerificationClient.Verification.ReportFlashCallByIdentity("+48123123",
+                new ReportFlashCallVerificationRequest()
                 {
                     FlashCall = new FlashCall()
                     {
@@ -54,8 +54,8 @@ namespace Sinch.Tests.e2e.Verification
                     },
                 });
 
-            response.Should().BeOfType<FlashCallVerificationReportResponse>().Which.Should().BeEquivalentTo(
-                new FlashCallVerificationReportResponse()
+            response.Should().BeOfType<ReportFlashCallVerificationResponse>().Which.Should().BeEquivalentTo(
+                new ReportFlashCallVerificationResponse()
                 {
                     Method = VerificationMethod.FlashCall,
                     Id = "_id",
@@ -78,10 +78,10 @@ namespace Sinch.Tests.e2e.Verification
         }
 
         [Fact]
-        public async Task ReportPhoneCallByIdentity()
+        public async Task ReportCalloutByIdentity()
         {
-            var response = await VerificationClient.Verification.ReportIdentity("+48123123",
-                new PhoneCallVerificationReportRequest
+            var response = await VerificationClient.Verification.ReportCalloutByIdentity("+48123123",
+                new ReportCalloutVerificationRequest
                 {
                     Callout = new Callout()
                     {
@@ -89,8 +89,8 @@ namespace Sinch.Tests.e2e.Verification
                     }
                 });
 
-            response.Should().BeOfType<PhoneCallVerificationReportResponse>().Which.Should().BeEquivalentTo(
-                new PhoneCallVerificationReportResponse()
+            response.Should().BeOfType<ReportCalloutVerificationResponse>().Which.Should().BeEquivalentTo(
+                new ReportCalloutVerificationResponse()
                 {
                     Method = VerificationMethod.Callout,
                     Id = "_id",
@@ -117,8 +117,8 @@ namespace Sinch.Tests.e2e.Verification
         [Fact]
         public async Task ReportSmsById()
         {
-            var response = await VerificationClient.Verification.ReportId("123",
-                new SmsVerificationReportRequest()
+            var response = await VerificationClient.Verification.ReportSmsById("123",
+                new ReportSmsVerificationRequest()
                 {
                     Sms = new SmsVerify()
                     {
@@ -126,8 +126,8 @@ namespace Sinch.Tests.e2e.Verification
                     }
                 });
 
-            response.Should().BeOfType<SmsVerificationReportResponse>().Which.Should().BeEquivalentTo(
-                new SmsVerificationReportResponse()
+            response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should().BeEquivalentTo(
+                new ReportSmsVerificationResponse()
                 {
                     Method = VerificationMethod.Sms,
                     Id = "_id",

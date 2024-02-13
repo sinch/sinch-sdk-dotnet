@@ -2,7 +2,7 @@
 
 namespace Sinch.Verification.Report.Request
 {
-    public class FlashCallVerificationReportRequest : VerifyReportRequest
+    public class ReportFlashCallVerificationRequest : VerifyReportRequest
     {
         /// <inheritdoc />
         public override string Method { get; } = VerificationMethod.FlashCall.Value;
