@@ -42,7 +42,14 @@ namespace Sinch.Tests.e2e.Verification
                     Type = IdentityType.Number
                 }
             };
-            var startSmsVerificationResponse = new StartSmsVerificationResponse
+
+            var response = await VerificationClient.Verification.StartSms(new StartSmsVerificationRequest
+            {
+                Custom = startVerificationRequest.Custom,
+                Reference = startVerificationRequest.Reference,
+                Identity = startVerificationRequest.Identity
+            });
+            response.Should().BeEquivalentTo(new StartSmsVerificationResponse
             {
                 Id = "1234567890",
                 Method = VerificationMethodEx.Sms,
@@ -60,15 +67,7 @@ namespace Sinch.Tests.e2e.Verification
                         Rel = "status"
                     }
                 }
-            };
-
-            var response = await VerificationClient.Verification.StartSms(new StartSmsVerificationRequest
-            {
-                Custom = startVerificationRequest.Custom,
-                Reference = startVerificationRequest.Reference,
-                Identity = startVerificationRequest.Identity
             });
-            response.Should().BeEquivalentTo(startSmsVerificationResponse);
         }
 
         [Fact]
@@ -83,7 +82,15 @@ namespace Sinch.Tests.e2e.Verification
                     DialTimeout = 12
                 }
             };
-            var startFlashCallVerificationResponse = new StartFlashCallVerificationResponse
+
+            var response = await VerificationClient.Verification.StartFlashCall(new StartFlashCallVerificationRequest
+            {
+                Identity = startVerificationRequest.Identity,
+                Reference = startVerificationRequest.Reference,
+                FlashCallOptions = startVerificationRequest.FlashCallOptions,
+                Custom = startVerificationRequest.Custom
+            });
+            response.Should().BeEquivalentTo(new StartFlashCallVerificationResponse
             {
                 Id = _id,
                 Method = VerificationMethodEx.FlashCall,
@@ -95,16 +102,7 @@ namespace Sinch.Tests.e2e.Verification
                     DenyCallAfter = 72
                 },
                 Links = _links
-            };
-
-            var response = await VerificationClient.Verification.StartFlashCall(new StartFlashCallVerificationRequest
-            {
-                Identity = startVerificationRequest.Identity,
-                Reference = startVerificationRequest.Reference,
-                FlashCallOptions = startVerificationRequest.FlashCallOptions,
-                Custom = startVerificationRequest.Custom
             });
-            response.Should().BeEquivalentTo(startFlashCallVerificationResponse);
         }
 
         [Fact]
@@ -138,7 +136,14 @@ namespace Sinch.Tests.e2e.Verification
                 Identity = _identity,
                 Method = VerificationMethodEx.Seamless
             };
-            var startDataVerificationResponse = new StartDataVerificationResponse
+
+            var response = await VerificationClient.Verification.StartSeamless(new StartDataVerificationRequest
+            {
+                Identity = startVerificationRequest.Identity,
+                Reference = startVerificationRequest.Reference,
+                Custom = startVerificationRequest.Custom
+            });
+            response.Should().BeEquivalentTo(new StartDataVerificationResponse
             {
                 Id = _id,
                 Method = VerificationMethodEx.Seamless,
@@ -147,15 +152,7 @@ namespace Sinch.Tests.e2e.Verification
                 {
                     TargetUri = "uri-target"
                 }
-            };
-
-            var response = await VerificationClient.Verification.StartSeamless(new StartDataVerificationRequest
-            {
-                Identity = startVerificationRequest.Identity,
-                Reference = startVerificationRequest.Reference,
-                Custom = startVerificationRequest.Custom
             });
-            response.Should().BeEquivalentTo(startDataVerificationResponse);
         }
     }
 }
