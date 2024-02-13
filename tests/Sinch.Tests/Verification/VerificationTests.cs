@@ -83,8 +83,8 @@ namespace Sinch.Tests.Verification
                     method = "callout"
                 }));
 
-            var response = await VerificationClient.Verification.ReportIdentity(endpoint,
-                new PhoneCallVerificationReportRequest
+            var response = await VerificationClient.Verification.ReportCalloutByIdentity(endpoint,
+                new ReportCalloutVerificationRequest
                 {
                     Callout = new Callout
                     {
@@ -92,8 +92,8 @@ namespace Sinch.Tests.Verification
                     }
                 });
 
-            response.Should().BeOfType<PhoneCallVerificationReportResponse>().Which.Should().BeEquivalentTo(
-                new PhoneCallVerificationReportResponse
+            response.Should().BeOfType<ReportCalloutVerificationResponse>().Which.Should().BeEquivalentTo(
+                new ReportCalloutVerificationResponse
                 {
                     Id = "10",
                     CallComplete = true,

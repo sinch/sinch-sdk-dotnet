@@ -2,7 +2,7 @@
 
 namespace Sinch.Verification.Report.Request
 {
-    public class SmsVerificationReportRequest : VerifyReportRequest
+    public class ReportSmsVerificationRequest : VerifyReportRequest
     {
         public override string Method { get; } = VerificationMethod.Sms.Value;
         

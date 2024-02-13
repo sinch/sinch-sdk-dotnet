@@ -3,7 +3,7 @@ using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Start.Request
 {
-    public class StartPhoneCallVerificationRequest : StartVerificationRequestBase
+    public class StartCalloutVerificationRequest : StartVerificationRequestBase
     {
         /// <summary>
         ///     The type of the verification request. Set to Phone Call
