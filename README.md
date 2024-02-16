@@ -6,11 +6,11 @@
 [![.NET 7.0](https://img.shields.io/badge/.NET-7.0-blue.svg)](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
 [![.NET 8.0](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
-Here you'll find documentation related to the Sinch <language> SDK, including how to install it, initialize it, and start developing <language> code using Sinch services.
+Here you'll find documentation related to the Sinch .NET SDK, including how to install it, initialize it, and start developing .NET code using Sinch services.
 
 To use Sinch services, you'll need a Sinch account and access keys. You can sign up for an account and create access keys at [dashboard.sinch.com](https://dashboard.sinch.com).
 
-For more information on the Sinch APIs on which this SDK is based, refer to the official [developer documentation portal](developers.sinch.com).
+For more information on the Sinch APIs on which this SDK is based, refer to the official [developer documentation portal](https://developers.sinch.com/).
 
 > [!WARNING]
 > This SDK is currently available to selected developers for preview use only. It is being provided for the purpose of collecting feedback, and should not be used in production environments.
@@ -36,7 +36,7 @@ Once the SDK is installed, you must start by initializing the main client class.
 
 ### Client initialization
 
-To initialize communication with the Sinch servers, credentials obtained from the Sinch dashboard must be provided to the main client class of this SDK. It's highly recommended to not hardcode these credentials and to load them from environment variables instead or any key-secret storage(for example, [app-secrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0)).
+To initialize communication with the Sinch servers, credentials obtained from the Sinch dashboard must be provided to the main client class of this SDK. It's highly recommended to not hardcode these credentials and to load them from environment variables instead or any key-secret storage (for example, [app-secrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0)).
 
 ```csharp
 using Sinch;
@@ -54,7 +54,7 @@ builder.Services.AddSingleton<ISinch>(x => new SinchClient(
     builder.Configuration["Sinch:ProjectId"]));
 ```
 
-To configure Conversation or Sms hosting regions, and any other additional paramters, use [`SinchOptions`](https://github.com/sinch/sinch-sdk-dotnet/blob/main/src/Sinch/SinchOptions.cs):
+To configure Conversation or Sms hosting regions, and any other additional parameters, use [`SinchOptions`](https://github.com/sinch/sinch-sdk-dotnet/blob/main/src/Sinch/SinchOptions.cs):
 
 ```csharp
 var sinch = new SinchClient(
@@ -81,7 +81,7 @@ Sinch client provides access to the following Sinch products:
 
 ## Logging, HttpClient, and additional options
 
-To configure logger, provide own `HttpClient`, and additional options utilize `SinchOptions` within constructor:
+To configure a logger, provide your own `HttpClient`, or any additional options utilize `SinchOptions` action within the constructor:
 
 ```csharp
 using Sinch;
@@ -107,7 +107,7 @@ var sinch = new SinchClient(
 
 ## Handling exceptions
 
-For an unsuccessful API calls `SinchApiException` will be thrown.
+For an unsuccessful API calls `SinchApiException` will be thrown:
 
 ```csharp
 using Sinch;
@@ -136,7 +136,7 @@ For additional examples see [examples](https://github.com/sinch/sinch-sdk-dotnet
 
 ## License
 
-This project is licensed under the Apache License. See the [LICENSE](license.md) file for the license text.
+This project is licensed under the Apache License. See the [LICENSE](license) file for the license text.
 
 
 
