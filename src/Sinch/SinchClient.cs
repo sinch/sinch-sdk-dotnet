@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using Sinch.Auth;
@@ -129,9 +130,36 @@ namespace Sinch
         private readonly HttpClient _httpClient;
 
         private readonly ApiUrlOverrides _apiUrlOverrides;
-        private string _keyId;
-        private string _keySecret;
-        private string _projectId;
+
+        private readonly string _keyId;
+        private readonly string _keySecret;
+        private readonly string _projectId;
+
+        private readonly ISinchNumbers _numbers;
+        private readonly ISinchSms _sms;
+        private readonly ISinchConversation _conversation;
+        private readonly ISinchAuth _auth;
+
+        private void ValidateCommonCredentials()
+        {
+            var exceptions = new List<Exception>();
+            if (_keyId is null)
+            {
+                exceptions.Add(new InvalidOperationException("keyId should have a value"));
+            }
+
+            if (_projectId is null)
+            {
+                exceptions.Add(new InvalidOperationException("projectId should have a value"));
+            }
+
+            if (_keySecret is null)
+            {
+                exceptions.Add(new InvalidOperationException("keySecret should have a value"));
+            }
+
+            throw new AggregateException("Credentials are missing", exceptions);
+        }
 
         /// <summary>
         ///     Initialize a new <see cref="SinchClient"/>
@@ -146,22 +174,8 @@ namespace Sinch
         {
             _projectId = projectId;
             _keyId = keyId;
-            if (_keyId is null)
-            {
-                throw new ArgumentNullException(nameof(_keyId), "Should have a value");
-            }
-
             _keySecret = keySecret;
-            if (_keySecret is null)
-            {
-                throw new ArgumentNullException(nameof(_keySecret), "Should have a value");
-            }
 
-            _projectId = projectId;
-            if (_projectId is null)
-            {
-                throw new ArgumentNullException(nameof(_projectId), "Should have a value");
-            }
 
             var optionsObj = new SinchOptions();
             options?.Invoke(optionsObj);
@@ -178,18 +192,18 @@ namespace Sinch
             ISinchAuth auth =
                 new OAuth(_keyId, _keySecret, _httpClient, _loggerFactory?.Create<OAuth>(),
                     new Uri(_apiUrlOverrides?.AuthUrl ?? AuthApiUrl));
-            Auth = auth;
+            _auth = auth;
             var httpCamelCase = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(),
                 JsonNamingPolicy.CamelCase);
             var httpSnakeCase = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(),
                 SnakeCaseNamingPolicy.Instance);
 
-            Numbers = new Numbers.Numbers(_projectId, new Uri(_apiUrlOverrides?.NumbersUrl ?? NumbersApiUrl),
+            _numbers = new Numbers.Numbers(_projectId, new Uri(_apiUrlOverrides?.NumbersUrl ?? NumbersApiUrl),
                 _loggerFactory, httpCamelCase);
-            Sms = new Sms(_projectId, GetSmsBaseAddress(optionsObj.SmsHostingRegion, _apiUrlOverrides?.SmsUrl),
+            _sms = new Sms(_projectId, GetSmsBaseAddress(optionsObj.SmsHostingRegion, _apiUrlOverrides?.SmsUrl),
                 _loggerFactory,
                 httpSnakeCase);
-            Conversation = new Conversation.SinchConversationClient(_projectId,
+            _conversation = new SinchConversationClient(_projectId,
                 new Uri(_apiUrlOverrides?.ConversationUrl ??
                         string.Format(ConversationApiUrlTemplate, optionsObj.ConversationRegion.Value)),
                 _loggerFactory, httpSnakeCase);
@@ -199,7 +213,7 @@ namespace Sinch
 
         private static Uri GetSmsBaseAddress(SmsHostingRegion smsHostingRegion, string smsUrlOverride)
         {
-            if (smsUrlOverride != null)
+            if (!string.IsNullOrEmpty(smsUrlOverride))
             {
                 return new Uri(smsUrlOverride);
             }
@@ -212,17 +226,46 @@ namespace Sinch
         }
 
         /// <inheritdoc/>       
-        public ISinchNumbers Numbers { get; }
+        public ISinchNumbers Numbers
+        {
+            get
+            {
+                ValidateCommonCredentials();
+                return _numbers;
+            }
+        }
 
         /// <inheritdoc/>
-        public ISinchSms Sms { get; }
+        public ISinchSms Sms
+        {
+            get
+            {
+                // TODO: when support service plan id make sure validation is proper here.
+                ValidateCommonCredentials();
+                return _sms;
+            }
+        }
 
         /// <inheritdoc/>
-        public ISinchConversation Conversation { get; }
+        public ISinchConversation Conversation
+        {
+            get
+            {
+                ValidateCommonCredentials();
+                return _conversation;
+            }
+        }
 
 
         /// <inheritdoc/>
-        public ISinchAuth Auth { get; }
+        public ISinchAuth Auth
+        {
+            get
+            {
+                ValidateCommonCredentials();
+                return _auth;
+            }
+        }
 
         /// <inheritdoc/>
         public ISinchVerificationClient Verification(string appKey, string appSecret,
