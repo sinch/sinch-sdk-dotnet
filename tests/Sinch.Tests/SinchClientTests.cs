@@ -7,42 +7,18 @@ namespace Sinch.Tests
 {
     public class SinchClientTests
     {
-        [Fact]
-        public void InitSinchClientWithoutAllCredentials()
+        [Theory]
+        [InlineData(null, null, null)]
+        [InlineData("projectId", null, null)]
+        [InlineData(null, "keyId", null)]
+        [InlineData(null, null, "keySecret")]
+        [InlineData("projectId", "keySecret", null)]
+        [InlineData("projectId", null, "keySecret")]
+        [InlineData(null, "keySecret", "keySecret")]
+        public void InitSinchClientWithoutCredentials(string projectId, string keyId, string keySecret)
         {
-            var sinch = new SinchClient(null, null, null);
+            var sinch = new SinchClient(projectId, keyId, keySecret);
             sinch.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void InitSinchClientWithoutProjectId()
-        {
-            var sinch = new SinchClient(null, "key", "secret");
-            sinch.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void InitSinchClientWithoutKeyId()
-        {
-            var sinch = new SinchClient("key", null, "secret");
-            sinch.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void InitSinchClientWithoutKeySecret()
-        {
-            var sinch = new SinchClient("key", "secret", null);
-            sinch.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void InitSinchClientWithCustomHttpClient()
-        {
-            var httpClient = new HttpClient();
-            var sinch = new SinchClient("TEST_PROJECT_ID", "TEST_KEY", "TEST_KEY_SECRET",
-                options => { options.HttpClient = httpClient; });
-            sinch.Should().NotBeNull();
-            Helpers.GetPrivateField<HttpClient, SinchClient>(sinch, "_httpClient").Should().Be(httpClient);
         }
 
         [Theory]
@@ -77,11 +53,22 @@ namespace Sinch.Tests
             var aggregateExceptionAuth = authOp.Should().Throw<AggregateException>().Which;
             aggregateExceptionAuth.Message.Should().BeEquivalentTo(message);
         }
+        
         [Fact]
         public void InitializeOwnHttpIfNotPassed()
         {
             var sinch = new SinchClient("proj", "id", "secret");
             Helpers.GetPrivateField<HttpClient, SinchClient>(sinch, "_httpClient").Should().NotBeNull();
+        }
+        
+        [Fact]
+        public void InitSinchClientWithCustomHttpClient()
+        {
+            var httpClient = new HttpClient();
+            var sinch = new SinchClient("TEST_PROJECT_ID", "TEST_KEY", "TEST_KEY_SECRET",
+                options => { options.HttpClient = httpClient; });
+            sinch.Should().NotBeNull();
+            Helpers.GetPrivateField<HttpClient, SinchClient>(sinch, "_httpClient").Should().Be(httpClient);
         }
     }
 }
