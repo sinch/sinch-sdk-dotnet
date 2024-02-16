@@ -44,23 +44,33 @@ namespace Sinch.Tests
             var conversationOp = () => sinch.Conversation;
             var aggregateExceptionConversation = conversationOp.Should().Throw<AggregateException>().Which;
             aggregateExceptionConversation.Message.Should().BeEquivalentTo(message);
-            
+
             var numbersOp = () => sinch.Numbers;
             var aggregateExceptionNumbers = numbersOp.Should().Throw<AggregateException>().Which;
             aggregateExceptionNumbers.Message.Should().BeEquivalentTo(message);
-            
+
             var authOp = () => sinch.Auth;
             var aggregateExceptionAuth = authOp.Should().Throw<AggregateException>().Which;
             aggregateExceptionAuth.Message.Should().BeEquivalentTo(message);
         }
-        
+
+        [Fact]
+        public void GetServiceWithoutExceptionsIfCredentialsAreSet()
+        {
+            var sinch = new SinchClient("projectId", "keyId", "keySecret");
+            sinch.Conversation.Should().NotBeNull();
+            sinch.Sms.Should().NotBeNull();
+            sinch.Auth.Should().NotBeNull();
+            sinch.Numbers.Should().NotBeNull();
+        }
+
         [Fact]
         public void InitializeOwnHttpIfNotPassed()
         {
             var sinch = new SinchClient("proj", "id", "secret");
             Helpers.GetPrivateField<HttpClient, SinchClient>(sinch, "_httpClient").Should().NotBeNull();
         }
-        
+
         [Fact]
         public void InitSinchClientWithCustomHttpClient()
         {

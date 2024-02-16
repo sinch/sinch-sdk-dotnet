@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using Sinch.Auth;
@@ -143,22 +144,25 @@ namespace Sinch
         private void ValidateCommonCredentials()
         {
             var exceptions = new List<Exception>();
-            if (_keyId is null)
+            if (string.IsNullOrEmpty(_keyId))
             {
                 exceptions.Add(new InvalidOperationException("keyId should have a value"));
             }
 
-            if (_projectId is null)
+            if (string.IsNullOrEmpty(_projectId))
             {
                 exceptions.Add(new InvalidOperationException("projectId should have a value"));
             }
 
-            if (_keySecret is null)
+            if (string.IsNullOrEmpty(_keySecret))
             {
                 exceptions.Add(new InvalidOperationException("keySecret should have a value"));
             }
 
-            throw new AggregateException("Credentials are missing", exceptions);
+            if (exceptions.Any())
+            {
+                throw new AggregateException("Credentials are missing", exceptions);
+            }
         }
 
         /// <summary>
