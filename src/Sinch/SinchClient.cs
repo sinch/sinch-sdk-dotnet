@@ -218,7 +218,7 @@ namespace Sinch
         public ISinchSms Sms { get; }
 
         /// <inheritdoc/>
-        public ISinchConversation Conversation { get; set; }
+        public ISinchConversation Conversation { get; }
 
 
         /// <inheritdoc/>
