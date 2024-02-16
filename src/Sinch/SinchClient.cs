@@ -181,11 +181,26 @@ namespace Sinch
             options?.Invoke(optionsObj);
 
             if (optionsObj.LoggerFactory is not null) _loggerFactory = new LoggerFactory(optionsObj.LoggerFactory);
-
-            _httpClient = optionsObj.HttpClient ?? new HttpClient();
-
             var logger = _loggerFactory?.Create<SinchClient>();
             logger?.LogInformation("Initializing SinchClient...");
+
+
+            if (string.IsNullOrEmpty(projectId))
+            {
+                logger?.LogWarning($"{nameof(projectId)} is not set!");
+            }
+
+            if (string.IsNullOrEmpty(keyId))
+            {
+                logger?.LogWarning($"{nameof(keyId)} is not set!");
+            }
+
+            if (string.IsNullOrEmpty(keySecret))
+            {
+                logger?.LogWarning($"{nameof(keySecret)} is not set!");
+            }
+
+            _httpClient = optionsObj.HttpClient ?? new HttpClient();
 
             _apiUrlOverrides = optionsObj?.ApiUrlOverrides;
 
