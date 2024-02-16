@@ -8,11 +8,31 @@ namespace Sinch.Tests
     public class SinchClientTests
     {
         [Fact]
-        public void Should_instantiate_sinch_client_with_provided_required_params()
+        public void InitSinchClientWithoutAllCredentials()
         {
-            var sinch = new SinchClient("TEST_PROJECT_ID", "TEST_KEY", "TEST_KEY_SECRET");
+            var sinch = new SinchClient(null, null, null);
             sinch.Should().NotBeNull();
-            sinch.Numbers.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void InitSinchClientWithoutProjectId()
+        {
+            var sinch = new SinchClient(null, "key", "secret");
+            sinch.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void InitSinchClientWithoutKeyId()
+        {
+            var sinch = new SinchClient("key", null, "secret");
+            sinch.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void InitSinchClientWithoutKeySecret()
+        {
+            var sinch = new SinchClient("key", "secret", null);
+            sinch.Should().NotBeNull();
         }
 
         [Fact]
@@ -25,27 +45,38 @@ namespace Sinch.Tests
             Helpers.GetPrivateField<HttpClient, SinchClient>(sinch, "_httpClient").Should().Be(httpClient);
         }
 
-        [Fact]
-        public void ThrowNullKeyId()
+        [Theory]
+        [InlineData(null, null, null,
+            "Credentials are missing (keyId should have a value) (projectId should have a value) (keySecret should have a value)")]
+        [InlineData("projectId", null, null,
+            "Credentials are missing (keyId should have a value) (keySecret should have a value)")]
+        [InlineData(null, "keyId", null,
+            "Credentials are missing (projectId should have a value) (keySecret should have a value)")]
+        [InlineData(null, null, "keySecret",
+            "Credentials are missing (keyId should have a value) (projectId should have a value)")]
+        [InlineData("projectId", "keySecret", null, "Credentials are missing (keySecret should have a value)")]
+        [InlineData("projectId", null, "keySecret", "Credentials are missing (keyId should have a value)")]
+        [InlineData(null, "keySecret", "keySecret", "Credentials are missing (projectId should have a value)")]
+        public void ThrowAggregateExceptionWhenAccessingCommonCredentialsProducts(string projectId, string keyId,
+            string keySecret, string message)
         {
-            Func<ISinchClient> initAction = () => new SinchClient("project", null, "secret");
-            initAction.Should().Throw<ArgumentNullException>("Should have a value");
-        }
+            var sinch = new SinchClient(projectId, keyId, keySecret);
+            var smsOp = () => sinch.Sms;
+            var aggregateExceptionSms = smsOp.Should().Throw<AggregateException>().Which;
+            aggregateExceptionSms.Message.Should().BeEquivalentTo(message);
 
-        [Fact]
-        public void ThrowNullKeySecret()
-        {
-            Func<ISinchClient> initAction = () => new SinchClient("project", "secret", null);
-            initAction.Should().Throw<ArgumentNullException>("Should have a value");
+            var conversationOp = () => sinch.Conversation;
+            var aggregateExceptionConversation = conversationOp.Should().Throw<AggregateException>().Which;
+            aggregateExceptionConversation.Message.Should().BeEquivalentTo(message);
+            
+            var numbersOp = () => sinch.Numbers;
+            var aggregateExceptionNumbers = numbersOp.Should().Throw<AggregateException>().Which;
+            aggregateExceptionNumbers.Message.Should().BeEquivalentTo(message);
+            
+            var authOp = () => sinch.Auth;
+            var aggregateExceptionAuth = authOp.Should().Throw<AggregateException>().Which;
+            aggregateExceptionAuth.Message.Should().BeEquivalentTo(message);
         }
-
-        [Fact]
-        public void ThrowNullProjectId()
-        {
-            Func<ISinchClient> initAction = () => new SinchClient(null, "id", "secret");
-            initAction.Should().Throw<ArgumentNullException>("Should have a value");
-        }
-
         [Fact]
         public void InitializeOwnHttpIfNotPassed()
         {
