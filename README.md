@@ -79,6 +79,17 @@ Sinch client provides access to the following Sinch products:
 - [Voice](https://developers.sinch.com/docs/voice/)
 - additional products coming soon!
 
+Usage example of the `numbers` product, assuming `sinch` is a type of `ISinchClient`:
+```csharp
+using Sinch.Numbers.Active.List;
+
+ListActiveNumbersResponse response = await sinch.Numbers.Active.List(new ListActiveNumbersRequest
+{
+    RegionCode = "US",
+    Type = Types.Mobile
+});
+```
+
 ## Logging, HttpClient, and additional options
 
 To configure a logger, provide your own `HttpClient`, or any additional options utilize `SinchOptions` action within the constructor:
