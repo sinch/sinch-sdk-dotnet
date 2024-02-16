@@ -129,6 +129,9 @@ namespace Sinch
         private readonly HttpClient _httpClient;
 
         private readonly ApiUrlOverrides _apiUrlOverrides;
+        private string _keyId;
+        private string _keySecret;
+        private string _projectId;
 
         /// <summary>
         ///     Initialize a new <see cref="SinchClient"/>
@@ -138,22 +141,26 @@ namespace Sinch
         /// <param name="projectId">Your project id.</param>
         /// <param name="options">Optional. See: <see cref="SinchOptions"/></param>
         /// <exception cref="ArgumentNullException"></exception>
-        public SinchClient(string keyId, string keySecret, string projectId,
+        public SinchClient(string projectId, string keyId, string keySecret,
             Action<SinchOptions> options = default)
         {
-            if (keyId is null)
+            _projectId = projectId;
+            _keyId = keyId;
+            if (_keyId is null)
             {
-                throw new ArgumentNullException(nameof(keyId), "Should have a value");
+                throw new ArgumentNullException(nameof(_keyId), "Should have a value");
             }
 
-            if (keySecret is null)
+            _keySecret = keySecret;
+            if (_keySecret is null)
             {
-                throw new ArgumentNullException(nameof(keySecret), "Should have a value");
+                throw new ArgumentNullException(nameof(_keySecret), "Should have a value");
             }
 
-            if (projectId is null)
+            _projectId = projectId;
+            if (_projectId is null)
             {
-                throw new ArgumentNullException(nameof(projectId), "Should have a value");
+                throw new ArgumentNullException(nameof(_projectId), "Should have a value");
             }
 
             var optionsObj = new SinchOptions();
@@ -169,7 +176,7 @@ namespace Sinch
             _apiUrlOverrides = optionsObj?.ApiUrlOverrides;
 
             ISinchAuth auth =
-                new OAuth(keyId, keySecret, _httpClient, _loggerFactory?.Create<OAuth>(),
+                new OAuth(_keyId, _keySecret, _httpClient, _loggerFactory?.Create<OAuth>(),
                     new Uri(_apiUrlOverrides?.AuthUrl ?? AuthApiUrl));
             Auth = auth;
             var httpCamelCase = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(),
@@ -177,12 +184,12 @@ namespace Sinch
             var httpSnakeCase = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(),
                 SnakeCaseNamingPolicy.Instance);
 
-            Numbers = new Numbers.Numbers(projectId, new Uri(_apiUrlOverrides?.NumbersUrl ?? NumbersApiUrl),
+            Numbers = new Numbers.Numbers(_projectId, new Uri(_apiUrlOverrides?.NumbersUrl ?? NumbersApiUrl),
                 _loggerFactory, httpCamelCase);
-            Sms = new Sms(projectId, GetSmsBaseAddress(optionsObj.SmsHostingRegion, _apiUrlOverrides?.SmsUrl),
+            Sms = new Sms(_projectId, GetSmsBaseAddress(optionsObj.SmsHostingRegion, _apiUrlOverrides?.SmsUrl),
                 _loggerFactory,
                 httpSnakeCase);
-            Conversation = new Conversation.SinchConversationClient(projectId,
+            Conversation = new Conversation.SinchConversationClient(_projectId,
                 new Uri(_apiUrlOverrides?.ConversationUrl ??
                         string.Format(ConversationApiUrlTemplate, optionsObj.ConversationRegion.Value)),
                 _loggerFactory, httpSnakeCase);
