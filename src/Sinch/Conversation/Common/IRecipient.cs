@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Sinch.Conversation.Messages
+namespace Sinch.Conversation.Common
 {
     [JsonDerivedType(typeof(ContactRecipient))]
     [JsonDerivedType(typeof(Identified))]

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages;
 
 namespace Sinch.Conversation.Contacts.Create

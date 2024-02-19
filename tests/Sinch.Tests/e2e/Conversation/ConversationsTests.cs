@@ -6,6 +6,7 @@ using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Conversation;
+using Sinch.Conversation.Common;
 using Sinch.Conversation.Conversations;
 using Sinch.Conversation.Conversations.Create;
 using Sinch.Conversation.Conversations.InjectMessage;

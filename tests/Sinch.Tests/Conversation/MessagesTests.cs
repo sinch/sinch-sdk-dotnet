@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using RichardSzalay.MockHttp;
 using Sinch.Conversation;
+using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages;
 using Sinch.Conversation.Messages.List;
 using Sinch.Conversation.Messages.Message;

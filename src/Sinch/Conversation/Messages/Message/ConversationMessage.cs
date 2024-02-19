@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Text.Json.Serialization;
+using Sinch.Conversation.Common;
 
 namespace Sinch.Conversation.Messages.Message
 {
