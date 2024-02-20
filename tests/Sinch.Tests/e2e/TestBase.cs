@@ -18,7 +18,7 @@ namespace Sinch.Tests.e2e
         protected TestBase()
         {
             Env.Load();
-            SinchClientMockStudio = new SinchClient("key_id", "key_secret", ProjectId,
+            SinchClientMockStudio = new SinchClient(ProjectId, "key_id", "key_secret",
                 options =>
                 {
                     options.ApiUrlOverrides = new ApiUrlOverrides()
@@ -29,7 +29,7 @@ namespace Sinch.Tests.e2e
                     };
                 });
 
-            SinchClientMockServer = new SinchClient("key_id", "key_secret", ProjectId, options =>
+            SinchClientMockServer = new SinchClient(ProjectId, "key_id", "key_secret", options =>
             {
                 options.ApiUrlOverrides = new ApiUrlOverrides()
                 {
