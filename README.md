@@ -1,6 +1,4 @@
-# [![Sinch Logo](https://developers.sinch.com/static/logo-07afe977d6d9dcd21b066d1612978e5c.svg)](https://www.sinch.com)
-
-# .NET SDK
+# Sinch .NET SDK
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/sinch/sinch-sdk-dotnet/blob/main/LICENSE)
 
@@ -8,26 +6,23 @@
 [![.NET 7.0](https://img.shields.io/badge/.NET-7.0-blue.svg)](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
 [![.NET 8.0](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
-# Welcome to Sinch's .NET SDK.
+Here you'll find documentation related to the Sinch .NET SDK, including how to install it, initialize it, and start developing .NET code using Sinch services.
 
-Here you'll find documentation to start developing C# code using Sinch services.
+To use Sinch services, you'll need a Sinch account and access keys. You can sign up for an account and create access keys at [dashboard.sinch.com](https://dashboard.sinch.com).
 
-To use this SDK you'll need a Sinch account and API keys. Please sign up at [sinch.com](https://sinch.com)
+For more information on the Sinch APIs on which this SDK is based, refer to the official [developer documentation portal](https://developers.sinch.com/).
 
-For more in depth version of the Sinch APIs, please refer to the official developer
-portal - [developers.sinch.com](https://developers.sinch.com/)
+> [!WARNING]
+> This SDK is currently available to selected developers for preview use only. It is being provided for the purpose of collecting feedback, and should not be used in production environments.
 
->[!WARNING]
->This SDK is currently available as a technical preview. It is being provided for the purpose of
-collecting feedback, and should not be used in production environments.
+- [Installation](#installation)
+- [Getting started](#getting-started)
+  - [Client initialization](#client-initialization)
+- [Supported Sinch products](#supported-sinch-products)
+- [Logging, HttpClient and additional options](#logging-httpclient-and-additional-options)
+- [Handling Exceptions](#handling-exceptions)
 
-* [Installation](#installation)
-* [Getting started](#getting-started)
-* [Products](#products)
-* [Handling Exceptions](#handling-exceptions)
-* [Client customization options](#logging-httpclient-and-additional-options)
-
-# Installation
+## Installation
 
 SinchSDK can be installed using the Nuget package manager or the `dotnet` CLI.
 
@@ -35,32 +30,18 @@ SinchSDK can be installed using the Nuget package manager or the `dotnet` CLI.
 dotnet add package Sinch --prerelease
 ```
 
-# Getting started
+## Getting started
 
-## Client initialization
+Once the SDK is installed, you must start by initializing the main client class.
 
-To initialize communication with Sinch backed, credentials obtained from Sinch portal have to be provided to the main
-client class of this SDK.
+### Client initialization
 
-> [!NOTE] 
-> Always store your credentials securely as an environment variables or with a [secret manager](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0)
+To initialize communication with the Sinch servers, credentials obtained from the Sinch dashboard must be provided to the main client class of this SDK. It's highly recommended to not hardcode these credentials and to load them from environment variables instead or any key-secret storage (for example, [app-secrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0)).
 
 ```csharp
 using Sinch;
 
 var sinch = new SinchClient(configuration["Sinch:KeyId"], configuration["Sinch:KeySecret"], configuration["Sinch:ProjectId"]);
-```
-To configure Conversation and SMS hosting regions, use `options`:
-```csharp
-var sinch = new SinchClient(
-    configuration["Sinch:KeyId"],
-    configuration["Sinch:KeySecret"], 
-    configuration["Sinch:ProjectId"],
-    options =>
-    {
-        options.SmsHostingRegion = Sinch.SMS.SmsHostingRegion.Eu;
-        options.ConversationRegion = Sinch.Conversation.ConversationRegion.Eu;
-    });
 ```
 
 With ASP.NET dependency injection:
@@ -73,19 +54,32 @@ builder.Services.AddSingleton<ISinch>(x => new SinchClient(
     builder.Configuration["Sinch:ProjectId"]));
 ```
 
+To configure Conversation or Sms hosting regions, and any other additional parameters, use [`SinchOptions`](https://github.com/sinch/sinch-sdk-dotnet/blob/main/src/Sinch/SinchOptions.cs):
 
-## Products
+```csharp
+var sinch = new SinchClient(
+    configuration["Sinch:KeyId"],
+    configuration["Sinch:KeySecret"],
+    configuration["Sinch:ProjectId"],
+    options =>
+    {
+        options.SmsHostingRegion = Sinch.SMS.SmsHostingRegion.Eu;
+        options.ConversationRegion = Sinch.Conversation.ConversationRegion.Eu;
+    });
+```
+
+## Supported Sinch Products
 
 Sinch client provides access to the following Sinch products:
 
-- Numbers
-- SMS
-- Verification
-- Voice
-- Work-in-Progress Conversation
+- [SMS](https://developers.sinch.com/docs/sms/)
+- [Conversation](https://developers.sinch.com/docs/conversation/)
+- [Numbers](https://developers.sinch.com/docs/numbers/)
+- [Verification](https://developers.sinch.com/docs/verification/)
+- [Voice](https://developers.sinch.com/docs/voice/)
+- additional products coming soon!
 
 Usage example of the `numbers` product, assuming `sinch` is a type of `ISinchClient`:
-
 ```csharp
 using Sinch.Numbers.Active.List;
 
@@ -94,12 +88,37 @@ ListActiveNumbersResponse response = await sinch.Numbers.Active.List(new ListAct
     RegionCode = "US",
     Type = Types.Mobile
 });
+```
 
+## Logging, HttpClient, and additional options
+
+To configure a logger, provide your own `HttpClient`, or any additional options utilize `SinchOptions` action within the constructor:
+
+```csharp
+using Sinch;
+using Sinch.SMS;
+
+var sinch = new SinchClient(
+    configuration["Sinch:KeyId"],
+    configuration["Sinch:KeySecret"],
+    configuration["Sinch:ProjectId"],
+    options =>
+    {
+        // provide any logger factory which satisfies Microsoft.Extensions.Logging.ILoggerFactory
+        options.LoggerFactory = LoggerFactory.Create(config => {
+            // add log output to console
+            config.AddConsole();
+        });
+        // Provide your http client here
+        options.HttpClient = new HttpClient();
+        // Set a hosting region for Sms
+        options.SmsHostingRegion = SmsHostingRegion.Eu;
+    });
 ```
 
 ## Handling exceptions
 
-For an unsuccessful API calls `SinchApiException` will be thrown.
+For an unsuccessful API calls `SinchApiException` will be thrown:
 
 ```csharp
 using Sinch;
@@ -116,35 +135,19 @@ try {
         }
     });
 }
-catch(SinchApiException e) 
+catch(SinchApiException e)
 {
     logger.LogError("Api Exception. Status: {status}. Detailed message: {message}", e.Status, e.DetailedMessage);
 }
 ```
 
-## Logging, HttpClient, and additional options
+## Sample apps
 
-To configure logger, provide own `HttpClient`, and additional options utilize `SinchOptions` within constructor:
+For additional examples see [examples](https://github.com/sinch/sinch-sdk-dotnet/tree/main/examples)
 
-```csharp
-using Sinch;
-using Sinch.SMS;
+## License
 
-var sinch = new SinchClient(
-    configuration["Sinch:KeyId"],
-    configuration["Sinch:KeySecret"], 
-    configuration["Sinch:ProjectId"],
-    options =>
-    {
-        // provde any logger factory which satisfies Microsoft.Extensions.Logging.ILoggerFactory
-        options.LoggerFactory = LoggerFactory.Create(config => { 
-            // add log output to console
-            config.AddConsole();
-        });
-        // Provide your http client here
-        options.HttpClient = new HttpClient();
-        // Set a hosting region for Sms
-        options.SmsHostingRegion = SmsHostingRegion.Eu;
-    });
-```
+This project is licensed under the Apache License. See the [LICENSE](license) file for the license text.
+
+
 
