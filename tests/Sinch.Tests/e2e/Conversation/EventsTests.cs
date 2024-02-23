@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Globalization;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Events;
@@ -21,7 +23,11 @@ namespace Sinch.Tests.e2e.Conversation
                     ContactId = "Hey yo"
                 },
             });
-            response.Should().BeEquivalentTo(new object());
+            response.Should().BeEquivalentTo(new SendEventResponse()
+            {
+                AcceptedTime = DateTime.Parse("2018-11-13T20:20:39+00:00", styles: DateTimeStyles.AssumeUniversal),
+                EventId = "some_string_value"
+            });
         }
     }
 }
