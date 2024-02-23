@@ -51,20 +51,20 @@ namespace Sinch.Tests.e2e.Verification
             });
             response.Should().BeEquivalentTo(new StartSmsVerificationResponse
             {
-                Id = "1234567890",
+                Id = "some_string_value",
                 Method = VerificationMethodEx.Sms,
                 Sms = new SmsInfo
                 {
-                    Template = "Your verification code is {{CODE}}",
-                    InterceptionTimeout = 32
+                    Template = "some_string_value",
+                    InterceptionTimeout = 0
                 },
                 Links = new List<Links>
                 {
                     new()
                     {
-                        Method = "GET",
+                        Method = "some_string_value",
                         Href = "some_string_value",
-                        Rel = "status"
+                        Rel = "some_string_value"
                     }
                 }
             });

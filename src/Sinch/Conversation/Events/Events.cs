@@ -40,7 +40,7 @@ namespace Sinch.Conversation.Events
         public Task<SendEventResponse> Send(SendEventRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/events:send");
-            _logger?.LogDebug("Sending a message...");
+            _logger?.LogDebug("Sending an event...");
             return _http.Send<SendEventRequest, SendEventResponse>(uri, HttpMethod.Post, request,
                 cancellationToken);
         }
