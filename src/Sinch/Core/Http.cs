@@ -67,7 +67,12 @@ namespace Sinch.Core
             _jsonSerializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web)
             {
                 PropertyNamingPolicy = jsonNamingPolicy,
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                AllowTrailingCommas = true,
+                
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                Converters ={
+                    new JsonStringEnumConverter()
+                }
             };
             var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo()!.Assembly!.FullName!).Version!.ToString();
             _userAgentHeaderValue =
@@ -163,15 +168,23 @@ namespace Sinch.Core
 
                 await result.EnsureSuccessApiStatusCode();
                 _logger?.LogDebug("Finished processing request for {uri}", uri);
-                if (result.IsJson())
-                    return await result.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken,
-                               options: _jsonSerializerOptions)
-                           ?? throw new NullReferenceException(
-                               $"{nameof(TResponse)} is null");
+                foreach (var header in result.Headers)
+                {
+                    _logger?.LogDebug("Header: {header} = {value}", header.Key, header.Value);
+                }
+                
+                var json = await result.Content.ReadAsStringAsync(cancellationToken);
+                
+                    if (result.IsJson())
+                        return await result.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken,
+                                   options: _jsonSerializerOptions)
+                               ?? throw new NullReferenceException(
+                                   $"{nameof(TResponse)} is null");
 
-                _logger?.LogWarning("Response is not json, but {content}",
-                    await result.Content.ReadAsStringAsync(cancellationToken));
-                return default;
+                    _logger?.LogWarning("Response is not json, but {content}",
+                        await result.Content.ReadAsStringAsync(cancellationToken));
+                    return default;
+                
             }
         }
 

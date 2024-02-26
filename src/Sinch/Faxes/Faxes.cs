@@ -1,7 +1,9 @@
 ﻿using Sinch.Core;
 using Sinch.Logger;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Sinch.Faxes
@@ -19,11 +21,12 @@ namespace Sinch.Faxes
         internal Faxes(string projectId, Uri uri, ILoggerAdapter<Faxes> loggerAdapter, Http httpClient)
         {
             this._projectId = projectId;
-            this._uri = uri;
+            
             this._loggerAdapter = loggerAdapter;
             this._http = httpClient;
             _mimeMapper = new FileExtensionContentTypeProvider();
             uri = new Uri(uri, $"/v3/projects/{projectId}/faxes");
+            this._uri = uri;
         }
         /// <summary>
         /// Send a fax
@@ -45,44 +48,6 @@ namespace Sinch.Faxes
                 ContentUrl = contentUrl
             };
             return await Send(fax, fileContent, fileName);
-
-            /* Unmerged change from project 'Sinch (net6.0)'
-            Before:
-                    }
-
-
-
-
-
-                    public async Task<Fax> Send(Fax fax, Stream fileContent, string fileName)
-            After:
-                    }
-
-
-
-
-
-                    public async Task<Fax> Send(Fax fax, Stream fileContent, string fileName)
-            */
-
-            /* Unmerged change from project 'Sinch (net8.0)'
-            Before:
-                    }
-
-
-
-
-
-                    public async Task<Fax> Send(Fax fax, Stream fileContent, string fileName)
-            After:
-                    }
-
-
-
-
-
-                    public async Task<Fax> Send(Fax fax, Stream fileContent, string fileName)
-            */
         }
 
 
@@ -96,17 +61,35 @@ namespace Sinch.Faxes
             return result;
         }
 
-        public Fax List()
+        public async Task<ListOfFaxes> List()
         {
-            throw new NotImplementedException();
+            return await List(new ListOptions());
         }
-        public Fax List(ListOptions listOptions)
+        public async Task<ListOfFaxes> List(ListOptions listOptions)
         {
-            throw new NotImplementedException();
+            var uribuilder = new UriBuilder(_uri.ToString());
+            uribuilder.Query = listOptions.ToQueryString();
+
+            return await _http.Send<ListOfFaxes>(uribuilder.Uri, HttpMethod.Get);
+            
         }
-        public Fax Get(string faxId)
+        public async Task<Fax> GetAsync(string faxId)
         {
-            throw new NotImplementedException();
+            
+            
+            var url = new Uri(_uri, $"/{faxId}");
+            return await _http.Send<Fax>(url, HttpMethod.Get);
         }
     }
+
+    public class ListOfFaxes
+    {
+        public int PageNumber { get; set; }
+        public int TotalPages { get; set; }
+        public int PageSize { get; set; }
+        public int TotalItems { get; set; }
+        
+        public IEnumerable<Fax>? Faxes { get; set; }
+    }
+    
 }

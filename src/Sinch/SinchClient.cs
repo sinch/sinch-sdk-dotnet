@@ -211,6 +211,7 @@ namespace Sinch
             Uri verificationBaseAddress, Uri voiceBaseAddress)
         {
             _httpClient = new HttpClient();
+            
             Auth = new OAuth(authUri, _httpClient);
             var httpCamelCase = new Http(Auth, _httpClient, null,
                 JsonNamingPolicy.CamelCase);

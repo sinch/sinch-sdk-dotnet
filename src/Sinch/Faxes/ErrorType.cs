@@ -9,7 +9,9 @@
     {
         DOCUMENT_CONVERSION_ERROR,
         CALL_ERROR,
-        FAX_ERROR
+        FAX_ERROR,
+        LINE_ERROR,
+        faxError
 
     }
 }

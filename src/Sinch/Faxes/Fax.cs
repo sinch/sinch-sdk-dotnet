@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Sinch.Faxes
 {
@@ -33,8 +34,10 @@ namespace Sinch.Faxes
         [ReadOnly(true)]
         public FaxStatus Status { get; init; }
         [ReadOnly(true)]
+        
         public Money Price { get; init; }
         [ReadOnly(true)]
+        [NotMapped]
         public Barcode[] BarCodes { get; init; }
         [ReadOnly(true)]
         public string CreateTime { get; init; }
@@ -45,6 +48,7 @@ namespace Sinch.Faxes
         public string HeaderTimeZone { get; set; }
         public int RetryDelaySeconds { get; set; }
         public int CancelTimeoutMinutes { get; set; }
+        [NotMapped]
         public Dictionary<string, string> Labels { get; set; }
         [DataType(DataType.Url)]
         public string CallbackUrl { get; set; }
@@ -66,6 +70,6 @@ namespace Sinch.Faxes
         [ReadOnly(true)]
         public int RetryCount { get; init; }
         [ReadOnly(true)]
-        public string HasFile { get; init; }
+        public bool HasFile { get; init; }
     }
 }
