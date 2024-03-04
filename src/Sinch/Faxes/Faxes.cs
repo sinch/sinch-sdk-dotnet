@@ -80,6 +80,13 @@ namespace Sinch.Faxes
             var url = new Uri(_uri, $"/{faxId}");
             return await _http.Send<Fax>(url, HttpMethod.Get);
         }
+
+        public async Task<Stream> Download(string id)
+        {
+            var url = new Uri(_uri, $"/{id}.pdf");
+            var result = await _http.Send<Stream>(url, HttpMethod.Get);
+            return result;
+        }
     }
 
     public class ListOfFaxes

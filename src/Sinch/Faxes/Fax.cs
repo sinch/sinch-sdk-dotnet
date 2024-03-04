@@ -40,7 +40,7 @@ namespace Sinch.Faxes
         [NotMapped]
         public Barcode[] BarCodes { get; init; }
         [ReadOnly(true)]
-        public string CreateTime { get; init; }
+        public DateTime CreateTime { get; init; }
         [ReadOnly(true)]
         public DateTime CompletedTime { get; init; }
         public string HeaderText { get; set; }
