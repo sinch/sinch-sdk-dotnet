@@ -2,7 +2,6 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Sinch.Conversation.Common;
 using Sinch.Core;
 using Sinch.Logger;
 
@@ -55,57 +54,5 @@ namespace Sinch.Conversation.Capability
             return _http.Send<LookupCapabilityRequest, LookupCapabilityResponse>(uri, HttpMethod.Post, request,
                 cancellationToken);
         }
-    }
-
-    public class LookupCapabilityRequest
-    {
-        /// <summary>
-        ///     The ID of the app to use for capability lookup.
-        /// </summary>
-#if NET7_0_OR_GREATER
-        public required string AppId { get; set; }
-#else
-        public string AppId { get; set; }
-#endif
-
-        /// <summary>
-        ///     The recipient to lookup capabilities for. Requires either contact_id or identified_by.
-        /// </summary>
-#if NET7_0_OR_GREATER
-        public required IRecipient Recipient { get; set; }
-#else
-        public IRecipient Recipient { get; set; }
-#endif
-
-        /// <summary>
-        ///     ID for the asynchronous response, will be generated if not set. Currently this field is not used for idempotency.
-        /// </summary>
-        public string RequestId { get; set; }
-    }
-
-    public class LookupCapabilityResponse
-    {
-        /// <summary>
-        ///     The ID of the app to use for capability lookup.
-        /// </summary>
-#if NET7_0_OR_GREATER
-        public required string AppId { get; set; }
-#else
-        public string AppId { get; set; }
-#endif
-
-        /// <summary>
-        ///     The recipient to lookup capabilities for. Requires either contact_id or identified_by.
-        /// </summary>
-#if NET7_0_OR_GREATER
-        public required IRecipient Recipient { get; set; }
-#else
-        public IRecipient Recipient { get; set; }
-#endif
-
-        /// <summary>
-        ///     ID for the asynchronous response, will be generated if not set. Currently this field is not used for idempotency.
-        /// </summary>
-        public string RequestId { get; set; }
     }
 }
