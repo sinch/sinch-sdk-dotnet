@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Sinch.Conversation.Messages.Message;
 using Sinch.Core;
 using Sinch.Logger;
 
@@ -21,51 +19,6 @@ namespace Sinch.Conversation.Transcoding
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<TranscodeResponse> Transcode(TranscodeRequest request, CancellationToken cancellationToken = default);
-    }
-
-    /// <summary>
-    ///     The message to be transcoded, and the app and channels for which the message is to be transcoded.
-    /// </summary>
-    public class TranscodeRequest
-    {
-#if NET7_0_OR_GREATER
-        public required string AppId { get; set; }
-#else
-        public string AppId { get; set; }
-#endif
-        
-        /// <summary>
-        ///     Message originating from an app
-        /// </summary>
-#if NET7_0_OR_GREATER
-        public required AppMessage AppMessage { get; set; }
-#else
-        public AppMessage AppMessage { get; set; }
-#endif
-        
-        /// <summary>
-        ///     The list of channels for which the message shall be transcoded to.
-        /// </summary>
-#if NET7_0_OR_GREATER
-        public required List<ConversationChannel> Channels { get; set; }
-#else
-        public List<ConversationChannel> Channels { get; set; }
-#endif
-
-        /// <summary>
-        ///     Optional.
-        /// </summary>
-        public string From { get; set; }
-
-        /// <summary>
-        ///     Optional.
-        /// </summary>
-        public string To { get; set; }
-    }
-
-    public class TranscodeResponse
-    {
-        public Dictionary<ConversationChannel, string> TranscodedMessage { get; set; }
     }
 
     internal class Transcoding : ISinchConversationTranscoding
