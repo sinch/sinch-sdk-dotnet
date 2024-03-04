@@ -4,6 +4,7 @@ using Sinch.Conversation.Contacts;
 using Sinch.Conversation.Conversations;
 using Sinch.Conversation.Events;
 using Sinch.Conversation.Messages;
+using Sinch.Conversation.Transcoding;
 using Sinch.Conversation.Webhooks;
 using Sinch.Core;
 using Sinch.Logger;
@@ -35,6 +36,9 @@ namespace Sinch.Conversation
 
         /// <inheritdoc cref="ISinchConversationEvents" />
         ISinchConversationEvents Events { get; }
+
+        /// <inheritdoc cref="ISinchConversationTranscoding" />
+        ISinchConversationTranscoding Transcoding { get; }
     }
 
     /// <inheritdoc />
@@ -53,6 +57,8 @@ namespace Sinch.Conversation
             Webhooks = new Webhooks.Webhooks(projectId, baseAddress,
                 loggerFactory?.Create<ISinchConversationWebhooks>(), http);
             Events = new Events.Events(projectId, baseAddress, loggerFactory?.Create<ISinchConversationEvents>(), http);
+            Transcoding = new Transcoding.Transcoding(projectId, baseAddress,
+                loggerFactory?.Create<ISinchConversationTranscoding>(), http);
         }
 
         /// <inheritdoc />
@@ -72,5 +78,8 @@ namespace Sinch.Conversation
 
         /// <inheritdoc />
         public ISinchConversationEvents Events { get; }
+
+        /// <inheritdoc />
+        public ISinchConversationTranscoding Transcoding { get; }
     }
 }

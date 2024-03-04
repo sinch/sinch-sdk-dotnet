@@ -1,4 +1,6 @@
-﻿namespace Sinch.Conversation.Events.AppEvents
+﻿using Sinch.Conversation.Common;
+
+namespace Sinch.Conversation.Events.AppEvents
 {
     public class AgentLeftEvent
     {

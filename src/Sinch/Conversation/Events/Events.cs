@@ -8,7 +8,7 @@ using Sinch.Logger;
 namespace Sinch.Conversation.Events
 {
     /// <summary>
-    ///     Service for sending events.
+    ///     Endpoint for sending events.
     /// </summary>
     public interface ISinchConversationEvents
     {

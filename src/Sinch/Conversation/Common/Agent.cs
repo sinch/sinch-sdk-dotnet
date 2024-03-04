@@ -1,4 +1,6 @@
-﻿namespace Sinch.Conversation.Events.AppEvents
+﻿using Sinch.Conversation.Events.AppEvents;
+
+namespace Sinch.Conversation.Common
 {
     /// <summary>
     ///     Represents an agent that is involved in a conversation.

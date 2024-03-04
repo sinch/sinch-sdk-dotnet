@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Conversation.Events.AppEvents
+namespace Sinch.Conversation.Common
 {
     [JsonConverter(typeof(EnumRecordJsonConverter<AgentType>))]
     public record AgentType(string Value) : EnumRecord(Value)
