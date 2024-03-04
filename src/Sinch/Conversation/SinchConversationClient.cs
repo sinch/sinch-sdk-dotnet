@@ -1,5 +1,6 @@
 ﻿using System;
 using Sinch.Conversation.Apps;
+using Sinch.Conversation.Capability;
 using Sinch.Conversation.Contacts;
 using Sinch.Conversation.Conversations;
 using Sinch.Conversation.Events;
@@ -39,6 +40,9 @@ namespace Sinch.Conversation
 
         /// <inheritdoc cref="ISinchConversationTranscoding" />
         ISinchConversationTranscoding Transcoding { get; }
+
+        /// <inheritdoc cref="ISinchConversationCapabilities" />
+        ISinchConversationCapabilities Capabilities { get; }
     }
 
     /// <inheritdoc />
@@ -59,6 +63,8 @@ namespace Sinch.Conversation
             Events = new Events.Events(projectId, baseAddress, loggerFactory?.Create<ISinchConversationEvents>(), http);
             Transcoding = new Transcoding.Transcoding(projectId, baseAddress,
                 loggerFactory?.Create<ISinchConversationTranscoding>(), http);
+            Capabilities = new Capabilities(projectId, baseAddress,
+                loggerFactory?.Create<ISinchConversationCapabilities>(), http);
         }
 
         /// <inheritdoc />
@@ -81,5 +87,8 @@ namespace Sinch.Conversation
 
         /// <inheritdoc />
         public ISinchConversationTranscoding Transcoding { get; }
+
+        /// <inheritdoc />
+        public ISinchConversationCapabilities Capabilities { get; }
     }
 }

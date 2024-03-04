@@ -16,14 +16,41 @@ namespace Sinch.Tests.e2e.Conversation
 {
     public class EventsTests : TestBase
     {
-        [Theory]
+        [Theory(Skip = "Wait for doppelganger to merge updates OAS file")]
         [ClassData(typeof(AppEvents))]
-        public async Task SendEvent(AppEvent @event)
+        public async Task SendEvents(AppEvent @event)
         {
             var response = await SinchClientMockServer.Conversation.Events.Send(new SendEventRequest
             {
                 AppId = "app_id",
                 Event = @event,
+                Recipient = new ContactRecipient()
+                {
+                    ContactId = "Hey yo"
+                },
+                Queue = MessageQueue.HighPriority,
+                EventMetadata = "meta",
+                CallbackUrl = "url",
+                ChannelPriorityOrder = new List<ConversationChannel>()
+                {
+                    ConversationChannel.Line,
+                    ConversationChannel.Telegram
+                }
+            });
+            response.Should().BeEquivalentTo(new SendEventResponse()
+            {
+                AcceptedTime = DateTime.Parse("2018-11-13T20:20:39+00:00", styles: DateTimeStyles.AssumeUniversal),
+                EventId = "some_string_value"
+            });
+        }
+
+        [Fact]
+        public async Task SendEvent()
+        {
+            var response = await SinchClientMockServer.Conversation.Events.Send(new SendEventRequest
+            {
+                AppId = "app_id",
+                Event = new AppEvent(new AgentJoinedEvent()),
                 Recipient = new ContactRecipient()
                 {
                     ContactId = "Hey yo"
