@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Events.AppEvents;
+using Sinch.Conversation.Events.EventTypes;
 
 namespace Sinch.Conversation.Events
 {

@@ -19,6 +19,14 @@ namespace Sinch.Conversation.Events
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<SendEventResponse> Send(SendEventRequest request, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Get event from ID
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ConversationEvent> Get(string eventId, CancellationToken cancellationToken = default);
     }
 
     internal class Events : ISinchConversationEvents
@@ -42,6 +50,20 @@ namespace Sinch.Conversation.Events
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/events:send");
             _logger?.LogDebug("Sending an event...");
             return _http.Send<SendEventRequest, SendEventResponse>(uri, HttpMethod.Post, request,
+                cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<ConversationEvent> Get(string eventId, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrEmpty(eventId))
+            {
+                throw new ArgumentNullException(nameof(eventId));
+            }
+
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/events/{eventId}");
+            _logger?.LogDebug("Sending an event...");
+            return _http.Send<ConversationEvent>(uri, HttpMethod.Get,
                 cancellationToken);
         }
     }

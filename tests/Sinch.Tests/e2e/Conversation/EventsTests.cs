@@ -9,6 +9,7 @@ using Sinch.Conversation;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Events;
 using Sinch.Conversation.Events.AppEvents;
+using Sinch.Conversation.Events.EventTypes;
 using Sinch.Conversation.Messages;
 using Xunit;
 
