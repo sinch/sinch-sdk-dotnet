@@ -119,8 +119,13 @@ namespace Sinch.Tests.e2e.Conversation
                 NextPageToken = "def"
             });
         }
-        
-        
+
+        [Fact]
+        public async Task Delete()
+        {
+            var op = () => SinchClientMockServer.Conversation.Events.Delete("123");
+            await op.Should().NotThrowAsync();
+        }
 
         private class AppEvents : IEnumerable<object[]>
         {
