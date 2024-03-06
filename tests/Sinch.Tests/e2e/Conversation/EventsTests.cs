@@ -73,6 +73,23 @@ namespace Sinch.Tests.e2e.Conversation
             });
         }
 
+        [Fact]
+        public async Task Get()
+        {
+            var response = await SinchClientMockServer.Conversation.Events.Get("123");
+            response.Should().BeEquivalentTo(new ConversationEvent
+            {
+                Id = "123",
+                Direction = null,
+                Event = null,
+                ConversationId = null,
+                ContactId = null,
+                ChannelIdentity = null,
+                AcceptTime = default,
+                ProcessingMode = null
+            });
+        }
+
         private class AppEvents : IEnumerable<object[]>
         {
             public IEnumerator<object[]> GetEnumerator()
