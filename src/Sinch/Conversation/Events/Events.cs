@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Sinch.Conversation.Events.Send;
 using Sinch.Core;
 using Sinch.Logger;
 
@@ -27,6 +30,31 @@ namespace Sinch.Conversation.Events
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<ConversationEvent> Get(string eventId, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Delete a specific event by its ID.
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ConversationEvent> Delete(string eventId, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     List all events in a project
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ListEventsResponse> List(ListEventsRequest request, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     List all events in a project automatically.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        IAsyncEnumerable<ConversationEvent> ListAuto(ListEventsRequest request,
+            CancellationToken cancellationToken = default);
     }
 
     internal class Events : ISinchConversationEvents
@@ -62,9 +90,47 @@ namespace Sinch.Conversation.Events
             }
 
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/events/{eventId}");
-            _logger?.LogDebug("Sending an event...");
+            _logger?.LogDebug("Getting an event with {id}", eventId);
             return _http.Send<ConversationEvent>(uri, HttpMethod.Get,
                 cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<ConversationEvent> Delete(string eventId, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrEmpty(eventId))
+            {
+                throw new ArgumentNullException(nameof(eventId));
+            }
+
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/events/{eventId}");
+            _logger?.LogDebug("Deleting an event with {id}", eventId);
+            return _http.Send<ConversationEvent>(uri, HttpMethod.Delete,
+                cancellationToken);
+        }
+
+        public Task<ListEventsResponse> List(ListEventsRequest request, CancellationToken cancellationToken = default)
+        {
+            var uri = new Uri(_baseAddress,
+                $"v1/projects/{_projectId}/events?{Utils.ToSnakeCaseQueryString(request)}");
+            _logger?.LogDebug("Listing events for {project}", _projectId);
+            return _http.Send<ListEventsResponse>(uri, HttpMethod.Get,
+                cancellationToken);
+        }
+
+        public async IAsyncEnumerable<ConversationEvent> ListAuto(ListEventsRequest request,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            _logger?.LogDebug("Auto Listing events for {projectId}", _projectId);
+            do
+            {
+                var query = Utils.ToSnakeCaseQueryString(request);
+                var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/events?{query}");
+                var response =
+                    await _http.Send<ListEventsResponse>(uri, HttpMethod.Get, cancellationToken);
+                request.PageToken = response.NextPageToken;
+                foreach (var conversationEvent in response.Events) yield return conversationEvent;
+            } while (!string.IsNullOrEmpty(request.PageToken));
         }
     }
 }

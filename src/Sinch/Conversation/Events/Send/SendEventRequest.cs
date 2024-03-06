@@ -3,7 +3,7 @@ using System.Text;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages;
 
-namespace Sinch.Conversation.Events
+namespace Sinch.Conversation.Events.Send
 {
     /// <summary>
     ///     SendEventRequest

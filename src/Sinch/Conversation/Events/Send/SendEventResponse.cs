@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Sinch.Conversation.Events
+namespace Sinch.Conversation.Events.Send
 {
     public class SendEventResponse
     {
