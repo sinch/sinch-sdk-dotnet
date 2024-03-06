@@ -12,12 +12,35 @@ using Sinch.Conversation.Events.AppEvents;
 using Sinch.Conversation.Events.EventTypes;
 using Sinch.Conversation.Events.Send;
 using Sinch.Conversation.Messages;
+using Sinch.Conversation.Messages.Message;
 using Xunit;
 
 namespace Sinch.Tests.e2e.Conversation
 {
     public class EventsTests : TestBase
     {
+        private readonly ConversationEvent _conversationEvent = new ConversationEvent
+        {
+            Id = "123",
+            Direction = ConversationDirection.ToContact,
+            Event = new ConversationEventEvent(new ContactMessageEvent(new PaymentStatusUpdateEvent()
+            {
+                PaymentStatus = PaymentStatus.PaymentStatusCaptured,
+                ReferenceId = "refid",
+                PaymentTransactionId = "transid",
+                PaymentTransactionStatus = PaymentTransactionStatus.PaymentStatusTransactionSuccess
+            })),
+            ConversationId = "conversation_id",
+            ContactId = "contact_id",
+            ChannelIdentity = new ChannelIdentity
+            {
+                Identity = "a",
+                Channel = ConversationChannel.Sms
+            },
+            AcceptTime = DateTime.Parse("2018-11-13T20:20:39+00:00", styles: DateTimeStyles.AssumeUniversal),
+            ProcessingMode = ProcessingMode.Conversation
+        };
+
         [Theory(Skip = "Wait for doppelganger to merge updates OAS file")]
         [ClassData(typeof(AppEvents))]
         public async Task SendEvents(AppEvent @event)
@@ -77,18 +100,27 @@ namespace Sinch.Tests.e2e.Conversation
         public async Task Get()
         {
             var response = await SinchClientMockServer.Conversation.Events.Get("123");
-            response.Should().BeEquivalentTo(new ConversationEvent
+            response.Should().BeEquivalentTo(_conversationEvent);
+        }
+
+        [Fact]
+        public async Task List()
+        {
+            var response = await SinchClientMockServer.Conversation.Events.List(new ListEventsRequest()
             {
-                Id = "123",
-                Direction = null,
-                Event = null,
-                ConversationId = null,
-                ContactId = null,
-                ChannelIdentity = null,
-                AcceptTime = default,
-                ProcessingMode = null
+                ConversationId = "conv_id",
+                ContactId = "contact_id",
+                PageSize = 10,
+                PageToken = "abc"
+            });
+            response.Should().BeEquivalentTo(new ListEventsResponse()
+            {
+                Events = new List<ConversationEvent>() {  _conversationEvent, _conversationEvent },
+                NextPageToken = "def"
             });
         }
+        
+        
 
         private class AppEvents : IEnumerable<object[]>
         {
