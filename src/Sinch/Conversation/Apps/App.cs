@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Sinch.Conversation.Common;
 
 namespace Sinch.Conversation.Apps
 {
