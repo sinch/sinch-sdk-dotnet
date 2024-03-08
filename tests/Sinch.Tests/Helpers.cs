@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Globalization;
+using System.Reflection;
 
 namespace Sinch.Tests
 {
@@ -15,6 +17,11 @@ namespace Sinch.Tests
         {
             var field = instance!.GetType().GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance);
             return (T)field!.GetValue(instance)!;
+        }
+
+        public static DateTime ParseUtc(string time)
+        {
+            return DateTime.Parse(time, CultureInfo.InvariantCulture).ToUniversalTime();
         }
     }
 }
