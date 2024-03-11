@@ -22,12 +22,12 @@ namespace Sinch.Tests.e2e.Conversation
             Version = 3,
             Translations = new List<TemplateTranslation>()
             {
-                new TemplateTranslation(new TextMessage("hello"))
+                new TemplateTranslation(new TextMessage("hello ${a}"))
                 {
                     Version = "1", // is this really a string?
                     CreateTime = DefaultTime,
                     UpdateTime = DefaultTime,
-                    LanguageCode = "en_US",
+                    LanguageCode = "en-US",
                     ChannelTemplateOverrides = null,
                     Variables = new List<TypeTemplateVariable>()
                     {
@@ -65,7 +65,16 @@ namespace Sinch.Tests.e2e.Conversation
         [Fact]
         public async Task Create()
         {
-            var response = await SinchClientMockServer.Conversation.TemplatesV2.Create(_template);
+            var createTemplateRequest = new CreateTemplateRequest()
+            {
+                Description = _template.Description,
+                Translations = _template.Translations,
+                CreateTime = _template.CreateTime,
+                DefaultTranslation = _template.DefaultTranslation,
+                UpdateTime = _template.UpdateTime,
+                Version = _template.Version
+            };
+            var response = await SinchClientMockServer.Conversation.TemplatesV2.Create(createTemplateRequest);
             response.Should().BeEquivalentTo(_template);
         }
 
@@ -73,7 +82,7 @@ namespace Sinch.Tests.e2e.Conversation
         public async Task ListTranslations()
         {
             var response =
-                await SinchClientMockServer.Conversation.TemplatesV2.ListTranslations(_template.Id, "en_US", "3");
+                await SinchClientMockServer.Conversation.TemplatesV2.ListTranslations(_template.Id, "en-US", "3");
             response.Should().BeEquivalentTo(_template.Translations);
         }
 

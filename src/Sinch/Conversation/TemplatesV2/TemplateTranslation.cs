@@ -54,7 +54,7 @@ namespace Sinch.Conversation.TemplatesV2
         {
             CarouselMessage = carouselMessage;
         }
-        
+
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public TextMessage TextMessage { get; private set; }
@@ -86,45 +86,45 @@ namespace Sinch.Conversation.TemplatesV2
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ListMessage ListMessage { get; private set; }
-        
-              /// <summary>
+
+        /// <summary>
         ///     The BCP-47 language code, such as &#x60;en-US&#x60; or &#x60;sr-Latn&#x60;. For more information, see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
         /// </summary>
-        #if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
         public required string LanguageCode { get; set; }
-        #else
+#else
         public string LanguageCode { get; set; }
-        #endif
+#endif
 
         /// <summary>
         ///     The version of the translation.
         /// </summary>
         public string Version { get; set; }
-        
+
 
         /// <summary>
         ///     Gets or Sets ChannelTemplateOverrides
         /// </summary>
         public ChannelTemplateOverride ChannelTemplateOverrides { get; set; }
-        
+
 
         /// <summary>
         ///     List of expected variables. Can be used for request validation.
         /// </summary>
         public List<TypeTemplateVariable> Variables { get; set; }
-        
+
 
         /// <summary>
         ///     Timestamp when the translation was created.
         /// </summary>
         public DateTime CreateTime { get; set; }
-        
+
 
         /// <summary>
         ///     Timestamp of when the translation was updated.
         /// </summary>
         public DateTime UpdateTime { get; set; }
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object

@@ -43,7 +43,7 @@ namespace Sinch.Conversation.TemplatesV2
         /// <param name="template">Template to create</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Template> Create(Template template, CancellationToken cancellationToken = default);
+        Task<Template> Create(CreateTemplateRequest template, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///    
@@ -120,12 +120,12 @@ namespace Sinch.Conversation.TemplatesV2
         }
 
         /// <inheritdoc />
-        public Task<Template> Create(Template template, CancellationToken cancellationToken = default)
+        public Task<Template> Create(CreateTemplateRequest template, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"v2/projects/{_projectId}/templates");
 
             _logger?.LogDebug("Creating a template in {projectId}", _projectId);
-            return _http.Send<Template, Template>(uri, HttpMethod.Post, template, cancellationToken: cancellationToken);
+            return _http.Send<CreateTemplateRequest, Template>(uri, HttpMethod.Post, template, cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
