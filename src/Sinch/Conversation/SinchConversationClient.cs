@@ -32,7 +32,7 @@ namespace Sinch.Conversation
 
         /// <inheritdoc cref="ISinchConversationWebhooks" />
         ISinchConversationWebhooks Webhooks { get; }
-        
+
         /// <inheritdoc cref="ISinchConversationTemplatesV2" />
         ISinchConversationTemplatesV2 TemplatesV2 { get; }
     }
@@ -40,19 +40,20 @@ namespace Sinch.Conversation
     /// <inheritdoc />
     internal class SinchConversationClient : ISinchConversation
     {
-        internal SinchConversationClient(string projectId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
+        internal SinchConversationClient(string projectId, Uri conversationBaseAddress, Uri templatesBaseAddress
+            , LoggerFactory loggerFactory, IHttp http)
         {
-            Messages = new Messages.Messages(projectId, baseAddress,
+            Messages = new Messages.Messages(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationMessages>(),
                 http);
-            Apps = new Apps.Apps(projectId, baseAddress, loggerFactory?.Create<Apps.Apps>(), http);
-            Contacts = new Contacts.Contacts(projectId, baseAddress,
+            Apps = new Apps.Apps(projectId, conversationBaseAddress, loggerFactory?.Create<Apps.Apps>(), http);
+            Contacts = new Contacts.Contacts(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationContacts>(), http);
-            Conversations = new ConversationsClient(projectId, baseAddress,
+            Conversations = new ConversationsClient(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationConversations>(), http);
-            Webhooks = new Webhooks.Webhooks(projectId, baseAddress,
+            Webhooks = new Webhooks.Webhooks(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationWebhooks>(), http);
-            TemplatesV2 = new TemplatesV2.TemplatesV2(projectId, baseAddress,
+            TemplatesV2 = new TemplatesV2.TemplatesV2(projectId, templatesBaseAddress,
                 loggerFactory?.Create<ISinchConversationTemplatesV2>(), http);
         }
 

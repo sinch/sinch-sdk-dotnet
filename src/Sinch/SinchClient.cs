@@ -126,6 +126,7 @@ namespace Sinch
         private const string ConversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
         private const string VoiceApiUrlTemplate = "https://{0}.api.sinch.com/";
         private const string AuthApiUrl = "https://auth.sinch.com";
+        private const string TemplatesApiUrlTemplate = "https://{0}.template.api.sinch.com/";
 
         private readonly LoggerFactory _loggerFactory;
         private readonly HttpClient _httpClient;
@@ -222,9 +223,14 @@ namespace Sinch
             _sms = new Sms(_projectId, GetSmsBaseAddress(optionsObj.SmsHostingRegion, _apiUrlOverrides?.SmsUrl),
                 _loggerFactory,
                 httpSnakeCase);
-            _conversation = new SinchConversationClient(_projectId,
-                new Uri(_apiUrlOverrides?.ConversationUrl ??
-                        string.Format(ConversationApiUrlTemplate, optionsObj.ConversationRegion.Value)),
+            var conversationBaseAddress = new Uri(_apiUrlOverrides?.ConversationUrl ??
+                                                  string.Format(ConversationApiUrlTemplate,
+                                                      optionsObj.ConversationRegion.Value));
+            var templatesBaseAddress = new Uri(_apiUrlOverrides?.TemplatesUrl ??
+                                               string.Format(TemplatesApiUrlTemplate,
+                                                   optionsObj.ConversationRegion.Value));
+            _conversation = new SinchConversationClient(_projectId, conversationBaseAddress
+                , templatesBaseAddress,
                 _loggerFactory, httpSnakeCase);
 
             logger?.LogInformation("SinchClient initialized.");

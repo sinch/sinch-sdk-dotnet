@@ -56,6 +56,12 @@ namespace Sinch
         public string ConversationUrl { get; init; }
 
         /// <summary>
+        ///     Overrides Templates api base url.
+        ///     Templates is treated as part of conversation api, but it has another base address.
+        /// </summary>
+        public string TemplatesUrl { get; init; }
+
+        /// <summary>
         ///     Overrides Voice api base url
         /// </summary>
         public string VoiceUrl { get; init; }
@@ -64,7 +70,7 @@ namespace Sinch
         ///     Overrides Verification api base url
         /// </summary>
         public string VerificationUrl { get; init; }
-        
+
         /// <summary>
         ///     Overrides Auth api base url
         /// </summary>
