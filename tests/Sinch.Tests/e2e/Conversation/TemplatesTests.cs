@@ -61,5 +61,27 @@ namespace Sinch.Tests.e2e.Conversation
             var response = await SinchClientMockServer.Conversation.TemplatesV2.List();
             response.Should().BeEquivalentTo(new List<Template>() { _template, _template });
         }
+
+        [Fact]
+        public async Task Create()
+        {
+            var response = await SinchClientMockServer.Conversation.TemplatesV2.Create(_template);
+            response.Should().BeEquivalentTo(_template);
+        }
+
+        [Fact]
+        public async Task ListTranslations()
+        {
+            var response =
+                await SinchClientMockServer.Conversation.TemplatesV2.ListTranslations(_template.Id, "en_US", "3");
+            response.Should().BeEquivalentTo(_template.Translations);
+        }
+
+        [Fact]
+        public async Task Update()
+        {
+            var response = await SinchClientMockServer.Conversation.TemplatesV2.Update(_template);
+            response.Should().BeEquivalentTo(_template);
+        }
     }
 }
