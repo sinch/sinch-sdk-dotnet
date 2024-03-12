@@ -28,7 +28,26 @@ namespace Sinch.Tests.e2e.Conversation
                     CreateTime = DefaultTime,
                     UpdateTime = DefaultTime,
                     LanguageCode = "en-US",
-                    ChannelTemplateOverrides = null,
+                    ChannelTemplateOverrides = new ChannelTemplateOverride()
+                    {
+                        WHATSAPP = new OverrideTemplateReference()
+                        {
+                            TemplateReference = new TemplateReference()
+                            {
+                                Version = "1",
+                                LanguageCode = "en-US",
+                                TemplateId = "t-id",
+                                Parameters = new Dictionary<string, string>()
+                                {
+                                    { "body[1]text", "defaultValue" }
+                                }
+                            },
+                            ParameterMappings = new TemplateReferenceParameterMappings()
+                            {
+                                Name = "body[1]text"
+                            }
+                        }
+                    },
                     Variables = new List<TypeTemplateVariable>()
                     {
                         new TypeTemplateVariable()
