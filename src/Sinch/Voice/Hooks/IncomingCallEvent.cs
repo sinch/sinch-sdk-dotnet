@@ -133,7 +133,7 @@ namespace Sinch.Voice.Hooks
         {
             var sb = new StringBuilder();
             sb.Append("class IceRequest {\n");
-            sb.Append("  VarEvent: ").Append(Event).Append("\n");
+            sb.Append("  Event: ").Append(Event).Append("\n");
             sb.Append("  CallId: ").Append(CallId).Append("\n");
             sb.Append("  CallResourceUrl: ").Append(CallResourceUrl).Append("\n");
             sb.Append("  Timestamp: ").Append(Timestamp).Append("\n");

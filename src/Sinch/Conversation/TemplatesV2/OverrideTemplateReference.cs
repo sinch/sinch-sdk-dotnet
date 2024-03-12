@@ -23,7 +23,7 @@ namespace Sinch.Conversation.TemplatesV2
         {
             var sb = new StringBuilder();
             sb.Append("class TemplateReference {\n");
-            sb.Append("  VarTemplateReference: ").Append(TemplateReference).Append("\n");
+            sb.Append("  TemplateReference: ").Append(TemplateReference).Append("\n");
             sb.Append("  ParameterMappings: ").Append(ParameterMappings).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
