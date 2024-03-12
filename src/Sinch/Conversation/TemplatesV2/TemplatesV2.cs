@@ -63,7 +63,7 @@ namespace Sinch.Conversation.TemplatesV2
         /// <param name="template"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Template> Update(Template template, CancellationToken cancellationToken = default);
+        Task<Template> Update(UpdateTemplateRequest template, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Deletes a template
@@ -155,7 +155,7 @@ namespace Sinch.Conversation.TemplatesV2
             return response.Translations;
         }
 
-        public Task<Template> Update(Template template, CancellationToken cancellationToken = default)
+        public Task<Template> Update(UpdateTemplateRequest template, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(template.Id))
             {
@@ -165,7 +165,7 @@ namespace Sinch.Conversation.TemplatesV2
             var uri = new Uri(_baseAddress, $"v2/projects/{_projectId}/templates/{template.Id}");
 
             _logger?.LogDebug("Updating a template with {templateId} in {projectId}", template.Id, _projectId);
-            return _http.Send<Template, Template>(uri, HttpMethod.Put, template, cancellationToken: cancellationToken);
+            return _http.Send<UpdateTemplateRequest, Template>(uri, HttpMethod.Put, template, cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />

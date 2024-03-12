@@ -89,7 +89,17 @@ namespace Sinch.Tests.e2e.Conversation
         [Fact]
         public async Task Update()
         {
-            var response = await SinchClientMockServer.Conversation.TemplatesV2.Update(_template);
+            var updateTemplateRequest = new UpdateTemplateRequest()
+            {
+                Id = _template.Id,
+                Description = _template.Description,
+                Translations = _template.Translations,
+                CreateTime = _template.CreateTime,
+                DefaultTranslation = _template.DefaultTranslation,
+                UpdateTime = _template.UpdateTime,
+                Version = _template.Version
+            };
+            var response = await SinchClientMockServer.Conversation.TemplatesV2.Update(updateTemplateRequest);
             response.Should().BeEquivalentTo(_template);
         }
     }
