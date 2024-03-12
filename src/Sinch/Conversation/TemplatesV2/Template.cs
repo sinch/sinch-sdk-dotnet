@@ -6,27 +6,29 @@ namespace Sinch.Conversation.TemplatesV2
 {
     public class Template
     {
-        
         /// <summary>
-        ///     The id of the template. Specify this yourself during creation. Otherwise, we will generate an ID for you. This must be unique for a given project.
+        ///     The id of the template. Specify this yourself during creation. Otherwise, we will generate an ID for you. This must
+        ///     be unique for a given project.
         /// </summary>
         public string Id { get; set; }
-        
+
 
         /// <summary>
         ///     The description of the template.
         /// </summary>
         public string Description { get; set; }
-        
+
 
         /// <summary>
-        ///     The version of the template. While creating a template, this will be defaulted to 1. When updating a template, you must supply the latest version of the template in order for the update to be successful.
+        ///     The version of the template. While creating a template, this will be defaulted to 1. When updating a template, you
+        ///     must supply the latest version of the template in order for the update to be successful.
         /// </summary>
         public int Version { get; set; }
-        
+
 
         /// <summary>
-        ///     The default translation to use if translation not specified. Specified as a BCP-47 &#x60;language_code&#x60; and the &#x60;language_code&#x60; must exist in the translations list.
+        ///     The default translation to use if translation not specified. Specified as a BCP-47 &#x60;language_code&#x60; and
+        ///     the &#x60;language_code&#x60; must exist in the translations list.
         /// </summary>
         public string DefaultTranslation { get; set; }
 
@@ -35,19 +37,19 @@ namespace Sinch.Conversation.TemplatesV2
         ///     Gets or Sets Translations
         /// </summary>
         public List<TemplateTranslation> Translations { get; set; }
-        
+
 
         /// <summary>
         ///     Timestamp when the template was created.
         /// </summary>
         public DateTime CreateTime { get; set; }
-        
+
 
         /// <summary>
         ///     Timestamp when the template was updated.
         /// </summary>
         public DateTime UpdateTime { get; set; }
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -67,6 +69,5 @@ namespace Sinch.Conversation.TemplatesV2
             sb.Append("}\n");
             return sb.ToString();
         }
-
     }
 }

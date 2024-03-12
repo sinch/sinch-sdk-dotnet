@@ -23,8 +23,7 @@ namespace Sinch.Conversation.TemplatesV2
 #else
         public List<TemplateTranslation> Translations { get; set; }
 #endif
-   
-       
+
 
         /// <summary>
         ///     The description of the template.
