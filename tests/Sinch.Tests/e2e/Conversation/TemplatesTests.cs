@@ -24,7 +24,7 @@ namespace Sinch.Tests.e2e.Conversation
             {
                 new TemplateTranslation(new TextMessage("hello ${a}"))
                 {
-                    Version = "1", // is this really a string?
+                    Version = "1", // the property is really a string despite Template.Version is integer
                     CreateTime = DefaultTime,
                     UpdateTime = DefaultTime,
                     LanguageCode = "en-US",
