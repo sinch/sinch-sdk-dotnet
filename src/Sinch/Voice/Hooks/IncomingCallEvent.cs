@@ -137,7 +137,7 @@ namespace Sinch.Voice.Hooks
             sb.Append("  CallId: ").Append(CallId).Append("\n");
             sb.Append("  CallResourceUrl: ").Append(CallResourceUrl).Append("\n");
             sb.Append("  Timestamp: ").Append(Timestamp).Append("\n");
-            sb.Append("  VarVersion: ").Append(Version).Append("\n");
+            sb.Append("  Version: ").Append(Version).Append("\n");
             sb.Append("  Custom: ").Append(Custom).Append("\n");
             sb.Append("  UserRate: ").Append(UserRate).Append("\n");
             sb.Append("  Cli: ").Append(Cli).Append("\n");

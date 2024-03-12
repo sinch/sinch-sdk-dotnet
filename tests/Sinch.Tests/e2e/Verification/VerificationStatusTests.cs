@@ -11,20 +11,20 @@ namespace Sinch.Tests.e2e.Verification
         private readonly ReportSmsVerificationResponse _smsVerificationReportResponse =
             new ReportSmsVerificationResponse()
             {
-                Id = "1234567890",
+                Id = "some_string_value",
                 Method = VerificationMethod.Sms,
                 Price = new PriceBase
                 {
                     VerificationPrice = new()
                     {
-                        CurrencyId = "USD",
-                        Amount = 0.0127
+                        CurrencyId = "some_string_value",
+                        Amount = 1.1
                     }
                 },
-                Reason = Reason.Fraud,
-                Reference = "12345",
-                Source = Source.Intercepted,
-                Status = VerificationStatus.Fail
+                Reason = new Reason("some_string_value"),
+                Reference = "some_string_value",
+                Source = new Source("some_string_value"),
+                Status = new VerificationStatus("some_string_value")
             };
 
         [Fact]
@@ -112,7 +112,7 @@ namespace Sinch.Tests.e2e.Verification
                     CallComplete = true,
                 });
         }
-        
+
         [Fact]
         public async Task ByReferenceFlashCall()
         {

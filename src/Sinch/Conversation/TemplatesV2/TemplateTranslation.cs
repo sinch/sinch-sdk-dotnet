@@ -135,7 +135,7 @@ namespace Sinch.Conversation.TemplatesV2
             var sb = new StringBuilder();
             sb.Append("class V2TemplateTranslation {\n");
             sb.Append("  LanguageCode: ").Append(LanguageCode).Append("\n");
-            sb.Append("  VarVersion: ").Append(Version).Append("\n");
+            sb.Append("  Version: ").Append(Version).Append("\n");
             sb.Append("  TextMessage: ").Append(TextMessage).Append("\n");
             sb.Append("  CardMessage: ").Append(CardMessage).Append("\n");
             sb.Append("  CarouselMessage: ").Append(CarouselMessage).Append("\n");

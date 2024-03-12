@@ -126,7 +126,7 @@ namespace Sinch.Voice.Hooks
             sb.Append("  Timestamp: ").Append(Timestamp).Append("\n");
             sb.Append("  Reason: ").Append(Reason).Append("\n");
             sb.Append("  Result: ").Append(Result).Append("\n");
-            sb.Append("  VarVersion: ").Append(Version).Append("\n");
+            sb.Append("  Version: ").Append(Version).Append("\n");
             sb.Append("  Custom: ").Append(Custom).Append("\n");
             sb.Append("  Debit: ").Append(Debit).Append("\n");
             sb.Append("  UserRate: ").Append(UserRate).Append("\n");

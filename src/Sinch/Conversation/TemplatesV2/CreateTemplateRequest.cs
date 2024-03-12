@@ -58,7 +58,7 @@ namespace Sinch.Conversation.TemplatesV2
             var sb = new StringBuilder();
             sb.Append("class V2TemplateResponse {\n");
             sb.Append("  Description: ").Append(Description).Append("\n");
-            sb.Append("  VarVersion: ").Append(Version).Append("\n");
+            sb.Append("  Version: ").Append(Version).Append("\n");
             sb.Append("  DefaultTranslation: ").Append(DefaultTranslation).Append("\n");
             sb.Append("  Translations: ").Append(Translations).Append("\n");
             sb.Append("  CreateTime: ").Append(CreateTime).Append("\n");
