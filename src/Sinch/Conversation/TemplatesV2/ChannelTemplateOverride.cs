@@ -10,17 +10,17 @@ namespace Sinch.Conversation.TemplatesV2
     public sealed class ChannelTemplateOverride
     {
         /// <summary>
-        ///     Gets or Sets WHATSAPP
+        ///     Gets or Sets Whatsapp
         /// </summary>
         [JsonPropertyName("WHATSAPP")]
-        public OverrideTemplateReference WHATSAPP { get; set; }
+        public OverrideTemplateReference WhatsApp { get; set; }
         
 
         /// <summary>
-        ///     Gets or Sets KAKOTALK
+        ///     Gets or Sets Kakaotalk
         /// </summary>
-        [JsonPropertyName("KAKOTALK")]
-        public OverrideTemplateReference KAKOTALK { get; set; }
+        [JsonPropertyName("KAKAOTALK")]
+        public OverrideTemplateReference KakaoTalk { get; set; }
         
 
         /// <summary>
@@ -31,8 +31,8 @@ namespace Sinch.Conversation.TemplatesV2
         {
             var sb = new StringBuilder();
             sb.Append("class ChannelTemplateOverride {\n");
-            sb.Append("  WHATSAPP: ").Append(WHATSAPP).Append("\n");
-            sb.Append("  KAKOTALK: ").Append(KAKOTALK).Append("\n");
+            sb.Append("  WHATSAPP: ").Append(WhatsApp).Append("\n");
+            sb.Append("  KAKOTALK: ").Append(KakaoTalk).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

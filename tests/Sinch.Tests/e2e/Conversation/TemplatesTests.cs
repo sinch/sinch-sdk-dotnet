@@ -30,7 +30,7 @@ namespace Sinch.Tests.e2e.Conversation
                     LanguageCode = "en-US",
                     ChannelTemplateOverrides = new ChannelTemplateOverride()
                     {
-                        WHATSAPP = new OverrideTemplateReference()
+                        WhatsApp = new OverrideTemplateReference()
                         {
                             TemplateReference = new TemplateReference()
                             {
