@@ -79,7 +79,7 @@ namespace Sinch.Conversation.Events
             var sb = new StringBuilder();
             sb.Append("class ConversationEvent {\n");
             sb.Append("  Direction: ").Append(Direction).Append("\n");
-            sb.Append("  VarEvent: ").Append(Event).Append("\n");
+            sb.Append("  Event: ").Append(Event).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  ConversationId: ").Append(ConversationId).Append("\n");
             sb.Append("  ContactId: ").Append(ContactId).Append("\n");

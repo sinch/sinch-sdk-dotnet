@@ -74,7 +74,7 @@ namespace Sinch.Conversation.Events.Send
             sb.Append("  AppId: ").Append(AppId).Append("\n");
             sb.Append("  CallbackUrl: ").Append(CallbackUrl).Append("\n");
             sb.Append("  ChannelPriorityOrder: ").Append(ChannelPriorityOrder).Append("\n");
-            sb.Append("  VarEvent: ").Append(Event).Append("\n");
+            sb.Append("  Event: ").Append(Event).Append("\n");
             sb.Append("  EventMetadata: ").Append(EventMetadata).Append("\n");
             sb.Append("  Queue: ").Append(Queue).Append("\n");
             sb.Append("  Recipient: ").Append(Recipient).Append("\n");
