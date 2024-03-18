@@ -97,10 +97,11 @@ namespace Sinch.Conversation.Conversations
         /// <summary>
         ///     This operation injects a conversation event into a specific conversation.
         /// </summary>
+        /// <param name="conversationId"></param>
         /// <param name="injectEventRequest"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<InjectEventResponse> InjectEvent(InjectEventRequest injectEventRequest,
+        Task<InjectEventResponse> InjectEvent(string conversationId, InjectEventRequest injectEventRequest,
             CancellationToken cancellationToken = default);
     }
 
@@ -244,20 +245,19 @@ namespace Sinch.Conversation.Conversations
         }
 
         /// <inheritdoc />
-        public Task<InjectEventResponse> InjectEvent(InjectEventRequest injectEventRequest,
+        public Task<InjectEventResponse> InjectEvent(string conversationId, InjectEventRequest injectEventRequest,
             CancellationToken cancellationToken = default)
         {
             if (injectEventRequest == null)
                 throw new ArgumentNullException(nameof(injectEventRequest), "Shouldn't be null");
 
-            if (string.IsNullOrEmpty(injectEventRequest.ConversationId))
-                throw new NullReferenceException(
-                    $"{nameof(injectEventRequest)}.{nameof(injectEventRequest.ConversationId)} should have a value");
+            if (string.IsNullOrEmpty(conversationId))
+                throw new ArgumentNullException(nameof(conversationId));
 
             var uri = new Uri(_baseAddress,
-                $"v1/projects/{_projectId}/conversations/{injectEventRequest.ConversationId}:inject-event");
+                $"v1/projects/{_projectId}/conversations/{conversationId}:inject-event");
             _logger?.LogDebug("Injecting a message into {conversationId} of {project}",
-                injectEventRequest.ConversationId, _projectId);
+                conversationId, _projectId);
             return _http.Send<InjectEventRequest, InjectEventResponse>(uri, HttpMethod.Post, injectEventRequest,
                 cancellationToken);
         }
