@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Sinch.Conversation.Conversations.Create;
+using Sinch.Conversation.Conversations.InjectEvent;
 using Sinch.Conversation.Conversations.InjectMessage;
 using Sinch.Conversation.Conversations.List;
 using Sinch.Core;
@@ -92,6 +93,15 @@ namespace Sinch.Conversation.Conversations
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task InjectMessage(InjectMessageRequest injectMessageRequest, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     This operation injects a conversation event into a specific conversation.
+        /// </summary>
+        /// <param name="injectEventRequest"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<InjectEventResponse> InjectEvent(InjectEventRequest injectEventRequest,
+            CancellationToken cancellationToken = default);
     }
 
     internal class ConversationsClient : ISinchConversationConversations
@@ -219,17 +229,36 @@ namespace Sinch.Conversation.Conversations
             CancellationToken cancellationToken = default)
         {
             if (injectMessageRequest == null)
-                throw new ArgumentNullException(nameof(injectMessageRequest), "Shouldn't be null");
-            
+                throw new ArgumentNullException(nameof(injectMessageRequest), "Shouldn't be null.");
+
             if (string.IsNullOrEmpty(injectMessageRequest.ConversationId))
                 throw new NullReferenceException(
-                    $"{nameof(injectMessageRequest)}.{nameof(injectMessageRequest.ConversationId)} should have a value");
+                    $"{nameof(injectMessageRequest)}.{nameof(injectMessageRequest.ConversationId)} is required.");
 
             var uri = new Uri(_baseAddress,
                 $"v1/projects/{_projectId}/conversations/{injectMessageRequest.ConversationId}:inject-message");
             _logger?.LogDebug("Injecting a message into {conversationId} of {project}",
                 injectMessageRequest.ConversationId, _projectId);
             return _http.Send<InjectMessageRequest, object>(uri, HttpMethod.Post, injectMessageRequest,
+                cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<InjectEventResponse> InjectEvent(InjectEventRequest injectEventRequest,
+            CancellationToken cancellationToken = default)
+        {
+            if (injectEventRequest == null)
+                throw new ArgumentNullException(nameof(injectEventRequest), "Shouldn't be null");
+
+            if (string.IsNullOrEmpty(injectEventRequest.ConversationId))
+                throw new NullReferenceException(
+                    $"{nameof(injectEventRequest)}.{nameof(injectEventRequest.ConversationId)} is required.");
+
+            var uri = new Uri(_baseAddress,
+                $"v1/projects/{_projectId}/conversations/{injectEventRequest.ConversationId}:inject-event");
+            _logger?.LogDebug("Injecting a message into {conversationId} of {project}",
+                injectEventRequest.ConversationId, _projectId);
+            return _http.Send<InjectEventRequest, InjectEventResponse>(uri, HttpMethod.Post, injectEventRequest,
                 cancellationToken);
         }
     }

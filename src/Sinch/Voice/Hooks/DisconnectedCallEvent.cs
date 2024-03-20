@@ -121,12 +121,12 @@ namespace Sinch.Voice.Hooks
         {
             var sb = new StringBuilder();
             sb.Append("class DiceRequest {\n");
-            sb.Append("  VarEvent: ").Append(Event).Append("\n");
+            sb.Append("  Event: ").Append(Event).Append("\n");
             sb.Append("  CallId: ").Append(CallId).Append("\n");
             sb.Append("  Timestamp: ").Append(Timestamp).Append("\n");
             sb.Append("  Reason: ").Append(Reason).Append("\n");
             sb.Append("  Result: ").Append(Result).Append("\n");
-            sb.Append("  VarVersion: ").Append(Version).Append("\n");
+            sb.Append("  Version: ").Append(Version).Append("\n");
             sb.Append("  Custom: ").Append(Custom).Append("\n");
             sb.Append("  Debit: ").Append(Debit).Append("\n");
             sb.Append("  UserRate: ").Append(UserRate).Append("\n");

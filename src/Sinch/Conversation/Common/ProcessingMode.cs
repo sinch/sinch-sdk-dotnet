@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Conversation.Apps
+namespace Sinch.Conversation.Common
 {
     /// <summary>
     ///     Represents the processing mode options for Conversation API.

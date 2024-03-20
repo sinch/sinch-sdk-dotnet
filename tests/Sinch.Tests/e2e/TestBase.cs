@@ -39,6 +39,8 @@ namespace Sinch.Tests.e2e
                     NumbersUrl = GetTestUrl("MOCK_NUMBERS_PORT"),
                     VoiceUrl = GetTestUrl("MOCK_VOICE_PORT"),
                     VerificationUrl = GetTestUrl("MOCK_VERIFICATION_PORT"),
+                    // templates treated as conversation api in doppelganger 
+                    TemplatesUrl = GetTestUrl("MOCK_CONVERSATION_PORT"),
                 };
             });
         }

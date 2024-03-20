@@ -6,11 +6,14 @@ using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Conversation;
+using Sinch.Conversation.Common;
 using Sinch.Conversation.Conversations;
 using Sinch.Conversation.Conversations.Create;
+using Sinch.Conversation.Conversations.InjectEvent;
 using Sinch.Conversation.Conversations.InjectMessage;
 using Sinch.Conversation.Conversations.List;
-using Sinch.Conversation.Messages;
+using Sinch.Conversation.Events;
+using Sinch.Conversation.Events.EventTypes;
 using Sinch.Conversation.Messages.Message;
 using Xunit;
 
@@ -130,6 +133,31 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var op = () => SinchClientMockServer.Conversation.Conversations.Stop(_conversation.Id);
             await op.Should().NotThrowAsync();
+        }
+
+
+        [Fact]
+        public async Task InjectEvent()
+        {
+            var response = await SinchClientMockServer.Conversation.Conversations.InjectEvent(
+                new InjectEventRequest(new AppEvent(new ComposingEvent()))
+                {
+                    ConversationId = _conversation.Id,
+                    AcceptTime = DateTime.Parse("1970-01-01T00:00:00Z", CultureInfo.InvariantCulture).ToUniversalTime(),
+                    ChannelIdentity = new ChannelIdentity()
+                    {
+                        Identity = "01HN31W37910AANG1JGE8Y6RFF",
+                        Channel = ConversationChannel.Instagram,
+                        AppId = "123"
+                    },
+                    ContactId = _conversation.ContactId,
+                    ProcessingMode = ProcessingMode.Dispatch,
+                });
+            response.Should().BeEquivalentTo(new InjectEventResponse()
+            {
+                AcceptedTime = DateTime.Parse("2019-08-24T14:15:22Z", CultureInfo.InvariantCulture).ToUniversalTime(),
+                EventId = "123"
+            });
         }
 
         private static void ValidateMetadata(Sinch.Conversation.Conversations.Conversation response)
