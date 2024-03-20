@@ -139,9 +139,10 @@ namespace Sinch.Tests.e2e.Conversation
         [Fact]
         public async Task InjectEvent()
         {
-            var response = await SinchClientMockServer.Conversation.Conversations.InjectEvent(_conversation.Id,
+            var response = await SinchClientMockServer.Conversation.Conversations.InjectEvent(
                 new InjectEventRequest(new AppEvent(new ComposingEvent()))
                 {
+                    ConversationId = _conversation.Id,
                     AcceptTime = DateTime.Parse("1970-01-01T00:00:00Z", CultureInfo.InvariantCulture).ToUniversalTime(),
                     ChannelIdentity = new ChannelIdentity()
                     {
