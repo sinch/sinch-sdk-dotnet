@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.Message;
 
 namespace Sinch.Conversation.Messages.Send

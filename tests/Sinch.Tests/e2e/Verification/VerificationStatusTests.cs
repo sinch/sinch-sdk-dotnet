@@ -8,6 +8,7 @@ namespace Sinch.Tests.e2e.Verification
 {
     public class VerificationStatusTests : VerificationTestBase
     {
+        // mocked based on oas file
         private readonly ReportSmsVerificationResponse _smsVerificationReportResponse =
             new ReportSmsVerificationResponse()
             {

@@ -12,6 +12,7 @@ using Sinch.Conversation.Apps;
 using Sinch.Conversation.Apps.Create;
 using Sinch.Conversation.Apps.Credentials;
 using Sinch.Conversation.Apps.Update;
+using Sinch.Conversation.Common;
 using Xunit;
 
 namespace Sinch.Tests.Conversation

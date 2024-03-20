@@ -1,4 +1,4 @@
-﻿namespace Sinch.Conversation.Messages
+﻿namespace Sinch.Conversation.Common
 {
     public sealed class ContactRecipient : IRecipient
     {
