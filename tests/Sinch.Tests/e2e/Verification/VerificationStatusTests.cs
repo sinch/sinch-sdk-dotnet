@@ -113,7 +113,7 @@ namespace Sinch.Tests.e2e.Verification
                     CallComplete = true,
                 });
         }
-        
+
         [Fact]
         public async Task ByReferenceFlashCall()
         {
