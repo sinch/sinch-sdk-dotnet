@@ -229,11 +229,11 @@ namespace Sinch.Conversation.Conversations
             CancellationToken cancellationToken = default)
         {
             if (injectMessageRequest == null)
-                throw new ArgumentNullException(nameof(injectMessageRequest), "Shouldn't be null");
+                throw new ArgumentNullException(nameof(injectMessageRequest), "Shouldn't be null.");
 
             if (string.IsNullOrEmpty(injectMessageRequest.ConversationId))
                 throw new NullReferenceException(
-                    $"{nameof(injectMessageRequest)}.{nameof(injectMessageRequest.ConversationId)} should have a value");
+                    $"{nameof(injectMessageRequest)}.{nameof(injectMessageRequest.ConversationId)} is required.");
 
             var uri = new Uri(_baseAddress,
                 $"v1/projects/{_projectId}/conversations/{injectMessageRequest.ConversationId}:inject-message");
@@ -251,7 +251,8 @@ namespace Sinch.Conversation.Conversations
                 throw new ArgumentNullException(nameof(injectEventRequest), "Shouldn't be null");
 
             if (string.IsNullOrEmpty(injectEventRequest.ConversationId))
-                throw new NullReferenceException($"{nameof(injectEventRequest.ConversationId)} is required.");
+                throw new NullReferenceException(
+                    $"{nameof(injectEventRequest)}.{nameof(injectEventRequest.ConversationId)} is required.");
 
             var uri = new Uri(_baseAddress,
                 $"v1/projects/{_projectId}/conversations/{injectEventRequest.ConversationId}:inject-event");
