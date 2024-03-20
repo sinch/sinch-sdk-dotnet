@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages;
 using Sinch.Core;
 

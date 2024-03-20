@@ -9,6 +9,7 @@ using FluentAssertions;
 using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
 using Sinch.Conversation;
+using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Messages.Send;

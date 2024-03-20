@@ -1,8 +1,11 @@
 ﻿using System;
 using Sinch.Conversation.Apps;
+using Sinch.Conversation.Capability;
 using Sinch.Conversation.Contacts;
 using Sinch.Conversation.Conversations;
+using Sinch.Conversation.Events;
 using Sinch.Conversation.Messages;
+using Sinch.Conversation.Transcoding;
 using Sinch.Conversation.Webhooks;
 using Sinch.Core;
 using Sinch.Logger;
@@ -31,6 +34,15 @@ namespace Sinch.Conversation
 
         /// <inheritdoc cref="ISinchConversationWebhooks" />
         ISinchConversationWebhooks Webhooks { get; }
+
+        /// <inheritdoc cref="ISinchConversationEvents" />
+        ISinchConversationEvents Events { get; }
+
+        /// <inheritdoc cref="ISinchConversationTranscoding" />
+        ISinchConversationTranscoding Transcoding { get; }
+
+        /// <inheritdoc cref="ISinchConversationCapabilities" />
+        ISinchConversationCapabilities Capabilities { get; }
     }
 
     /// <inheritdoc />
@@ -48,6 +60,11 @@ namespace Sinch.Conversation
                 loggerFactory?.Create<ISinchConversationConversations>(), http);
             Webhooks = new Webhooks.Webhooks(projectId, baseAddress,
                 loggerFactory?.Create<ISinchConversationWebhooks>(), http);
+            Events = new Events.Events(projectId, baseAddress, loggerFactory?.Create<ISinchConversationEvents>(), http);
+            Transcoding = new Transcoding.Transcoding(projectId, baseAddress,
+                loggerFactory?.Create<ISinchConversationTranscoding>(), http);
+            Capabilities = new Capabilities(projectId, baseAddress,
+                loggerFactory?.Create<ISinchConversationCapabilities>(), http);
         }
 
         /// <inheritdoc />
@@ -62,6 +79,16 @@ namespace Sinch.Conversation
         /// <inheritdoc />
         public ISinchConversationConversations Conversations { get; }
 
+        /// <inheritdoc />
         public ISinchConversationWebhooks Webhooks { get; }
+
+        /// <inheritdoc />
+        public ISinchConversationEvents Events { get; }
+
+        /// <inheritdoc />
+        public ISinchConversationTranscoding Transcoding { get; }
+
+        /// <inheritdoc />
+        public ISinchConversationCapabilities Capabilities { get; }
     }
 }

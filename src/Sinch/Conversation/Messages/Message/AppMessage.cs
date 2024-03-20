@@ -2,6 +2,8 @@
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using Sinch.Conversation.Common;
+using Sinch.Conversation.Events.AppEvents;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -59,6 +61,9 @@ namespace Sinch.Conversation.Messages.Message
         ///     The key in the map must point to a valid conversation channel as defined by the enum ConversationChannel.
         /// </summary>
         public JsonObject ExplicitChannelMessage { get; set; }
+
+        /// <inheritdoc cref="Agent" />        
+        public Agent Agent { get; set; }
 
         /// <summary>
         ///     Gets or Sets AdditionalProperties
