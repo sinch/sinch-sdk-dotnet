@@ -8,6 +8,7 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using Microsoft.Extensions.Primitives;
 using Sinch.Core;
 using Sinch.Logger;
 
@@ -68,7 +69,7 @@ namespace Sinch.Conversation.Webhooks
         /// <param name="body"></param>
         /// <param name="secret"></param>
         /// <returns>True, if produced signature match with that of a header.</returns>
-        bool ValidateRequest(Dictionary<string, IEnumerable<string>> headers, JsonObject body, string secret);
+        bool ValidateRequest(Dictionary<string, StringValues> headers, JsonObject body, string secret);
     }
 
     /// <inheritdoc />
@@ -162,10 +163,10 @@ namespace Sinch.Conversation.Webhooks
                 cancellationToken);
         }
 
-        public bool ValidateRequest(Dictionary<string, IEnumerable<string>> headers, JsonObject body, string secret)
+        public bool ValidateRequest(Dictionary<string, StringValues> headers, JsonObject body, string secret)
         {
             var headersCaseInsensitive =
-                new Dictionary<string, IEnumerable<string>>(headers, StringComparer.InvariantCultureIgnoreCase);
+                new Dictionary<string, StringValues>(headers, StringComparer.InvariantCultureIgnoreCase);
 
             var nonce = headersCaseInsensitive["x-sinch-webhook-signature-nonce"].FirstOrDefault();
             if (string.IsNullOrEmpty(nonce))
