@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Text.Json.Serialization;
-using Sinch.Conversation.Apps;
-using Sinch.Conversation.Messages;
+using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.Message;
 
 namespace Sinch.Conversation.Hooks
