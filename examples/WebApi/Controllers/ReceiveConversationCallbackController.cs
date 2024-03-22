@@ -21,7 +21,7 @@ public class ReceiveConversationCallbackController : ControllerBase
     }
 
     [HttpPost(Name = "handle")]
-    public ActionResult Handle([FromBody] EventInboundAllOfEvent messageInboundEvent)
+    public ActionResult Handle([FromBody] EventInbound messageInboundEvent)
     {
         using var reader = new StreamReader(Request.Body, Encoding.UTF8);
         var rawJson = reader.ReadToEndAsync().Result;
