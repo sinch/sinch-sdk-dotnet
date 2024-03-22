@@ -1,5 +1,5 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Hooks.Models
@@ -9,7 +9,6 @@ namespace Sinch.Conversation.Hooks.Models
     /// </summary>
     public sealed class ChannelEventAllOfChannelEventNotification
     {
-
         /// <summary>
         /// Gets or Sets Channel
         /// </summary>
@@ -21,14 +20,14 @@ namespace Sinch.Conversation.Hooks.Models
         /// </summary>
         [JsonPropertyName("event_type")]
         public string EventType { get; set; }
-        
+
 
         /// <summary>
         ///     An object containing additional information regarding the event. The contents of the object depend on the channel and the event_type.
         /// </summary>
         [JsonPropertyName("additional_data")]
-        public Object AdditionalData { get; set; }
-        
+        public JsonObject AdditionalData { get; set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -44,7 +43,5 @@ namespace Sinch.Conversation.Hooks.Models
             sb.Append("}\n");
             return sb.ToString();
         }
-
     }
-
 }
