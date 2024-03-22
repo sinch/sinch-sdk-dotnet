@@ -69,7 +69,7 @@ namespace Sinch.Conversation.Webhooks
         /// <param name="body"></param>
         /// <param name="secret"></param>
         /// <returns>True, if produced signature match with that of a header.</returns>
-        bool ValidateRequest(Dictionary<string, StringValues> headers, JsonObject body, string secret);
+        bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonObject body, string secret);
     }
 
     /// <inheritdoc />
@@ -163,7 +163,7 @@ namespace Sinch.Conversation.Webhooks
                 cancellationToken);
         }
 
-        public bool ValidateRequest(Dictionary<string, StringValues> headers, JsonObject body, string secret)
+        public bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonObject body, string secret)
         {
             var headersCaseInsensitive =
                 new Dictionary<string, StringValues>(headers, StringComparer.InvariantCultureIgnoreCase);

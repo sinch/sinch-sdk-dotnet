@@ -27,7 +27,7 @@ public class ReceiveConversationCallbackController : ControllerBase
         var rawJson = reader.ReadToEndAsync().Result;
         
         var headers = Request.Headers.ToDictionary(a => a.Key, a => a.Value);
-        if (!_sinch.Conversation.Webhooks.ValidateRequest(headers, JsonNode.Parse(rawJson).AsObject(), Secret))
+        if (!_sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, JsonNode.Parse(rawJson).AsObject(), Secret))
         {
             _logger?.LogError("Failed to authorize received callback.");
             return Unauthorized();
