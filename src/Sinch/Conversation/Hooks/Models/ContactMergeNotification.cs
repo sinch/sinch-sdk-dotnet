@@ -7,7 +7,7 @@ namespace Sinch.Conversation.Hooks.Models
     /// <summary>
     ///     ContactMergeEventAllOfContactMergeNotification
     /// </summary>
-    public sealed class ContactMergeEventAllOfContactMergeNotification
+    public sealed class ContactMergeNotification
     {
         /// <summary>
         ///     Gets or Sets PreservedContact
@@ -30,7 +30,7 @@ namespace Sinch.Conversation.Hooks.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(ContactMergeEventAllOfContactMergeNotification)} {{\n");
+            sb.Append($"class {nameof(ContactMergeNotification)} {{\n");
             sb.Append($"  {nameof(PreservedContact)}: ").Append(PreservedContact).Append('\n');
             sb.Append($"  {nameof(DeletedContact)}: ").Append(DeletedContact).Append('\n');
             sb.Append("}\n");

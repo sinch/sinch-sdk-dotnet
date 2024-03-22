@@ -7,7 +7,7 @@ namespace Sinch.Conversation.Hooks.Models
     /// <summary>
     ///     OptOutEventAllOfOptOutNotification
     /// </summary>
-    public sealed class OptOutEventAllOfOptOutNotification
+    public sealed class OptOutNotification
     {
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Sinch.Conversation.Hooks.Models
         ///     Gets or Sets ErrorDetails
         /// </summary>
         [JsonPropertyName("error_details")]
-        public OptOutEventAllOfOptOutNotificationErrorDetails ErrorDetails { get; set; }
+        public OptOutNotificationErrorDetails ErrorDetails { get; set; }
         
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Sinch.Conversation.Hooks.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(OptOutEventAllOfOptOutNotification)} {{\n");
+            sb.Append($"class {nameof(OptOutNotification)} {{\n");
             sb.Append($"  {nameof(RequestId)}: ").Append(RequestId).Append('\n');
             sb.Append($"  {nameof(ContactId)}: ").Append(ContactId).Append('\n');
             sb.Append($"  {nameof(Channel)}: ").Append(Channel).Append('\n');

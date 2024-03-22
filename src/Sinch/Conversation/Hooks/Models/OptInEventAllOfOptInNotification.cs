@@ -55,7 +55,7 @@ namespace Sinch.Conversation.Hooks.Models
         ///     Gets or Sets ErrorDetails
         /// </summary>
         [JsonPropertyName("error_details")]
-        public OptInEventAllOfOptInNotificationErrorDetails ErrorDetails { get; set; }
+        public OptInNotificationErrorDetails ErrorDetails { get; set; }
         
 
         /// <summary>

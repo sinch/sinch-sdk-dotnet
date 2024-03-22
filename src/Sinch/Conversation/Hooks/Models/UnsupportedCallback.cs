@@ -7,7 +7,7 @@ namespace Sinch.Conversation.Hooks.Models
     /// <summary>
     ///     UnsupportedCallbackEventAllOfUnsupportedCallback
     /// </summary>
-    public sealed class UnsupportedCallbackEventAllOfUnsupportedCallback
+    public sealed class UnsupportedCallback
     {
         /// <summary>
         /// Gets or Sets Channel
@@ -64,7 +64,7 @@ namespace Sinch.Conversation.Hooks.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(UnsupportedCallbackEventAllOfUnsupportedCallback)} {{\n");
+            sb.Append($"class {nameof(UnsupportedCallback)} {{\n");
             sb.Append($"  {nameof(Channel)}: ").Append(Channel).Append('\n');
             sb.Append($"  {nameof(Payload)}: ").Append(Payload).Append('\n');
             sb.Append($"  {nameof(ProcessingMode)}: ").Append(ProcessingMode).Append('\n');

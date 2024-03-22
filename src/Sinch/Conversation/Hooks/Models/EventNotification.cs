@@ -7,7 +7,7 @@ namespace Sinch.Conversation.Hooks.Models
     /// <summary>
     ///     ChannelEventAllOfChannelEventNotification
     /// </summary>
-    public sealed class ChannelEventAllOfChannelEventNotification
+    public sealed class EventNotification
     {
         /// <summary>
         /// Gets or Sets Channel
@@ -36,7 +36,7 @@ namespace Sinch.Conversation.Hooks.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(ChannelEventAllOfChannelEventNotification)} {{\n");
+            sb.Append($"class {nameof(EventNotification)} {{\n");
             sb.Append($"  {nameof(Channel)}: ").Append(Channel).Append('\n');
             sb.Append($"  {nameof(EventType)}: ").Append(EventType).Append('\n');
             sb.Append($"  {nameof(AdditionalData)}: ").Append(AdditionalData).Append('\n');

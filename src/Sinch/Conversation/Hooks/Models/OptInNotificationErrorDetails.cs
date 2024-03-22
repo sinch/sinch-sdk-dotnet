@@ -1,12 +1,12 @@
-using System.Text;
+﻿using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Hooks.Models
 {
     /// <summary>
-    ///     This field is populated if the opt-out failed.
+    ///     This field is populated if the opt-in failed.
     /// </summary>
-    public sealed class OptOutEventAllOfOptOutNotificationErrorDetails
+    public sealed class OptInNotificationErrorDetails
     {
         /// <summary>
         ///     Human-readable error description.
@@ -22,7 +22,7 @@ namespace Sinch.Conversation.Hooks.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(OptOutEventAllOfOptOutNotificationErrorDetails)} {{\n");
+            sb.Append($"class {nameof(OptInNotificationErrorDetails)} {{\n");
             sb.Append($"  {nameof(Description)}: ").Append(Description).Append('\n');
             sb.Append("}\n");
             return sb.ToString();

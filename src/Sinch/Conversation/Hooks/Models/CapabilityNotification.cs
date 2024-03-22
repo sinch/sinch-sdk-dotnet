@@ -8,7 +8,7 @@ namespace Sinch.Conversation.Hooks.Models
     /// <summary>
     ///     CapabilityEventAllOfCapabilityNotification
     /// </summary>
-    public sealed class CapabilityEventAllOfCapabilityNotification
+    public sealed class CapabilityNotification
     {
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Sinch.Conversation.Hooks.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(CapabilityEventAllOfCapabilityNotification)} {{\n");
+            sb.Append($"class {nameof(CapabilityNotification)} {{\n");
             sb.Append($"  {nameof(RequestId)}: ").Append(RequestId).Append('\n');
             sb.Append($"  {nameof(ContactId)}: ").Append(ContactId).Append('\n');
             sb.Append($"  {nameof(Channel)}: ").Append(Channel).Append('\n');

@@ -56,7 +56,7 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets OptOutNotification
         /// </summary>
         [JsonPropertyName("opt_out_notification")]
-        public OptOutEventAllOfOptOutNotification OptOutNotification { get; set; }
+        public OptOutNotification OptOutNotification { get; set; }
         
 
         /// <summary>

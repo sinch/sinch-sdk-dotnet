@@ -56,7 +56,7 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets UnsupportedCallback
         /// </summary>
         [JsonPropertyName("unsupported_callback")]
-        public UnsupportedCallbackEventAllOfUnsupportedCallback UnsupportedCallback { get; set; }
+        public UnsupportedCallback UnsupportedCallback { get; set; }
 
 
         /// <summary>

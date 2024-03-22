@@ -6,7 +6,7 @@ namespace Sinch.Conversation.Hooks.Models
     /// <summary>
     ///     Object reflecting the current state of a particular payment flow.
     /// </summary>
-    public sealed class ContactMessageEventPaymentStatusUpdateEvent
+    public sealed class PaymentStatusUpdateEvent
     {
         /// <summary>
         /// The stage the payment has reached within the payment flow.
@@ -43,7 +43,7 @@ namespace Sinch.Conversation.Hooks.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(ContactMessageEventPaymentStatusUpdateEvent)} {{\n");
+            sb.Append($"class {nameof(PaymentStatusUpdateEvent)} {{\n");
             sb.Append($"  {nameof(ReferenceId)}: ").Append(ReferenceId).Append('\n');
             sb.Append($"  {nameof(PaymentStatus)}: ").Append(PaymentStatus).Append('\n');
             sb.Append($"  {nameof(PaymentTransactionStatus)}: ").Append(PaymentTransactionStatus).Append('\n');

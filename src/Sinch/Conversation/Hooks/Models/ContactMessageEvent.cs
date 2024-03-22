@@ -12,7 +12,7 @@ namespace Sinch.Conversation.Hooks.Models
         ///     Gets or Sets PaymentStatusUpdateEvent
         /// </summary>
         [JsonPropertyName("payment_status_update_event")]
-        public ContactMessageEventPaymentStatusUpdateEvent PaymentStatusUpdateEvent { get; set; }
+        public PaymentStatusUpdateEvent PaymentStatusUpdateEvent { get; set; }
 
 
         /// <summary>

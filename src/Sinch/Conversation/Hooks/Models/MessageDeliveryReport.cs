@@ -8,7 +8,7 @@ namespace Sinch.Conversation.Hooks.Models
     /// <summary>
     ///     MessageDeliveryReceiptEventAllOfMessageDeliveryReport
     /// </summary>
-    public sealed class MessageDeliveryReceiptEventAllOfMessageDeliveryReport
+    public sealed class MessageDeliveryReport
     {
         /// <summary>
         /// Gets or Sets Status
@@ -72,7 +72,7 @@ namespace Sinch.Conversation.Hooks.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(MessageDeliveryReceiptEventAllOfMessageDeliveryReport)} {{\n");
+            sb.Append($"class {nameof(MessageDeliveryReport)} {{\n");
             sb.Append($"  {nameof(MessageId)}: ").Append(MessageId).Append('\n');
             sb.Append($"  {nameof(ConversationId)}: ").Append(ConversationId).Append('\n');
             sb.Append($"  {nameof(Status)}: ").Append(Status).Append('\n');

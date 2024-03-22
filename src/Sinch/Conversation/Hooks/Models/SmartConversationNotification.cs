@@ -6,7 +6,7 @@ namespace Sinch.Conversation.Hooks.Models
     /// <summary>
     ///     SmartConversationsEventAllOfSmartConversationNotification
     /// </summary>
-    public sealed class SmartConversationsEventAllOfSmartConversationNotification
+    public sealed class SmartConversationNotification
     {
         /// <summary>
         /// Gets or Sets Channel
@@ -56,7 +56,7 @@ namespace Sinch.Conversation.Hooks.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(SmartConversationsEventAllOfSmartConversationNotification)} {{\n");
+            sb.Append($"class {nameof(SmartConversationNotification)} {{\n");
             sb.Append($"  {nameof(ContactId)}: ").Append(ContactId).Append('\n');
             sb.Append($"  {nameof(ChannelIdentity)}: ").Append(ChannelIdentity).Append('\n');
             sb.Append($"  {nameof(Channel)}: ").Append(Channel).Append('\n');

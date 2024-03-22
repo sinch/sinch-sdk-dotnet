@@ -56,7 +56,7 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets SmartConversationNotification
         /// </summary>
         [JsonPropertyName("smart_conversation_notification")]
-        public SmartConversationsEventAllOfSmartConversationNotification SmartConversationNotification { get; set; }
+        public SmartConversationNotification SmartConversationNotification { get; set; }
         
 
         /// <summary>

@@ -6,9 +6,9 @@ using Sinch.Conversation.Hooks.Models;
 namespace Sinch.Conversation.Hooks
 {
     /// <summary>
-    ///     EventDelivery
+    ///     EventInbound
     /// </summary>
-    public sealed class EventDelivery
+    public sealed class InboundEvent
     {
         /// <summary>
         ///     Id of the subscribed app.
@@ -53,10 +53,10 @@ namespace Sinch.Conversation.Hooks
 
 
         /// <summary>
-        ///     Gets or Sets EventDeliveryReport
+        ///     Gets or Sets VarEvent
         /// </summary>
-        [JsonPropertyName("event_delivery_report")]
-        public EventDeliveryAllOfEventDeliveryReport EventDeliveryReport { get; set; }
+        [JsonPropertyName("event")]
+        public EventInboundAllOfEvent Event { get; set; }
 
 
         /// <summary>
@@ -66,14 +66,14 @@ namespace Sinch.Conversation.Hooks
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(EventDelivery)} {{\n");
+            sb.Append($"class {nameof(InboundEvent)} {{\n");
             sb.Append($"  {nameof(AppId)}: ").Append(AppId).Append('\n');
             sb.Append($"  {nameof(AcceptedTime)}: ").Append(AcceptedTime).Append('\n');
             sb.Append($"  {nameof(EventTime)}: ").Append(EventTime).Append('\n');
             sb.Append($"  {nameof(ProjectId)}: ").Append(ProjectId).Append('\n');
             sb.Append($"  {nameof(MessageMetadata)}: ").Append(MessageMetadata).Append('\n');
             sb.Append($"  {nameof(CorrelationId)}: ").Append(CorrelationId).Append('\n');
-            sb.Append($"  {nameof(EventDeliveryReport)}: ").Append(EventDeliveryReport).Append('\n');
+            sb.Append($"  {nameof(Event)}: ").Append(Event).Append('\n');
             sb.Append("}\n");
             return sb.ToString();
         }

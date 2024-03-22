@@ -56,7 +56,7 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets MessageSubmitNotification
         /// </summary>
         [JsonPropertyName("message_submit_notification")]
-        public MessageSubmitEventAllOfMessageSubmitNotification MessageSubmitNotification { get; set; }
+        public MessageSubmitNotification MessageSubmitNotification { get; set; }
 
 
         /// <summary>
