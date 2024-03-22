@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Hooks
 {
-    public abstract class CallbackEventBase
+    public abstract class CallbackEventBase : ICallbackEvent
     {
         /// <summary>
         ///     Id of the subscribed app.

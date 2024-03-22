@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using System.Text.Json;
 using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Mvc;
 using Sinch;
@@ -21,19 +21,64 @@ public class ReceiveConversationCallbackController : ControllerBase
     }
 
     [HttpPost(Name = "handle")]
-    public ActionResult Handle([FromBody] InboundEvent messageInboundEvent)
+    public ActionResult Handle([FromBody] JsonObject json)
     {
-        using var reader = new StreamReader(Request.Body, Encoding.UTF8);
-        var rawJson = reader.ReadToEndAsync().Result;
-        
         var headers = Request.Headers.ToDictionary(a => a.Key, a => a.Value);
-        if (!_sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, JsonNode.Parse(rawJson).AsObject(), Secret))
+        if (!_sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, json,
+                Secret))
         {
             _logger?.LogError("Failed to authorize received callback.");
             return Unauthorized();
         }
 
-        // do something with messageInboundEvent
+        var callbackEvent = json.Deserialize<ICallbackEvent>();
+        // do something with specific event
+        switch (callbackEvent)
+        {
+            case CapabilityEvent capabilityEvent:
+                break;
+            case ChannelEvent channelEvent:
+                break;
+            case ContactCreateEvent contactCreateEvent:
+                break;
+            case ContactDeleteEvent contactDeleteEvent:
+                break;
+            case ContactIdentitiesDuplicationEvent contactIdentitiesDuplicationEvent:
+                break;
+            case ContactMergeEvent contactMergeEvent:
+                break;
+            case ContactUpdateEvent contactUpdateEvent:
+                break;
+            case ConversationDeleteEvent conversationDeleteEvent:
+                break;
+            case ConversationStartEvent conversationStartEvent:
+                break;
+            case ConversationStopEvent conversationStopEvent:
+                break;
+            case DeliveryEvent deliveryEvent:
+                break;
+            case InboundEvent inboundEvent:
+                break;
+            case MessageDeliveryReceiptEvent messageDeliveryReceiptEvent:
+                break;
+            case MessageInboundEvent messageInboundEvent:
+                break;
+            case MessageInboundSmartConversationRedactionEvent messageInboundSmartConversationRedactionEvent:
+                break;
+            case MessageSubmitEvent messageSubmitEvent:
+                break;
+            case OptInEvent optInEvent:
+                break;
+            case OptOutEvent optOutEvent:
+                break;
+            case SmartConversationsEvent smartConversationsEvent:
+                break;
+            case UnsupportedCallbackEvent unsupportedCallbackEvent:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(callbackEvent));
+        }
+
         return Ok();
     }
 }
