@@ -55,7 +55,7 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets VarEvent
         /// </summary>
         [JsonPropertyName("event")]
-        public EventInboundAllOfEvent VarEvent { get; set; }
+        public EventInboundAllOfEvent Event { get; set; }
 
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Sinch.Conversation.Hooks
             sb.Append($"  {nameof(ProjectId)}: ").Append(ProjectId).Append('\n');
             sb.Append($"  {nameof(MessageMetadata)}: ").Append(MessageMetadata).Append('\n');
             sb.Append($"  {nameof(CorrelationId)}: ").Append(CorrelationId).Append('\n');
-            sb.Append($"  {nameof(VarEvent)}: ").Append(VarEvent).Append('\n');
+            sb.Append($"  {nameof(Event)}: ").Append(Event).Append('\n');
             sb.Append("}\n");
             return sb.ToString();
         }
