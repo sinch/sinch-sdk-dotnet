@@ -49,7 +49,7 @@ namespace Sinch.SMS
         ISinchSmsDeliveryReports DeliveryReports { get; }
     }
 
-    internal class Sms : ISinchSms
+    internal class SmsClient : ISinchSms
     {
         /// <summary>
         ///     Creates an instance of Sms service. Be aware that first parameter is either projectId or servicePlanId.
@@ -60,7 +60,7 @@ namespace Sinch.SMS
         /// <param name="baseAddress"></param>
         /// <param name="loggerFactory"></param>
         /// <param name="http"></param>
-        internal Sms(string projectIdOrServicePlanId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
+        internal SmsClient(string projectIdOrServicePlanId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
         {
             Batches = new Batches.Batches(projectIdOrServicePlanId, baseAddress,
                 loggerFactory?.Create<ISinchSmsBatches>(), http);

@@ -8,26 +8,26 @@
         /// <summary>
         ///     USA
         /// </summary>
-        public static readonly SmsHostingRegion Us = new("us");
+        public static readonly SmsServicePlanIdHostingRegion Us = new("us");
 
         /// <summary>
         ///     Ireland, Sweden
         /// </summary>
-        public static readonly SmsHostingRegion Eu = new("eu");
+        public static readonly SmsServicePlanIdHostingRegion Eu = new("eu");
         
         /// <summary>
         ///     Australia
         /// </summary>
-        public static readonly SmsHostingRegion Au = new("au");
+        public static readonly SmsServicePlanIdHostingRegion Au = new("au");
         
         /// <summary>
         ///     Brazil
         /// </summary>
-        public static readonly SmsHostingRegion Br = new("br");
+        public static readonly SmsServicePlanIdHostingRegion Br = new("br");
         
         /// <summary>
         ///     Canada
         /// </summary>
-        public static readonly SmsHostingRegion Ca = new("ca");
+        public static readonly SmsServicePlanIdHostingRegion Ca = new("ca");
     }
 }

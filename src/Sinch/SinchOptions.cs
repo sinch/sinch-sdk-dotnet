@@ -49,32 +49,42 @@ namespace Sinch
         /// </summary>
         /// <param name="servicePlanId">Your service plan id</param>
         /// <param name="hostingRegion">Region to use.</param>
+        /// <param name="apiToken"></param>
         /// <exception cref="ArgumentNullException">throws if service plan id or region is null or an empty string</exception>
-        public void UseServicePlanIdWithSms(string servicePlanId, SmsServicePlanIdHostingRegion hostingRegion)
+        public void UseServicePlanIdWithSms(string servicePlanId, SmsServicePlanIdHostingRegion hostingRegion,
+            string apiToken)
         {
-            ServicePlanIdOptions = new ServicePlanIdOptions(servicePlanId, hostingRegion);
+            ServicePlanIdOptions = new ServicePlanIdOptions(servicePlanId, hostingRegion, apiToken);
         }
     }
 
     internal class ServicePlanIdOptions
     {
-        public ServicePlanIdOptions(string servicePlanId, SmsServicePlanIdHostingRegion servicePlanIdHostingRegion)
+        public ServicePlanIdOptions(string servicePlanId, SmsServicePlanIdHostingRegion hostingRegion, string apiToken)
         {
-            if (!string.IsNullOrEmpty(servicePlanId))
+            if (string.IsNullOrEmpty(servicePlanId))
             {
                 throw new ArgumentNullException(nameof(servicePlanId), "Should have a value");
             }
 
-            if (servicePlanIdHostingRegion is null)
+            if (hostingRegion is null)
             {
-                throw new ArgumentNullException(nameof(servicePlanIdHostingRegion), "Should have a value");
+                throw new ArgumentNullException(nameof(hostingRegion), "Should have a value");
+            }
+
+            if (string.IsNullOrEmpty(apiToken))
+            {
+                throw new ArgumentNullException(nameof(apiToken), "Should have a value");
             }
 
             ServicePlanId = servicePlanId;
-            ServicePlanIdHostingRegion = servicePlanIdHostingRegion;
+            HostingRegion = hostingRegion;
+            ApiToken = apiToken;
         }
 
-        public SmsServicePlanIdHostingRegion ServicePlanIdHostingRegion { get; }
+        public string ApiToken { get; }
+
+        public SmsServicePlanIdHostingRegion HostingRegion { get; }
 
         public string ServicePlanId { get; }
     }
