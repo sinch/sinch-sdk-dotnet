@@ -53,7 +53,8 @@ namespace Sinch.SMS
     {
         /// <summary>
         ///     Creates an instance of Sms service. Be aware that first parameter is either projectId or servicePlanId.
-        ///     They are not distinguished more cause only one variant 
+        ///     They are not distinguished more cause only service_plan_id and project_id is in the same place in url path
+        ///     parameters, but base address is different.
         /// </summary>
         /// <param name="projectIdOrServicePlanId"></param>
         /// <param name="baseAddress"></param>
@@ -62,13 +63,13 @@ namespace Sinch.SMS
         internal Sms(string projectIdOrServicePlanId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
         {
             Batches = new Batches.Batches(projectIdOrServicePlanId, baseAddress,
-                loggerFactory?.Create<Batches.Batches>(), http);
+                loggerFactory?.Create<ISinchSmsBatches>(), http);
             Inbounds = new Inbounds.Inbounds(projectIdOrServicePlanId, baseAddress,
-                loggerFactory?.Create<Inbounds.Inbounds>(), http);
-            Groups = new Groups.Groups(projectIdOrServicePlanId, baseAddress, loggerFactory?.Create<Groups.Groups>(),
+                loggerFactory?.Create<ISinchSmsInbounds>(), http);
+            Groups = new Groups.Groups(projectIdOrServicePlanId, baseAddress, loggerFactory?.Create<ISinchSmsGroups>(),
                 http);
             DeliveryReports = new DeliveryReports.DeliveryReports(projectIdOrServicePlanId, baseAddress,
-                loggerFactory?.Create<DeliveryReports.DeliveryReports>(), http);
+                loggerFactory?.Create<ISinchSmsDeliveryReports>(), http);
         }
 
         public ISinchSmsBatches Batches { get; }
