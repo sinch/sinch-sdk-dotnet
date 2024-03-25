@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using Microsoft.Extensions.Primitives;
 using Sinch.Core;
 using Sinch.Logger;
 
@@ -56,6 +61,15 @@ namespace Sinch.Conversation.Webhooks
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task Delete(string webhookId, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Validates callback request.
+        /// </summary>
+        /// <param name="headers"></param>
+        /// <param name="body"></param>
+        /// <param name="secret"></param>
+        /// <returns>True, if produced signature match with that of a header.</returns>
+        bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonObject body, string secret);
     }
 
     /// <inheritdoc />
@@ -100,7 +114,7 @@ namespace Sinch.Conversation.Webhooks
             {
                 throw new ArgumentNullException(nameof(appId), "Should have a value");
             }
-            
+
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/apps/{appId}/webhooks");
             _logger?.LogDebug("Listing webhooks for an {appId}...", appId);
             var response = await _http.Send<ListWebhooksResponse>(uri, HttpMethod.Get,
@@ -120,21 +134,20 @@ namespace Sinch.Conversation.Webhooks
             {
                 throw new NullReferenceException($"{nameof(webhook)}.{nameof(webhook.Id)} shouldn't be null");
             }
-            
+
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{webhook.Id}");
-            
+
             var builder = new UriBuilder(uri);
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             var propMask = webhook.GetPropertiesMask();
             if (!string.IsNullOrEmpty(propMask)) queryString.Add("update_mask", propMask);
             builder.Query = queryString?.ToString()!;
-            
+
             _logger?.LogDebug("Updating a webhook with {id}...", webhook.Id);
             return _http.Send<Webhook, Webhook>(builder.Uri, HttpMethod.Patch, webhook,
                 cancellationToken);
         }
-        
-        
+
 
         /// <inheritdoc />
         public Task Delete(string webhookId, CancellationToken cancellationToken = default)
@@ -143,10 +156,50 @@ namespace Sinch.Conversation.Webhooks
             {
                 throw new ArgumentNullException(nameof(webhookId), "Should have a value");
             }
+
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{webhookId}");
             _logger?.LogDebug("Deleting a webhook with {id}...", webhookId);
             return _http.Send<object>(uri, HttpMethod.Delete,
                 cancellationToken);
+        }
+
+        public bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonObject body, string secret)
+        {
+            var headersCaseInsensitive =
+                new Dictionary<string, StringValues>(headers, StringComparer.InvariantCultureIgnoreCase);
+
+            var nonce = headersCaseInsensitive["x-sinch-webhook-signature-nonce"].FirstOrDefault();
+            if (string.IsNullOrEmpty(nonce))
+            {
+                _logger?.LogDebug("Failed to validate request. \"x-sinch-webhook-signature-nonce\" header is missing");
+                return false;
+            }
+
+            var timestamp = headersCaseInsensitive["x-sinch-webhook-signature-timestamp"].FirstOrDefault();
+            if (string.IsNullOrEmpty(timestamp))
+            {
+                _logger?.LogDebug(
+                    "Failed to validate request. \"x-sinch-webhook-signature-timestamp\" header is missing");
+                return false;
+            }
+
+            var signature = headersCaseInsensitive["x-sinch-webhook-signature"].FirstOrDefault();
+            if (string.IsNullOrEmpty(signature))
+            {
+                _logger.LogDebug("Failed to validate request. \"x-sinch-webhook-signature\" header is missing");
+                return false;
+            }
+
+            var signedData = new StringBuilder().AppendJoin('.', body.ToJsonString(), nonce, timestamp).ToString();
+
+            using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(secret));
+            var hmacSha256 = hmac.ComputeHash(Encoding.UTF8.GetBytes(signedData));
+            var calculatedSignature = Convert.ToBase64String(hmacSha256);
+            _logger?.LogDebug("{CalculatedSignature}", calculatedSignature);
+            _logger?.LogDebug("{x-sinch-webhook-signature}", signature);
+            var isValidSignature = string.Equals(calculatedSignature, signature, StringComparison.Ordinal);
+            _logger?.LogInformation("The signature was validated with {success}", isValidSignature);
+            return isValidSignature;
         }
     }
 
