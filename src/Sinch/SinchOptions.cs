@@ -48,33 +48,33 @@ namespace Sinch
         ///     `service_plan_id` will be used in place of `project_id`
         /// </summary>
         /// <param name="servicePlanId">Your service plan id</param>
-        /// <param name="region">Region to use.</param>
+        /// <param name="hostingRegion">Region to use.</param>
         /// <exception cref="ArgumentNullException">throws if service plan id or region is null or an empty string</exception>
-        public void UseServicePlanIdWithSms(string servicePlanId, SmsServicePlanIdRegion region)
+        public void UseServicePlanIdWithSms(string servicePlanId, SmsServicePlanIdHostingRegion hostingRegion)
         {
-            ServicePlanIdOptions = new ServicePlanIdOptions(servicePlanId, region);
+            ServicePlanIdOptions = new ServicePlanIdOptions(servicePlanId, hostingRegion);
         }
     }
 
     internal class ServicePlanIdOptions
     {
-        public ServicePlanIdOptions(string servicePlanId, SmsServicePlanIdRegion servicePlanIdRegion)
+        public ServicePlanIdOptions(string servicePlanId, SmsServicePlanIdHostingRegion servicePlanIdHostingRegion)
         {
             if (!string.IsNullOrEmpty(servicePlanId))
             {
                 throw new ArgumentNullException(nameof(servicePlanId), "Should have a value");
             }
 
-            if (servicePlanIdRegion is null)
+            if (servicePlanIdHostingRegion is null)
             {
-                throw new ArgumentNullException(nameof(servicePlanIdRegion), "Should have a value");
+                throw new ArgumentNullException(nameof(servicePlanIdHostingRegion), "Should have a value");
             }
 
             ServicePlanId = servicePlanId;
-            ServicePlanIdRegion = servicePlanIdRegion;
+            ServicePlanIdHostingRegion = servicePlanIdHostingRegion;
         }
 
-        public SmsServicePlanIdRegion ServicePlanIdRegion { get; }
+        public SmsServicePlanIdHostingRegion ServicePlanIdHostingRegion { get; }
 
         public string ServicePlanId { get; }
     }

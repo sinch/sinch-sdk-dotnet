@@ -3,7 +3,7 @@
     /// <summary>
     ///     The following regions can be set to be used in SDK as a hosting region when using `service_plan_id` option
     /// </summary>
-    public record SmsServicePlanIdRegion(string Value)
+    public record SmsServicePlanIdHostingRegion(string Value)
     {
         /// <summary>
         ///     USA

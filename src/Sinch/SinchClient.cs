@@ -123,6 +123,7 @@ namespace Sinch
         private const string VerificationApiUrl = "https://verification.api.sinch.com/";
         private const string NumbersApiUrl = "https://numbers.api.sinch.com/";
         private const string SmsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
+        private const string SmsApiServicePlanIdUrlTemplate = "https://{0}.sms.api.sinch.com";
         private const string ConversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
         private const string VoiceApiUrlTemplate = "https://{0}.api.sinch.com/";
         private const string AuthApiUrl = "https://auth.sinch.com";
@@ -181,12 +182,11 @@ namespace Sinch
             _keyId = keyId;
             _keySecret = keySecret;
 
-
             var optionsObj = new SinchOptions();
             options?.Invoke(optionsObj);
 
             if (optionsObj.LoggerFactory is not null) _loggerFactory = new LoggerFactory(optionsObj.LoggerFactory);
-            var logger = _loggerFactory?.Create<SinchClient>();
+            var logger = _loggerFactory?.Create<ISinchClient>();
             logger?.LogInformation("Initializing SinchClient...");
 
 
@@ -220,9 +220,9 @@ namespace Sinch
 
             _numbers = new Numbers.Numbers(_projectId, new Uri(_apiUrlOverrides?.NumbersUrl ?? NumbersApiUrl),
                 _loggerFactory, httpCamelCase);
-            _sms = new Sms(_projectId, GetSmsBaseAddress(optionsObj.SmsHostingRegion, _apiUrlOverrides?.SmsUrl),
-                _loggerFactory,
-                httpSnakeCase);
+
+            _sms = InitSms(optionsObj, httpSnakeCase, logger);
+
             var conversationBaseAddress = new Uri(_apiUrlOverrides?.ConversationUrl ??
                                                   string.Format(ConversationApiUrlTemplate,
                                                       optionsObj.ConversationRegion.Value));
@@ -234,6 +234,38 @@ namespace Sinch
                 _loggerFactory, httpSnakeCase);
 
             logger?.LogInformation("SinchClient initialized.");
+        }
+
+        private Sms InitSms(SinchOptions optionsObj, IHttp httpSnakeCase, ILoggerAdapter<ISinchClient> logger)
+        {
+            if (optionsObj.ServicePlanIdOptions != null)
+            {
+                logger?.LogInformation("Initializing SMS client with {service_plan_id} in {region}",
+                    optionsObj.ServicePlanIdOptions.ServicePlanId,
+                    optionsObj.ServicePlanIdOptions.ServicePlanIdHostingRegion.Value);
+                return new Sms(optionsObj.ServicePlanIdOptions.ServicePlanId,
+                    GetSmsBaseAddress(optionsObj.ServicePlanIdOptions.ServicePlanIdHostingRegion,
+                        _apiUrlOverrides?.SmsUrl),
+                    _loggerFactory, httpSnakeCase);
+            }
+
+            logger?.LogInformation("Initializing SMS client with {project_id} in {region}", _projectId,
+                optionsObj.SmsHostingRegion.Value);
+            return new Sms(_projectId, GetSmsBaseAddress(optionsObj.SmsHostingRegion, _apiUrlOverrides?.SmsUrl),
+                _loggerFactory,
+                httpSnakeCase);
+        }
+
+        private static Uri GetSmsBaseAddress(SmsServicePlanIdHostingRegion smsServicePlanIdHostingRegion,
+            string smsUrlOverride)
+        {
+            if (!string.IsNullOrEmpty(smsUrlOverride))
+            {
+                return new Uri(smsUrlOverride);
+            }
+
+            return new Uri(string.Format(SmsApiServicePlanIdUrlTemplate,
+                smsServicePlanIdHostingRegion.Value.ToLowerInvariant()));
         }
 
         private static Uri GetSmsBaseAddress(SmsHostingRegion smsHostingRegion, string smsUrlOverride)

@@ -51,12 +51,23 @@ namespace Sinch.SMS
 
     internal class Sms : ISinchSms
     {
-        internal Sms(string projectId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
+        /// <summary>
+        ///     Creates an instance of Sms service. Be aware that first parameter is either projectId or servicePlanId.
+        ///     They are not distinguished more cause only one variant 
+        /// </summary>
+        /// <param name="projectIdOrServicePlanId"></param>
+        /// <param name="baseAddress"></param>
+        /// <param name="loggerFactory"></param>
+        /// <param name="http"></param>
+        internal Sms(string projectIdOrServicePlanId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
         {
-            Batches = new Batches.Batches(projectId, baseAddress, loggerFactory?.Create<Batches.Batches>(), http);
-            Inbounds = new Inbounds.Inbounds(projectId, baseAddress, loggerFactory?.Create<Inbounds.Inbounds>(), http);
-            Groups = new Groups.Groups(projectId, baseAddress, loggerFactory?.Create<Groups.Groups>(), http);
-            DeliveryReports = new DeliveryReports.DeliveryReports(projectId, baseAddress,
+            Batches = new Batches.Batches(projectIdOrServicePlanId, baseAddress,
+                loggerFactory?.Create<Batches.Batches>(), http);
+            Inbounds = new Inbounds.Inbounds(projectIdOrServicePlanId, baseAddress,
+                loggerFactory?.Create<Inbounds.Inbounds>(), http);
+            Groups = new Groups.Groups(projectIdOrServicePlanId, baseAddress, loggerFactory?.Create<Groups.Groups>(),
+                http);
+            DeliveryReports = new DeliveryReports.DeliveryReports(projectIdOrServicePlanId, baseAddress,
                 loggerFactory?.Create<DeliveryReports.DeliveryReports>(), http);
         }
 
