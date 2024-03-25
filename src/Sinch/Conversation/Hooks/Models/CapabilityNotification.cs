@@ -6,20 +6,19 @@ using Sinch.Conversation.Messages.Message;
 namespace Sinch.Conversation.Hooks.Models
 {
     /// <summary>
-    ///     CapabilityEventAllOfCapabilityNotification
+    ///     CapabilityNotification
     /// </summary>
     public sealed class CapabilityNotification
     {
-
         /// <summary>
-        /// Gets or Sets Channel
+        ///     Gets or Sets Channel
         /// </summary>
         [JsonPropertyName("channel")]
         public ConversationChannel Channel { get; set; }
 
 
         /// <summary>
-        /// Status indicating the recipient&#39;s capability on the channel.
+        ///     Status indicating the recipient&#39;s capability on the channel.
         /// </summary>
         [JsonPropertyName("capability_status")]
         public CapabilityStatus CapabilityStatus { get; set; }
@@ -29,35 +28,35 @@ namespace Sinch.Conversation.Hooks.Models
         /// </summary>
         [JsonPropertyName("request_id")]
         public string RequestId { get; set; }
-        
+
 
         /// <summary>
         ///     The ID of the contact.
         /// </summary>
         [JsonPropertyName("contact_id")]
         public string ContactId { get; set; }
-        
+
 
         /// <summary>
         ///     The channel identity. For example, a phone number for SMS, WhatsApp, and Viber Business.
         /// </summary>
         [JsonPropertyName("identity")]
         public string Identity { get; set; }
-        
+
 
         /// <summary>
         ///     When capability_status is set to CAPABILITY_PARTIAL, this field includes a list of the supported channel-specific capabilities reported by the channel.
         /// </summary>
         [JsonPropertyName("channel_capabilities")]
         public List<string> ChannelCapabilities { get; set; }
-        
+
 
         /// <summary>
         ///     Gets or Sets Reason
         /// </summary>
         [JsonPropertyName("reason")]
         public Reason Reason { get; set; }
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -77,6 +76,5 @@ namespace Sinch.Conversation.Hooks.Models
             sb.Append("}\n");
             return sb.ToString();
         }
-
     }
 }
