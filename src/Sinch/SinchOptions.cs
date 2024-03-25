@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using Microsoft.Extensions.Logging;
 using Sinch.Conversation;
 using Sinch.SMS;
@@ -38,6 +39,44 @@ namespace Sinch
 
         /// <inheritdoc cref="ApiUrlOverrides"/>
         public ApiUrlOverrides ApiUrlOverrides { get; set; }
+
+
+        internal ServicePlanIdOptions ServicePlanIdOptions { get; private set; }
+
+        /// <summary>
+        ///     Use SMS API with `service plan id` and compatible region.
+        ///     `service_plan_id` will be used in place of `project_id`
+        /// </summary>
+        /// <param name="servicePlanId">Your service plan id</param>
+        /// <param name="region">Region to use.</param>
+        /// <exception cref="ArgumentNullException">throws if service plan id or region is null or an empty string</exception>
+        public void UseServicePlanIdWithSms(string servicePlanId, SmsServicePlanIdRegion region)
+        {
+            ServicePlanIdOptions = new ServicePlanIdOptions(servicePlanId, region);
+        }
+    }
+
+    internal class ServicePlanIdOptions
+    {
+        public ServicePlanIdOptions(string servicePlanId, SmsServicePlanIdRegion servicePlanIdRegion)
+        {
+            if (!string.IsNullOrEmpty(servicePlanId))
+            {
+                throw new ArgumentNullException(nameof(servicePlanId), "Should have a value");
+            }
+
+            if (servicePlanIdRegion is null)
+            {
+                throw new ArgumentNullException(nameof(servicePlanIdRegion), "Should have a value");
+            }
+
+            ServicePlanId = servicePlanId;
+            ServicePlanIdRegion = servicePlanIdRegion;
+        }
+
+        public SmsServicePlanIdRegion ServicePlanIdRegion { get; }
+
+        public string ServicePlanId { get; }
     }
 
     /// <summary>
