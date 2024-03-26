@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using RichardSzalay.MockHttp;
 using Sinch.Conversation;
 using Sinch.Conversation.Common;
-using Sinch.Conversation.Messages;
 using Sinch.Conversation.Messages.List;
 using Sinch.Conversation.Messages.Message;
 using Xunit;
@@ -286,6 +286,17 @@ namespace Sinch.Tests.Conversation
                 injected = true
             };
             return responseObj;
+        }
+
+        [Fact]
+        public void SerializeBirthDate()
+        {
+            // the birthday format is YYYY-MM-DD
+            var t = @"{ ""birthday"": ""2000-03-12"", ""name"": { ""full_name"": ""AAA""}, ""phone_numbers"":[] }";
+            
+            var contact = JsonSerializer.Deserialize<ContactInfoMessage>(t);
+            
+            contact.Birthday.Should().BeSameDateAs(new DateTime(2000, 03, 12));
         }
     }
 }
