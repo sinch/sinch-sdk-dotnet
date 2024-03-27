@@ -56,6 +56,11 @@ namespace Sinch.Conversation.Messages.Message
             CarouselMessage = carouselMessage;
         }
 
+        public AppMessage(ContactInfoMessage contactInfoMessage)
+        {
+            ContactInfoMessage = contactInfoMessage;
+        }
+
         /// <summary>
         ///     Optional. Channel specific messages, overriding any transcoding.
         ///     The key in the map must point to a valid conversation channel as defined by the enum ConversationChannel.
@@ -101,6 +106,10 @@ namespace Sinch.Conversation.Messages.Message
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ListMessage ListMessage { get; private set; }
+        
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public ContactInfoMessage ContactInfoMessage { get; private set; }
     }
 
     /// <summary>
