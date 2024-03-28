@@ -59,7 +59,5 @@ namespace Sinch.Conversation.Messages.Message
     public class MediaCarouselMessage
     {
         public Uri Url { get; set; }
-
-        public string Caption { get; set; }
     }
 }

@@ -121,7 +121,6 @@ namespace Sinch.Tests.Conversation
                         height = "TALL",
                         media_message = new
                         {
-                            caption = "cap",
                             url = "https://localmob"
                         },
                         choices = new[]
@@ -159,7 +158,6 @@ namespace Sinch.Tests.Conversation
                         Height = CardHeight.Tall,
                         MediaMessage = new MediaCarouselMessage()
                         {
-                            Caption = "cap",
                             Url = new Uri("https://localmob"),
                         },
                         Choices = new List<Choice>
