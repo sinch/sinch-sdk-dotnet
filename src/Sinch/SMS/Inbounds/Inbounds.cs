@@ -44,12 +44,12 @@ namespace Sinch.SMS.Inbounds
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<Inbounds> _logger;
-        private readonly string _projectId;
+        private readonly ILoggerAdapter<ISinchSmsInbounds> _logger;
+        private readonly string _projectOrServicePlanId;
 
-        internal Inbounds(string projectId, Uri baseAddress, ILoggerAdapter<Inbounds> logger, IHttp http)
+        internal Inbounds(string projectOrServicePlanId, Uri baseAddress, ILoggerAdapter<ISinchSmsInbounds> logger, IHttp http)
         {
-            _projectId = projectId;
+            _projectOrServicePlanId = projectOrServicePlanId;
             _baseAddress = baseAddress;
             _logger = logger;
             _http = http;
@@ -57,7 +57,7 @@ namespace Sinch.SMS.Inbounds
 
         public Task<ListInboundsResponse> List(ListInboundsRequest request, CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/inbounds?{request.GetQueryString()}");
+            var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/inbounds?{request.GetQueryString()}");
             _logger?.LogDebug("Listing inbounds...");
             return _http.Send<ListInboundsResponse>(uri, HttpMethod.Get, cancellationToken);
         }
@@ -68,7 +68,7 @@ namespace Sinch.SMS.Inbounds
             bool isLastPage;
             do
             {
-                var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/inbounds?{request.GetQueryString()}");
+                var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/inbounds?{request.GetQueryString()}");
                 _logger?.LogDebug("Auto list {page}", request.Page);
                 var response = await _http.Send<ListInboundsResponse>(uri, HttpMethod.Get, cancellationToken);
                 foreach (var inbound in response.Inbounds)
@@ -84,7 +84,7 @@ namespace Sinch.SMS.Inbounds
 
         public Task<Inbound> Get(string inboundId, CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/inbounds/{inboundId}");
+            var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/inbounds/{inboundId}");
             _logger?.LogDebug("Getting inbound with {id}", inboundId);
             return _http.Send<Inbound>(uri, HttpMethod.Get, cancellationToken);
         }

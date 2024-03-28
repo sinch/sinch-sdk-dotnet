@@ -58,12 +58,12 @@ namespace Sinch.SMS.DeliveryReports
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<DeliveryReports> _logger;
-        private readonly string _projectId;
+        private readonly ILoggerAdapter<ISinchSmsDeliveryReports> _logger;
+        private readonly string _projectOrServicePlanId;
 
-        internal DeliveryReports(string projectId, Uri baseAddress, ILoggerAdapter<DeliveryReports> logger, IHttp http)
+        internal DeliveryReports(string projectOrServicePlanId, Uri baseAddress, ILoggerAdapter<ISinchSmsDeliveryReports> logger, IHttp http)
         {
-            _projectId = projectId;
+            _projectOrServicePlanId = projectOrServicePlanId;
             _baseAddress = baseAddress;
             _logger = logger;
             _http = http;
@@ -73,7 +73,7 @@ namespace Sinch.SMS.DeliveryReports
         public Task<GetDeliveryReportResponse> Get(GetDeliveryReportRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress,
-                $"xms/v1/{_projectId}/batches/{request.BatchId}/delivery_report?{request.GetQueryString()}");
+                $"xms/v1/{_projectOrServicePlanId}/batches/{request.BatchId}/delivery_report?{request.GetQueryString()}");
             _logger?.LogDebug("Fetching delivery report for a batch with {id}", request.BatchId);
 
             return _http.Send<GetDeliveryReportRequest, GetDeliveryReportResponse>(uri, HttpMethod.Get, null, cancellationToken)!;
@@ -84,7 +84,7 @@ namespace Sinch.SMS.DeliveryReports
             CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress,
-                $"xms/v1/{_projectId}/batches/{batchId}/delivery_report/{recipientMsisdn}");
+                $"xms/v1/{_projectOrServicePlanId}/batches/{batchId}/delivery_report/{recipientMsisdn}");
 
             _logger?.LogDebug("Fetching delivery report for a {number} of a {batchId}", recipientMsisdn, batchId);
 
@@ -95,9 +95,9 @@ namespace Sinch.SMS.DeliveryReports
         public Task<ListDeliveryReportsResponse> List(ListDeliveryReportsRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress,
-                $"xms/v1/{_projectId}/delivery_reports?{request.GetQueryString()}");
+                $"xms/v1/{_projectOrServicePlanId}/delivery_reports?{request.GetQueryString()}");
 
-            _logger?.LogDebug("Listing delivery reports for {projectId}", _projectId);
+            _logger?.LogDebug("Listing delivery reports for {projectOrServicePlanId}", _projectOrServicePlanId);
 
             return _http.Send<object, ListDeliveryReportsResponse>(uri, HttpMethod.Get, null, cancellationToken);
         }
@@ -106,12 +106,12 @@ namespace Sinch.SMS.DeliveryReports
         public async IAsyncEnumerable<DeliveryReport> ListAuto(ListDeliveryReportsRequest request,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            _logger?.LogDebug("Listing delivery reports for {projectId}", _projectId);
+            _logger?.LogDebug("Listing delivery reports for {projectOrServicePlanId}", _projectOrServicePlanId);
             bool isLastPage;
             do
             {
                 var uri = new Uri(_baseAddress,
-                    $"xms/v1/{_projectId}/delivery_reports?{request.GetQueryString()}");
+                    $"xms/v1/{_projectOrServicePlanId}/delivery_reports?{request.GetQueryString()}");
 
 
                 var response = await _http.Send<ListDeliveryReportsResponse>(uri, HttpMethod.Get, cancellationToken);

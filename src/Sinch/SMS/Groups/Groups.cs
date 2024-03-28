@@ -104,12 +104,12 @@ namespace Sinch.SMS.Groups
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<Groups> _logger;
-        private readonly string _projectId;
+        private readonly ILoggerAdapter<ISinchSmsGroups> _logger;
+        private readonly string _projectOrServicePlanId;
 
-        internal Groups(string projectId, Uri baseAddress, ILoggerAdapter<Groups> logger, IHttp http)
+        internal Groups(string projectOrServicePlanId, Uri baseAddress, ILoggerAdapter<ISinchSmsGroups> logger, IHttp http)
         {
-            _projectId = projectId;
+            _projectOrServicePlanId = projectOrServicePlanId;
             _baseAddress = baseAddress;
             _logger = logger;
             _http = http;
@@ -118,7 +118,7 @@ namespace Sinch.SMS.Groups
         /// <inheritdoc />
         public Task<ListGroupsResponse> List(ListGroupsRequest request, CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/groups?{request.GetQueryString()}");
+            var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/groups?{request.GetQueryString()}");
             _logger?.LogDebug("Listing groups...");
             return _http.Send<ListGroupsResponse>(uri, HttpMethod.Get, cancellationToken);
         }
@@ -131,7 +131,7 @@ namespace Sinch.SMS.Groups
             bool isLastPage;
             do
             {
-                var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/groups?{request.GetQueryString()}");
+                var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/groups?{request.GetQueryString()}");
                 _logger?.LogDebug("Listing group {page}", request.Page);
                 var response = await _http.Send<ListGroupsResponse>(uri, HttpMethod.Get, cancellationToken);
                 foreach (var group in response.Groups)
@@ -147,7 +147,7 @@ namespace Sinch.SMS.Groups
         /// <inheritdoc />
         public Task<Group> Get(string groupId, CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/groups/{groupId}");
+            var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/groups/{groupId}");
             _logger?.LogDebug("Fetching a group with {groupId}", groupId);
             return _http.Send<Group>(uri, HttpMethod.Get, cancellationToken);
         }
@@ -155,7 +155,7 @@ namespace Sinch.SMS.Groups
         /// <inheritdoc />
         public Task<Group> Create(CreateGroupRequest request, CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/groups");
+            var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/groups");
             _logger?.LogDebug("Creating a group...");
             return _http.Send<CreateGroupRequest, Group>(uri, HttpMethod.Post, request, cancellationToken)!;
         }
@@ -163,7 +163,7 @@ namespace Sinch.SMS.Groups
         /// <inheritdoc />
         public Task<Group> Update(UpdateGroupRequest request, CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/groups/{request.GroupId}");
+            var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/groups/{request.GroupId}");
             _logger?.LogDebug("Updating a group with {id}...", request.GroupId);
             // No simple way to conditionally remove name property from request object. Easy to go with anonymous objects
             if (request.Name == string.Empty)
@@ -182,7 +182,7 @@ namespace Sinch.SMS.Groups
         /// <inheritdoc />
         public Task<Group> Replace(ReplaceGroupRequest request, CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/groups/{request.GroupId}");
+            var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/groups/{request.GroupId}");
             _logger?.LogDebug("Replacing a group with {id}...", request.GroupId);
             var requestInner = new RequestInner
             {
@@ -195,7 +195,7 @@ namespace Sinch.SMS.Groups
         /// <inheritdoc />
         public Task Delete(string groupId, CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/groups/{groupId}");
+            var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/groups/{groupId}");
             _logger?.LogDebug("Deleting a group with {id}...", groupId);
             return _http.Send<object, Group>(uri, HttpMethod.Delete, null, cancellationToken);
         }
@@ -203,7 +203,7 @@ namespace Sinch.SMS.Groups
         /// <inheritdoc />
         public Task<IEnumerable<string>> ListMembers(string groupId, CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"xms/v1/{_projectId}/groups/{groupId}/members");
+            var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/groups/{groupId}/members");
             _logger?.LogDebug("Listing members of a group with {id}...", groupId);
             return _http.Send<object, IEnumerable<string>>(uri, HttpMethod.Get, null, cancellationToken)!;
         }

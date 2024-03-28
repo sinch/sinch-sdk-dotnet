@@ -49,15 +49,27 @@ namespace Sinch.SMS
         ISinchSmsDeliveryReports DeliveryReports { get; }
     }
 
-    internal class Sms : ISinchSms
+    internal class SmsClient : ISinchSms
     {
-        internal Sms(string projectId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
+        /// <summary>
+        ///     Creates an instance of Sms service. Be aware that first parameter is either projectId or servicePlanId.
+        ///     They are not distinguished more cause only service_plan_id and project_id is in the same place in url path
+        ///     parameters, but base address is different.
+        /// </summary>
+        /// <param name="projectIdOrServicePlanId"></param>
+        /// <param name="baseAddress"></param>
+        /// <param name="loggerFactory"></param>
+        /// <param name="http"></param>
+        internal SmsClient(string projectIdOrServicePlanId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
         {
-            Batches = new Batches.Batches(projectId, baseAddress, loggerFactory?.Create<Batches.Batches>(), http);
-            Inbounds = new Inbounds.Inbounds(projectId, baseAddress, loggerFactory?.Create<Inbounds.Inbounds>(), http);
-            Groups = new Groups.Groups(projectId, baseAddress, loggerFactory?.Create<Groups.Groups>(), http);
-            DeliveryReports = new DeliveryReports.DeliveryReports(projectId, baseAddress,
-                loggerFactory?.Create<DeliveryReports.DeliveryReports>(), http);
+            Batches = new Batches.Batches(projectIdOrServicePlanId, baseAddress,
+                loggerFactory?.Create<ISinchSmsBatches>(), http);
+            Inbounds = new Inbounds.Inbounds(projectIdOrServicePlanId, baseAddress,
+                loggerFactory?.Create<ISinchSmsInbounds>(), http);
+            Groups = new Groups.Groups(projectIdOrServicePlanId, baseAddress, loggerFactory?.Create<ISinchSmsGroups>(),
+                http);
+            DeliveryReports = new DeliveryReports.DeliveryReports(projectIdOrServicePlanId, baseAddress,
+                loggerFactory?.Create<ISinchSmsDeliveryReports>(), http);
         }
 
         public ISinchSmsBatches Batches { get; }
