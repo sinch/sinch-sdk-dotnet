@@ -111,6 +111,6 @@ namespace Sinch.SMS
 
         public ISinchSmsDeliveryReports DeliveryReports { get; }
 
-        public bool IsUsingServicePlanId { get; } = false;
+        public bool IsUsingServicePlanId { get; }
     }
 }

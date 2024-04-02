@@ -49,11 +49,13 @@ namespace Sinch
         /// </summary>
         /// <param name="servicePlanId">Your service plan id</param>
         /// <param name="apiToken"></param>
-        /// <param name="hostingRegion">Region to use.</param>
+        /// <param name="hostingRegion">Region to use. Defaults to <see cref="SmsServicePlanIdHostingRegion.Us" /></param>
         /// <exception cref="ArgumentNullException">throws if service plan id or region is null or an empty string</exception>
         public void UseServicePlanIdWithSms(string servicePlanId,
-            string apiToken, SmsServicePlanIdHostingRegion hostingRegion)
+            string apiToken, SmsServicePlanIdHostingRegion hostingRegion = default)
         {
+            hostingRegion ??= SmsServicePlanIdHostingRegion.Us;
+
             ServicePlanIdOptions = new ServicePlanIdOptions(servicePlanId, hostingRegion, apiToken);
         }
     }
