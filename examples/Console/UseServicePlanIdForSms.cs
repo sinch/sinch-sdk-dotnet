@@ -8,11 +8,12 @@ namespace Examples
     {
         public void Example()
         {
-            var sinchClient = new SinchClient(default, default, default, options =>
-            {
-                options.UseServicePlanIdWithSms(Environment.GetEnvironmentVariable("SINCH_SERVICE_PLAN_ID"),
-                    SmsServicePlanIdHostingRegion.Ca, Environment.GetEnvironmentVariable("SINCH_API_TOKEN"));
-            });
+            var sinchClient = new SinchClient(default, default, default,
+                options =>
+                {
+                    options.UseServicePlanIdWithSms(Environment.GetEnvironmentVariable("SINCH_SERVICE_PLAN_ID"),
+                        Environment.GetEnvironmentVariable("SINCH_API_TOKEN"), SmsServicePlanIdHostingRegion.Ca);
+                });
             sinchClient.Sms.Batches.Send(new SendTextBatchRequest()
             {
                 Body = "Hello, World!",

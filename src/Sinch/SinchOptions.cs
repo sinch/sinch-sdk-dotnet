@@ -48,11 +48,11 @@ namespace Sinch
         ///     `service_plan_id` will be used in place of `project_id`
         /// </summary>
         /// <param name="servicePlanId">Your service plan id</param>
-        /// <param name="hostingRegion">Region to use.</param>
         /// <param name="apiToken"></param>
+        /// <param name="hostingRegion">Region to use.</param>
         /// <exception cref="ArgumentNullException">throws if service plan id or region is null or an empty string</exception>
-        public void UseServicePlanIdWithSms(string servicePlanId, SmsServicePlanIdHostingRegion hostingRegion,
-            string apiToken)
+        public void UseServicePlanIdWithSms(string servicePlanId,
+            string apiToken, SmsServicePlanIdHostingRegion hostingRegion)
         {
             ServicePlanIdOptions = new ServicePlanIdOptions(servicePlanId, hostingRegion, apiToken);
         }
