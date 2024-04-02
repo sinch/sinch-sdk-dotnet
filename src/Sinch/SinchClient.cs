@@ -219,8 +219,8 @@ namespace Sinch
         {
             get
             {
-                // TODO: when support service plan id make sure validation is proper here.
-                ValidateCommonCredentials();
+                if (!_sms.IsUsingServicePlanId)
+                    ValidateCommonCredentials();
                 return _sms;
             }
         }
@@ -317,7 +317,7 @@ namespace Sinch
                 var bearerSnakeHttp = new Http(new BearerAuth(optionsObj.ServicePlanIdOptions.ApiToken), _httpClient,
                     _loggerFactory?.Create<Http>(),
                     SnakeCaseNamingPolicy.Instance);
-                return new SmsClient(optionsObj.ServicePlanIdOptions.ServicePlanId,
+                return new SmsClient(new ServicePlanId(optionsObj.ServicePlanIdOptions.ServicePlanId),
                     BuildServicePlanIdSmsBaseAddress(optionsObj.ServicePlanIdOptions.HostingRegion,
                         _apiUrlOverrides?.SmsUrl),
                     _loggerFactory, bearerSnakeHttp);
@@ -325,7 +325,8 @@ namespace Sinch
 
             _logger?.LogInformation("Initializing SMS client with {project_id} in {region}", _projectId,
                 optionsObj.SmsHostingRegion.Value);
-            return new SmsClient(_projectId, BuildSmsBaseAddress(optionsObj.SmsHostingRegion, _apiUrlOverrides?.SmsUrl),
+            return new SmsClient(new ProjectId(_projectId),
+                BuildSmsBaseAddress(optionsObj.SmsHostingRegion, _apiUrlOverrides?.SmsUrl),
                 _loggerFactory,
                 httpSnakeCase);
         }

@@ -9,7 +9,8 @@ namespace Sinch.Tests.Sms
 
         protected SmsTestBase()
         {
-            Sms = new SMS.SmsClient(ProjectId, new Uri("https://zt.us.sms.api.sinch.com"), default, HttpSnakeCase);
+            Sms = new SmsClient(new ProjectId(ProjectId), new Uri("https://zt.us.sms.api.sinch.com"), default,
+                HttpSnakeCase);
         }
     }
 }

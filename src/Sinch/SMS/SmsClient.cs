@@ -47,10 +47,41 @@ namespace Sinch.SMS
         ///     or sent to a callback.
         /// </summary>
         ISinchSmsDeliveryReports DeliveryReports { get; }
+
+        internal bool IsUsingServicePlanId { get; }
     }
+
+    internal record ServicePlanId(string Value);
+
+    internal record ProjectId(string Value);
 
     internal class SmsClient : ISinchSms
     {
+        /// <summary>
+        ///     Creates an instance of Sms service with project id
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="baseAddress"></param>
+        /// <param name="loggerFactory"></param>
+        /// <param name="http"></param>
+        internal SmsClient(ProjectId projectId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http) : this(
+            projectId.Value, baseAddress, loggerFactory, http)
+        {
+        }
+        
+        /// <summary>
+        ///     Creates an instance of Sms service with service plan id
+        /// </summary>
+        /// <param name="servicePlanId"></param>
+        /// <param name="baseAddress"></param>
+        /// <param name="loggerFactory"></param>
+        /// <param name="http"></param>
+        internal SmsClient(ServicePlanId servicePlanId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http) : this(
+            servicePlanId.Value, baseAddress, loggerFactory, http)
+        {
+            IsUsingServicePlanId = true;
+        }
+
         /// <summary>
         ///     Creates an instance of Sms service. Be aware that first parameter is either projectId or servicePlanId.
         ///     They are not distinguished more cause only service_plan_id and project_id is in the same place in url path
@@ -60,7 +91,7 @@ namespace Sinch.SMS
         /// <param name="baseAddress"></param>
         /// <param name="loggerFactory"></param>
         /// <param name="http"></param>
-        internal SmsClient(string projectIdOrServicePlanId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
+        private SmsClient(string projectIdOrServicePlanId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
         {
             Batches = new Batches.Batches(projectIdOrServicePlanId, baseAddress,
                 loggerFactory?.Create<ISinchSmsBatches>(), http);
@@ -79,5 +110,7 @@ namespace Sinch.SMS
         public ISinchSmsGroups Groups { get; }
 
         public ISinchSmsDeliveryReports DeliveryReports { get; }
+
+        public bool IsUsingServicePlanId { get; } = false;
     }
 }
