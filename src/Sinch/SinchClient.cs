@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using Sinch.Auth;
@@ -123,15 +125,50 @@ namespace Sinch
     {
         private const string VerificationApiUrl = "https://verification.api.sinch.com/";
         private const string NumbersApiUrl = "https://numbers.api.sinch.com/";
-        private const string FaxApiUrl = "https://fax.api.sinch.com/";
         private const string SmsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
+        private const string FaxApiUrl = "https://fax.api.sinch.com/";
         private const string ConversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
         private const string VoiceApiUrlTemplate = "https://{0}.api.sinch.com/";
+        private const string AuthApiUrl = "https://auth.sinch.com";
+        private const string TemplatesApiUrlTemplate = "https://{0}.template.api.sinch.com/";
 
         private readonly LoggerFactory _loggerFactory;
         private readonly HttpClient _httpClient;
-        private readonly Uri _verificationBaseAddress;
-        private readonly Uri _voiceBaseAddress;
+
+        private readonly ApiUrlOverrides _apiUrlOverrides;
+
+        private readonly string _keyId;
+        private readonly string _keySecret;
+        private readonly string _projectId;
+
+        private readonly ISinchNumbers _numbers;
+        private readonly ISinchSms _sms;
+        private readonly ISinchConversation _conversation;
+        private readonly ISinchAuth _auth;
+
+        private void ValidateCommonCredentials()
+        {
+            var exceptions = new List<Exception>();
+            if (string.IsNullOrEmpty(_keyId))
+            {
+                exceptions.Add(new InvalidOperationException("keyId should have a value"));
+            }
+
+            if (string.IsNullOrEmpty(_projectId))
+            {
+                exceptions.Add(new InvalidOperationException("projectId should have a value"));
+            }
+
+            if (string.IsNullOrEmpty(_keySecret))
+            {
+                exceptions.Add(new InvalidOperationException("keySecret should have a value"));
+            }
+
+            if (exceptions.Any())
+            {
+                throw new AggregateException("Credentials are missing", exceptions);
+            }
+        }
 
         /// <summary>
         ///     Initialize a new <see cref="SinchClient"/>
@@ -141,56 +178,75 @@ namespace Sinch
         /// <param name="projectId">Your project id.</param>
         /// <param name="options">Optional. See: <see cref="SinchOptions"/></param>
         /// <exception cref="ArgumentNullException"></exception>
-        public SinchClient(string keyId, string keySecret, string projectId,
+        public SinchClient(string projectId, string keyId, string keySecret,
             Action<SinchOptions> options = default)
         {
-            if (keyId is null)
-            {
-                throw new ArgumentNullException(nameof(keyId), "Should have a value");
-            }
+            _projectId = projectId;
+            _keyId = keyId;
+            _keySecret = keySecret;
 
-            if (keySecret is null)
-            {
-                throw new ArgumentNullException(nameof(keySecret), "Should have a value");
-            }
-
-            if (projectId is null)
-            {
-                throw new ArgumentNullException(nameof(projectId), "Should have a value");
-            }
 
             var optionsObj = new SinchOptions();
             options?.Invoke(optionsObj);
 
             if (optionsObj.LoggerFactory is not null) _loggerFactory = new LoggerFactory(optionsObj.LoggerFactory);
-
-            _httpClient = optionsObj.HttpClient ?? new HttpClient();
-
             var logger = _loggerFactory?.Create<SinchClient>();
             logger?.LogInformation("Initializing SinchClient...");
 
+            if (string.IsNullOrEmpty(projectId))
+            {
+                logger?.LogWarning($"{nameof(projectId)} is not set!");
+            }
+
+            if (string.IsNullOrEmpty(keyId))
+            {
+                logger?.LogWarning($"{nameof(keyId)} is not set!");
+            }
+
+            if (string.IsNullOrEmpty(keySecret))
+            {
+                logger?.LogWarning($"{nameof(keySecret)} is not set!");
+            }
+
+            _httpClient = optionsObj.HttpClient ?? new HttpClient();
+
+            _apiUrlOverrides = optionsObj?.ApiUrlOverrides;
+
             ISinchAuth auth =
-                new OAuth(keyId, keySecret, _httpClient, _loggerFactory?.Create<OAuth>());
+                new OAuth(_keyId, _keySecret, _httpClient, _loggerFactory?.Create<OAuth>(),
+                    new Uri(_apiUrlOverrides?.AuthUrl ?? AuthApiUrl));
+            _auth = auth;
             var httpCamelCase = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(),
                 JsonNamingPolicy.CamelCase);
             var httpSnakeCase = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(),
                 SnakeCaseNamingPolicy.Instance);
 
-            Numbers = new Numbers.Numbers(projectId, new Uri(NumbersApiUrl),
+            _numbers = new Numbers.Numbers(_projectId, new Uri(_apiUrlOverrides?.NumbersUrl ?? NumbersApiUrl),
                 _loggerFactory, httpCamelCase);
-            Sms = new Sms(projectId, GetSmsBaseAddress(optionsObj.SmsHostingRegion), _loggerFactory,
+            _sms = new Sms(_projectId, GetSmsBaseAddress(optionsObj.SmsHostingRegion, _apiUrlOverrides?.SmsUrl),
+                _loggerFactory,
                 httpSnakeCase);
-            Conversation = new Conversation.Conversation(projectId,
-                new Uri(string.Format(ConversationApiUrlTemplate, optionsObj.ConversationRegion.Value)),
+            var conversationBaseAddress = new Uri(_apiUrlOverrides?.ConversationUrl ??
+                                                  string.Format(ConversationApiUrlTemplate,
+                                                      optionsObj.ConversationRegion.Value));
+            var templatesBaseAddress = new Uri(_apiUrlOverrides?.TemplatesUrl ??
+                                               string.Format(TemplatesApiUrlTemplate,
+                                                   optionsObj.ConversationRegion.Value));
+            _conversation = new SinchConversationClient(_projectId, conversationBaseAddress
+                , templatesBaseAddress,
                 _loggerFactory, httpSnakeCase);
             Faxes = new FaxClient(projectId, new Uri(FaxApiUrl), _loggerFactory, httpCamelCase);
-            Auth = auth;
 
             logger?.LogInformation("SinchClient initialized.");
         }
 
-        private static Uri GetSmsBaseAddress(SmsHostingRegion smsHostingRegion)
+        private static Uri GetSmsBaseAddress(SmsHostingRegion smsHostingRegion, string smsUrlOverride)
         {
+            if (!string.IsNullOrEmpty(smsUrlOverride))
+            {
+                return new Uri(smsUrlOverride);
+            }
+
             // General SMS rest api uses service_plan_id to performs calls
             // But SDK is based on single-account model which uses project_id
             // Thus, baseAddress for sms api is using a special endpoint where service_plan_id is replaced with projectId
@@ -198,48 +254,53 @@ namespace Sinch
             return new Uri(string.Format(SmsApiUrlTemplate, smsHostingRegion.Value.ToLowerInvariant()));
         }
 
-        /// <summary>
-        ///     For E2E tests only. Here you can override base addresses.
-        /// </summary>
-        /// <param name="projectId"></param>
-        /// <param name="authUri"></param>
-        /// <param name="numbersBaseAddress"></param>
-        /// <param name="smsBaseAddress"></param>
-        /// <param name="verificationBaseAddress"></param>
-        /// <param name="voiceBaseAddress"></param>
-        internal SinchClient(string projectId, Uri authUri, Uri numbersBaseAddress, Uri smsBaseAddress,
-            Uri verificationBaseAddress, Uri voiceBaseAddress)
+        /// <inheritdoc/>       
+        public ISinchNumbers Numbers
         {
-            _httpClient = new HttpClient();
-            
-            Auth = new OAuth(authUri, _httpClient);
-            var httpCamelCase = new Http(Auth, _httpClient, null,
-                JsonNamingPolicy.CamelCase);
-            var httpSnakeCase = new Http(Auth, _httpClient, null,
-                SnakeCaseNamingPolicy.Instance);
-            Numbers = new Numbers.Numbers(projectId, numbersBaseAddress, null, httpCamelCase);
-            Sms = new Sms(projectId, smsBaseAddress, null, httpSnakeCase);
-            _verificationBaseAddress = verificationBaseAddress;
-            _voiceBaseAddress = voiceBaseAddress;
+            get
+            {
+                ValidateCommonCredentials();
+                return _numbers;
+            }
         }
 
-        /// <inheritdoc/>       
-        public ISinchNumbers Numbers { get; }
+        /// <inheritdoc/>
+        public ISinchSms Sms
+        {
+            get
+            {
+                // TODO: when support service plan id make sure validation is proper here.
+                ValidateCommonCredentials();
+                return _sms;
+            }
+        }
 
         /// <inheritdoc/>
-        public ISinchSms Sms { get; }
-
-        /// <inheritdoc/>
-        public ISinchConversation Conversation { get; set; }
+        public ISinchConversation Conversation
+        {
+            get
+            {
+                ValidateCommonCredentials();
+                return _conversation;
+            }
+        }
+        
         public FaxClient Faxes { get; init; }
 
 
         /// <inheritdoc/>
-        public ISinchAuth Auth { get; }
-        
+        public ISinchAuth Auth
+        {
+            get
+            {
+                ValidateCommonCredentials();
+                return _auth;
+            }
+        }
+
         /// <inheritdoc/>
         public ISinchVerificationClient Verification(string appKey, string appSecret,
-            AuthStrategy authStrategy)
+            AuthStrategy authStrategy = AuthStrategy.ApplicationSign)
         {
             if (string.IsNullOrEmpty(appKey))
             {
@@ -262,7 +323,7 @@ namespace Sinch
             }
 
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(), JsonNamingPolicy.CamelCase);
-            return new SinchVerificationClient(_verificationBaseAddress ?? new Uri(VerificationApiUrl),
+            return new SinchVerificationClient(new Uri(_apiUrlOverrides?.VerificationUrl ?? VerificationApiUrl),
                 _loggerFactory, http);
         }
 
@@ -295,7 +356,7 @@ namespace Sinch
 
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(), JsonNamingPolicy.CamelCase);
             return new SinchVoiceClient(
-                _voiceBaseAddress ?? new Uri(string.Format(VoiceApiUrlTemplate, callingRegion.Value)),
+                new Uri(_apiUrlOverrides?.VoiceUrl ?? string.Format(VoiceApiUrlTemplate, callingRegion.Value)),
                 _loggerFactory, http);
         }
     }

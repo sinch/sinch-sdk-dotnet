@@ -7,7 +7,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     Message containing text, media and choices.
     /// </summary>
-    public sealed class CardMessage : IMessage
+    public sealed class CardMessage 
     {
         /// <summary>
         /// Gets or Sets Height
@@ -59,7 +59,5 @@ namespace Sinch.Conversation.Messages.Message
     public class MediaCarouselMessage
     {
         public Uri Url { get; set; }
-
-        public string Caption { get; set; }
     }
 }

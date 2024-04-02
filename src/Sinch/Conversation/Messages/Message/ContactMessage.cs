@@ -1,50 +1,108 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
-    
     public class ContactMessage
-{   /// <summary>
+    {
+        // Thank you System.Text.Json -_-
+        [JsonConstructor]
+        [Obsolete("Needed for System.Text.Json", true)]
+        public ContactMessage()
+        {
+        }
+
+        public ContactMessage(ChoiceResponseMessage choiceResponseMessage)
+        {
+            ChoiceResponseMessage = choiceResponseMessage;
+        }
+
+        public ContactMessage(FallbackMessage fallbackMessage)
+        {
+            FallbackMessage = fallbackMessage;
+        }
+
+        public ContactMessage(LocationMessage locationMessage)
+        {
+            LocationMessage = locationMessage;
+        }
+
+        public ContactMessage(MediaCarouselMessage mediaCardMessage)
+        {
+            MediaCardMessage = mediaCardMessage;
+        }
+
+        public ContactMessage(MediaMessage mediaMessage)
+        {
+            MediaMessage = mediaMessage;
+        }
+
+        public ContactMessage(ReplyTo replyTo)
+        {
+            ReplyTo = replyTo;
+        }
+
+        public ContactMessage(TextMessage textMessage)
+        {
+            TextMessage = textMessage;
+        }
+
+        /// <summary>
         ///     Gets or Sets ChoiceResponseMessage
         /// </summary>
-        public ChoiceResponseMessage ChoiceResponseMessage { get; set; }
-        
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public ChoiceResponseMessage ChoiceResponseMessage { get; private set; }
+
 
         /// <summary>
         ///     Gets or Sets FallbackMessage
         /// </summary>
-        public FallbackMessage FallbackMessage { get; set; }
-        
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public FallbackMessage FallbackMessage { get; private set; }
+
 
         /// <summary>
         ///     Gets or Sets LocationMessage
         /// </summary>
-        public LocationMessage LocationMessage { get; set; }
-        
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public LocationMessage LocationMessage { get; private set; }
+
 
         /// <summary>
         ///     Gets or Sets MediaCardMessage
         /// </summary>
-        public MediaCarouselMessage MediaCardMessage { get; set; }
-        
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public MediaCarouselMessage MediaCardMessage { get; private set; }
+
 
         /// <summary>
         ///     Gets or Sets MediaMessage
         /// </summary>
-        public MediaMessage MediaMessage { get; set; }
-        
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public MediaMessage MediaMessage { get; private set; }
+
 
         /// <summary>
         ///     Gets or Sets ReplyTo
         /// </summary>
-        public ReplyTo ReplyTo { get; set; }
-        
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public ReplyTo ReplyTo { get; private set; }
+
 
         /// <summary>
         ///     Gets or Sets TextMessage
         /// </summary>
-        public TextMessage TextMessage { get; set; }
-        
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public TextMessage TextMessage { get; private set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -64,6 +122,5 @@ namespace Sinch.Conversation.Messages.Message
             sb.Append("}\n");
             return sb.ToString();
         }
+    }
 }
-}
-

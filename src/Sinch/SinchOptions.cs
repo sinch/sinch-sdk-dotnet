@@ -35,5 +35,50 @@ namespace Sinch
         ///     Defaults to "us"
         /// </summary>
         public ConversationRegion ConversationRegion { get; set; } = ConversationRegion.Us;
+
+        /// <inheritdoc cref="ApiUrlOverrides"/>
+        public ApiUrlOverrides ApiUrlOverrides { get; set; }
+    }
+
+    /// <summary>
+    ///     If you want to set your own url for proxy or testing, you can do it here for each API endpoint.
+    /// </summary>
+    public sealed class ApiUrlOverrides
+    {
+        /// <summary>
+        ///     Overrides SMS api base url
+        /// </summary>
+        public string SmsUrl { get; init; }
+
+        /// <summary>
+        ///     Overrides Conversation api base url
+        /// </summary>
+        public string ConversationUrl { get; init; }
+
+        /// <summary>
+        ///     Overrides Templates api base url.
+        ///     Templates is treated as part of conversation api, but it has another base address.
+        /// </summary>
+        public string TemplatesUrl { get; init; }
+
+        /// <summary>
+        ///     Overrides Voice api base url
+        /// </summary>
+        public string VoiceUrl { get; init; }
+
+        /// <summary>
+        ///     Overrides Verification api base url
+        /// </summary>
+        public string VerificationUrl { get; init; }
+
+        /// <summary>
+        ///     Overrides Auth api base url
+        /// </summary>
+        public string AuthUrl { get; init; }
+
+        /// <summary>
+        ///     Overrides Numbers api base url
+        /// </summary>
+        public string NumbersUrl { get; init; }
     }
 }

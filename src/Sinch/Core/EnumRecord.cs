@@ -11,7 +11,7 @@ namespace Sinch.Core
             return Value;
         }
     }
-    
+
     public class EnumRecordJsonConverter<T> : JsonConverter<T> where T : EnumRecord
     {
         public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -22,6 +22,13 @@ namespace Sinch.Core
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
             writer.WriteStringValue(value.Value);
+        }
+
+        // Added to properly deserialize the enum records as dictionary key
+        public override T ReadAsPropertyName(ref Utf8JsonReader reader, Type typeToConvert,
+            JsonSerializerOptions options)
+        {
+            return Activator.CreateInstance(typeToConvert, reader.GetString()) as T;
         }
     }
 }

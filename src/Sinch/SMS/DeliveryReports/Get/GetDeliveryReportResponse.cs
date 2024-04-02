@@ -4,6 +4,8 @@ namespace Sinch.SMS.DeliveryReports.Get
 {
     public sealed class GetDeliveryReportResponse
     {
+#pragma warning disable CS1570 
+
         /// <summary>
         ///     The type of webhook for the delivery report.
         ///     Returns a either a full or summary delivery report depending on what was set in the batch.
@@ -13,6 +15,7 @@ namespace Sinch.SMS.DeliveryReports.Get
         ///         the difference between the two.
         ///     </see>
         /// </summary>
+#pragma warning restore CA2200 
         public DeliveryReportType Type { get; set; }
 
         /// <summary>
