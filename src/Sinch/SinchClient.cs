@@ -318,19 +318,19 @@ namespace Sinch
                     _loggerFactory?.Create<Http>(),
                     SnakeCaseNamingPolicy.Instance);
                 return new SmsClient(optionsObj.ServicePlanIdOptions.ServicePlanId,
-                    GetSmsBaseAddress(optionsObj.ServicePlanIdOptions.HostingRegion,
+                    BuildServicePlanIdSmsBaseAddress(optionsObj.ServicePlanIdOptions.HostingRegion,
                         _apiUrlOverrides?.SmsUrl),
                     _loggerFactory, bearerSnakeHttp);
             }
 
             _logger?.LogInformation("Initializing SMS client with {project_id} in {region}", _projectId,
                 optionsObj.SmsHostingRegion.Value);
-            return new SmsClient(_projectId, GetSmsBaseAddress(optionsObj.SmsHostingRegion, _apiUrlOverrides?.SmsUrl),
+            return new SmsClient(_projectId, BuildSmsBaseAddress(optionsObj.SmsHostingRegion, _apiUrlOverrides?.SmsUrl),
                 _loggerFactory,
                 httpSnakeCase);
         }
 
-        private static Uri GetSmsBaseAddress(SmsServicePlanIdHostingRegion smsServicePlanIdHostingRegion,
+        private static Uri BuildServicePlanIdSmsBaseAddress(SmsServicePlanIdHostingRegion smsServicePlanIdHostingRegion,
             string smsUrlOverride)
         {
             if (!string.IsNullOrEmpty(smsUrlOverride)) return new Uri(smsUrlOverride);
@@ -339,7 +339,7 @@ namespace Sinch
                 smsServicePlanIdHostingRegion.Value.ToLowerInvariant()));
         }
 
-        private static Uri GetSmsBaseAddress(SmsHostingRegion smsHostingRegion, string smsUrlOverride)
+        private static Uri BuildSmsBaseAddress(SmsHostingRegion smsHostingRegion, string smsUrlOverride)
         {
             if (!string.IsNullOrEmpty(smsUrlOverride)) return new Uri(smsUrlOverride);
 
