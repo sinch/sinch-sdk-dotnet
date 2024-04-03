@@ -12,6 +12,13 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: [
+          { version: '6.0.x', tfm: 'net6.0' },
+          { version: '7.0.x', tfm: 'net7.0' },
+          { version: '8.0.x', tfm: 'net8.0' },
+        ]
         
     services:
       doppleganger:
@@ -45,14 +52,11 @@ jobs:
         with:
           useConfigFile: true
 
-      - name: Setup .NET SDK
+      - name: Setup .NET SDK ${{ matrix.dotnet-version.version }}
         id: dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: |
-            6.0.x
-            7.0.x
-            8.0.x
+          dotnet-version: ${{ matrix.dotnet-version.version }}
 
       - name: Checkout Wiremock fixtures repo
         uses: actions/checkout@v3
@@ -76,7 +80,7 @@ jobs:
         run: dotnet build -p:Version=${{ steps.gitversion.outputs.semVer }} --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test --no-restore --verbosity normal --framework ${{ matrix.dotnet-version.tfm }}
       
       # --include-symbols?
       - name: Pack
