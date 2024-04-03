@@ -4,6 +4,10 @@ using System;
 
 namespace Sinch.Faxes
 {
+    public interface ISinchFax
+    {
+        
+    }
     public class FaxClient
     {
         private readonly string _projectId;
