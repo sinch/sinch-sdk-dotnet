@@ -7,10 +7,11 @@ namespace Sinch.Fax
 {
     public interface ISinchFaxClient
     {
+        /// <inheritdoc cref="ISinchFaxFaxes" />
         public ISinchFaxFaxes Faxes { get; }
     }
 
-    public class FaxClient : ISinchFaxClient
+    internal class FaxClient : ISinchFaxClient
     {
         internal FaxClient(string projectId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
         {

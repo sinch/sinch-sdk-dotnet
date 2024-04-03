@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,18 +7,13 @@ using Sinch.Logger;
 
 namespace Sinch.Fax.Faxes
 {
+    /// <summary>
+    ///     The Fax API allows you to send and receive faxes.
+    ///     You can send faxes to a single recipient or to multiple recipients.
+    ///     You can also receive faxes and download them.
+    /// </summary>
     public interface ISinchFaxFaxes
     {
-    }
-
-    public class ListOfFaxes
-    {
-        public int PageNumber { get; set; }
-        public int TotalPages { get; set; }
-        public int PageSize { get; set; }
-        public int TotalItems { get; set; }
-
-        public IEnumerable<Fax>? Faxes { get; set; }
     }
 
     internal sealed class FaxesClient : ISinchFaxFaxes
@@ -34,13 +28,13 @@ namespace Sinch.Fax.Faxes
 
         internal FaxesClient(string projectId, Uri uri, ILoggerAdapter<ISinchFaxFaxes> loggerAdapter, IHttp httpClient)
         {
-            this._projectId = projectId;
+            _projectId = projectId;
 
-            this._loggerAdapter = loggerAdapter;
-            this._http = httpClient;
+            _loggerAdapter = loggerAdapter;
+            _http = httpClient;
             _mimeMapper = new FileExtensionContentTypeProvider();
             uri = new Uri(uri, $"/v3/projects/{projectId}/faxes");
-            this._uri = uri;
+            _uri = uri;
         }
 
         /// <summary>
@@ -49,8 +43,7 @@ namespace Sinch.Fax.Faxes
         /// <param name="to">Number to send to</param>
         /// <param name="filePath">Path to file to fax</param>
         /// <param name="from">Sinch number you want to set as from </param>
-        /// /// <param name="contentUrls">content Urls to fax</param>
-        /// <param name="callbackUrl">Callback url to notify when fax is completed or failed</param>
+        /// <param name="contentUrl">Callback url to notify when fax is completed or failed</param>
         public async Task<Fax> Send(string to, string filePath, string from = "", string CallbackUrl = null,
             string[] contentUrl = null)
         {
