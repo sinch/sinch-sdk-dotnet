@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using Microsoft.Extensions.Logging;
 using Sinch.Conversation;
 using Sinch.SMS;
@@ -38,6 +39,56 @@ namespace Sinch
 
         /// <inheritdoc cref="ApiUrlOverrides"/>
         public ApiUrlOverrides ApiUrlOverrides { get; set; }
+
+
+        internal ServicePlanIdOptions ServicePlanIdOptions { get; private set; }
+
+        /// <summary>
+        ///     Use SMS API with `service plan id` and compatible region.
+        ///     `service_plan_id` will be used in place of `project_id`
+        /// </summary>
+        /// <param name="servicePlanId">Your service plan id</param>
+        /// <param name="apiToken"></param>
+        /// <param name="hostingRegion">Region to use. Defaults to <see cref="SmsServicePlanIdHostingRegion.Us" /></param>
+        /// <exception cref="ArgumentNullException">throws if service plan id or region is null or an empty string</exception>
+        public void UseServicePlanIdWithSms(string servicePlanId,
+            string apiToken, SmsServicePlanIdHostingRegion hostingRegion = default)
+        {
+            hostingRegion ??= SmsServicePlanIdHostingRegion.Us;
+
+            ServicePlanIdOptions = new ServicePlanIdOptions(servicePlanId, hostingRegion, apiToken);
+        }
+    }
+
+    internal class ServicePlanIdOptions
+    {
+        public ServicePlanIdOptions(string servicePlanId, SmsServicePlanIdHostingRegion hostingRegion, string apiToken)
+        {
+            if (string.IsNullOrEmpty(servicePlanId))
+            {
+                throw new ArgumentNullException(nameof(servicePlanId), "Should have a value");
+            }
+
+            if (hostingRegion is null)
+            {
+                throw new ArgumentNullException(nameof(hostingRegion), "Should have a value");
+            }
+
+            if (string.IsNullOrEmpty(apiToken))
+            {
+                throw new ArgumentNullException(nameof(apiToken), "Should have a value");
+            }
+
+            ServicePlanId = servicePlanId;
+            HostingRegion = hostingRegion;
+            ApiToken = apiToken;
+        }
+
+        public string ApiToken { get; }
+
+        public SmsServicePlanIdHostingRegion HostingRegion { get; }
+
+        public string ServicePlanId { get; }
     }
 
     /// <summary>
