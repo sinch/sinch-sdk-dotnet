@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Sinch;
 using Sinch.Numbers;
 using Sinch.Numbers.Available.Rent;
