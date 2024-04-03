@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Sinch.Faxes
+namespace Sinch.Fax.Faxes
 {
     internal class FileExtensionContentTypeProvider
     {

@@ -1,33 +1,48 @@
-﻿using Sinch.Core;
-using Sinch.Logger;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Sinch.Core;
+using Sinch.Logger;
 
-namespace Sinch.Faxes
+namespace Sinch.Fax.Faxes
 {
-    public partial class Faxes
+    public interface ISinchFaxFaxes
+    {
+    }
+
+    public class ListOfFaxes
+    {
+        public int PageNumber { get; set; }
+        public int TotalPages { get; set; }
+        public int PageSize { get; set; }
+        public int TotalItems { get; set; }
+
+        public IEnumerable<Fax>? Faxes { get; set; }
+    }
+
+    internal sealed class FaxesClient : ISinchFaxFaxes
     {
         private readonly string _projectId;
         private readonly Uri _uri;
 
-        private readonly Http _http;
-        private ILoggerAdapter<Faxes> _loggerAdapter;
+        private readonly IHttp _http;
+        private ILoggerAdapter<ISinchFaxFaxes> _loggerAdapter;
         private FileExtensionContentTypeProvider _mimeMapper;
 
 
-        internal Faxes(string projectId, Uri uri, ILoggerAdapter<Faxes> loggerAdapter, Http httpClient)
+        internal FaxesClient(string projectId, Uri uri, ILoggerAdapter<ISinchFaxFaxes> loggerAdapter, IHttp httpClient)
         {
             this._projectId = projectId;
-            
+
             this._loggerAdapter = loggerAdapter;
             this._http = httpClient;
             _mimeMapper = new FileExtensionContentTypeProvider();
             uri = new Uri(uri, $"/v3/projects/{projectId}/faxes");
             this._uri = uri;
         }
+
         /// <summary>
         /// Send a fax
         /// </summary>
@@ -36,7 +51,8 @@ namespace Sinch.Faxes
         /// <param name="from">Sinch number you want to set as from </param>
         /// /// <param name="contentUrls">content Urls to fax</param>
         /// <param name="callbackUrl">Callback url to notify when fax is completed or failed</param>
-        public async Task<Fax> Send(string to, string filePath, string from = "", string CallbackUrl = null, string[] contentUrl = null)
+        public async Task<Fax> Send(string to, string filePath, string from = "", string CallbackUrl = null,
+            string[] contentUrl = null)
         {
             var fileContent = File.OpenRead(filePath);
             var fileName = Path.GetFileName(filePath);
@@ -51,12 +67,8 @@ namespace Sinch.Faxes
         }
 
 
-
-
-
         public async Task<Fax> Send(Fax fax, Stream fileContent, string fileName)
         {
-
             Fax result = await _http.SendMultipart<Fax, Fax>(_uri, fax, fileContent, fileName);
             return result;
         }
@@ -65,18 +77,17 @@ namespace Sinch.Faxes
         {
             return await List(new ListOptions());
         }
+
         public async Task<ListOfFaxes> List(ListOptions listOptions)
         {
             var uribuilder = new UriBuilder(_uri.ToString());
             uribuilder.Query = listOptions.ToQueryString();
 
             return await _http.Send<ListOfFaxes>(uribuilder.Uri, HttpMethod.Get);
-            
         }
+
         public async Task<Fax> GetAsync(string faxId)
         {
-            
-            
             var url = new Uri(_uri, $"/{faxId}");
             return await _http.Send<Fax>(url, HttpMethod.Get);
         }
@@ -88,15 +99,4 @@ namespace Sinch.Faxes
             return result;
         }
     }
-
-    public class ListOfFaxes
-    {
-        public int PageNumber { get; set; }
-        public int TotalPages { get; set; }
-        public int PageSize { get; set; }
-        public int TotalItems { get; set; }
-        
-        public IEnumerable<Fax>? Faxes { get; set; }
-    }
-    
 }

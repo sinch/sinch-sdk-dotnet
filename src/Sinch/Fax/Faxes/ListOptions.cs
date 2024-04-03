@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Sinch.Faxes
+namespace Sinch.Fax.Faxes
 {
     public class ListOptions
     {

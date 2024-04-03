@@ -6,7 +6,7 @@ using System.Text.Json;
 using Sinch.Auth;
 using Sinch.Conversation;
 using Sinch.Core;
-using Sinch.Faxes;
+using Sinch.Fax;
 using Sinch.Logger;
 using Sinch.Numbers;
 using Sinch.SMS;
@@ -118,7 +118,7 @@ namespace Sinch
         public ISinchVoiceClient Voice(string appKey, string appSecret, CallingRegion callingRegion = null,
             AuthStrategy authStrategy = AuthStrategy.ApplicationSign);
 
-        public FaxClient Faxes { get; init; }
+        public ISinchFaxClient Fax { get; }
     }
 
     public class SinchClient : ISinchClient
@@ -145,6 +145,7 @@ namespace Sinch
         private readonly ISinchSms _sms;
         private readonly ISinchConversation _conversation;
         private readonly ISinchAuth _auth;
+        private readonly ISinchFaxClient _fax;
 
         private void ValidateCommonCredentials()
         {
@@ -210,7 +211,7 @@ namespace Sinch
 
             _httpClient = optionsObj.HttpClient ?? new HttpClient();
 
-            _apiUrlOverrides = optionsObj?.ApiUrlOverrides;
+            _apiUrlOverrides = optionsObj.ApiUrlOverrides;
 
             ISinchAuth auth =
                 new OAuth(_keyId, _keySecret, _httpClient, _loggerFactory?.Create<OAuth>(),
@@ -235,7 +236,7 @@ namespace Sinch
             _conversation = new SinchConversationClient(_projectId, conversationBaseAddress
                 , templatesBaseAddress,
                 _loggerFactory, httpSnakeCase);
-            Faxes = new FaxClient(projectId, new Uri(FaxApiUrl), _loggerFactory, httpCamelCase);
+            _fax = new FaxClient(projectId, new Uri(FaxApiUrl), _loggerFactory, httpCamelCase);
 
             logger?.LogInformation("SinchClient initialized.");
         }
@@ -253,6 +254,8 @@ namespace Sinch
             // for each provided endpoint
             return new Uri(string.Format(SmsApiUrlTemplate, smsHostingRegion.Value.ToLowerInvariant()));
         }
+
+        #region ISinchClient public members
 
         /// <inheritdoc/>       
         public ISinchNumbers Numbers
@@ -284,8 +287,6 @@ namespace Sinch
                 return _conversation;
             }
         }
-        
-        public FaxClient Faxes { get; init; }
 
 
         /// <inheritdoc/>
@@ -295,6 +296,15 @@ namespace Sinch
             {
                 ValidateCommonCredentials();
                 return _auth;
+            }
+        }
+
+        public ISinchFaxClient Fax
+        {
+            get
+            {
+                ValidateCommonCredentials();
+                return _fax;
             }
         }
 
@@ -359,5 +369,7 @@ namespace Sinch
                 new Uri(_apiUrlOverrides?.VoiceUrl ?? string.Format(VoiceApiUrlTemplate, callingRegion.Value)),
                 _loggerFactory, http);
         }
+
+        #endregion
     }
 }

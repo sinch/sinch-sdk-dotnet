@@ -1,25 +1,27 @@
-﻿using Sinch.Core;
-using Sinch.Logger;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
+using Sinch.Core;
+using Sinch.Logger;
 
-namespace Sinch.Faxes
+namespace Sinch.Fax.Faxes
 {
-    public class Emails
+    public interface ISinchFaxEmails
+    {
+    }
+
+    public class Emails : ISinchFaxEmails
     {
         private readonly string _projectId;
         private readonly Uri _uri;
 
         private readonly Http _http;
-        private ILoggerAdapter<Faxes> _loggerAdapter;
+        private ILoggerAdapter<ISinchFaxEmails> _loggerAdapter;
         private FileExtensionContentTypeProvider _mimeMapper;
 
 
-        internal Emails(string projectId, Uri uri, ILoggerAdapter<Faxes> loggerAdapter, Http httpClient)
+        internal Emails(string projectId, Uri uri, ILoggerAdapter<ISinchFaxEmails> loggerAdapter, Http httpClient)
         {
             this._projectId = projectId;
 
@@ -32,19 +34,19 @@ namespace Sinch.Faxes
 
         public async Task<EmailAdress> ListEmails(string email)
         {
-            
             var result = await _http.Send<EmailAdress>(_uri, HttpMethod.Get);
             return result;
         }
+
         public async Task<EmailAdress> Uppdate(EmailAdress email)
         {
             var url = new Uri(_uri, $"/{email.Email}");
-            var result = await _http.Send<EmailAdress, EmailAdress>(url,  HttpMethod.Put, email);
+            var result = await _http.Send<EmailAdress, EmailAdress>(url, HttpMethod.Put, email);
             return result;
         }
+
         public async Task<EmailAdress> Add(EmailAdress email)
         {
-
             var result = await _http.Send<EmailAdress, EmailAdress>(_uri, HttpMethod.Post, email);
             return result;
         }
@@ -56,6 +58,7 @@ namespace Sinch.Faxes
             return result;
         }
     }
+
     /// <summary>
     /// Object from emails/ endoint that is used to send and recieve a fax via email
     /// </summary>
@@ -65,5 +68,3 @@ namespace Sinch.Faxes
         public List<String> PhoneNumbers { get; set; }
     }
 }
-
-

@@ -1,30 +1,22 @@
-﻿using Sinch.Core;
+﻿using System;
+using Sinch.Core;
+using Sinch.Fax.Faxes;
 using Sinch.Logger;
-using System;
 
-namespace Sinch.Faxes
+namespace Sinch.Fax
 {
-    public interface ISinchFax
+    public interface ISinchFaxClient
     {
-        
+        public ISinchFaxFaxes Faxes { get; }
     }
-    public class FaxClient
-    {
-        private readonly string _projectId;
-        private readonly Uri _uri;
-        private readonly LoggerFactory _loggerFactory;
-        private readonly Http _httpClient;
 
-        internal FaxClient(string projectId, Uri uri, Logger.LoggerFactory _loggerFactory, Core.Http httpClient)
+    public class FaxClient : ISinchFaxClient
+    {
+        internal FaxClient(string projectId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
         {
-            this._projectId = projectId;
-            this._uri = uri;
-            this._loggerFactory = _loggerFactory;
-            this._httpClient = httpClient;
-            Faxes = new Faxes(_projectId, _uri, this._loggerFactory?.Create<Faxes>(), _httpClient);
-            // Services = new Services(projectId, uri, loggerFactory?.Create<Services>(), httpSnakeCase);
+            Faxes = new FaxesClient(projectId, baseAddress, loggerFactory?.Create<ISinchFaxFaxes>(), http);
         }
-        public Faxes Faxes { get; }
-        //   public Services Services { get; }
+
+        public ISinchFaxFaxes Faxes { get; }
     }
 }

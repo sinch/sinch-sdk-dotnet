@@ -1,4 +1,4 @@
-﻿namespace Sinch.Faxes
+﻿namespace Sinch.Fax.Faxes
 {
 
     /// <summary>
