@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -125,9 +125,9 @@ namespace Sinch.Voice.Applications
             var uri = new Uri(_baseAddress, $"v1/configuration/callbacks/applications/{request.ApplicationKey}");
             _logger?.LogDebug("Updating callback urls...");
             return _http.Send<object, object>(uri, HttpMethod.Post, new
-                {
-                    url = request.Url
-                },
+            {
+                url = request.Url
+            },
                 cancellationToken);
         }
 

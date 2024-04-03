@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 
 namespace Sinch.Voice.Calls.Instructions
 {
@@ -8,7 +8,7 @@ namespace Sinch.Voice.Calls.Instructions
     public class Answer : IInstruction
     {
         public string Name { get; } = "answer";
-        
+
         /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>

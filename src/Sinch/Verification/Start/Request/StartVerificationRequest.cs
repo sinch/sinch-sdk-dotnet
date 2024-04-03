@@ -1,4 +1,4 @@
-﻿using Sinch.Verification.Common;
+using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Start.Request
 {
@@ -9,22 +9,22 @@ namespace Sinch.Verification.Start.Request
         ///     `number` is currently the only supported endpoint type.
         /// </summary>
         public Identity Identity { get; set; }
-        
+
         /// <summary>
         ///     The type of the verification request.
         /// </summary>
         public VerificationMethodEx Method { get; set; }
-        
+
         /// <summary>
         ///     Used to pass your own reference in the request for tracking purposes.
         /// </summary>
         public string Reference { get; set; }
-        
+
         /// <summary>
         ///     Can be used to pass custom data in the request.
         /// </summary>
         public string Custom { get; set; }
-        
+
         /// <summary>
         ///     An optional object for flashCall verifications.
         ///     It allows you to specify dial time out parameter for flashCall.

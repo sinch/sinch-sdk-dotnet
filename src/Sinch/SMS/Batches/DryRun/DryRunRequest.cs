@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Sinch.Core;
 using Sinch.SMS.Batches.Send;
 
@@ -24,7 +24,7 @@ namespace Sinch.SMS.Batches.DryRun
         internal string GetQueryString()
         {
             var kvp = new List<KeyValuePair<string, string>>();
-            
+
             if (PerRecipient.HasValue)
             {
                 kvp.Add(new KeyValuePair<string, string>("per_recipient", PerRecipient.ToString().ToLowerInvariant()));

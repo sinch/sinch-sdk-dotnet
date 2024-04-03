@@ -1,4 +1,4 @@
-﻿using Sinch.Conversation.Common;
+using Sinch.Conversation.Common;
 
 namespace Sinch.Conversation.Events.AppEvents
 {

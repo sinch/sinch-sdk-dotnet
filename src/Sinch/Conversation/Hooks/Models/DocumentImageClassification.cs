@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Hooks.Models
@@ -13,14 +13,14 @@ namespace Sinch.Conversation.Hooks.Models
         /// </summary>
         [JsonPropertyName("doc_type")]
         public string DocType { get; set; }
-        
+
 
         /// <summary>
         ///     The likelihood that the analyzed image contains the assigned document type. 1 is the maximum value, representing the highest likelihood that the analyzed image contains the assigned document type, and 0 is the minimum value, representing the lowest likelihood that the analyzed image contains the assigned document type.
         /// </summary>
         [JsonPropertyName("confidence")]
         public float Confidence { get; set; }
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object

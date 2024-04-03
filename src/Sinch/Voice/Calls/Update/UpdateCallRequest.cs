@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Sinch.Voice.Calls.Actions;
 using Sinch.Voice.Calls.Instructions;
 
@@ -21,7 +21,7 @@ namespace Sinch.Voice.Calls.Update
         ///     as necessary.
         /// </summary>
         public List<IInstruction> Instructions { get; set; }
-        
+
         /// <summary>
         ///     The action that will control the call. Each SVAML object can only include one action.
         /// </summary>

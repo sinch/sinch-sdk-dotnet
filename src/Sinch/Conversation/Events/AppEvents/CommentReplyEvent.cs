@@ -1,4 +1,4 @@
-﻿namespace Sinch.Conversation.Events.AppEvents
+namespace Sinch.Conversation.Events.AppEvents
 {
     public class CommentReplyEvent
     {

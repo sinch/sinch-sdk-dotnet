@@ -1,11 +1,11 @@
-﻿using Sinch.Verification.Common;
+using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Report.Request
 {
     public class ReportSmsVerificationRequest : VerifyReportRequest
     {
         public override string Method { get; } = VerificationMethod.Sms.Value;
-        
+
         /// <summary>
         ///     A configuration object containing settings specific to SMS verifications.
         /// </summary>
@@ -20,7 +20,7 @@ namespace Sinch.Verification.Report.Request
 #if NET7_0_OR_GREATER
         public required string Code { get; set; }
 #else
-         public  string Code { get; set; }
+        public string Code { get; set; }
 #endif
         /// <summary>
         ///     The sender ID of the SMS.

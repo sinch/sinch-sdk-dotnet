@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Voice.Calls.Instructions
@@ -10,7 +10,7 @@ namespace Sinch.Voice.Calls.Instructions
     {
         [JsonPropertyName("name")]
         public string Name { get; } = "say";
-        
+
         /// <summary>
         ///     Contains the message that will be spoken. Default maximum length is 600 characters. To change this limit, please
         ///     contact support.

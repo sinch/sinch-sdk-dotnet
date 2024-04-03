@@ -1,4 +1,4 @@
-﻿namespace Sinch.Conversation.Contacts.GetChannelProfile
+namespace Sinch.Conversation.Contacts.GetChannelProfile
 {
     public class ChannelProfile
     {

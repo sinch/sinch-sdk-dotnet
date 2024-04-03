@@ -35,28 +35,28 @@ namespace Sinch.Conversation.Hooks.Models
         /// </summary>
         [JsonPropertyName("request_id")]
         public string RequestId { get; set; }
-        
+
 
         /// <summary>
         ///     The ID of the contact which is the subject of the opt-out. Will be empty if processing_mode is DISPATCH.
         /// </summary>
         [JsonPropertyName("contact_id")]
         public string ContactId { get; set; }
-        
+
 
         /// <summary>
         ///     The channel identity. For example, a phone number for SMS, WhatsApp and Viber Business.
         /// </summary>
         [JsonPropertyName("identity")]
         public string Identity { get; set; }
-        
+
 
         /// <summary>
         ///     Gets or Sets ErrorDetails
         /// </summary>
         [JsonPropertyName("error_details")]
         public OptOutNotificationErrorDetails ErrorDetails { get; set; }
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object

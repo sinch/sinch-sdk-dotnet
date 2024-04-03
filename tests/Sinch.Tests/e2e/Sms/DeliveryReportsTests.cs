@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -37,7 +37,7 @@ namespace Sinch.Tests.e2e.Sms
         {
             var response = await SinchClientMockStudio.Sms.DeliveryReports.List(new SMS.DeliveryReports.List.ListDeliveryReportsRequest()
             {
-                
+
                 Page = 0,
             });
             response.DeliveryReports.Count().Should().Be(5);

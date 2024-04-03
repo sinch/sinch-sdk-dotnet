@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Sinch.SMS.DeliveryReports;
 
@@ -23,13 +23,13 @@ namespace Sinch.SMS.Hooks
         /// </summary>
         [JsonPropertyName("type")]
         public DeliveryReportType Type { get; set; }
-        
+
         /// <summary>
         ///     The total number of messages in the batch.
         /// </summary>
         [JsonPropertyName("total_message_count")]
         public uint TotalMessageCount { get; set; }
-        
+
         /// <summary>
         ///     The client identifier of the batch this delivery report belongs to, if set when submitting batch.
         /// </summary>

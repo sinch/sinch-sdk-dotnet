@@ -1,4 +1,4 @@
-﻿namespace Sinch.Conversation.Apps.Credentials
+namespace Sinch.Conversation.Apps.Credentials
 {
     /// <summary>
     ///     This object is required for channels which use a bearer-type of credential for authentication.

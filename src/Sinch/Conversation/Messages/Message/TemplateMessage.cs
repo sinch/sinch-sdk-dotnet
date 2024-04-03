@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Sinch.Conversation.Messages.Message
@@ -7,7 +7,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     TemplateMessage
     /// </summary>
-    public sealed class TemplateMessage 
+    public sealed class TemplateMessage
     {
         /// <summary>
         ///     Optional. Channel specific template reference with parameters per channel.

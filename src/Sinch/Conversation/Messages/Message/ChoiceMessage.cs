@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Sinch.Conversation.Messages.Message
 {
-    public class ChoiceMessage 
+    public class ChoiceMessage
     {
         /// <summary>
         ///     The number of choices is limited to 10.

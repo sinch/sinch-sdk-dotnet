@@ -1,4 +1,4 @@
-﻿namespace Sinch.Numbers
+namespace Sinch.Numbers
 {
 
     /// <summary>

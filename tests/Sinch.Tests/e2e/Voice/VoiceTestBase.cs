@@ -1,4 +1,4 @@
-﻿using Sinch.Auth;
+using Sinch.Auth;
 using Sinch.Voice;
 
 namespace Sinch.Tests.e2e.Voice

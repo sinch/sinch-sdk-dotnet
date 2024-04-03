@@ -1,4 +1,4 @@
-﻿namespace Sinch.Conversation.Messages.Message
+namespace Sinch.Conversation.Messages.Message
 {
     public class Choice
     {

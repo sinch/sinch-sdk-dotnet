@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Conversation.Hooks.Models
@@ -10,7 +10,7 @@ namespace Sinch.Conversation.Hooks.Models
     [JsonConverter(typeof(EnumRecordJsonConverter<CapabilityStatus>))]
     public record CapabilityStatus(string Value) : EnumRecord(Value)
     {
-        
+
         public static readonly CapabilityStatus CapabilityUnknown = new("CAPABILITY_UNKNOWN");
         public static readonly CapabilityStatus CapabilityFull = new("CAPABILITY_FULL");
         public static readonly CapabilityStatus CapabilityPartial = new("CAPABILITY_PARTIAL");

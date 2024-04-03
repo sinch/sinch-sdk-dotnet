@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -115,7 +115,7 @@ namespace Sinch.Tests.e2e.Conversation
             });
             response.Should().BeEquivalentTo(new ListEventsResponse()
             {
-                Events = new List<ConversationEvent>() {  _conversationEvent, _conversationEvent },
+                Events = new List<ConversationEvent>() { _conversationEvent, _conversationEvent },
                 NextPageToken = "def"
             });
         }

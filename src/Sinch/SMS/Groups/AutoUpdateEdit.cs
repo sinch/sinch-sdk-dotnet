@@ -1,4 +1,4 @@
-﻿namespace Sinch.SMS.Groups
+namespace Sinch.SMS.Groups
 {
     public class AutoUpdateEdit
     {

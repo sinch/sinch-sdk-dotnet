@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Net;
@@ -415,7 +415,7 @@ namespace Sinch.Tests.Conversation
 
             response.Should().NotBeNull();
         }
-        
+
         [Fact]
         public async Task SendAllParams()
         {

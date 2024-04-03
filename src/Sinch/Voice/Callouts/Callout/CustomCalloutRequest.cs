@@ -15,7 +15,7 @@ namespace Sinch.Voice.Callouts.Callout
         ///     The type of device and number or endpoint to call.
         /// </summary>
         public Destination Destination { get; set; }
-        
+
         /// <summary>
         ///     When the destination picks up, this DTMF tones will be played to the callee.
         ///     Valid characters in the string are "0"-"9", "#", and "w". A "w" will render a 500 ms pause.
@@ -29,12 +29,12 @@ namespace Sinch.Voice.Callouts.Callout
         ///     Can be used to input custom data.
         /// </summary>
         public string Custom { get; set; }
-        
+
         /// <summary>
         ///     The maximum amount of time in seconds that the call will last.
         ///  </summary>
         public int? MaxDuration { get; set; }
-        
+
         /// <summary>
         ///     You can use inline <see href="https://developers.sinch.com/docs/voice/api-reference/svaml/">SVAML</see>
         ///     to replace a callback URL when using custom callouts.
@@ -51,7 +51,7 @@ namespace Sinch.Voice.Callouts.Callout
         ///     Ensure that the JSON object is escaped correctly.
         /// </summary>
         public string Ace { get; set; }
-        
+
         /// <summary>
         ///     <b>Note:</b> PIE callbacks are not available for DATA Calls; only PSTN and SIP calls. <br/><br/>
         ///     You can use inline <see href="https://developers.sinch.com/docs/voice/api-reference/svaml/">SVAML</see>

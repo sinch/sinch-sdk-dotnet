@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 
 namespace Sinch.Logger
@@ -174,7 +174,7 @@ namespace Sinch.Logger
         }
     }
 
-// ReSharper disable once UnusedTypeParameter
+    // ReSharper disable once UnusedTypeParameter
     internal interface ILoggerAdapter<T>
     {
         void LogInformation(string message);

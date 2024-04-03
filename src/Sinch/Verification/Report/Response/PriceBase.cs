@@ -1,4 +1,4 @@
-﻿using Sinch.Verification.Common;
+using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Report.Response
 {

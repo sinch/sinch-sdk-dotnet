@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Sinch.SMS;
 
 namespace Sinch.Tests.Sms

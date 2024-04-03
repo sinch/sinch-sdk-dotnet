@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -78,7 +78,7 @@ namespace Sinch.Tests.e2e.Conversation
             var response = await SinchClientMockServer.Conversation.Webhooks.Get("123");
             response.Should().BeEquivalentTo(_webhookResponse);
         }
-        
+
         [Fact]
         public async Task Delete()
         {

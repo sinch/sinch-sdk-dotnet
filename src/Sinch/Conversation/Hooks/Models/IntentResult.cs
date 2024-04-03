@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Hooks.Models
@@ -13,14 +13,14 @@ namespace Sinch.Conversation.Hooks.Models
         /// </summary>
         [JsonPropertyName("intent")]
         public string Intent { get; set; }
-        
+
 
         /// <summary>
         ///     The likelihood that the assigned intent represents the purpose of the analyzed text. 1 is the maximum value, representing the highest likelihood that the message text matches the intent, and 0 is the minimum value, representing the lowest likelihood that the message text matches the intent.
         /// </summary>
         [JsonPropertyName("score")]
         public float Score { get; set; }
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object

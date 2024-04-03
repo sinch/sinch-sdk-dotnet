@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -90,7 +90,7 @@ namespace Sinch.Tests.Sms
             response.Count.Should().Be(2);
             response.Inbounds.Should().HaveCount(1);
         }
-        
+
         [Fact]
         public async Task ListAuto()
         {
@@ -139,7 +139,7 @@ namespace Sinch.Tests.Sms
                 Page = 0
             };
 
-            var response =  Sms.Inbounds.ListAuto(request);
+            var response = Sms.Inbounds.ListAuto(request);
             var list = new List<Inbound>();
             await foreach (var inbound in response)
             {

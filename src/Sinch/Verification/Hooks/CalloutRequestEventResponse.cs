@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Verification.Hooks
 {
@@ -17,7 +17,7 @@ namespace Sinch.Verification.Hooks
         /// </summary>
         [JsonPropertyName("code")]
         public string Code { get; set; }
-        
+
         /// <summary>
         ///     An object defining various properties for the text-to-speech message.
         /// </summary>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using FluentAssertions;
 using Sinch.Voice;
 using Sinch.Voice.Callouts;
@@ -16,7 +16,7 @@ namespace Sinch.Tests.Voice
             var baseUrl = Helpers.GetPrivateField<Uri, ISinchVoiceCallout>(voiceClient.Callouts, "_baseAddress");
             baseUrl.Should().BeEquivalentTo(new Uri("https://calling.api.sinch.com/"));
         }
-        
+
         [Fact]
         public void InitVoiceWithEastAsia1Region()
         {

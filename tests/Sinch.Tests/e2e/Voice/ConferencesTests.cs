@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -64,7 +64,7 @@ namespace Sinch.Tests.e2e.Voice
             });
             await op.Should().NotThrowAsync();
         }
-        
+
         [Fact]
         public async Task KickParticipant()
         {

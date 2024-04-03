@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Hooks.Models
         /// </summary>
         [JsonPropertyName("description")]
         public string Description { get; set; }
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object

@@ -1,4 +1,4 @@
-﻿namespace Sinch.Voice.Calls.Actions
+namespace Sinch.Voice.Calls.Actions
 {
     /// <summary>
     ///      Hangs up a call.

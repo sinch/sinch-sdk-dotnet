@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -293,9 +293,9 @@ namespace Sinch.Tests.Conversation
         {
             // the birthday format is YYYY-MM-DD
             var t = @"{ ""birthday"": ""2000-03-12"", ""name"": { ""full_name"": ""AAA""}, ""phone_numbers"":[] }";
-            
+
             var contact = JsonSerializer.Deserialize<ContactInfoMessage>(t);
-            
+
             contact.Birthday.Should().BeSameDateAs(new DateTime(2000, 03, 12));
         }
     }

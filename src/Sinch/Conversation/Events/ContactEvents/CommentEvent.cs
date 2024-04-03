@@ -1,4 +1,4 @@
-﻿namespace Sinch.Conversation.Events.ContactEvents
+namespace Sinch.Conversation.Events.ContactEvents
 {
     /// <summary>
     ///     The user sent a comment outside of the main conversation context
