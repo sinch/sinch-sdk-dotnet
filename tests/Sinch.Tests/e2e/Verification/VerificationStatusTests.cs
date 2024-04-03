@@ -8,23 +8,24 @@ namespace Sinch.Tests.e2e.Verification
 {
     public class VerificationStatusTests : VerificationTestBase
     {
-        private readonly SmsVerificationReportResponse _smsVerificationReportResponse =
-            new SmsVerificationReportResponse()
+        // mocked based on oas file
+        private readonly ReportSmsVerificationResponse _smsVerificationReportResponse =
+            new ReportSmsVerificationResponse()
             {
-                Id = "1234567890",
+                Id = "some_string_value",
                 Method = VerificationMethod.Sms,
                 Price = new PriceBase
                 {
                     VerificationPrice = new()
                     {
-                        CurrencyId = "USD",
-                        Amount = 0.0127
+                        CurrencyId = "some_string_value",
+                        Amount = 1.1
                     }
                 },
-                Reason = Reason.Fraud,
-                Reference = "12345",
-                Source = Source.Intercepted,
-                Status = VerificationStatus.Fail
+                Reason = new Reason("some_string_value"),
+                Reference = "some_string_value",
+                Source = new Source("some_string_value"),
+                Status = new VerificationStatus("some_string_value")
             };
 
         [Fact]
@@ -32,7 +33,7 @@ namespace Sinch.Tests.e2e.Verification
         {
             var response = await VerificationClient.VerificationStatus.GetById("123");
 
-            response.Should().BeOfType<SmsVerificationReportResponse>().Which.Should().BeEquivalentTo(
+            response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should().BeEquivalentTo(
                 _smsVerificationReportResponse);
         }
 
@@ -43,7 +44,7 @@ namespace Sinch.Tests.e2e.Verification
                 await VerificationClient.VerificationStatus.GetByIdentity("123",
                     VerificationMethod.Sms);
 
-            response.Should().BeOfType<SmsVerificationReportResponse>().Which.Should()
+            response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should()
                 .BeEquivalentTo(_smsVerificationReportResponse);
         }
 
@@ -52,7 +53,7 @@ namespace Sinch.Tests.e2e.Verification
         {
             var response = await VerificationClient.VerificationStatus.GetByReference("123");
 
-            response.Should().BeOfType<SmsVerificationReportResponse>().Which.Should()
+            response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should()
                 .BeEquivalentTo(_smsVerificationReportResponse);
         }
 
@@ -61,8 +62,8 @@ namespace Sinch.Tests.e2e.Verification
         {
             var response = await VerificationClient.VerificationStatus.GetById("12");
 
-            response.Should().BeOfType<SmsVerificationReportResponse>().Which.Should().BeEquivalentTo(
-                new SmsVerificationReportResponse()
+            response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should().BeEquivalentTo(
+                new ReportSmsVerificationResponse()
                 {
                     Method = VerificationMethod.Sms,
                     Reference = "ref",
@@ -88,8 +89,8 @@ namespace Sinch.Tests.e2e.Verification
                 await VerificationClient.VerificationStatus.GetByIdentity("+49342432",
                     VerificationMethod.Callout);
 
-            response.Should().BeOfType<PhoneCallVerificationReportResponse>().Which.Should().BeEquivalentTo(
-                new PhoneCallVerificationReportResponse()
+            response.Should().BeOfType<ReportCalloutVerificationResponse>().Which.Should().BeEquivalentTo(
+                new ReportCalloutVerificationResponse()
                 {
                     Method = VerificationMethod.Callout,
                     Id = "_id",
@@ -112,15 +113,15 @@ namespace Sinch.Tests.e2e.Verification
                     CallComplete = true,
                 });
         }
-        
+
         [Fact]
         public async Task ByReferenceFlashCall()
         {
             var response =
                 await VerificationClient.VerificationStatus.GetByReference("ref_12");
 
-            response.Should().BeOfType<FlashCallVerificationReportResponse>().Which.Should().BeEquivalentTo(
-                new FlashCallVerificationReportResponse()
+            response.Should().BeOfType<ReportFlashCallVerificationResponse>().Which.Should().BeEquivalentTo(
+                new ReportFlashCallVerificationResponse()
                 {
                     Method = VerificationMethod.FlashCall,
                     Id = "_id",

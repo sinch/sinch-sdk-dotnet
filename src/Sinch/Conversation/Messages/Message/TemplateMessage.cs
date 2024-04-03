@@ -7,7 +7,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     TemplateMessage
     /// </summary>
-    public sealed class TemplateMessage : IMessage
+    public sealed class TemplateMessage 
     {
         /// <summary>
         ///     Optional. Channel specific template reference with parameters per channel.
@@ -92,7 +92,7 @@ namespace Sinch.Conversation.Messages.Message
             sb.Append("  LanguageCode: ").Append(LanguageCode).Append("\n");
             sb.Append("  Parameters: ").Append(Parameters).Append("\n");
             sb.Append("  TemplateId: ").Append(TemplateId).Append("\n");
-            sb.Append("  VarVersion: ").Append(Version).Append("\n");
+            sb.Append("  Version: ").Append(Version).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

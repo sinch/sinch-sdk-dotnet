@@ -46,10 +46,10 @@ namespace Sinch.Tests.Verification
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             };
-            var smsResponse = JsonSerializer.Deserialize<IVerificationStartResponse>(jData, _jsonSerializerOptions);
+            var smsResponse = JsonSerializer.Deserialize<IStartVerificationResponse>(jData, _jsonSerializerOptions);
 
-            smsResponse.Should().BeOfType<SmsVerificationStartResponse>().Which.Should().BeEquivalentTo(
-                new SmsVerificationStartResponse()
+            smsResponse.Should().BeOfType<StartSmsVerificationResponse>().Which.Should().BeEquivalentTo(
+                new StartSmsVerificationResponse()
                 {
                     Id = "1234567890",
                     Method = VerificationMethodEx.Sms,
@@ -83,8 +83,8 @@ namespace Sinch.Tests.Verification
                     method = "callout"
                 }));
 
-            var response = await VerificationClient.Verification.ReportIdentity(endpoint,
-                new PhoneCallVerificationReportRequest
+            var response = await VerificationClient.Verification.ReportCalloutByIdentity(endpoint,
+                new ReportCalloutVerificationRequest
                 {
                     Callout = new Callout
                     {
@@ -92,8 +92,8 @@ namespace Sinch.Tests.Verification
                     }
                 });
 
-            response.Should().BeOfType<PhoneCallVerificationReportResponse>().Which.Should().BeEquivalentTo(
-                new PhoneCallVerificationReportResponse
+            response.Should().BeOfType<ReportCalloutVerificationResponse>().Which.Should().BeEquivalentTo(
+                new ReportCalloutVerificationResponse
                 {
                     Id = "10",
                     CallComplete = true,

@@ -7,7 +7,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     A message containing a list of options to choose from
     /// </summary>
-    public sealed class ListMessage : IMessage
+    public sealed class ListMessage 
     {
         /// <summary>
         ///     A title for the message that is displayed near the products or choices.

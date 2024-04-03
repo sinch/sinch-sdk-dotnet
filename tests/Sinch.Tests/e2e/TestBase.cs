@@ -5,6 +5,9 @@ namespace Sinch.Tests.e2e
 {
     public class TestBase
     {
+        /// <summary>
+        ///     It's the same value as in doppleganger common.defaultProjectId, so it's shared and common. 
+        /// </summary>
         private const string ProjectId = "e15b2651-daac-4ccb-92e8-e3066d1d033b";
 
         protected readonly ISinchClient SinchClientMockStudio;
@@ -15,7 +18,7 @@ namespace Sinch.Tests.e2e
         protected TestBase()
         {
             Env.Load();
-            SinchClientMockStudio = new SinchClient("key_id", "key_secret", ProjectId,
+            SinchClientMockStudio = new SinchClient(ProjectId, "key_id", "key_secret",
                 options =>
                 {
                     options.ApiUrlOverrides = new ApiUrlOverrides()
@@ -26,7 +29,7 @@ namespace Sinch.Tests.e2e
                     };
                 });
 
-            SinchClientMockServer = new SinchClient("key_id", "key_secret", ProjectId, options =>
+            SinchClientMockServer = new SinchClient(ProjectId, "key_id", "key_secret", options =>
             {
                 options.ApiUrlOverrides = new ApiUrlOverrides()
                 {
@@ -36,6 +39,8 @@ namespace Sinch.Tests.e2e
                     NumbersUrl = GetTestUrl("MOCK_NUMBERS_PORT"),
                     VoiceUrl = GetTestUrl("MOCK_VOICE_PORT"),
                     VerificationUrl = GetTestUrl("MOCK_VERIFICATION_PORT"),
+                    // templates treated as conversation api in doppelganger 
+                    TemplatesUrl = GetTestUrl("MOCK_CONVERSATION_PORT"),
                 };
             });
         }
