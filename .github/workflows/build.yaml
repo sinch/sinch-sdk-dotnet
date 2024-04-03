@@ -35,7 +35,7 @@ jobs:
           - 6044:6044
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -54,7 +54,7 @@ jobs:
 
       - name: Setup .NET SDK ${{ matrix.dotnet-version.version }}
         id: dotnet
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ matrix.dotnet-version.version }}
 
