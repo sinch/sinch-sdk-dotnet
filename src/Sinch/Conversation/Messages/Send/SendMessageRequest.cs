@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Nodes;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.Message;
 
@@ -99,7 +100,7 @@ namespace Sinch.Conversation.Messages.Send
         ///     Currently only returned in the &#x60;message_metadata&#x60;
         ///     field of an [Inbound Message](/docs/conversation/callbacks/#inbound-message) callback.
         /// </summary>
-        public object ConversationMetadata { get; set; }
+        public JsonObject ConversationMetadata { get; set; }
 
 
         /// <summary>
