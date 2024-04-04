@@ -123,8 +123,13 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
         }
     }
 
-    public interface IFlowChannelSpecificMessageHeader
+    [JsonConverter(typeof(EnumRecordJsonConverter<WhatsAppHeaderType>))]
+    public record WhatsAppHeaderType(string Value) : EnumRecord(Value)
     {
+        public static readonly WhatsAppHeaderType Video = new("video");
+        public static readonly WhatsAppHeaderType Image = new("image");
+        public static readonly WhatsAppHeaderType Text = new("text");
+        public static readonly WhatsAppHeaderType Document = new("document");
     }
 
     /// <summary>
@@ -135,12 +140,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
         /// <summary>
         ///     Must be set to text.
         /// </summary>
+        [JsonInclude]
         [JsonPropertyName("type")]
-#if NET7_0_OR_GREATER
-        public required string Type { get; set; }
-#else
-        public string Type { get; set; }
-#endif
+        public WhatsAppHeaderType Type { get; private set; } = WhatsAppHeaderType.Text;
 
 
         /// <summary>
@@ -174,15 +176,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
     /// </summary>
     public sealed class WhatsAppInteractiveImageHeader : IFlowChannelSpecificMessageHeader
     {
-        /// <summary>
-        ///     Must be set to image.
-        /// </summary>
+        [JsonInclude]
         [JsonPropertyName("type")]
-#if NET7_0_OR_GREATER
-        public required string Type { get; set; }
-#else
-        public string Type { get; set; }
-#endif
+        public WhatsAppHeaderType Type { get; private set; } = WhatsAppHeaderType.Image;
 
 
         /// <summary>
@@ -214,7 +210,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
     /// <summary>
     ///     Media object for the header.
     /// </summary>
-    public sealed class WhatsAppInteractiveHeaderMedia : IFlowChannelSpecificMessageHeader
+    public sealed class WhatsAppInteractiveHeaderMedia
     {
         /// <summary>
         ///     URL for the media.
@@ -249,12 +245,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
         /// <summary>
         ///     Must be set to document.
         /// </summary>
+        [JsonInclude]
         [JsonPropertyName("type")]
-#if NET7_0_OR_GREATER
-        public required string Type { get; set; }
-#else
-        public string Type { get; set; }
-#endif
+        public WhatsAppHeaderType Type { get; private set; } = WhatsAppHeaderType.Document;
 
 
         /// <summary>
@@ -282,7 +275,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
             return sb.ToString();
         }
     }
-    
+
     /// <summary>
     ///     Header of the interactive message with video.
     /// </summary>
@@ -291,13 +284,10 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
         /// <summary>
         ///     Must be set to video.
         /// </summary>
+        [JsonInclude]
         [JsonPropertyName("type")]
-#if NET7_0_OR_GREATER
-        public required string Type { get; set; }
-#else
-        public string Type { get; set; }
-#endif
-        
+        public WhatsAppHeaderType Type { get; private set; } = WhatsAppHeaderType.Video;
+
 
         /// <summary>
         ///     Gets or Sets Video
@@ -308,7 +298,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
 #else
         public WhatsAppInteractiveHeaderMedia Video { get; set; }
 #endif
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -323,8 +313,5 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
             sb.Append("}\n");
             return sb.ToString();
         }
-
     }
-    
-    
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
@@ -115,7 +116,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     the explicit_channel_message property, and may be easier to use.
         ///     The key in the map must point to a valid conversation channel as defined in the enum ConversationChannel.
         /// </summary>
-        public Dictionary<ConversationChannel, ChannelSpecificMessage> ChannelSpecificMessage { get; set; }
+        public Dictionary<ConversationChannel, IChannelSpecificMessage> ChannelSpecificMessage { get; set; }
 
         /// <inheritdoc cref="Agent" />        
         public Agent Agent { get; set; }
@@ -124,46 +125,47 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     A message containing a channel specific message (not supported by OMNI types).
     /// </summary>
-    public sealed class ChannelSpecificMessage
+    [JsonDerivedType(typeof(FlowMessage))]
+    [JsonConverter(typeof(ChannelSpecificMessageJsonInterfaceConverter))]
+    public interface IChannelSpecificMessage
     {
- 
-
-
         /// <summary>
-        /// Gets or Sets MessageType
+        ///     Gets or Sets MessageType
         /// </summary>
-        [JsonPropertyName("message_type")]
-#if NET7_0_OR_GREATER
-        public required MessageTypeEnum MessageType { get; set; }
-#else 
-        public MessageTypeEnum MessageType { get; set; }
-#endif
+        public MessageTypeEnum MessageType { get; }
+    }
 
-        /// <summary>
-        ///     Gets or Sets Message
-        /// </summary>
-        [JsonPropertyName("message")]
-#if NET7_0_OR_GREATER
-        public required IChannelSpecificMessage Message { get; set; }
-#else
-        public IChannelSpecificMessage Message { get; set; }
-#endif
-        
-
-        /// <summary>
-        ///     Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
+    public class ChannelSpecificMessageJsonInterfaceConverter : JsonConverter<IChannelSpecificMessage>
+    {
+        public override IChannelSpecificMessage Read(ref Utf8JsonReader reader, Type typeToConvert,
+            JsonSerializerOptions options)
         {
-            var sb = new StringBuilder();
-            sb.Append($"class {nameof(ChannelSpecificMessage)} {{\n");
-            sb.Append($"  {nameof(MessageType)}: ").Append(MessageType).Append('\n');
-            sb.Append($"  {nameof(Message)}: ").Append(Message).Append('\n');
-            sb.Append("}\n");
-            return sb.ToString();
+            //not optimal but straightforward
+            var elem = JsonElement.ParseValue(ref reader);
+            var descriptor = elem.EnumerateObject().FirstOrDefault(x => x.Name == "message_type");
+            var method = descriptor.Value.GetString();
+
+            if (MessageTypeEnum.Flows.Value == method)
+                return elem.Deserialize<FlowMessage>(options);
+
+            throw new JsonException(
+                $"Failed to match verification method object, got prop `{descriptor.Name}` with value `{method}`");
         }
 
+        public override void Write(Utf8JsonWriter writer, IChannelSpecificMessage value, JsonSerializerOptions options)
+        {
+            JsonSerializer.Serialize(writer, value, options);
+        }
+    }
+
+    public class FlowMessage : IChannelSpecificMessage
+    {
+        [JsonPropertyName("message_type")]
+        [JsonInclude]
+        public MessageTypeEnum MessageType { get; private set; } = MessageTypeEnum.Flows;
+
+        [JsonPropertyName("message")]
+        public FlowChannelSpecificMessage Message { get; set; }
     }
 
     /// <summary>
@@ -172,7 +174,6 @@ namespace Sinch.Conversation.Messages.Message
     [JsonConverter(typeof(EnumRecordJsonConverter<MessageTypeEnum>))]
     public record MessageTypeEnum(string Value) : EnumRecord(Value)
     {
-        
         public static readonly MessageTypeEnum Flows = new("FLOWS");
     }
 }
