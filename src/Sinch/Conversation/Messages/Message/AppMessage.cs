@@ -4,6 +4,8 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
+using Sinch.Conversation.Messages.Message.ChannelSpecificMessages;
+using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -53,7 +55,7 @@ namespace Sinch.Conversation.Messages.Message
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ContactInfoMessage ContactInfoMessage { get; private set; }
-        
+
         public AppMessage(ChoiceMessage choiceMessage)
         {
             ChoiceMessage = choiceMessage;
@@ -107,20 +109,46 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         public Dictionary<ConversationChannel, JsonValue> ExplicitChannelMessage { get; set; }
 
+        /// <summary>
+        ///     Channel specific messages, overriding any transcoding.
+        ///     The structure of this property is more well-defined than the open structure of
+        ///     the explicit_channel_message property, and may be easier to use.
+        ///     The key in the map must point to a valid conversation channel as defined in the enum ConversationChannel.
+        /// </summary>
+        public Dictionary<ConversationChannel, ChannelSpecificMessage> ChannelSpecificMessage { get; set; }
+
         /// <inheritdoc cref="Agent" />        
         public Agent Agent { get; set; }
     }
 
     /// <summary>
-    ///     Additional properties of the message.
+    ///     A message containing a channel specific message (not supported by OMNI types).
     /// </summary>
-    public sealed class AppMessageAdditionalProperties
+    public sealed class ChannelSpecificMessage
     {
-        /// <summary>
-        ///     The &#x60;display_name&#x60; of the newly created contact in case it doesn&#39;t exist.
-        /// </summary>
-        public string ContactName { get; set; }
+ 
 
+
+        /// <summary>
+        /// Gets or Sets MessageType
+        /// </summary>
+        [JsonPropertyName("message_type")]
+#if NET7_0_OR_GREATER
+        public required MessageTypeEnum MessageType { get; set; }
+#else 
+        public MessageTypeEnum MessageType { get; set; }
+#endif
+
+        /// <summary>
+        ///     Gets or Sets Message
+        /// </summary>
+        [JsonPropertyName("message")]
+#if NET7_0_OR_GREATER
+        public required IChannelSpecificMessage Message { get; set; }
+#else
+        public IChannelSpecificMessage Message { get; set; }
+#endif
+        
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -129,10 +157,22 @@ namespace Sinch.Conversation.Messages.Message
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class AppMessageAdditionalProperties {\n");
-            sb.Append("  ContactName: ").Append(ContactName).Append("\n");
+            sb.Append($"class {nameof(ChannelSpecificMessage)} {{\n");
+            sb.Append($"  {nameof(MessageType)}: ").Append(MessageType).Append('\n');
+            sb.Append($"  {nameof(Message)}: ").Append(Message).Append('\n');
             sb.Append("}\n");
             return sb.ToString();
         }
+
+    }
+
+    /// <summary>
+    /// Defines MessageType
+    /// </summary>
+    [JsonConverter(typeof(EnumRecordJsonConverter<MessageTypeEnum>))]
+    public record MessageTypeEnum(string Value) : EnumRecord(Value)
+    {
+        
+        public static readonly MessageTypeEnum Flows = new("FLOWS");
     }
 }
