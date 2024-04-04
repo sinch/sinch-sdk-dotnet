@@ -16,6 +16,44 @@ namespace Sinch.Conversation.Messages.Message
         {
         }
 
+        #region Oneof app message props and constructors
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public TextMessage TextMessage { get; private set; }
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public CardMessage CardMessage { get; private set; }
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public CarouselMessage CarouselMessage { get; private set; }
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public ChoiceMessage ChoiceMessage { get; private set; }
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public LocationMessage LocationMessage { get; private set; }
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public MediaMessage MediaMessage { get; private set; }
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public TemplateMessage TemplateMessage { get; private set; }
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public ListMessage ListMessage { get; private set; }
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public ContactInfoMessage ContactInfoMessage { get; private set; }
+        
         public AppMessage(ChoiceMessage choiceMessage)
         {
             ChoiceMessage = choiceMessage;
@@ -61,6 +99,8 @@ namespace Sinch.Conversation.Messages.Message
             ContactInfoMessage = contactInfoMessage;
         }
 
+        #endregion
+
         /// <summary>
         ///     Optional. Channel specific messages, overriding any transcoding.
         ///     The key in the map must point to a valid conversation channel as defined by the enum ConversationChannel.
@@ -69,47 +109,6 @@ namespace Sinch.Conversation.Messages.Message
 
         /// <inheritdoc cref="Agent" />        
         public Agent Agent { get; set; }
-
-        /// <summary>
-        ///     Gets or Sets AdditionalProperties
-        /// </summary>
-        public AppMessageAdditionalProperties AdditionalProperties { get; set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public TextMessage TextMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public CardMessage CardMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public CarouselMessage CarouselMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ChoiceMessage ChoiceMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public LocationMessage LocationMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public MediaMessage MediaMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public TemplateMessage TemplateMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ListMessage ListMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ContactInfoMessage ContactInfoMessage { get; private set; }
     }
 
     /// <summary>
