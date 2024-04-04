@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
-using Sinch.Conversation.Events.AppEvents;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -65,7 +65,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     Optional. Channel specific messages, overriding any transcoding.
         ///     The key in the map must point to a valid conversation channel as defined by the enum ConversationChannel.
         /// </summary>
-        public JsonObject ExplicitChannelMessage { get; set; }
+        public Dictionary<ConversationChannel, JsonValue> ExplicitChannelMessage { get; set; }
 
         /// <inheritdoc cref="Agent" />        
         public Agent Agent { get; set; }
@@ -106,7 +106,7 @@ namespace Sinch.Conversation.Messages.Message
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ListMessage ListMessage { get; private set; }
-        
+
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ContactInfoMessage ContactInfoMessage { get; private set; }

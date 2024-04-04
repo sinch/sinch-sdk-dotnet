@@ -30,5 +30,10 @@ namespace Sinch.Core
         {
             return Activator.CreateInstance(typeToConvert, reader.GetString()) as T;
         }
+
+        public override void WriteAsPropertyName(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+        {
+            writer.WritePropertyName(value.Value);
+        }
     }
 }
