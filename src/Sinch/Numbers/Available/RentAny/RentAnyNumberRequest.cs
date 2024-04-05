@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Sinch.Numbers.Available.RentAny
 {
@@ -29,7 +29,7 @@ namespace Sinch.Numbers.Available.RentAny
 #else
         public Types Type { get; set; }
 #endif
-            
+
         /// <summary>
         ///     Number capabilities to filter by, SMS and/or VOICE
         /// </summary>

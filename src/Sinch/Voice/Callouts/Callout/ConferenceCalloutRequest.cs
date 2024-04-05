@@ -37,8 +37,8 @@ namespace Sinch.Voice.Callouts.Callout
         ///     instance require a conference PIN code or an extension to be entered.
         /// </summary>
         public string Dtmf { get; set; }
-        
-            // TODO: add description when updated in docs: https://developers.sinch.com/docs/voice/api-reference/voice/tag/Callouts/#tag/Callouts/operation/Callouts!path=conferenceCallout/maxDuration&t=request
+
+        // TODO: add description when updated in docs: https://developers.sinch.com/docs/voice/api-reference/voice/tag/Callouts/#tag/Callouts/operation/Callouts!path=conferenceCallout/maxDuration&t=request
         public int? MaxDuration { get; set; }
 
         /// <summary>

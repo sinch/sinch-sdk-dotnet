@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Sinch.Conversation.Messages.Message;
 
 namespace Sinch.Conversation.Transcoding
@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Transcoding
 #else
         public string AppId { get; set; }
 #endif
-        
+
         /// <summary>
         ///     Message originating from an app
         /// </summary>
@@ -22,7 +22,7 @@ namespace Sinch.Conversation.Transcoding
 #else
         public AppMessage AppMessage { get; set; }
 #endif
-        
+
         /// <summary>
         ///     The list of channels for which the message shall be transcoded to.
         /// </summary>

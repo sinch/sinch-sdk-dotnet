@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Hooks
@@ -41,7 +41,7 @@ namespace Sinch.Verification.Hooks
         /// </summary>
         [JsonPropertyName("status")]
         public VerificationStatus Status { get; set; }
-        
+
         /// <summary>
         ///     Displays the reason why a verification has FAILED, was DENIED, or was ABORTED.
         /// </summary>
@@ -53,7 +53,7 @@ namespace Sinch.Verification.Hooks
         /// </summary>
         [JsonPropertyName("reference")]
         public string Reference { get; set; }
-    
+
         /// <summary>
         ///     Free text that the client is sending, used to show if the call/SMS was intercepted or not.
         /// </summary>

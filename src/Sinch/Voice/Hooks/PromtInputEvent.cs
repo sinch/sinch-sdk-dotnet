@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
@@ -19,7 +19,7 @@ namespace Sinch.Voice.Hooks
         ///     Must have the value pie.
         /// </summary>
         [JsonPropertyName("event")]
-        public string Event { get; set; } 
+        public string Event { get; set; }
 
         /// <summary>
         ///     The unique ID assigned to this call.

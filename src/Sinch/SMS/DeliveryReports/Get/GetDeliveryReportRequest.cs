@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Sinch.Core;
 
@@ -34,7 +34,7 @@ namespace Sinch.SMS.DeliveryReports.Get
             if (DeliveryReportType is not null)
             {
                 kvp.Add(
-                    new KeyValuePair<string, string>("type",DeliveryReportType.Value));
+                    new KeyValuePair<string, string>("type", DeliveryReportType.Value));
             }
 
             if (Statuses is not null && Statuses.Count > 0)

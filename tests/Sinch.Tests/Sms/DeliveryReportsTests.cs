@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -189,7 +189,7 @@ namespace Sinch.Tests.Sms
                         }
                     }
                 }));
-            
+
             HttpMessageHandlerMock
                 .Expect(HttpMethod.Get,
                     uri)
@@ -212,7 +212,7 @@ namespace Sinch.Tests.Sms
                         }
                     }
                 }));
-            
+
             HttpMessageHandlerMock
                 .Expect(HttpMethod.Get,
                     uri)
@@ -235,7 +235,7 @@ namespace Sinch.Tests.Sms
                         }
                     }
                 }));
-            
+
             var response = Sms.DeliveryReports.ListAuto(new SMS.DeliveryReports.List.ListDeliveryReportsRequest
             {
                 Page = 0,

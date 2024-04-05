@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Sinch.Numbers
 {
@@ -9,7 +9,7 @@ namespace Sinch.Numbers
         ///     application ID of the scheduled provisioning task.
         /// </summary>
         public string AppId { get; set; }
-        
+
         /// <summary>
         ///     The provisioning status. It will be either WAITING, IN_PROGRESS or FAILED.
         ///     If the provisioning fails, a reason for the failure will be provided.
@@ -19,7 +19,7 @@ namespace Sinch.Numbers
         ///     and troubleshooting recommendations.
         /// </summary>
         public ProvisioningStatus Status { get; set; }
-        
+
         /// <summary>
         ///     Timestamp when the status was last updated.
         /// </summary>

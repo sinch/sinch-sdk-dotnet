@@ -1,4 +1,4 @@
-﻿namespace Sinch.SMS.Batches.Update
+namespace Sinch.SMS.Batches.Update
 {
     public class UpdateBinaryBatchRequest : UpdateBatchBaseRequest, IUpdateBatchRequest
     {

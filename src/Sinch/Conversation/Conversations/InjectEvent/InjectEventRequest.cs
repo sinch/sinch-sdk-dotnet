@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Events;
@@ -55,7 +55,7 @@ namespace Sinch.Conversation.Conversations.InjectEvent
         /// </summary>
         [JsonIgnore]
         public string ConversationId { get; set; }
-        
+
         /// <summary>
         ///     The processed time of the message in UTC timezone. Must be less than current_time and greater than (current_time -
         ///     30 days).

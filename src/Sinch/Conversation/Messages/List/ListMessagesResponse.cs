@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Sinch.Conversation.Messages.Message;
 
 namespace Sinch.Conversation.Messages.List
@@ -9,7 +9,7 @@ namespace Sinch.Conversation.Messages.List
         ///     List of messages associated to the referenced conversation.
         /// </summary>
         public IEnumerable<ConversationMessage> Messages { get; set; }
-        
+
         /// <summary>
         ///     Token that should be included in the next request to fetch the next page.
         /// </summary>

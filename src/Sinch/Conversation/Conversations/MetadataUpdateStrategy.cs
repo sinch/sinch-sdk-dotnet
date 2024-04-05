@@ -1,4 +1,4 @@
-﻿using Sinch.Core;
+using Sinch.Core;
 
 namespace Sinch.Conversation.Conversations
 {

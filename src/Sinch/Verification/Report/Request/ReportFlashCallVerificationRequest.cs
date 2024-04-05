@@ -1,4 +1,4 @@
-﻿using Sinch.Verification.Common;
+using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Report.Request
 {
@@ -19,14 +19,14 @@ namespace Sinch.Verification.Report.Request
 
     public class FlashCall
     {
-            
+
         /// <summary>
         ///     The caller ID of the FlashCall.
         /// </summary>
 #if NET7_0_OR_GREATER
         public required string Cli { get; set; }
 #else
-        public string Cli {get;set;}
+        public string Cli { get; set; }
 #endif
     }
 }

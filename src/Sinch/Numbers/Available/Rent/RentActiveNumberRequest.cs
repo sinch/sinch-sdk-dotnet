@@ -1,4 +1,4 @@
-﻿namespace Sinch.Numbers.Available.Rent
+namespace Sinch.Numbers.Available.Rent
 {
     public class RentActiveNumberRequest
     {
@@ -9,7 +9,7 @@
         ///     processed successfully, the servicePlanId sent will appear directly under the smsConfiguration object.
         /// </summary>
         public SmsConfiguration SmsConfiguration { get; set; }
-        
+
         /// <summary>
         ///     The current voice configuration for this number. During scheduled provisioning,
         ///     the app ID value may be empty in a response if it is still processing or if it has failed.

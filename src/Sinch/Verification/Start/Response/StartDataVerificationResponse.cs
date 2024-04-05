@@ -1,4 +1,4 @@
-﻿namespace Sinch.Verification.Start.Response
+namespace Sinch.Verification.Start.Response
 {
     public class StartDataVerificationResponse : VerificationStartResponseBase, IStartVerificationResponse
     {

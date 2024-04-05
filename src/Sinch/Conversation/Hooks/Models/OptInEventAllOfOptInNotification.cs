@@ -1,10 +1,10 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
 
 namespace Sinch.Conversation.Hooks.Models
 {
-     /// <summary>
+    /// <summary>
     ///     OptInEventAllOfOptInNotification
     /// </summary>
     public sealed class OptInEventAllOfOptInNotification
@@ -35,28 +35,28 @@ namespace Sinch.Conversation.Hooks.Models
         /// </summary>
         [JsonPropertyName("request_id")]
         public string RequestId { get; set; }
-        
+
 
         /// <summary>
         ///     The ID of the contact which is the subject of the opt-in. Will be empty if processing_mode is DISPATCH.
         /// </summary>
         [JsonPropertyName("contact_id")]
         public string ContactId { get; set; }
-        
+
 
         /// <summary>
         ///     The channel identity. For example, a phone number for SMS, WhatsApp and Viber Business.
         /// </summary>
         [JsonPropertyName("identity")]
         public string Identity { get; set; }
-        
+
 
         /// <summary>
         ///     Gets or Sets ErrorDetails
         /// </summary>
         [JsonPropertyName("error_details")]
         public OptInNotificationErrorDetails ErrorDetails { get; set; }
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object

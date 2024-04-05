@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Sinch.Core;
 using Sinch.Logger;
 using Sinch.SMS.Batches;
@@ -68,7 +68,7 @@ namespace Sinch.SMS
             projectId.Value, baseAddress, loggerFactory, http)
         {
         }
-        
+
         /// <summary>
         ///     Creates an instance of Sms service with service plan id
         /// </summary>

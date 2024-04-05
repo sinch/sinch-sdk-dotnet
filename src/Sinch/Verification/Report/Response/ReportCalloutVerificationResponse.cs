@@ -1,4 +1,4 @@
-﻿namespace Sinch.Verification.Report.Response
+namespace Sinch.Verification.Report.Response
 {
     public class ReportCalloutVerificationResponse : VerificationReportResponseBase, IVerificationReportResponse
     {

@@ -1,4 +1,4 @@
-﻿namespace Sinch.Conversation.Apps.Credentials
+namespace Sinch.Conversation.Apps.Credentials
 {
     /// <summary>
     ///     If you are including the WeChat channel in the &#x60;channel_identifier&#x60; property, you must include this object.

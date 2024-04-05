@@ -1,4 +1,4 @@
-﻿namespace Sinch.Verification.Report.Request
+namespace Sinch.Verification.Report.Request
 {
     public abstract class VerifyReportRequest
     {

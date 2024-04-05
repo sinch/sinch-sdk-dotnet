@@ -1,4 +1,4 @@
-﻿namespace Sinch.Conversation.Apps
+namespace Sinch.Conversation.Apps
 {
     /// <summary>
     ///     This object is required for apps that subscribe to Smart Conversations features.

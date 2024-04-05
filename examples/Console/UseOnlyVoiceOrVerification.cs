@@ -1,4 +1,4 @@
-﻿using Sinch;
+using Sinch;
 
 namespace Examples
 {

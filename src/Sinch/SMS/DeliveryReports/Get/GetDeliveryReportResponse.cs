@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Sinch.SMS.DeliveryReports.Get
 {
     public sealed class GetDeliveryReportResponse
     {
-#pragma warning disable CS1570 
+#pragma warning disable CS1570
 
         /// <summary>
         ///     The type of webhook for the delivery report.
@@ -15,7 +15,7 @@ namespace Sinch.SMS.DeliveryReports.Get
         ///         the difference between the two.
         ///     </see>
         /// </summary>
-#pragma warning restore CA2200 
+#pragma warning restore CA2200
         public DeliveryReportType Type { get; set; }
 
         /// <summary>

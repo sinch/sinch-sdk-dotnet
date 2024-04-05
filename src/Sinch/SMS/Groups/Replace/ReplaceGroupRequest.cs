@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace Sinch.SMS.Groups.Replace
@@ -32,7 +32,7 @@ namespace Sinch.SMS.Groups.Replace
         public string Name { get; set; }
     }
 
-// Workaround for not working  JsonIgnore with required keyword
+    // Workaround for not working  JsonIgnore with required keyword
     internal sealed class RequestInner
     {
         public List<string> Members { get; set; }

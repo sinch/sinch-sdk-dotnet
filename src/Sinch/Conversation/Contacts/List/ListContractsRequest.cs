@@ -1,4 +1,4 @@
-﻿namespace Sinch.Conversation.Contacts.List
+namespace Sinch.Conversation.Contacts.List
 {
     public class ListContactsRequest
     {

@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Messages.Message;
 
@@ -14,14 +14,14 @@ namespace Sinch.Conversation.TemplatesV2
         /// </summary>
         [JsonPropertyName("WHATSAPP")]
         public OverrideTemplateReference WhatsApp { get; set; }
-        
+
 
         /// <summary>
         ///     Gets or Sets Kakaotalk
         /// </summary>
         [JsonPropertyName("KAKAOTALK")]
         public OverrideTemplateReference KakaoTalk { get; set; }
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object

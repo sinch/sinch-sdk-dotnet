@@ -1,11 +1,11 @@
-﻿using System.Text;
+using System.Text;
 
 namespace Sinch.Conversation.Messages.Message
 {
     /// <summary>
     ///     Message containing geographic location.
     /// </summary>
-    public sealed class LocationMessage 
+    public sealed class LocationMessage
     {
         /// <summary>
         ///     Gets or Sets Coordinates
@@ -54,7 +54,7 @@ namespace Sinch.Conversation.Messages.Message
     /// </summary>
     public record Coordinates(float Latitude, float Longitude)
     {
-            /// <summary>
+        /// <summary>
         ///     The latitude.
         /// </summary>
 #if NET7_0_OR_GREATER

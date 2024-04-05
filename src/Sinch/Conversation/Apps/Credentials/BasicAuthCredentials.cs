@@ -1,4 +1,4 @@
-﻿namespace Sinch.Conversation.Apps.Credentials
+namespace Sinch.Conversation.Apps.Credentials
 {
     /// <summary>
     ///     It consists of a username and a password.

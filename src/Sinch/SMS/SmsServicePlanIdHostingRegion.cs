@@ -1,4 +1,4 @@
-﻿namespace Sinch.SMS
+namespace Sinch.SMS
 {
     /// <summary>
     ///     The following regions can be set to be used in SDK as a hosting region when using `service_plan_id` option
@@ -14,17 +14,17 @@
         ///     Ireland, Sweden
         /// </summary>
         public static readonly SmsServicePlanIdHostingRegion Eu = new("eu");
-        
+
         /// <summary>
         ///     Australia
         /// </summary>
         public static readonly SmsServicePlanIdHostingRegion Au = new("au");
-        
+
         /// <summary>
         ///     Brazil
         /// </summary>
         public static readonly SmsServicePlanIdHostingRegion Br = new("br");
-        
+
         /// <summary>
         ///     Canada
         /// </summary>

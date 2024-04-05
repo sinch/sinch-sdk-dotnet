@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -21,7 +21,7 @@ namespace Sinch.Conversation.Hooks.Models
         /// </summary>
         [JsonPropertyName("contact_ids")]
         public List<string> ContactIds { get; set; }
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object

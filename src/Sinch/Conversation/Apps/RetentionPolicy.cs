@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 
 namespace Sinch.Conversation.Apps
 {
@@ -12,7 +12,7 @@ namespace Sinch.Conversation.Apps
         ///     Gets or Sets RetentionType
         /// </summary>
         public RetentionType RetentionType { get; set; }
-        
+
 
         /// <summary>
         ///     Optional. The days before a message or conversation is eligible for deletion.
@@ -22,7 +22,7 @@ namespace Sinch.Conversation.Apps
         ///     messages and conversations are not deleted on the minute they become eligible for deletion.
         /// </summary>
         public long? TtlDays { get; set; }
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object

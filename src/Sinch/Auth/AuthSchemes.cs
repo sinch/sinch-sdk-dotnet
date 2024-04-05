@@ -1,4 +1,4 @@
-﻿namespace Sinch.Auth
+namespace Sinch.Auth
 {
     internal static class AuthSchemes
     {

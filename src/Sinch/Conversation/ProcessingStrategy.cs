@@ -1,9 +1,9 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Conversation
 {
-    
+
     [JsonConverter(typeof(EnumRecordJsonConverter<ProcessingStrategy>))]
     public record ProcessingStrategy(string Value) : EnumRecord(Value)
     {

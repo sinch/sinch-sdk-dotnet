@@ -1,4 +1,4 @@
-﻿namespace Sinch.SMS.Batches.Send
+namespace Sinch.SMS.Batches.Send
 {
     public class SendBinaryBatchRequest : BatchBase, ISendBatchRequest
     {

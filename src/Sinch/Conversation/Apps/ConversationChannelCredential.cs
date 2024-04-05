@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using Sinch.Conversation.Apps.Credentials;
 using Sinch.Conversation.Messages;
 

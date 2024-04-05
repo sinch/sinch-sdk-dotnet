@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 
 namespace Sinch.Conversation.Apps
 {
@@ -23,7 +23,7 @@ namespace Sinch.Conversation.Apps
         ///     so messages are not deleted on the minute they become eligible for deletion.
         /// </summary>
         public long TtlDays { get; set; }
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object

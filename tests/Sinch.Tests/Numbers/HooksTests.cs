@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using FluentAssertions;
 using Sinch.Numbers.Hooks;
 using Xunit;
@@ -26,7 +26,7 @@ namespace Sinch.Tests.Numbers
             @enum.EventType.Should().Be(EventType.LinkTo10DlcCampaign);
             @enum.FailureCode.Should().Be(FailureCode.CampaignNotAvailable);
         }
-        
+
         [Fact]
         public void DeserializeEventWithCustomEnum()
         {

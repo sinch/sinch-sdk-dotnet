@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Sinch;
 using Sinch.SMS.Batches;
@@ -38,14 +38,14 @@ public class InboundSmsController : ControllerBase
         {
             case (false, "SUBSCRIBE"):
                 await _sinchClient.Sms.Groups.Update(new UpdateGroupRequest
-                    {
-                        GroupId = group.Id,
-                        Name = "group 1",
-                        Add = new List<string>()
+                {
+                    GroupId = group.Id,
+                    Name = "group 1",
+                    Add = new List<string>()
                         {
                             fromNumber,
                         }
-                    }
+                }
                 );
                 autoReply = $"Congratulations! You are now subscribed to {group.Name}. Text STOP to leave this group.";
                 break;
