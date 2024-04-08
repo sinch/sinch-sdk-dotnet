@@ -102,9 +102,9 @@ namespace Sinch.Conversation.Messages.Message
         [Obsolete("Required for System.Text.Json", true)]
         public ListItem()
         {
-            
+
         }
-        
+
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ListItemChoice Choice { get; private set; }
@@ -112,7 +112,7 @@ namespace Sinch.Conversation.Messages.Message
         {
             Choice = listItemChoice;
         }
-        
+
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ListItemProduct Product { get; private set; }
