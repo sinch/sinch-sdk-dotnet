@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
+namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
 {
     /// <summary>
     ///     Body of the interactive message.

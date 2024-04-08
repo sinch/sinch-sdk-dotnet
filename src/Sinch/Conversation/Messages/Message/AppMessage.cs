@@ -6,6 +6,7 @@ using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.Message.ChannelSpecificMessages;
+using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
 using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Message
@@ -132,7 +133,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Gets or Sets MessageType
         /// </summary>
-        public MessageTypeEnum MessageType { get; }
+        public MessageType MessageType { get; }
     }
 
     public class ChannelSpecificMessageJsonInterfaceConverter : JsonConverter<IChannelSpecificMessage>
@@ -140,16 +141,16 @@ namespace Sinch.Conversation.Messages.Message
         public override IChannelSpecificMessage Read(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)
         {
-            //not optimal but straightforward
+            // not optimal but straightforward
             var elem = JsonElement.ParseValue(ref reader);
             var descriptor = elem.EnumerateObject().FirstOrDefault(x => x.Name == "message_type");
             var method = descriptor.Value.GetString();
 
-            if (MessageTypeEnum.Flows.Value == method)
+            if (MessageType.Flows.Value == method)
                 return elem.Deserialize<FlowMessage>(options);
 
             throw new JsonException(
-                $"Failed to match verification method object, got prop `{descriptor.Name}` with value `{method}`");
+                $"Failed to match {nameof(IChannelSpecificMessage)}, got prop `{descriptor.Name}` with value `{method}`");
         }
 
         public override void Write(Utf8JsonWriter writer, IChannelSpecificMessage value, JsonSerializerOptions options)
@@ -162,18 +163,18 @@ namespace Sinch.Conversation.Messages.Message
     {
         [JsonPropertyName("message_type")]
         [JsonInclude]
-        public MessageTypeEnum MessageType { get; private set; } = MessageTypeEnum.Flows;
+        public MessageType MessageType { get; private set; } = MessageType.Flows;
 
         [JsonPropertyName("message")]
         public FlowChannelSpecificMessage Message { get; set; }
     }
 
     /// <summary>
-    /// Defines MessageType
+    ///     Defines MessageType
     /// </summary>
-    [JsonConverter(typeof(EnumRecordJsonConverter<MessageTypeEnum>))]
-    public record MessageTypeEnum(string Value) : EnumRecord(Value)
+    [JsonConverter(typeof(EnumRecordJsonConverter<MessageType>))]
+    public record MessageType(string Value) : EnumRecord(Value)
     {
-        public static readonly MessageTypeEnum Flows = new("FLOWS");
+        public static readonly MessageType Flows = new("FLOWS");
     }
 }

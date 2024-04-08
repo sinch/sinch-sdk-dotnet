@@ -13,6 +13,7 @@ using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.List;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Messages.Message.ChannelSpecificMessages;
+using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
 using Xunit;
 
 namespace Sinch.Tests.Conversation
@@ -321,9 +322,9 @@ namespace Sinch.Tests.Conversation
                         Link = "url_video"
                     }
                 },
-                FlowAction = FlowChannelSpecificMessage.FlowActionEnum.Navigate,
+                FlowAction = FlowChannelSpecificMessage.FlowActionType.Navigate,
                 FlowCta = "flow_cta",
-                FlowMode = FlowChannelSpecificMessage.FlowModeEnum.Published,
+                FlowMode = FlowChannelSpecificMessage.FlowModeType.Published,
                 FlowToken = "flow_token",
                 FlowActionPayload = new FlowChannelSpecificMessageFlowActionPayload()
                 {

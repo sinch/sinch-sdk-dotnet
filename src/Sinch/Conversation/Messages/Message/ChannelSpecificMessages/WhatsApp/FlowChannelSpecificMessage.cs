@@ -2,7 +2,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
+namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
 {
     /// <summary>
     ///     A message type for sending WhatsApp Flows.
@@ -13,11 +13,11 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
         /// The mode in which the flow is.
         /// </summary>
         /// <value>The mode in which the flow is.</value>
-        [JsonConverter(typeof(EnumRecordJsonConverter<FlowModeEnum>))]
-        public record FlowModeEnum(string Value) : EnumRecord(Value)
+        [JsonConverter(typeof(EnumRecordJsonConverter<FlowModeType>))]
+        public record FlowModeType(string Value) : EnumRecord(Value)
         {
-            public static readonly FlowModeEnum Draft = new("draft");
-            public static readonly FlowModeEnum Published = new("published");
+            public static readonly FlowModeType Draft = new("draft");
+            public static readonly FlowModeType Published = new("published");
         }
 
 
@@ -25,16 +25,16 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
         /// The mode in which the flow is.
         /// </summary>
         [JsonPropertyName("flow_mode")]
-        public FlowModeEnum? FlowMode { get; set; }
+        public FlowModeType? FlowMode { get; set; }
 
         /// <summary>
         /// Defines FlowAction
         /// </summary>
-        [JsonConverter(typeof(EnumRecordJsonConverter<FlowActionEnum>))]
-        public record FlowActionEnum(string Value) : EnumRecord(Value)
+        [JsonConverter(typeof(EnumRecordJsonConverter<FlowActionType>))]
+        public record FlowActionType(string Value) : EnumRecord(Value)
         {
-            public static readonly FlowActionEnum Navigate = new("navigate");
-            public static readonly FlowActionEnum DataExchange = new("data_exchange");
+            public static readonly FlowActionType Navigate = new("navigate");
+            public static readonly FlowActionType DataExchange = new("data_exchange");
         }
 
 
@@ -42,7 +42,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
         /// Gets or Sets FlowAction
         /// </summary>
         [JsonPropertyName("flow_action")]
-        public FlowActionEnum? FlowAction { get; set; }
+        public FlowActionType? FlowAction { get; set; }
 
         /// <summary>
         ///     Gets or Sets Header
@@ -121,15 +121,6 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
             sb.Append("}\n");
             return sb.ToString();
         }
-    }
-
-    [JsonConverter(typeof(EnumRecordJsonConverter<WhatsAppHeaderType>))]
-    public record WhatsAppHeaderType(string Value) : EnumRecord(Value)
-    {
-        public static readonly WhatsAppHeaderType Video = new("video");
-        public static readonly WhatsAppHeaderType Image = new("image");
-        public static readonly WhatsAppHeaderType Text = new("text");
-        public static readonly WhatsAppHeaderType Document = new("document");
     }
 
     /// <summary>

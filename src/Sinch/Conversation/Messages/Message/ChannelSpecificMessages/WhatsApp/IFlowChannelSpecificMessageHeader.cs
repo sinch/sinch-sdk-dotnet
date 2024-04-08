@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
+namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
 {
     [JsonConverter(typeof(FlowChannelSpecificMessageHeaderJsonConverter))]
     [JsonDerivedType(typeof(WhatsAppInteractiveTextHeader))]
@@ -43,7 +43,27 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
         public override void Write(Utf8JsonWriter writer, IFlowChannelSpecificMessageHeader value,
             JsonSerializerOptions options)
         {
-            JsonSerializer.Serialize(writer, value, options);
+            if (value.Type == WhatsAppHeaderType.Video)
+            {
+                JsonSerializer.Serialize(writer, value as WhatsAppInteractiveVideoHeader, options);
+            }
+            else if (value.Type == WhatsAppHeaderType.Document)
+            {
+                JsonSerializer.Serialize(writer, value as WhatsAppInteractiveDocumentHeader, options);
+            }
+            else if (value.Type == WhatsAppHeaderType.Image)
+            {
+                JsonSerializer.Serialize(writer, value as WhatsAppInteractiveImageHeader, options);
+            }
+            else if (value.Type == WhatsAppHeaderType.Text)
+            {
+                JsonSerializer.Serialize(writer, value as WhatsAppInteractiveTextHeader, options);
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                    $"Cannot serialize unknown type of {nameof(IFlowChannelSpecificMessageHeader)}");
+            }
         }
     }
 }
