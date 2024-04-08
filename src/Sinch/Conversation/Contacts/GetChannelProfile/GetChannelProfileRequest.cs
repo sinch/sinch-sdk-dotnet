@@ -1,4 +1,4 @@
-﻿using Sinch.Conversation.Common;
+using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages;
 
 namespace Sinch.Conversation.Contacts.GetChannelProfile
@@ -12,7 +12,7 @@ namespace Sinch.Conversation.Contacts.GetChannelProfile
 #if NET7_0_OR_GREATER
         public required IRecipient Recipient { get; set; }
 #else
-        public IRecipient  Recipient { get; set; }
+        public IRecipient Recipient { get; set; }
 #endif
 
         /// <summary>

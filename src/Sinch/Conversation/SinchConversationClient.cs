@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Sinch.Conversation.Apps;
 using Sinch.Conversation.Capability;
 using Sinch.Conversation.Contacts;

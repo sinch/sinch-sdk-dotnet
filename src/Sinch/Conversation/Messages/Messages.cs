@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -96,7 +96,7 @@ namespace Sinch.Conversation.Messages
             _logger?.LogDebug("Sending a message...");
             return _http.Send<SendMessageRequest, SendMessageResponse>(uri, HttpMethod.Post, request, cancellationToken: cancellationToken);
         }
-        
+
         //TODO: add simplified send text to app of recipient
 
         /// <inheritdoc/>  

@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Conversation.Capability;
 using Sinch.Conversation.Common;

@@ -11,7 +11,7 @@ namespace Sinch.Conversation.TemplatesV2
         ///     The mapping between the omni-template variable and the channel specific parameter.
         /// </summary>
         public string Name { get; set; }
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object

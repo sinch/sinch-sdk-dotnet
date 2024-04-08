@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Sinch.SMS.Batches.Send
@@ -28,8 +28,8 @@ namespace Sinch.SMS.Batches.Send
         ///     If set to true, your message will be rejected if it doesn't conform to the listed
         ///     recommendations, otherwise no validation will be performed.
         /// </summary>
-        public bool? StrictValidation { get; set; } 
-        
+        public bool? StrictValidation { get; set; }
+
         /// <summary>
         ///     Contains the parameters that will be used for customizing the message for each recipient.<br /><br />
         ///     <see href="https://developers.sinch.com/docs/sms/resources/message-info/message-parameterization">
@@ -39,7 +39,7 @@ namespace Sinch.SMS.Batches.Send
         /// </summary>
         public Dictionary<string, Dictionary<string, string>> Parameters { get; set; }
     }
-    
+
     public class MediaBody
     {
         /// <summary>

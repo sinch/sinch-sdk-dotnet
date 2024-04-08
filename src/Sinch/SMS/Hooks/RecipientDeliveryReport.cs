@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using Sinch.Core;
 using Sinch.SMS.DeliveryReports;
@@ -56,27 +56,27 @@ namespace Sinch.SMS.Hooks
         /// </summary>
         [JsonPropertyName("client_reference")]
         public string ClientReference { get; set; }
-        
+
         /// <summary>
         ///     Applied encoding for message. Present only if smart encoding is enabled.
         /// </summary>
         [JsonPropertyName("encoding")]
         public Encoding Encoding { get; set; }
-        
+
         /// <summary>
         ///     The number of parts the message was split into.
         ///     Present only if max_number_of_message_parts parameter was set.
         /// </summary>
         [JsonPropertyName("number_of_message_parts")]
         public int? NumberOfMessageParts { get; set; }
-        
+
         /// <summary>
         ///     The operator that was used for delivering the message to this recipient,
         ///     if enabled on the account by Sinch.
         /// </summary>
         [JsonPropertyName("operator")]
         public string Operator { get; set; }
-        
+
         /// <summary>
         ///     A timestamp extracted from the Delivery Receipt from the originating SMSC.
         ///     Formatted as <see href="https://en.wikipedia.org/wiki/ISO_8601">ISO-8601</see>: YYYY-MM-DDThh:mm:ss.SSSZ.

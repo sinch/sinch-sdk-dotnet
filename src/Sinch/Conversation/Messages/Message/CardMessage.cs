@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,7 +7,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     Message containing text, media and choices.
     /// </summary>
-    public sealed class CardMessage 
+    public sealed class CardMessage
     {
         /// <summary>
         /// Gets or Sets Height

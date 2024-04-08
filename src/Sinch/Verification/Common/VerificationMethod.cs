@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Verification.Common
@@ -14,7 +14,7 @@ namespace Sinch.Verification.Common
         public static readonly VerificationMethod FlashCall = new("flashCall");
         public static readonly VerificationMethod Callout = new("callout");
     }
-    
+
     /// <summary>
     ///     The method of the verification request extended. Includes <see cref="Seamless"/>
     /// </summary>

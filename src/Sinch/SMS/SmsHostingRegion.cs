@@ -1,4 +1,4 @@
-﻿namespace Sinch.SMS
+namespace Sinch.SMS
 {
     /// <summary>
     ///     The following regions can be set to be used in SDK as a hosting region.

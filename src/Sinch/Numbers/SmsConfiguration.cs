@@ -1,4 +1,4 @@
-﻿namespace Sinch.Numbers
+namespace Sinch.Numbers
 {
     /// <summary>
     ///     https://developers.sinch.com/docs/numbers/api-reference/numbers/tag/Active-Number/#tag/Active-Number/operation/NumberService_ListActiveNumbers

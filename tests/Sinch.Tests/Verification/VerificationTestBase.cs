@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Sinch.Verification;
 
 namespace Sinch.Tests.Verification

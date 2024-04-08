@@ -1,4 +1,4 @@
-﻿namespace Sinch.Auth
+namespace Sinch.Auth
 {
     public enum AuthStrategy
     {
@@ -6,7 +6,7 @@
         ///     Utilizes only AppId and AppSecret
         /// </summary>
         Basic,
-        
+
         /// <summary>
         ///     Utilizes <see href="https://developers.sinch.com/docs/verification/api-reference/authentication/signed-request/">Request Signing</see>
         /// </summary>

@@ -1,4 +1,4 @@
-﻿namespace Sinch.Numbers.Active.Update
+namespace Sinch.Numbers.Active.Update
 {
     public sealed class UpdateActiveNumberRequest
     {

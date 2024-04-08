@@ -1,4 +1,4 @@
-﻿using Sinch.Conversation.Messages;
+using Sinch.Conversation.Messages;
 
 namespace Sinch.Conversation.Conversations.List
 {

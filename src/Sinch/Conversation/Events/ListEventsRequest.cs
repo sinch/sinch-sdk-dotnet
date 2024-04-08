@@ -1,4 +1,4 @@
-﻿namespace Sinch.Conversation.Events
+namespace Sinch.Conversation.Events
 {
     public class ListEventsRequest
     {

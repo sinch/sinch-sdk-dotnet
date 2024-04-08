@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Voice.Calls.Actions
@@ -110,8 +110,8 @@ namespace Sinch.Voice.Calls.Actions
             return sb.ToString();
         }
     }
-    
-    
+
+
     public class Amd
     {
         /// <summary>

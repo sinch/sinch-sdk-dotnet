@@ -1,4 +1,4 @@
-﻿namespace Sinch.Verification.Start.Response
+namespace Sinch.Verification.Start.Response
 {
     public class StartFlashCallVerificationResponse : VerificationStartResponseBase, IStartVerificationResponse
     {
@@ -16,23 +16,23 @@
 #if NET7_0_OR_GREATER
         public required string CliFilter { get; set; }
 #else
-     public string CliFilter { get; set; }
+        public string CliFilter { get; set; }
 #endif
-        
+
         /// <summary>
         ///     Amount of seconds client should wait for the Flashcall.
         /// </summary>
 #if NET7_0_OR_GREATER
         public required int InterceptionTimeout { get; set; }
 #else
-    public int InterceptionTimeout { get; set; }
+        public int InterceptionTimeout { get; set; }
 #endif
-        
+
         /// <summary>
         ///     The time in seconds allowed for reporting the code after which the verification will expire.
         /// </summary>
         public int? ReportTimeout { get; set; }
-        
+
         /// <summary>
         ///     Used by the SDKs, this setting makes the handset deny the flashcall after the set time in seconds.
         /// </summary>

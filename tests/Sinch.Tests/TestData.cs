@@ -1,4 +1,4 @@
-﻿namespace Sinch.Tests
+namespace Sinch.Tests
 {
     internal class TestData
     {

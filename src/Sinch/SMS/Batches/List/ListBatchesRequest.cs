@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sinch.Core;
@@ -41,13 +41,13 @@ namespace Sinch.SMS.Batches.List
         internal string GetQueryString()
         {
             var kvp = new List<KeyValuePair<string, string>>();
-            
+
             if (Page.HasValue)
             {
                 kvp.Add(new KeyValuePair<string, string>("page", Page.ToString()));
             }
-            
-            
+
+
             if (PageSize.HasValue)
             {
                 kvp.Add(new KeyValuePair<string, string>("page_size", PageSize.ToString()));

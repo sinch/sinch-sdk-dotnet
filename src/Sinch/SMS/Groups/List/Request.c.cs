@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Sinch.Core;
 
 namespace Sinch.SMS.Groups.List
@@ -17,7 +17,7 @@ namespace Sinch.SMS.Groups.List
             {
                 kvp.Add(new KeyValuePair<string, string>("page_size", PageSize.Value.ToString()));
             }
-            
+
             return StringUtils.ToQueryString(kvp);
         }
     }

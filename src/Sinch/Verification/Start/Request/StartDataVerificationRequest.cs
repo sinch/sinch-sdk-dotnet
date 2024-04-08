@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Start.Request

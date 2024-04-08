@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Sinch.Core;
 using Sinch.Logger;
 

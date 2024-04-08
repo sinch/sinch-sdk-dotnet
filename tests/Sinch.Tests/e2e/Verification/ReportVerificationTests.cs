@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Verification.Common;
 using Sinch.Verification.Report.Request;
@@ -113,7 +113,7 @@ namespace Sinch.Tests.e2e.Verification
                     CallComplete = true,
                 });
         }
-        
+
         [Fact]
         public async Task ReportSmsById()
         {

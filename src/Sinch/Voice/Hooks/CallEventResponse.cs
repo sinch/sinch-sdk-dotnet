@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Sinch.Voice.Calls.Actions;
 using Sinch.Voice.Calls.Instructions;

@@ -1,4 +1,4 @@
-﻿namespace Sinch.Numbers.Active
+namespace Sinch.Numbers.Active
 {
     /// <summary>
     ///     Represents the order by options for sorting.

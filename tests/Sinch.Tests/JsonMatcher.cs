@@ -1,4 +1,4 @@
-﻿using System.Net.Http;
+using System.Net.Http;
 using FluentAssertions.Json;
 using Newtonsoft.Json.Linq;
 using RichardSzalay.MockHttp;
