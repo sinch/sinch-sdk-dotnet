@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -40,9 +40,9 @@ namespace Sinch.Tests.Conversation
                     new ListSection()
                     {
                         Title = "sec1",
-                        Items = new List<IListItem>()
+                        Items = new List<ListItem>()
                         {
-                            new ListItemChoice()
+                            new(new ListItemChoice()
                             {
                                 Title = "title",
                                 Description = "desc",
@@ -51,19 +51,19 @@ namespace Sinch.Tests.Conversation
                                     Url = new Uri("http://localhost")
                                 },
                                 PostbackData = "postback"
-                            }
+                            })
                         }
                     },
                     new ListSection()
                     {
                         Title = "sec2",
-                        Items = new List<IListItem>()
+                        Items = new List<ListItem>()
                         {
-                            new ListItemProduct()
+                            new(new ListItemProduct()
                             {
                                 Id = "id",
                                 Marketplace = "amazon"
-                            }
+                            })
                         }
                     }
                 }
@@ -205,13 +205,16 @@ namespace Sinch.Tests.Conversation
                                 {
                                     new
                                     {
-                                        title = "title",
-                                        description = "desc",
-                                        media = new
+                                        choice = new
                                         {
-                                            url = "http://localhost",
-                                        },
-                                        postback_data = "postback"
+                                            title = "title",
+                                            description = "desc",
+                                            media = new
+                                            {
+                                                url = "http://localhost",
+                                            },
+                                            postback_data = "postback"
+                                        }
                                     }
                                 }
                             },
@@ -222,8 +225,11 @@ namespace Sinch.Tests.Conversation
                                 {
                                     new
                                     {
-                                        id = "id",
-                                        marketplace = "amazon"
+                                        product = new
+                                        {
+                                            id = "id",
+                                            marketplace = "amazon"
+                                        }
                                     }
                                 }
                             }

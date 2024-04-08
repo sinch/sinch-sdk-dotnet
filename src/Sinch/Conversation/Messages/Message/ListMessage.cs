@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Message
@@ -72,7 +74,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Gets or Sets Items
         /// </summary>
-        public List<IListItem> Items { get; set; }
+        public List<ListItem> Items { get; set; }
 
 
         /// <summary>
@@ -93,6 +95,31 @@ namespace Sinch.Conversation.Messages.Message
     [JsonInterfaceConverter(typeof(InterfaceConverter<IListItem>))]
     public interface IListItem
     {
+    }
+
+    public class ListItem
+    {
+        [Obsolete("Required for System.Text.Json", true)]
+        public ListItem()
+        {
+            
+        }
+        
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public ListItemChoice Choice { get; private set; }
+        public ListItem(ListItemChoice listItemChoice)
+        {
+            Choice = listItemChoice;
+        }
+        
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public ListItemProduct Product { get; private set; }
+        public ListItem(ListItemProduct listItemProduct)
+        {
+            Product = listItemProduct;
+        }
     }
 
     /// <summary>
