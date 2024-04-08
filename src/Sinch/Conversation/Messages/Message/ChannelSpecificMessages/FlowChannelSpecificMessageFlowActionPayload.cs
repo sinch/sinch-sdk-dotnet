@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
@@ -14,14 +14,14 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
         /// </summary>
         [JsonPropertyName("screen")]
         public string Screen { get; set; }
-        
+
 
         /// <summary>
         ///     Data for the first screen.
         /// </summary>
         [JsonPropertyName("data")]
         public JsonObject Data { get; set; }
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object

@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
@@ -17,7 +17,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
 #else
         public string Text { get; set; }
 #endif
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -33,6 +33,6 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
         }
 
     }
-    
+
 
 }
