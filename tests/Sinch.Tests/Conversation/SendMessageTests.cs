@@ -26,8 +26,7 @@ namespace Sinch.Tests.Conversation
             AppId = "123",
             Message = new AppMessage(new TextMessage("I'm a texter"))
             {
-                ExplicitChannelMessage = null,
-                AdditionalProperties = null
+                ExplicitChannelMessage = null
             },
             Recipient = new ContactRecipient()
             {

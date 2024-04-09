@@ -6,11 +6,14 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
+using FluentAssertions.Json;
 using RichardSzalay.MockHttp;
 using Sinch.Conversation;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.List;
 using Sinch.Conversation.Messages.Message;
+using Sinch.Conversation.Messages.Message.ChannelSpecificMessages;
+using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
 using Xunit;
 
 namespace Sinch.Tests.Conversation
@@ -297,6 +300,56 @@ namespace Sinch.Tests.Conversation
             var contact = JsonSerializer.Deserialize<ContactInfoMessage>(t);
 
             contact.Birthday.Should().BeSameDateAs(new DateTime(2000, 03, 12));
+        }
+
+        private FlowMessage _flowMessage = new FlowMessage()
+        {
+            Message = new FlowChannelSpecificMessage()
+            {
+                FlowId = "g",
+                Body = new WhatsAppInteractiveBody()
+                {
+                    Text = "body_text"
+                },
+                Footer = new WhatsAppInteractiveFooter()
+                {
+                    Text = "footer_text",
+                },
+                Header = new WhatsAppInteractiveVideoHeader()
+                {
+                    Video = new WhatsAppInteractiveHeaderMedia()
+                    {
+                        Link = "url_video"
+                    }
+                },
+                FlowAction = FlowChannelSpecificMessage.FlowActionType.Navigate,
+                FlowCta = "flow_cta",
+                FlowMode = FlowChannelSpecificMessage.FlowModeType.Published,
+                FlowToken = "flow_token",
+                FlowActionPayload = new FlowChannelSpecificMessageFlowActionPayload()
+                {
+                    Data = null,
+                    Screen = "a",
+                }
+            }
+        };
+
+        private const string FlowsRawJson =
+            "{\"message_type\":\"FLOWS\",\"message\":{\"flow_mode\":\"published\",\"flow_action\":\"navigate\",\"header\":{\"type\":\"video\",\"video\":{\"link\":\"url_video\"}},\"body\":{\"text\":\"body_text\"},\"footer\":{\"text\":\"footer_text\"},\"flow_id\":\"g\",\"flow_token\":\"flow_token\",\"flow_cta\":\"flow_cta\",\"flow_action_payload\":{\"screen\":\"a\",\"data\":null}}}";
+
+        [Fact]
+        public void SerializeFlowChannelSpecificMessage()
+        {
+            var val = JsonSerializer.Serialize(_flowMessage);
+            val.Should().BeValidJson().And.BeEquivalentTo(FlowsRawJson);
+        }
+
+        [Fact]
+        public void DeserializeFlowMessage()
+        {
+            var json = $"{{\"WHATSAPP\":{FlowsRawJson}}}";
+            var dict = JsonSerializer.Deserialize<Dictionary<ConversationChannel, IChannelSpecificMessage>>(json);
+            dict[ConversationChannel.WhatsApp].Should().BeEquivalentTo(_flowMessage);
         }
     }
 }
