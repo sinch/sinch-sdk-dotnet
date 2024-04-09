@@ -1,9 +1,13 @@
 using System;
-using System.Text;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
-using Sinch.Conversation.Events.AppEvents;
+using Sinch.Conversation.Messages.Message.ChannelSpecificMessages;
+using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
+using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -15,6 +19,44 @@ namespace Sinch.Conversation.Messages.Message
         public AppMessage()
         {
         }
+
+        #region Oneof app message props and constructors
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public TextMessage TextMessage { get; private set; }
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public CardMessage CardMessage { get; private set; }
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public CarouselMessage CarouselMessage { get; private set; }
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public ChoiceMessage ChoiceMessage { get; private set; }
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public LocationMessage LocationMessage { get; private set; }
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public MediaMessage MediaMessage { get; private set; }
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public TemplateMessage TemplateMessage { get; private set; }
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public ListMessage ListMessage { get; private set; }
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public ContactInfoMessage ContactInfoMessage { get; private set; }
 
         public AppMessage(ChoiceMessage choiceMessage)
         {
@@ -61,79 +103,78 @@ namespace Sinch.Conversation.Messages.Message
             ContactInfoMessage = contactInfoMessage;
         }
 
+        #endregion
+
         /// <summary>
         ///     Optional. Channel specific messages, overriding any transcoding.
         ///     The key in the map must point to a valid conversation channel as defined by the enum ConversationChannel.
         /// </summary>
-        public JsonObject ExplicitChannelMessage { get; set; }
+        public Dictionary<ConversationChannel, JsonValue> ExplicitChannelMessage { get; set; }
+
+        /// <summary>
+        ///     Channel specific messages, overriding any transcoding.
+        ///     The structure of this property is more well-defined than the open structure of
+        ///     the explicit_channel_message property, and may be easier to use.
+        ///     The key in the map must point to a valid conversation channel as defined in the enum ConversationChannel.
+        /// </summary>
+        public Dictionary<ConversationChannel, IChannelSpecificMessage> ChannelSpecificMessage { get; set; }
 
         /// <inheritdoc cref="Agent" />        
         public Agent Agent { get; set; }
-
-        /// <summary>
-        ///     Gets or Sets AdditionalProperties
-        /// </summary>
-        public AppMessageAdditionalProperties AdditionalProperties { get; set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public TextMessage TextMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public CardMessage CardMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public CarouselMessage CarouselMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ChoiceMessage ChoiceMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public LocationMessage LocationMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public MediaMessage MediaMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public TemplateMessage TemplateMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ListMessage ListMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ContactInfoMessage ContactInfoMessage { get; private set; }
     }
 
     /// <summary>
-    ///     Additional properties of the message.
+    ///     A message containing a channel specific message (not supported by OMNI types).
     /// </summary>
-    public sealed class AppMessageAdditionalProperties
+    [JsonDerivedType(typeof(FlowMessage))]
+    [JsonConverter(typeof(ChannelSpecificMessageJsonInterfaceConverter))]
+    public interface IChannelSpecificMessage
     {
         /// <summary>
-        ///     The &#x60;display_name&#x60; of the newly created contact in case it doesn&#39;t exist.
+        ///     Gets or Sets MessageType
         /// </summary>
-        public string ContactName { get; set; }
+        public MessageType MessageType { get; }
+    }
 
-
-        /// <summary>
-        ///     Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
+    public class ChannelSpecificMessageJsonInterfaceConverter : JsonConverter<IChannelSpecificMessage>
+    {
+        public override IChannelSpecificMessage Read(ref Utf8JsonReader reader, Type typeToConvert,
+            JsonSerializerOptions options)
         {
-            var sb = new StringBuilder();
-            sb.Append("class AppMessageAdditionalProperties {\n");
-            sb.Append("  ContactName: ").Append(ContactName).Append("\n");
-            sb.Append("}\n");
-            return sb.ToString();
+            // not optimal but straightforward
+            var elem = JsonElement.ParseValue(ref reader);
+            var descriptor = elem.EnumerateObject().FirstOrDefault(x => x.Name == "message_type");
+            var method = descriptor.Value.GetString();
+
+            if (MessageType.Flows.Value == method)
+                return elem.Deserialize<FlowMessage>(options);
+
+            throw new JsonException(
+                $"Failed to match {nameof(IChannelSpecificMessage)}, got prop `{descriptor.Name}` with value `{method}`");
         }
+
+        public override void Write(Utf8JsonWriter writer, IChannelSpecificMessage value, JsonSerializerOptions options)
+        {
+            JsonSerializer.Serialize(writer, value, options);
+        }
+    }
+
+    public class FlowMessage : IChannelSpecificMessage
+    {
+        [JsonPropertyName("message_type")]
+        [JsonInclude]
+        public MessageType MessageType { get; private set; } = MessageType.Flows;
+
+        [JsonPropertyName("message")]
+        public FlowChannelSpecificMessage Message { get; set; }
+    }
+
+    /// <summary>
+    ///     Defines MessageType
+    /// </summary>
+    [JsonConverter(typeof(EnumRecordJsonConverter<MessageType>))]
+    public record MessageType(string Value) : EnumRecord(Value)
+    {
+        public static readonly MessageType Flows = new("FLOWS");
     }
 }
