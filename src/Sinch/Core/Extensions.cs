@@ -20,7 +20,7 @@ namespace Sinch.Core
             throw new SinchApiException(httpResponseMessage.StatusCode, httpResponseMessage.ReasonPhrase, null, apiError);
         }
 
-        public static async Task<T> TryGetJson<T>(this HttpResponseMessage httpResponseMessage)
+        public static async Task<T?> TryGetJson<T>(this HttpResponseMessage httpResponseMessage)
         {
             var authResponse = default(T);
             if (httpResponseMessage.IsJson()) authResponse = await httpResponseMessage.Content.ReadFromJsonAsync<T>();

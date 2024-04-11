@@ -11,13 +11,13 @@ namespace Sinch.Auth
         {
         }
 
-        internal SinchAuthException(HttpStatusCode statusCode, string? message, Exception? inner, AuthApiError authApiError)
+        internal SinchAuthException(HttpStatusCode statusCode, string? message, Exception? inner, AuthApiError? authApiError)
             : this(statusCode, message, inner)
         {
-            Error = authApiError.Error;
-            ErrorDescription = authApiError.ErrorDescription;
-            ErrorHint = authApiError.ErrorHint;
-            ErrorVerbose = authApiError.ErrorVerbose;
+            Error = authApiError?.Error;
+            ErrorDescription = authApiError?.ErrorDescription;
+            ErrorHint = authApiError?.ErrorHint;
+            ErrorVerbose = authApiError?.ErrorVerbose;
         }
 
         public string? Error { get; }

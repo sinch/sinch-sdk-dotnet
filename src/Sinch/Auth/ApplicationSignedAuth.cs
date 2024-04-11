@@ -24,7 +24,7 @@ namespace Sinch.Auth
         }
 
         public string GetSignedAuth(byte[] jsonBodyBytes, string httpVerb,
-            string requestPath, string timestamp, string contentType)
+            string requestPath, string timestamp, string? contentType)
         {
             _jsonBodyInBytes = jsonBodyBytes;
             _httpVerb = httpVerb;
