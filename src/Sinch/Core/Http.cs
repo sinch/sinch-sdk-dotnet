@@ -52,12 +52,12 @@ namespace Sinch.Core
     {
         private readonly HttpClient _httpClient;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
-        private readonly ILoggerAdapter<Http> _logger;
+        private readonly ILoggerAdapter<IHttp> _logger;
         private readonly ISinchAuth _auth;
         private readonly string _userAgentHeaderValue;
 
 
-        public Http(ISinchAuth auth, HttpClient httpClient, ILoggerAdapter<Http> logger,
+        public Http(ISinchAuth auth, HttpClient httpClient, ILoggerAdapter<IHttp> logger,
             JsonNamingPolicy jsonNamingPolicy)
         {
             _logger = logger;
