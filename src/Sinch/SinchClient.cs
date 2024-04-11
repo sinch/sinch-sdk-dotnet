@@ -114,7 +114,7 @@ namespace Sinch
         ///     Defaults to Application Sign request and it's a recommended approach.
         /// </param>
         /// <returns></returns>
-        public ISinchVoiceClient Voice(string appKey, string appSecret, CallingRegion callingRegion = null,
+        public ISinchVoiceClient Voice(string appKey, string appSecret, CallingRegion? callingRegion = null,
             AuthStrategy authStrategy = AuthStrategy.ApplicationSign);
     }
 
@@ -129,20 +129,21 @@ namespace Sinch
         private const string AuthApiUrl = "https://auth.sinch.com";
         private const string TemplatesApiUrlTemplate = "https://{0}.template.api.sinch.com/";
 
-        private readonly ApiUrlOverrides _apiUrlOverrides;
+        private readonly ApiUrlOverrides? _apiUrlOverrides;
         private readonly ISinchAuth _auth;
         private readonly ISinchConversation _conversation;
         private readonly HttpClient _httpClient;
 
-        private readonly string _keyId;
-        private readonly string _keySecret;
-
+        private readonly string? _keyId;
+        private readonly string? _keySecret;
+        private readonly string? _projectId;
+        
         private readonly LoggerFactory _loggerFactory;
 
         private readonly ISinchNumbers _numbers;
-        private readonly string _projectId;
+       
         private readonly ISinchSms _sms;
-        private readonly ILoggerAdapter<ISinchClient> _logger;
+        private readonly ILoggerAdapter<ISinchClient>? _logger;
 
         /// <summary>
         ///     Initialize a new <see cref="SinchClient" />
@@ -152,8 +153,8 @@ namespace Sinch
         /// <param name="projectId">Your project id.</param>
         /// <param name="options">Optional. See: <see cref="SinchOptions" /></param>
         /// <exception cref="ArgumentNullException"></exception>
-        public SinchClient(string projectId, string keyId, string keySecret,
-            Action<SinchOptions> options = default)
+        public SinchClient(string? projectId, string? keyId, string? keySecret,
+            Action<SinchOptions>? options = default)
         {
             _projectId = projectId;
             _keyId = keyId;
@@ -269,7 +270,7 @@ namespace Sinch
 
         /// <inheritdoc />
         public ISinchVoiceClient Voice(string appKey, string appSecret,
-            CallingRegion callingRegion = default,
+            CallingRegion? callingRegion = default,
             AuthStrategy authStrategy = AuthStrategy.ApplicationSign)
         {
             if (string.IsNullOrEmpty(appKey))
