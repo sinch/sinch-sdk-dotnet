@@ -17,7 +17,7 @@ namespace Sinch.Voice.Callouts.Callout
 #if NET7_0_OR_GREATER
         public required string Endpoint { get; set; }
 #else
-        public string Endpoint { get; set; }  = null!;
+        public string Endpoint { get; set; } = null!;
 #endif
     }
 }
