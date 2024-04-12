@@ -23,7 +23,7 @@ namespace Sinch.Voice.Callouts
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<CalloutResponse> Tts(TtsCalloutRequest request, CancellationToken cancellationToken = default);
+        Task<CalloutResponse> Tts(TextToSpeechCalloutRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     The conference callout calls a phone number or a user.
@@ -59,7 +59,7 @@ namespace Sinch.Voice.Callouts
         }
 
         /// <inheritdoc />
-        public Task<CalloutResponse> Tts(TtsCalloutRequest request, CancellationToken cancellationToken = default)
+        public Task<CalloutResponse> Tts(TextToSpeechCalloutRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, "calling/v1/callouts");
             _logger?.LogDebug("Making Tts callout request...");
@@ -68,7 +68,7 @@ namespace Sinch.Voice.Callouts
                 method = CalloutType.Tts.Value,
                 ttsCallout = request
             },
-                cancellationToken);
+                cancellationToken)!;
         }
 
         /// <inheritdoc />
@@ -82,7 +82,7 @@ namespace Sinch.Voice.Callouts
                 method = CalloutType.Conference.Value,
                 conferenceCallout = request
             },
-                cancellationToken);
+                cancellationToken)!;
         }
 
         /// <inheritdoc />
@@ -95,7 +95,7 @@ namespace Sinch.Voice.Callouts
                 method = CalloutType.Custom.Value,
                 customCallout = request
             },
-                cancellationToken);
+                cancellationToken)!;
         }
     }
 }

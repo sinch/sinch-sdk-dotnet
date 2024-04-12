@@ -8,7 +8,7 @@ namespace Sinch.Voice.Callouts.Callout
 #if NET7_0_OR_GREATER
         public required DestinationType Type { get; set; }
 #else
-        public DestinationType Type { get; set; }
+        public DestinationType Type { get; set; } = null!;
 #endif
         /// <summary>
         ///     If the type is number the value of the endpoint is a phone number.
@@ -17,7 +17,7 @@ namespace Sinch.Voice.Callouts.Callout
 #if NET7_0_OR_GREATER
         public required string Endpoint { get; set; }
 #else
-        public string Endpoint { get; set; }
+        public string Endpoint { get; set; }  = null!;
 #endif
     }
 }

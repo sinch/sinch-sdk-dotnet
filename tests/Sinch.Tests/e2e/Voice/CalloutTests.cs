@@ -1,3 +1,4 @@
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Voice;
@@ -11,7 +12,7 @@ namespace Sinch.Tests.e2e.Voice
         [Fact]
         public async Task TtsRequest()
         {
-            var response = await VoiceClient.Callouts.Tts(new TtsCalloutRequest()
+            var response = await VoiceClient.Callouts.Tts(new TextToSpeechCalloutRequest()
             {
                 Destination = new Destination()
                 {
@@ -78,8 +79,10 @@ namespace Sinch.Tests.e2e.Voice
                 Dtmf = "w9",
                 Custom = "arigato",
                 MaxDuration = 300,
-                Ice = "{\"action\":{\"name\":\"connectPstn\",\"number\":\"46000000001\",\"maxDuration\":90}}",
-                Ace = "{}",
+                Ice = JsonNode
+                    .Parse("{\"action\":{\"name\":\"connectPstn\",\"number\":\"46000000001\",\"maxDuration\":90}}")!
+                    .AsObject()!,
+                Ace = JsonNode.Parse("{}")!.AsObject(),
                 Pie = "https://your-application-server-host/application"
             });
             response.CallId.Should().BeEquivalentTo("440");

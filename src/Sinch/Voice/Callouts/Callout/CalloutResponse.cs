@@ -5,6 +5,6 @@ namespace Sinch.Voice.Callouts.Callout
         /// <summary>
         ///     The returned call identifier.
         /// </summary>
-        public string CallId { get; set; }
+        public string? CallId { get; set; }
     }
 }
