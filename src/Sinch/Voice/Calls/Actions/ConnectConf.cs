@@ -15,7 +15,7 @@ namespace Sinch.Voice.Calls.Actions
 #if NET7_0_OR_GREATER
         public required string ConferenceId { get; set; }
 #else
-        public string ConferenceId { get; set; }
+        public string ConferenceId { get; set; } = null!;
 #endif
 
 
@@ -23,7 +23,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     Gets or Sets ConferenceDtmfOptions
         /// </summary>
         [JsonPropertyName("conferenceDtmfOptions")]
-        public ConferenceDtmfOptions ConferenceDtmfOptions { get; set; }
+        public ConferenceDtmfOptions? ConferenceDtmfOptions { get; set; }
 
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     specified, the user will only hear silence while alone in the conference.
         /// </summary>
         [JsonPropertyName("moh")]
-        public MohClass Moh { get; set; }
+        public MohClass? Moh { get; set; }
 
         public string Name { get; } = "connectConf";
 

@@ -14,7 +14,7 @@ namespace Sinch.Voice.Calls.Actions
 
         /// <inheritdoc cref="Destination" />
         [JsonPropertyName("destination")]
-        public Destination Destination { get; set; }
+        public Destination? Destination { get; set; }
 
         /// <summary>
         ///     An optional parameter that allows you to specify or override call headers provided to the receiving Sinch SDK
@@ -22,7 +22,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     <see href="https://developers.sinch.com/docs/voice/api-reference/voice/call-headers/">here</see>.
         /// </summary>
         [JsonPropertyName("callheaders")]
-        public List<CallHeader> Callheaders { get; set; }
+        public List<CallHeader>? CallHeaders { get; set; }
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ namespace Sinch.Voice.Calls.Actions
 #if NET7_0_OR_GREATER
         public required DestinationType Type { get; set; }
 #else
-        public string Type { get; set; }
+        public string Type { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Sinch.Voice.Calls.Actions
 #if NET7_0_OR_GREATER
         public required string Endpoint { get; set; }
 #else
-        public string Endpoint { get; set; }
+        public string Endpoint { get; set; } = null!;
 #endif
 
 

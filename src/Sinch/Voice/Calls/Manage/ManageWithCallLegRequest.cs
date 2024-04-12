@@ -15,13 +15,13 @@ namespace Sinch.Voice.Calls.Manage
         /// <summary>
         ///     The collection of instructions that can perform various tasks during the call. You can include as many instructions as necessary.
         /// </summary>
-        public List<IInstruction> Instructions { get; set; }
+        public List<IInstruction>? Instructions { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets Action
         /// </summary>
-        public IAction Action { get; set; }
+        public IAction? Action { get; set; }
 
 
         /// <summary>

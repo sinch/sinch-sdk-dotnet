@@ -19,7 +19,7 @@ namespace Sinch.Voice.Calls.Instructions
         ///     progress while the DTMF is sent.
         /// </summary>
         [JsonPropertyName("value")]
-        public string Value { get; set; }
+        public string? Value { get; set; }
 
 
         /// <summary>

@@ -88,7 +88,7 @@ namespace Sinch.Voice.Calls
             var uri = new Uri(_baseAddress, $"calling/v1/calls/id/{callId}");
             _logger?.LogDebug("Getting info about a call with {id}", callId);
             return _http.Send<Call>(uri, HttpMethod.Get,
-                cancellationToken: cancellationToken);
+                cancellationToken: cancellationToken)!;
         }
 
         /// <inheritdoc />

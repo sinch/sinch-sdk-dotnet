@@ -37,14 +37,14 @@ namespace Sinch.Voice.Calls.Actions
         ///     property is required in order to select the input language.
         /// </summary>
         [JsonPropertyName("locale")]
-        public string Locale { get; set; }
+        public string? Locale { get; set; }
 
 
         /// <summary>
         ///     Selects the menu item from the &#x60;menus&#x60; array to play first.
         /// </summary>
         [JsonPropertyName("mainMenu")]
-        public string MainMenu { get; set; }
+        public string? MainMenu { get; set; }
 
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     no menu has an &#x60;id&#x60; value of &#x60;main&#x60;, an error is returned.
         /// </summary>
         [JsonPropertyName("menus")]
-        public List<Menu> Menus { get; set; }
+        public List<Menu>? Menus { get; set; }
 
         public string Name { get; } = "runMenu";
 
