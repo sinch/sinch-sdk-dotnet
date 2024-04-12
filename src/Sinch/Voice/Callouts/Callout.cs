@@ -49,9 +49,9 @@ namespace Sinch.Voice.Callouts
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchVoiceCallout> _logger;
+        private readonly ILoggerAdapter<ISinchVoiceCallout>? _logger;
 
-        public SinchCallout(ILoggerAdapter<ISinchVoiceCallout> logger, Uri baseAddress, IHttp http)
+        public SinchCallout(ILoggerAdapter<ISinchVoiceCallout>? logger, Uri baseAddress, IHttp http)
         {
             _logger = logger;
             _baseAddress = baseAddress;

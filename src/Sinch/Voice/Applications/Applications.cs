@@ -73,9 +73,9 @@ namespace Sinch.Voice.Applications
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchVoiceApplications> _logger;
+        private readonly ILoggerAdapter<ISinchVoiceApplications>? _logger;
 
-        public SinchApplications(ILoggerAdapter<ISinchVoiceApplications> logger, Uri baseAddress, IHttp http)
+        public SinchApplications(ILoggerAdapter<ISinchVoiceApplications>? logger, Uri baseAddress, IHttp http)
         {
             _logger = logger;
             _baseAddress = baseAddress;
@@ -88,7 +88,7 @@ namespace Sinch.Voice.Applications
             var uri = new Uri(_baseAddress, "v1/configuration/numbers");
             _logger?.LogDebug("Getting a numbers...");
             return _http.Send<GetNumbersResponse>(uri, HttpMethod.Get,
-                cancellationToken);
+                cancellationToken)!;
         }
 
         /// <inheritdoc />
@@ -115,7 +115,7 @@ namespace Sinch.Voice.Applications
             var uri = new Uri(_baseAddress, $"v1/configuration/callbacks/applications/{applicationKey}");
             _logger?.LogDebug("Getting callback urls...");
             return _http.Send<Callbacks>(uri, HttpMethod.Get,
-                cancellationToken);
+                cancellationToken)!;
         }
 
         /// <inheritdoc />
@@ -136,7 +136,7 @@ namespace Sinch.Voice.Applications
             var uri = new Uri(_baseAddress, $"v1/calling/query/number/{number}");
             _logger?.LogDebug("Querying a {number}", number);
             return _http.Send<QueryNumberResponse>(uri, HttpMethod.Get,
-                cancellationToken);
+                cancellationToken)!;
         }
     }
 }

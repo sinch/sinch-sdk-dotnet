@@ -58,9 +58,9 @@ namespace Sinch.Voice.Conferences
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchVoiceConferences> _logger;
+        private readonly ILoggerAdapter<ISinchVoiceConferences>? _logger;
 
-        public SinchConferences(ILoggerAdapter<ISinchVoiceConferences> logger, Uri baseAddress, IHttp http)
+        public SinchConferences(ILoggerAdapter<ISinchVoiceConferences>? logger, Uri baseAddress, IHttp http)
         {
             _logger = logger;
             _baseAddress = baseAddress;

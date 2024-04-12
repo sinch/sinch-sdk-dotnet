@@ -35,7 +35,7 @@ namespace Sinch.Voice
     /// <inheritdoc />
     internal class SinchVoiceClient : ISinchVoiceClient
     {
-        public SinchVoiceClient(Uri baseAddress, LoggerFactory loggerFactory,
+        public SinchVoiceClient(Uri baseAddress, LoggerFactory? loggerFactory,
             IHttp http)
         {
             Callouts = new SinchCallout(loggerFactory?.Create<ISinchVoiceCallout>(), baseAddress, http);

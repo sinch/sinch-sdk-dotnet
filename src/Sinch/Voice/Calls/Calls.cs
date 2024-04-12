@@ -58,11 +58,11 @@ namespace Sinch.Voice.Calls
     /// <inheritdoc />
     internal class SinchCalls : ISinchVoiceCalls
     {
-        private readonly ILoggerAdapter<ISinchVoiceCalls> _logger;
+        private readonly ILoggerAdapter<ISinchVoiceCalls>? _logger;
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
 
-        public SinchCalls(ILoggerAdapter<ISinchVoiceCalls> logger, Uri baseAddress, IHttp http)
+        public SinchCalls(ILoggerAdapter<ISinchVoiceCalls>? logger, Uri baseAddress, IHttp http)
         {
             _logger = logger;
             _baseAddress = baseAddress;

@@ -10,12 +10,12 @@ namespace Sinch.Voice.Applications.UpdateCallbackUrls
 #if NET7_0_OR_GREATER
         public required string ApplicationKey { get; set; }
 #else
-        public string ApplicationKey { get; set; }
+        public string? ApplicationKey { get; set; }
 #endif
         /// <summary>
         ///     Gets or Sets Url
         /// </summary>
-        public CallbackUrls Url { get; set; }
+        public CallbackUrls? Url { get; set; }
 
 
         /// <summary>
