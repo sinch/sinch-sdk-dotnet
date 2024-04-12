@@ -1,5 +1,6 @@
-using System.Security.AccessControl;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
+using Sinch.Core;
 
 namespace Sinch.Voice.Callouts.Callout
 {
@@ -43,7 +44,7 @@ namespace Sinch.Voice.Callouts.Callout
         ///     If inline ICE SVAML is passed, exclude cli and destination properties from the customCallout request body.
         ///     <example>"{\"action\":{\"name\":\"connectPstn\",\"number\":\"46000000001\",\"maxDuration\":90}}"</example>
         /// </summary>
-        // TODO: consider using JsonObject here???
+        [JsonConverter(typeof(JsonObjectAsStringJsonConverter))]
         public JsonObject? Ice { get; set; }
 
         /// <summary>
@@ -51,6 +52,7 @@ namespace Sinch.Voice.Callouts.Callout
         ///     to replace a callback URL when using custom callouts.
         ///     Ensure that the JSON object is escaped correctly.
         /// </summary>
+        [JsonConverter(typeof(JsonObjectAsStringJsonConverter))]
         public JsonObject? Ace { get; set; }
 
         /// <summary>
