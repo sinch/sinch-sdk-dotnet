@@ -42,13 +42,7 @@ https://github.com/sinch/sinch-sdk-dotnet/blob/9f69eb2c5da48d5678d0f28ec4c039dd8
 
 With ASP.NET dependency injection:
 
-```csharp
-// SinchClient is thread safe so it's okay to add it as a singleton
-builder.Services.AddSingleton<ISinch>(x => new SinchClient(
-    builder.Configuration["Sinch:KeyId"],
-    builder.Configuration["Sinch:KeySecret"],
-    builder.Configuration["Sinch:ProjectId"]));
-```
+https://github.com/sinch/sinch-sdk-dotnet/blob/9f69eb2c5da48d5678d0f28ec4c039dd816f36d7/examples/WebApi/Program.cs#L17-L25
 
 To configure Conversation or Sms hosting regions, and any other additional parameters, use [`SinchOptions`](https://github.com/sinch/sinch-sdk-dotnet/blob/main/src/Sinch/SinchOptions.cs):
 
