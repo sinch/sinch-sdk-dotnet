@@ -38,11 +38,7 @@ Once the SDK is installed, you must start by initializing the main client class.
 
 To initialize communication with the Sinch servers, credentials obtained from the Sinch dashboard must be provided to the main client class of this SDK. It's highly recommended to not hardcode these credentials and to load them from environment variables instead or any key-secret storage (for example, [app-secrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0)).
 
-```csharp
-using Sinch;
-
-var sinch = new SinchClient(configuration["Sinch:KeyId"], configuration["Sinch:KeySecret"], configuration["Sinch:ProjectId"]);
-```
+https://github.com/sinch/sinch-sdk-dotnet/blob/9f69eb2c5da48d5678d0f28ec4c039dd816f36d7/examples/Console/Program.cs#L8-L10
 
 With ASP.NET dependency injection:
 
