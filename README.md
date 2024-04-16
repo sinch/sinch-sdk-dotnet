@@ -73,26 +73,7 @@ https://github.com/sinch/sinch-sdk-dotnet/blob/9f69eb2c5da48d5678d0f28ec4c039dd8
 
 For an unsuccessful API calls `SinchApiException` will be thrown:
 
-```csharp
-using Sinch;
-using Sinch.SMS.Batches.Send;
-
-try {
-    var batch = await sinch.Sms.Batches.Send(new SendBatchRequest
-    {
-        Body = "Hello, World!",
-        DeliveryReport = DeliveryReport.None,
-        To = new List<string>()
-        {
-            123456789
-        }
-    });
-}
-catch(SinchApiException e)
-{
-    logger.LogError("Api Exception. Status: {status}. Detailed message: {message}", e.Status, e.DetailedMessage);
-}
-```
+https://github.com/sinch/sinch-sdk-dotnet/blob/3ad0f84dc19968d1d708fab59fd84e134c76f066/examples/Console/HandlingExceptions.cs#L19-L35
 
 ## Sample apps
 
