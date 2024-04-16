@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Sinch;
 using Sinch.SMS;
 using Sinch.SMS.Batches.Send;
