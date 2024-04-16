@@ -60,41 +60,14 @@ Sinch client provides access to the following Sinch products:
 - additional products coming soon!
 
 Usage example of the `numbers` product, assuming `sinch` is a type of `ISinchClient`:
-```csharp
-using Sinch.Numbers.Active.List;
 
-ListActiveNumbersResponse response = await sinch.Numbers.Active.List(new ListActiveNumbersRequest
-{
-    RegionCode = "US",
-    Type = Types.Mobile
-});
-```
+https://github.com/sinch/sinch-sdk-dotnet/blob/63752849bb3277b464754f8ad9544cfae2d51d35/examples/Console/ListActiveNumbers.cs#L15-L19
 
 ## Logging, HttpClient, and additional options
 
 To configure a logger, provide your own `HttpClient`, or any additional options utilize `SinchOptions` action within the constructor:
 
-```csharp
-using Sinch;
-using Sinch.SMS;
-
-var sinch = new SinchClient(
-    configuration["Sinch:KeyId"],
-    configuration["Sinch:KeySecret"],
-    configuration["Sinch:ProjectId"],
-    options =>
-    {
-        // provide any logger factory which satisfies Microsoft.Extensions.Logging.ILoggerFactory
-        options.LoggerFactory = LoggerFactory.Create(config => {
-            // add log output to console
-            config.AddConsole();
-        });
-        // Provide your http client here
-        options.HttpClient = new HttpClient();
-        // Set a hosting region for Sms
-        options.SmsHostingRegion = SmsHostingRegion.Eu;
-    });
-```
+https://github.com/sinch/sinch-sdk-dotnet/blob/9f69eb2c5da48d5678d0f28ec4c039dd816f36d7/examples/WebApi/Program.cs#L17-L25
 
 ## Handling exceptions
 
