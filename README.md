@@ -46,17 +46,7 @@ https://github.com/sinch/sinch-sdk-dotnet/blob/9f69eb2c5da48d5678d0f28ec4c039dd8
 
 To configure Conversation or Sms hosting regions, and any other additional parameters, use [`SinchOptions`](https://github.com/sinch/sinch-sdk-dotnet/blob/main/src/Sinch/SinchOptions.cs):
 
-```csharp
-var sinch = new SinchClient(
-    configuration["Sinch:KeyId"],
-    configuration["Sinch:KeySecret"],
-    configuration["Sinch:ProjectId"],
-    options =>
-    {
-        options.SmsHostingRegion = Sinch.SMS.SmsHostingRegion.Eu;
-        options.ConversationRegion = Sinch.Conversation.ConversationRegion.Eu;
-    });
-```
+https://github.com/sinch/sinch-sdk-dotnet/blob/4ca70fc3df975f213c822a66a0e6775d3ddee23d/examples/Console/UsingSinchOptions.cs#L9-L16
 
 ## Supported Sinch Products
 
