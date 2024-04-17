@@ -37,12 +37,7 @@ namespace Sinch.Core
 
         public override void Write(Utf8JsonWriter writer, T? value, JsonSerializerOptions options)
         {
-            if (value is null)
-            {
-                throw new NullReferenceException("value is null");
-            }
-
-            var type = value.GetType();
+            var type = typeof(T);
             JsonSerializer.Serialize(writer, value, type, options);
         }
     }
