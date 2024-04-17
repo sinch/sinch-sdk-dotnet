@@ -37,7 +37,15 @@ namespace Sinch.Core
 
         public override void Write(Utf8JsonWriter writer, T? value, JsonSerializerOptions options)
         {
-            var type = typeof(T);
+            // just serialize as usual null object
+            if (value is null)
+            {
+                JsonSerializer.Serialize(writer, value, typeof(object), options);
+                return;
+            }
+            
+            // need getType to get an actual instance and not typeof<T> which is always the interface itself
+            var type = value.GetType();
             JsonSerializer.Serialize(writer, value, type, options);
         }
     }
