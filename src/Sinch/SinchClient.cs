@@ -138,7 +138,7 @@ namespace Sinch
         private readonly string? _keySecret;
         private readonly string? _projectId;
 
-        private readonly LoggerFactory _loggerFactory;
+        private readonly LoggerFactory? _loggerFactory;
 
         private readonly ISinchNumbers _numbers;
 
