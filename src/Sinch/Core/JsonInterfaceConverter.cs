@@ -43,7 +43,7 @@ namespace Sinch.Core
                 JsonSerializer.Serialize(writer, value, typeof(object), options);
                 return;
             }
-            
+
             // need getType to get an actual instance and not typeof<T> which is always the interface itself
             var type = value.GetType();
             JsonSerializer.Serialize(writer, value, type, options);
