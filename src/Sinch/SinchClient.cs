@@ -179,6 +179,7 @@ namespace Sinch
             _apiUrlOverrides = optionsObj.ApiUrlOverrides;
 
             ISinchAuth auth =
+                // exception is throw when trying to get OAuth or Oauth dependant clients if credentials are missing
                 new OAuth(_keyId!, _keySecret!, _httpClient, _loggerFactory?.Create<OAuth>(),
                     new Uri(_apiUrlOverrides?.AuthUrl ?? AuthApiUrl));
             _auth = auth;
