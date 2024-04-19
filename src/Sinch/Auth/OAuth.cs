@@ -16,13 +16,14 @@ namespace Sinch.Auth
         private readonly HttpClient _httpClient;
         private readonly string _keyId;
         private readonly string _keySecret;
-        private readonly ILoggerAdapter<OAuth> _logger;
-        private volatile string _token;
+        private readonly ILoggerAdapter<OAuth>? _logger;
+        private volatile string? _token;
         private readonly Uri _baseAddress;
 
         public string Scheme { get; } = AuthSchemes.Bearer;
 
-        public OAuth(string keyId, string keySecret, HttpClient httpClient, ILoggerAdapter<OAuth> logger, Uri baseAddress)
+        public OAuth(string keyId, string keySecret, HttpClient httpClient, ILoggerAdapter<OAuth>? logger,
+            Uri baseAddress)
         {
             _keyId = keyId;
             _keySecret = keySecret;
@@ -80,7 +81,12 @@ namespace Sinch.Auth
         private class AuthResponse
         {
             [JsonPropertyName("access_token")]
-            public string AccessToken { get; set; }
+#if NET7_0_OR_GREATER
+             public required string AccessToken { get; set; }
+#else
+            public string AccessToken { get; set; } = null!;
+#endif
+
 
             /// <summary>
             ///     In seconds
