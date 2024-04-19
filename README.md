@@ -41,7 +41,7 @@ To initialize communication with the Sinch servers, credentials obtained from th
 ```csharp
 using Sinch;
 
-var sinch = new SinchClient(configuration["Sinch:KeyId"], configuration["Sinch:KeySecret"], configuration["Sinch:ProjectId"]);
+var sinch = new SinchClient(configuration["Sinch:ProjectId"], configuration["Sinch:KeyId"], configuration["Sinch:KeySecret"]);
 ```
 
 With ASP.NET dependency injection:
@@ -49,18 +49,19 @@ With ASP.NET dependency injection:
 ```csharp
 // SinchClient is thread safe so it's okay to add it as a singleton
 builder.Services.AddSingleton<ISinch>(x => new SinchClient(
+    builder.Configuration["Sinch:ProjectId"],
     builder.Configuration["Sinch:KeyId"],
-    builder.Configuration["Sinch:KeySecret"],
-    builder.Configuration["Sinch:ProjectId"]));
+    builder.Configuration["Sinch:KeySecret"]
+));
 ```
 
 To configure Conversation or Sms hosting regions, and any other additional parameters, use [`SinchOptions`](https://github.com/sinch/sinch-sdk-dotnet/blob/main/src/Sinch/SinchOptions.cs):
 
 ```csharp
 var sinch = new SinchClient(
+    configuration["Sinch:ProjectId"],
     configuration["Sinch:KeyId"],
     configuration["Sinch:KeySecret"],
-    configuration["Sinch:ProjectId"],
     options =>
     {
         options.SmsHostingRegion = Sinch.SMS.SmsHostingRegion.Eu;
@@ -99,9 +100,9 @@ using Sinch;
 using Sinch.SMS;
 
 var sinch = new SinchClient(
+    configuration["Sinch:ProjectId"],
     configuration["Sinch:KeyId"],
     configuration["Sinch:KeySecret"],
-    configuration["Sinch:ProjectId"],
     options =>
     {
         // provide any logger factory which satisfies Microsoft.Extensions.Logging.ILoggerFactory
