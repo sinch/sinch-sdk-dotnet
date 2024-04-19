@@ -47,6 +47,13 @@ namespace Sinch.Core
             CancellationToken cancellationToken = default);
     }
 
+    /// <summary>
+    ///     Represents an empty response for cases where no json is expected.
+    /// </summary>
+    public class EmptyResponse
+    {
+    }
+
     /// <inheritdoc /> 
     internal class Http : IHttp
     {
@@ -157,16 +164,24 @@ namespace Sinch.Core
                            ?? throw new InvalidOperationException(
                                $"{typeof(TResponse).Name} is null");
 
-                // EmptyContent class is internal somehow...
-                if (result.Content.GetType().Name == "EmptyContent" && typeof(TResponse) == typeof(object))
+                // if empty response is expected, any non related response is dropped
+                if (typeof(TResponse) == typeof(EmptyResponse))
                 {
-                    return (TResponse)new object();
+                    // if not empty content, check what is there for debug purposes.
+                    if (result.Content.GetType().Name != "EmptyContent")
+                    {
+                        _logger?.LogDebug("Response is not json, but {content}",
+                            await result.Content.ReadAsStringAsync(cancellationToken));
+                    }
+
+                    return (TResponse)(object)new EmptyResponse();
                 }
 
+                // unexpected content, log warning and throw exception
                 _logger?.LogWarning("Response is not json, but {content}",
                     await result.Content.ReadAsStringAsync(cancellationToken));
 
-                throw new InvalidOperationException("The response is not json or empty object.");
+                throw new InvalidOperationException("The response is not Json or EmptyResponse");
             }
         }
     }
