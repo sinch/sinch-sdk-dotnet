@@ -96,7 +96,7 @@ namespace Sinch.Voice.Applications
         {
             var uri = new Uri(_baseAddress, "v1/configuration/numbers");
             _logger?.LogDebug("Assigning a numbers to {applicationKey}", request.ApplicationKey);
-            return _http.Send<AssignNumbersRequest, object>(uri, HttpMethod.Post, request,
+            return _http.Send<AssignNumbersRequest, EmptyResponse>(uri, HttpMethod.Post, request,
                 cancellationToken);
         }
 
@@ -105,7 +105,7 @@ namespace Sinch.Voice.Applications
         {
             var uri = new Uri(_baseAddress, "v1/configuration/numbers");
             _logger?.LogDebug("Un-assigning a {number}", request.Number);
-            return _http.Send<UnassignNumberRequest, object>(uri, HttpMethod.Delete, request,
+            return _http.Send<UnassignNumberRequest, EmptyResponse>(uri, HttpMethod.Delete, request,
                 cancellationToken);
         }
 

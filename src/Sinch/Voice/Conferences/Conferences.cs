@@ -81,7 +81,7 @@ namespace Sinch.Voice.Conferences
         {
             var uri = new Uri(_baseAddress, $"calling/v1/conferences/id/{conferenceId}");
             _logger?.LogDebug("Kicking all from a conference with {conferenceId}", conferenceId);
-            return _http.Send<object>(uri, HttpMethod.Delete,
+            return _http.Send<EmptyResponse>(uri, HttpMethod.Delete,
                 cancellationToken);
         }
 
@@ -91,7 +91,7 @@ namespace Sinch.Voice.Conferences
         {
             var uri = new Uri(_baseAddress, $"calling/v1/conferences/id/{conferenceId}/{callId}");
             _logger?.LogDebug("Managing {callId} of {conferenceId}", callId, conferenceId);
-            return _http.Send<object, ManageParticipantRequest>(uri, HttpMethod.Patch, request,
+            return _http.Send<ManageParticipantRequest, EmptyResponse>(uri, HttpMethod.Patch, request,
                 cancellationToken);
         }
 
@@ -100,7 +100,7 @@ namespace Sinch.Voice.Conferences
         {
             var uri = new Uri(_baseAddress, $"calling/v1/conferences/id/{conferenceId}/{callId}");
             _logger?.LogDebug("Kicking {callId} from {conferenceId}", callId, conferenceId);
-            return _http.Send<object>(uri, HttpMethod.Delete,
+            return _http.Send<EmptyResponse>(uri, HttpMethod.Delete,
                 cancellationToken);
         }
     }
