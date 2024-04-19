@@ -15,9 +15,9 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddSingleton<ISinchClient>(_ => new SinchClient(
+    builder.Configuration["Sinch:ProjectId"],
     builder.Configuration["Sinch:KeyId"]!,
     builder.Configuration["Sinch:KeySecret"]!,
-    builder.Configuration["Sinch:ProjectId"],
     options =>
     {
         options.LoggerFactory = LoggerFactory.Create(config => { config.AddConsole(); });

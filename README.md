@@ -38,15 +38,36 @@ Once the SDK is installed, you must start by initializing the main client class.
 
 To initialize communication with the Sinch servers, credentials obtained from the Sinch dashboard must be provided to the main client class of this SDK. It's highly recommended to not hardcode these credentials and to load them from environment variables instead or any key-secret storage (for example, [app-secrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0)).
 
-https://github.com/sinch/sinch-sdk-dotnet/blob/9f69eb2c5da48d5678d0f28ec4c039dd816f36d7/examples/Console/Program.cs#L8-L10
+```csharp
+using Sinch;
+
+var sinch = new SinchClient(configuration["Sinch:ProjectId"], configuration["Sinch:KeyId"], configuration["Sinch:KeySecret"]);
+```
 
 With ASP.NET dependency injection:
 
-https://github.com/sinch/sinch-sdk-dotnet/blob/9f69eb2c5da48d5678d0f28ec4c039dd816f36d7/examples/WebApi/Program.cs#L17-L25
+```csharp
+// SinchClient is thread safe so it's okay to add it as a singleton
+builder.Services.AddSingleton<ISinch>(x => new SinchClient(
+    builder.Configuration["Sinch:ProjectId"],
+    builder.Configuration["Sinch:KeyId"],
+    builder.Configuration["Sinch:KeySecret"]
+));
+```
 
 To configure Conversation or Sms hosting regions, and any other additional parameters, use [`SinchOptions`](https://github.com/sinch/sinch-sdk-dotnet/blob/main/src/Sinch/SinchOptions.cs):
 
-https://github.com/sinch/sinch-sdk-dotnet/blob/4ca70fc3df975f213c822a66a0e6775d3ddee23d/examples/Console/UsingSinchOptions.cs#L9-L16
+```csharp
+var sinch = new SinchClient(
+    configuration["Sinch:ProjectId"],
+    configuration["Sinch:KeyId"],
+    configuration["Sinch:KeySecret"],
+    options =>
+    {
+        options.SmsHostingRegion = Sinch.SMS.SmsHostingRegion.Eu;
+        options.ConversationRegion = Sinch.Conversation.ConversationRegion.Eu;
+    });
+```
 
 ## Supported Sinch Products
 
@@ -60,20 +81,66 @@ Sinch client provides access to the following Sinch products:
 - additional products coming soon!
 
 Usage example of the `numbers` product, assuming `sinch` is a type of `ISinchClient`:
+```csharp
+using Sinch.Numbers.Active.List;
 
-https://github.com/sinch/sinch-sdk-dotnet/blob/63752849bb3277b464754f8ad9544cfae2d51d35/examples/Console/ListActiveNumbers.cs#L15-L19
+ListActiveNumbersResponse response = await sinch.Numbers.Active.List(new ListActiveNumbersRequest
+{
+    RegionCode = "US",
+    Type = Types.Mobile
+});
+```
 
 ## Logging, HttpClient, and additional options
 
 To configure a logger, provide your own `HttpClient`, or any additional options utilize `SinchOptions` action within the constructor:
 
-https://github.com/sinch/sinch-sdk-dotnet/blob/9f69eb2c5da48d5678d0f28ec4c039dd816f36d7/examples/WebApi/Program.cs#L17-L25
+```csharp
+using Sinch;
+using Sinch.SMS;
+
+var sinch = new SinchClient(
+    configuration["Sinch:ProjectId"],
+    configuration["Sinch:KeyId"],
+    configuration["Sinch:KeySecret"],
+    options =>
+    {
+        // provide any logger factory which satisfies Microsoft.Extensions.Logging.ILoggerFactory
+        options.LoggerFactory = LoggerFactory.Create(config => {
+            // add log output to console
+            config.AddConsole();
+        });
+        // Provide your http client here
+        options.HttpClient = new HttpClient();
+        // Set a hosting region for Sms
+        options.SmsHostingRegion = SmsHostingRegion.Eu;
+    });
+```
 
 ## Handling exceptions
 
 For an unsuccessful API calls `SinchApiException` will be thrown:
 
-https://github.com/sinch/sinch-sdk-dotnet/blob/3ad0f84dc19968d1d708fab59fd84e134c76f066/examples/Console/HandlingExceptions.cs#L19-L35
+```csharp
+using Sinch;
+using Sinch.SMS.Batches.Send;
+
+try {
+    var batch = await sinch.Sms.Batches.Send(new SendBatchRequest
+    {
+        Body = "Hello, World!",
+        DeliveryReport = DeliveryReport.None,
+        To = new List<string>()
+        {
+            123456789
+        }
+    });
+}
+catch(SinchApiException e)
+{
+    logger.LogError("Api Exception. Status: {status}. Detailed message: {message}", e.Status, e.DetailedMessage);
+}
+```
 
 ## Sample apps
 
