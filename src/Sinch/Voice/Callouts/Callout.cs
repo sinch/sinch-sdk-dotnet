@@ -68,7 +68,7 @@ namespace Sinch.Voice.Callouts
                 method = CalloutType.Tts.Value,
                 ttsCallout = request
             },
-                cancellationToken)!;
+                cancellationToken);
         }
 
         /// <inheritdoc />
@@ -82,7 +82,7 @@ namespace Sinch.Voice.Callouts
                 method = CalloutType.Conference.Value,
                 conferenceCallout = request
             },
-                cancellationToken)!;
+                cancellationToken);
         }
 
         /// <inheritdoc />
@@ -95,7 +95,7 @@ namespace Sinch.Voice.Callouts
                 method = CalloutType.Custom.Value,
                 customCallout = request
             },
-                cancellationToken)!;
+                cancellationToken);
         }
     }
 }

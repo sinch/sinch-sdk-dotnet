@@ -96,7 +96,7 @@ namespace Sinch.Voice.Calls.Actions
 #if NET7_0_OR_GREATER
         public required string Id { get; set; }
 #else
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
 #endif
 
 
@@ -112,7 +112,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     more information.
         /// </summary>
         [JsonPropertyName("mainPrompt")]
-        public string MainPrompt { get; set; }
+        public string? MainPrompt { get; set; }
 
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     more information.
         /// </summary>
         [JsonPropertyName("repeatPrompt")]
-        public string RepeatPrompt { get; set; }
+        public string? RepeatPrompt { get; set; }
 
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     The set of options available in the menu.
         /// </summary>
         [JsonPropertyName("options")]
-        public List<Option> Options { get; set; }
+        public List<Option>? Options { get; set; }
 
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace Sinch.Voice.Calls.Actions
 #if NET7_0_OR_GREATER
         public required string Dtmf { get; set; }
 #else
-        public string Dtmf { get; set; }
+        public string Dtmf { get; set; } = null!;
 #endif
 
 
@@ -216,7 +216,7 @@ namespace Sinch.Voice.Calls.Actions
 #if NET7_0_OR_GREATER
         public required DtmfAction Action { get; set; }
 #else
-        public DtmfAction Action { get; set; }
+        public DtmfAction Action { get; set; } = null!;
 #endif
 
 
