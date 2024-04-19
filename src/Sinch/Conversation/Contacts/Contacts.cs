@@ -199,7 +199,7 @@ namespace Sinch.Conversation.Contacts
         {
             _logger?.LogDebug("Deleting a {contactId} from {projectId}", contactId, _projectId);
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{contactId}");
-            return _http.Send<object>(uri, HttpMethod.Delete, cancellationToken);
+            return _http.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken);
         }
 
         /// <inheritdoc />

@@ -198,7 +198,7 @@ namespace Sinch.SMS.Groups
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/groups/{groupId}");
             _logger?.LogDebug("Deleting a group with {id}...", groupId);
-            return _http.Send<object>(uri, HttpMethod.Delete, cancellationToken);
+            return _http.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken);
         }
 
         /// <inheritdoc />

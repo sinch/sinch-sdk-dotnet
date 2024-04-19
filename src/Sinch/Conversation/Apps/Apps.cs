@@ -141,7 +141,7 @@ namespace Sinch.Conversation.Apps
 
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/apps/{appId}");
             _logger?.LogDebug("Deleting an app for a {projectId} with {appId}", _projectId, appId);
-            return _http.Send<object>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
+            return _http.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />

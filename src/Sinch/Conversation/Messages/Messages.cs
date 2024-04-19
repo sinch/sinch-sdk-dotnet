@@ -81,7 +81,8 @@ namespace Sinch.Conversation.Messages
         private readonly ILoggerAdapter<ISinchConversationMessages> _logger;
         private readonly string _projectId;
 
-        public Messages(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationMessages> logger, IHttp http)
+        public Messages(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationMessages> logger,
+            IHttp http)
         {
             _projectId = projectId;
             _baseAddress = baseAddress;
@@ -94,7 +95,8 @@ namespace Sinch.Conversation.Messages
         {
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/messages:send");
             _logger?.LogDebug("Sending a message...");
-            return _http.Send<SendMessageRequest, SendMessageResponse>(uri, HttpMethod.Post, request, cancellationToken: cancellationToken);
+            return _http.Send<SendMessageRequest, SendMessageResponse>(uri, HttpMethod.Post, request,
+                cancellationToken: cancellationToken);
         }
 
         //TODO: add simplified send text to app of recipient
@@ -111,7 +113,8 @@ namespace Sinch.Conversation.Messages
         }
 
         /// <inheritdoc/>  
-        public Task<ListMessagesResponse> List(ListMessagesRequest request, CancellationToken cancellationToken = default)
+        public Task<ListMessagesResponse> List(ListMessagesRequest request,
+            CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Fetching list of messages {request}", request);
             var uri = new Uri(_baseAddress,
@@ -127,7 +130,7 @@ namespace Sinch.Conversation.Messages
             _logger?.LogDebug("Deleting a message {messageId}", messageId);
             var uri = new Uri(_baseAddress,
                 $"v1/projects/{_projectId}/messages/{messageId}{param}");
-            return _http.Send<object>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
+            return _http.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
         }
 
         private static string GetMessageSourceQueryParam(MessageSource messagesSource)

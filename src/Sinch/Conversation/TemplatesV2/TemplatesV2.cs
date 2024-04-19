@@ -125,7 +125,8 @@ namespace Sinch.Conversation.TemplatesV2
             var uri = new Uri(_baseAddress, $"v2/projects/{_projectId}/templates");
 
             _logger?.LogDebug("Creating a template in {projectId}", _projectId);
-            return _http.Send<CreateTemplateRequest, Template>(uri, HttpMethod.Post, template, cancellationToken: cancellationToken);
+            return _http.Send<CreateTemplateRequest, Template>(uri, HttpMethod.Post, template,
+                cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
@@ -165,7 +166,8 @@ namespace Sinch.Conversation.TemplatesV2
             var uri = new Uri(_baseAddress, $"v2/projects/{_projectId}/templates/{template.Id}");
 
             _logger?.LogDebug("Updating a template with {templateId} in {projectId}", template.Id, _projectId);
-            return _http.Send<UpdateTemplateRequest, Template>(uri, HttpMethod.Put, template, cancellationToken: cancellationToken);
+            return _http.Send<UpdateTemplateRequest, Template>(uri, HttpMethod.Put, template,
+                cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
@@ -179,7 +181,7 @@ namespace Sinch.Conversation.TemplatesV2
             var uri = new Uri(_baseAddress, $"v2/projects/{_projectId}/templates/{templateId}");
 
             _logger?.LogDebug("Deleting a template with {templateId} in {projectId}", templateId, _projectId);
-            return _http.Send<object>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
+            return _http.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
         }
 
         private class ListTranslationsResponse

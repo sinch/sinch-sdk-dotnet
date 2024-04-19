@@ -37,7 +37,7 @@ namespace Sinch.Conversation.Events
         /// <param name="eventId"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ConversationEvent> Delete(string eventId, CancellationToken cancellationToken = default);
+        Task Delete(string eventId, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     List all events in a project
@@ -96,7 +96,7 @@ namespace Sinch.Conversation.Events
         }
 
         /// <inheritdoc />
-        public Task<ConversationEvent> Delete(string eventId, CancellationToken cancellationToken = default)
+        public Task Delete(string eventId, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(eventId))
             {
@@ -105,7 +105,7 @@ namespace Sinch.Conversation.Events
 
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/events/{eventId}");
             _logger?.LogDebug("Deleting an event with {id}", eventId);
-            return _http.Send<ConversationEvent>(uri, HttpMethod.Delete,
+            return _http.Send<EmptyResponse>(uri, HttpMethod.Delete,
                 cancellationToken);
         }
 
