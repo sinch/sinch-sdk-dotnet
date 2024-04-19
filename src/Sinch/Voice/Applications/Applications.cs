@@ -88,7 +88,7 @@ namespace Sinch.Voice.Applications
             var uri = new Uri(_baseAddress, "v1/configuration/numbers");
             _logger?.LogDebug("Getting a numbers...");
             return _http.Send<GetNumbersResponse>(uri, HttpMethod.Get,
-                cancellationToken)!;
+                cancellationToken);
         }
 
         /// <inheritdoc />

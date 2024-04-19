@@ -107,7 +107,8 @@ namespace Sinch.SMS.Groups
         private readonly ILoggerAdapter<ISinchSmsGroups> _logger;
         private readonly string _projectOrServicePlanId;
 
-        internal Groups(string projectOrServicePlanId, Uri baseAddress, ILoggerAdapter<ISinchSmsGroups> logger, IHttp http)
+        internal Groups(string projectOrServicePlanId, Uri baseAddress, ILoggerAdapter<ISinchSmsGroups> logger,
+            IHttp http)
         {
             _projectOrServicePlanId = projectOrServicePlanId;
             _baseAddress = baseAddress;
@@ -197,7 +198,7 @@ namespace Sinch.SMS.Groups
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/groups/{groupId}");
             _logger?.LogDebug("Deleting a group with {id}...", groupId);
-            return _http.Send<object, Group>(uri, HttpMethod.Delete, null, cancellationToken);
+            return _http.Send<object>(uri, HttpMethod.Delete, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -205,7 +206,7 @@ namespace Sinch.SMS.Groups
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/groups/{groupId}/members");
             _logger?.LogDebug("Listing members of a group with {id}...", groupId);
-            return _http.Send<object, IEnumerable<string>>(uri, HttpMethod.Get, null, cancellationToken)!;
+            return _http.Send<IEnumerable<string>>(uri, HttpMethod.Get, cancellationToken)!;
         }
     }
 }
