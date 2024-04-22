@@ -57,35 +57,35 @@ namespace Sinch.Conversation.TemplatesV2
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public TextMessage TextMessage { get; private set; }
+        public TextMessage? TextMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public CardMessage CardMessage { get; private set; }
+        public CardMessage? CardMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public CarouselMessage CarouselMessage { get; private set; }
+        public CarouselMessage? CarouselMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ChoiceMessage ChoiceMessage { get; private set; }
+        public ChoiceMessage? ChoiceMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public LocationMessage LocationMessage { get; private set; }
+        public LocationMessage? LocationMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public MediaMessage MediaMessage { get; private set; }
+        public MediaMessage? MediaMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public TemplateMessage TemplateMessage { get; private set; }
+        public TemplateMessage? TemplateMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ListMessage ListMessage { get; private set; }
+        public ListMessage? ListMessage { get; private set; }
 
         /// <summary>
         ///     The BCP-47 language code, such as &#x60;en-US&#x60; or &#x60;sr-Latn&#x60;. For more information, see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
@@ -93,37 +93,37 @@ namespace Sinch.Conversation.TemplatesV2
 #if NET7_0_OR_GREATER
         public required string LanguageCode { get; set; }
 #else
-        public string LanguageCode { get; set; }
+        public string LanguageCode { get; set; } = null!;
 #endif
 
         /// <summary>
         ///     The version of the translation.
         /// </summary>
-        public string Version { get; set; }
+        public string? Version { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets ChannelTemplateOverrides
         /// </summary>
-        public ChannelTemplateOverride ChannelTemplateOverrides { get; set; }
+        public ChannelTemplateOverride? ChannelTemplateOverrides { get; set; }
 
 
         /// <summary>
         ///     List of expected variables. Can be used for request validation.
         /// </summary>
-        public List<TypeTemplateVariable> Variables { get; set; }
+        public List<TypeTemplateVariable>? Variables { get; set; }
 
 
         /// <summary>
         ///     Timestamp when the translation was created.
         /// </summary>
-        public DateTime CreateTime { get; set; }
+        public DateTime? CreateTime { get; set; }
 
 
         /// <summary>
         ///     Timestamp of when the translation was updated.
         /// </summary>
-        public DateTime UpdateTime { get; set; }
+        public DateTime? UpdateTime { get; set; }
 
 
         /// <summary>

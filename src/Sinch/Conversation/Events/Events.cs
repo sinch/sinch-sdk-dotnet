@@ -61,10 +61,10 @@ namespace Sinch.Conversation.Events
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchConversationEvents> _logger;
+        private readonly ILoggerAdapter<ISinchConversationEvents>? _logger;
         private readonly string _projectId;
 
-        public Events(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationEvents> logger, IHttp http)
+        public Events(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationEvents>? logger, IHttp http)
         {
             _projectId = projectId;
             _baseAddress = baseAddress;
@@ -129,7 +129,9 @@ namespace Sinch.Conversation.Events
                 var response =
                     await _http.Send<ListEventsResponse>(uri, HttpMethod.Get, cancellationToken);
                 request.PageToken = response.NextPageToken;
-                foreach (var conversationEvent in response.Events) yield return conversationEvent;
+                if (response.Events == null) continue;
+                foreach (var conversationEvent in response.Events)
+                    yield return conversationEvent;
             } while (!string.IsNullOrEmpty(request.PageToken));
         }
     }

@@ -75,26 +75,26 @@ namespace Sinch.Conversation.Events
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ComposingEvent ComposingEvent { get; private set; }
+        public ComposingEvent? ComposingEvent { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ComposingEndEvent ComposingEndEvent { get; private set; }
+        public ComposingEndEvent? ComposingEndEvent { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public CommentReplyEvent CommentReplyEvent { get; private set; }
+        public CommentReplyEvent? CommentReplyEvent { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public AgentJoinedEvent AgentJoinedEvent { get; private set; }
+        public AgentJoinedEvent? AgentJoinedEvent { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public AgentLeftEvent AgentLeftEvent { get; private set; }
+        public AgentLeftEvent? AgentLeftEvent { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public GenericEvent GenericEvent { get; private set; }
+        public GenericEvent? GenericEvent { get; private set; }
     }
 }

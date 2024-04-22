@@ -40,7 +40,7 @@ namespace Sinch.Tests.Conversation
                     kakaotalk_credentials = new
                     {
                         kakaotalk_plus_friend_id = "my_kakaotalk_id",
-                        kakaotalk_sender_key = "my_kakaotalk_key"
+                        api_key = "my_kakaotalk_key"
                     },
                     static_bearer = new
                     {
@@ -131,7 +131,7 @@ namespace Sinch.Tests.Conversation
                     callback_secret = "sec",
                     kakaotalk_credentials = new
                     {
-                        kakaotalk_sender_key = "ole",
+                        api_key = "ole",
                         kakaotalk_plus_friend_id = "boke"
                     },
                     mms_credentials = new
@@ -200,8 +200,8 @@ namespace Sinch.Tests.Conversation
                     CallbackSecret = "sec",
                     KakaotalkCredentials = new KakaoTalkCredentials()
                     {
-                        KakaotalkSenderKey = "ole",
-                        KakaotalkPlusFriendId = "boke",
+                        ApiKey = "ole",
+                        KakaoTalkPlusFriendId = "boke",
                     },
                     MmsCredentials = new MmsCredentials()
                     {
@@ -289,8 +289,8 @@ namespace Sinch.Tests.Conversation
                 },
                 KakaotalkCredentials = new KakaoTalkCredentials()
                 {
-                    KakaotalkSenderKey = "my_kakaotalk_key",
-                    KakaotalkPlusFriendId = "my_kakaotalk_id"
+                    ApiKey = "my_kakaotalk_key",
+                    KakaoTalkPlusFriendId = "my_kakaotalk_id"
                 },
                 LineCredentials = new LineCredentials()
                 {

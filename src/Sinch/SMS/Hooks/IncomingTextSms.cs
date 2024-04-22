@@ -15,7 +15,12 @@ namespace Sinch.SMS.Hooks
         ///     Gets or Sets Body
         /// </summary>
         [JsonPropertyName("body")]
-        public virtual string? Body { get; set; }
+#if NET7_0_OR_GREATER
+    public required virtual string Body { get; set; }
+#else
+        public virtual string Body { get; set; } = null!;
+#endif
+
 
         /// <summary>
         ///     If this inbound message is in response to a previously sent message that contained a client reference,
@@ -104,7 +109,7 @@ namespace Sinch.SMS.Hooks
 #if NET7_0_OR_GREATER
         public required Sinch.SMS.Inbounds.SmsType Type { get; set; }
 #else
-        public Sinch.SMS.Inbounds.SmsType Type { get; set; } = null!;
+        public Inbounds.SmsType Type { get; set; } = null!;
 #endif
 
 

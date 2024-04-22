@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
+namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
 {
     /// <summary>
     ///     Footer of the interactive message.
@@ -15,7 +15,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages
 #if NET7_0_OR_GREATER
         public required string Text { get; set; }
 #else
-        public string Text { get; set; }
+        public string Text { get; set; } = null!;
 #endif
 
 

@@ -11,7 +11,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     An optional parameter. Will be used where it is natively supported.
         /// </summary>
-        public Uri ThumbnailUrl { get; set; }
+        public Uri? ThumbnailUrl { get; set; }
 
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required Uri Url { get; init; }
 #else
-        public Uri Url { get; set; }
+        public Uri Url { get; set; } = null!;
 #endif
 
 

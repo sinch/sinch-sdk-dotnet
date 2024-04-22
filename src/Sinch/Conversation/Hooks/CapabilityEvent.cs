@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets CapabilityNotification
         /// </summary>
         [JsonPropertyName("capability_notification")]
-        public CapabilityNotification CapabilityNotification { get; set; }
+        public CapabilityNotification? CapabilityNotification { get; set; }
 
         /// <summary>
         ///     Returns the string presentation of the object

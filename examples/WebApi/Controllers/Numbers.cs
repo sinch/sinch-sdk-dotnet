@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Sinch;
+using Sinch.Numbers;
 using Sinch.Numbers.Regions;
 
 namespace WebApiExamples.Controllers;
@@ -18,7 +19,7 @@ public class Numbers : ControllerBase
     [HttpGet(Name = "AvailableRegions")]
     public async Task<IEnumerable<Region>> Get()
     {
-        var regions = await _sinch.Numbers.Regions.List(default);
+        var regions = await _sinch.Numbers.Regions.List(new List<Types>() { });
         return regions;
     }
 }

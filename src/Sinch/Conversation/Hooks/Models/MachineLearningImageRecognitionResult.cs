@@ -12,28 +12,28 @@ namespace Sinch.Conversation.Hooks.Models
         ///     The URL of the image that was processed.
         /// </summary>
         [JsonPropertyName("url")]
-        public string Url { get; set; }
+        public string? Url { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets DocumentImageClassification
         /// </summary>
         [JsonPropertyName("document_image_classification")]
-        public DocumentImageClassification DocumentImageClassification { get; set; }
+        public DocumentImageClassification? DocumentImageClassification { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets OpticalCharacterRecognition
         /// </summary>
         [JsonPropertyName("optical_character_recognition")]
-        public OpticalCharacterRecognition OpticalCharacterRecognition { get; set; }
+        public OpticalCharacterRecognition? OpticalCharacterRecognition { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets DocumentFieldClassification
         /// </summary>
         [JsonPropertyName("document_field_classification")]
-        public DocumentFieldClassification DocumentFieldClassification { get; set; }
+        public DocumentFieldClassification? DocumentFieldClassification { get; set; }
 
 
         /// <summary>

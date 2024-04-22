@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using System.Text.Json.Serialization;
-using Sinch.Conversation.Apps;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.Message;
 
@@ -15,12 +14,12 @@ namespace Sinch.Conversation.Events
         /// <summary>
         /// Gets or Sets Direction
         /// </summary>
-        public ConversationDirection Direction { get; set; }
+        public ConversationDirection? Direction { get; set; }
 
         /// <summary>
         ///     Gets or Sets VarEvent
         /// </summary>
-        public ConversationEventEvent Event { get; set; }
+        public ConversationEventEvent? Event { get; set; }
 
 
         /// <summary>
@@ -29,20 +28,20 @@ namespace Sinch.Conversation.Events
 #if NET7_0_OR_GREATER
         public required string Id { get; set; }
 #else
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     Optional. The ID of the event&#39;s conversation. Will not be present for apps in Dispatch Mode.
         /// </summary>
-        public string ConversationId { get; set; }
+        public string? ConversationId { get; set; }
 
 
         /// <summary>
         ///     Optional. The ID of the contact. Will not be present for apps in Dispatch Mode.
         /// </summary>
-        public string ContactId { get; set; }
+        public string? ContactId { get; set; }
 
 
         /// <summary>
@@ -51,7 +50,7 @@ namespace Sinch.Conversation.Events
 #if NET7_0_OR_GREATER
         public required ChannelIdentity ChannelIdentity { get; set; }
 #else
-        public ChannelIdentity ChannelIdentity { get; set; }
+        public ChannelIdentity ChannelIdentity { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -66,7 +65,7 @@ namespace Sinch.Conversation.Events
 #if NET7_0_OR_GREATER
         public required ProcessingMode ProcessingMode { get; set; }
 #else
-        public ProcessingMode ProcessingMode { get; set; }
+        public ProcessingMode ProcessingMode { get; set; } = null!;
 #endif
 
 
@@ -120,21 +119,21 @@ namespace Sinch.Conversation.Events
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public AppEvent AppEvent { get; private set; }
+        public AppEvent? AppEvent { get; private set; }
 
         /// <summary>
         ///     Gets or Sets ContactEvent
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ContactEvent ContactEvent { get; private set; }
+        public ContactEvent? ContactEvent { get; private set; }
 
         /// <summary>
         ///     Gets or Sets ContactMessageEvent
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ContactMessageEvent ContactMessageEvent { get; private set; }
+        public ContactMessageEvent? ContactMessageEvent { get; private set; }
 
         /// <summary>
         /// Returns the string presentation of the object

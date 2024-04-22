@@ -53,7 +53,7 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ChoiceResponseMessage ChoiceResponseMessage { get; private set; }
+        public ChoiceResponseMessage? ChoiceResponseMessage { get; private set; }
 
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public FallbackMessage FallbackMessage { get; private set; }
+        public FallbackMessage? FallbackMessage { get; private set; }
 
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public LocationMessage LocationMessage { get; private set; }
+        public LocationMessage? LocationMessage { get; private set; }
 
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public MediaCarouselMessage MediaCardMessage { get; private set; }
+        public MediaCarouselMessage? MediaCardMessage { get; private set; }
 
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public MediaMessage MediaMessage { get; private set; }
+        public MediaMessage? MediaMessage { get; private set; }
 
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ReplyTo ReplyTo { get; private set; }
+        public ReplyTo? ReplyTo { get; private set; }
 
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public TextMessage TextMessage { get; private set; }
+        public TextMessage? TextMessage { get; private set; }
 
 
         /// <summary>

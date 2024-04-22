@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Sinch.Conversation.Apps.Credentials
 {
     /// <summary>
@@ -8,20 +10,16 @@ namespace Sinch.Conversation.Apps.Credentials
         /// <summary>
         ///     KakaoTalk Business Channel ID.
         /// </summary>
+        [JsonPropertyName("kakaotalk_plus_friend_id")]
 #if NET7_0_OR_GREATER
-        public required string KakaotalkPlusFriendId { get; set; }
+        public required string KakaoTalkPlusFriendId { get; set; }
 #else
-        public string KakaotalkPlusFriendId { get; set; }
+        public string KakaoTalkPlusFriendId { get; set; } = null!;
 #endif
-
 
         /// <summary>
-        ///     KakaoTalk Sender Key.
+        ///     InfoBank API KEY.
         /// </summary>
-#if NET7_0_OR_GREATER
-        public required string KakaotalkSenderKey { get; set; }
-#else
-        public string KakaotalkSenderKey { get; set; }
-#endif
+        public string? ApiKey { get; set; }
     }
 }

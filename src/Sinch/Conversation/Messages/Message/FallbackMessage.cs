@@ -10,13 +10,13 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Optional. The raw fallback message if provided by the channel.
         /// </summary>
-        public string RawMessage { get; set; }
+        public string? RawMessage { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets Reason
         /// </summary>
-        public Reason Reason { get; set; }
+        public Reason? Reason { get; set; }
 
 
         /// <summary>
@@ -42,19 +42,19 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Gets or Sets Code
         /// </summary>
-        public string Code { get; set; }
+        public string? Code { get; set; }
 
 
         /// <summary>
         ///     A textual description of the reason.
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets SubCode
         /// </summary>
-        public string SubCode { get; set; }
+        public string? SubCode { get; set; }
 
 
         /// <summary>

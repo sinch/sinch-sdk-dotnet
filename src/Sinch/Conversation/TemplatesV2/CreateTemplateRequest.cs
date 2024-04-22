@@ -12,7 +12,7 @@ namespace Sinch.Conversation.TemplatesV2
 #if NET7_0_OR_GREATER
         public required string DefaultTranslation { get; set; }
 #else
-        public string DefaultTranslation { get; set; }
+        public string DefaultTranslation { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -21,32 +21,32 @@ namespace Sinch.Conversation.TemplatesV2
 #if NET7_0_OR_GREATER
          public required List<TemplateTranslation> Translations { get; set; }
 #else
-        public List<TemplateTranslation> Translations { get; set; }
+        public List<TemplateTranslation> Translations { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     The description of the template.
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
 
         /// <summary>
         ///     The version of the template. While creating a template, this will be defaulted to 1. When updating a template, you must supply the latest version of the template in order for the update to be successful.
         /// </summary>
-        public int Version { get; set; }
+        public int? Version { get; set; }
 
 
         /// <summary>
         ///     Timestamp when the template was created.
         /// </summary>
-        public DateTime CreateTime { get; set; }
+        public DateTime? CreateTime { get; set; }
 
 
         /// <summary>
         ///     Timestamp when the template was updated.
         /// </summary>
-        public DateTime UpdateTime { get; set; }
+        public DateTime? UpdateTime { get; set; }
 
 
         /// <summary>

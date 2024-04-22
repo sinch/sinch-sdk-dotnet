@@ -13,14 +13,14 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     The ID of the screen displayed first. This must be an entry screen.
         /// </summary>
         [JsonPropertyName("screen")]
-        public string Screen { get; set; }
+        public string? Screen { get; set; }
 
 
         /// <summary>
         ///     Data for the first screen.
         /// </summary>
         [JsonPropertyName("data")]
-        public JsonObject Data { get; set; }
+        public JsonObject? Data { get; set; }
 
 
         /// <summary>
