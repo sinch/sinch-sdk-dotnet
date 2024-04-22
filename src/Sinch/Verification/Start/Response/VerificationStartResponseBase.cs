@@ -23,7 +23,7 @@ namespace Sinch.Verification.Start.Response
         /// <summary>
         ///     The value of the method used for the Verification.
         /// </summary>
-        public VerificationMethodEx? Method { get; set; }
+        public VerificationMethodEx Method { get; set; } = null!;
     }
 
     /// <summary>

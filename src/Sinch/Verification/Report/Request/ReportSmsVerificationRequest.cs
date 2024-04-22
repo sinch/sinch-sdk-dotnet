@@ -9,7 +9,7 @@ namespace Sinch.Verification.Report.Request
         /// <summary>
         ///     A configuration object containing settings specific to SMS verifications.
         /// </summary>
-        public SmsVerify? Sms { get; set; } 
+        public SmsVerify? Sms { get; set; }
     }
 
     public class SmsVerify
