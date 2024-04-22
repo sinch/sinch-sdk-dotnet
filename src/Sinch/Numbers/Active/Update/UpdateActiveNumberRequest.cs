@@ -5,7 +5,7 @@ namespace Sinch.Numbers.Active.Update
         /// <summary>
         ///     User supplied name for the phone number.
         /// </summary>
-        public string DisplayName { get; set; }
+        public string? DisplayName { get; set; }
 
         /// <summary>
         ///     The current SMS configuration for this number.<br /><br />
@@ -14,7 +14,7 @@ namespace Sinch.Numbers.Active.Update
         ///     processed successfully,
         ///     the servicePlanId sent will appear directly under the smsConfiguration object.
         /// </summary>
-        public SmsConfiguration SmsConfiguration { get; set; }
+        public SmsConfiguration? SmsConfiguration { get; set; }
 
         /// <summary>
         ///     The current voice configuration for this number.
@@ -23,6 +23,6 @@ namespace Sinch.Numbers.Active.Update
         ///     The status of scheduled provisioning will show under a scheduledVoiceProvisioning object if it's still running.
         ///     Once processed successfully, the appId sent will appear directly under the voiceConfiguration object.
         /// </summary>
-        public VoiceConfiguration VoiceConfiguration { get; set; }
+        public VoiceConfiguration? VoiceConfiguration { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace Sinch.Numbers
 #if NET7_0_OR_GREATER
         public required string ServicePlanId { get; set; }
 #else
-        public string ServicePlanId { get; set; }
+        public string ServicePlanId { get; set; } = null!;
 #endif
 
 
@@ -23,12 +23,12 @@ namespace Sinch.Numbers
         ///     <see href="https://community.sinch.com/t5/10DLC/What-is-10DLC/ta-p/7845">10DLC numbers</see>.
         ///     So, it is the current campaign ID for this number. The campaign_id is found on your TCR platform.
         /// </summary>
-        public string CampaignId { get; set; }
+        public string? CampaignId { get; set; }
 
         /// <summary>
         ///     This object is temporary and will appear while the scheduled provisioning for SMS is processing.
         ///     Once it has successfully processed, only the ID of the SMS configuration will display.
         /// </summary>
-        public ScheduledProvisioning ScheduledProvisioning { get; }
+        public ScheduledProvisioning? ScheduledProvisioning { get; set; }
     }
 }
