@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Sinch.Core
 {
@@ -35,7 +33,7 @@ namespace Sinch.Core
 
             if (enumMemberAttribute == null)
             {
-                return value.ToString();
+                return value.ToString() ?? throw new InvalidOperationException("value.ToString() is null");
             }
 
             return enumMemberAttribute.Value!;
@@ -98,7 +96,7 @@ namespace Sinch.Core
                 if (typeof(IEnumerable).IsAssignableFrom(propType) &&
                     propType != typeof(string))
                 {
-                    list.AddRange(ParamsFromObject(propName, propVal as IEnumerable));
+                    list.AddRange(ParamsFromObject(propName, (propVal as IEnumerable)!));
                 }
                 else
                 {
@@ -130,28 +128,15 @@ namespace Sinch.Core
 
             if (typeof(bool).IsAssignableFrom(type) || typeof(bool?).IsAssignableFrom(type))
             {
-                return o.ToString()?.ToLowerInvariant();
+                return o.ToString()?.ToLowerInvariant()!;
             }
 
             if (typeof(EnumRecord).IsAssignableFrom(type))
             {
-                return type.GetProperty("Value", typeof(string))?.GetValue(o) as string;
+                return (type.GetProperty("Value", typeof(string))?.GetValue(o) as string)!;
             }
 
-            return o.ToString();
-        }
-    }
-
-    internal class SinchEnumConverter<T> : JsonConverter<T> where T : Enum
-    {
-        public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        {
-            return Utils.ParseEnum<T>(reader.GetString());
-        }
-
-        public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
-        {
-            writer.WriteStringValue(Utils.GetEnumString(value));
+            return o.ToString()!;
         }
     }
 }
