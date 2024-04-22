@@ -14,13 +14,13 @@ namespace Sinch.SMS.Hooks
         ///     Max 140 bytes together with udh.
         /// </summary>
         [JsonPropertyName("body")]
-        public override string Body { get; set; }
+        public override string? Body { get; set; }
 
         /// <summary>
         ///     The UDH header of a binary message HEX encoded. <br/><br/>
         ///     Max 140 bytes together with body.
         /// </summary>
         [JsonPropertyName("udh")]
-        public string Udh { get; set; }
+        public string? Udh { get; set; }
     }
 }

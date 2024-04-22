@@ -9,7 +9,7 @@ namespace Sinch.SMS.Batches.Update
         /// <summary>
         ///     The message content
         /// </summary>
-        public string Body { get; set; }
+        public string? Body { get; set; }
 
         /// <summary>
         ///     Contains the parameters that will be used for customizing the message for each recipient.<br /><br />
@@ -18,6 +18,6 @@ namespace Sinch.SMS.Batches.Update
         ///         learn more about parameterization.
         ///     </see>
         /// </summary>
-        public Dictionary<string, Dictionary<string, string>> Parameters { get; set; }
+        public Dictionary<string, Dictionary<string, string>>? Parameters { get; set; }
     }
 }

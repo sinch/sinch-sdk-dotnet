@@ -15,7 +15,7 @@ namespace Sinch.SMS.Hooks
         ///     Gets or Sets Body
         /// </summary>
         [JsonPropertyName("body")]
-        public virtual string Body { get; set; }
+        public virtual string? Body { get; set; }
 
         /// <summary>
         ///     If this inbound message is in response to a previously sent message that contained a client reference,
@@ -25,7 +25,7 @@ namespace Sinch.SMS.Hooks
         ///     <see href="">https://dashboard.sinch.com/settings/account-details</see> to enable this feature.
         /// </summary>
         [JsonPropertyName("client_reference")]
-        public string ClientReference { get; set; }
+        public string? ClientReference { get; set; }
 
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Sinch.SMS.Hooks
 #if NET7_0_OR_GREATER
         public required string From { get; set; }
 #else
-        public string From { get; set; }
+        public string From { get; set; } = null!;
 #endif
 
 
@@ -50,7 +50,7 @@ namespace Sinch.SMS.Hooks
 #if NET7_0_OR_GREATER
         public required string Id { get; set; }
 #else
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
 #endif
 
 
@@ -60,7 +60,7 @@ namespace Sinch.SMS.Hooks
         /// <value>The MCC/MNC of the sender's operator if known.</value>
         /// <example>35000</example>
         [JsonPropertyName("operator_id")]
-        public string OperatorId { get; set; }
+        public string? OperatorId { get; set; }
 
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Sinch.SMS.Hooks
 #if NET7_0_OR_GREATER
         public required string To { get; set; }
 #else
-        public string To { get; set; }
+        public string To { get; set; } = null!;
 #endif
 
 
@@ -104,7 +104,7 @@ namespace Sinch.SMS.Hooks
 #if NET7_0_OR_GREATER
         public required Sinch.SMS.Inbounds.SmsType Type { get; set; }
 #else
-        public Sinch.SMS.Inbounds.SmsType Type { get; set; }
+        public Sinch.SMS.Inbounds.SmsType Type { get; set; } = null!;
 #endif
 
 

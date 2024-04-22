@@ -19,7 +19,12 @@ namespace Sinch.SMS.Batches.DryRun
         /// <summary>
         ///     The request to calculate based on.
         /// </summary>
-        public ISendBatchRequest BatchRequest { get; set; }
+#if NET7_0_OR_GREATER
+        public required ISendBatchRequest BatchRequest { get; set; }
+#else
+        public ISendBatchRequest BatchRequest { get; set; } = null!;
+#endif
+
 
         internal string GetQueryString()
         {
@@ -27,12 +32,13 @@ namespace Sinch.SMS.Batches.DryRun
 
             if (PerRecipient.HasValue)
             {
-                kvp.Add(new KeyValuePair<string, string>("per_recipient", PerRecipient.ToString().ToLowerInvariant()));
+                // to string should return value here and below
+                kvp.Add(new KeyValuePair<string, string>("per_recipient", PerRecipient.ToString()!.ToLowerInvariant()));
             }
 
             if (NumberOfRecipients.HasValue)
             {
-                kvp.Add(new KeyValuePair<string, string>("number_of_recipients", NumberOfRecipients.ToString()));
+                kvp.Add(new KeyValuePair<string, string>("number_of_recipients", NumberOfRecipients.ToString()!));
             }
 
             return StringUtils.ToQueryString(kvp);

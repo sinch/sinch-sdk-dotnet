@@ -44,10 +44,10 @@ namespace Sinch.SMS.Inbounds
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchSmsInbounds> _logger;
+        private readonly ILoggerAdapter<ISinchSmsInbounds>? _logger;
         private readonly string _projectOrServicePlanId;
 
-        internal Inbounds(string projectOrServicePlanId, Uri baseAddress, ILoggerAdapter<ISinchSmsInbounds> logger, IHttp http)
+        internal Inbounds(string projectOrServicePlanId, Uri baseAddress, ILoggerAdapter<ISinchSmsInbounds>? logger, IHttp http)
         {
             _projectOrServicePlanId = projectOrServicePlanId;
             _baseAddress = baseAddress;
@@ -71,10 +71,11 @@ namespace Sinch.SMS.Inbounds
                 var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/inbounds?{request.GetQueryString()}");
                 _logger?.LogDebug("Auto list {page}", request.Page);
                 var response = await _http.Send<ListInboundsResponse>(uri, HttpMethod.Get, cancellationToken);
-                foreach (var inbound in response.Inbounds)
-                {
-                    yield return inbound;
-                }
+                if (response.Inbounds != null)
+                    foreach (var inbound in response.Inbounds)
+                    {
+                        yield return inbound;
+                    }
 
                 isLastPage = Utils.IsLastPage(response.Page, response.PageSize, response.Count);
                 request.Page++;

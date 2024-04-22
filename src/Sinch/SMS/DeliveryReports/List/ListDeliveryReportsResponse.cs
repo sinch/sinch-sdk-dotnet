@@ -16,6 +16,6 @@ namespace Sinch.SMS.DeliveryReports.List
 
         public int PageSize { get; set; }
 
-        public IEnumerable<DeliveryReport> DeliveryReports { get; set; }
+        public IEnumerable<DeliveryReport>? DeliveryReports { get; set; }
     }
 }
