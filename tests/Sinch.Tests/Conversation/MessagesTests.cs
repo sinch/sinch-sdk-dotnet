@@ -43,30 +43,36 @@ namespace Sinch.Tests.Conversation
                     new ListSection()
                     {
                         Title = "sec1",
-                        Items = new List<ListItem>()
+                        Items = new List<IListItem>()
                         {
-                            new(new ListItemChoice()
+                            new ListItemChoiceWrapper
                             {
-                                Title = "title",
-                                Description = "desc",
-                                Media = new MediaMessage()
+                                Choice = new ListItemChoice()
                                 {
-                                    Url = new Uri("http://localhost")
-                                },
-                                PostbackData = "postback"
-                            })
+                                    Title = "title",
+                                    Description = "desc",
+                                    Media = new MediaMessage()
+                                    {
+                                        Url = new Uri("http://localhost")
+                                    },
+                                    PostbackData = "postback"
+                                }
+                            }
                         }
                     },
                     new ListSection()
                     {
                         Title = "sec2",
-                        Items = new List<ListItem>()
+                        Items = new List<IListItem>
                         {
-                            new(new ListItemProduct()
+                            new ListItemProductWrapper()
                             {
-                                Id = "id",
-                                Marketplace = "amazon"
-                            })
+                                Product = new ListItemProduct()
+                                {
+                                    Id = "id",
+                                    Marketplace = "amazon"
+                                }
+                            }
                         }
                     }
                 }

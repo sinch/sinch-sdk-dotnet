@@ -74,7 +74,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Gets or Sets Items
         /// </summary>
-        public List<ListItem> Items { get; set; }
+        public List<IListItem> Items { get; set; }
 
 
         /// <summary>
@@ -97,29 +97,14 @@ namespace Sinch.Conversation.Messages.Message
     {
     }
 
-    public class ListItem
+    public class ListItemChoiceWrapper : IListItem
     {
-        [Obsolete("Required for System.Text.Json", true)]
-        public ListItem()
-        {
-
-        }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ListItemChoice Choice { get; private set; }
-        public ListItem(ListItemChoice listItemChoice)
-        {
-            Choice = listItemChoice;
-        }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ListItemProduct Product { get; private set; }
-        public ListItem(ListItemProduct listItemProduct)
-        {
-            Product = listItemProduct;
-        }
+        public ListItemChoice Choice { get; set; }
+    }
+    
+    public class ListItemProductWrapper : IListItem
+    {
+        public ListItemProduct Product { get;  set; }
     }
 
     /// <summary>

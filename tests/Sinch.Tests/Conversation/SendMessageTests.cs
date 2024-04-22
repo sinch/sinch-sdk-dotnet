@@ -380,27 +380,33 @@ namespace Sinch.Tests.Conversation
                     new ListSection()
                     {
                         Title = "item1",
-                        Items = new List<ListItem>()
+                        Items = new List<IListItem>()
                         {
-                            new(new ListItemChoice()
+                            new ListItemChoiceWrapper
                             {
-                                Title = "listitemchoice",
-                                PostbackData = "postno",
-                                Description = "desc",
-                                Media = new MediaMessage()
+                                Choice = new ListItemChoice()
                                 {
-                                    Url = new Uri("https://nolocalhost"),
-                                    ThumbnailUrl = new Uri("https://knowyourmeme.com/photos/377946")
+                                    Title = "listitemchoice",
+                                    PostbackData = "postno",
+                                    Description = "desc",
+                                    Media = new MediaMessage()
+                                    {
+                                        Url = new Uri("https://nolocalhost"),
+                                        ThumbnailUrl = new Uri("https://knowyourmeme.com/photos/377946")
+                                    }
                                 }
-                            }),
-                            new(new ListItemProduct
+                            },
+                            new ListItemProductWrapper()
                             {
-                                Id = "prod_id",
-                                Marketplace = "amazon",
-                                Currency = "eur",
-                                Quantity = 20,
-                                ItemPrice = 12.1000004f,
-                            })
+                                Product = new ListItemProduct
+                                {
+                                    Id = "prod_id",
+                                    Marketplace = "amazon",
+                                    Currency = "eur",
+                                    Quantity = 20,
+                                    ItemPrice = 12.1000004f,
+                                }
+                            }
                         }
                     }
                 },
