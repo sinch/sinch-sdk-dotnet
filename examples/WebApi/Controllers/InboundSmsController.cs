@@ -29,7 +29,7 @@ public class InboundSmsController : ControllerBase
         var group = await _sinchClient.Sms.Groups.Create(new CreateGroupRequest() { Name = "Pirates of Sinch" });
         var fromNumber = incomingSms.From;
         var toNumber = incomingSms.To;
-        var autoReply = "";
+        string autoReply;
         var inboundMessage = incomingSms.Body;
 
         if (group.Id is null)

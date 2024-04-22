@@ -19,7 +19,7 @@ public class Numbers : ControllerBase
     [HttpGet(Name = "AvailableRegions")]
     public async Task<IEnumerable<Region>> Get()
     {
-        var regions = await _sinch.Numbers.Regions.List(new List<Types>() { });
+        var regions = await _sinch.Numbers.Regions.List(new List<Types>());
         return regions;
     }
 }
