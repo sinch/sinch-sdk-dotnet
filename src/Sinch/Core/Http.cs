@@ -30,7 +30,7 @@ namespace Sinch.Core
         /// <param name="cancellationToken"></param>
         /// <typeparam name="TResponse">The type of the response object.</typeparam>
         /// <returns></returns>
-        Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
+        Task<TResponse?> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Sinch.Core
         /// <typeparam name="TRequest">The type of the request object.</typeparam>
         /// <typeparam name="TResponse">The type of the response object.</typeparam>
         /// <returns></returns>
-        Task<TResponse> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest httpContent,
+        Task<TResponse?> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest httpContent,
             CancellationToken cancellationToken = default);
     }
 
@@ -52,12 +52,12 @@ namespace Sinch.Core
     {
         private readonly HttpClient _httpClient;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
-        private readonly ILoggerAdapter<Http> _logger;
+        private readonly ILoggerAdapter<IHttp>? _logger;
         private readonly ISinchAuth _auth;
         private readonly string _userAgentHeaderValue;
 
 
-        public Http(ISinchAuth auth, HttpClient httpClient, ILoggerAdapter<Http> logger,
+        public Http(ISinchAuth auth, HttpClient httpClient, ILoggerAdapter<IHttp>? logger,
             JsonNamingPolicy jsonNamingPolicy)
         {
             _logger = logger;
@@ -68,25 +68,25 @@ namespace Sinch.Core
                 PropertyNamingPolicy = jsonNamingPolicy,
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             };
-            var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo()!.Assembly!.FullName!).Version!.ToString();
+            var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo().Assembly.FullName!).Version!.ToString();
             _userAgentHeaderValue =
                 $"sinch-sdk/{sdkVersion} (csharp/{RuntimeInformation.FrameworkDescription};;)";
         }
 
-        public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
+        public Task<TResponse?> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default)
         {
             return Send<object, TResponse>(uri, httpMethod, null, cancellationToken);
         }
 
-        public async Task<TResponse> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest request,
+        public async Task<TResponse?> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest? request,
             CancellationToken cancellationToken = default)
         {
             var retry = true;
             while (true)
             {
                 _logger?.LogDebug("Sending request to {uri}", uri);
-                HttpContent httpContent =
+                HttpContent? httpContent =
                     request == null ? null : JsonContent.Create(request, options: _jsonSerializerOptions);
 
 #if DEBUG
@@ -108,10 +108,17 @@ namespace Sinch.Core
                     var now = DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture);
                     const string headerName = "x-timestamp";
                     msg.Headers.Add(headerName, now);
+
+                    var bytes = Array.Empty<byte>();
+                    if (msg.Content is not null)
+                    {
+                        bytes = await msg.Content.ReadAsByteArrayAsync(cancellationToken);
+                    }
+
                     token = appSignAuth.GetSignedAuth(
-                        msg.Content?.ReadAsByteArrayAsync(cancellationToken).GetAwaiter().GetResult(),
+                        bytes,
                         msg.Method.ToString().ToUpperInvariant(), msg.RequestUri.PathAndQuery,
-                        $"{headerName}:{now}", msg.Content?.Headers?.ContentType?.ToString());
+                        $"{headerName}:{now}", msg.Content?.Headers.ContentType?.ToString());
                     retry = false;
                 }
                 else
@@ -130,8 +137,8 @@ namespace Sinch.Core
                 {
                     // will not retry when no "expired" header for a token.
                     const string wwwAuthenticateHeader = "www-authenticate";
-                    if (_auth.Scheme == AuthSchemes.Bearer && true == result.Headers?.Contains(wwwAuthenticateHeader) &&
-                        false == result.Headers?.GetValues(wwwAuthenticateHeader)?.Contains("expired"))
+                    if (_auth.Scheme == AuthSchemes.Bearer && result.Headers.Contains(wwwAuthenticateHeader) &&
+                        !result.Headers.GetValues(wwwAuthenticateHeader).Contains("expired"))
                     {
                         _logger?.LogDebug("OAuth Unauthorized");
                     }
@@ -152,6 +159,7 @@ namespace Sinch.Core
 
                 _logger?.LogWarning("Response is not json, but {content}",
                     await result.Content.ReadAsStringAsync(cancellationToken));
+
                 return default;
             }
         }

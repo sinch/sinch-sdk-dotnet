@@ -9,11 +9,11 @@ namespace Sinch.Auth
     {
         private readonly string _appSecret;
         private readonly string _appKey;
-        private byte[] _jsonBodyInBytes;
-        private string _httpVerb;
-        private string _requestContentType;
-        private string _requestPath;
-        private string _timestamp;
+        private byte[]? _jsonBodyInBytes;
+        private string? _httpVerb;
+        private string? _requestContentType;
+        private string? _requestPath;
+        private string? _timestamp;
 
         public string Scheme { get; } = AuthSchemes.Application;
 
@@ -24,7 +24,7 @@ namespace Sinch.Auth
         }
 
         public string GetSignedAuth(byte[] jsonBodyBytes, string httpVerb,
-            string requestPath, string timestamp, string contentType)
+            string requestPath, string timestamp, string? contentType)
         {
             _jsonBodyInBytes = jsonBodyBytes;
             _httpVerb = httpVerb;
@@ -44,7 +44,7 @@ namespace Sinch.Auth
                 encodedBody = Convert.ToBase64String(md5Bytes);
             }
 
-            var toSign = new StringBuilder().AppendJoin('\n', _httpVerb.ToUpperInvariant(), encodedBody,
+            var toSign = new StringBuilder().AppendJoin('\n', _httpVerb?.ToUpperInvariant(), encodedBody,
                 _requestContentType,
                 _timestamp, _requestPath).ToString();
 

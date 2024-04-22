@@ -11,13 +11,13 @@ namespace Sinch
         /// <summary>
         ///     A logger factory used to create ILogger inside the SDK to enable logging
         /// </summary>
-        public ILoggerFactory LoggerFactory { get; set; }
+        public ILoggerFactory? LoggerFactory { get; set; }
 
         /// <summary>
         ///     A HttpClient to use. If not provided, HttpClient will be created and managed by <see cref="SinchClient"></see>
         ///     itself
         /// </summary>
-        public HttpClient HttpClient { get; set; }
+        public HttpClient? HttpClient { get; set; }
 
         /// <summary>
         ///     Set's the hosting region for the SMS service.
@@ -38,10 +38,10 @@ namespace Sinch
         public ConversationRegion ConversationRegion { get; set; } = ConversationRegion.Us;
 
         /// <inheritdoc cref="ApiUrlOverrides"/>
-        public ApiUrlOverrides ApiUrlOverrides { get; set; }
+        public ApiUrlOverrides? ApiUrlOverrides { get; set; }
 
 
-        internal ServicePlanIdOptions ServicePlanIdOptions { get; private set; }
+        internal ServicePlanIdOptions? ServicePlanIdOptions { get; private set; }
 
         /// <summary>
         ///     Use SMS API with `service plan id` and compatible region.
@@ -52,7 +52,7 @@ namespace Sinch
         /// <param name="hostingRegion">Region to use. Defaults to <see cref="SmsServicePlanIdHostingRegion.Us" /></param>
         /// <exception cref="ArgumentNullException">throws if service plan id or region is null or an empty string</exception>
         public void UseServicePlanIdWithSms(string servicePlanId,
-            string apiToken, SmsServicePlanIdHostingRegion hostingRegion = default)
+            string apiToken, SmsServicePlanIdHostingRegion? hostingRegion = default)
         {
             hostingRegion ??= SmsServicePlanIdHostingRegion.Us;
 
@@ -99,37 +99,37 @@ namespace Sinch
         /// <summary>
         ///     Overrides SMS api base url
         /// </summary>
-        public string SmsUrl { get; init; }
+        public string? SmsUrl { get; init; }
 
         /// <summary>
         ///     Overrides Conversation api base url
         /// </summary>
-        public string ConversationUrl { get; init; }
+        public string? ConversationUrl { get; init; }
 
         /// <summary>
         ///     Overrides Templates api base url.
         ///     Templates is treated as part of conversation api, but it has another base address.
         /// </summary>
-        public string TemplatesUrl { get; init; }
+        public string? TemplatesUrl { get; init; }
 
         /// <summary>
         ///     Overrides Voice api base url
         /// </summary>
-        public string VoiceUrl { get; init; }
+        public string? VoiceUrl { get; init; }
 
         /// <summary>
         ///     Overrides Verification api base url
         /// </summary>
-        public string VerificationUrl { get; init; }
+        public string? VerificationUrl { get; init; }
 
         /// <summary>
         ///     Overrides Auth api base url
         /// </summary>
-        public string AuthUrl { get; init; }
+        public string? AuthUrl { get; init; }
 
         /// <summary>
         ///     Overrides Numbers api base url
         /// </summary>
-        public string NumbersUrl { get; init; }
+        public string? NumbersUrl { get; init; }
     }
 }
