@@ -11,27 +11,27 @@ namespace Sinch.Verification.Report.Response
         /// <summary>
         ///     The unique ID of the verification request.
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         ///     The method of the verification request.
         /// </summary>
-        public VerificationMethod Method { get; set; }
+        public VerificationMethod? Method { get; set; }
 
         /// <summary>
         ///     The status of the verification request.
         /// </summary>
-        public VerificationStatus Status { get; set; }
+        public VerificationStatus? Status { get; set; }
 
         /// <summary>
         ///     Displays the reason why a verification has FAILED, was DENIED, or was ABORTED.
         /// </summary>
-        public Reason Reason { get; set; }
+        public Reason? Reason { get; set; }
 
         /// <summary>
         ///     The reference ID that was optionally passed together with the verification request.
         /// </summary>
-        public string Reference { get; set; }
+        public string? Reference { get; set; }
     }
 
     [JsonConverter(typeof(VerificationReportResponseConverter))]
@@ -39,9 +39,9 @@ namespace Sinch.Verification.Report.Response
     {
     }
 
-    public class VerificationReportResponseConverter : JsonConverter<IVerificationReportResponse>
+    public class VerificationReportResponseConverter : JsonConverter<IVerificationReportResponse?>
     {
-        public override IVerificationReportResponse Read(ref Utf8JsonReader reader, Type typeToConvert,
+        public override IVerificationReportResponse? Read(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)
         {
             var elem = JsonElement.ParseValue(ref reader);
@@ -49,28 +49,28 @@ namespace Sinch.Verification.Report.Response
             var method = descriptor.Value.GetString();
             if (method == VerificationMethod.Sms.Value)
             {
-                return (ReportSmsVerificationResponse)elem.Deserialize(
+                return (ReportSmsVerificationResponse?)elem.Deserialize(
                     typeof(ReportSmsVerificationResponse),
                     options);
             }
 
             if (method == VerificationMethod.Callout.Value)
             {
-                return (ReportCalloutVerificationResponse)elem.Deserialize(
+                return (ReportCalloutVerificationResponse?)elem.Deserialize(
                     typeof(ReportCalloutVerificationResponse),
                     options);
             }
 
             if (method == VerificationMethod.FlashCall.Value)
             {
-                return (ReportFlashCallVerificationResponse)elem.Deserialize(
+                return (ReportFlashCallVerificationResponse?)elem.Deserialize(
                     typeof(ReportFlashCallVerificationResponse), options);
             }
 
             throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
         }
 
-        public override void Write(Utf8JsonWriter writer, IVerificationReportResponse value,
+        public override void Write(Utf8JsonWriter writer, IVerificationReportResponse? value,
             JsonSerializerOptions options)
         {
             switch (value)

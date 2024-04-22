@@ -9,12 +9,12 @@ namespace Sinch.Verification.Report.Response
         ///     This property will appear in the body of the response with a delay.
         ///     It will become visible only when the verification status is other than PENDING
         /// </summary>
-        public PriceDetail VerificationPrice { get; set; }
+        public PriceDetail? VerificationPrice { get; set; }
     }
 
     public class Price : PriceBase
     {
-        public PriceDetail TerminationPrice { get; set; }
+        public PriceDetail? TerminationPrice { get; set; }
 
         /// <summary>
         ///     The time of the call for which the fee was charged. <br/><br/>

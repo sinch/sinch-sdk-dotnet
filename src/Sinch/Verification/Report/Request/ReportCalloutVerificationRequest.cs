@@ -12,7 +12,7 @@ namespace Sinch.Verification.Report.Request
 #if NET7_0_OR_GREATER
         public required Callout Callout { get; set; }
 #else
-        public Callout Callout { get; set; }
+        public Callout Callout { get; set; } = null!;
 #endif
     }
 
@@ -21,6 +21,6 @@ namespace Sinch.Verification.Report.Request
         /// <summary>
         ///     The code which was received by the user submitting the Phone Call verification.
         /// </summary>
-        public string Code { get; set; }
+        public string? Code { get; set; }
     }
 }
