@@ -101,10 +101,10 @@ namespace Sinch.Conversation.Messages.Message
     {
         public ListItemChoice Choice { get; set; }
     }
-    
+
     public class ListItemProductWrapper : IListItem
     {
-        public ListItemProduct Product { get;  set; }
+        public ListItemProduct Product { get; set; }
     }
 
     /// <summary>
