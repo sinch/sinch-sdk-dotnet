@@ -27,7 +27,7 @@ public class ReceiveConversationCallbackController : ControllerBase
         if (!_sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, json,
                 Secret))
         {
-            _logger?.LogError("Failed to authorize received callback.");
+            _logger.LogError("Failed to authorize received callback.");
             return Unauthorized();
         }
 

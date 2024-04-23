@@ -15,14 +15,14 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required string Title { get; set; }
 #else
-        public string Title { get; set; }
+        public string Title { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     This is an optional field, containing a description for the message.
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
 
         /// <summary>
@@ -31,14 +31,14 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required List<ListSection> Sections { get; set; }
 #else
-        public List<ListSection> Sections { get; set; }
+        public List<ListSection> Sections { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     Gets or Sets MessageProperties
         /// </summary>
-        public ListMessageMessageProperties MessageProperties { get; set; }
+        public ListMessageMessageProperties? MessageProperties { get; set; }
 
 
         /// <summary>
@@ -66,13 +66,13 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Optional parameter. Title for list section.
         /// </summary>
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets Items
         /// </summary>
-        public List<IListItem> Items { get; set; }
+        public List<IListItem>? Items { get; set; }
 
 
         /// <summary>
@@ -103,13 +103,13 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Required if sending a product list message. The ID of the catalog to which the products belong.
         /// </summary>
-        public string CatalogId { get; set; }
+        public string? CatalogId { get; set; }
 
 
         /// <summary>
         ///     Optional. Sets the text for the menu of a choice list message.
         /// </summary>
-        public string Menu { get; set; }
+        public string? Menu { get; set; }
 
 
         /// <summary>

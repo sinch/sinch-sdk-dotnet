@@ -41,7 +41,7 @@ namespace Sinch.Conversation.Messages
         /// <param name="messagesSource"><see cref="MessageSource"/></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ConversationMessage> Get(string messageId, MessageSource messagesSource = default,
+        Task<ConversationMessage> Get(string messageId, MessageSource? messagesSource = default,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Sinch.Conversation.Messages
         /// <param name="messagesSource"><see cref="MessageSource"/></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task Delete(string messageId, MessageSource messagesSource = default,
+        Task Delete(string messageId, MessageSource? messagesSource = default,
             CancellationToken cancellationToken = default);
     }
 
@@ -78,10 +78,10 @@ namespace Sinch.Conversation.Messages
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchConversationMessages> _logger;
+        private readonly ILoggerAdapter<ISinchConversationMessages>? _logger;
         private readonly string _projectId;
 
-        public Messages(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationMessages> logger,
+        public Messages(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationMessages>? logger,
             IHttp http)
         {
             _projectId = projectId;
@@ -102,7 +102,7 @@ namespace Sinch.Conversation.Messages
         //TODO: add simplified send text to app of recipient
 
         /// <inheritdoc/>  
-        public Task<ConversationMessage> Get(string messageId, MessageSource messagesSource = default,
+        public Task<ConversationMessage> Get(string messageId, MessageSource? messagesSource = default,
             CancellationToken cancellationToken = default)
         {
             var param = GetMessageSourceQueryParam(messagesSource);
@@ -123,7 +123,7 @@ namespace Sinch.Conversation.Messages
         }
 
         /// <inheritdoc/>  
-        public Task Delete(string messageId, MessageSource messagesSource = default,
+        public Task Delete(string messageId, MessageSource? messagesSource = default,
             CancellationToken cancellationToken = default)
         {
             var param = GetMessageSourceQueryParam(messagesSource);
@@ -133,7 +133,7 @@ namespace Sinch.Conversation.Messages
             return _http.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
         }
 
-        private static string GetMessageSourceQueryParam(MessageSource messagesSource)
+        private static string GetMessageSourceQueryParam(MessageSource? messagesSource)
         {
             var param = messagesSource is null
                 ? string.Empty

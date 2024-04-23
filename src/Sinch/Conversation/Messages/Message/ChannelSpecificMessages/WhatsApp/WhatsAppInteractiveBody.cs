@@ -15,7 +15,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
 #if NET7_0_OR_GREATER
         public required string Text { get; set; }
 #else
-        public string Text { get; set; }
+        public string Text { get; set; } = null!;
 #endif
 
 

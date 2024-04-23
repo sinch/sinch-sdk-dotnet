@@ -5,6 +5,6 @@ namespace Sinch.Conversation.Common
         /// <summary>
         ///     The ID of the contact.
         /// </summary>
-        public string ContactId { get; set; }
+        public string? ContactId { get; set; }
     }
 }

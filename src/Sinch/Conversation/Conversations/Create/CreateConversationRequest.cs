@@ -1,6 +1,5 @@
 using System.Text;
 using System.Text.Json.Nodes;
-using Sinch.Conversation.Messages;
 
 namespace Sinch.Conversation.Conversations.Create
 {
@@ -9,12 +8,12 @@ namespace Sinch.Conversation.Conversations.Create
         /// <summary>
         ///     Gets or Sets ActiveChannel
         /// </summary>
-        public ConversationChannel ActiveChannel { get; set; }
+        public ConversationChannel? ActiveChannel { get; set; }
 
         /// <summary>
         ///     Flag for whether this conversation is active.
         /// </summary>
-        public bool Active { get; set; }
+        public bool? Active { get; set; }
 
 
         /// <summary>
@@ -23,7 +22,7 @@ namespace Sinch.Conversation.Conversations.Create
 #if NET7_0_OR_GREATER
         public required string AppId { get; set; }
 #else
-        public string AppId { get; set; }
+        public string AppId { get; set; } = null!;
 #endif
 
 
@@ -33,21 +32,21 @@ namespace Sinch.Conversation.Conversations.Create
 #if NET7_0_OR_GREATER
         public required string ContactId { get; set; }
 #else
-        public string ContactId { get; set; }
+        public string ContactId { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     Arbitrary data set by the Conversation API clients. Up to 1024 characters long.
         /// </summary>
-        public string Metadata { get; set; }
+        public string? Metadata { get; set; }
 
 
         /// <summary>
         ///     Arbitrary data set by the Conversation API clients and/or provided in the &#x60;conversation_metadata&#x60; field
         ///     of a SendMessageRequest. A valid JSON object.
         /// </summary>
-        public JsonObject MetadataJson { get; set; }
+        public JsonObject? MetadataJson { get; set; }
 
 
         /// <summary>

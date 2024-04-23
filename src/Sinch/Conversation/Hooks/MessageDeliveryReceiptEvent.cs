@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets MessageDeliveryReport
         /// </summary>
         [JsonPropertyName("message_delivery_report")]
-        public MessageDeliveryReport MessageDeliveryReport { get; set; }
+        public MessageDeliveryReport? MessageDeliveryReport { get; set; }
 
 
         /// <summary>

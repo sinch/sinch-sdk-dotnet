@@ -200,8 +200,8 @@ namespace Sinch.Tests.Conversation
                     CallbackSecret = "sec",
                     KakaotalkCredentials = new KakaoTalkCredentials()
                     {
-                        KakaotalkSenderKey = "ole",
-                        KakaotalkPlusFriendId = "boke",
+                        KakaoTalkSenderKey = "ole",
+                        KakaoTalkPlusFriendId = "boke",
                     },
                     MmsCredentials = new MmsCredentials()
                     {
@@ -289,8 +289,8 @@ namespace Sinch.Tests.Conversation
                 },
                 KakaotalkCredentials = new KakaoTalkCredentials()
                 {
-                    KakaotalkSenderKey = "my_kakaotalk_key",
-                    KakaotalkPlusFriendId = "my_kakaotalk_id"
+                    KakaoTalkSenderKey = "my_kakaotalk_key",
+                    KakaoTalkPlusFriendId = "my_kakaotalk_id"
                 },
                 LineCredentials = new LineCredentials()
                 {

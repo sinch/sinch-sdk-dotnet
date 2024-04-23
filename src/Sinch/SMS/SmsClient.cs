@@ -64,7 +64,7 @@ namespace Sinch.SMS
         /// <param name="baseAddress"></param>
         /// <param name="loggerFactory"></param>
         /// <param name="http"></param>
-        internal SmsClient(ProjectId projectId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http) : this(
+        internal SmsClient(ProjectId projectId, Uri baseAddress, LoggerFactory? loggerFactory, IHttp http) : this(
             projectId.Value, baseAddress, loggerFactory, http)
         {
         }
@@ -76,7 +76,7 @@ namespace Sinch.SMS
         /// <param name="baseAddress"></param>
         /// <param name="loggerFactory"></param>
         /// <param name="http"></param>
-        internal SmsClient(ServicePlanId servicePlanId, Uri baseAddress, LoggerFactory loggerFactory,
+        internal SmsClient(ServicePlanId servicePlanId, Uri baseAddress, LoggerFactory? loggerFactory,
             IHttp http) : this(
             servicePlanId.Value, baseAddress, loggerFactory, http)
         {

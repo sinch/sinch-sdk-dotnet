@@ -10,7 +10,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Gets or Sets Direction
         /// </summary>
-        public ConversationDirection Direction { get; set; }
+        public ConversationDirection? Direction { get; set; }
 
         /// <summary>
         ///     The time Conversation API processed the message.
@@ -23,49 +23,49 @@ namespace Sinch.Conversation.Messages.Message
         ///     Gets or Sets AppMessage
         /// </summary>
 
-        public AppMessage AppMessage { get; set; }
+        public AppMessage? AppMessage { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets ChannelIdentity
         /// </summary>
-        public ChannelIdentity ChannelIdentity { get; set; }
+        public ChannelIdentity? ChannelIdentity { get; set; }
 
 
         /// <summary>
         ///     The ID of the contact.
         /// </summary>
-        public string ContactId { get; set; }
+        public string? ContactId { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets ContactMessage
         /// </summary>
-        public ContactMessage ContactMessage { get; set; }
+        public ContactMessage? ContactMessage { get; set; }
 
 
         /// <summary>
         ///     The ID of the conversation.
         /// </summary>
-        public string ConversationId { get; set; }
+        public string? ConversationId { get; set; }
 
 
         /// <summary>
         ///     The ID of the message.
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
 
         /// <summary>
         ///     Optional. Metadata associated with the contact. Up to 1024 characters long.
         /// </summary>
-        public string Metadata { get; set; }
+        public string? Metadata { get; set; }
 
 
         /// <summary>
         ///     Flag for whether this message was injected.
         /// </summary>
-        public bool Injected { get; }
+        public bool? Injected { get; set; }
 
 
         /// <summary>

@@ -11,7 +11,7 @@ namespace Sinch.Conversation.Apps
         /// <summary>
         ///     Gets or Sets RetentionType
         /// </summary>
-        public RetentionType RetentionType { get; set; }
+        public RetentionType? RetentionType { get; set; }
 
 
         /// <summary>

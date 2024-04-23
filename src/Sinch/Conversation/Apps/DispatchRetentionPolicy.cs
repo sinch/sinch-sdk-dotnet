@@ -14,7 +14,7 @@ namespace Sinch.Conversation.Apps
         /// <summary>
         /// Gets or Sets RetentionType
         /// </summary>
-        public DispatchRetentionPolicyType RetentionType { get; set; }
+        public DispatchRetentionPolicyType? RetentionType { get; set; }
 
         /// <summary>
         ///     Optional. The days before a message is eligible for deletion.
@@ -22,7 +22,7 @@ namespace Sinch.Conversation.Apps
         ///     messages aren&#39;t stored at all. Note the retention cleanup job runs once every twenty-four hours,
         ///     so messages are not deleted on the minute they become eligible for deletion.
         /// </summary>
-        public long TtlDays { get; set; }
+        public long? TtlDays { get; set; }
 
 
         /// <summary>

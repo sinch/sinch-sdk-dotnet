@@ -10,13 +10,17 @@ namespace Sinch.Conversation.TemplatesV2
         ///     The id of the template. Specify this yourself during creation. Otherwise, we will generate an ID for you. This must
         ///     be unique for a given project.
         /// </summary>
-        public string Id { get; set; }
+#if NET7_0_OR_GREATER
+public required string Id { get; set; }
+#else
+        public string Id { get; set; } = null!;
+#endif
 
 
         /// <summary>
         ///     The description of the template.
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
 
         /// <summary>
@@ -30,25 +34,25 @@ namespace Sinch.Conversation.TemplatesV2
         ///     The default translation to use if translation not specified. Specified as a BCP-47 &#x60;language_code&#x60; and
         ///     the &#x60;language_code&#x60; must exist in the translations list.
         /// </summary>
-        public string DefaultTranslation { get; set; }
+        public string? DefaultTranslation { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets Translations
         /// </summary>
-        public List<TemplateTranslation> Translations { get; set; }
+        public List<TemplateTranslation>? Translations { get; set; }
 
 
         /// <summary>
         ///     Timestamp when the template was created.
         /// </summary>
-        public DateTime CreateTime { get; set; }
+        public DateTime? CreateTime { get; set; }
 
 
         /// <summary>
         ///     Timestamp when the template was updated.
         /// </summary>
-        public DateTime UpdateTime { get; set; }
+        public DateTime? UpdateTime { get; set; }
 
 
         /// <summary>

@@ -5,6 +5,6 @@ namespace Sinch.Conversation.Contacts.GetChannelProfile
         /// <summary>
         ///     The profile name.
         /// </summary>
-        public string ProfileName { get; set; }
+        public string? ProfileName { get; set; }
     }
 }
