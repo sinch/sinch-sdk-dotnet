@@ -7,27 +7,27 @@ namespace Sinch.SMS.Inbounds
         /// <summary>
         ///     The ID of this inbound message.
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         ///     The object type.
         /// </summary>
-        public SmsType Type { get; set; }
+        public SmsType? Type { get; set; }
 
         /// <summary>
         ///     The phone number that sent the message.
         /// </summary>
-        public string From { get; set; }
+        public string? From { get; set; }
 
         /// <summary>
         ///     The Sinch phone number or short code to which the message was sent.
         /// </summary>
-        public string To { get; set; }
+        public string? To { get; set; }
 
         /// <summary>
         ///     The message body. Base64 encoded if type is mo_binary.
         /// </summary>
-        public string Body { get; set; }
+        public string? Body { get; set; }
 
         /// <summary>
         ///     If this inbound message is in response to a previously sent message that contained a client reference,
@@ -36,12 +36,12 @@ namespace Sinch.SMS.Inbounds
         ///     Contact your <see href="https://dashboard.sinch.com/settings/account-details">account manager</see>
         ///     to enable this feature.
         /// </summary>
-        public string ClientReference { get; set; }
+        public string? ClientReference { get; set; }
 
         /// <summary>
         ///     The MCC/MNC of the sender's operator if known.
         /// </summary>
-        public string OperatorId { get; set; }
+        public string? OperatorId { get; set; }
 
         /// <summary>
         ///     When the message left the originating device. Only available if provided by operator.

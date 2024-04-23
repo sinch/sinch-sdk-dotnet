@@ -5,7 +5,7 @@ namespace Sinch.SMS.Batches.Send
         /// <summary>
         ///       The UDH header of a binary message HEX encoded. Max 140 bytes including the <c>body</c>.  
         /// </summary>
-        public string Udh { get; set; }
+        public string? Udh { get; set; }
 
         /// <summary>
         ///     Shows message on screen without user interaction while not saving the message to the inbox.
@@ -39,7 +39,7 @@ namespace Sinch.SMS.Batches.Send
 #if NET7_0_OR_GREATER
         public required string Body { get; set; }
 #else
-        public string Body { get; set; }
+        public string Body { get; set; } = null!;
 #endif
         /// <summary>
         ///         SMS in binary format.

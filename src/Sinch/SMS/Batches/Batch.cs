@@ -16,12 +16,12 @@ namespace Sinch.SMS.Batches
         /// <summary>
         ///     Unique identifier for batch
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         ///     Indicates if the batch has been canceled or not.
         /// </summary>
-        public bool Canceled { get; set; }
+        public bool? Canceled { get; set; }
     }
 
     internal class BatchConverter : JsonConverter<IBatch>
@@ -33,17 +33,20 @@ namespace Sinch.SMS.Batches
             var type = descriptor.Value.GetString();
             if (type == SmsType.MtText.Value)
             {
-                return elem.Deserialize<TextBatch>(options);
+                return elem.Deserialize<TextBatch>(options) ??
+                       throw new InvalidOperationException($"{nameof(TextBatch)} deserialization result is null.");
             }
 
             if (type == SmsType.MtBinary.Value)
             {
-                return elem.Deserialize<BinaryBatch>(options);
+                return elem.Deserialize<BinaryBatch>(options) ??
+                       throw new InvalidOperationException($"{nameof(BinaryBatch)} deserialization result is null.");
             }
 
             if (type == SmsType.MtMedia.Value)
             {
-                return elem.Deserialize<MediaBatch>(options);
+                return elem.Deserialize<MediaBatch>(options) ??
+                       throw new InvalidOperationException($"{nameof(MediaBatch)} deserialization result is null.");
             }
 
             throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
@@ -74,12 +77,12 @@ namespace Sinch.SMS.Batches
         /// <summary>
         ///     Unique identifier for batch
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         ///     Indicates if the batch has been canceled or not.
         /// </summary>
-        public bool Canceled { get; set; }
+        public bool? Canceled { get; set; }
 
         /// <summary>
         ///     The message content
@@ -88,7 +91,7 @@ namespace Sinch.SMS.Batches
         public required string Body { get; set; }
 
 #else
-        public string Body { get; set; }
+        public string Body { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -98,7 +101,7 @@ namespace Sinch.SMS.Batches
         ///         learn more about parameterization.
         ///     </see>
         /// </summary>
-        public Dictionary<string, Dictionary<string, string>> Parameters { get; set; }
+        public Dictionary<string, Dictionary<string, string>>? Parameters { get; set; }
 
         /// <summary>
         ///     Regular SMS
@@ -137,17 +140,17 @@ namespace Sinch.SMS.Batches
         /// <summary>
         ///     Unique identifier for batch
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         ///     Indicates if the batch has been canceled or not.
         /// </summary>
-        public bool Canceled { get; set; }
+        public bool? Canceled { get; set; }
 
         /// <summary>
         ///       The UDH header of a binary message HEX encoded. Max 140 bytes including the <c>body</c>.  
         /// </summary>
-        public string Udh { get; set; }
+        public string? Udh { get; set; }
 
         /// <summary>
         ///     Shows message on screen without user interaction while not saving the message to the inbox.
@@ -181,7 +184,7 @@ namespace Sinch.SMS.Batches
 #if NET7_0_OR_GREATER
         public required string Body { get; set; }
 #else
-        public string Body { get; set; }
+        public string Body { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -195,12 +198,12 @@ namespace Sinch.SMS.Batches
         /// <summary>
         ///     Unique identifier for batch
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         ///     Indicates if the batch has been canceled or not.
         /// </summary>
-        public bool Canceled { get; set; }
+        public bool? Canceled { get; set; }
 
         /// <summary>
         ///     The message content, including a URL to the media file
@@ -208,7 +211,7 @@ namespace Sinch.SMS.Batches
 #if NET7_0_OR_GREATER
         public required MediaBody Body { get; set; }
 #else
-        public MediaBody Body { get; set; }
+        public MediaBody Body { get; set; } = null!;
 #endif
         /// <summary>
         ///     MMS
@@ -231,6 +234,6 @@ namespace Sinch.SMS.Batches
         ///         learn more about parameterization.
         ///     </see>
         /// </summary>
-        public Dictionary<string, Dictionary<string, string>> Parameters { get; set; }
+        public Dictionary<string, Dictionary<string, string>>? Parameters { get; set; }
     }
 }

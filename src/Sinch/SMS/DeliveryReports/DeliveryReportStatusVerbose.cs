@@ -15,7 +15,7 @@ namespace Sinch.SMS.DeliveryReports
         ///     The simplified status as described in <see cref="Sinch.SMS.DeliveryReports.DeliveryReportStatus" />
         /// </summary>
         [JsonPropertyName("status")]
-        public DeliveryReportStatus Status { get; set; }
+        public DeliveryReportStatus? Status { get; set; }
 
         /// <summary>
         ///     The number of messages that currently has this code. Will always be at least 1
@@ -27,6 +27,6 @@ namespace Sinch.SMS.DeliveryReports
         ///     Only for full report. A list of the phone number recipients which messages has this status code.
         /// </summary>
         [JsonPropertyName("recipients")]
-        public List<string> Recipients { get; set; }
+        public List<string>? Recipients { get; set; }
     }
 }

@@ -18,17 +18,17 @@ namespace Sinch.SMS.Batches.DryRun
         ///     The recipient, the number of message parts to this recipient,
         ///     the body of the message, and the encoding type of each message
         /// </summary>
-        public List<PerRecipient> PerRecipient { get; set; }
+        public List<PerRecipient>? PerRecipient { get; set; }
     }
 
     public class PerRecipient
     {
-        public string Recipient { get; set; }
+        public string? Recipient { get; set; }
 
-        public string MessagePart { get; set; }
+        public string? MessagePart { get; set; }
 
-        public string Body { get; set; }
+        public string? Body { get; set; }
 
-        public string Encoding { get; set; }
+        public string? Encoding { get; set; }
     }
 }
