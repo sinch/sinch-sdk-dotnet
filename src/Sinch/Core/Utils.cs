@@ -138,10 +138,5 @@ namespace Sinch.Core
 
             return o.ToString()!;
         }
-
-        public static void ThrowNullDeserialization(Type type)
-        {
-            throw new InvalidOperationException($"{type.Name} deserialization result is null");
-        }
     }
 }
