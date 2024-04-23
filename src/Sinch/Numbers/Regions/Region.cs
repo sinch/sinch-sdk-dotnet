@@ -10,7 +10,7 @@ namespace Sinch.Numbers.Regions
 #if NET7_0_OR_GREATER
         public required string RegionCode { get; set; }
 #else
-        public string RegionCode { get; set; }
+        public string RegionCode { get; set; } = null!;
 #endif
 
 
@@ -20,7 +20,7 @@ namespace Sinch.Numbers.Regions
 #if NET7_0_OR_GREATER
         public required string RegionName { get; set; }
 #else
-        public string RegionName { get; set; }
+        public string RegionName { get; set; } = null!;
 #endif
 
 
@@ -30,7 +30,7 @@ namespace Sinch.Numbers.Regions
 #if NET7_0_OR_GREATER
         public required List<Types> Types { get; set; }
 #else
-        public List<Types> Types { get; set; }
+        public List<Types> Types { get; set; } = null!;
 #endif
     }
 }
