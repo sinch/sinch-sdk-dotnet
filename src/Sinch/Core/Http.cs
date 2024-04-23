@@ -168,9 +168,11 @@ namespace Sinch.Core
                 if (typeof(TResponse) == typeof(EmptyResponse))
                 {
                     // if not empty content, check what is there for debug purposes.
+                    // C# EmptyContent class is internal, so checking it by the name
+                    // for more details, see: https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http/src/System/Net/Http/EmptyContent.cs
                     if (result.Content.GetType().Name != "EmptyContent")
                     {
-                        _logger?.LogDebug("Response is not json, but {content}",
+                        _logger?.LogDebug("Expected empty content, but got {content}",
                             await result.Content.ReadAsStringAsync(cancellationToken));
                     }
 
