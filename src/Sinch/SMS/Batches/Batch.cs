@@ -40,13 +40,13 @@ namespace Sinch.SMS.Batches
             if (type == SmsType.MtBinary.Value)
             {
                 return elem.Deserialize<BinaryBatch>(options) ??
-                       throw new InvalidOperationException($"{nameof(TextBatch)} deserialization result is null.");
+                       throw new InvalidOperationException($"{nameof(BinaryBatch)} deserialization result is null.");
             }
 
             if (type == SmsType.MtMedia.Value)
             {
                 return elem.Deserialize<MediaBatch>(options) ??
-                       throw new InvalidOperationException($"{nameof(TextBatch)} deserialization result is null.");
+                       throw new InvalidOperationException($"{nameof(MediaBatch)} deserialization result is null.");
             }
 
             throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");

@@ -109,7 +109,7 @@ namespace Sinch.SMS.Hooks
 #if NET7_0_OR_GREATER
         public required Sinch.SMS.Inbounds.SmsType Type { get; set; }
 #else
-        public Inbounds.SmsType Type { get; set; } = null!;
+        public Sinch.SMS.Inbounds.SmsType Type { get; set; } = null!;
 #endif
 
 
