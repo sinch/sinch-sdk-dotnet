@@ -14,14 +14,13 @@ namespace Sinch.Voice.Hooks
     ///     enabled, the amd object will also be present on ACE callbacks.
     ///     Note: ACE Callbacks are not issued for InApp Calls (destination: username), only PSTN and SIP calls.
     /// </summary>
-    public class AnsweredCallEvent
+    public class AnsweredCallEvent : IVoiceEvent
     {
         /// <summary>
         ///     Must have the value ace.
         /// </summary>
         [JsonPropertyName("event")]
-        [JsonInclude]
-        public string? Event { get; private set; }
+        public EventType? Event { get; set; }
 
 
         /// <summary>
@@ -64,5 +63,7 @@ namespace Sinch.Voice.Hooks
         /// </summary>
         [JsonPropertyName("amd")]
         public Amd? Amd { get; set; }
+
+        public EventType? EventType { get; }
     }
 }

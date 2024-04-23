@@ -18,22 +18,38 @@ namespace WebApiExamples.Controllers
         }
 
         [HttpPost]
-        [Route("ice-event")]
-        public IActionResult HandleEvent([FromBody] IncomingCallEvent incomingCallEvent)
+        [Route("event")]
+        public IActionResult HandleEvent([FromBody] IVoiceEvent incomingEvent)
         {
-            var response = new CallEventResponse()
+            switch (incomingEvent)
             {
-                Action = new Hangup(),
-                Instructions = new List<IInstruction>()
-                {
-                    new Say()
+                case AnsweredCallEvent answeredCallEvent:
+                    break;
+                case DisconnectedCallEvent disconnectedCallEvent:
+                    break;
+                case IncomingCallEvent incomingCallEvent:
+                    var response = new CallEventResponse()
                     {
-                        Text = "Thank you for calling Sinch! This call will now end.",
-                        Locale = "en-US"
-                    }
-                }
-            };
-            return Ok(response);
+                        Action = new Hangup(),
+                        Instructions = new List<IInstruction>()
+                        {
+                            new Say()
+                            {
+                                Text = "Thank you for calling Sinch! This call will now end.",
+                                Locale = "en-US"
+                            }
+                        }
+                    };
+                    return Ok(response);
+                case NotificationEvent notificationEvent:
+                    break;
+                case PromptInputEvent promptInputEvent:
+                    break;
+                default:
+                    return BadRequest();
+            }
+
+            return BadRequest();
         }
     }
 }
