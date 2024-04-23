@@ -18,6 +18,6 @@ namespace Sinch.Verification.Start.Request
         ///     if the verification request was triggered from your backend (no SDK client)
         ///     through an Application signed request.
         /// </summary>
-        public FlashCallOptions FlashCallOptions { get; set; }
+        public FlashCallOptions? FlashCallOptions { get; set; }
     }
 }

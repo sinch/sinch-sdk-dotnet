@@ -8,6 +8,6 @@ namespace Sinch.Verification.Hooks
         ///     Determines whether the verification can be executed.
         /// </summary>
         [JsonPropertyName("action")]
-        public Action Action { get; set; }
+        public Action? Action { get; set; }
     }
 }
