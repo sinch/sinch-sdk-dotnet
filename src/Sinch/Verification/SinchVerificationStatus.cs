@@ -45,11 +45,11 @@ namespace Sinch.Verification
 
     internal class SinchVerificationStatus : ISinchVerificationStatus
     {
-        private readonly ILoggerAdapter<SinchVerificationStatus> _logger;
+        private readonly ILoggerAdapter<SinchVerificationStatus>? _logger;
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
 
-        public SinchVerificationStatus(ILoggerAdapter<SinchVerificationStatus> logger, Uri baseAddress, IHttp http)
+        public SinchVerificationStatus(ILoggerAdapter<SinchVerificationStatus>? logger, Uri baseAddress, IHttp http)
         {
             _http = http;
             _baseAddress = baseAddress;

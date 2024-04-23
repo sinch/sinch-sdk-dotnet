@@ -53,7 +53,7 @@ namespace Sinch.Conversation
     internal class SinchConversationClient : ISinchConversation
     {
         internal SinchConversationClient(string projectId, Uri conversationBaseAddress, Uri templatesBaseAddress
-            , LoggerFactory loggerFactory, IHttp http)
+            , LoggerFactory? loggerFactory, IHttp http)
         {
             Messages = new Messages.Messages(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationMessages>(),

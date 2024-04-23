@@ -13,7 +13,7 @@ namespace Sinch.Verification.Report.Request
 #if NET7_0_OR_GREATER
         public required FlashCall FlashCall { get; set; }
 #else
-        public FlashCall FlashCall { get; set; }
+        public FlashCall FlashCall { get; set; } = null!;
 #endif
     }
 
@@ -26,7 +26,7 @@ namespace Sinch.Verification.Report.Request
 #if NET7_0_OR_GREATER
         public required string Cli { get; set; }
 #else
-        public string Cli { get; set; }
+        public string Cli { get; set; } = null!;
 #endif
     }
 }

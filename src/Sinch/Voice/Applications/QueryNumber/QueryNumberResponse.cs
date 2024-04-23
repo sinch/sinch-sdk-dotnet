@@ -7,13 +7,13 @@ namespace Sinch.Voice.Applications.QueryNumber
         /// <summary>
         ///     The type of method.
         /// </summary>
-        public string Method { get; set; }
+        public string? Method { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets NumberItem
         /// </summary>
-        public NumberItem NumberItem { get; set; }
+        public NumberItem? NumberItem { get; set; }
 
 
         /// <summary>

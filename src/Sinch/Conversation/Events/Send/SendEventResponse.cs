@@ -8,13 +8,13 @@ namespace Sinch.Conversation.Events.Send
         /// <summary>
         ///     Accepted timestamp.
         /// </summary>
-        public DateTime AcceptedTime { get; set; }
+        public DateTime? AcceptedTime { get; set; }
 
 
         /// <summary>
         ///     Event id.
         /// </summary>
-        public string EventId { get; set; }
+        public string? EventId { get; set; }
 
 
         /// <summary>

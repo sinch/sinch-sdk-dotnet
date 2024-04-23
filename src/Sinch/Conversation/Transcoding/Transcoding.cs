@@ -25,10 +25,10 @@ namespace Sinch.Conversation.Transcoding
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchConversationTranscoding> _logger;
+        private readonly ILoggerAdapter<ISinchConversationTranscoding>? _logger;
         private readonly string _projectId;
 
-        public Transcoding(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationTranscoding> logger,
+        public Transcoding(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationTranscoding>? logger,
             IHttp http)
         {
             _projectId = projectId;

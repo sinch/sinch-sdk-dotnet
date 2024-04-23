@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
-using Sinch.Conversation.Messages.Message.ChannelSpecificMessages;
 using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
 using Sinch.Core;
 
@@ -24,39 +23,39 @@ namespace Sinch.Conversation.Messages.Message
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public TextMessage TextMessage { get; private set; }
+        public TextMessage? TextMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public CardMessage CardMessage { get; private set; }
+        public CardMessage? CardMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public CarouselMessage CarouselMessage { get; private set; }
+        public CarouselMessage? CarouselMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ChoiceMessage ChoiceMessage { get; private set; }
+        public ChoiceMessage? ChoiceMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public LocationMessage LocationMessage { get; private set; }
+        public LocationMessage? LocationMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public MediaMessage MediaMessage { get; private set; }
+        public MediaMessage? MediaMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public TemplateMessage TemplateMessage { get; private set; }
+        public TemplateMessage? TemplateMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ListMessage ListMessage { get; private set; }
+        public ListMessage? ListMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ContactInfoMessage ContactInfoMessage { get; private set; }
+        public ContactInfoMessage? ContactInfoMessage { get; private set; }
 
         public AppMessage(ChoiceMessage choiceMessage)
         {
@@ -109,7 +108,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     Optional. Channel specific messages, overriding any transcoding.
         ///     The key in the map must point to a valid conversation channel as defined by the enum ConversationChannel.
         /// </summary>
-        public Dictionary<ConversationChannel, JsonValue> ExplicitChannelMessage { get; set; }
+        public Dictionary<ConversationChannel, JsonValue>? ExplicitChannelMessage { get; set; }
 
         /// <summary>
         ///     Channel specific messages, overriding any transcoding.
@@ -117,10 +116,10 @@ namespace Sinch.Conversation.Messages.Message
         ///     the explicit_channel_message property, and may be easier to use.
         ///     The key in the map must point to a valid conversation channel as defined in the enum ConversationChannel.
         /// </summary>
-        public Dictionary<ConversationChannel, IChannelSpecificMessage> ChannelSpecificMessage { get; set; }
+        public Dictionary<ConversationChannel, IChannelSpecificMessage>? ChannelSpecificMessage { get; set; }
 
         /// <inheritdoc cref="Agent" />        
-        public Agent Agent { get; set; }
+        public Agent? Agent { get; set; }
     }
 
     /// <summary>
@@ -147,7 +146,8 @@ namespace Sinch.Conversation.Messages.Message
             var method = descriptor.Value.GetString();
 
             if (MessageType.Flows.Value == method)
-                return elem.Deserialize<FlowMessage>(options);
+                return elem.Deserialize<FlowMessage>(options) ??
+                       throw new InvalidOperationException($"{nameof(FlowMessage)} deserialization result is null.");
 
             throw new JsonException(
                 $"Failed to match {nameof(IChannelSpecificMessage)}, got prop `{descriptor.Name}` with value `{method}`");
@@ -166,7 +166,7 @@ namespace Sinch.Conversation.Messages.Message
         public MessageType MessageType { get; private set; } = MessageType.Flows;
 
         [JsonPropertyName("message")]
-        public FlowChannelSpecificMessage Message { get; set; }
+        public FlowChannelSpecificMessage? Message { get; set; }
     }
 
     /// <summary>

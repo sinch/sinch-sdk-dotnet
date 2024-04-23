@@ -30,7 +30,7 @@ namespace Sinch.Core
         /// <param name="cancellationToken"></param>
         /// <typeparam name="TResponse">The type of the response object.</typeparam>
         /// <returns></returns>
-        Task<TResponse?> Send<TResponse>(Uri uri, HttpMethod httpMethod,
+        Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -43,8 +43,15 @@ namespace Sinch.Core
         /// <typeparam name="TRequest">The type of the request object.</typeparam>
         /// <typeparam name="TResponse">The type of the response object.</typeparam>
         /// <returns></returns>
-        Task<TResponse?> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest httpContent,
+        Task<TResponse> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest httpContent,
             CancellationToken cancellationToken = default);
+    }
+
+    /// <summary>
+    ///     Represents an empty response for cases where no json is expected.
+    /// </summary>
+    public class EmptyResponse
+    {
     }
 
     /// <inheritdoc /> 
@@ -73,13 +80,13 @@ namespace Sinch.Core
                 $"sinch-sdk/{sdkVersion} (csharp/{RuntimeInformation.FrameworkDescription};;)";
         }
 
-        public Task<TResponse?> Send<TResponse>(Uri uri, HttpMethod httpMethod,
+        public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default)
         {
             return Send<object, TResponse>(uri, httpMethod, null, cancellationToken);
         }
 
-        public async Task<TResponse?> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest? request,
+        public async Task<TResponse> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest? request,
             CancellationToken cancellationToken = default)
         {
             var retry = true;
@@ -154,13 +161,29 @@ namespace Sinch.Core
                 if (result.IsJson())
                     return await result.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken,
                                options: _jsonSerializerOptions)
-                           ?? throw new NullReferenceException(
-                               $"{nameof(TResponse)} is null");
+                           ?? throw new InvalidOperationException(
+                               $"{typeof(TResponse).Name} is null");
 
+                // if empty response is expected, any non related response is dropped
+                if (typeof(TResponse) == typeof(EmptyResponse))
+                {
+                    // if not empty content, check what is there for debug purposes.
+                    // C# EmptyContent class is internal, so checking it by the name
+                    // for more details, see: https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http/src/System/Net/Http/EmptyContent.cs
+                    if (result.Content.GetType().Name != "EmptyContent")
+                    {
+                        _logger?.LogDebug("Expected empty content, but got {content}",
+                            await result.Content.ReadAsStringAsync(cancellationToken));
+                    }
+
+                    return (TResponse)(object)new EmptyResponse();
+                }
+
+                // unexpected content, log warning and throw exception
                 _logger?.LogWarning("Response is not json, but {content}",
                     await result.Content.ReadAsStringAsync(cancellationToken));
 
-                return default;
+                throw new InvalidOperationException("The response is not Json or EmptyResponse");
             }
         }
     }

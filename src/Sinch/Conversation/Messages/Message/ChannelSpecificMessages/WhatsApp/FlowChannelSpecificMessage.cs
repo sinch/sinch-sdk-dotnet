@@ -48,21 +48,21 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     Gets or Sets Header
         /// </summary>
         [JsonPropertyName("header")]
-        public IFlowChannelSpecificMessageHeader Header { get; set; }
+        public IFlowChannelSpecificMessageHeader? Header { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets Body
         /// </summary>
         [JsonPropertyName("body")]
-        public WhatsAppInteractiveBody Body { get; set; }
+        public WhatsAppInteractiveBody? Body { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets Footer
         /// </summary>
         [JsonPropertyName("footer")]
-        public WhatsAppInteractiveFooter Footer { get; set; }
+        public WhatsAppInteractiveFooter? Footer { get; set; }
 
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
 #if NET7_0_OR_GREATER
         public required string FlowId { get; set; }
 #else
-        public string FlowId { get; set; }
+        public string FlowId { get; set; } = null!;
 #endif
 
 
@@ -80,7 +80,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     Generated token which is an identifier.
         /// </summary>
         [JsonPropertyName("flow_token")]
-        public string FlowToken { get; set; }
+        public string? FlowToken { get; set; }
 
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
 #if NET7_0_OR_GREATER
         public required string FlowCta { get; set; }
 #else
-        public string FlowCta { get; set; }
+        public string FlowCta { get; set; } = null!;
 #endif
 
 
@@ -98,7 +98,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     Gets or Sets FlowActionPayload
         /// </summary>
         [JsonPropertyName("flow_action_payload")]
-        public FlowChannelSpecificMessageFlowActionPayload FlowActionPayload { get; set; }
+        public FlowChannelSpecificMessageFlowActionPayload? FlowActionPayload { get; set; }
 
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
 #if NET7_0_OR_GREATER
         public required string Text { get; set; }
 #else
-        public string Text { get; set; }
+        public string Text { get; set; } = null!;
 #endif
 
 
@@ -179,7 +179,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
 #if NET7_0_OR_GREATER
         public required WhatsAppInteractiveHeaderMedia Image { get; set; }
 #else
-        public WhatsAppInteractiveHeaderMedia Image { get; set; }
+        public WhatsAppInteractiveHeaderMedia Image { get; set; } = null!;
 #endif
 
 
@@ -210,7 +210,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
 #if NET7_0_OR_GREATER
         public required string Link { get; set; }
 #else
-        public string Link { get; set; }
+        public string Link { get; set; } = null!;
 #endif
 
 
@@ -248,7 +248,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
 #if NET7_0_OR_GREATER
         public required WhatsAppInteractiveHeaderMedia Document { get; set; }
 #else
-        public WhatsAppInteractiveHeaderMedia Document { get; set; }
+        public WhatsAppInteractiveHeaderMedia Document { get; set; } = null!;
 #endif
 
 
@@ -287,7 +287,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
 #if NET7_0_OR_GREATER
         public required WhatsAppInteractiveHeaderMedia Video { get; set; }
 #else
-        public WhatsAppInteractiveHeaderMedia Video { get; set; }
+        public WhatsAppInteractiveHeaderMedia Video { get; set; } = null!;
 #endif
 
 

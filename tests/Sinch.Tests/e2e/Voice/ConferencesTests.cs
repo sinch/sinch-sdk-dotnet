@@ -40,7 +40,7 @@ namespace Sinch.Tests.e2e.Voice
                         Duration = 15,
                         Id = "call1",
                         Muted = false,
-                        Onhold = false
+                        OnHold = false
                     },
                     new Participant
                     {
@@ -48,7 +48,7 @@ namespace Sinch.Tests.e2e.Voice
                         Duration = 70,
                         Id = "call2",
                         Muted = true,
-                        Onhold = true
+                        OnHold = true
                     }
                 }
             });

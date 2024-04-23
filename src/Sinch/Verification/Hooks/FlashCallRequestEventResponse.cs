@@ -5,7 +5,7 @@ namespace Sinch.Verification.Hooks
     public class FlashCallRequestEventResponse : RequestEventResponseBase
     {
         [JsonPropertyName("flashCall")]
-        public FlashCall FlashCall { get; set; }
+        public FlashCall? FlashCall { get; set; }
     }
 
     public class FlashCall
@@ -17,7 +17,7 @@ namespace Sinch.Verification.Hooks
         ///     If you want to set your own CLI, you can specify it in the response to the Verification Request Event.
         /// </summary>
         [JsonPropertyName("cli")]
-        public string Cli { get; set; }
+        public string? Cli { get; set; }
 
         /// <summary>
         ///     The maximum time that a flashcall verification will be active and can be completed.
@@ -28,6 +28,6 @@ namespace Sinch.Verification.Hooks
         ///     you can specify it in the response to the Verification Request Event.
         /// </summary>
         [JsonPropertyName("dialTimeout")]
-        public int DialTimeout { get; set; }
+        public int? DialTimeout { get; set; }
     }
 }

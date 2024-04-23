@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Voice;
@@ -25,11 +26,11 @@ namespace Sinch.Tests.e2e.Voice
                 Domain = CallDomain.Pstn,
                 CallId = "123",
                 Duration = 60,
-                Status = CallStatus.ONGOING,
+                Status = CallStatus.Ongoing,
                 Result = CallResult.Busy,
                 Reason = CallResultReason.Cancel,
                 Timestamp = DateTime.Parse("2019-08-24T14:15:22Z").ToUniversalTime(),
-                Custom = new object(),
+                Custom = new JsonObject(),
                 UserRate = "39",
                 Debit = "138"
             });

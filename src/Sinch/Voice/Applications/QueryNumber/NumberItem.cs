@@ -10,30 +10,30 @@ namespace Sinch.Voice.Applications.QueryNumber
         /// <summary>
         ///     The type of the number.
         /// </summary>
-        public NumberType NumberType { get; set; }
+        public NumberType? NumberType { get; set; }
 
         /// <summary>
         ///     The ISO 3166-1 formatted country code.
         /// </summary>
-        public string CountryId { get; set; }
+        public string? CountryId { get; set; }
 
 
         /// <summary>
         ///     The number in E.164 format.
         /// </summary>
-        public string NormalizedNumber { get; set; }
+        public string? NormalizedNumber { get; set; }
 
 
         /// <summary>
         ///     Concerns whether the call is restricted or not.
         /// </summary>
-        public bool Restricted { get; set; }
+        public bool? Restricted { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets Rate
         /// </summary>
-        public Rate Rate { get; set; }
+        public Rate? Rate { get; set; }
 
 
         /// <summary>

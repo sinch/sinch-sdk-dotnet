@@ -18,7 +18,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     <see href="https://developers.sinch.com/docs/voice/api-reference/voice/voice-locales">here</see>.
         /// </summary>
         [JsonPropertyName("locale")]
-        public string Locale { get; set; }
+        public string? Locale { get; set; }
 
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     element, SSML commands using the &#x60;#ssml[]&#x60; element.
         /// </summary>
         [JsonPropertyName("introPromt")]
-        public string IntroPrompt { get; set; }
+        public string? IntroPrompt { get; set; }
 
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     &#x60; element.
         /// </summary>
         [JsonPropertyName("holdPrompt")]
-        public string HoldPrompt { get; set; }
+        public string? HoldPrompt { get; set; }
 
 
         /// <summary>

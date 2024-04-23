@@ -9,7 +9,7 @@ namespace Sinch.Verification.Report.Request
         /// <summary>
         ///     A configuration object containing settings specific to SMS verifications.
         /// </summary>
-        public SmsVerify Sms { get; set; }
+        public SmsVerify? Sms { get; set; }
     }
 
     public class SmsVerify
@@ -20,11 +20,11 @@ namespace Sinch.Verification.Report.Request
 #if NET7_0_OR_GREATER
         public required string Code { get; set; }
 #else
-        public string Code { get; set; }
+        public string Code { get; set; } = null!;
 #endif
         /// <summary>
         ///     The sender ID of the SMS.
         /// </summary>
-        public string Cli { get; set; }
+        public string? Cli { get; set; }
     }
 }

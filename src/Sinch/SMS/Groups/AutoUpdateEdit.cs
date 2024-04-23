@@ -6,17 +6,17 @@ namespace Sinch.SMS.Groups
         ///     Short code or long number addressed in
         ///     <see href="https://community.sinch.com/t5/Glossary/MO-Mobile-Originated/ta-p/7618">MO</see>.
         /// </summary>
-        public string To { get; set; }
+        public string? To { get; set; }
 
         /// <summary>
         ///     /// Keyword to be sent in MO to add to a group.
         /// </summary>
-        public AutoUpdateAdd Add { get; set; }
+        public AutoUpdateAdd? Add { get; set; }
 
         /// <summary>
         ///     Keyword to be sent in MO to remove from a group.
         /// </summary>
-        public AutoUpdateRemove Remove { get; set; }
+        public AutoUpdateRemove? Remove { get; set; }
     }
 
     public class AutoUpdateAdd
@@ -30,13 +30,13 @@ namespace Sinch.SMS.Groups
         ///     <br /><br />
         ///     Constraints: Must be one word.
         /// </summary>
-        public string FirstWord { get; set; }
+        public string? FirstWord { get; set; }
 
         /// <summary>
         ///     Opt-in keyword like "JOIN" if auto_update.to is shared short code.<br /><br />
         ///     Constraints: Must be one word.
         /// </summary>
-        public string SecondWord { get; set; }
+        public string? SecondWord { get; set; }
     }
 
     public class AutoUpdateRemove
@@ -47,12 +47,12 @@ namespace Sinch.SMS.Groups
         ///     <br /><br />
         ///     Constraints: Must be one word.
         /// </summary>
-        public string FirstWord { get; set; }
+        public string? FirstWord { get; set; }
 
         /// <summary>
         ///     Opt-out keyword like "LEAVE" if auto_update.to is shared short code.<br /><br />
         ///     Constraints: Must be one word.
         /// </summary>
-        public string SecondWord { get; set; }
+        public string? SecondWord { get; set; }
     }
 }

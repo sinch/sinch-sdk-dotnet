@@ -6,7 +6,6 @@ using Sinch.Conversation.Common;
 using Sinch.Conversation.Contacts.Create;
 using Sinch.Conversation.Contacts.GetChannelProfile;
 using Sinch.Conversation.Contacts.List;
-using Sinch.Conversation.Messages;
 using Xunit;
 using Contact = Sinch.Conversation.Contacts.Contact;
 

@@ -83,7 +83,7 @@ namespace Sinch.Conversation.Conversations
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<Conversation> Update(Conversation conversation,
-            MetadataUpdateStrategy metadataUpdateStrategy = null,
+            MetadataUpdateStrategy? metadataUpdateStrategy = null,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -108,11 +108,11 @@ namespace Sinch.Conversation.Conversations
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchConversationConversations> _logger;
+        private readonly ILoggerAdapter<ISinchConversationConversations>? _logger;
         private readonly string _projectId;
 
         public ConversationsClient(string projectId, Uri baseAddress,
-            ILoggerAdapter<ISinchConversationConversations> logger, IHttp http)
+            ILoggerAdapter<ISinchConversationConversations>? logger, IHttp http)
         {
             _projectId = projectId;
             _baseAddress = baseAddress;
@@ -153,7 +153,9 @@ namespace Sinch.Conversation.Conversations
                 var response =
                     await _http.Send<ListConversationsResponse>(uri, HttpMethod.Get, cancellationToken);
                 request.PageToken = response.NextPageToken;
-                foreach (var conversation in response.Conversations) yield return conversation;
+                if (response.Conversations == null) continue;
+                foreach (var conversation in response.Conversations)
+                    yield return conversation;
             } while (!string.IsNullOrEmpty(request.PageToken));
         }
 
@@ -198,7 +200,7 @@ namespace Sinch.Conversation.Conversations
 
         /// <inheritdoc />
         public Task<Conversation> Update(Conversation conversation,
-            MetadataUpdateStrategy metadataUpdateStrategy = null,
+            MetadataUpdateStrategy? metadataUpdateStrategy = null,
             CancellationToken cancellationToken = default)
         {
             if (conversation == null)
@@ -217,7 +219,7 @@ namespace Sinch.Conversation.Conversations
             if (metadataUpdateStrategy is not null)
                 queryString.Add("metadata_update_strategy", metadataUpdateStrategy.Value);
 
-            builder.Query = queryString?.ToString()!; // it's okay to pass null.
+            builder.Query = queryString.ToString()!; // it's okay to pass null.
 
             _logger?.LogDebug("Updating a {conversationId} of {project}", conversation.Id, _projectId);
             return _http.Send<Conversation, Conversation>(builder.Uri, HttpMethod.Patch, conversation,

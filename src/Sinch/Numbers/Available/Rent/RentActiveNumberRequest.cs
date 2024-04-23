@@ -8,7 +8,7 @@ namespace Sinch.Numbers.Available.Rent
         ///     The status of scheduled provisioning will show under a scheduledProvisioning object if it's still running. Once
         ///     processed successfully, the servicePlanId sent will appear directly under the smsConfiguration object.
         /// </summary>
-        public SmsConfiguration SmsConfiguration { get; set; }
+        public SmsConfiguration? SmsConfiguration { get; set; }
 
         /// <summary>
         ///     The current voice configuration for this number. During scheduled provisioning,
@@ -17,6 +17,6 @@ namespace Sinch.Numbers.Available.Rent
         ///     if it's still running. Once processed successfully,
         ///     the appId sent will appear directly under the voiceConfiguration object.
         /// </summary>
-        public VoiceConfiguration VoiceConfiguration { get; set; }
+        public VoiceConfiguration? VoiceConfiguration { get; set; }
     }
 }

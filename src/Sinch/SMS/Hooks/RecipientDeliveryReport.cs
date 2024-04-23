@@ -18,7 +18,7 @@ namespace Sinch.SMS.Hooks
         ///     The ID of the batch this delivery report belongs to
         /// </summary>
         [JsonPropertyName("batch_id")]
-        public string BatchId { get; set; }
+        public string? BatchId { get; set; }
 
         /// <summary>
         ///     The detailed status code.
@@ -30,38 +30,38 @@ namespace Sinch.SMS.Hooks
         ///     Phone number that was queried.
         /// </summary>
         [JsonPropertyName("recipient")]
-        public string Recipient { get; set; }
+        public string? Recipient { get; set; }
 
         /// <summary>
         ///     The simplified status as described in Delivery Report Statuses.
         /// </summary>
         [JsonPropertyName("status")]
-        public DeliveryReportStatus Status { get; set; }
+        public DeliveryReportStatus? Status { get; set; }
 
         /// <summary>
         ///     The recipient delivery report type.
         /// </summary>
         [JsonPropertyName("type")]
-        public RecipientDeliveryReportType Type { get; set; }
+        public RecipientDeliveryReportType? Type { get; set; }
 
         /// <summary>
         ///     The default originator used for the recipient this delivery report belongs to,
         ///     if default originator pool configured and no originator set when submitting batch.
         /// </summary>
         [JsonPropertyName("applied_originator")]
-        public string AppliedOriginator { get; set; }
+        public string? AppliedOriginator { get; set; }
 
         /// <summary>
         ///     The client identifier of the batch this delivery report belongs to, if set when submitting batch.
         /// </summary>
         [JsonPropertyName("client_reference")]
-        public string ClientReference { get; set; }
+        public string? ClientReference { get; set; }
 
         /// <summary>
         ///     Applied encoding for message. Present only if smart encoding is enabled.
         /// </summary>
         [JsonPropertyName("encoding")]
-        public Encoding Encoding { get; set; }
+        public Encoding? Encoding { get; set; }
 
         /// <summary>
         ///     The number of parts the message was split into.
@@ -75,7 +75,7 @@ namespace Sinch.SMS.Hooks
         ///     if enabled on the account by Sinch.
         /// </summary>
         [JsonPropertyName("operator")]
-        public string Operator { get; set; }
+        public string? Operator { get; set; }
 
         /// <summary>
         ///     A timestamp extracted from the Delivery Receipt from the originating SMSC.

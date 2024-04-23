@@ -14,14 +14,14 @@ namespace Sinch.Voice.Calls.Instructions
         ///     The name of the cookie you want to set.
         /// </summary>
         [JsonPropertyName("key")]
-        public string Key { get; set; }
+        public string? Key { get; set; }
 
 
         /// <summary>
         ///     The value of the cookie you want to set.
         /// </summary>
         [JsonPropertyName("value")]
-        public string Value { get; set; }
+        public string? Value { get; set; }
 
 
         /// <summary>

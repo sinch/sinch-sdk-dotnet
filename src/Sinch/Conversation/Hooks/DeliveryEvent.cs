@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Hooks.Models;
@@ -14,7 +13,7 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets EventDeliveryReport
         /// </summary>
         [JsonPropertyName("event_delivery_report")]
-        public EventDeliveryAllOfEventDeliveryReport EventDeliveryReport { get; set; }
+        public EventDeliveryAllOfEventDeliveryReport? EventDeliveryReport { get; set; }
 
 
         /// <summary>

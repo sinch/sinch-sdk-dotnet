@@ -10,6 +10,6 @@ namespace Sinch.SMS.Inbounds.List
 
         public int Count { get; set; }
 
-        public IEnumerable<Inbound> Inbounds { get; set; }
+        public IEnumerable<Inbound>? Inbounds { get; set; }
     }
 }

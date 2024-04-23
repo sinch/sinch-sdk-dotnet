@@ -1,4 +1,6 @@
-using System.Security.AccessControl;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
+using Sinch.Core;
 
 namespace Sinch.Voice.Callouts.Callout
 {
@@ -9,12 +11,12 @@ namespace Sinch.Voice.Callouts.Callout
         ///     to set your own CLI, you may use your verified number or your Dashboard virtual number,
         ///     it must be in E.164 format.
         /// </summary>
-        public string Cli { get; set; }
+        public string? Cli { get; set; }
 
         /// <summary>
         ///     The type of device and number or endpoint to call.
         /// </summary>
-        public Destination Destination { get; set; }
+        public Destination? Destination { get; set; }
 
         /// <summary>
         ///     When the destination picks up, this DTMF tones will be played to the callee.
@@ -23,12 +25,12 @@ namespace Sinch.Voice.Callouts.Callout
         ///     by a 0.5s pause and finally the DTMF tone for "#". This can be used if the callout destination for
         ///     instance require a conference PIN code or an extension to be entered.
         /// </summary>
-        public string Dtmf { get; set; }
+        public string? Dtmf { get; set; }
 
         /// <summary>
         ///     Can be used to input custom data.
         /// </summary>
-        public string Custom { get; set; }
+        public string? Custom { get; set; }
 
         /// <summary>
         ///     The maximum amount of time in seconds that the call will last.
@@ -42,15 +44,16 @@ namespace Sinch.Voice.Callouts.Callout
         ///     If inline ICE SVAML is passed, exclude cli and destination properties from the customCallout request body.
         ///     <example>"{\"action\":{\"name\":\"connectPstn\",\"number\":\"46000000001\",\"maxDuration\":90}}"</example>
         /// </summary>
-        // TODO: consider using JsonObject here???
-        public string Ice { get; set; }
+        [JsonConverter(typeof(JsonObjectAsStringJsonConverter))]
+        public JsonObject? Ice { get; set; }
 
         /// <summary>
         ///     You can use inline <see href="https://developers.sinch.com/docs/voice/api-reference/svaml/">SVAML</see>
         ///     to replace a callback URL when using custom callouts.
         ///     Ensure that the JSON object is escaped correctly.
         /// </summary>
-        public string Ace { get; set; }
+        [JsonConverter(typeof(JsonObjectAsStringJsonConverter))]
+        public JsonObject? Ace { get; set; }
 
         /// <summary>
         ///     <b>Note:</b> PIE callbacks are not available for DATA Calls; only PSTN and SIP calls. <br/><br/>
@@ -62,6 +65,6 @@ namespace Sinch.Voice.Callouts.Callout
         ///     This could result in further SVAML or some other application logic function.
         ///     <example>"https://your-application-server-host/application"</example>
         /// </summary>
-        public string Pie { get; set; }
+        public string? Pie { get; set; }
     }
 }

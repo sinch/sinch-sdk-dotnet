@@ -15,7 +15,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     At least one of &#x60;channel_template&#x60; or &#x60;omni_template&#x60; needs to be present.
         ///     The key in the map must point to a valid conversation channel as defined by the enum ConversationChannel.
         /// </summary>
-        public Dictionary<string, TemplateReference> ChannelTemplate { get; set; }
+        public Dictionary<string, TemplateReference>? ChannelTemplate { get; set; }
 
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     Template Store as AppMessage or it can reference external channel-specific template
         ///     such as WhatsApp Business Template.
         /// </summary>
-        public TemplateReference OmniTemplate { get; set; }
+        public TemplateReference? OmniTemplate { get; set; }
 
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required string TemplateId { get; set; }
 #else
-        public string TemplateId { get; set; }
+        public string TemplateId { get; set; } = null!;
 #endif
 
 
@@ -63,14 +63,14 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required string Version { get; set; }
 #else
-        public string Version { get; set; }
+        public string Version { get; set; } = null!;
 #endif
 
         /// <summary>
         ///     The BCP-47 language code, such as &#x60;en-US&#x60; or &#x60;sr-Latn&#x60;. For more information,
         ///     see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. English is the default language_code.
         /// </summary>
-        public string LanguageCode { get; set; }
+        public string? LanguageCode { get; set; }
 
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     Concrete values must be present for all defined parameters in the template.
         ///     Parameters can be different for different versions and/or languages of the template.
         /// </summary>
-        public Dictionary<string, string> Parameters { get; set; }
+        public Dictionary<string, string>? Parameters { get; set; }
 
 
         /// <summary>

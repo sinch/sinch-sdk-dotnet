@@ -25,16 +25,26 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
             var method = descriptor.Value.GetString();
 
             if (WhatsAppHeaderType.Text.Value == method)
-                return elem.Deserialize<WhatsAppInteractiveTextHeader>(options);
+                return elem.Deserialize<WhatsAppInteractiveTextHeader>(options) ??
+                       throw new InvalidOperationException(
+                           $"{nameof(WhatsAppInteractiveTextHeader)} deserialization result is null");
 
             if (WhatsAppHeaderType.Document.Value == method)
-                return elem.Deserialize<WhatsAppInteractiveDocumentHeader>(options);
+                return elem.Deserialize<WhatsAppInteractiveDocumentHeader>(options) ??
+                       throw new InvalidOperationException(
+                           $"{nameof(WhatsAppInteractiveDocumentHeader)} deserialization result is null");
+
 
             if (WhatsAppHeaderType.Video.Value == method)
-                return elem.Deserialize<WhatsAppInteractiveVideoHeader>(options);
+                return elem.Deserialize<WhatsAppInteractiveVideoHeader>(options) ??
+                       throw new InvalidOperationException(
+                           $"{nameof(WhatsAppInteractiveVideoHeader)} deserialization result is null");
+
 
             if (WhatsAppHeaderType.Image.Value == method)
-                return elem.Deserialize<WhatsAppInteractiveImageHeader>(options);
+                return elem.Deserialize<WhatsAppInteractiveImageHeader>(options) ??
+                       throw new InvalidOperationException(
+                           $"{nameof(WhatsAppInteractiveImageHeader)} deserialization result is null");
 
             throw new JsonException(
                 $"Failed to match verification method object, got prop `{descriptor.Name}` with value `{method}`");

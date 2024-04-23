@@ -11,7 +11,7 @@ namespace Sinch.Conversation.Apps.Credentials
 #if NET7_0_OR_GREATER
         public required string Token { get; set; }
 #else
-        public string Token { get; set; }
+        public string Token { get; set; } = null!;
 #endif
 
 
@@ -21,7 +21,7 @@ namespace Sinch.Conversation.Apps.Credentials
 #if NET7_0_OR_GREATER
         public required string Secret { get; set; }
 #else
-        public string Secret { get; set; }
+        public string Secret { get; set; } = null!;
 #endif
     }
 }

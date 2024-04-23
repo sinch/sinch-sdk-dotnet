@@ -27,35 +27,35 @@ namespace Sinch.Conversation.Hooks.Models
         ///     The ID of the app event.
         /// </summary>
         [JsonPropertyName("event_id")]
-        public string EventId { get; set; }
+        public string? EventId { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets ChannelIdentity
         /// </summary>
         [JsonPropertyName("channel_identity")]
-        public ChannelIdentity ChannelIdentity { get; set; }
+        public ChannelIdentity? ChannelIdentity { get; set; }
 
 
         /// <summary>
         ///     The ID of the contact. Will be empty if processing_mode is DISPATCH.
         /// </summary>
         [JsonPropertyName("contact_id")]
-        public string ContactId { get; set; }
+        public string? ContactId { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets Reason
         /// </summary>
         [JsonPropertyName("reason")]
-        public Reason Reason { get; set; }
+        public Reason? Reason { get; set; }
 
 
         /// <summary>
         ///     Metadata specified when sending the event if any.
         /// </summary>
         [JsonPropertyName("metadata")]
-        public string Metadata { get; set; }
+        public string? Metadata { get; set; }
 
 
         /// <summary>
