@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Hooks.Models;
@@ -14,7 +13,7 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets OptInNotification
         /// </summary>
         [JsonPropertyName("opt_in_notification")]
-        public OptInEventAllOfOptInNotification OptInNotification { get; set; }
+        public OptInEventAllOfOptInNotification? OptInNotification { get; set; }
 
 
         /// <summary>

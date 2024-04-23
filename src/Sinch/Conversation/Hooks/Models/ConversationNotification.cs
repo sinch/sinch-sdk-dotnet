@@ -12,7 +12,7 @@ namespace Sinch.Conversation.Hooks.Models
         ///     Gets or Sets Conversation
         /// </summary>
         [JsonPropertyName("conversation")]
-        public Conversations.Conversation Conversation { get; set; }
+        public Conversations.Conversation? Conversation { get; set; }
 
 
         /// <summary>

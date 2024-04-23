@@ -1,5 +1,4 @@
 using Sinch.Conversation.Common;
-using Sinch.Conversation.Messages;
 
 namespace Sinch.Conversation.Contacts.GetChannelProfile
 {
@@ -12,7 +11,7 @@ namespace Sinch.Conversation.Contacts.GetChannelProfile
 #if NET7_0_OR_GREATER
         public required IRecipient Recipient { get; set; }
 #else
-        public IRecipient Recipient { get; set; }
+        public IRecipient Recipient { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -21,7 +20,7 @@ namespace Sinch.Conversation.Contacts.GetChannelProfile
 #if NET7_0_OR_GREATER
         public required string AppId { get; set; }
 #else
-        public string AppId { get; set; }
+        public string AppId { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -30,7 +29,7 @@ namespace Sinch.Conversation.Contacts.GetChannelProfile
 #if NET7_0_OR_GREATER
         public required ChannelProfileConversationChannel Channel { get; set; }
 #else
-        public ChannelProfileConversationChannel Channel { get; set; }
+        public ChannelProfileConversationChannel Channel { get; set; } = null!;
 #endif
     }
 }

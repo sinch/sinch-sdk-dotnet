@@ -5,7 +5,7 @@ namespace Sinch.Verification.Start.Response
         /// <summary>
         ///     The response contains the cliFilter and interceptionTimeout properties.
         /// </summary>
-        public FlashCallDetails FlashCall { get; set; }
+        public FlashCallDetails? FlashCall { get; set; }
     }
 
     public class FlashCallDetails
@@ -16,7 +16,7 @@ namespace Sinch.Verification.Start.Response
 #if NET7_0_OR_GREATER
         public required string CliFilter { get; set; }
 #else
-        public string CliFilter { get; set; }
+        public string CliFilter { get; set; } = null!;
 #endif
 
         /// <summary>

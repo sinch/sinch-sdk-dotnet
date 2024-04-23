@@ -104,10 +104,11 @@ namespace Sinch.SMS.Groups
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchSmsGroups> _logger;
+        private readonly ILoggerAdapter<ISinchSmsGroups>? _logger;
         private readonly string _projectOrServicePlanId;
 
-        internal Groups(string projectOrServicePlanId, Uri baseAddress, ILoggerAdapter<ISinchSmsGroups> logger, IHttp http)
+        internal Groups(string projectOrServicePlanId, Uri baseAddress, ILoggerAdapter<ISinchSmsGroups>? logger,
+            IHttp http)
         {
             _projectOrServicePlanId = projectOrServicePlanId;
             _baseAddress = baseAddress;
@@ -157,7 +158,7 @@ namespace Sinch.SMS.Groups
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/groups");
             _logger?.LogDebug("Creating a group...");
-            return _http.Send<CreateGroupRequest, Group>(uri, HttpMethod.Post, request, cancellationToken)!;
+            return _http.Send<CreateGroupRequest, Group>(uri, HttpMethod.Post, request, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -174,9 +175,9 @@ namespace Sinch.SMS.Groups
                     AddFromGroup = request.AddFromGroup,
                     RemoveFromGroup = request.RemoveFromGroup,
                     AutoUpdate = request.AutoUpdate
-                }, cancellationToken)!;
+                }, cancellationToken);
 
-            return _http.Send<IGroupUpdateRequest, Group>(uri, HttpMethod.Post, request, cancellationToken)!;
+            return _http.Send<IGroupUpdateRequest, Group>(uri, HttpMethod.Post, request, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -189,7 +190,7 @@ namespace Sinch.SMS.Groups
                 Members = request.Members,
                 Name = request.Name
             };
-            return _http.Send<RequestInner, Group>(uri, HttpMethod.Put, requestInner, cancellationToken)!;
+            return _http.Send<RequestInner, Group>(uri, HttpMethod.Put, requestInner, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -197,7 +198,7 @@ namespace Sinch.SMS.Groups
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/groups/{groupId}");
             _logger?.LogDebug("Deleting a group with {id}...", groupId);
-            return _http.Send<object, Group>(uri, HttpMethod.Delete, null, cancellationToken);
+            return _http.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -205,7 +206,7 @@ namespace Sinch.SMS.Groups
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/groups/{groupId}/members");
             _logger?.LogDebug("Listing members of a group with {id}...", groupId);
-            return _http.Send<object, IEnumerable<string>>(uri, HttpMethod.Get, null, cancellationToken)!;
+            return _http.Send<IEnumerable<string>>(uri, HttpMethod.Get, cancellationToken);
         }
     }
 }

@@ -18,19 +18,19 @@ namespace Sinch.Conversation.Messages.Send
 #if NET7_0_OR_GREATER
         public required string AppId { get; set; }
 #else
-        public string AppId { get; set; }
+        public string AppId { get; set; } = null!;
 #endif
 
         /// <summary>
         ///     Select the priority type for the message
         /// </summary>
-        public MessageQueue Queue { get; set; }
+        public MessageQueue? Queue { get; set; }
 
 
         /// <summary>
         ///     Overwrites the default callback url for delivery receipts for this message The REST URL should be of the form: &#x60;http://host[:port]/path&#x60;
         /// </summary>
-        public Uri CallbackUrl { get; set; }
+        public Uri? CallbackUrl { get; set; }
 
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Sinch.Conversation.Messages.Send
         ///             </item>
         ///     </list>
         /// </summary>
-        public List<ConversationChannel> ChannelPriorityOrder { get; set; }
+        public List<ConversationChannel>? ChannelPriorityOrder { get; set; }
 
 
         /// <summary>
@@ -65,13 +65,13 @@ namespace Sinch.Conversation.Messages.Send
         ///     The key in the map must point to a valid channel property key as defined
         ///     by the enum ChannelPropertyKeys. The maximum allowed property value length is 1024 characters.
         /// </summary>
-        public Dictionary<string, string> ChannelProperties { get; set; }
+        public Dictionary<string, string>? ChannelProperties { get; set; }
 
 
 #if NET7_0_OR_GREATER
         public required AppMessage Message { get; set; }
 #else
-        public AppMessage Message { get; set; }
+        public AppMessage Message { get; set; } = null!;
 #endif
 
 
@@ -80,7 +80,7 @@ namespace Sinch.Conversation.Messages.Send
         ///     [Message Delivery Receipt](https://developers.sinch.com/docs/conversation/callbacks/#message-delivery-receipt).
         ///     Up to 1024 characters long.
         /// </summary>
-        public string MessageMetadata { get; set; }
+        public string? MessageMetadata { get; set; }
 
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace Sinch.Conversation.Messages.Send
         ///     Currently only returned in the &#x60;message_metadata&#x60;
         ///     field of an [Inbound Message](/docs/conversation/callbacks/#inbound-message) callback.
         /// </summary>
-        public JsonObject ConversationMetadata { get; set; }
+        public JsonObject? ConversationMetadata { get; set; }
 
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace Sinch.Conversation.Messages.Send
 #if NET7_0_OR_GREATER
         public required IRecipient Recipient { get; set; }
 #else
-        public IRecipient Recipient { get; set; }
+        public IRecipient Recipient { get; set; } = null!;
 #endif
 
 
@@ -122,19 +122,19 @@ namespace Sinch.Conversation.Messages.Send
         ///     Valid integer range is 3 to 315,576,000,000 (inclusive). Example values include &#x60;10s&#x60;
         ///     (10 seconds) and &#x60;86400s&#x60; (24 hours).
         /// </summary>
-        public string Ttl { get; set; }
+        public string? Ttl { get; set; }
 
 
         /// <summary>
         ///     Overrides the app&#39;s [Processing Mode](../../../../../conversation/processing-modes/). Default value is &#x60;DEFAULT&#x60;.
         /// </summary>
-        public ProcessingStrategy ProcessingStrategy { get; set; }
+        public ProcessingStrategy? ProcessingStrategy { get; set; }
 
 
         /// <summary>
         ///     An arbitrary identifier that will be propagated to callbacks related to this message, including MO replies. Only applicable to messages sent with the &#x60;CONVERSATION&#x60; processing mode. Up to 128 characters long.
         /// </summary>
-        public string CorrelationId { get; set; }
+        public string? CorrelationId { get; set; }
 
 
         /// <summary>

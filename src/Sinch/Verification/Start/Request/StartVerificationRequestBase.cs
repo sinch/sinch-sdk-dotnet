@@ -12,16 +12,16 @@ namespace Sinch.Verification.Start.Request
         ///     Specifies the type of endpoint that will be verified and the particular endpoint.
         ///     `number` is currently the only supported endpoint type.
         /// </summary>
-        public Identity Identity { get; set; }
+        public Identity? Identity { get; set; }
 
         /// <summary>
         ///     Used to pass your own reference in the request for tracking purposes.
         /// </summary>
-        public string Reference { get; set; }
+        public string? Reference { get; set; }
 
         /// <summary>
         ///     Can be used to pass custom data in the request.
         /// </summary>
-        public string Custom { get; set; }
+        public string? Custom { get; set; }
     }
 }

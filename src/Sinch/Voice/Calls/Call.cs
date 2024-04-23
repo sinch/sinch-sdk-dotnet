@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
@@ -10,23 +11,23 @@ namespace Sinch.Voice.Calls
         /// <summary>
         ///     Contains the caller information.
         /// </summary>
-        public string From { get; set; }
+        public string? From { get; set; }
 
         /// <summary>
         ///     Contains the callee information.
         /// </summary>
-        public string To { get; set; }
+        public string? To { get; set; }
 
         /// <summary>
         ///     Must be &#x60;pstn&#x60; for PSTN.
         /// </summary>
-        public CallDomain Domain { get; set; }
+        public CallDomain? Domain { get; set; }
 
 
         /// <summary>
         ///     The unique identifier of the call.
         /// </summary>
-        public string CallId { get; set; }
+        public string? CallId { get; set; }
 
         /// <summary>
         ///     The duration of the call in seconds.
@@ -36,19 +37,19 @@ namespace Sinch.Voice.Calls
         /// <summary>
         ///     The status of the call. Either &#x60;ONGOING&#x60; or &#x60;FINAL&#x60;
         /// </summary>
-        public CallStatus Status { get; set; }
+        public CallStatus? Status { get; set; }
 
 
         /// <summary>
         ///     Contains the result of a call.
         /// </summary>
-        public CallResult Result { get; set; }
+        public CallResult? Result { get; set; }
 
 
         /// <summary>
         ///     Contains the reason why a call ended.
         /// </summary>
-        public CallResultReason Reason { get; set; }
+        public CallResultReason? Reason { get; set; }
 
 
         /// <summary>
@@ -60,19 +61,19 @@ namespace Sinch.Voice.Calls
         /// <summary>
         ///     An object that can be used to pass custom information related to the call.
         /// </summary>
-        public object Custom { get; set; }
+        public JsonObject? Custom { get; set; }
 
 
         /// <summary>
         ///     The rate per minute that was charged for the call.
         /// </summary>
-        public string UserRate { get; set; }
+        public string? UserRate { get; set; }
 
 
         /// <summary>
         ///     The total amount charged for the call.
         /// </summary>
-        public string Debit { get; set; }
+        public string? Debit { get; set; }
 
 
         /// <summary>
@@ -107,8 +108,8 @@ namespace Sinch.Voice.Calls
     [JsonConverter(typeof(EnumRecordJsonConverter<CallStatus>))]
     public record CallStatus(string Value) : EnumRecord(Value)
     {
-        public static readonly CallStatus ONGOING = new("ONGOING");
-        public static readonly CallStatus FINAL = new("FINAL");
+        public static readonly CallStatus Ongoing = new("ONGOING");
+        public static readonly CallStatus Final = new("FINAL");
     }
 
     /// <summary>

@@ -17,7 +17,7 @@ namespace Sinch.Voice.Calls.Actions
 #if NET7_0_OR_GREATER
         public required ConnectSipDestination Destination { get; set; }
 #else
-        public ConnectSipDestination Destination { get; set; }
+        public ConnectSipDestination Destination { get; set; } = null!;
 #endif
 
 
@@ -34,14 +34,14 @@ namespace Sinch.Voice.Calls.Actions
         ///     shown as the CLI. To set your own CLI, you may use your verified number or your Dashboard virtual number.
         /// </summary>
         [JsonPropertyName("cli")]
-        public string Cli { get; set; }
+        public string? Cli { get; set; }
 
 
         /// <summary>
         ///     An optional parameter to specify the SIP transport protocol. If unspecified, UDP is used.
         /// </summary>
         [JsonPropertyName("transport")]
-        public Transport Transport { get; set; }
+        public Transport? Transport { get; set; }
 
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     to send with the call.
         /// </summary>
         [JsonPropertyName("callHeaders")]
-        public List<CallHeader> CallHeaders { get; set; }
+        public List<CallHeader>? CallHeaders { get; set; }
 
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     user will only hear silence while during the holding period .
         /// </summary>
         [JsonPropertyName("moh")]
-        public MohClass Moh { get; set; }
+        public MohClass? Moh { get; set; }
 
         public string Name { get; } = "connectSip";
 
@@ -125,7 +125,7 @@ namespace Sinch.Voice.Calls.Actions
 #if NET7_0_OR_GREATER
         public required string Endpoint { get; set; }
 #else
-        public string Endpoint { get; set; }
+        public string Endpoint { get; set; } = null!;
 #endif
 
 
@@ -136,7 +136,7 @@ namespace Sinch.Voice.Calls.Actions
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class SvamlActionConnectSipDestination {\n");
+            sb.Append("class ConnectSipDestination {\n");
             sb.Append("  Endpoint: ").Append(Endpoint).Append("\n");
             sb.Append("}\n");
             return sb.ToString();

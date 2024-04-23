@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets ContactMergeNotification
         /// </summary>
         [JsonPropertyName("contact_merge_notification")]
-        public ContactMergeNotification ContactMergeNotification { get; set; }
+        public ContactMergeNotification? ContactMergeNotification { get; set; }
 
 
         /// <summary>

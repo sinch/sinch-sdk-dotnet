@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Hooks.Models
         ///     The result of the Document Field Classification process
         /// </summary>
         [JsonPropertyName("result")]
-        public List<Dictionary<string, string>> Result { get; set; }
+        public List<Dictionary<string, string>>? Result { get; set; }
 
 
         /// <summary>

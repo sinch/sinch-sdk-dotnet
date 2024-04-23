@@ -12,7 +12,7 @@ namespace Sinch.Conversation.Messages.Send
         /// <summary>
         ///     The ID of the message.
         /// </summary>
-        public string MessageId { get; set; }
+        public string? MessageId { get; set; }
 
     }
 }

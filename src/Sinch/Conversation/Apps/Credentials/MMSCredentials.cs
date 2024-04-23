@@ -11,7 +11,7 @@ namespace Sinch.Conversation.Apps.Credentials
 #if NET7_0_OR_GREATER
         public required string AccountId { get; set; }
 #else
-        public string AccountId { get; set; }
+        public string AccountId { get; set; } = null!;
 #endif
 
 
@@ -21,13 +21,13 @@ namespace Sinch.Conversation.Apps.Credentials
 #if NET7_0_OR_GREATER
         public required string ApiKey { get; set; }
 #else
-        public string ApiKey { get; set; }
+        public string ApiKey { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     Gets or Sets BasicAuth
         /// </summary>
-        public BasicAuthCredential BasicAuth { get; set; }
+        public BasicAuthCredential BasicAuth { get; set; } = null!;
     }
 }

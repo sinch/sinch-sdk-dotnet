@@ -58,10 +58,10 @@ namespace Sinch.SMS.DeliveryReports
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchSmsDeliveryReports> _logger;
+        private readonly ILoggerAdapter<ISinchSmsDeliveryReports>? _logger;
         private readonly string _projectOrServicePlanId;
 
-        internal DeliveryReports(string projectOrServicePlanId, Uri baseAddress, ILoggerAdapter<ISinchSmsDeliveryReports> logger, IHttp http)
+        internal DeliveryReports(string projectOrServicePlanId, Uri baseAddress, ILoggerAdapter<ISinchSmsDeliveryReports>? logger, IHttp http)
         {
             _projectOrServicePlanId = projectOrServicePlanId;
             _baseAddress = baseAddress;
@@ -76,7 +76,7 @@ namespace Sinch.SMS.DeliveryReports
                 $"xms/v1/{_projectOrServicePlanId}/batches/{request.BatchId}/delivery_report?{request.GetQueryString()}");
             _logger?.LogDebug("Fetching delivery report for a batch with {id}", request.BatchId);
 
-            return _http.Send<GetDeliveryReportRequest, GetDeliveryReportResponse>(uri, HttpMethod.Get, null, cancellationToken)!;
+            return _http.Send<GetDeliveryReportResponse>(uri, HttpMethod.Get, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -88,7 +88,7 @@ namespace Sinch.SMS.DeliveryReports
 
             _logger?.LogDebug("Fetching delivery report for a {number} of a {batchId}", recipientMsisdn, batchId);
 
-            return _http.Send<object, DeliveryReport>(uri, HttpMethod.Get, null, cancellationToken)!;
+            return _http.Send<DeliveryReport>(uri, HttpMethod.Get, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -99,7 +99,7 @@ namespace Sinch.SMS.DeliveryReports
 
             _logger?.LogDebug("Listing delivery reports for {projectOrServicePlanId}", _projectOrServicePlanId);
 
-            return _http.Send<object, ListDeliveryReportsResponse>(uri, HttpMethod.Get, null, cancellationToken);
+            return _http.Send<ListDeliveryReportsResponse>(uri, HttpMethod.Get, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -115,10 +115,11 @@ namespace Sinch.SMS.DeliveryReports
 
 
                 var response = await _http.Send<ListDeliveryReportsResponse>(uri, HttpMethod.Get, cancellationToken);
-                foreach (var report in response.DeliveryReports)
-                {
-                    yield return report;
-                }
+                if (response.DeliveryReports != null)
+                    foreach (var report in response.DeliveryReports)
+                    {
+                        yield return report;
+                    }
 
                 isLastPage = Utils.IsLastPage(response.Page, response.PageSize, response.Count);
                 request.Page++;

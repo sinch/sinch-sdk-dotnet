@@ -23,7 +23,7 @@ namespace Sinch.SMS.Inbounds.List
         ///     <see href="https://community.sinch.com/t5/Glossary/E-164/ta-p/7537">E.164</see>
         ///     or short codes can be comma separated.
         /// </summary>
-        public IList<string> To { get; set; }
+        public IList<string>? To { get; set; }
 
         /// <summary>
         ///     Only list messages received at or after this date/time.
@@ -41,7 +41,7 @@ namespace Sinch.SMS.Inbounds.List
         ///     to enable this feature.<br /><br />
         ///     Only list inbound messages that are in response to messages with a previously provided client reference.
         /// </summary>
-        public string ClientReference { get; set; }
+        public string? ClientReference { get; set; }
 
         internal string GetQueryString()
         {

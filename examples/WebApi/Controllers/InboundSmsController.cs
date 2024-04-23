@@ -1,7 +1,6 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Sinch;
-using Sinch.SMS.Batches;
 using Sinch.SMS.Batches.Send;
 using Sinch.SMS.Groups.Create;
 using Sinch.SMS.Groups.Update;
@@ -30,8 +29,14 @@ public class InboundSmsController : ControllerBase
         var group = await _sinchClient.Sms.Groups.Create(new CreateGroupRequest() { Name = "Pirates of Sinch" });
         var fromNumber = incomingSms.From;
         var toNumber = incomingSms.To;
-        var autoReply = "";
+        string autoReply;
         var inboundMessage = incomingSms.Body;
+
+        if (group.Id is null)
+        {
+            _logger.LogError("GroupId is null.");
+            return;
+        }
 
         var groupNumbers = await _sinchClient.Sms.Groups.ListMembers(group.Id);
         switch (groupNumbers.Contains(fromNumber), inboundMessage)

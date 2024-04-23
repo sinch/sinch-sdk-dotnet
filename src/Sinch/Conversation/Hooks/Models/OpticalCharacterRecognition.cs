@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Hooks.Models
         ///     The result of the OCR process.
         /// </summary>
         [JsonPropertyName("result")]
-        public List<OpticalCharacterRecognitionData> Result { get; set; }
+        public List<OpticalCharacterRecognitionData>? Result { get; set; }
 
 
         /// <summary>

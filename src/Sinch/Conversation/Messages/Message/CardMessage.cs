@@ -12,30 +12,30 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         /// Gets or Sets Height
         /// </summary>
-        public CardHeight Height { get; set; }
+        public CardHeight? Height { get; set; }
 
         /// <summary>
         ///     You may include choices in your Card Message. The number of choices is limited to 10.
         /// </summary>
-        public List<Choice> Choices { get; set; }
+        public List<Choice>? Choices { get; set; }
 
 
         /// <summary>
         ///     This is an optional description field that is displayed below the title on the card.
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets MediaMessage
         /// </summary>
-        public MediaCarouselMessage MediaMessage { get; set; }
+        public MediaCarouselMessage? MediaMessage { get; set; }
 
 
         /// <summary>
         ///     The title of the card message.
         /// </summary>
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
 
         /// <summary>
@@ -58,6 +58,6 @@ namespace Sinch.Conversation.Messages.Message
 
     public class MediaCarouselMessage
     {
-        public Uri Url { get; set; }
+        public Uri? Url { get; set; }
     }
 }

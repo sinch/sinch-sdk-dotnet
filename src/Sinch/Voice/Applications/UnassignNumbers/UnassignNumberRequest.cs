@@ -10,12 +10,12 @@ namespace Sinch.Voice.Applications.UnassignNumbers
         ///     (optional) indicates the DID capability that was assigned to the chosen application. Please note that the DID needs
         ///     to support the selected capability.
         /// </summary>
-        public Capability Capability { get; set; }
+        public Capability? Capability { get; set; }
 
         /// <summary>
         ///     The phone number in E.164 format (https://en.wikipedia.org/wiki/E.164)
         /// </summary>
-        public string Number { get; set; }
+        public string? Number { get; set; }
 
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Sinch.Voice.Applications.UnassignNumbers
         ///     request will be used.
         /// </summary>
         [JsonPropertyName("applicationkey")]
-        public string ApplicationKey { get; set; }
+        public string? ApplicationKey { get; set; }
 
 
         /// <summary>

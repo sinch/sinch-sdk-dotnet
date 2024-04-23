@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required string MessageId { get; set; }
 #else
-        public string MessageId { get; set; }
+        public string MessageId { get; set; } = null!;
 #endif
 
 
@@ -23,7 +23,7 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required string PostbackData { get; set; }
 #else
-        public string PostbackData { get; set; }
+        public string PostbackData { get; set; } = null!;
 #endif
 
 

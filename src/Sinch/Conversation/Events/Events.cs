@@ -37,7 +37,7 @@ namespace Sinch.Conversation.Events
         /// <param name="eventId"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ConversationEvent> Delete(string eventId, CancellationToken cancellationToken = default);
+        Task Delete(string eventId, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     List all events in a project
@@ -61,10 +61,10 @@ namespace Sinch.Conversation.Events
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchConversationEvents> _logger;
+        private readonly ILoggerAdapter<ISinchConversationEvents>? _logger;
         private readonly string _projectId;
 
-        public Events(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationEvents> logger, IHttp http)
+        public Events(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationEvents>? logger, IHttp http)
         {
             _projectId = projectId;
             _baseAddress = baseAddress;
@@ -96,7 +96,7 @@ namespace Sinch.Conversation.Events
         }
 
         /// <inheritdoc />
-        public Task<ConversationEvent> Delete(string eventId, CancellationToken cancellationToken = default)
+        public Task Delete(string eventId, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(eventId))
             {
@@ -105,7 +105,7 @@ namespace Sinch.Conversation.Events
 
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/events/{eventId}");
             _logger?.LogDebug("Deleting an event with {id}", eventId);
-            return _http.Send<ConversationEvent>(uri, HttpMethod.Delete,
+            return _http.Send<EmptyResponse>(uri, HttpMethod.Delete,
                 cancellationToken);
         }
 
@@ -129,7 +129,9 @@ namespace Sinch.Conversation.Events
                 var response =
                     await _http.Send<ListEventsResponse>(uri, HttpMethod.Get, cancellationToken);
                 request.PageToken = response.NextPageToken;
-                foreach (var conversationEvent in response.Events) yield return conversationEvent;
+                if (response.Events == null) continue;
+                foreach (var conversationEvent in response.Events)
+                    yield return conversationEvent;
             } while (!string.IsNullOrEmpty(request.PageToken));
         }
     }

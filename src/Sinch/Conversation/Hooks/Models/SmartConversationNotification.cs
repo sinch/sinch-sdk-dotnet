@@ -18,35 +18,35 @@ namespace Sinch.Conversation.Hooks.Models
         ///     The unique ID of the contact that sent the message.
         /// </summary>
         [JsonPropertyName("contact_id")]
-        public string ContactId { get; set; }
+        public string? ContactId { get; set; }
 
 
         /// <summary>
         ///     The channel-specific identifier for the contact.
         /// </summary>
         [JsonPropertyName("channel_identity")]
-        public string ChannelIdentity { get; set; }
+        public string? ChannelIdentity { get; set; }
 
 
         /// <summary>
         ///     The unique ID of the corresponding message.
         /// </summary>
         [JsonPropertyName("message_id")]
-        public string MessageId { get; set; }
+        public string? MessageId { get; set; }
 
 
         /// <summary>
         ///     The ID of the conversation the app message is part of.
         /// </summary>
         [JsonPropertyName("conversation_id")]
-        public string ConversationId { get; set; }
+        public string? ConversationId { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets AnalysisResults
         /// </summary>
         [JsonPropertyName("analysis_results")]
-        public AnalysisResult AnalysisResults { get; set; }
+        public AnalysisResult? AnalysisResults { get; set; }
 
 
         /// <summary>

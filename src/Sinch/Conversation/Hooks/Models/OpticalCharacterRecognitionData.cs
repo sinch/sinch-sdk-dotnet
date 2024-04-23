@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Hooks.Models
         ///     The data array contains the string(s) identified in one section of an analyzed image.
         /// </summary>
         [JsonPropertyName("data")]
-        public List<string> Data { get; set; }
+        public List<string>? Data { get; set; }
 
 
         /// <summary>

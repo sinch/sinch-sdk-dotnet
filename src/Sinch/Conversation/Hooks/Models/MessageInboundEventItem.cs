@@ -28,63 +28,63 @@ namespace Sinch.Conversation.Hooks.Models
         ///     The message ID.
         /// </summary>
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets ContactMessage
         /// </summary>
         [JsonPropertyName("contact_message")]
-        public ContactMessage ContactMessage { get; set; }
+        public ContactMessage? ContactMessage { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets ChannelIdentity
         /// </summary>
         [JsonPropertyName("channel_identity")]
-        public ChannelIdentity ChannelIdentity { get; set; }
+        public ChannelIdentity? ChannelIdentity { get; set; }
 
 
         /// <summary>
         ///     The ID of the conversation this message is part of. Will be empty if processing_mode is DISPATCH.
         /// </summary>
         [JsonPropertyName("conversation_id")]
-        public string ConversationId { get; set; }
+        public string? ConversationId { get; set; }
 
 
         /// <summary>
         ///     The ID of the contact. Will be empty if processing_mode is DISPATCH.
         /// </summary>
         [JsonPropertyName("contact_id")]
-        public string ContactId { get; set; }
+        public string? ContactId { get; set; }
 
 
         /// <summary>
         ///     Usually, metadata specific to the underlying channel is provided in this field. Refer to the individual channels&#39; documentation for more information (for example, SMS delivery receipts). Note that, for Choice message responses, this field is populated with the value of the message_metadata field of the corresponding Send message request.
         /// </summary>
         [JsonPropertyName("metadata")]
-        public string Metadata { get; set; }
+        public string? Metadata { get; set; }
 
 
         /// <summary>
         ///     Timestamp marking when the channel callback was received by the Conversation API.
         /// </summary>
         [JsonPropertyName("accept_time")]
-        public DateTime AcceptTime { get; set; }
+        public DateTime? AcceptTime { get; set; }
 
 
         /// <summary>
         ///     The sender ID to which the contact sent the message, if applicable. For example, originator msisdn/short code for SMS and MMS.
         /// </summary>
         [JsonPropertyName("sender_id")]
-        public string SenderId { get; set; }
+        public string? SenderId { get; set; }
 
 
         /// <summary>
         ///     Flag for whether this message was injected.
         /// </summary>
         [JsonPropertyName("injected")]
-        public bool Injected { get; set; }
+        public bool? Injected { get; set; }
 
 
         /// <summary>
