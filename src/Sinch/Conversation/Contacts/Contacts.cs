@@ -138,10 +138,10 @@ namespace Sinch.Conversation.Contacts
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchConversationContacts> _logger;
+        private readonly ILoggerAdapter<ISinchConversationContacts>? _logger;
         private readonly string _projectId;
 
-        public Contacts(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationContacts> logger,
+        public Contacts(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationContacts>? logger,
             IHttp http)
         {
             _projectId = projectId;
@@ -190,7 +190,9 @@ namespace Sinch.Conversation.Contacts
                 var response =
                     await _http.Send<ListContactsResponse>(uri, HttpMethod.Get, cancellationToken);
                 request.PageToken = response.NextPageToken;
-                foreach (var contact in response.Contacts) yield return contact;
+                if (response.Contacts == null) continue;
+                foreach (var contact in response.Contacts)
+                    yield return contact;
             } while (!string.IsNullOrEmpty(request.PageToken));
         }
 
@@ -199,7 +201,7 @@ namespace Sinch.Conversation.Contacts
         {
             _logger?.LogDebug("Deleting a {contactId} from {projectId}", contactId, _projectId);
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{contactId}");
-            return _http.Send<object>(uri, HttpMethod.Delete, cancellationToken);
+            return _http.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken);
         }
 
         /// <inheritdoc />

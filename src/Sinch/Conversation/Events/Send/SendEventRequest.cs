@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Events.Send
         /// <summary>
         /// Gets or Sets Queue
         /// </summary>
-        public MessageQueue Queue { get; set; }
+        public MessageQueue? Queue { get; set; }
 
         /// <summary>
         ///     The ID of the app sending the event.
@@ -21,20 +21,20 @@ namespace Sinch.Conversation.Events.Send
 #if NET7_0_OR_GREATER
         public required string AppId { get; set; }
 #else
-        public string AppId { get; set; }
+        public string AppId { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     Overwrites the default callback url for delivery receipts for this message The REST URL should be of the form: &#x60;http://host[:port]/path&#x60;
         /// </summary>
-        public string CallbackUrl { get; set; }
+        public string? CallbackUrl { get; set; }
 
 
         /// <summary>
         ///     Optional. A single element array that dictates on what channel should the Conversation API try to send the event. It overrides any default set on the contact. Providing more than one option has no effect.
         /// </summary>
-        public List<ConversationChannel> ChannelPriorityOrder { get; set; }
+        public List<ConversationChannel>? ChannelPriorityOrder { get; set; }
 
 
         /// <summary>
@@ -43,14 +43,14 @@ namespace Sinch.Conversation.Events.Send
 #if NET7_0_OR_GREATER
         public required AppEvent Event { get; set; }
 #else
-        public AppEvent Event { get; set; }
+        public AppEvent Event { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     Optional. Eventual metadata that should be associated to the event.
         /// </summary>
-        public string EventMetadata { get; set; }
+        public string? EventMetadata { get; set; }
 
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Sinch.Conversation.Events.Send
 #if NET7_0_OR_GREATER
         public required IRecipient Recipient { get; set; }
 #else
-        public IRecipient Recipient { get; set; }
+        public IRecipient Recipient { get; set; } = null!;
 #endif
 
 

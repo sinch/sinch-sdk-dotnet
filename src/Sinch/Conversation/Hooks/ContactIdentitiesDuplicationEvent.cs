@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Hooks.Models;
@@ -14,7 +13,7 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets DuplicatedContactIdentitiesNotification
         /// </summary>
         [JsonPropertyName("duplicated_contact_identities_notification")]
-        public DuplicatedIdentitiesEvent DuplicatedContactIdentitiesNotification { get; set; }
+        public DuplicatedIdentitiesEvent? DuplicatedContactIdentitiesNotification { get; set; }
 
 
         /// <summary>

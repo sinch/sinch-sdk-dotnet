@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Conversation.Hooks

@@ -10,7 +10,7 @@ namespace Sinch.SMS.Batches.Update
         /// <summary>
         ///     The message content, including a URL to the media file
         /// </summary>
-        public MediaBody Body { get; set; }
+        public MediaBody? Body { get; set; }
 
         /// <summary>
         ///     Default: <c>false</c>.<br/><br/>
@@ -28,6 +28,6 @@ namespace Sinch.SMS.Batches.Update
         ///         learn more about parameterization.
         ///     </see>
         /// </summary>
-        public Dictionary<string, Dictionary<string, string>> Parameters { get; set; }
+        public Dictionary<string, Dictionary<string, string>>? Parameters { get; set; }
     }
 }

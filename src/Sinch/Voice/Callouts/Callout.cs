@@ -23,7 +23,7 @@ namespace Sinch.Voice.Callouts
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<CalloutResponse> Tts(TtsCalloutRequest request, CancellationToken cancellationToken = default);
+        Task<CalloutResponse> Tts(TextToSpeechCalloutRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     The conference callout calls a phone number or a user.
@@ -49,9 +49,9 @@ namespace Sinch.Voice.Callouts
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchVoiceCallout> _logger;
+        private readonly ILoggerAdapter<ISinchVoiceCallout>? _logger;
 
-        public SinchCallout(ILoggerAdapter<ISinchVoiceCallout> logger, Uri baseAddress, IHttp http)
+        public SinchCallout(ILoggerAdapter<ISinchVoiceCallout>? logger, Uri baseAddress, IHttp http)
         {
             _logger = logger;
             _baseAddress = baseAddress;
@@ -59,7 +59,7 @@ namespace Sinch.Voice.Callouts
         }
 
         /// <inheritdoc />
-        public Task<CalloutResponse> Tts(TtsCalloutRequest request, CancellationToken cancellationToken = default)
+        public Task<CalloutResponse> Tts(TextToSpeechCalloutRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, "calling/v1/callouts");
             _logger?.LogDebug("Making Tts callout request...");

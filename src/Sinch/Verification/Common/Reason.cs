@@ -57,11 +57,13 @@ namespace Sinch.Verification.Common
         /// <summary>
         ///     The reason for an SMS delivery failure during verification.
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public static readonly Reason SMSDeliveryFailure = new("SMS delivery failure");
 
         /// <summary>
         ///     The reason for an invalid CLI (Caller Line Identity) during verification.
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public static readonly Reason InvalidCLI = new("Invalid CLI");
 
         /// <summary>

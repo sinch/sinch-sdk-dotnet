@@ -19,14 +19,14 @@ namespace Sinch.Conversation.Hooks.Models
         ///     The type of event being reported.
         /// </summary>
         [JsonPropertyName("event_type")]
-        public string EventType { get; set; }
+        public string? EventType { get; set; }
 
 
         /// <summary>
         ///     An object containing additional information regarding the event. The contents of the object depend on the channel and the event_type.
         /// </summary>
         [JsonPropertyName("additional_data")]
-        public JsonObject AdditionalData { get; set; }
+        public JsonObject? AdditionalData { get; set; }
 
 
         /// <summary>

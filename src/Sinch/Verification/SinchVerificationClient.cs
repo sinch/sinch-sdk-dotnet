@@ -22,7 +22,7 @@ namespace Sinch.Verification
 
     internal class SinchVerificationClient : ISinchVerificationClient
     {
-        internal SinchVerificationClient(Uri baseAddress, LoggerFactory loggerFactory,
+        internal SinchVerificationClient(Uri baseAddress, LoggerFactory? loggerFactory,
             IHttp http)
         {
             Verification = new SinchVerification(loggerFactory?.Create<SinchVerification>(), baseAddress, http);

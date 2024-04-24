@@ -84,10 +84,10 @@ namespace Sinch.Conversation.Apps
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<Apps> _logger;
+        private readonly ILoggerAdapter<Apps>? _logger;
         private readonly string _projectId;
 
-        public Apps(string projectId, Uri baseAddress, ILoggerAdapter<Apps> logger, IHttp http)
+        public Apps(string projectId, Uri baseAddress, ILoggerAdapter<Apps>? logger, IHttp http)
         {
             _projectId = projectId;
             _baseAddress = baseAddress;
@@ -111,7 +111,7 @@ namespace Sinch.Conversation.Apps
             _logger?.LogDebug("Listing apps for a {projectId}", _projectId);
             // flatten the response 
             var response = await _http.Send<ListResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
-            return response.Apps;
+            return response.Apps ?? new List<App>();
         }
 
         /// <inheritdoc />
@@ -119,7 +119,7 @@ namespace Sinch.Conversation.Apps
         {
             if (string.IsNullOrEmpty(appId))
             {
-                _logger.LogError("Get an app failed. Provided app id was null or empty for a {projectId}",
+                _logger?.LogError("Get an app failed. Provided app id was null or empty for a {projectId}",
                     _projectId);
                 throw new ArgumentNullException(nameof(appId), "The appId parameter is null or empty");
             }
@@ -134,14 +134,14 @@ namespace Sinch.Conversation.Apps
         {
             if (string.IsNullOrEmpty(appId))
             {
-                _logger.LogError("Delete an app failed. Provided app id was null or empty for a {projectId}",
+                _logger?.LogError("Delete an app failed. Provided app id was null or empty for a {projectId}",
                     _projectId);
                 throw new ArgumentNullException(nameof(appId), "The appId parameter is null or empty");
             }
 
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/apps/{appId}");
             _logger?.LogDebug("Deleting an app for a {projectId} with {appId}", _projectId, appId);
-            return _http.Send<object>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
+            return _http.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
@@ -149,12 +149,12 @@ namespace Sinch.Conversation.Apps
         {
             if (string.IsNullOrEmpty(appId))
             {
-                _logger.LogError("Delete an app failed. Provided app id was null or empty for a {projectId}",
+                _logger?.LogError("Delete an app failed. Provided app id was null or empty for a {projectId}",
                     _projectId);
                 throw new ArgumentNullException(nameof(appId), "The appId parameter is null or empty");
             }
 
-            string query = null;
+            string? query = null;
             if (request.UpdateMaskPaths is not null && request.UpdateMaskPaths.Any())
                 query =
                     $"?update_mask.paths={string.Join("&update_mask.paths=", request.UpdateMaskPaths.Select(WebUtility.UrlEncode))}";
@@ -167,7 +167,8 @@ namespace Sinch.Conversation.Apps
 
         private class ListResponse
         {
-            public List<App> Apps { get; set; }
+            // ReSharper disable once CollectionNeverUpdated.Local
+            public List<App>? Apps { get; set; }
         }
     }
 }

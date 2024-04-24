@@ -22,17 +22,23 @@ namespace Sinch.SMS.Batches.Update
             var type = descriptor.Value.GetString();
             if (type == SmsType.MtText.Value)
             {
-                return elem.Deserialize<UpdateTextBatchRequest>(options);
+                return elem.Deserialize<UpdateTextBatchRequest>(options) ??
+                       throw new InvalidOperationException(
+                           $"{nameof(UpdateTextBatchRequest)} deserialization result is null.");
             }
 
             if (type == SmsType.MtBinary.Value)
             {
-                return elem.Deserialize<UpdateBinaryBatchRequest>(options);
+                return elem.Deserialize<UpdateBinaryBatchRequest>(options) ??
+                       throw new InvalidOperationException(
+                           $"{nameof(UpdateBinaryBatchRequest)} deserialization result is null.");
             }
 
             if (type == SmsType.MtMedia.Value)
             {
-                return elem.Deserialize<UpdateMediaBatchRequest>(options);
+                return elem.Deserialize<UpdateMediaBatchRequest>(options) ??
+                       throw new InvalidOperationException(
+                           $"{nameof(UpdateMediaBatchRequest)} deserialization result is null.");
             }
 
             throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
@@ -65,25 +71,25 @@ namespace Sinch.SMS.Batches.Update
         ///     Sender number. Must be valid phone number, short code or alphanumeric.
         ///     Required if Automatic Default Originator not configured.
         /// </summary>
-        public string From { get; set; }
+        public string? From { get; set; }
 
         public abstract SmsType Type { get; }
 
         /// <summary>
         ///     List of phone numbers and group IDs to add to the batch.
         /// </summary>
-        public List<string> ToAdd { get; set; }
+        public List<string>? ToAdd { get; set; }
 
         /// <summary>
         ///     List of phone numbers and group IDs to remove from the batch.
         /// </summary>
-        public List<string> ToRemove { get; set; }
+        public List<string>? ToRemove { get; set; }
 
         /// <summary>
         ///     Request delivery report callback.<br/><br/>
         ///     Note that delivery reports can be fetched from the API regardless of this setting.
         /// </summary>
-        public DeliveryReport DeliveryReport { get; set; }
+        public DeliveryReport? DeliveryReport { get; set; }
 
         /// <summary>
         ///     If set in the future, the message will be delayed until send_at occurs. Must be before expire_at.
@@ -103,6 +109,6 @@ namespace Sinch.SMS.Batches.Update
         ///     <see href="https://community.sinch.com/t5/SMS/How-do-I-assign-a-callback-URL-to-an-SMS-service-plan/ta-p/8414">here</see>
         ///     .
         /// </summary>
-        public Uri CallbackUrl { get; set; }
+        public Uri? CallbackUrl { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Hooks.Models
         /// </summary>
         [JsonPropertyName("payment_status")]
 
-        public PaymentStatus PaymentStatus { get; set; }
+        public PaymentStatus? PaymentStatus { get; set; }
 
 
         /// <summary>
@@ -26,14 +26,14 @@ namespace Sinch.Conversation.Hooks.Models
         ///     Unique identifier for the corresponding payment of a particular order.
         /// </summary>
         [JsonPropertyName("reference_id")]
-        public string ReferenceId { get; set; }
+        public string? ReferenceId { get; set; }
 
 
         /// <summary>
         ///     Unique identifier of the payment_transaction_status.
         /// </summary>
         [JsonPropertyName("payment_transaction_id")]
-        public string PaymentTransactionId { get; set; }
+        public string? PaymentTransactionId { get; set; }
 
 
         /// <summary>

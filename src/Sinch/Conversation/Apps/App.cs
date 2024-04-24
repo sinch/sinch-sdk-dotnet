@@ -9,57 +9,57 @@ namespace Sinch.Conversation.Apps
         /// <summary>
         ///     An array of channel credentials. The order of the credentials defines the app channel priority.
         /// </summary>
-        public List<ConversationChannelCredential> ChannelCredentials { get; set; }
+        public List<ConversationChannelCredential>? ChannelCredentials { get; set; }
 
         /// <summary>
         ///     Gets or Sets ConversationMetadataReportView
         /// </summary>
-        public ConversationMetadataReportView ConversationMetadataReportView { get; set; }
+        public ConversationMetadataReportView? ConversationMetadataReportView { get; set; }
 
         /// <summary>
         ///     The display name for the app.
         /// </summary>
-        public string DisplayName { get; set; }
+        public string? DisplayName { get; set; }
 
         /// <summary>
         ///     The ID of the app. You can find this on the [Sinch Dashboard](https://dashboard.sinch.com/convapi/apps).
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         ///     Gets or Sets RateLimits
         /// </summary>
-        public RateLimits RateLimits { get; set; }
+        public RateLimits? RateLimits { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets RetentionPolicy
         /// </summary>
-        public RetentionPolicy RetentionPolicy { get; set; }
+        public RetentionPolicy? RetentionPolicy { get; set; }
 
         /// <summary>
         ///     Gets or Sets DispatchRetentionPolicy
         /// </summary>
-        public DispatchRetentionPolicy DispatchRetentionPolicy { get; set; }
+        public DispatchRetentionPolicy? DispatchRetentionPolicy { get; set; }
 
         /// <summary>
         ///     Whether or not Conversation API should store contacts and conversations for the app.
         ///     For more information,
         ///     see [Processing Modes](https://developers.sinch.com/docs/conversation/processing-modes/).
         /// </summary>
-        public ProcessingMode ProcessingMode { get; set; }
+        public ProcessingMode? ProcessingMode { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets SmartConversation
         /// </summary>
-        public SmartConversation SmartConversation { get; set; }
+        public SmartConversation? SmartConversation { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets QueueStats
         /// </summary>
-        public QueueStats QueueStats { get; set; }
+        public QueueStats? QueueStats { get; set; }
 
 
         /// <summary>

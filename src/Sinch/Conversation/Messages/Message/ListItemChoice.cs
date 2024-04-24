@@ -13,26 +13,26 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required string Title { get; set; }
 #else
-        public string Title { get; set; }
+        public string Title { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     Optional parameter. The description (or subtitle) of this choice item.
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets Media
         /// </summary>
-        public MediaMessage Media { get; set; }
+        public MediaMessage? Media { get; set; }
 
 
         /// <summary>
         ///     Optional parameter. Postback data that will be returned in the MO if the user selects this option.
         /// </summary>
-        public string PostbackData { get; set; }
+        public string? PostbackData { get; set; }
 
 
         /// <summary>

@@ -77,10 +77,10 @@ namespace Sinch.Conversation.Webhooks
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchConversationWebhooks> _logger;
+        private readonly ILoggerAdapter<ISinchConversationWebhooks>? _logger;
         private readonly string _projectId;
 
-        public Webhooks(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationWebhooks> logger,
+        public Webhooks(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationWebhooks>? logger,
             IHttp http)
         {
             _projectId = projectId;
@@ -119,7 +119,7 @@ namespace Sinch.Conversation.Webhooks
             _logger?.LogDebug("Listing webhooks for an {appId}...", appId);
             var response = await _http.Send<ListWebhooksResponse>(uri, HttpMethod.Get,
                 cancellationToken);
-            return response.Webhooks;
+            return response.Webhooks ?? new List<Webhook>();
         }
 
         /// <inheritdoc />
@@ -141,7 +141,7 @@ namespace Sinch.Conversation.Webhooks
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             var propMask = webhook.GetPropertiesMask();
             if (!string.IsNullOrEmpty(propMask)) queryString.Add("update_mask", propMask);
-            builder.Query = queryString?.ToString()!;
+            builder.Query = queryString.ToString()!;
 
             _logger?.LogDebug("Updating a webhook with {id}...", webhook.Id);
             return _http.Send<Webhook, Webhook>(builder.Uri, HttpMethod.Patch, webhook,
@@ -186,7 +186,7 @@ namespace Sinch.Conversation.Webhooks
             var signature = headersCaseInsensitive["x-sinch-webhook-signature"].FirstOrDefault();
             if (string.IsNullOrEmpty(signature))
             {
-                _logger.LogDebug("Failed to validate request. \"x-sinch-webhook-signature\" header is missing");
+                _logger?.LogDebug("Failed to validate request. \"x-sinch-webhook-signature\" header is missing");
                 return false;
             }
 
@@ -206,6 +206,6 @@ namespace Sinch.Conversation.Webhooks
     internal class ListWebhooksResponse
     {
         // ReSharper disable once CollectionNeverUpdated.Global
-        public List<Webhook> Webhooks { get; set; }
+        public List<Webhook>? Webhooks { get; set; }
     }
 }

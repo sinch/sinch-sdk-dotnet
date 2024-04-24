@@ -10,7 +10,7 @@ namespace Examples
         public async Task Example()
         {
             // for the sake of example, no real logger is created.
-            var logger = LoggerFactory.Create(x => { }).CreateLogger("example");
+            var logger = LoggerFactory.Create(_ => { }).CreateLogger("example");
             var sinch = new SinchClient(Environment.GetEnvironmentVariable("SINCH_PROJECT_ID")!,
                 Environment.GetEnvironmentVariable("SINCH_KEY_ID")!,
                 Environment.GetEnvironmentVariable("SINCH_KEY_SECRET")!

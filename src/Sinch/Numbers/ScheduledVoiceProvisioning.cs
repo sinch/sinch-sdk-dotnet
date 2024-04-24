@@ -8,7 +8,7 @@ namespace Sinch.Numbers
         ///     <see href="https://community.sinch.com/t5/Glossary/RTC/ta-p/7699">RTC</see>
         ///     application ID of the scheduled provisioning task.
         /// </summary>
-        public string AppId { get; set; }
+        public string? AppId { get; set; }
 
         /// <summary>
         ///     The provisioning status. It will be either WAITING, IN_PROGRESS or FAILED.
@@ -18,11 +18,11 @@ namespace Sinch.Numbers
         ///     </see>
         ///     and troubleshooting recommendations.
         /// </summary>
-        public ProvisioningStatus Status { get; set; }
+        public ProvisioningStatus? Status { get; set; }
 
         /// <summary>
         ///     Timestamp when the status was last updated.
         /// </summary>
-        public DateTime LastUpdatedTime { get; set; }
+        public DateTime? LastUpdatedTime { get; set; }
     }
 }

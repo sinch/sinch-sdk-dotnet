@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Hooks.Models;
@@ -14,7 +13,7 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets ContactDeleteNotification
         /// </summary>
         [JsonPropertyName("contact_delete_notification")]
-        public ContactNotification ContactDeleteNotification { get; set; }
+        public ContactNotification? ContactDeleteNotification { get; set; }
 
 
         /// <summary>

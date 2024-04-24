@@ -12,7 +12,7 @@ namespace Sinch.Conversation.Apps.Create
         /// <summary>
         /// Gets or Sets ConversationMetadataReportView
         /// </summary>
-        public ConversationMetadataReportView ConversationMetadataReportView { get; set; }
+        public ConversationMetadataReportView? ConversationMetadataReportView { get; set; }
 
         /// <summary>
         ///     An array of channel credentials. The order of the credentials defines the app channel priority.
@@ -20,7 +20,7 @@ namespace Sinch.Conversation.Apps.Create
 #if NET7_0_OR_GREATER
         public required List<ConversationChannelCredential> ChannelCredentials { get; set; }
 #else
-        public List<ConversationChannelCredential> ChannelCredentials { get; set; }
+        public List<ConversationChannelCredential> ChannelCredentials { get; set; } = null!;
 #endif
 
 
@@ -30,32 +30,32 @@ namespace Sinch.Conversation.Apps.Create
 #if NET7_0_OR_GREATER
         public required string DisplayName { get; set; }
 #else
-        public string DisplayName { get; set; }
+        public string DisplayName { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     Gets or Sets RetentionPolicy
         /// </summary>
-        public RetentionPolicy RetentionPolicy { get; set; }
+        public RetentionPolicy? RetentionPolicy { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets DispatchRetentionPolicy
         /// </summary>
-        public DispatchRetentionPolicy DispatchRetentionPolicy { get; set; }
+        public DispatchRetentionPolicy? DispatchRetentionPolicy { get; set; }
 
 
         /// <summary>
         ///     Whether or not Conversation API should store contacts and conversations for the app. For more information, see [Processing Modes](../../../../../conversation/processing-modes/).
         /// </summary>
-        public ProcessingMode ProcessingMode { get; set; }
+        public ProcessingMode? ProcessingMode { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets SmartConversation
         /// </summary>
-        public SmartConversation SmartConversation { get; set; }
+        public SmartConversation? SmartConversation { get; set; }
 
 
         /// <summary>

@@ -15,12 +15,12 @@ namespace Sinch.Voice.Hooks
         ///     as necessary.
         /// </summary>
         [JsonPropertyName("instructions")]
-        public List<IInstruction> Instructions { get; set; }
+        public List<IInstruction>? Instructions { get; set; }
 
         /// <summary>
         ///     The action that will control the call. Each SVAML object can only include one action.
         /// </summary>
         [JsonPropertyName("action")]
-        public IAction Action { get; set; }
+        public IAction? Action { get; set; }
     }
 }

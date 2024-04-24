@@ -13,20 +13,20 @@ namespace Sinch.SMS.DeliveryReports.Get
 #if NET7_0_OR_GREATER
         public required string BatchId { get; set; }
 #else
-        public string BatchId { get; set; }
+        public string BatchId { get; set; } = null!;
 #endif
 
-        public DeliveryReportVerbosityType DeliveryReportType { get; set; }
+        public DeliveryReportVerbosityType? DeliveryReportType { get; set; }
 
         /// <summary>
         ///     A list of <see cref="DeliveryReportStatus" /> to include.
         /// </summary>
-        public List<DeliveryReportStatus> Statuses { get; set; }
+        public List<DeliveryReportStatus>? Statuses { get; set; }
 
         /// <summary>
         ///     A list of delivery_receipt_error_codes to include.
         /// </summary>
-        public List<string> Code { get; set; }
+        public List<string>? Code { get; set; }
 
         internal string GetQueryString()
         {

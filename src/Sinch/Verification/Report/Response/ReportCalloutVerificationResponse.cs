@@ -10,6 +10,6 @@ namespace Sinch.Verification.Report.Response
         /// <summary>
         ///     Prices associated with this verification
         /// </summary>
-        public Price Price { get; set; }
+        public Price? Price { get; set; }
     }
 }

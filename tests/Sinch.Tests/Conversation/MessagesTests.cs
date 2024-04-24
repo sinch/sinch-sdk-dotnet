@@ -12,7 +12,6 @@ using Sinch.Conversation;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.List;
 using Sinch.Conversation.Messages.Message;
-using Sinch.Conversation.Messages.Message.ChannelSpecificMessages;
 using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
 using Xunit;
 
@@ -35,7 +34,7 @@ namespace Sinch.Tests.Conversation
             var response = await Conversation.Messages.Get(messageId, MessageSource.ConversationSource);
 
             response.Should().NotBeNull();
-            response.AppMessage.ListMessage.Should().BeEquivalentTo(new ListMessage
+            response.AppMessage!.ListMessage.Should().BeEquivalentTo(new ListMessage
             {
                 Title = "title",
                 Sections = new List<ListSection>()
@@ -78,7 +77,7 @@ namespace Sinch.Tests.Conversation
                 }
             });
             response.Direction.Should().Be(ConversationDirection.UndefinedDirection);
-            response.ContactMessage.ReplyTo.MessageId.Should().Be("string");
+            response.ContactMessage!.ReplyTo!.MessageId.Should().Be("string");
             response.ChannelIdentity.Should().BeEquivalentTo(new ChannelIdentity()
             {
                 AppId = "string",

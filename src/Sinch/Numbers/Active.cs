@@ -79,11 +79,11 @@ namespace Sinch.Numbers
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ActiveNumbers> _logger;
+        private readonly ILoggerAdapter<ActiveNumbers>? _logger;
         private readonly string _projectId;
 
         public ActiveNumbers(string projectId, Uri baseAddress,
-            ILoggerAdapter<ActiveNumbers> logger, IHttp http)
+            ILoggerAdapter<ActiveNumbers>? logger, IHttp http)
         {
             _projectId = projectId;
             _baseAddress = baseAddress;

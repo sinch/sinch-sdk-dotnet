@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Hooks.Models;
@@ -14,7 +13,7 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets SmartConversationNotification
         /// </summary>
         [JsonPropertyName("smart_conversation_notification")]
-        public SmartConversationNotification SmartConversationNotification { get; set; }
+        public SmartConversationNotification? SmartConversationNotification { get; set; }
 
 
         /// <summary>
