@@ -76,7 +76,7 @@ namespace Sinch.Voice.Callouts.Callout
         ///     Example:
         ///     <c>#tts[Hello from Sinch];#ssml[&lt;speak&gt;&lt;break time=\"250ms\"/&gt;Have a great day!&lt;/speak&gt;]</c>
         /// </summary>
-        public string? Promts { get; set; }
+        public string? Prompts { get; set; }
 
         /// <summary>
         ///     If <c>enableAce</c> is set to <c>true</c> and the application has a callback URL specified, you will receive an ACE

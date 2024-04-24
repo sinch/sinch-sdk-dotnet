@@ -15,13 +15,13 @@ namespace Sinch.Voice.Hooks
     ///     If there is no response to the callback within the timeout period, an error message is played, and the call is
     ///     disconnected.
     /// </summary>
-    public class IncomingCallEvent
+    public class IncomingCallEvent : IVoiceEvent
     {
         /// <summary>
         ///     Must have the value ice.
         /// </summary>
         [JsonPropertyName("event")]
-        public string? Event { get; set; }
+        public EventType? Event { get; set; }
 
 
         /// <summary>
