@@ -25,7 +25,7 @@ namespace Sinch.Tests.e2e.Voice
                 Custom = "opaque",
                 Locale = "en-US",
                 Text = "Hello, this is a call from Sinch.",
-                Promts = "#tts[Hello from Sinch]",
+                Prompts = "#tts[Hello from Sinch]",
                 EnableAce = true,
                 EnableDice = true,
                 EnablePie = true,
