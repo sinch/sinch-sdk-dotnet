@@ -108,7 +108,7 @@ namespace Sinch.Voice
             var bytesBody = JsonSerializer.SerializeToUtf8Bytes(body);
             var contentType = headersCaseInsensitive.GetValueOrDefault("content-type");
             var timestamp = headersCaseInsensitive.GetValueOrDefault(timestampHeader, string.Empty);
-            var calculatedSignature = // passing empty timestamp is okay
+            var calculatedSignature =
                 _applicationSignedAuth.GetSignedAuth(bytesBody, method.Method, path,
                     string.Join(':', timestampHeader, timestamp), contentType);
             var signature = authSignature.Split(' ').Skip(1).FirstOrDefault();
