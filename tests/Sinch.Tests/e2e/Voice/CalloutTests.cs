@@ -65,8 +65,10 @@ namespace Sinch.Tests.e2e.Voice
             response.CallId.Should().BeEquivalentTo("330");
         }
 
-        [Fact]
-        public async Task CustomRequest()
+        [Theory]
+        [InlineData("{\"cli\": \"456789123\"}")]
+        [InlineData("\"https://hello-world-callback.url\"")]
+        public async Task CustomRequest(string rawJsonPie)
         {
             var response = await VoiceClient.Callouts.Custom(new CustomCalloutRequest()
             {
@@ -84,7 +86,7 @@ namespace Sinch.Tests.e2e.Voice
                     .AsObject()!,
                 Ace = JsonNode.Parse("{}")!.AsObject(),
                 Pie = JsonNode
-                    .Parse("{\"cli\": \"456789123\"}")!
+                    .Parse(rawJsonPie)!
             });
             response.CallId.Should().BeEquivalentTo("440");
         }
