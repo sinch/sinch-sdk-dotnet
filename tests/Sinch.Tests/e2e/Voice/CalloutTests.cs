@@ -85,7 +85,6 @@ namespace Sinch.Tests.e2e.Voice
                 Ace = JsonNode.Parse("{}")!.AsObject(),
                 Pie = JsonNode
                     .Parse("{\"cli\": \"456789123\"}")!
-                    .AsObject()!
             });
             response.CallId.Should().BeEquivalentTo("440");
         }
