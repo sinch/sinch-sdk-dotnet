@@ -83,7 +83,9 @@ namespace Sinch.Tests.e2e.Voice
                     .Parse("{\"action\":{\"name\":\"connectPstn\",\"number\":\"46000000001\",\"maxDuration\":90}}")!
                     .AsObject()!,
                 Ace = JsonNode.Parse("{}")!.AsObject(),
-                Pie = "https://your-application-server-host/application"
+                Pie = JsonNode
+                    .Parse("{\"cli\": \"456789123\"}")!
+                    .AsObject()!
             });
             response.CallId.Should().BeEquivalentTo("440");
         }
