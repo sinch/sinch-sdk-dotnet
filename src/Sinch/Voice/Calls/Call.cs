@@ -61,7 +61,7 @@ namespace Sinch.Voice.Calls
         /// <summary>
         ///     An object that can be used to pass custom information related to the call.
         /// </summary>
-        public JsonObject? Custom { get; set; }
+        public string? Custom { get; set; }
 
 
         /// <summary>
