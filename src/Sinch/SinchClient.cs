@@ -109,13 +109,8 @@ namespace Sinch
         /// <param name="appKey"></param>
         /// <param name="appSecret"></param>
         /// <param name="callingRegion">See <see cref="CallingRegion" />. Defaults to <see cref="CallingRegion.Global" /></param>
-        /// <param name="authStrategy">
-        ///     Choose which authentication to use.
-        ///     Defaults to Application Sign request and it's a recommended approach.
-        /// </param>
         /// <returns></returns>
-        public ISinchVoiceClient Voice(string appKey, string appSecret, CallingRegion? callingRegion = null,
-            AuthStrategy authStrategy = AuthStrategy.ApplicationSign);
+        public ISinchVoiceClient Voice(string appKey, string appSecret, CallingRegion? callingRegion = null);
     }
 
     public class SinchClient : ISinchClient
@@ -271,8 +266,7 @@ namespace Sinch
 
         /// <inheritdoc />
         public ISinchVoiceClient Voice(string appKey, string appSecret,
-            CallingRegion? callingRegion = default,
-            AuthStrategy authStrategy = AuthStrategy.ApplicationSign)
+            CallingRegion? callingRegion = default)
         {
             if (string.IsNullOrEmpty(appKey))
                 throw new ArgumentNullException(nameof(appKey), "The value should be present");
@@ -280,18 +274,14 @@ namespace Sinch
             if (string.IsNullOrEmpty(appSecret))
                 throw new ArgumentNullException(nameof(appSecret), "The value should be present");
 
-            ISinchAuth auth;
-            if (authStrategy == AuthStrategy.ApplicationSign)
-                auth = new ApplicationSignedAuth(appKey, appSecret);
-            else
-                auth = new BasicAuth(appKey, appSecret);
+            ISinchAuth auth = new ApplicationSignedAuth(appKey, appSecret);
 
             callingRegion ??= CallingRegion.Global;
 
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
             return new SinchVoiceClient(
                 new Uri(_apiUrlOverrides?.VoiceUrl ?? string.Format(VoiceApiUrlTemplate, callingRegion.Value)),
-                _loggerFactory, http);
+                _loggerFactory, http, (auth as ApplicationSignedAuth)!);
         }
 
         private void ValidateCommonCredentials()

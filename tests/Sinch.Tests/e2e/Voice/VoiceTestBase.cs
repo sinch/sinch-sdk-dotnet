@@ -9,7 +9,7 @@ namespace Sinch.Tests.e2e.Voice
 
         protected VoiceTestBase()
         {
-            VoiceClient = SinchClientMockServer.Voice("app_key", "app_secret", default, AuthStrategy.Basic);
+            VoiceClient = SinchClientMockServer.Voice("app_key", "app_secret", default);
         }
     }
 }
