@@ -25,7 +25,7 @@ namespace Sinch.Tests.e2e.Voice
                 Custom = "opaque",
                 Locale = "en-US",
                 Text = "Hello, this is a call from Sinch.",
-                Promts = "#tts[Hello from Sinch]",
+                Prompts = "#tts[Hello from Sinch]",
                 EnableAce = true,
                 EnableDice = true,
                 EnablePie = true,
@@ -65,8 +65,10 @@ namespace Sinch.Tests.e2e.Voice
             response.CallId.Should().BeEquivalentTo("330");
         }
 
-        [Fact]
-        public async Task CustomRequest()
+        [Theory]
+        [InlineData("{\"cli\": \"456789123\"}")]
+        [InlineData("\"https://hello-world-callback.url\"")]
+        public async Task CustomRequest(string rawJsonPie)
         {
             var response = await VoiceClient.Callouts.Custom(new CustomCalloutRequest()
             {
@@ -83,7 +85,8 @@ namespace Sinch.Tests.e2e.Voice
                     .Parse("{\"action\":{\"name\":\"connectPstn\",\"number\":\"46000000001\",\"maxDuration\":90}}")!
                     .AsObject()!,
                 Ace = JsonNode.Parse("{}")!.AsObject(),
-                Pie = "https://your-application-server-host/application"
+                Pie = JsonNode
+                    .Parse(rawJsonPie)!
             });
             response.CallId.Should().BeEquivalentTo("440");
         }

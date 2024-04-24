@@ -30,7 +30,7 @@ namespace Sinch.Tests.e2e.Voice
                 Result = CallResult.Busy,
                 Reason = CallResultReason.Cancel,
                 Timestamp = DateTime.Parse("2019-08-24T14:15:22Z").ToUniversalTime(),
-                Custom = new JsonObject(),
+                Custom = string.Empty,
                 UserRate = "39",
                 Debit = "138"
             });
