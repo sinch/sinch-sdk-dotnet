@@ -44,18 +44,15 @@ namespace Sinch.Tests.Conversation
                         Title = "sec1",
                         Items = new List<IListItem>()
                         {
-                            new ListItemChoiceWrapper
+                            new ListItemChoice()
                             {
-                                Choice = new ListItemChoice()
+                                Title = "title",
+                                Description = "desc",
+                                Media = new MediaMessage()
                                 {
-                                    Title = "title",
-                                    Description = "desc",
-                                    Media = new MediaMessage()
-                                    {
-                                        Url = new Uri("http://localhost")
-                                    },
-                                    PostbackData = "postback"
-                                }
+                                    Url = new Uri("http://localhost")
+                                },
+                                PostbackData = "postback"
                             }
                         }
                     },
@@ -64,13 +61,10 @@ namespace Sinch.Tests.Conversation
                         Title = "sec2",
                         Items = new List<IListItem>
                         {
-                            new ListItemProductWrapper()
+                            new ListItemProduct()
                             {
-                                Product = new ListItemProduct()
-                                {
-                                    Id = "id",
-                                    Marketplace = "amazon"
-                                }
+                                Id = "id",
+                                Marketplace = "amazon"
                             }
                         }
                     }

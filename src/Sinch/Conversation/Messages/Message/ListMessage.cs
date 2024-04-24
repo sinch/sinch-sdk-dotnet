@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
@@ -92,19 +93,64 @@ namespace Sinch.Conversation.Messages.Message
         }
     }
 
-    [JsonInterfaceConverter(typeof(InterfaceConverter<IListItem>))]
+    [JsonInterfaceConverter(typeof(ListItemJsonConverter))]
     public interface IListItem
     {
     }
 
-    public class ListItemChoiceWrapper : IListItem
+    public class ListItemJsonConverter : JsonConverter<IListItem>
     {
-        public ListItemChoice Choice { get; set; }
+        public override IListItem? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            var elem = JsonElement.ParseValue(ref reader);
+            if (elem.TryGetProperty("choice", out var choice))
+            {
+                return choice.Deserialize<ListItemChoice>(options);
+            }
+
+            if (elem.TryGetProperty("product", out var product))
+            {
+                return product.Deserialize<ListItemProduct>(options);
+            }
+
+            throw new JsonException(
+                $"Failed to match {nameof(IListItem)}, got json element: {elem.ToString()}");
+        }
+
+        public override void Write(Utf8JsonWriter writer, IListItem value, JsonSerializerOptions options)
+        {
+            var type = value.GetType();
+            if (type == typeof(ListItemChoice))
+            {
+                JsonSerializer.Serialize(writer, new ListItemChoiceWrapper()
+                {
+                    Choice = value as ListItemChoice
+                }, options);
+                return;
+            }
+
+            if (type == typeof(ListItemProduct))
+            {
+                JsonSerializer.Serialize(writer, new ListItemProductWrapper()
+                {
+                    Product = value as ListItemProduct
+                }, options);
+                return;
+            }
+
+            throw new InvalidOperationException(
+                $"Value is not in range of expected types - actual type is {type.FullName}");
+        }
     }
 
-    public class ListItemProductWrapper : IListItem
+    internal class ListItemChoiceWrapper
     {
-        public ListItemProduct Product { get; set; }
+        public ListItemChoice? Choice { get; set; }
+    }
+
+    internal class ListItemProductWrapper
+    {
+        public ListItemProduct? Product { get; set; }
     }
 
     /// <summary>

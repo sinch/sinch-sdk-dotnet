@@ -382,30 +382,24 @@ namespace Sinch.Tests.Conversation
                         Title = "item1",
                         Items = new List<IListItem>()
                         {
-                            new ListItemChoiceWrapper
+                            new ListItemChoice()
                             {
-                                Choice = new ListItemChoice()
+                                Title = "listitemchoice",
+                                PostbackData = "postno",
+                                Description = "desc",
+                                Media = new MediaMessage()
                                 {
-                                    Title = "listitemchoice",
-                                    PostbackData = "postno",
-                                    Description = "desc",
-                                    Media = new MediaMessage()
-                                    {
-                                        Url = new Uri("https://nolocalhost"),
-                                        ThumbnailUrl = new Uri("https://knowyourmeme.com/photos/377946")
-                                    }
+                                    Url = new Uri("https://nolocalhost"),
+                                    ThumbnailUrl = new Uri("https://knowyourmeme.com/photos/377946")
                                 }
                             },
-                            new ListItemProductWrapper()
+                            new ListItemProduct
                             {
-                                Product = new ListItemProduct
-                                {
-                                    Id = "prod_id",
-                                    Marketplace = "amazon",
-                                    Currency = "eur",
-                                    Quantity = 20,
-                                    ItemPrice = 12.1000004f,
-                                }
+                                Id = "prod_id",
+                                Marketplace = "amazon",
+                                Currency = "eur",
+                                Quantity = 20,
+                                ItemPrice = 12.1000004f,
                             }
                         }
                     }
