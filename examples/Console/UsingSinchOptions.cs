@@ -11,7 +11,7 @@ public class UsingSinchOptions
             Environment.GetEnvironmentVariable("SINCH_KEY_SECRET")!,
             options =>
             {
-                options.SmsHostingRegion = Sinch.SMS.SmsHostingRegion.Eu;
+                options.SmsRegion = Sinch.SMS.SmsRegion.Eu;
                 options.ConversationRegion = Sinch.Conversation.ConversationRegion.Eu;
             });
     }

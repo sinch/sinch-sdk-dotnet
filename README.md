@@ -64,7 +64,7 @@ var sinch = new SinchClient(
     configuration["Sinch:KeySecret"],
     options =>
     {
-        options.SmsHostingRegion = Sinch.SMS.SmsHostingRegion.Eu;
+        options.SmsRegion = Sinch.SMS.SmsRegion.Eu;
         options.ConversationRegion = Sinch.Conversation.ConversationRegion.Eu;
     });
 ```
@@ -113,7 +113,7 @@ var sinch = new SinchClient(
         // Provide your http client here
         options.HttpClient = new HttpClient();
         // Set a hosting region for Sms
-        options.SmsHostingRegion = SmsHostingRegion.Eu;
+        options.SmsRegion = SmsRegion.Eu;
     });
 ```
 
