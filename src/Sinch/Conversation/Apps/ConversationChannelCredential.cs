@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 using Sinch.Conversation.Apps.Credentials;
 
 namespace Sinch.Conversation.Apps
@@ -36,7 +37,8 @@ namespace Sinch.Conversation.Apps
         /// <summary>
         ///     Gets or Sets KakaotalkCredentials
         /// </summary>
-        public KakaoTalkCredentials? KakaotalkCredentials { get; set; }
+        [JsonPropertyName("kakaotalk_credentials")]
+        public KakaoTalkCredentials? KakaoTalkCredentials { get; set; }
 
 
         /// <summary>
@@ -68,6 +70,9 @@ namespace Sinch.Conversation.Apps
         /// </summary>
         public WeChatCredentials? WechatCredentials { get; set; }
 
+        [JsonPropertyName("kakaotalkchat_credentials")]
+        public KakaoTalkChatCredentials? KakaoTalkChatCredentials { get; set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -80,7 +85,7 @@ namespace Sinch.Conversation.Apps
             sb.Append("  CallbackSecret: ").Append(CallbackSecret).Append("\n");
             sb.Append("  Channel: ").Append(Channel).Append("\n");
             sb.Append("  MmsCredentials: ").Append(MmsCredentials).Append("\n");
-            sb.Append("  KakaoTalkCredentials: ").Append(KakaotalkCredentials).Append("\n");
+            sb.Append("  KakaoTalkCredentials: ").Append(KakaoTalkCredentials).Append("\n");
             sb.Append("  StaticBearer: ").Append(StaticBearer).Append("\n");
             sb.Append("  StaticToken: ").Append(StaticToken).Append("\n");
             sb.Append("  TelegramCredentials: ").Append(TelegramCredentials).Append("\n");
