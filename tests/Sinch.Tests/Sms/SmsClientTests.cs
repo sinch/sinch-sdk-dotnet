@@ -23,7 +23,7 @@ namespace Sinch.Tests.Sms
                 options =>
                 {
                     options.HttpClient = httpClient;
-                    options.UseServicePlanIdWithSms(servicePlanId, apiToken, SmsServicePlanIdHostingRegion.Au);
+                    options.UseServicePlanIdWithSms(servicePlanId, apiToken, SmsServicePlanIdRegion.Au);
                 });
 
             var batchId = "b1";

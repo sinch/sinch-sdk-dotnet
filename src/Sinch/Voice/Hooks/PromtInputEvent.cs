@@ -13,13 +13,13 @@ namespace Sinch.Voice.Hooks
     ///     [SVAML](https://developers.sinch.com/docs/voice/api-reference/svaml/) logic.<br /><br />
     ///     Note: PIE callbacks are not issued for DATA Calls, only PSTN and SIP calls.
     /// </summary>
-    public class PromptInputEvent
+    public class PromptInputEvent : IVoiceEvent
     {
         /// <summary>
         ///     Must have the value pie.
         /// </summary>
         [JsonPropertyName("event")]
-        public string? Event { get; set; }
+        public EventType? Event { get; set; }
 
         /// <summary>
         ///     The unique ID assigned to this call.

@@ -108,9 +108,9 @@ namespace Sinch
         /// </summary>
         /// <param name="appKey"></param>
         /// <param name="appSecret"></param>
-        /// <param name="callingRegion">See <see cref="CallingRegion" />. Defaults to <see cref="CallingRegion.Global" /></param>
+        /// <param name="voiceRegion">See <see cref="VoiceRegion" />. Defaults to <see cref="VoiceRegion.Global" /></param>
         /// <returns></returns>
-        public ISinchVoiceClient Voice(string appKey, string appSecret, CallingRegion? callingRegion = null);
+        public ISinchVoiceClient Voice(string appKey, string appSecret, VoiceRegion? voiceRegion = null);
     }
 
     public class SinchClient : ISinchClient
@@ -266,7 +266,7 @@ namespace Sinch
 
         /// <inheritdoc />
         public ISinchVoiceClient Voice(string appKey, string appSecret,
-            CallingRegion? callingRegion = default)
+            VoiceRegion? voiceRegion = default)
         {
             if (string.IsNullOrEmpty(appKey))
                 throw new ArgumentNullException(nameof(appKey), "The value should be present");
@@ -276,11 +276,11 @@ namespace Sinch
 
             ISinchAuth auth = new ApplicationSignedAuth(appKey, appSecret);
 
-            callingRegion ??= CallingRegion.Global;
+            voiceRegion ??= VoiceRegion.Global;
 
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
             return new SinchVoiceClient(
-                new Uri(_apiUrlOverrides?.VoiceUrl ?? string.Format(VoiceApiUrlTemplate, callingRegion.Value)),
+                new Uri(_apiUrlOverrides?.VoiceUrl ?? string.Format(VoiceApiUrlTemplate, voiceRegion.Value)),
                 _loggerFactory, http, (auth as ApplicationSignedAuth)!);
         }
 
@@ -305,37 +305,37 @@ namespace Sinch
             {
                 _logger?.LogInformation("Initializing SMS client with {service_plan_id} in {region}",
                     optionsObj.ServicePlanIdOptions.ServicePlanId,
-                    optionsObj.ServicePlanIdOptions.HostingRegion.Value);
+                    optionsObj.ServicePlanIdOptions.Region.Value);
                 var bearerSnakeHttp = new Http(new BearerAuth(optionsObj.ServicePlanIdOptions.ApiToken), _httpClient,
                     _loggerFactory?.Create<IHttp>(),
                     SnakeCaseNamingPolicy.Instance);
                 return new SmsClient(new ServicePlanId(optionsObj.ServicePlanIdOptions.ServicePlanId),
-                    BuildServicePlanIdSmsBaseAddress(optionsObj.ServicePlanIdOptions.HostingRegion,
+                    BuildServicePlanIdSmsBaseAddress(optionsObj.ServicePlanIdOptions.Region,
                         _apiUrlOverrides?.SmsUrl),
                     _loggerFactory, bearerSnakeHttp);
             }
 
             _logger?.LogInformation("Initializing SMS client with {project_id} in {region}", _projectId,
-                optionsObj.SmsHostingRegion.Value);
+                optionsObj.SmsRegion.Value);
 
             return new SmsClient(
                 new ProjectId(
                     _projectId!), // exception is throw when trying to get SMS client property if _projectId is null
-                BuildSmsBaseAddress(optionsObj.SmsHostingRegion, _apiUrlOverrides?.SmsUrl),
+                BuildSmsBaseAddress(optionsObj.SmsRegion, _apiUrlOverrides?.SmsUrl),
                 _loggerFactory,
                 httpSnakeCase);
         }
 
-        private static Uri BuildServicePlanIdSmsBaseAddress(SmsServicePlanIdHostingRegion smsServicePlanIdHostingRegion,
+        private static Uri BuildServicePlanIdSmsBaseAddress(SmsServicePlanIdRegion smsServicePlanIdRegion,
             string? smsUrlOverride)
         {
             if (!string.IsNullOrEmpty(smsUrlOverride)) return new Uri(smsUrlOverride);
 
             return new Uri(string.Format(SmsApiServicePlanIdUrlTemplate,
-                smsServicePlanIdHostingRegion.Value.ToLowerInvariant()));
+                smsServicePlanIdRegion.Value.ToLowerInvariant()));
         }
 
-        private static Uri BuildSmsBaseAddress(SmsHostingRegion smsHostingRegion, string? smsUrlOverride)
+        private static Uri BuildSmsBaseAddress(SmsRegion smsRegion, string? smsUrlOverride)
         {
             if (!string.IsNullOrEmpty(smsUrlOverride)) return new Uri(smsUrlOverride);
 
@@ -343,7 +343,7 @@ namespace Sinch
             // But SDK is based on single-account model which uses project_id
             // Thus, baseAddress for sms api is using a special endpoint where service_plan_id is replaced with projectId
             // for each provided endpoint
-            return new Uri(string.Format(SmsApiUrlTemplate, smsHostingRegion.Value.ToLowerInvariant()));
+            return new Uri(string.Format(SmsApiUrlTemplate, smsRegion.Value.ToLowerInvariant()));
         }
     }
 }

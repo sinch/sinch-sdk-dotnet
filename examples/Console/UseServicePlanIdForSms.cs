@@ -12,7 +12,7 @@ namespace Examples
                 options =>
                 {
                     options.UseServicePlanIdWithSms(Environment.GetEnvironmentVariable("SINCH_SERVICE_PLAN_ID")!,
-                        Environment.GetEnvironmentVariable("SINCH_API_TOKEN")!, SmsServicePlanIdHostingRegion.Ca);
+                        Environment.GetEnvironmentVariable("SINCH_API_TOKEN")!, SmsServicePlanIdRegion.Ca);
                 });
             sinchClient.Sms.Batches.Send(new SendTextBatchRequest()
             {
