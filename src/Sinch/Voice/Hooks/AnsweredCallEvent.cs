@@ -63,7 +63,5 @@ namespace Sinch.Voice.Hooks
         /// </summary>
         [JsonPropertyName("amd")]
         public Amd? Amd { get; set; }
-
-        public EventType? EventType { get; }
     }
 }
