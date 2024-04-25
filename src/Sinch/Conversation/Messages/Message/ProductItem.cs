@@ -5,7 +5,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     A message component for interactive messages, containing a product.
     /// </summary>
-    public sealed class ListItemProduct : IListItem
+    public sealed class ProductItem : IListItem
     {
         /// <summary>
         ///     Required parameter. The ID for the product.

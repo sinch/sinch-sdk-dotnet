@@ -44,7 +44,7 @@ namespace Sinch.Tests.Conversation
                         Title = "sec1",
                         Items = new List<IListItem>()
                         {
-                            new ListItemChoice()
+                            new ChoiceItem()
                             {
                                 Title = "title",
                                 Description = "desc",
@@ -61,7 +61,7 @@ namespace Sinch.Tests.Conversation
                         Title = "sec2",
                         Items = new List<IListItem>
                         {
-                            new ListItemProduct()
+                            new ProductItem()
                             {
                                 Id = "id",
                                 Marketplace = "amazon"

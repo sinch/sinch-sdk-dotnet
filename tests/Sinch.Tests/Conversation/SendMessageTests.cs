@@ -382,7 +382,7 @@ namespace Sinch.Tests.Conversation
                         Title = "item1",
                         Items = new List<IListItem>()
                         {
-                            new ListItemChoice()
+                            new ChoiceItem()
                             {
                                 Title = "listitemchoice",
                                 PostbackData = "postno",
@@ -393,7 +393,7 @@ namespace Sinch.Tests.Conversation
                                     ThumbnailUrl = new Uri("https://knowyourmeme.com/photos/377946")
                                 }
                             },
-                            new ListItemProduct
+                            new ProductItem
                             {
                                 Id = "prod_id",
                                 Marketplace = "amazon",

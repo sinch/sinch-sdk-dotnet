@@ -105,12 +105,12 @@ namespace Sinch.Conversation.Messages.Message
             var elem = JsonElement.ParseValue(ref reader);
             if (elem.TryGetProperty("choice", out var choice))
             {
-                return choice.Deserialize<ListItemChoice>(options);
+                return choice.Deserialize<ChoiceItem>(options);
             }
 
             if (elem.TryGetProperty("product", out var product))
             {
-                return product.Deserialize<ListItemProduct>(options);
+                return product.Deserialize<ProductItem>(options);
             }
 
             throw new JsonException(
@@ -120,20 +120,20 @@ namespace Sinch.Conversation.Messages.Message
         public override void Write(Utf8JsonWriter writer, IListItem value, JsonSerializerOptions options)
         {
             var type = value.GetType();
-            if (type == typeof(ListItemChoice))
+            if (type == typeof(ChoiceItem))
             {
                 JsonSerializer.Serialize(writer, new ListItemChoiceWrapper()
                 {
-                    Choice = value as ListItemChoice
+                    Choice = value as ChoiceItem
                 }, options);
                 return;
             }
 
-            if (type == typeof(ListItemProduct))
+            if (type == typeof(ProductItem))
             {
                 JsonSerializer.Serialize(writer, new ListItemProductWrapper()
                 {
-                    Product = value as ListItemProduct
+                    Product = value as ProductItem
                 }, options);
                 return;
             }
@@ -145,12 +145,12 @@ namespace Sinch.Conversation.Messages.Message
 
     internal class ListItemChoiceWrapper
     {
-        public ListItemChoice? Choice { get; set; }
+        public ChoiceItem? Choice { get; set; }
     }
 
     internal class ListItemProductWrapper
     {
-        public ListItemProduct? Product { get; set; }
+        public ProductItem? Product { get; set; }
     }
 
     /// <summary>
