@@ -111,9 +111,18 @@ namespace Sinch.Voice
             var calculatedSignature =
                 _applicationSignedAuth.GetSignedAuth(bytesBody, method.Method, path,
                     string.Join(':', timestampHeader, timestamp), contentType);
-            var signature = authSignature.Split(' ').Skip(1).FirstOrDefault();
+            var splitAuthHeader = authSignature.Split(' ');
 
-            if (signature == null)
+            if (splitAuthHeader.FirstOrDefault() != "application")
+            {
+                _logger?.LogDebug(
+                    "Failed to validate auth header. Authorization header not starting from 'application'.");
+                return false;
+            }
+
+            var signature = splitAuthHeader.Skip(1).FirstOrDefault();
+
+            if (string.IsNullOrEmpty(signature))
             {
                 _logger?.LogDebug("Failed to validate auth header. Signature is missing from the header.");
                 return false;
