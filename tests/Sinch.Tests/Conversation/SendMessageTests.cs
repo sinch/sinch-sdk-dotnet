@@ -344,22 +344,28 @@ namespace Sinch.Tests.Conversation
                         {
                             new
                             {
-                                title = "listitemchoice",
-                                postback_data = "postno",
-                                description = "desc",
-                                media = new
+                                choice = new
                                 {
-                                    url = "https://nolocalhost",
-                                    thumbnail_url = "https://knowyourmeme.com/photos/377946"
+                                    title = "listitemchoice",
+                                    postback_data = "postno",
+                                    description = "desc",
+                                    media = new
+                                    {
+                                        url = "https://nolocalhost",
+                                        thumbnail_url = "https://knowyourmeme.com/photos/377946"
+                                    }
                                 }
                             },
                             new
                             {
-                                id = "prod_id",
-                                marketplace = "amazon",
-                                currency = "eur",
-                                quantity = 20,
-                                item_price = 12.1000004f,
+                                product = new
+                                {
+                                    id = "prod_id",
+                                    marketplace = "amazon",
+                                    currency = "eur",
+                                    quantity = 20,
+                                    item_price = 12.1000004f,
+                                }
                             }
                         }
                     }
@@ -376,7 +382,7 @@ namespace Sinch.Tests.Conversation
                         Title = "item1",
                         Items = new List<IListItem>()
                         {
-                            new ListItemChoice()
+                            new ChoiceItem()
                             {
                                 Title = "listitemchoice",
                                 PostbackData = "postno",
@@ -387,7 +393,7 @@ namespace Sinch.Tests.Conversation
                                     ThumbnailUrl = new Uri("https://knowyourmeme.com/photos/377946")
                                 }
                             },
-                            new ListItemProduct
+                            new ProductItem
                             {
                                 Id = "prod_id",
                                 Marketplace = "amazon",

@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Message
@@ -90,9 +93,64 @@ namespace Sinch.Conversation.Messages.Message
         }
     }
 
-    [JsonInterfaceConverter(typeof(InterfaceConverter<IListItem>))]
+    [JsonInterfaceConverter(typeof(ListItemJsonConverter))]
     public interface IListItem
     {
+    }
+
+    public class ListItemJsonConverter : JsonConverter<IListItem>
+    {
+        public override IListItem? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            var elem = JsonElement.ParseValue(ref reader);
+            if (elem.TryGetProperty("choice", out var choice))
+            {
+                return choice.Deserialize<ChoiceItem>(options);
+            }
+
+            if (elem.TryGetProperty("product", out var product))
+            {
+                return product.Deserialize<ProductItem>(options);
+            }
+
+            throw new JsonException(
+                $"Failed to match {nameof(IListItem)}, got json element: {elem.ToString()}");
+        }
+
+        public override void Write(Utf8JsonWriter writer, IListItem value, JsonSerializerOptions options)
+        {
+            var type = value.GetType();
+            if (type == typeof(ChoiceItem))
+            {
+                JsonSerializer.Serialize(writer, new ListItemChoiceWrapper()
+                {
+                    Choice = value as ChoiceItem
+                }, options);
+                return;
+            }
+
+            if (type == typeof(ProductItem))
+            {
+                JsonSerializer.Serialize(writer, new ListItemProductWrapper()
+                {
+                    Product = value as ProductItem
+                }, options);
+                return;
+            }
+
+            throw new InvalidOperationException(
+                $"Value is not in range of expected types - actual type is {type.FullName}");
+        }
+    }
+
+    internal class ListItemChoiceWrapper
+    {
+        public ChoiceItem? Choice { get; set; }
+    }
+
+    internal class ListItemProductWrapper
+    {
+        public ProductItem? Product { get; set; }
     }
 
     /// <summary>

@@ -44,7 +44,7 @@ namespace Sinch.Tests.Conversation
                         Title = "sec1",
                         Items = new List<IListItem>()
                         {
-                            new ListItemChoice()
+                            new ChoiceItem()
                             {
                                 Title = "title",
                                 Description = "desc",
@@ -59,9 +59,9 @@ namespace Sinch.Tests.Conversation
                     new ListSection()
                     {
                         Title = "sec2",
-                        Items = new List<IListItem>()
+                        Items = new List<IListItem>
                         {
-                            new ListItemProduct()
+                            new ProductItem()
                             {
                                 Id = "id",
                                 Marketplace = "amazon"
@@ -207,13 +207,16 @@ namespace Sinch.Tests.Conversation
                                 {
                                     new
                                     {
-                                        title = "title",
-                                        description = "desc",
-                                        media = new
+                                        choice = new
                                         {
-                                            url = "http://localhost",
-                                        },
-                                        postback_data = "postback"
+                                            title = "title",
+                                            description = "desc",
+                                            media = new
+                                            {
+                                                url = "http://localhost",
+                                            },
+                                            postback_data = "postback"
+                                        }
                                     }
                                 }
                             },
@@ -224,8 +227,11 @@ namespace Sinch.Tests.Conversation
                                 {
                                     new
                                     {
-                                        id = "id",
-                                        marketplace = "amazon"
+                                        product = new
+                                        {
+                                            id = "id",
+                                            marketplace = "amazon"
+                                        }
                                     }
                                 }
                             }
