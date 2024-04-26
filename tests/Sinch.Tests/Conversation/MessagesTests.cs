@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -13,6 +14,7 @@ using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.List;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
+using Sinch.Core;
 using Xunit;
 
 namespace Sinch.Tests.Conversation
@@ -356,5 +358,67 @@ namespace Sinch.Tests.Conversation
             var dict = JsonSerializer.Deserialize<Dictionary<ConversationChannel, IChannelSpecificMessage>>(json);
             dict[ConversationChannel.WhatsApp].Should().BeEquivalentTo(_flowMessage);
         }
+
+
+        [Theory]
+        [ClassData(typeof(OmniMessageTestData))]
+        public void DeserializeOmniMessageOverride(string json, object dataToCheck)
+        {
+            var dict = JsonSerializer
+                .Deserialize<Dictionary<ChannelSpecificTemplate, IOmniMessageOverride>>(json,
+                    options: new JsonSerializerOptions()
+                    {
+                        PropertyNamingPolicy = SnakeCaseNamingPolicy.Instance
+                    });
+            dict.Should().ContainKey(ChannelSpecificTemplate.WhatsApp).WhoseValue.Should()
+                .BeEquivalentTo(dataToCheck);
+        }
+    }
+
+    public class OmniMessageTestData : IEnumerable<object[]>
+    {
+        private static readonly string Text = @"
+            {
+              ""WHATSAPP"": {
+                  ""text_message"": {
+                    ""text"": ""hello""
+                  }
+              }
+            }";
+        private static readonly string Media = @"
+            {
+              ""WHATSAPP"": {
+                  ""media_message"": {
+                    ""url"": ""https://hello.net""
+                  }
+              }
+            }";
+        private static readonly string Template = @"
+            {
+              ""WHATSAPP"": {
+                  ""template_reference"": {
+                    ""template_id"": ""id"",
+                    ""version"": ""3""
+                  }
+              }
+            }";
+
+        private readonly List<object[]> _data = new()
+        {
+            new object[] { Text, new TextMessage("hello") },
+            new object[] { Media, new MediaMessage()
+            {
+                Url = new Uri("https://hello.net")
+            }},
+            new object[] { Template, new TemplateReference()
+            {
+                TemplateId = "id",
+                Version = "3"
+            }},
+        };
+
+        public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

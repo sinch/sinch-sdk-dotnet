@@ -449,6 +449,16 @@ namespace Sinch.Tests.Conversation
             _baseMessageExpected.ttl = "1800s";
             _baseMessageExpected.queue = "HIGH_PRIORITY";
             _baseMessageExpected.message_metadata = "meta";
+            _baseMessageExpected.message.explicit_channel_omni_message = new
+            {
+                WECHAT = new
+                {
+                    text_message = new
+                    {
+                        text = "hello"
+                    }
+                }
+            };
 
             _baseRequest.Recipient = new Identified
             {
@@ -474,6 +484,11 @@ namespace Sinch.Tests.Conversation
             _baseRequest.Ttl = "1800s";
             _baseRequest.Queue = MessageQueue.HighPriority;
             _baseRequest.MessageMetadata = "meta";
+            _baseRequest.Message.ExplicitChannelOmniMessage =
+                new Dictionary<ChannelSpecificTemplate, IOmniMessageOverride>()
+                {
+                    { ChannelSpecificTemplate.WeChat, new TextMessage("hello") }
+                };
 
             HttpMessageHandlerMock
                 .When(HttpMethod.Post,
