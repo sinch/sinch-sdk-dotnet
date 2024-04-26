@@ -10,99 +10,11 @@ using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Message
 {
+    // ! IMPORTANT SERIALIZATION: maps every type of messages properties to Message 
+    [JsonConverter(typeof(AppMessageConverter))]
     public class AppMessage
     {
-        // Thank you System.Text.Json -_-
-        [JsonConstructor]
-        [Obsolete("Needed for System.Text.Json", true)]
-        public AppMessage()
-        {
-        }
-
-        #region Oneof app message props and constructors
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public TextMessage? TextMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public CardMessage? CardMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public CarouselMessage? CarouselMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ChoiceMessage? ChoiceMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public LocationMessage? LocationMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public MediaMessage? MediaMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public TemplateMessage? TemplateMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ListMessage? ListMessage { get; private set; }
-
-        [JsonInclude]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ContactInfoMessage? ContactInfoMessage { get; private set; }
-
-        public AppMessage(ChoiceMessage choiceMessage)
-        {
-            ChoiceMessage = choiceMessage;
-        }
-
-        public AppMessage(LocationMessage locationMessage)
-        {
-            LocationMessage = locationMessage;
-        }
-
-        public AppMessage(MediaMessage mediaMessage)
-        {
-            MediaMessage = mediaMessage;
-        }
-
-        public AppMessage(TemplateMessage templateMessage)
-        {
-            TemplateMessage = templateMessage;
-        }
-
-        public AppMessage(ListMessage listMessage)
-        {
-            ListMessage = listMessage;
-        }
-
-        public AppMessage(TextMessage textMessage)
-        {
-            TextMessage = textMessage;
-        }
-
-        public AppMessage(CardMessage cardMessage)
-        {
-            CardMessage = cardMessage;
-        }
-
-        public AppMessage(CarouselMessage carouselMessage)
-        {
-            CarouselMessage = carouselMessage;
-        }
-
-        public AppMessage(ContactInfoMessage contactInfoMessage)
-        {
-            ContactInfoMessage = contactInfoMessage;
-        }
-
-        #endregion
+        public IMessage? Message { get; set; }
 
         /// <summary>
         ///     Optional. Channel specific messages, overriding any transcoding.
@@ -125,6 +37,92 @@ namespace Sinch.Conversation.Messages.Message
         public Agent? Agent { get; set; }
     }
 
+    public class AppMessageConverter : JsonConverter<AppMessage>
+    {
+        public override AppMessage? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            var elem = JsonElement.ParseValue(ref reader);
+
+            foreach (var entry in MessagePropNameToTypeMap.Map)
+            {
+                if (elem.TryGetProperty(entry.Key, out var value))
+                {
+                    return new AppMessage()
+                    {
+                        Message = value.Deserialize<IMessage>(options),
+                        Agent = elem.TryGetProperty("agent", out var agent) ? agent.Deserialize<Agent>(options) : null,
+                        ChannelSpecificMessage =
+                            elem.TryGetProperty("channel_specific_message", out var channelSpecificMessage)
+                                ? channelSpecificMessage
+                                    .Deserialize<Dictionary<ConversationChannel, IChannelSpecificMessage>?>(options)
+                                : null,
+                        ExplicitChannelMessage =
+                            elem.TryGetProperty("explicit_channel_message", out var explicitChannelMessage)
+                                ? explicitChannelMessage
+                                    .Deserialize<Dictionary<ConversationChannel, JsonValue>?>(options)
+                                : null,
+                        ExplicitChannelOmniMessage = elem.TryGetProperty("explicit_channel_omni_message",
+                            out var explicitChannelOmniMessage)
+                            ? explicitChannelOmniMessage
+                                .Deserialize<Dictionary<ChannelSpecificTemplate, IOmniMessageOverride>?>(options)
+                            : null
+                    };
+                }
+            }
+
+            throw new JsonException(
+                $"Failed to match {nameof(IMessage)}, got json element: {elem.ToString()}");
+        }
+
+        public override void Write(Utf8JsonWriter writer, AppMessage value, JsonSerializerOptions options)
+        {
+            var messageType = value.Message?.GetType();
+            var matchingType = MessagePropNameToTypeMap.Map.FirstOrDefault(x => x.Value == messageType);
+
+            var obj = new Dictionary<string, object?>();
+            if (matchingType.Key is not null)
+            {
+                obj.Add(matchingType.Key, value.Message);
+            }
+
+            if (options.DefaultIgnoreCondition is JsonIgnoreCondition.WhenWritingNull
+                or JsonIgnoreCondition.WhenWritingDefault or JsonIgnoreCondition.Always)
+            {
+                if (value.Agent is not null)
+                {
+                    obj.Add("agent", value.Agent);
+                }
+
+                if (value.ChannelSpecificMessage is not null)
+                {
+                    obj.Add("channel_specific_message", value.ChannelSpecificMessage);
+                }
+
+
+                if (value.ExplicitChannelMessage is not null)
+                {
+                    obj.Add("explicit_channel_message", value.ExplicitChannelMessage);
+                }
+
+                if (value.ExplicitChannelOmniMessage is not null)
+                {
+                    obj.Add("explicit_channel_omni_message", value.ExplicitChannelOmniMessage);
+                }
+            }
+            else
+            {
+                obj.Add("agent", value.Agent);
+                obj.Add("channel_specific_message", value.ChannelSpecificMessage);
+                obj.Add("explicit_channel_message", value.ExplicitChannelMessage);
+                obj.Add("explicit_channel_omni_message", value.ExplicitChannelOmniMessage);
+            }
+
+
+            JsonSerializer.Serialize(writer, obj, options);
+        }
+    }
+
+
     /// <summary>
     ///     A message containing a channel specific message (not supported by OMNI types).
     /// </summary>
@@ -137,7 +135,6 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         public MessageType MessageType { get; }
     }
-
 
 
     [JsonConverter(typeof(EnumRecordJsonConverter<ChannelSpecificTemplate>))]

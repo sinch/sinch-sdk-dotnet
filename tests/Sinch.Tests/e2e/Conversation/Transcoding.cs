@@ -24,8 +24,9 @@ namespace Sinch.Tests.e2e.Conversation
                 {
                     ConversationChannel.Instagram, ConversationChannel.WhatsApp
                 },
-                AppMessage = new AppMessage(new TextMessage("aaa"))
+                AppMessage = new AppMessage()
                 {
+                    Message = new TextMessage("aaa"),
                     ExplicitChannelMessage = new Dictionary<ConversationChannel, JsonValue>()
                     {
                         { ConversationChannel.WhatsApp, JsonValue.Create("data") }

@@ -5,7 +5,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     A message containing only text.
     /// </summary>
-    public sealed class TextMessage : IOmniMessageOverride
+    public sealed class TextMessage : IOmniMessageOverride, IMessage
     {
         /// <summary>
         ///     A message containing only text.

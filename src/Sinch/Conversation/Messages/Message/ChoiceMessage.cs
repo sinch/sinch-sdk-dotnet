@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Sinch.Conversation.Messages.Message
 {
-    public sealed class ChoiceMessage : IOmniMessageOverride
+    public sealed class ChoiceMessage : IOmniMessageOverride, IMessage
     {
         /// <summary>
         ///     The number of choices is limited to 10.

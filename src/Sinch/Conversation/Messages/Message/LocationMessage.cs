@@ -5,7 +5,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     Message containing geographic location.
     /// </summary>
-    public sealed class LocationMessage : IOmniMessageOverride
+    public sealed class LocationMessage : IOmniMessageOverride, IMessage
     {
         /// <summary>
         ///     Gets or Sets Coordinates

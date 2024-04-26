@@ -36,7 +36,7 @@ namespace Sinch.Tests.Conversation
             var response = await Conversation.Messages.Get(messageId, MessageSource.ConversationSource);
 
             response.Should().NotBeNull();
-            response.AppMessage!.ListMessage.Should().BeEquivalentTo(new ListMessage
+            response.AppMessage!.Message.Should().BeOfType<ListMessage>().Which.Should().BeEquivalentTo(new ListMessage
             {
                 Title = "title",
                 Sections = new List<ListSection>()
@@ -385,6 +385,7 @@ namespace Sinch.Tests.Conversation
                   }
               }
             }";
+
         private static readonly string Media = @"
             {
               ""WHATSAPP"": {
@@ -393,6 +394,7 @@ namespace Sinch.Tests.Conversation
                   }
               }
             }";
+
         private static readonly string Template = @"
             {
               ""WHATSAPP"": {
@@ -406,15 +408,21 @@ namespace Sinch.Tests.Conversation
         private readonly List<object[]> _data = new()
         {
             new object[] { Text, new TextMessage("hello") },
-            new object[] { Media, new MediaMessage()
+            new object[]
             {
-                Url = new Uri("https://hello.net")
-            }},
-            new object[] { Template, new TemplateReference()
+                Media, new MediaMessage()
+                {
+                    Url = new Uri("https://hello.net")
+                }
+            },
+            new object[]
             {
-                TemplateId = "id",
-                Version = "3"
-            }},
+                Template, new TemplateReference()
+                {
+                    TemplateId = "id",
+                    Version = "3"
+                }
+            },
         };
 
         public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();

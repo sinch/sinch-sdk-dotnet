@@ -114,7 +114,10 @@ namespace Sinch.Tests.e2e.Conversation
             {
                 Direction = ConversationDirection.ToApp,
                 AcceptTime = DateTime.Parse("1970-01-01T00:00:00Z", CultureInfo.InvariantCulture).ToUniversalTime(),
-                AppMessage = new AppMessage(new TextMessage("hi")),
+                AppMessage = new AppMessage()
+                {
+                    Message = new TextMessage("hi"),
+                },
                 ChannelIdentity = new ChannelIdentity
                 {
                     Identity = "01HN31W37910AANG1JGE8Y6RFF",

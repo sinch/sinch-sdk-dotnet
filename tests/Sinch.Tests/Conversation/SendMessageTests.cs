@@ -24,8 +24,9 @@ namespace Sinch.Tests.Conversation
         private readonly SendMessageRequest _baseRequest = new SendMessageRequest
         {
             AppId = "123",
-            Message = new AppMessage(new TextMessage("I'm a texter"))
+            Message = new AppMessage()
             {
+                Message = new TextMessage("I'm a texter"),
                 ExplicitChannelMessage = null
             },
             Recipient = new ContactRecipient()
@@ -87,12 +88,15 @@ namespace Sinch.Tests.Conversation
                     longitude = 4.20f,
                 }
             };
-            _baseRequest.Message = new AppMessage(new LocationMessage
+            _baseRequest.Message = new AppMessage()
             {
-                Coordinates = new Coordinates(3.18f, 4.20f),
-                Label = "label",
-                Title = "title"
-            });
+                Message = new LocationMessage
+                {
+                    Coordinates = new Coordinates(3.18f, 4.20f),
+                    Label = "label",
+                    Title = "title"
+                }
+            };
 
             HttpMessageHandlerMock
                 .When(HttpMethod.Post,
@@ -146,36 +150,39 @@ namespace Sinch.Tests.Conversation
                     }
                 }
             };
-            _baseRequest.Message = new AppMessage(new CarouselMessage()
+            _baseRequest.Message = new AppMessage()
             {
-                Cards = new List<CardMessage>()
+                Message = new CarouselMessage()
                 {
-                    new()
+                    Cards = new List<CardMessage>()
                     {
-                        Description = "card description",
-                        Title = "Title Card",
-                        Height = CardHeight.Tall,
-                        MediaMessage = new MediaCarouselMessage()
+                        new()
                         {
-                            Url = new Uri("https://localmob"),
-                        },
-                        Choices = new List<Choice>
-                        {
-                            new Choice
+                            Description = "card description",
+                            Title = "Title Card",
+                            Height = CardHeight.Tall,
+                            MediaMessage = new MediaCarouselMessage()
                             {
-                                CallMessage = new("123", "Jhon"),
+                                Url = new Uri("https://localmob"),
+                            },
+                            Choices = new List<Choice>
+                            {
+                                new Choice
+                                {
+                                    CallMessage = new("123", "Jhon"),
+                                }
                             }
                         }
-                    }
-                },
-                Choices = new List<Choice>()
-                {
-                    new Choice()
+                    },
+                    Choices = new List<Choice>()
                     {
-                        TextMessage = new TextMessage("123")
+                        new Choice()
+                        {
+                            TextMessage = new TextMessage("123")
+                        }
                     }
                 }
-            });
+            };
             HttpMessageHandlerMock
                 .When(HttpMethod.Post,
                     _sendUrl)
@@ -208,18 +215,21 @@ namespace Sinch.Tests.Conversation
                     text = "123",
                 }
             };
-            _baseRequest.Message = new AppMessage(new ChoiceMessage()
+            _baseRequest.Message = new AppMessage()
             {
-                Choices = new List<Choice>()
+                Message = new ChoiceMessage()
                 {
-                    new Choice()
+                    Choices = new List<Choice>()
                     {
-                        TextMessage = new TextMessage("123"),
-                        PostbackData = "postback"
-                    }
-                },
-                TextMessage = new TextMessage("123")
-            });
+                        new Choice()
+                        {
+                            TextMessage = new TextMessage("123"),
+                            PostbackData = "postback"
+                        }
+                    },
+                    TextMessage = new TextMessage("123")
+                }
+            };
             HttpMessageHandlerMock
                 .When(HttpMethod.Post,
                     _sendUrl)
@@ -239,11 +249,14 @@ namespace Sinch.Tests.Conversation
                 url = "http://yup/ls",
                 thumbnail_url = "https://img.c",
             };
-            _baseRequest.Message = new AppMessage(new MediaMessage
+            _baseRequest.Message = new AppMessage()
             {
-                Url = new Uri("http://yup/ls"),
-                ThumbnailUrl = new Uri("https://img.c")
-            });
+                Message = new MediaMessage
+                {
+                    Url = new Uri("http://yup/ls"),
+                    ThumbnailUrl = new Uri("https://img.c")
+                }
+            };
             HttpMessageHandlerMock
                 .When(HttpMethod.Post,
                     _sendUrl)
@@ -284,34 +297,37 @@ namespace Sinch.Tests.Conversation
                     }
                 }
             };
-            _baseRequest.Message = new AppMessage(new TemplateMessage()
+            _baseRequest.Message = new AppMessage()
             {
-                OmniTemplate = new TemplateReference
+                Message = new TemplateMessage()
                 {
-                    LanguageCode = "es",
-                    Parameters = new Dictionary<string, string>()
+                    OmniTemplate = new TemplateReference
                     {
-                        { "key", "val" }
-                    },
-                    TemplateId = "tempid",
-                    Version = "1.0"
-                },
-                ChannelTemplate = new Dictionary<string, TemplateReference>()
-                {
-                    {
-                        "test", new TemplateReference
+                        LanguageCode = "es",
+                        Parameters = new Dictionary<string, string>()
                         {
-                            TemplateId = "abc",
-                            Version = "305",
-                            Parameters = new Dictionary<string, string>()
+                            { "key", "val" }
+                        },
+                        TemplateId = "tempid",
+                        Version = "1.0"
+                    },
+                    ChannelTemplate = new Dictionary<string, TemplateReference>()
+                    {
+                        {
+                            "test", new TemplateReference
                             {
-                                { "tarnished", "order" }
-                            },
-                            LanguageCode = "de"
+                                TemplateId = "abc",
+                                Version = "305",
+                                Parameters = new Dictionary<string, string>()
+                                {
+                                    { "tarnished", "order" }
+                                },
+                                LanguageCode = "de"
+                            }
                         }
                     }
                 }
-            });
+            };
             HttpMessageHandlerMock
                 .When(HttpMethod.Post,
                     _sendUrl)
@@ -371,45 +387,48 @@ namespace Sinch.Tests.Conversation
                     }
                 }
             };
-            _baseRequest.Message = new AppMessage(new ListMessage
+            _baseRequest.Message = new AppMessage()
             {
-                Title = "list_title",
-                Description = "description",
-                Sections = new List<ListSection>()
+                Message = new ListMessage
                 {
-                    new ListSection()
+                    Title = "list_title",
+                    Description = "description",
+                    Sections = new List<ListSection>()
                     {
-                        Title = "item1",
-                        Items = new List<IListItem>()
+                        new ListSection()
                         {
-                            new ChoiceItem()
+                            Title = "item1",
+                            Items = new List<IListItem>()
                             {
-                                Title = "listitemchoice",
-                                PostbackData = "postno",
-                                Description = "desc",
-                                Media = new MediaMessage()
+                                new ChoiceItem()
                                 {
-                                    Url = new Uri("https://nolocalhost"),
-                                    ThumbnailUrl = new Uri("https://knowyourmeme.com/photos/377946")
+                                    Title = "listitemchoice",
+                                    PostbackData = "postno",
+                                    Description = "desc",
+                                    Media = new MediaMessage()
+                                    {
+                                        Url = new Uri("https://nolocalhost"),
+                                        ThumbnailUrl = new Uri("https://knowyourmeme.com/photos/377946")
+                                    }
+                                },
+                                new ProductItem
+                                {
+                                    Id = "prod_id",
+                                    Marketplace = "amazon",
+                                    Currency = "eur",
+                                    Quantity = 20,
+                                    ItemPrice = 12.1000004f,
                                 }
-                            },
-                            new ProductItem
-                            {
-                                Id = "prod_id",
-                                Marketplace = "amazon",
-                                Currency = "eur",
-                                Quantity = 20,
-                                ItemPrice = 12.1000004f,
                             }
                         }
+                    },
+                    MessageProperties = new ListMessageMessageProperties()
+                    {
+                        Menu = "omenu",
+                        CatalogId = "id1"
                     }
-                },
-                MessageProperties = new ListMessageMessageProperties()
-                {
-                    Menu = "omenu",
-                    CatalogId = "id1"
                 }
-            });
+            };
             HttpMessageHandlerMock
                 .When(HttpMethod.Post,
                     _sendUrl)

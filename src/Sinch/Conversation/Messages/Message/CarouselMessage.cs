@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Sinch.Conversation.Messages.Message
 {
-    public sealed class CarouselMessage : IOmniMessageOverride
+    public sealed class CarouselMessage : IOmniMessageOverride, IMessage
     {
         /// <summary>
         ///     A list of up to 10 cards.
