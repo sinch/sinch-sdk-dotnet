@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Voice.Common
@@ -10,14 +10,14 @@ namespace Sinch.Voice.Common
         /// </summary>
         [JsonPropertyName("currencyId")]
         public string? CurrencyId { get; set; }
-        
+
 
         /// <summary>
         ///     Gets or Sets Amount
         /// </summary>
         [JsonPropertyName("amount")]
         public float? Amount { get; set; }
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object

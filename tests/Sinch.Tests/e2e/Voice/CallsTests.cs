@@ -27,7 +27,7 @@ namespace Sinch.Tests.e2e.Voice
                     Endpoint = "+123456",
                     Type = DestinationType.Number
                 },
-                To =new Destination()
+                To = new Destination()
                 {
                     Endpoint = "+987654",
                     Type = DestinationType.Number
