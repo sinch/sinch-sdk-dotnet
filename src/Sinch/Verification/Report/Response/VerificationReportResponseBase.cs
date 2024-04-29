@@ -32,6 +32,16 @@ namespace Sinch.Verification.Report.Response
         ///     The reference ID that was optionally passed together with the verification request.
         /// </summary>
         public string? Reference { get; set; }
+
+        /// <summary>
+        ///     The ID of the country to which the verification was sent.
+        /// </summary>
+        public string? CountryId { get; set; }
+
+        /// <summary>
+        ///     The timestamp in UTC format. 
+        /// </summary>
+        public DateTime? VerificationTimestamp { get; set; }
     }
 
     [JsonConverter(typeof(VerificationReportResponseConverter))]

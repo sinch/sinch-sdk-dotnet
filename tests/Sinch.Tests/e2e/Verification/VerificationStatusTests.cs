@@ -31,7 +31,7 @@ namespace Sinch.Tests.e2e.Verification
         [Fact]
         public async Task StatusById()
         {
-            var response = await VerificationClient.VerificationStatus.GetById("123");
+            var response = await VerificationClient.VerificationStatus.GetSmsById("123");
 
             response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should().BeEquivalentTo(
                 _smsVerificationReportResponse);
@@ -41,17 +41,16 @@ namespace Sinch.Tests.e2e.Verification
         public async Task StatusByIdentity()
         {
             var response =
-                await VerificationClient.VerificationStatus.GetByIdentity("123",
-                    VerificationMethod.Sms);
+                await VerificationClient.VerificationStatus.GetSmsByIdentity("123");
 
-            response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should()
+            response.Should()
                 .BeEquivalentTo(_smsVerificationReportResponse);
         }
 
         [Fact]
         public async Task StatusByReference()
         {
-            var response = await VerificationClient.VerificationStatus.GetByReference("123");
+            var response = await VerificationClient.VerificationStatus.GetSmsByReference("123");
 
             response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should()
                 .BeEquivalentTo(_smsVerificationReportResponse);
@@ -60,9 +59,9 @@ namespace Sinch.Tests.e2e.Verification
         [Fact]
         public async Task ByReferenceSms()
         {
-            var response = await VerificationClient.VerificationStatus.GetById("12");
+            var response = await VerificationClient.VerificationStatus.GetSmsById("12");
 
-            response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should().BeEquivalentTo(
+            response.Should().BeEquivalentTo(
                 new ReportSmsVerificationResponse()
                 {
                     Method = VerificationMethod.Sms,
@@ -86,10 +85,9 @@ namespace Sinch.Tests.e2e.Verification
         public async Task ByIdentityPhoneCall()
         {
             var response =
-                await VerificationClient.VerificationStatus.GetByIdentity("+49342432",
-                    VerificationMethod.Callout);
+                await VerificationClient.VerificationStatus.GetCalloutByIdentity("+49342432");
 
-            response.Should().BeOfType<ReportCalloutVerificationResponse>().Which.Should().BeEquivalentTo(
+            response.Should().BeEquivalentTo(
                 new ReportCalloutVerificationResponse()
                 {
                     Method = VerificationMethod.Callout,
@@ -118,9 +116,9 @@ namespace Sinch.Tests.e2e.Verification
         public async Task ByReferenceFlashCall()
         {
             var response =
-                await VerificationClient.VerificationStatus.GetByReference("ref_12");
+                await VerificationClient.VerificationStatus.GetFlashcallByReference("ref_12");
 
-            response.Should().BeOfType<ReportFlashCallVerificationResponse>().Which.Should().BeEquivalentTo(
+            response.Should().BeEquivalentTo(
                 new ReportFlashCallVerificationResponse()
                 {
                     Method = VerificationMethod.FlashCall,
