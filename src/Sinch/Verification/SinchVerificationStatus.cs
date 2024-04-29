@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
 using Sinch.Verification.Common;
-using Sinch.Verification.Report.Response;
+using Sinch.Verification.Status;
 
 namespace Sinch.Verification
 {
@@ -18,14 +18,13 @@ namespace Sinch.Verification
         /// <param name="id">The ID of the verification.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ReportSmsVerificationResponse> GetSmsById(string id, CancellationToken cancellationToken = default);
+        Task<SmsVerificationStatusResponse> GetSmsById(string id, CancellationToken cancellationToken = default);
 
         /// <inheritdoc cref="GetSmsById" />
-        Task<ReportCalloutVerificationResponse>
-            GetCalloutById(string id, CancellationToken cancellationToken = default);
+        Task<CalloutVerificationStatusResponse> GetCalloutById(string id, CancellationToken cancellationToken = default);
 
         /// <inheritdoc cref="GetSmsById" />
-        Task<ReportFlashCallVerificationResponse> GetFlashCallById(string id,
+        Task<FlashCallVerificationStatusResponse> GetFlashCallById(string id,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -36,14 +35,14 @@ namespace Sinch.Verification
         /// <param name="endpoint">For type number use a E.164-compatible phone number.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ReportSmsVerificationResponse> GetSmsByIdentity(string endpoint,
+        Task<SmsVerificationStatusResponse> GetSmsByIdentity(string endpoint,
             CancellationToken cancellationToken = default);
 
         /// <inheritdoc cref="GetSmsByIdentity" />
-        Task<ReportCalloutVerificationResponse> GetCalloutByIdentity(string endpoint,
+        Task<CalloutVerificationStatusResponse> GetCalloutByIdentity(string endpoint,
             CancellationToken cancellationToken = default);
 
-        Task<ReportFlashCallVerificationResponse> GetFlashcallByIdentity(string endpoint,
+        Task<FlashCallVerificationStatusResponse> GetFlashcallByIdentity(string endpoint,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -53,15 +52,15 @@ namespace Sinch.Verification
         /// <param name="reference">The custom reference of the verification.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ReportSmsVerificationResponse> GetSmsByReference(string reference,
+        Task<SmsVerificationStatusResponse> GetSmsByReference(string reference,
             CancellationToken cancellationToken = default);
 
         /// <inheritdoc cref="GetSmsByReference" />
-        Task<ReportFlashCallVerificationResponse> GetFlashcallByReference(string reference,
+        Task<FlashCallVerificationStatusResponse> GetFlashcallByReference(string reference,
             CancellationToken cancellationToken = default);
 
         /// <inheritdoc cref="GetSmsByReference" />
-        Task<ReportCalloutVerificationResponse> GetCalloutByReference(string reference,
+        Task<CalloutVerificationStatusResponse> GetCalloutByReference(string reference,
             CancellationToken cancellationToken = default);
     }
 
@@ -78,94 +77,94 @@ namespace Sinch.Verification
             _logger = logger;
         }
 
-        private Task<IVerificationReportResponse> GetById(string id, CancellationToken cancellationToken = default)
+        private Task<IVerificationStatusResponse> GetById(string id, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"verification/v1/verifications/id/{id}");
             _logger?.LogDebug("Getting status of the verification by {id}", id);
-            return _http.Send<IVerificationReportResponse>(uri, HttpMethod.Get,
+            return _http.Send<IVerificationStatusResponse>(uri, HttpMethod.Get,
                 cancellationToken: cancellationToken);
         }
 
-        private Task<IVerificationReportResponse> GetByIdentity(string endpoint, VerificationMethod method,
+        private Task<IVerificationStatusResponse> GetByIdentity(string endpoint, VerificationMethod method,
             CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"verification/v1/verifications/{method.Value}/number/{endpoint}");
             _logger?.LogDebug("Getting status of the verification by identity {endpoint} and {method}", endpoint,
                 method);
-            return _http.Send<IVerificationReportResponse>(uri, HttpMethod.Get,
+            return _http.Send<IVerificationStatusResponse>(uri, HttpMethod.Get,
                 cancellationToken: cancellationToken);
         }
 
-        private Task<IVerificationReportResponse> GetByReference(string reference,
+        private Task<IVerificationStatusResponse> GetByReference(string reference,
             CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"verification/v1/verifications/reference/{reference}");
             _logger?.LogDebug("Getting status of the verification by {reference}", reference);
-            return _http.Send<IVerificationReportResponse>(uri, HttpMethod.Get,
+            return _http.Send<IVerificationStatusResponse>(uri, HttpMethod.Get,
                 cancellationToken: cancellationToken);
         }
 
-        public async Task<ReportSmsVerificationResponse> GetSmsById(string id,
+        public async Task<SmsVerificationStatusResponse> GetSmsById(string id,
             CancellationToken cancellationToken = default)
         {
             var result = await GetById(id, cancellationToken);
-            return (result as ReportSmsVerificationResponse)!;
+            return (result as SmsVerificationStatusResponse)!;
         }
 
-        public async Task<ReportCalloutVerificationResponse> GetCalloutById(string id,
+        public async Task<CalloutVerificationStatusResponse> GetCalloutById(string id,
             CancellationToken cancellationToken = default)
         {
             var result = await GetById(id, cancellationToken);
-            return (result as ReportCalloutVerificationResponse)!;
+            return (result as CalloutVerificationStatusResponse)!;
         }
 
-        public async Task<ReportFlashCallVerificationResponse> GetFlashCallById(string id,
+        public async Task<FlashCallVerificationStatusResponse> GetFlashCallById(string id,
             CancellationToken cancellationToken = default)
         {
             var result = await GetById(id, cancellationToken);
-            return (result as ReportFlashCallVerificationResponse)!;
+            return (result as FlashCallVerificationStatusResponse)!;
         }
 
-        public async Task<ReportSmsVerificationResponse> GetSmsByIdentity(string endpoint,
+        public async Task<SmsVerificationStatusResponse> GetSmsByIdentity(string endpoint,
             CancellationToken cancellationToken = default)
         {
             var result = await GetByIdentity(endpoint, VerificationMethod.Sms, cancellationToken);
-            return (result as ReportSmsVerificationResponse)!;
+            return (result as SmsVerificationStatusResponse)!;
         }
 
-        public async Task<ReportCalloutVerificationResponse> GetCalloutByIdentity(string endpoint,
+        public async Task<CalloutVerificationStatusResponse> GetCalloutByIdentity(string endpoint,
             CancellationToken cancellationToken = default)
         {
             var result = await GetByIdentity(endpoint, VerificationMethod.Callout, cancellationToken);
-            return (result as ReportCalloutVerificationResponse)!;
+            return (result as CalloutVerificationStatusResponse)!;
         }
 
-        public async Task<ReportFlashCallVerificationResponse> GetFlashcallByIdentity(string endpoint,
+        public async Task<FlashCallVerificationStatusResponse> GetFlashcallByIdentity(string endpoint,
             CancellationToken cancellationToken = default)
         {
             var result = await GetByIdentity(endpoint, VerificationMethod.FlashCall, cancellationToken);
-            return (result as ReportFlashCallVerificationResponse)!;
+            return (result as FlashCallVerificationStatusResponse)!;
         }
 
-        public async Task<ReportSmsVerificationResponse> GetSmsByReference(string reference,
+        public async Task<SmsVerificationStatusResponse> GetSmsByReference(string reference,
             CancellationToken cancellationToken = default)
         {
             var result = await GetByReference(reference, cancellationToken);
-            return (result as ReportSmsVerificationResponse)!;
+            return (result as SmsVerificationStatusResponse)!;
         }
 
-        public async Task<ReportFlashCallVerificationResponse> GetFlashcallByReference(string reference,
+        public async Task<FlashCallVerificationStatusResponse> GetFlashcallByReference(string reference,
             CancellationToken cancellationToken = default)
         {
             var result = await GetByReference(reference, cancellationToken);
-            return (result as ReportFlashCallVerificationResponse)!;
+            return (result as FlashCallVerificationStatusResponse)!;
         }
 
-        public async Task<ReportCalloutVerificationResponse> GetCalloutByReference(string reference,
+        public async Task<CalloutVerificationStatusResponse> GetCalloutByReference(string reference,
             CancellationToken cancellationToken = default)
         {
             var result = await GetByReference(reference, cancellationToken);
-            return (result as ReportCalloutVerificationResponse)!;
+            return (result as CalloutVerificationStatusResponse)!;
         }
     }
 }

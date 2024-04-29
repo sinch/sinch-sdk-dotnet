@@ -1,4 +1,3 @@
-using Sinch.Auth;
 using Sinch.Voice;
 
 namespace Sinch.Tests.e2e.Voice
@@ -9,7 +8,7 @@ namespace Sinch.Tests.e2e.Voice
 
         protected VoiceTestBase()
         {
-            VoiceClient = SinchClientMockServer.Voice("669E367E-6BBA-48AB-AF15-266871C28135", "BeIukql3pTKJ8RGL5zo0DA==", default);
+            VoiceClient = SinchClientMockServer.Voice("669E367E-6BBA-48AB-AF15-266871C28135", "BeIukql3pTKJ8RGL5zo0DA==");
         }
     }
 }

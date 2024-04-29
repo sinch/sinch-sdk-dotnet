@@ -96,7 +96,6 @@ namespace Sinch.Tests.Verification
                 new ReportCalloutVerificationResponse
                 {
                     Id = "10",
-                    CallComplete = true,
                 });
         }
     }

@@ -17,32 +17,12 @@ namespace Sinch.Verification.Report.Response
         ///     The method of the verification request.
         /// </summary>
         [JsonInclude]
-        public virtual VerificationMethod? Method { get; protected set; }
+        public abstract VerificationMethod Method { get; protected set; }
 
         /// <summary>
         ///     The status of the verification request.
         /// </summary>
         public VerificationStatus? Status { get; set; }
-
-        /// <summary>
-        ///     Displays the reason why a verification has FAILED, was DENIED, or was ABORTED.
-        /// </summary>
-        public Reason? Reason { get; set; }
-
-        /// <summary>
-        ///     The reference ID that was optionally passed together with the verification request.
-        /// </summary>
-        public string? Reference { get; set; }
-
-        /// <summary>
-        ///     The ID of the country to which the verification was sent.
-        /// </summary>
-        public string? CountryId { get; set; }
-
-        /// <summary>
-        ///     The timestamp in UTC format. 
-        /// </summary>
-        public DateTime? VerificationTimestamp { get; set; }
     }
 
     [JsonConverter(typeof(VerificationReportResponseConverter))]

@@ -2,16 +2,19 @@ using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Verification.Common;
-using Sinch.Verification.Report.Response;
+using Sinch.Verification.Status;
 using Xunit;
 
 namespace Sinch.Tests.e2e.Verification
 {
     public class VerificationStatusTests : VerificationTestBase
     {
-        // based on manual mock
-        private readonly ReportSmsVerificationResponse _smsVerificationManualResponse =
-            new()
+        [Fact]
+        public async Task ReportStatusByIdSms()
+        {
+            var response = await VerificationClient.VerificationStatus.GetSmsById("12");
+
+            response.Should().BeEquivalentTo(new SmsVerificationStatusResponse()
             {
                 Id = "_id",
                 Status = VerificationStatus.Aborted,
@@ -28,15 +31,7 @@ namespace Sinch.Tests.e2e.Verification
                 Source = Source.Intercepted,
                 CountryId = "de",
                 VerificationTimestamp = new DateTime(2023, 04, 21, 14, 45, 51)
-            };
-
-        [Fact]
-        public async Task ReportStatusByIdSms()
-        {
-            var response = await VerificationClient.VerificationStatus.GetSmsById("12");
-
-            response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should().BeEquivalentTo(
-                _smsVerificationManualResponse);
+            });
         }
 
         [Fact]
@@ -46,7 +41,7 @@ namespace Sinch.Tests.e2e.Verification
                 await VerificationClient.VerificationStatus.GetCalloutByIdentity("+49342432");
 
             response.Should().BeEquivalentTo(
-                new ReportCalloutVerificationResponse()
+                new CalloutVerificationStatusResponse()
                 {
                     Id = "_id",
                     Price = new Price()
@@ -78,7 +73,7 @@ namespace Sinch.Tests.e2e.Verification
                 await VerificationClient.VerificationStatus.GetFlashcallByReference("ref_12");
 
             response.Should().BeEquivalentTo(
-                new ReportFlashCallVerificationResponse()
+                new FlashCallVerificationStatusResponse()
                 {
                     Id = "_id",
                     Price = new Price()

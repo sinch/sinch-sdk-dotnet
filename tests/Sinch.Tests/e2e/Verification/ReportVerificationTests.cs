@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Verification.Common;
@@ -23,24 +22,11 @@ namespace Sinch.Tests.e2e.Verification
                     }
                 });
 
-            response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should().BeEquivalentTo(
+            response.Should().BeEquivalentTo(
                 new ReportSmsVerificationResponse()
                 {
-                    Reference = "ref",
-                    Id = "_id",
-                    Price = new PriceBase()
-                    {
-                        VerificationPrice = new PriceDetail()
-                        {
-                            Amount = 0.42,
-                            CurrencyId = "US"
-                        }
-                    },
-                    Reason = Reason.DeniedByCallback,
-                    Source = Source.Intercepted,
-                    Status = VerificationStatus.Aborted,
-                    CountryId = "de",
-                    VerificationTimestamp = DateTime.Parse("2023-04-21T14:45:51")
+                    Id = "123456",
+                    Status = VerificationStatus.Successful,
                 });
         }
 
@@ -56,25 +42,11 @@ namespace Sinch.Tests.e2e.Verification
                     },
                 });
 
-            response.Should().BeOfType<ReportFlashCallVerificationResponse>().Which.Should().BeEquivalentTo(
+            response.Should().BeEquivalentTo(
                 new ReportFlashCallVerificationResponse()
                 {
-                    Id = "_id",
-                    Price = new Price()
-                    {
-                        VerificationPrice = new PriceDetail()
-                        {
-                            Amount = 0.42,
-                            CurrencyId = "EUR"
-                        },
-                        TerminationPrice = new PriceDetail()
-                        {
-                            Amount = 0.11,
-                            CurrencyId = "EUR"
-                        },
-                        BillableDuration = 40
-                    },
-                    Status = VerificationStatus.Successful
+                    Id = "123456",
+                    Status = VerificationStatus.Fail
                 });
         }
 
@@ -90,29 +62,11 @@ namespace Sinch.Tests.e2e.Verification
                     }
                 });
 
-            response.Should().BeOfType<ReportCalloutVerificationResponse>().Which.Should().BeEquivalentTo(
+            response.Should().BeEquivalentTo(
                 new ReportCalloutVerificationResponse()
                 {
-                    Id = "_id",
-                    Price = new Price()
-                    {
-                        VerificationPrice = new PriceDetail()
-                        {
-                            Amount = 0.42,
-                            CurrencyId = "EUR"
-                        },
-                        TerminationPrice = new PriceDetail()
-                        {
-                            Amount = 0.11,
-                            CurrencyId = "EUR"
-                        },
-                        BillableDuration = 40
-                    },
-                    Status = VerificationStatus.Error,
-                    Reason = Reason.NetworkErrorOrUnreachable,
-                    CallComplete = true,
-                    CountryId = "de",
-                    VerificationTimestamp = DateTime.Parse("2023-04-21T14:45:51")
+                    Id = "123456",
+                    Status = VerificationStatus.Aborted,
                 });
         }
 
@@ -128,22 +82,11 @@ namespace Sinch.Tests.e2e.Verification
                     }
                 });
 
-            response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should().BeEquivalentTo(
+            response.Should().BeEquivalentTo(
                 new ReportSmsVerificationResponse()
                 {
                     Id = "_id",
-                    Price = new PriceBase()
-                    {
-                        VerificationPrice = new PriceDetail()
-                        {
-                            Amount = 0.42,
-                            CurrencyId = "USD"
-                        },
-                    },
                     Status = VerificationStatus.Aborted,
-                    Reason = Reason.DeniedByCallback,
-                    Source = Source.Manual,
-                    Reference = "ref",
                 });
         }
     }

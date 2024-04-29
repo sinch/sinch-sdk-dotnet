@@ -1,6 +1,4 @@
-using Sinch.Verification.Common;
-
-namespace Sinch.Verification.Report.Response
+namespace Sinch.Verification.Common
 {
     public class PriceBase
     {
