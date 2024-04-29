@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Report.Response
@@ -13,5 +14,8 @@ namespace Sinch.Verification.Report.Response
         ///     Prices associated with this verification
         /// </summary>
         public Price? Price { get; set; }
+
+        [JsonInclude]
+        public override VerificationMethod? Method { get; protected set; } = VerificationMethod.FlashCall;
     }
 }

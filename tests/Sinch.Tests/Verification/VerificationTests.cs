@@ -97,7 +97,6 @@ namespace Sinch.Tests.Verification
                 {
                     Id = "10",
                     CallComplete = true,
-                    Method = VerificationMethod.Callout
                 });
         }
     }

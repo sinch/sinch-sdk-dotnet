@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Verification.Common;
@@ -8,77 +9,34 @@ namespace Sinch.Tests.e2e.Verification
 {
     public class VerificationStatusTests : VerificationTestBase
     {
-        // mocked based on oas file
-        private readonly ReportSmsVerificationResponse _smsVerificationReportResponse =
-            new ReportSmsVerificationResponse()
+        // based on manual mock
+        private readonly ReportSmsVerificationResponse _smsVerificationManualResponse =
+            new()
             {
-                Id = "some_string_value",
-                Method = VerificationMethod.Sms,
-                Price = new PriceBase
+                Id = "_id",
+                Status = VerificationStatus.Aborted,
+                Reason = Reason.DeniedByCallback,
+                Reference = "ref",
+                Price = new Price()
                 {
-                    VerificationPrice = new()
+                    VerificationPrice = new PriceDetail()
                     {
-                        CurrencyId = "some_string_value",
-                        Amount = 1.1
+                        CurrencyId = "US",
+                        Amount = 0.42d,
                     }
                 },
-                Reason = new Reason("some_string_value"),
-                Reference = "some_string_value",
-                Source = new Source("some_string_value"),
-                Status = new VerificationStatus("some_string_value")
+                Source = Source.Intercepted,
+                CountryId = "de",
+                VerificationTimestamp = new DateTime(2023, 04, 21, 14, 45, 51)
             };
 
         [Fact]
-        public async Task StatusById()
-        {
-            var response = await VerificationClient.VerificationStatus.GetSmsById("123");
-
-            response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should().BeEquivalentTo(
-                _smsVerificationReportResponse);
-        }
-
-        [Fact]
-        public async Task StatusByIdentity()
-        {
-            var response =
-                await VerificationClient.VerificationStatus.GetSmsByIdentity("123");
-
-            response.Should()
-                .BeEquivalentTo(_smsVerificationReportResponse);
-        }
-
-        [Fact]
-        public async Task StatusByReference()
-        {
-            var response = await VerificationClient.VerificationStatus.GetSmsByReference("123");
-
-            response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should()
-                .BeEquivalentTo(_smsVerificationReportResponse);
-        }
-
-        [Fact]
-        public async Task ByReferenceSms()
+        public async Task ReportStatusByIdSms()
         {
             var response = await VerificationClient.VerificationStatus.GetSmsById("12");
 
-            response.Should().BeEquivalentTo(
-                new ReportSmsVerificationResponse()
-                {
-                    Method = VerificationMethod.Sms,
-                    Reference = "ref",
-                    Id = "_id",
-                    Price = new PriceBase()
-                    {
-                        VerificationPrice = new PriceDetail()
-                        {
-                            Amount = 0.42,
-                            CurrencyId = "US"
-                        }
-                    },
-                    Reason = Reason.DeniedByCallback,
-                    Source = Source.Intercepted,
-                    Status = VerificationStatus.Aborted
-                });
+            response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should().BeEquivalentTo(
+                _smsVerificationManualResponse);
         }
 
         [Fact]
@@ -90,7 +48,6 @@ namespace Sinch.Tests.e2e.Verification
             response.Should().BeEquivalentTo(
                 new ReportCalloutVerificationResponse()
                 {
-                    Method = VerificationMethod.Callout,
                     Id = "_id",
                     Price = new Price()
                     {
@@ -109,6 +66,8 @@ namespace Sinch.Tests.e2e.Verification
                     Status = VerificationStatus.Error,
                     Reason = Reason.NetworkErrorOrUnreachable,
                     CallComplete = true,
+                    CountryId = "de",
+                    VerificationTimestamp = DateTime.Parse("2023-04-21T14:45:51")
                 });
         }
 
@@ -121,7 +80,6 @@ namespace Sinch.Tests.e2e.Verification
             response.Should().BeEquivalentTo(
                 new ReportFlashCallVerificationResponse()
                 {
-                    Method = VerificationMethod.FlashCall,
                     Id = "_id",
                     Price = new Price()
                     {

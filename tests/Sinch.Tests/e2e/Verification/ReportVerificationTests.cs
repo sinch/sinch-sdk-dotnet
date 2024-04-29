@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Verification.Common;
@@ -25,7 +26,6 @@ namespace Sinch.Tests.e2e.Verification
             response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should().BeEquivalentTo(
                 new ReportSmsVerificationResponse()
                 {
-                    Method = VerificationMethod.Sms,
                     Reference = "ref",
                     Id = "_id",
                     Price = new PriceBase()
@@ -38,7 +38,9 @@ namespace Sinch.Tests.e2e.Verification
                     },
                     Reason = Reason.DeniedByCallback,
                     Source = Source.Intercepted,
-                    Status = VerificationStatus.Aborted
+                    Status = VerificationStatus.Aborted,
+                    CountryId = "de",
+                    VerificationTimestamp = DateTime.Parse("2023-04-21T14:45:51")
                 });
         }
 
@@ -57,7 +59,6 @@ namespace Sinch.Tests.e2e.Verification
             response.Should().BeOfType<ReportFlashCallVerificationResponse>().Which.Should().BeEquivalentTo(
                 new ReportFlashCallVerificationResponse()
                 {
-                    Method = VerificationMethod.FlashCall,
                     Id = "_id",
                     Price = new Price()
                     {
@@ -92,7 +93,6 @@ namespace Sinch.Tests.e2e.Verification
             response.Should().BeOfType<ReportCalloutVerificationResponse>().Which.Should().BeEquivalentTo(
                 new ReportCalloutVerificationResponse()
                 {
-                    Method = VerificationMethod.Callout,
                     Id = "_id",
                     Price = new Price()
                     {
@@ -111,6 +111,8 @@ namespace Sinch.Tests.e2e.Verification
                     Status = VerificationStatus.Error,
                     Reason = Reason.NetworkErrorOrUnreachable,
                     CallComplete = true,
+                    CountryId = "de",
+                    VerificationTimestamp = DateTime.Parse("2023-04-21T14:45:51")
                 });
         }
 
@@ -129,7 +131,6 @@ namespace Sinch.Tests.e2e.Verification
             response.Should().BeOfType<ReportSmsVerificationResponse>().Which.Should().BeEquivalentTo(
                 new ReportSmsVerificationResponse()
                 {
-                    Method = VerificationMethod.Sms,
                     Id = "_id",
                     Price = new PriceBase()
                     {

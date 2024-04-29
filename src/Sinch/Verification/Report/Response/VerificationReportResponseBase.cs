@@ -16,7 +16,8 @@ namespace Sinch.Verification.Report.Response
         /// <summary>
         ///     The method of the verification request.
         /// </summary>
-        public VerificationMethod? Method { get; set; }
+        [JsonInclude]
+        public virtual VerificationMethod? Method { get; protected set; }
 
         /// <summary>
         ///     The status of the verification request.
