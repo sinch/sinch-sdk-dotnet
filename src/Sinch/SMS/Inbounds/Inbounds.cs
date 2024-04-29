@@ -29,7 +29,7 @@ namespace Sinch.SMS.Inbounds
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        IAsyncEnumerable<Inbound> ListAuto(ListInboundsRequest request, CancellationToken cancellationToken = default);
+        IAsyncEnumerable<IInbound> ListAuto(ListInboundsRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     This operation retrieves a specific inbound message with the provided inbound ID.
@@ -37,7 +37,7 @@ namespace Sinch.SMS.Inbounds
         /// <param name="inboundId">The Inbound ID found when listing inbound messages</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Inbound> Get(string inboundId, CancellationToken cancellationToken = default);
+        Task<IInbound> Get(string inboundId, CancellationToken cancellationToken = default);
     }
 
     public class Inbounds : ISinchSmsInbounds
@@ -62,7 +62,7 @@ namespace Sinch.SMS.Inbounds
             return _http.Send<ListInboundsResponse>(uri, HttpMethod.Get, cancellationToken);
         }
 
-        public async IAsyncEnumerable<Inbound> ListAuto(ListInboundsRequest request, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        public async IAsyncEnumerable<IInbound> ListAuto(ListInboundsRequest request, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Auto listing inbounds...");
             bool isLastPage;
@@ -83,11 +83,11 @@ namespace Sinch.SMS.Inbounds
         }
 
 
-        public Task<Inbound> Get(string inboundId, CancellationToken cancellationToken = default)
+        public Task<IInbound> Get(string inboundId, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/inbounds/{inboundId}");
             _logger?.LogDebug("Getting inbound with {id}", inboundId);
-            return _http.Send<Inbound>(uri, HttpMethod.Get, cancellationToken);
+            return _http.Send<IInbound>(uri, HttpMethod.Get, cancellationToken);
         }
     }
 }
