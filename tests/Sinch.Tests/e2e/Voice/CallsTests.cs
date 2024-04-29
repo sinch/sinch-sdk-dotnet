@@ -9,6 +9,7 @@ using Sinch.Voice.Calls.Actions;
 using Sinch.Voice.Calls.Instructions;
 using Sinch.Voice.Calls.Manage;
 using Sinch.Voice.Calls.Update;
+using Sinch.Voice.Common;
 using Xunit;
 
 namespace Sinch.Tests.e2e.Voice
@@ -21,8 +22,16 @@ namespace Sinch.Tests.e2e.Voice
             var response = await VoiceClient.Calls.Get("123");
             response.Should().BeEquivalentTo(new Call
             {
-                From = "456",
-                To = "987",
+                From = new Destination()
+                {
+                    Endpoint = "+123456",
+                    Type = DestinationType.Number
+                },
+                To =new Destination()
+                {
+                    Endpoint = "+987654",
+                    Type = DestinationType.Number
+                },
                 Domain = CallDomain.Pstn,
                 CallId = "123",
                 Duration = 60,
@@ -31,8 +40,16 @@ namespace Sinch.Tests.e2e.Voice
                 Reason = CallResultReason.Cancel,
                 Timestamp = DateTime.Parse("2019-08-24T14:15:22Z").ToUniversalTime(),
                 Custom = string.Empty,
-                UserRate = "39",
-                Debit = "138"
+                UserRate = new Price()
+                {
+                    Amount = 1.42f,
+                    CurrencyId = "EUR"
+                },
+                Debit = new Price()
+                {
+                    Amount = 2.28f,
+                    CurrencyId = "EUR"
+                },
             });
         }
 
