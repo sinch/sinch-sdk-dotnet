@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Core;
+using Sinch.Voice.Common;
 
 namespace Sinch.Voice.Calls
 {
@@ -10,12 +11,12 @@ namespace Sinch.Voice.Calls
         /// <summary>
         ///     Contains the caller information.
         /// </summary>
-        public string? From { get; set; }
+        public Destination? From { get; set; }
 
         /// <summary>
         ///     Contains the callee information.
         /// </summary>
-        public string? To { get; set; }
+        public Destination? To { get; set; }
 
         /// <summary>
         ///     Must be &#x60;pstn&#x60; for PSTN.
@@ -66,13 +67,13 @@ namespace Sinch.Voice.Calls
         /// <summary>
         ///     The rate per minute that was charged for the call.
         /// </summary>
-        public string? UserRate { get; set; }
+        public Price? UserRate { get; set; }
 
 
         /// <summary>
         ///     The total amount charged for the call.
         /// </summary>
-        public string? Debit { get; set; }
+        public Price? Debit { get; set; }
 
 
         /// <summary>
