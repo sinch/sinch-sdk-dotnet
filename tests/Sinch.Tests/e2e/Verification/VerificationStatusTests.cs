@@ -24,7 +24,7 @@ namespace Sinch.Tests.e2e.Verification
                 {
                     VerificationPrice = new PriceDetail()
                     {
-                        CurrencyId = "US",
+                        CurrencyId = "USD",
                         Amount = 0.42d,
                     }
                 },
