@@ -30,7 +30,12 @@ namespace Sinch.Tests.e2e.Verification
                 },
                 Source = Source.Intercepted,
                 CountryId = "de",
-                VerificationTimestamp = new DateTime(2023, 04, 21, 14, 45, 51)
+                VerificationTimestamp = new DateTime(2023, 04, 21, 14, 45, 51),
+                Identity = new Identity()
+                {
+                    Type = IdentityType.Number,
+                    Endpoint = "+123456"
+                },
             });
         }
 
@@ -62,7 +67,12 @@ namespace Sinch.Tests.e2e.Verification
                     Reason = Reason.NetworkErrorOrUnreachable,
                     CallComplete = true,
                     CountryId = "de",
-                    VerificationTimestamp = DateTime.Parse("2023-04-21T14:45:51")
+                    VerificationTimestamp = DateTime.Parse("2023-04-21T14:45:51"),
+                    Identity = new Identity()
+                    {
+                        Type = IdentityType.Number,
+                        Endpoint = "+123456"
+                    }
                 });
         }
 
@@ -90,7 +100,12 @@ namespace Sinch.Tests.e2e.Verification
                         },
                         BillableDuration = 40
                     },
-                    Status = VerificationStatus.Successful
+                    Status = VerificationStatus.Successful,
+                    Identity = new Identity()
+                    {
+                        Type = IdentityType.Number,
+                        Endpoint = "+123456"
+                    },
                 });
         }
     }

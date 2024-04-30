@@ -43,6 +43,11 @@ namespace Sinch.Verification.Status
         ///     The timestamp in UTC format. 
         /// </summary>
         public DateTime? VerificationTimestamp { get; set; }
+
+        /// <summary>
+        ///     Specifies the type of endpoint that will be verified and the particular endpoint. number is currently the only supported endpoint type.
+        /// </summary>
+        public Identity? Identity { get; set; }
     }
 
     [JsonConverter(typeof(VerificationStatusResponseConverter))]

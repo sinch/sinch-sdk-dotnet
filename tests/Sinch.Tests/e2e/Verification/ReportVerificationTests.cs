@@ -27,6 +27,14 @@ namespace Sinch.Tests.e2e.Verification
                 {
                     Id = "123456",
                     Status = VerificationStatus.Successful,
+                    Reason = null,
+                    Reference = "ref",
+                    Source = Source.Manual,
+                    Identity = new Identity()
+                    {
+                        Type = IdentityType.Number,
+                        Endpoint = "+123456"
+                    }
                 });
         }
 
@@ -46,7 +54,16 @@ namespace Sinch.Tests.e2e.Verification
                 new ReportFlashCallVerificationResponse()
                 {
                     Id = "123456",
-                    Status = VerificationStatus.Fail
+                    Status = VerificationStatus.Fail,
+                    Reason = Reason.DestinationDenied,
+                    Reference = "ref",
+                    Source = Source.Manual,
+                    Identity = new Identity()
+                    {
+                        Type = IdentityType.Number,
+                        Endpoint = "+123456"
+                    },
+                    CallComplete = true
                 });
         }
 
@@ -67,6 +84,15 @@ namespace Sinch.Tests.e2e.Verification
                 {
                     Id = "123456",
                     Status = VerificationStatus.Aborted,
+                    Reason = Reason.Expired,
+                    Reference = "ref",
+                    Source = Source.Manual,
+                    Identity = new Identity()
+                    {
+                        Type = IdentityType.Number,
+                        Endpoint = "+123456"
+                    },
+                    CallComplete = false,
                 });
         }
 
@@ -87,6 +113,14 @@ namespace Sinch.Tests.e2e.Verification
                 {
                     Id = "_id",
                     Status = VerificationStatus.Aborted,
+                    Reason = Reason.SMSDeliveryFailure,
+                    Reference = "ref",
+                    Source = Source.Manual,
+                    Identity = new Identity()
+                    {
+                        Type = IdentityType.Number,
+                        Endpoint = "+123456"
+                    }
                 });
         }
     }

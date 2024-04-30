@@ -7,5 +7,10 @@ namespace Sinch.Verification.Report.Response
     {
         [JsonInclude]
         public override VerificationMethod Method { get; protected set; } = VerificationMethod.FlashCall;
+
+        /// <summary>
+        ///     Shows whether the call is complete or not.
+        /// </summary>
+        public bool? CallComplete { get; set; }
     }
 }
