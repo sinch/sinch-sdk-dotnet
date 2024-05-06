@@ -118,6 +118,9 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         public Dictionary<ConversationChannel, IChannelSpecificMessage>? ChannelSpecificMessage { get; set; }
 
+
+        public Dictionary<ChannelSpecificTemplate, IOmniMessageOverride>? ExplicitChannelOmniMessage { get; set; }
+
         /// <inheritdoc cref="Agent" />        
         public Agent? Agent { get; set; }
     }
@@ -133,6 +136,16 @@ namespace Sinch.Conversation.Messages.Message
         ///     Gets or Sets MessageType
         /// </summary>
         public MessageType MessageType { get; }
+    }
+
+
+
+    [JsonConverter(typeof(EnumRecordJsonConverter<ChannelSpecificTemplate>))]
+    public record ChannelSpecificTemplate(string Value) : EnumRecord(Value)
+    {
+        public static readonly ChannelSpecificTemplate WhatsApp = new ChannelSpecificTemplate("WHATSAPP");
+        public static readonly ChannelSpecificTemplate KakaoTalk = new ChannelSpecificTemplate("KAKAOTALK");
+        public static readonly ChannelSpecificTemplate WeChat = new ChannelSpecificTemplate("WECHAT");
     }
 
     public class ChannelSpecificMessageJsonInterfaceConverter : JsonConverter<IChannelSpecificMessage>

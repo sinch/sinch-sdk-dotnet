@@ -6,7 +6,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     A message containing a media component, such as an image, document, or video.
     /// </summary>
-    public sealed class MediaMessage
+    public sealed class MediaMessage : IOmniMessageOverride
     {
         /// <summary>
         ///     An optional parameter. Will be used where it is natively supported.
@@ -23,6 +23,10 @@ namespace Sinch.Conversation.Messages.Message
         public Uri Url { get; set; } = null!;
 #endif
 
+        /// <summary>
+        ///     Overrides the media file name.
+        /// </summary>
+        public string? FilenameOverride { get; set; }
 
         /// <summary>
         ///     Returns the string presentation of the object
