@@ -5,9 +5,6 @@ namespace Sinch.SMS.Inbounds
 {
     public class BinaryInbound : IInbound
     {
-        [JsonInclude]
-        public SmsType Type { get; private set; } = SmsType.Binary;
-
         /// <summary>
         ///     The ID of this inbound message.
         /// </summary>
