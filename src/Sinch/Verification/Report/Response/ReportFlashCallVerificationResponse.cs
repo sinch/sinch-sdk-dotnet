@@ -1,17 +1,16 @@
+using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Report.Response
 {
     public class ReportFlashCallVerificationResponse : VerificationReportResponseBase, IVerificationReportResponse
     {
-        /// <summary>
-        ///     Free text that the client is sending, used to show if the call/SMS was intercepted or not.
-        /// </summary>
-        public Source? Source { get; set; }
+        [JsonInclude]
+        public override VerificationMethod Method { get; protected set; } = VerificationMethod.FlashCall;
 
         /// <summary>
-        ///     Prices associated with this verification
+        ///     Shows whether the call is complete or not.
         /// </summary>
-        public Price? Price { get; set; }
+        public bool? CallComplete { get; set; }
     }
 }

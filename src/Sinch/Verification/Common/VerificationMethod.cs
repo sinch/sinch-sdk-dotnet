@@ -11,7 +11,7 @@ namespace Sinch.Verification.Common
     public record VerificationMethod(string Value) : EnumRecord(Value)
     {
         public static readonly VerificationMethod Sms = new("sms");
-        public static readonly VerificationMethod FlashCall = new("flashCall");
+        public static readonly VerificationMethod FlashCall = new("flashcall");
         public static readonly VerificationMethod Callout = new("callout");
     }
 
@@ -23,7 +23,7 @@ namespace Sinch.Verification.Common
     public record VerificationMethodEx(string Value) : EnumRecord(Value)
     {
         public static readonly VerificationMethodEx Sms = new("sms");
-        public static readonly VerificationMethodEx FlashCall = new("flashCall");
+        public static readonly VerificationMethodEx FlashCall = new("flashcall");
         public static readonly VerificationMethodEx Callout = new("callout");
         public static readonly VerificationMethodEx Seamless = new("seamless");
     }

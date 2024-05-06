@@ -1,14 +1,8 @@
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Text.Json;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json.Linq;
-using RichardSzalay.MockHttp;
 using Sinch.Verification.Common;
-using Sinch.Verification.Report.Request;
-using Sinch.Verification.Report.Response;
 using Sinch.Verification.Start.Response;
 using Xunit;
 
@@ -67,37 +61,6 @@ namespace Sinch.Tests.Verification
                             Method = "GET"
                         }
                     }
-                });
-        }
-
-        [Fact]
-        public async Task VerifyReport()
-        {
-            const string endpoint = "+44000000000";
-            HttpMessageHandlerMock.When(HttpMethod.Put,
-                    $"https://verification.api.sinch.com/verification/v1/verifications/number/{endpoint}")
-                .Respond(JsonContent.Create(new
-                {
-                    id = "10",
-                    callComplete = true,
-                    method = "callout"
-                }));
-
-            var response = await VerificationClient.Verification.ReportCalloutByIdentity(endpoint,
-                new ReportCalloutVerificationRequest
-                {
-                    Callout = new Callout
-                    {
-                        Code = "1"
-                    }
-                });
-
-            response.Should().BeOfType<ReportCalloutVerificationResponse>().Which.Should().BeEquivalentTo(
-                new ReportCalloutVerificationResponse
-                {
-                    Id = "10",
-                    CallComplete = true,
-                    Method = VerificationMethod.Callout
                 });
         }
     }
