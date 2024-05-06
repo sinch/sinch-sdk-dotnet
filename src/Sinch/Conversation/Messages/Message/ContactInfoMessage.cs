@@ -8,7 +8,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     Message containing contact information.
     /// </summary>
-    public sealed class ContactInfoMessage
+    public sealed class ContactInfoMessage : IOmniMessageOverride
     {
         /// <summary>
         ///     Gets or Sets Name
