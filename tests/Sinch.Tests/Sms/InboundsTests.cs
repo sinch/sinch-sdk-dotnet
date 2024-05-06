@@ -33,7 +33,7 @@ namespace Sinch.Tests.Sms
 
 
         [Fact]
-        public async Task Get()
+        public async Task GetBinary()
         {
             const string inboundId = "in-bound";
             HttpMessageHandlerMock
@@ -58,6 +58,36 @@ namespace Sinch.Tests.Sms
             });
         }
 
+        [Fact]
+        public async Task GetSms()
+        {
+            const string inboundId = "in-bound";
+            HttpMessageHandlerMock
+                .When(HttpMethod.Get, $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/inbounds/{inboundId}")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    type = "mo_text",
+                    id = inboundId,
+                    from = "+4800000",
+                    to = "+48000001",
+                    body = "hello-world",
+                    received_at = "2019-08-24T14:15:22Z",
+                    udh = "hey"
+                }));
+
+            var response = await Sms.Inbounds.Get(inboundId);
+
+            response.Should().NotBeNull();
+            response.Should().BeOfType<SmsInbound>().Which.Should().BeEquivalentTo(new SmsInbound()
+            {
+                Id = inboundId,
+                Body = "hello-world",
+                ReceivedAt = new DateTime(2019, 8, 24, 14, 15, 22),
+                From = "+4800000",
+                To = "+48000001",
+            });
+        }
 
         [Fact]
         public async Task List()

@@ -1,13 +1,9 @@
 using System;
-using System.Text.Json.Serialization;
 
 namespace Sinch.SMS.Inbounds
 {
     public class SmsInbound : IInbound
     {
-        [JsonInclude]
-        public SmsType Type { get; private set; } = null!; // set by the response
-
         /// <summary>
         ///     The ID of this inbound message.
         /// </summary>
