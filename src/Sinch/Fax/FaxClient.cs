@@ -13,7 +13,7 @@ namespace Sinch.Fax
 
     internal class FaxClient : ISinchFaxClient
     {
-        internal FaxClient(string projectId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
+        internal FaxClient(string projectId, Uri baseAddress, LoggerFactory? loggerFactory, IHttp http)
         {
             Faxes = new FaxesClient(projectId, baseAddress, loggerFactory?.Create<ISinchFaxFaxes>(), http);
         }

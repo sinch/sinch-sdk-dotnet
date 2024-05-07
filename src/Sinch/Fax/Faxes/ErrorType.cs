@@ -1,3 +1,6 @@
+﻿using System.Text.Json.Serialization;
+using Sinch.Core;
+
 namespace Sinch.Fax.Faxes
 {
     /// <summary>
@@ -5,13 +8,14 @@ namespace Sinch.Fax.Faxes
     /// The type will give you a general idea of why the operation failed, whereas the errorCode describes the issue in more detail.Below we list the error_codes for the API, segmented by their corresponding error_type.
     /// </summary>
     /// 
-    public enum ErrorType
+    [JsonConverter(typeof(EnumRecordJsonConverter<ErrorType>))]
+    public record ErrorType(string Value) : EnumRecord(Value)
     {
-        DOCUMENT_CONVERSION_ERROR,
-        CALL_ERROR,
-        FAX_ERROR,
-        LINE_ERROR,
-        faxError
-
+       
+        public static readonly ErrorType DocumentConversionError = new("DOCUMENT_CONVERSION_ERROR");
+        public static readonly ErrorType CallError = new("CALL_ERROR");
+        public static readonly ErrorType FaxError = new("FAX_ERROR");
+        public static readonly ErrorType FatalError = new("FATAL_ERROR");
+        public static readonly ErrorType GeneralError = new("GENERAL_ERROR");
     }
 }

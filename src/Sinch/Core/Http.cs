@@ -34,7 +34,9 @@ namespace Sinch.Core
         Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default);
 
-        Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream, string fileName, CancellationToken cancellationToken = default);
+        Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream, string fileName,
+            CancellationToken cancellationToken = default);
+
         /// <summary>
         ///     Use to send http request with a body
         /// </summary>
@@ -81,34 +83,40 @@ namespace Sinch.Core
             _userAgentHeaderValue =
                 $"sinch-sdk/{sdkVersion} (csharp/{RuntimeInformation.FrameworkDescription};;)";
         }
-        public Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream, string fileName, CancellationToken cancellationToken = default)
-        {
 
+        public Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream,
+            string fileName, CancellationToken cancellationToken = default)
+        {
             var content = new MultipartFormDataContent();
             var props = request.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public |
-                                                BindingFlags.DeclaredOnly);
+                                                        BindingFlags.DeclaredOnly);
             foreach (var prop in props)
             {
                 var value = prop.GetValue(request);
                 if (value != null)
                 {
-                    content.Add(new StringContent(value.ToString()), prop.Name);
+                    var stringValue = value.ToString();
+                    if (stringValue != null)
+                    {
+                        content.Add(new StringContent(stringValue), prop.Name);
+                    }
                 }
             }
+
             stream.Position = 0;
             content.Add(new StreamContent(stream), "file", fileName);
             return SendHttpContent<TResponse>(uri, HttpMethod.Post, content, cancellationToken);
-
         }
 
         public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default)
         {
-            return Send<object, TResponse>(uri, httpMethod, null, cancellationToken);
+            return Send<EmptyResponse, TResponse>(uri, httpMethod, null, cancellationToken);
         }
 
-        private async Task<TResponse> SendHttpContent<TResponse>(Uri uri, HttpMethod httpMethod, HttpContent httpContent,
-         CancellationToken cancellationToken = default)
+        private async Task<TResponse> SendHttpContent<TResponse>(Uri uri, HttpMethod httpMethod,
+            HttpContent? httpContent,
+            CancellationToken cancellationToken = default)
         {
             var retry = true;
             while (true)
@@ -206,18 +214,19 @@ namespace Sinch.Core
             }
         }
 
-        public async Task<TResponse> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest request,
-                CancellationToken cancellationToken = default)
+        public async Task<TResponse> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest? request,
+            CancellationToken cancellationToken = default)
         {
-
-            HttpContent httpContent =
+            HttpContent? httpContent =
                 request == null ? null : JsonContent.Create(request, options: _jsonSerializerOptions);
 
 
-            return await SendHttpContent<TResponse>(uri: uri, httpMethod: httpMethod, httpContent, cancellationToken: cancellationToken);
+            return await SendHttpContent<TResponse>(uri: uri, httpMethod: httpMethod, httpContent,
+                cancellationToken: cancellationToken);
         }
 
-        public Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest request, Stream stream, string fileName, CancellationToken cancellationToken = default)
+        public Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest request,
+            Stream stream, string fileName, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

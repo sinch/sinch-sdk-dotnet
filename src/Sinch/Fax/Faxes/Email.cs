@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -23,13 +23,13 @@ namespace Sinch.Fax.Faxes
 
         internal Emails(string projectId, Uri uri, ILoggerAdapter<ISinchFaxEmails> loggerAdapter, Http httpClient)
         {
-            this._projectId = projectId;
+            _projectId = projectId;
 
-            this._loggerAdapter = loggerAdapter;
-            this._http = httpClient;
+            _loggerAdapter = loggerAdapter;
+            _http = httpClient;
             _mimeMapper = new FileExtensionContentTypeProvider();
             uri = new Uri(uri, $"/v3/projects/{projectId}/emails");
-            this._uri = uri;
+            _uri = uri;
         }
 
         public async Task<EmailAdress> ListEmails(string email)

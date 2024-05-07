@@ -1,9 +1,13 @@
+﻿using System.Text.Json.Serialization;
+using Sinch.Core;
+
 namespace Sinch.Fax.Faxes
 {
-    public enum BarCodeType
+    [JsonConverter(typeof(EnumRecordJsonConverter<BarCodeType>))]
+    public record BarCodeType(string Value) : EnumRecord(Value)
     {
-        CODE_128,
-        DATA_MATRIX
+        public static readonly BarCodeType Code128 = new("CODE_128");
+        public static readonly BarCodeType DataMatrix = new("DATA_MATRIX");
     }
 
     /// <summary>
@@ -14,16 +18,19 @@ namespace Sinch.Fax.Faxes
         /// <summary>
         /// The type of barcode found.
         /// </summary>
-        public BarCodeType Type { get; set; }
+        [JsonPropertyName("type")]
+        public BarCodeType? Type { get; set; }
 
         /// <summary>
         /// The page number on which the barcode was found.
         /// </summary>
-        public int page { get; set; }
+        [JsonPropertyName("page")]
+        public int Page { get; set; }
 
         /// <summary>
         /// The information of the barcode.
         /// </summary>
-        public string value { get; set; }
+        [JsonPropertyName("value")]
+        public string? Value { get; set; }
     }
 }
