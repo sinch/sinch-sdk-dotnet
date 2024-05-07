@@ -1,4 +1,6 @@
-﻿namespace Sinch.Conversation.Apps.Credentials
+using System.Text.Json.Serialization;
+
+namespace Sinch.Conversation.Apps.Credentials
 {
     /// <summary>
     ///     If you are including the KakaoTalk channel in the &#x60;channel_identifier&#x60; property, you must include this object.
@@ -8,20 +10,18 @@
         /// <summary>
         ///     KakaoTalk Business Channel ID.
         /// </summary>
+        [JsonPropertyName("kakaotalk_plus_friend_id")]
 #if NET7_0_OR_GREATER
-        public required string KakaotalkPlusFriendId { get; set; }
+        public required string KakaoTalkPlusFriendId { get; set; }
 #else
-        public string KakaotalkPlusFriendId { get; set; }
+        public string KakaoTalkPlusFriendId { get; set; } = null!;
 #endif
 
-
-        /// <summary>
-        ///     KakaoTalk Sender Key.
-        /// </summary>
+        [JsonPropertyName("kakaotalk_sender_key")]
 #if NET7_0_OR_GREATER
-        public required string KakaotalkSenderKey { get; set; }
+        public required string KakaoTalkSenderKey { get; set; }
 #else
-        public string KakaotalkSenderKey { get; set; }
+        public string KakaoTalkSenderKey { get; set; } = null!;
 #endif
     }
 }

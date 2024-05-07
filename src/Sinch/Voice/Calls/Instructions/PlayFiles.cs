@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -19,7 +19,7 @@ namespace Sinch.Voice.Calls.Instructions
 #if NET7_0_OR_GREATER
         public required List<List<string>> Ids { get; set; }
 #else
-        public List<List<string>> Ids { get; set; }
+        public List<List<string>> Ids { get; set; } = null!;
 #endif
 
 
@@ -33,7 +33,7 @@ namespace Sinch.Voice.Calls.Instructions
 #if NET7_0_OR_GREATER
         public required string Locale { get; set; }
 #else
-        public string Locale { get; set; }
+        public string Locale { get; set; } = null!;
 #endif
         public string Name { get; } = "playFiles";
 

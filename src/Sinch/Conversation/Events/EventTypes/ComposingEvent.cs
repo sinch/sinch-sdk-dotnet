@@ -1,4 +1,4 @@
-﻿namespace Sinch.Conversation.Events.EventTypes
+namespace Sinch.Conversation.Events.EventTypes
 {
     public class ComposingEvent
     {

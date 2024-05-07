@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Net;
@@ -26,8 +26,7 @@ namespace Sinch.Tests.Conversation
             AppId = "123",
             Message = new AppMessage(new TextMessage("I'm a texter"))
             {
-                ExplicitChannelMessage = null,
-                AdditionalProperties = null
+                ExplicitChannelMessage = null
             },
             Recipient = new ContactRecipient()
             {
@@ -345,22 +344,28 @@ namespace Sinch.Tests.Conversation
                         {
                             new
                             {
-                                title = "listitemchoice",
-                                postback_data = "postno",
-                                description = "desc",
-                                media = new
+                                choice = new
                                 {
-                                    url = "https://nolocalhost",
-                                    thumbnail_url = "https://knowyourmeme.com/photos/377946"
+                                    title = "listitemchoice",
+                                    postback_data = "postno",
+                                    description = "desc",
+                                    media = new
+                                    {
+                                        url = "https://nolocalhost",
+                                        thumbnail_url = "https://knowyourmeme.com/photos/377946"
+                                    }
                                 }
                             },
                             new
                             {
-                                id = "prod_id",
-                                marketplace = "amazon",
-                                currency = "eur",
-                                quantity = 20,
-                                item_price = 12.1000004f,
+                                product = new
+                                {
+                                    id = "prod_id",
+                                    marketplace = "amazon",
+                                    currency = "eur",
+                                    quantity = 20,
+                                    item_price = 12.1000004f,
+                                }
                             }
                         }
                     }
@@ -377,7 +382,7 @@ namespace Sinch.Tests.Conversation
                         Title = "item1",
                         Items = new List<IListItem>()
                         {
-                            new ListItemChoice()
+                            new ChoiceItem()
                             {
                                 Title = "listitemchoice",
                                 PostbackData = "postno",
@@ -388,7 +393,7 @@ namespace Sinch.Tests.Conversation
                                     ThumbnailUrl = new Uri("https://knowyourmeme.com/photos/377946")
                                 }
                             },
-                            new ListItemProduct
+                            new ProductItem
                             {
                                 Id = "prod_id",
                                 Marketplace = "amazon",
@@ -415,7 +420,7 @@ namespace Sinch.Tests.Conversation
 
             response.Should().NotBeNull();
         }
-        
+
         [Fact]
         public async Task SendAllParams()
         {
@@ -444,6 +449,16 @@ namespace Sinch.Tests.Conversation
             _baseMessageExpected.ttl = "1800s";
             _baseMessageExpected.queue = "HIGH_PRIORITY";
             _baseMessageExpected.message_metadata = "meta";
+            _baseMessageExpected.message.explicit_channel_omni_message = new
+            {
+                WECHAT = new
+                {
+                    text_message = new
+                    {
+                        text = "hello"
+                    }
+                }
+            };
 
             _baseRequest.Recipient = new Identified
             {
@@ -469,6 +484,11 @@ namespace Sinch.Tests.Conversation
             _baseRequest.Ttl = "1800s";
             _baseRequest.Queue = MessageQueue.HighPriority;
             _baseRequest.MessageMetadata = "meta";
+            _baseRequest.Message.ExplicitChannelOmniMessage =
+                new Dictionary<ChannelSpecificTemplate, IOmniMessageOverride>()
+                {
+                    { ChannelSpecificTemplate.WeChat, new TextMessage("hello") }
+                };
 
             HttpMessageHandlerMock
                 .When(HttpMethod.Post,

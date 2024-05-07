@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Hooks.Models;
@@ -14,8 +13,8 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets OptOutNotification
         /// </summary>
         [JsonPropertyName("opt_out_notification")]
-        public OptOutNotification OptOutNotification { get; set; }
-        
+        public OptOutNotification? OptOutNotification { get; set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object

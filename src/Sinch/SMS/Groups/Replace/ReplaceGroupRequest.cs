@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace Sinch.SMS.Groups.Replace
@@ -12,7 +12,7 @@ namespace Sinch.SMS.Groups.Replace
 #if NET7_0_OR_GREATER
         public required string GroupId { get; init; }
 #else
-        public string GroupId { get; set; }
+        public string GroupId { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -23,20 +23,20 @@ namespace Sinch.SMS.Groups.Replace
 #if NET7_0_OR_GREATER
     public required List<string> Members { get; init; }
 #else
-        public List<string> Members { get; set; }
+        public List<string> Members { get; set; } = null!;
 #endif
 
         /// <summary>
         ///     Name of group
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 
-// Workaround for not working  JsonIgnore with required keyword
+    // Workaround for not working  JsonIgnore with required keyword
     internal sealed class RequestInner
     {
-        public List<string> Members { get; set; }
+        public List<string>? Members { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 }

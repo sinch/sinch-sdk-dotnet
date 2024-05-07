@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
@@ -22,19 +22,19 @@ namespace Sinch.Numbers.Active.List
 #if NET7_0_OR_GREATER
         public required Types Type { get; set; }
 #else
-        public Types Type { get; set; }
+        public Types Type { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     Search numbers by pattern
         /// </summary>
-        public NumberPattern NumberPattern { get; set; }
+        public NumberPattern? NumberPattern { get; set; }
 
         /// <summary>
         ///     Number capabilities to filter by SMS and/or VOICE.
         /// </summary>
-        public IList<Product> Capability { get; set; }
+        public List<Product>? Capability { get; set; }
 
         /// <summary>
         ///     The maximum number of items to return.
@@ -44,12 +44,12 @@ namespace Sinch.Numbers.Active.List
         /// <summary>
         ///     The next page token value returned from a previous List request, if any.
         /// </summary>
-        public string PageToken { get; set; }
+        public string? PageToken { get; set; }
 
         /// <summary>
         ///     Supported fields for ordering by phoneNumber or displayName.
         /// </summary>
-        public OrderBy OrderBy { get; set; }
+        public OrderBy? OrderBy { get; set; }
 
         internal string GetQueryString()
         {

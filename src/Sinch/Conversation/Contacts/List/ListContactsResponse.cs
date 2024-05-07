@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Sinch.Conversation.Contacts.List
 {
@@ -7,11 +7,11 @@ namespace Sinch.Conversation.Contacts.List
         /// <summary>
         ///     Token that should be included in the next list contacts request to fetch the next page.
         /// </summary>
-        public string NextPageToken { get; set; }
+        public string? NextPageToken { get; set; }
 
         /// <summary>
         ///     List of contacts belonging to the specified project.
         /// </summary>
-        public List<Contact> Contacts { get; set; }
+        public List<Contact>? Contacts { get; set; }
     }
 }

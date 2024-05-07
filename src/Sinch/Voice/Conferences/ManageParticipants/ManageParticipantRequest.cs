@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Voice.Conferences.ManageParticipants
@@ -11,10 +11,10 @@ namespace Sinch.Voice.Conferences.ManageParticipants
 #if NET7_0_OR_GREATER
         public required Command Command { get; set; }
 #else
-        public Command Command { get; set; }
+        public Command Command { get; set; } = null!;
 #endif
         /// <inheritdoc cref="MohClass" />
-        public MohClass Moh { get; set; }
+        public MohClass? Moh { get; set; }
     }
 
     [JsonConverter(typeof(EnumRecordJsonConverter<Command>))]

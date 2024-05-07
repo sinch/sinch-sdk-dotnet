@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -14,17 +14,17 @@ namespace Sinch.Conversation.Conversations
     public sealed class Conversation : PropertyMaskQuery
     {
         private bool? _active;
-        private ConversationChannel _activeChannel;
-        private string _appId;
-        private string _contactId;
-        private string _correlationId;
-        private string _metadata;
-        private JsonObject _metadataJson;
+        private ConversationChannel? _activeChannel;
+        private string? _appId;
+        private string? _contactId;
+        private string? _correlationId;
+        private string? _metadata;
+        private JsonObject? _metadataJson;
 
         /// <summary>
         ///     Gets or Sets ActiveChannel
         /// </summary>
-        public ConversationChannel ActiveChannel
+        public ConversationChannel? ActiveChannel
         {
             get => _activeChannel;
             set
@@ -51,7 +51,7 @@ namespace Sinch.Conversation.Conversations
         /// <summary>
         ///     The ID of the participating app.
         /// </summary>
-        public string AppId
+        public string? AppId
         {
             get => _appId;
             set
@@ -64,7 +64,7 @@ namespace Sinch.Conversation.Conversations
         /// <summary>
         ///     The ID of the participating contact.
         /// </summary>
-        public string ContactId
+        public string? ContactId
         {
             get => _contactId;
             set
@@ -77,7 +77,7 @@ namespace Sinch.Conversation.Conversations
         /// <summary>
         ///     The ID of the conversation.
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         ///     The timestamp of the latest message in the conversation.
@@ -88,7 +88,7 @@ namespace Sinch.Conversation.Conversations
         /// <summary>
         ///     Arbitrary data set by the Conversation API clients. Up to 1024 characters long.
         /// </summary>
-        public string Metadata
+        public string? Metadata
         {
             get => _metadata;
             set
@@ -102,7 +102,7 @@ namespace Sinch.Conversation.Conversations
         ///     Arbitrary data set by the Conversation API clients and/or provided in the conversation_metadata field of a
         ///     SendMessageRequest. A valid JSON object.
         /// </summary>
-        public JsonObject MetadataJson
+        public JsonObject? MetadataJson
         {
             get => _metadataJson;
             set
@@ -112,7 +112,7 @@ namespace Sinch.Conversation.Conversations
             }
         }
 
-        public string CorrelationId
+        public string? CorrelationId
         {
             get => _correlationId;
             set

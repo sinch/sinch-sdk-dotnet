@@ -1,11 +1,10 @@
-﻿using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Hooks.Models;
 
 namespace Sinch.Conversation.Hooks
 {
-   /// <summary>
+    /// <summary>
     ///     This callback is used to deliver opt-in notifications from the channels.
     /// </summary>
     public sealed class OptInEvent : CallbackEventBase
@@ -14,8 +13,8 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets OptInNotification
         /// </summary>
         [JsonPropertyName("opt_in_notification")]
-        public OptInEventAllOfOptInNotification OptInNotification { get; set; }
-        
+        public OptInEventAllOfOptInNotification? OptInNotification { get; set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object

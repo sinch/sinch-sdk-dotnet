@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Sinch.SMS.Batches.Send
@@ -14,7 +14,7 @@ namespace Sinch.SMS.Batches.Send
 #if NET7_0_OR_GREATER
         public required MediaBody Body { get; set; }
 #else
-        public MediaBody Body { get; set; }
+        public MediaBody Body { get; set; } = null!;
 #endif
         /// <summary>
         ///     MMS
@@ -28,8 +28,8 @@ namespace Sinch.SMS.Batches.Send
         ///     If set to true, your message will be rejected if it doesn't conform to the listed
         ///     recommendations, otherwise no validation will be performed.
         /// </summary>
-        public bool? StrictValidation { get; set; } 
-        
+        public bool? StrictValidation { get; set; }
+
         /// <summary>
         ///     Contains the parameters that will be used for customizing the message for each recipient.<br /><br />
         ///     <see href="https://developers.sinch.com/docs/sms/resources/message-info/message-parameterization">
@@ -37,19 +37,19 @@ namespace Sinch.SMS.Batches.Send
         ///         learn more about parameterization.
         ///     </see>
         /// </summary>
-        public Dictionary<string, Dictionary<string, string>> Parameters { get; set; }
+        public Dictionary<string, Dictionary<string, string>>? Parameters { get; set; }
     }
-    
+
     public class MediaBody
     {
         /// <summary>
         ///     URL to the media file
         /// </summary>
-        public Uri Url { get; set; }
+        public Uri? Url { get; set; }
 
         /// <summary>
         ///   The message text. Text only media messages will be rejected, please use SMS instead.  
         /// </summary>
-        public string Message { get; set; }
+        public string? Message { get; set; }
     }
 }

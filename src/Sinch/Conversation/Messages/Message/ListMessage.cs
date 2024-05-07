@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Message
@@ -7,7 +10,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     A message containing a list of options to choose from
     /// </summary>
-    public sealed class ListMessage 
+    public sealed class ListMessage : IOmniMessageOverride
     {
         /// <summary>
         ///     A title for the message that is displayed near the products or choices.
@@ -15,14 +18,14 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required string Title { get; set; }
 #else
-        public string Title { get; set; }
+        public string Title { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     This is an optional field, containing a description for the message.
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
 
         /// <summary>
@@ -31,14 +34,14 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required List<ListSection> Sections { get; set; }
 #else
-        public List<ListSection> Sections { get; set; }
+        public List<ListSection> Sections { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     Gets or Sets MessageProperties
         /// </summary>
-        public ListMessageMessageProperties MessageProperties { get; set; }
+        public ListMessageMessageProperties? MessageProperties { get; set; }
 
 
         /// <summary>
@@ -66,13 +69,13 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Optional parameter. Title for list section.
         /// </summary>
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets Items
         /// </summary>
-        public List<IListItem> Items { get; set; }
+        public List<IListItem>? Items { get; set; }
 
 
         /// <summary>
@@ -90,9 +93,64 @@ namespace Sinch.Conversation.Messages.Message
         }
     }
 
-    [JsonInterfaceConverter(typeof(InterfaceConverter<IListItem>))]
+    [JsonInterfaceConverter(typeof(ListItemJsonConverter))]
     public interface IListItem
     {
+    }
+
+    public class ListItemJsonConverter : JsonConverter<IListItem>
+    {
+        public override IListItem? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            var elem = JsonElement.ParseValue(ref reader);
+            if (elem.TryGetProperty("choice", out var choice))
+            {
+                return choice.Deserialize<ChoiceItem>(options);
+            }
+
+            if (elem.TryGetProperty("product", out var product))
+            {
+                return product.Deserialize<ProductItem>(options);
+            }
+
+            throw new JsonException(
+                $"Failed to match {nameof(IListItem)}, got json element: {elem.ToString()}");
+        }
+
+        public override void Write(Utf8JsonWriter writer, IListItem value, JsonSerializerOptions options)
+        {
+            var type = value.GetType();
+            if (type == typeof(ChoiceItem))
+            {
+                JsonSerializer.Serialize(writer, new ListItemChoiceWrapper()
+                {
+                    Choice = value as ChoiceItem
+                }, options);
+                return;
+            }
+
+            if (type == typeof(ProductItem))
+            {
+                JsonSerializer.Serialize(writer, new ListItemProductWrapper()
+                {
+                    Product = value as ProductItem
+                }, options);
+                return;
+            }
+
+            throw new InvalidOperationException(
+                $"Value is not in range of expected types - actual type is {type.FullName}");
+        }
+    }
+
+    internal class ListItemChoiceWrapper
+    {
+        public ChoiceItem? Choice { get; set; }
+    }
+
+    internal class ListItemProductWrapper
+    {
+        public ProductItem? Product { get; set; }
     }
 
     /// <summary>
@@ -103,13 +161,13 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Required if sending a product list message. The ID of the catalog to which the products belong.
         /// </summary>
-        public string CatalogId { get; set; }
+        public string? CatalogId { get; set; }
 
 
         /// <summary>
         ///     Optional. Sets the text for the menu of a choice list message.
         /// </summary>
-        public string Menu { get; set; }
+        public string? Menu { get; set; }
 
 
         /// <summary>

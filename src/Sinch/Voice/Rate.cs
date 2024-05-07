@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Voice
@@ -12,7 +12,7 @@ namespace Sinch.Voice
         ///     The currency ID of the rate, for example, &#x60;USD&#x60;.
         /// </summary>
         [JsonPropertyName("currencyId")]
-        public string CurrencyId { get; set; }
+        public string? CurrencyId { get; set; }
 
 
         /// <summary>

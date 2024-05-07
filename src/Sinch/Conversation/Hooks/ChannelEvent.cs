@@ -1,4 +1,3 @@
-﻿using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Hooks.Models;
@@ -14,8 +13,8 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets ChannelEventNotification
         /// </summary>
         [JsonPropertyName("channel_event_notification")]
-        public EventNotification EventNotification { get; set; }
-        
+        public EventNotification? EventNotification { get; set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object

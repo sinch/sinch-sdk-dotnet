@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -70,11 +70,11 @@ namespace Sinch.Numbers
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<AvailableNumbers> _logger;
+        private readonly ILoggerAdapter<AvailableNumbers>? _logger;
         private readonly string _projectId;
 
         public AvailableNumbers(string projectId, Uri baseAddress,
-            ILoggerAdapter<AvailableNumbers> logger, IHttp http)
+            ILoggerAdapter<AvailableNumbers>? logger, IHttp http)
         {
             _projectId = projectId;
             _baseAddress = baseAddress;

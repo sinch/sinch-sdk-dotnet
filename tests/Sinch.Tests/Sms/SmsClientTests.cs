@@ -1,5 +1,7 @@
-﻿using System.Net;
+using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using RichardSzalay.MockHttp;
@@ -21,7 +23,7 @@ namespace Sinch.Tests.Sms
                 options =>
                 {
                     options.HttpClient = httpClient;
-                    options.UseServicePlanIdWithSms(servicePlanId, apiToken, SmsServicePlanIdHostingRegion.Au);
+                    options.UseServicePlanIdWithSms(servicePlanId, apiToken, SmsServicePlanIdRegion.Au);
                 });
 
             var batchId = "b1";
@@ -30,7 +32,13 @@ namespace Sinch.Tests.Sms
                     $"https://au.sms.api.sinch.com/xms/v1/{servicePlanId}/batches/{batchId}")
                 // bearer with provided token
                 .WithHeaders("Authorization", $"Bearer {apiToken}")
-                .Respond(HttpStatusCode.OK);
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    id = "123",
+                    type = SmsType.MtText.Value,
+                    body = "hello",
+                    to = new List<string>() { "+4800000" }
+                }));
 
             var op = () => sinchClient.Sms.Batches.Cancel(batchId);
             await op.Should().NotThrowAsync();

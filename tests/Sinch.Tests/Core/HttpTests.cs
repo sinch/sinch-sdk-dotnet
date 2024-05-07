@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -47,7 +47,7 @@ namespace Sinch.Tests.Core
             var httpClient = new HttpClient(_httpMessageHandlerMock);
             var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
 
-            Func<Task<object>> response = () => http.Send<object>(uri, HttpMethod.Get);
+            var response = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
 
             await response.Should().NotThrowAsync();
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
@@ -126,7 +126,7 @@ namespace Sinch.Tests.Core
             var httpClient = new HttpClient(_httpMessageHandlerMock);
             var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
 
-            Func<Task<object>> response = () => http.Send<object>(uri, HttpMethod.Get);
+            var response = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
 
             await response.Should().NotThrowAsync();
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
@@ -157,7 +157,7 @@ namespace Sinch.Tests.Core
             var httpClient = new HttpClient(_httpMessageHandlerMock);
             var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
 
-            await http.Send<object>(uri, HttpMethod.Get);
+            await http.Send<EmptyResponse>(uri, HttpMethod.Get);
 
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }

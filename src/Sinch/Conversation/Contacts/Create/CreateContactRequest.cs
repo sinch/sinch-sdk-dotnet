@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 using Sinch.Conversation.Common;
-using Sinch.Conversation.Messages;
 
 namespace Sinch.Conversation.Contacts.Create
 {
@@ -13,7 +12,7 @@ namespace Sinch.Conversation.Contacts.Create
 #if NET7_0_OR_GREATER
         public required List<ChannelIdentity> ChannelIdentities { get; set; }
 #else
-        public List<ChannelIdentity> ChannelIdentities { get; set; }
+        public List<ChannelIdentity> ChannelIdentities { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -22,37 +21,37 @@ namespace Sinch.Conversation.Contacts.Create
 #if NET7_0_OR_GREATER
         public required string Language { get; set; }
 #else
-        public string Language { get; set; }
+        public string Language { get; set; } = null!;
 #endif
 
         /// <summary>
         ///     List of channels defining the channel priority. The channel at the top of the list is tried first.
         /// </summary>
-        public List<ConversationChannel> ChannelPriority { get; set; }
+        public List<ConversationChannel>? ChannelPriority { get; set; }
 
 
         /// <summary>
         ///     The display name. A default &#39;Unknown&#39; will be assigned if left empty.
         /// </summary>
-        public string DisplayName { get; set; }
+        public string? DisplayName { get; set; }
 
 
         /// <summary>
         ///     Email of the contact.
         /// </summary>
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
 
         /// <summary>
         ///     Contact identifier in an external system.
         /// </summary>
-        public string ExternalId { get; set; }
+        public string? ExternalId { get; set; }
 
 
         /// <summary>
         ///     Metadata associated with the contact. Up to 1024 characters long.
         /// </summary>
-        public string Metadata { get; set; }
+        public string? Metadata { get; set; }
 
 
         /// <summary>

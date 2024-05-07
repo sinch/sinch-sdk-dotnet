@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Sinch.Core;
 using Sinch.Logger;
 
@@ -30,7 +30,7 @@ namespace Sinch.Numbers
     public sealed class Numbers : ISinchNumbers
     {
         internal Numbers(string projectId, Uri baseAddress,
-            LoggerFactory loggerFactory, IHttp http)
+            LoggerFactory? loggerFactory, IHttp http)
         {
             Regions = new AvailableRegions(projectId, baseAddress,
                 loggerFactory?.Create<AvailableRegions>(), http);

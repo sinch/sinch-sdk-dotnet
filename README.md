@@ -12,12 +12,9 @@ To use Sinch services, you'll need a Sinch account and access keys. You can sign
 
 For more information on the Sinch APIs on which this SDK is based, refer to the official [developer documentation portal](https://developers.sinch.com/).
 
-> [!WARNING]
-> This SDK is currently available to selected developers for preview use only. It is being provided for the purpose of collecting feedback, and should not be used in production environments.
-
 - [Installation](#installation)
 - [Getting started](#getting-started)
-  - [Client initialization](#client-initialization)
+- [Client initialization](#client-initialization)
 - [Supported Sinch products](#supported-sinch-products)
 - [Logging, HttpClient and additional options](#logging-httpclient-and-additional-options)
 - [Handling Exceptions](#handling-exceptions)
@@ -27,7 +24,7 @@ For more information on the Sinch APIs on which this SDK is based, refer to the 
 SinchSDK can be installed using the Nuget package manager or the `dotnet` CLI.
 
 ```
-dotnet add package Sinch --prerelease
+dotnet add package Sinch
 ```
 
 ## Getting started
@@ -41,7 +38,7 @@ To initialize communication with the Sinch servers, credentials obtained from th
 ```csharp
 using Sinch;
 
-var sinch = new SinchClient(configuration["Sinch:KeyId"], configuration["Sinch:KeySecret"], configuration["Sinch:ProjectId"]);
+var sinch = new SinchClient(configuration["Sinch:ProjectId"], configuration["Sinch:KeyId"], configuration["Sinch:KeySecret"]);
 ```
 
 With ASP.NET dependency injection:
@@ -49,21 +46,22 @@ With ASP.NET dependency injection:
 ```csharp
 // SinchClient is thread safe so it's okay to add it as a singleton
 builder.Services.AddSingleton<ISinch>(x => new SinchClient(
+    builder.Configuration["Sinch:ProjectId"],
     builder.Configuration["Sinch:KeyId"],
-    builder.Configuration["Sinch:KeySecret"],
-    builder.Configuration["Sinch:ProjectId"]));
+    builder.Configuration["Sinch:KeySecret"]
+));
 ```
 
 To configure Conversation or Sms hosting regions, and any other additional parameters, use [`SinchOptions`](https://github.com/sinch/sinch-sdk-dotnet/blob/main/src/Sinch/SinchOptions.cs):
 
 ```csharp
 var sinch = new SinchClient(
+    configuration["Sinch:ProjectId"],
     configuration["Sinch:KeyId"],
     configuration["Sinch:KeySecret"],
-    configuration["Sinch:ProjectId"],
     options =>
     {
-        options.SmsHostingRegion = Sinch.SMS.SmsHostingRegion.Eu;
+        options.SmsRegion = Sinch.SMS.SmsRegion.Eu;
         options.ConversationRegion = Sinch.Conversation.ConversationRegion.Eu;
     });
 ```
@@ -99,9 +97,9 @@ using Sinch;
 using Sinch.SMS;
 
 var sinch = new SinchClient(
+    configuration["Sinch:ProjectId"],
     configuration["Sinch:KeyId"],
     configuration["Sinch:KeySecret"],
-    configuration["Sinch:ProjectId"],
     options =>
     {
         // provide any logger factory which satisfies Microsoft.Extensions.Logging.ILoggerFactory
@@ -112,7 +110,7 @@ var sinch = new SinchClient(
         // Provide your http client here
         options.HttpClient = new HttpClient();
         // Set a hosting region for Sms
-        options.SmsHostingRegion = SmsHostingRegion.Eu;
+        options.SmsRegion = SmsRegion.Eu;
     });
 ```
 
@@ -125,13 +123,12 @@ using Sinch;
 using Sinch.SMS.Batches.Send;
 
 try {
-    var batch = await sinch.Sms.Batches.Send(new SendBatchRequest
+    var batch = await sinch.Sms.Batches.Send(new SendTextBatchRequest()
     {
         Body = "Hello, World!",
-        DeliveryReport = DeliveryReport.None,
         To = new List<string>()
         {
-            123456789
+            "+123456789"
         }
     });
 }

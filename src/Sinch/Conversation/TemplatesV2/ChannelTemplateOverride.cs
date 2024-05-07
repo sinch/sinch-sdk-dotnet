@@ -1,6 +1,5 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
-using Sinch.Conversation.Messages.Message;
 
 namespace Sinch.Conversation.TemplatesV2
 {
@@ -13,15 +12,15 @@ namespace Sinch.Conversation.TemplatesV2
         ///     Gets or Sets Whatsapp
         /// </summary>
         [JsonPropertyName("WHATSAPP")]
-        public OverrideTemplateReference WhatsApp { get; set; }
-        
+        public OverrideTemplateReference? WhatsApp { get; set; }
+
 
         /// <summary>
         ///     Gets or Sets Kakaotalk
         /// </summary>
         [JsonPropertyName("KAKAOTALK")]
-        public OverrideTemplateReference KakaoTalk { get; set; }
-        
+        public OverrideTemplateReference? KakaoTalk { get; set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -31,8 +30,8 @@ namespace Sinch.Conversation.TemplatesV2
         {
             var sb = new StringBuilder();
             sb.Append("class ChannelTemplateOverride {\n");
-            sb.Append("  WHATSAPP: ").Append(WhatsApp).Append("\n");
-            sb.Append("  KAKOTALK: ").Append(KakaoTalk).Append("\n");
+            sb.Append("  WhatsApp: ").Append(WhatsApp).Append("\n");
+            sb.Append("  KakaotTalk: ").Append(KakaoTalk).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

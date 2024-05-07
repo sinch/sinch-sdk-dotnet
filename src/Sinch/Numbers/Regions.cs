@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -29,11 +29,11 @@ namespace Sinch.Numbers
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<AvailableRegions> _logger;
+        private readonly ILoggerAdapter<AvailableRegions>? _logger;
         private readonly string _projectId;
 
         public AvailableRegions(string projectId, Uri baseAddress,
-            ILoggerAdapter<AvailableRegions> loggerAdapter, IHttp http)
+            ILoggerAdapter<AvailableRegions>? loggerAdapter, IHttp http)
         {
             _projectId = projectId;
             _baseAddress = baseAddress;
@@ -47,15 +47,13 @@ namespace Sinch.Numbers
         {
             _logger?.LogDebug("Fetching available regions");
             var typesStr = string.Empty;
-            if (types is not null)
+            var typesQuery = string.Join("&", types.Select(x => "types=" + x.Value));
+            if (!string.IsNullOrEmpty(typesQuery))
             {
-                var typesQuery = string.Join("&", types.Select(x => "types=" + x.Value));
-                if (!string.IsNullOrEmpty(typesQuery))
-                {
-                    typesStr = typesQuery;
-                    _logger?.LogDebug("For {types}", typesStr);
-                }
+                typesStr = typesQuery;
+                _logger?.LogDebug("For {types}", typesStr);
             }
+
 
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/availableRegions?{typesStr}");
             var response = await _http.Send<ListRegionsResponse>(uri, HttpMethod.Get, cancellationToken);

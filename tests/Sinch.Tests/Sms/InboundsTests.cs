@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -26,15 +26,16 @@ namespace Sinch.Tests.Sms
                 client_reference = "ccc",
                 operator_id = "op_id",
                 send_at = "2019-08-24T14:15:22Z",
-                received_at = "2019-08-24T14:15:22Z"
+                received_at = "2019-08-24T14:15:22Z",
+                udh = "hey"
             };
         }
 
 
         [Fact]
-        public async Task Get()
+        public async Task GetBinary()
         {
-            var inboundId = "in-bound";
+            const string inboundId = "in-bound";
             HttpMessageHandlerMock
                 .When(HttpMethod.Get, $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/inbounds/{inboundId}")
                 .WithHeaders("Authorization", $"Bearer {Token}")
@@ -43,11 +44,50 @@ namespace Sinch.Tests.Sms
             var response = await Sms.Inbounds.Get(inboundId);
 
             response.Should().NotBeNull();
-            response.Type.Should().Be(SmsType.Binary);
-            response.SendAt.Should().Be(new DateTime(2019, 8, 24, 14, 15, 22));
-            response.ReceivedAt.Should().Be(new DateTime(2019, 8, 24, 14, 15, 22));
+            response.Should().BeOfType<BinaryInbound>().Which.Should().BeEquivalentTo(new BinaryInbound()
+            {
+                Id = "in-bound",
+                Body = "some_body",
+                SendAt = new DateTime(2019, 8, 24, 14, 15, 22),
+                ReceivedAt = new DateTime(2019, 8, 24, 14, 15, 22),
+                From = "123",
+                To = "456",
+                Udh = "hey",
+                ClientReference = "ccc",
+                OperatorId = "op_id"
+            });
         }
 
+        [Fact]
+        public async Task GetSms()
+        {
+            const string inboundId = "in-bound";
+            HttpMessageHandlerMock
+                .When(HttpMethod.Get, $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/inbounds/{inboundId}")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    type = "mo_text",
+                    id = inboundId,
+                    from = "+4800000",
+                    to = "+48000001",
+                    body = "hello-world",
+                    received_at = "2019-08-24T14:15:22Z",
+                    udh = "hey"
+                }));
+
+            var response = await Sms.Inbounds.Get(inboundId);
+
+            response.Should().NotBeNull();
+            response.Should().BeOfType<SmsInbound>().Which.Should().BeEquivalentTo(new SmsInbound()
+            {
+                Id = inboundId,
+                Body = "hello-world",
+                ReceivedAt = new DateTime(2019, 8, 24, 14, 15, 22),
+                From = "+4800000",
+                To = "+48000001",
+            });
+        }
 
         [Fact]
         public async Task List()
@@ -90,7 +130,7 @@ namespace Sinch.Tests.Sms
             response.Count.Should().Be(2);
             response.Inbounds.Should().HaveCount(1);
         }
-        
+
         [Fact]
         public async Task ListAuto()
         {
@@ -139,8 +179,8 @@ namespace Sinch.Tests.Sms
                 Page = 0
             };
 
-            var response =  Sms.Inbounds.ListAuto(request);
-            var list = new List<Inbound>();
+            var response = Sms.Inbounds.ListAuto(request);
+            var list = new List<IInbound>();
             await foreach (var inbound in response)
             {
                 inbound.Should().NotBeNull();

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Sinch.SMS.Batches.List
 {
@@ -22,6 +22,6 @@ namespace Sinch.SMS.Batches.List
         /// <summary>
         ///     The page of batches matching the given filters
         /// </summary>
-        public List<IBatch> Batches { get; set; }
+        public List<IBatch>? Batches { get; set; }
     }
 }

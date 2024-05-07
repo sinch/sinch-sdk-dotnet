@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Verification.Common
 {
@@ -8,7 +8,7 @@ namespace Sinch.Verification.Common
         ///     ISO 4217 currency code
         /// </summary>
         [JsonPropertyName("currencyId")]
-        public string CurrencyId { get; set; }
+        public string? CurrencyId { get; set; }
 
         [JsonPropertyName("amount")]
         public double Amount { get; set; }

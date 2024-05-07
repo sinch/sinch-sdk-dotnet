@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentAssertions;
 using Sinch.Conversation;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Contacts;
-using Sinch.Conversation.Messages;
 using Xunit;
 
 namespace Sinch.Tests.Conversation

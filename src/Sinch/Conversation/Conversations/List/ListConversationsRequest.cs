@@ -1,5 +1,3 @@
-﻿using Sinch.Conversation.Messages;
-
 namespace Sinch.Conversation.Conversations.List
 {
     public sealed class ListConversationsRequest
@@ -16,12 +14,12 @@ namespace Sinch.Conversation.Conversations.List
         /// <summary>
         ///     At least one of app_id or contact_id must be present.
         /// </summary>
-        public string AppId { get; set; }
+        public string? AppId { get; set; }
 
         /// <summary>
         ///     At least one of app_id or contact_id must be present.
         /// </summary>
-        public string ContactId { get; set; }
+        public string? ContactId { get; set; }
 
         /// <summary>
         ///     The maximum number of conversations to fetch. Defaults to 10 and the maximum is 20.
@@ -31,11 +29,11 @@ namespace Sinch.Conversation.Conversations.List
         /// <summary>
         ///     Next page token previously returned if any.
         /// </summary>
-        public string PageToken { get; set; }
+        public string? PageToken { get; set; }
 
         /// <summary>
         ///     Only fetch conversations from the active_channel
         /// </summary>
-        public ConversationChannel ActiveChannel { get; set; }
+        public ConversationChannel? ActiveChannel { get; set; }
     }
 }

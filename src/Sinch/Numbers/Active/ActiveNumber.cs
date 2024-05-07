@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Sinch.Numbers.Active
@@ -13,7 +13,7 @@ namespace Sinch.Numbers.Active
 #if NET7_0_OR_GREATER
         public required string PhoneNumber { get; set; }
 #else
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Sinch.Numbers.Active
 #if NET7_0_OR_GREATER
         public required string ProjectId { get; set; }
 #else
-        public string ProjectId { get; set; }
+        public string ProjectId { get; set; } = null!;
 #endif
 
 
@@ -33,7 +33,7 @@ namespace Sinch.Numbers.Active
 #if NET7_0_OR_GREATER
         public required string DisplayName { get; set; }
 #else
-        public string DisplayName { get; set; }
+        public string DisplayName { get; set; } = null!;
 #endif
 
 
@@ -44,22 +44,22 @@ namespace Sinch.Numbers.Active
 #if NET7_0_OR_GREATER
         public required string RegionCode { get; set; }
 #else
-        public string RegionCode { get; set; }
+        public string RegionCode { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     The number type.
         /// </summary>
-        public Types Type { get; set; }
+        public Types? Type { get; set; }
 
         /// <summary>
         ///     The capability of the number.
         /// </summary>
 #if NET7_0_OR_GREATER
-        public required IList<Product> Capability { get; set; }
+        public required List<Product> Capability { get; set; }
 #else
-        public IList<Product> Capability { get; set; }
+        public List<Product> Capability { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -68,19 +68,19 @@ namespace Sinch.Numbers.Active
 #if NET7_0_OR_GREATER
         public required Money Money { get; set; }
 #else
-        public Money Money { get; set; }
+        public Money Money { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     How often the recurring price is charged in months.
         /// </summary>
-        public int PaymentIntervalMonths { get; set; }
+        public int? PaymentIntervalMonths { get; set; }
 
         /// <summary>
         ///     The date of the next charge.
         /// </summary>
-        public DateTime NextChargeDate { get; set; }
+        public DateTime? NextChargeDate { get; set; }
 
         /// <summary>
         ///     The timestamp when the subscription will expire if an expiration date has been set.
@@ -93,7 +93,7 @@ namespace Sinch.Numbers.Active
         ///     The status of scheduled provisioning will show under a scheduledProvisioning object if it's still running. Once
         ///     processed successfully, the servicePlanId sent will appear directly under the smsConfiguration object.
         /// </summary>
-        public SmsConfiguration SmsConfiguration { get; set; }
+        public SmsConfiguration? SmsConfiguration { get; set; }
 
         /// <summary>
         ///     The current voice configuration for this number.<br /><br />
@@ -102,6 +102,6 @@ namespace Sinch.Numbers.Active
         ///     The status of scheduled provisioning will show under a scheduledProvisioning object if it's still running. Once
         ///     processed successfully, the appId sent will appear directly under the voiceConfiguration object.
         /// </summary>
-        public VoiceConfiguration VoiceConfiguration { get; set; }
+        public VoiceConfiguration? VoiceConfiguration { get; set; }
     }
 }

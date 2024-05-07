@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
@@ -28,49 +28,49 @@ namespace Sinch.Conversation.Hooks.Models
         ///     The event ID.
         /// </summary>
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets ContactEvent
         /// </summary>
         [JsonPropertyName("contact_event")]
-        public ContactEvent ContactEvent { get; set; }
+        public ContactEvent? ContactEvent { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets ContactMessageEvent
         /// </summary>
         [JsonPropertyName("contact_message_event")]
-        public ContactMessageEvent ContactMessageEvent { get; set; }
+        public ContactMessageEvent? ContactMessageEvent { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets ChannelIdentity
         /// </summary>
         [JsonPropertyName("channel_identity")]
-        public ChannelIdentity ChannelIdentity { get; set; }
+        public ChannelIdentity? ChannelIdentity { get; set; }
 
 
         /// <summary>
         ///     The ID of the contact. Will be empty if processing_mode is DISPATCH.
         /// </summary>
         [JsonPropertyName("contact_id")]
-        public string ContactId { get; set; }
+        public string? ContactId { get; set; }
 
 
         /// <summary>
         ///     The ID of the conversation this event is part of. Will be empty if processing_mode is DISPATCH.
         /// </summary>
         [JsonPropertyName("conversation_id")]
-        public string ConversationId { get; set; }
+        public string? ConversationId { get; set; }
 
 
         /// <summary>
         ///     Timestamp marking when the channel callback was received by the Conversation API.
         /// </summary>
         [JsonPropertyName("accept_time")]
-        public DateTime AcceptTime { get; set; }
+        public DateTime? AcceptTime { get; set; }
 
 
         /// <summary>

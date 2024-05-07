@@ -1,27 +1,25 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Generic;
 using System.Text;
 using Sinch.Conversation.Common;
-using Sinch.Conversation.Messages;
 using Sinch.Core;
 
 namespace Sinch.Conversation.Contacts
 {
     public sealed class Contact : PropertyMaskQuery
     {
-        private List<ChannelIdentity> _channelIdentities;
-        private List<ConversationChannel> _channelPriority;
-        private string _displayName;
-        private string _email;
-        private string _externalId;
-        private string _id;
-        private ConversationLanguage _language;
-        private string _metadata;
+        private List<ChannelIdentity>? _channelIdentities;
+        private List<ConversationChannel>? _channelPriority;
+        private string? _displayName;
+        private string? _email;
+        private string? _externalId;
+        private string? _id;
+        private ConversationLanguage? _language;
+        private string? _metadata;
 
         /// <summary>
         ///     List of channel identities.
         /// </summary>
-        public List<ChannelIdentity> ChannelIdentities
+        public List<ChannelIdentity>? ChannelIdentities
         {
             get => _channelIdentities;
             set
@@ -35,7 +33,7 @@ namespace Sinch.Conversation.Contacts
         /// <summary>
         ///     List of channels defining the channel priority.
         /// </summary>
-        public List<ConversationChannel> ChannelPriority
+        public List<ConversationChannel>? ChannelPriority
         {
             get => _channelPriority;
             set
@@ -49,7 +47,7 @@ namespace Sinch.Conversation.Contacts
         /// <summary>
         ///     The display name. A default &#39;Unknown&#39; will be assigned if left empty.
         /// </summary>
-        public string DisplayName
+        public string? DisplayName
         {
             get => _displayName;
             set
@@ -63,7 +61,7 @@ namespace Sinch.Conversation.Contacts
         /// <summary>
         ///     Email of the contact.
         /// </summary>
-        public string Email
+        public string? Email
         {
             get => _email;
             set
@@ -77,7 +75,7 @@ namespace Sinch.Conversation.Contacts
         /// <summary>
         ///     Contact identifier in an external system.
         /// </summary>
-        public string ExternalId
+        public string? ExternalId
         {
             get => _externalId;
             set
@@ -91,7 +89,7 @@ namespace Sinch.Conversation.Contacts
         /// <summary>
         ///     The ID of the contact.
         /// </summary>
-        public string Id
+        public string? Id
         {
             get => _id;
             set
@@ -105,7 +103,7 @@ namespace Sinch.Conversation.Contacts
         /// <summary>
         ///     Gets or Sets Language
         /// </summary>
-        public ConversationLanguage Language
+        public ConversationLanguage? Language
         {
             get => _language;
             set
@@ -119,7 +117,7 @@ namespace Sinch.Conversation.Contacts
         /// <summary>
         ///     Metadata associated with the contact. Up to 1024 characters long.
         /// </summary>
-        public string Metadata
+        public string? Metadata
         {
             get => _metadata;
             set
@@ -128,7 +126,6 @@ namespace Sinch.Conversation.Contacts
                 _metadata = value;
             }
         }
-
 
 
         /// <summary>

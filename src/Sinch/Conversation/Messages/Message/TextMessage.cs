@@ -1,11 +1,11 @@
-﻿using System.Text;
+using System.Text;
 
 namespace Sinch.Conversation.Messages.Message
 {
     /// <summary>
     ///     A message containing only text.
     /// </summary>
-    public sealed class TextMessage 
+    public sealed class TextMessage : IOmniMessageOverride
     {
         /// <summary>
         ///     A message containing only text.

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -16,7 +16,8 @@ namespace Sinch.Core
     {
         public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return Activator.CreateInstance(typeToConvert, reader.GetString()) as T;
+            return Activator.CreateInstance(typeToConvert, reader.GetString()) as T ??
+                   throw new InvalidOperationException("Created instance is null");
         }
 
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
@@ -28,7 +29,13 @@ namespace Sinch.Core
         public override T ReadAsPropertyName(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)
         {
-            return Activator.CreateInstance(typeToConvert, reader.GetString()) as T;
+            return Activator.CreateInstance(typeToConvert, reader.GetString()) as T ??
+                   throw new InvalidOperationException("Created instance is null");
+        }
+
+        public override void WriteAsPropertyName(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+        {
+            writer.WritePropertyName(value.Value);
         }
     }
 }

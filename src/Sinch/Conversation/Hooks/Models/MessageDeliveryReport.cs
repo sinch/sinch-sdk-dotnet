@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.Message;
@@ -27,42 +27,42 @@ namespace Sinch.Conversation.Hooks.Models
         ///     The ID of the app message.
         /// </summary>
         [JsonPropertyName("message_id")]
-        public string MessageId { get; set; }
+        public string? MessageId { get; set; }
 
 
         /// <summary>
         ///     The ID of the conversation the app message is part of. Will be empty if processing_mode is DISPATCH.
         /// </summary>
         [JsonPropertyName("conversation_id")]
-        public string ConversationId { get; set; }
+        public string? ConversationId { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets ChannelIdentity
         /// </summary>
         [JsonPropertyName("channel_identity")]
-        public ChannelIdentity ChannelIdentity { get; set; }
+        public ChannelIdentity? ChannelIdentity { get; set; }
 
 
         /// <summary>
         ///     The ID of the contact. Will be empty if processing_mode is DISPATCH.
         /// </summary>
         [JsonPropertyName("contact_id")]
-        public string ContactId { get; set; }
+        public string? ContactId { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets Reason
         /// </summary>
         [JsonPropertyName("reason")]
-        public Reason Reason { get; set; }
+        public Reason? Reason { get; set; }
 
 
         /// <summary>
         ///     Metadata specified in the message_metadata field of a Send Message request, if any.
         /// </summary>
         [JsonPropertyName("metadata")]
-        public string Metadata { get; set; }
+        public string? Metadata { get; set; }
 
 
         /// <summary>

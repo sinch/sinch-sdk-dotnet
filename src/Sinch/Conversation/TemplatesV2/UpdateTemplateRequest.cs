@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,7 +12,7 @@ namespace Sinch.Conversation.TemplatesV2
 #if NET7_0_OR_GREATER
         public required string Id { get; set; }
 #else
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
 #endif
 
 
@@ -28,30 +28,30 @@ namespace Sinch.Conversation.TemplatesV2
         /// <summary>
         ///     The default translation to use if translation not specified. Specified as a BCP-47 &#x60;language_code&#x60; and the &#x60;language_code&#x60; must exist in the translations list.
         /// </summary>
-        public string DefaultTranslation { get; set; }
+        public string? DefaultTranslation { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets Translations
         /// </summary>
-        public List<TemplateTranslation> Translations { get; set; }
+        public List<TemplateTranslation>? Translations { get; set; }
 
         /// <summary>
         ///     The description of the template.
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
 
         /// <summary>
         ///     Timestamp when the template was created.
         /// </summary>
-        public DateTime CreateTime { get; set; }
+        public DateTime? CreateTime { get; set; }
 
 
         /// <summary>
         ///     Timestamp when the template was updated.
         /// </summary>
-        public DateTime UpdateTime { get; set; }
+        public DateTime? UpdateTime { get; set; }
 
 
         /// <summary>

@@ -1,4 +1,3 @@
-﻿using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Hooks.Models;
@@ -14,7 +13,7 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets MessageSubmitNotification
         /// </summary>
         [JsonPropertyName("message_submit_notification")]
-        public MessageSubmitNotification MessageSubmitNotification { get; set; }
+        public MessageSubmitNotification? MessageSubmitNotification { get; set; }
 
 
         /// <summary>

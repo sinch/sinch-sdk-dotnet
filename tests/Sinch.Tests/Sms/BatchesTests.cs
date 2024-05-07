@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -213,7 +213,7 @@ namespace Sinch.Tests.Sms
             {
                 PageSize = 11,
                 ClientReference = "havel",
-                From = new[] { "123", "456" },
+                From = new List<string>() { "123", "456" },
                 Page = 3,
                 StartDate = new DateTime(2023, 8, 16, 3, 14, 17, DateTimeKind.Utc),
                 EndDate = new DateTime(2023, 8, 16, 3, 14, 17, DateTimeKind.Utc)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -87,9 +87,9 @@ namespace Sinch.Tests.e2e.Conversation
             var createTemplateRequest = new CreateTemplateRequest()
             {
                 Description = _template.Description,
-                Translations = _template.Translations,
+                Translations = _template.Translations!,
                 CreateTime = _template.CreateTime,
-                DefaultTranslation = _template.DefaultTranslation,
+                DefaultTranslation = _template.DefaultTranslation!,
                 UpdateTime = _template.UpdateTime,
                 Version = _template.Version
             };

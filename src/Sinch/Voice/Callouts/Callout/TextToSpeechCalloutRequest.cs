@@ -3,12 +3,12 @@ using Sinch.Core;
 
 namespace Sinch.Voice.Callouts.Callout
 {
-    public class TtsCalloutRequest
+    public class TextToSpeechCalloutRequest
     {
 #if NET7_0_OR_GREATER
         public required Destination Destination { get; set; }
 #else
-        public Destination Destination { get; set; }
+        public Destination Destination { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -16,7 +16,7 @@ namespace Sinch.Voice.Callouts.Callout
         ///     to set your own CLI, you may use your verified number or your Dashboard virtual number,
         ///     it must be in E.164 format.
         /// </summary>
-        public string Cli { get; set; }
+        public string? Cli { get; set; }
 
         /// <summary>
         ///     When the destination picks up, this DTMF tones will be played to the callee.
@@ -25,17 +25,17 @@ namespace Sinch.Voice.Callouts.Callout
         ///     by a 0.5s pause and finally the DTMF tone for "#". This can be used if the callout destination for
         ///     instance require a conference PIN code or an extension to be entered.
         /// </summary>
-        public string Dtmf { get; set; }
+        public string? Dtmf { get; set; }
 
         /// <summary>
         ///     Can be either pstn for PSTN endpoint or mxp for data (app or web) clients.
         /// </summary>
-        public Domain Domain { get; set; }
+        public Domain? Domain { get; set; }
 
         /// <summary>
         ///     Can be used to input custom data.
         /// </summary>
-        public string Custom { get; set; }
+        public string? Custom { get; set; }
 
         /// <summary>
         ///     The voice and language you want to use for the text-to-speech message.
@@ -43,7 +43,7 @@ namespace Sinch.Voice.Callouts.Callout
         ///     Supported languages and voices are detailed
         ///     <see href="https://developers.sinch.com/docs/voice/api-reference/voice-locales/">here</see>.
         /// </summary>
-        public string Locale { get; set; }
+        public string? Locale { get; set; }
 
         /// <summary>
         ///     The text that will be spoken in the text-to-speech message.
@@ -51,7 +51,7 @@ namespace Sinch.Voice.Callouts.Callout
         ///     Every application's default maximum characters allowed in text-to-speech is 600 characters.
         ///     Contact support if you wish this limit to be changed.
         /// </summary>
-        public string Text { get; set; }
+        public string? Text { get; set; }
 
         /// <summary>
         ///     An advanced alternative to using <c>text</c>. <br /><br />
@@ -76,7 +76,7 @@ namespace Sinch.Voice.Callouts.Callout
         ///     Example:
         ///     <c>#tts[Hello from Sinch];#ssml[&lt;speak&gt;&lt;break time=\"250ms\"/&gt;Have a great day!&lt;/speak&gt;]</c>
         /// </summary>
-        public string Promts { get; set; }
+        public string? Prompts { get; set; }
 
         /// <summary>
         ///     If <c>enableAce</c> is set to <c>true</c> and the application has a callback URL specified, you will receive an ACE

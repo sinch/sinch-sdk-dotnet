@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Events.ContactEvents;
 using Sinch.Conversation.Events.EventTypes;
@@ -47,34 +47,34 @@ namespace Sinch.Conversation.Events
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ComposingEvent ComposingEvent { get; private set; }
+        public ComposingEvent? ComposingEvent { get; private set; }
 
         /// <summary>
         ///     Gets or Sets ContactMessageEvent
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ComposingEndEvent ComposingEndEvent { get; private set; }
+        public ComposingEndEvent? ComposingEndEvent { get; private set; }
 
         /// <summary>
         ///     Gets or Sets ContactMessageEvent
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ConversationDeletedEvent ConversationDeletedEvent { get; private set; }
+        public ConversationDeletedEvent? ConversationDeletedEvent { get; private set; }
 
         /// <summary>
         ///     Gets or Sets ContactMessageEvent
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public CommentEvent CommentEvent { get; private set; }
+        public CommentEvent? CommentEvent { get; private set; }
 
         /// <summary>
         ///     Gets or Sets ContactMessageEvent
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public GenericEvent GenericEvent { get; private set; }
+        public GenericEvent? GenericEvent { get; private set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Net.Http;
+using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -20,7 +20,7 @@ namespace Sinch.Core
             throw new SinchApiException(httpResponseMessage.StatusCode, httpResponseMessage.ReasonPhrase, null, apiError);
         }
 
-        public static async Task<T> TryGetJson<T>(this HttpResponseMessage httpResponseMessage)
+        public static async Task<T?> TryGetJson<T>(this HttpResponseMessage httpResponseMessage)
         {
             var authResponse = default(T);
             if (httpResponseMessage.IsJson()) authResponse = await httpResponseMessage.Content.ReadFromJsonAsync<T>();

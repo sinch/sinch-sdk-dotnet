@@ -1,11 +1,11 @@
-﻿using System.Text;
+using System.Text;
 
 namespace Sinch.Conversation.Messages.Message
 {
     /// <summary>
     ///     Message containing geographic location.
     /// </summary>
-    public sealed class LocationMessage 
+    public sealed class LocationMessage : IOmniMessageOverride
     {
         /// <summary>
         ///     Gets or Sets Coordinates
@@ -13,14 +13,14 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required Coordinates Coordinates { get; set; }
 #else
-        public Coordinates Coordinates { get; set; }
+        public Coordinates Coordinates { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     Label or name for the position.
         /// </summary>
-        public string Label { get; set; }
+        public string? Label { get; set; }
 
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required string Title { get; set; }
 #else
-        public string Title { get; set; }
+        public string Title { get; set; } = null!;
 #endif
 
 
@@ -54,7 +54,7 @@ namespace Sinch.Conversation.Messages.Message
     /// </summary>
     public record Coordinates(float Latitude, float Longitude)
     {
-            /// <summary>
+        /// <summary>
         ///     The latitude.
         /// </summary>
 #if NET7_0_OR_GREATER

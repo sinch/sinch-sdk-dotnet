@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Sinch.Numbers
 {
@@ -12,7 +12,7 @@ namespace Sinch.Numbers
 #if NET7_0_OR_GREATER
         public required string AppId { get; set; }
 #else
-        public string AppId { get; set; }
+        public string AppId { get; set; } = null!;
 #endif
 
 
@@ -20,11 +20,11 @@ namespace Sinch.Numbers
         ///     This object is temporary and will appear while the scheduled voice provisioning is processing.
         ///     Once it has successfully processed, only the ID of the Voice configuration will display.
         /// </summary>
-        public ScheduledVoiceProvisioning ScheduledVoiceProvisioning { get; }
+        public ScheduledVoiceProvisioning? ScheduledVoiceProvisioning { get; set; }
 
         /// <summary>
         ///     Timestamp when the status was last updated.
         /// </summary>
-        public DateTime LastUpdatedTime { get; }
+        public DateTime? LastUpdatedTime { get; set; }
     }
 }

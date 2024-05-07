@@ -1,4 +1,4 @@
-﻿namespace Sinch.Numbers
+namespace Sinch.Numbers
 {
 
     /// <summary>
@@ -12,7 +12,7 @@
 #if NET_7
         public required string CurrencyCode { get; set; }
 #else
-        public string CurrencyCode { get; set; }
+        public string CurrencyCode { get; set; } = null!;
 #endif
 
         /// <summary>

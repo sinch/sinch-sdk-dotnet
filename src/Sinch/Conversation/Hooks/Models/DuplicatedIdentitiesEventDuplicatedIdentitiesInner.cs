@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -14,14 +14,14 @@ namespace Sinch.Conversation.Hooks.Models
         /// Gets or Sets Channel
         /// </summary>
         [JsonPropertyName("channel")]
-        public ConversationChannel Channel { get; set; }
+        public ConversationChannel? Channel { get; set; }
 
         /// <summary>
         ///     List of duplicated ids in the specified channel.
         /// </summary>
         [JsonPropertyName("contact_ids")]
-        public List<string> ContactIds { get; set; }
-        
+        public List<string>? ContactIds { get; set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object

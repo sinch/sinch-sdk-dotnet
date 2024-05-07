@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -40,7 +40,7 @@ namespace Sinch.Tests.e2e.Voice
                         Duration = 15,
                         Id = "call1",
                         Muted = false,
-                        Onhold = false
+                        OnHold = false
                     },
                     new Participant
                     {
@@ -48,7 +48,7 @@ namespace Sinch.Tests.e2e.Voice
                         Duration = 70,
                         Id = "call2",
                         Muted = true,
-                        Onhold = true
+                        OnHold = true
                     }
                 }
             });
@@ -64,7 +64,7 @@ namespace Sinch.Tests.e2e.Voice
             });
             await op.Should().NotThrowAsync();
         }
-        
+
         [Fact]
         public async Task KickParticipant()
         {

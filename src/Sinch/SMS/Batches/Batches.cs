@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
@@ -123,10 +123,11 @@ namespace Sinch.SMS.Batches
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchSmsBatches> _logger;
+        private readonly ILoggerAdapter<ISinchSmsBatches>? _logger;
         private readonly string _projectOrServicePlanId;
 
-        internal Batches(string projectOrServicePlanId, Uri baseAddress, ILoggerAdapter<ISinchSmsBatches> logger, IHttp http)
+        internal Batches(string projectOrServicePlanId, Uri baseAddress, ILoggerAdapter<ISinchSmsBatches>? logger,
+            IHttp http)
         {
             _projectOrServicePlanId = projectOrServicePlanId;
             _http = http;
@@ -167,10 +168,11 @@ namespace Sinch.SMS.Batches
                 var uri = new Uri(_baseAddress, relative);
                 var response = await _http.Send<ListBatchesResponse>(uri, HttpMethod.Get, cancellationToken);
 
-                foreach (var batch in response.Batches)
-                {
-                    yield return batch;
-                }
+                if (response.Batches != null)
+                    foreach (var batch in response.Batches)
+                    {
+                        yield return batch;
+                    }
 
                 lastPage = Utils.IsLastPage(response.Page, response.PageSize, response.Count);
                 request.Page ??= response.Page;
@@ -180,7 +182,8 @@ namespace Sinch.SMS.Batches
 
         public Task<DryRunResponse> DryRun(DryRunRequest request, CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/batches/dry_run?{request.GetQueryString()}");
+            var uri = new Uri(_baseAddress,
+                $"xms/v1/{_projectOrServicePlanId}/batches/dry_run?{request.GetQueryString()}");
             _logger?.LogDebug("Performing dry run...");
             return _http.Send<ISendBatchRequest, DryRunResponse>(uri, HttpMethod.Post, request.BatchRequest,
                 cancellationToken);
@@ -224,9 +227,9 @@ namespace Sinch.SMS.Batches
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/batches/{batchId}/delivery_feedback");
             _logger?.LogDebug("Sending delivery feedback for batch {id}...", batchId);
-            return _http.Send<object, object>(uri, HttpMethod.Post, new
+            return _http.Send<object, EmptyResponse>(uri, HttpMethod.Post, new
             {
-                recipients = recipients ?? Array.Empty<string>()
+                recipients
             }, cancellationToken);
         }
     }

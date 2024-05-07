@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Sinch.Core;
 
@@ -13,20 +13,20 @@ namespace Sinch.SMS.DeliveryReports.Get
 #if NET7_0_OR_GREATER
         public required string BatchId { get; set; }
 #else
-        public string BatchId { get; set; }
+        public string BatchId { get; set; } = null!;
 #endif
 
-        public DeliveryReportVerbosityType DeliveryReportType { get; set; }
+        public DeliveryReportVerbosityType? DeliveryReportType { get; set; }
 
         /// <summary>
         ///     A list of <see cref="DeliveryReportStatus" /> to include.
         /// </summary>
-        public List<DeliveryReportStatus> Statuses { get; set; }
+        public List<DeliveryReportStatus>? Statuses { get; set; }
 
         /// <summary>
         ///     A list of delivery_receipt_error_codes to include.
         /// </summary>
-        public List<string> Code { get; set; }
+        public List<string>? Code { get; set; }
 
         internal string GetQueryString()
         {
@@ -34,7 +34,7 @@ namespace Sinch.SMS.DeliveryReports.Get
             if (DeliveryReportType is not null)
             {
                 kvp.Add(
-                    new KeyValuePair<string, string>("type",DeliveryReportType.Value));
+                    new KeyValuePair<string, string>("type", DeliveryReportType.Value));
             }
 
             if (Statuses is not null && Statuses.Count > 0)

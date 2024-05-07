@@ -1,5 +1,3 @@
-﻿using System.Text;
-
 namespace Sinch.Conversation.Apps.Credentials
 {
     /// <summary>
@@ -13,7 +11,7 @@ namespace Sinch.Conversation.Apps.Credentials
 #if NET7_0_OR_GREATER
         public required string Token { get; set; }
 #else
-        public string Token { get; set; }
+        public string Token { get; set; } = null!;
 #endif
     }
 }

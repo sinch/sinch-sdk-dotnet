@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sinch.Core;
@@ -15,11 +15,11 @@ namespace Sinch.SMS.DeliveryReports.List
 
         public DateTime? EndDate { get; set; }
 
-        public List<DeliveryReportStatus> Status { get; set; }
+        public List<DeliveryReportStatus>? Status { get; set; }
 
-        public List<string> Code { get; set; }
+        public List<string>? Code { get; set; }
 
-        public string ClientReference { get; set; }
+        public string? ClientReference { get; set; }
 
         internal string GetQueryString()
         {

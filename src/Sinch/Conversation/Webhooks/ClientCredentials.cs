@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 
 namespace Sinch.Conversation.Webhooks
 {
@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Webhooks
 #if NET7_0_OR_GREATER
         public required string ClientId { get; set; }
 #else
-        public string ClientId { get; set; }
+        public string ClientId { get; set; } = null!;
 #endif
 
 
@@ -23,7 +23,7 @@ namespace Sinch.Conversation.Webhooks
 #if NET7_0_OR_GREATER
         public required string ClientSecret { get; set; }
 #else
-        public string ClientSecret { get; set; }
+        public string ClientSecret { get; set; } = null!;
 #endif
 
 
@@ -35,7 +35,7 @@ namespace Sinch.Conversation.Webhooks
 #if NET7_0_OR_GREATER
         public required string Endpoint { get; set; }
 #else
-        public string Endpoint { get; set; }
+        public string Endpoint { get; set; } = null!;
 #endif
 
 

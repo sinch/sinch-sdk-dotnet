@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -12,18 +12,18 @@ namespace Sinch.Verification.Start.Response
         /// <summary>
         ///     Verification identifier used to query for status.
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         ///     Available methods and actions which can be done after a successful Verification
         /// </summary>
         [JsonPropertyName("_links")]
-        public List<Links> Links { get; set; }
+        public List<Links>? Links { get; set; }
 
         /// <summary>
         ///     The value of the method used for the Verification.
         /// </summary>
-        public VerificationMethodEx Method { get; set; }
+        public VerificationMethodEx Method { get; set; } = null!;
     }
 
     /// <summary>
@@ -48,18 +48,26 @@ namespace Sinch.Verification.Start.Response
             var method = descriptor.Value.GetString();
 
             if (VerificationMethodEx.Seamless.Value == method)
-                return elem.Deserialize<StartDataVerificationResponse>(options);
+                return elem.Deserialize<StartDataVerificationResponse>(options) ??
+                       throw new InvalidOperationException(
+                           $"{nameof(StartDataVerificationResponse)} deserialization result is null.");
 
             if (VerificationMethodEx.Sms.Value == method)
                 return
                     elem.Deserialize<StartSmsVerificationResponse>(
-                        options);
+                        options) ??
+                    throw new InvalidOperationException(
+                        $"{nameof(StartSmsVerificationResponse)} deserialization result is null.");
 
             if (VerificationMethodEx.FlashCall.Value == method)
-                return elem.Deserialize<StartFlashCallVerificationResponse>(options);
+                return elem.Deserialize<StartFlashCallVerificationResponse>(options) ??
+                       throw new InvalidOperationException(
+                           $"{nameof(StartFlashCallVerificationResponse)} deserialization result is null.");
 
             if (VerificationMethodEx.Callout.Value == method)
-                return elem.Deserialize<StartCalloutVerificationResponse>(options);
+                return elem.Deserialize<StartCalloutVerificationResponse>(options) ??
+                       throw new InvalidOperationException(
+                           $"{nameof(StartCalloutVerificationResponse)} deserialization result is null.");
 
             throw new JsonException(
                 $"Failed to match verification method object, got prop `{descriptor.Name}` with value `{method}`");

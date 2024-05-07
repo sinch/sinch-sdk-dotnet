@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.Linq;
 using System.Reflection;
@@ -9,7 +9,7 @@ namespace Sinch.Core
 {
     public static class JsonExtensions
     {
-        public static object ToObject(this JsonElement element, Type type, JsonSerializerOptions options = null)
+        public static object? ToObject(this JsonElement element, Type type, JsonSerializerOptions? options = null)
         {
             var bufferWriter = new ArrayBufferWriter<byte>();
             using (var writer = new Utf8JsonWriter(bufferWriter))

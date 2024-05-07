@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -13,8 +13,8 @@ namespace Sinch.Conversation.Hooks.Models
         ///     The data array contains the string(s) identified in one section of an analyzed image.
         /// </summary>
         [JsonPropertyName("data")]
-        public List<string> Data { get; set; }
-        
+        public List<string>? Data { get; set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object

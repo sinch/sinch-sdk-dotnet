@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Core;
@@ -24,7 +24,7 @@ namespace Sinch.Conversation.Events
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public PaymentStatusUpdateEvent PaymentStatusUpdateEvent { get; private set; }
+        public PaymentStatusUpdateEvent? PaymentStatusUpdateEvent { get; private set; }
     }
 
 
@@ -47,13 +47,13 @@ namespace Sinch.Conversation.Events
         /// <summary>
         ///     Unique identifier for the corresponding payment of a particular order.
         /// </summary>
-        public string ReferenceId { get; set; }
+        public string? ReferenceId { get; set; }
 
 
         /// <summary>
         ///     Unique identifier of the payment_transaction_status.
         /// </summary>
-        public string PaymentTransactionId { get; set; }
+        public string? PaymentTransactionId { get; set; }
 
 
         /// <summary>

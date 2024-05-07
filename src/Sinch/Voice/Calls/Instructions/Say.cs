@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Voice.Calls.Instructions
@@ -10,13 +10,13 @@ namespace Sinch.Voice.Calls.Instructions
     {
         [JsonPropertyName("name")]
         public string Name { get; } = "say";
-        
+
         /// <summary>
         ///     Contains the message that will be spoken. Default maximum length is 600 characters. To change this limit, please
         ///     contact support.
         /// </summary>
         [JsonPropertyName("text")]
-        public string Text { get; set; }
+        public string? Text { get; set; }
 
         /// <summary>
         ///     The voice and language you want to use for the text-to-speech message. This can either be defined by the ISO 639
@@ -24,7 +24,7 @@ namespace Sinch.Voice.Calls.Instructions
         ///     https://developers.sinch.com/docs/voice/api-reference/voice/voice-locales.
         /// </summary>
         [JsonPropertyName("locale")]
-        public string Locale { get; set; }
+        public string? Locale { get; set; }
 
         /// <summary>
         ///     Returns the string presentation of the object

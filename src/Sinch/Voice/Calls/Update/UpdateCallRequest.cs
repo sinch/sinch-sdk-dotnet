@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Sinch.Voice.Calls.Actions;
 using Sinch.Voice.Calls.Instructions;
 
@@ -13,18 +13,18 @@ namespace Sinch.Voice.Calls.Update
 #if NET7_0_OR_GREATER
         public required string CallId { get; set; }
 #else
-        public string CallId { get; set; }
+        public string? CallId { get; set; }
 #endif
 
         /// <summary>
         ///     The collection of instructions that can perform various tasks during the call. You can include as many instructions
         ///     as necessary.
         /// </summary>
-        public List<IInstruction> Instructions { get; set; }
-        
+        public List<IInstruction>? Instructions { get; set; }
+
         /// <summary>
         ///     The action that will control the call. Each SVAML object can only include one action.
         /// </summary>
-        public IAction Action { get; set; }
+        public IAction? Action { get; set; }
     }
 }

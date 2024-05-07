@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Start.Request
@@ -10,7 +10,7 @@ namespace Sinch.Verification.Start.Request
         /// </summary>
         [JsonInclude]
         public override VerificationMethodEx Method { get; } = VerificationMethodEx.FlashCall;
-        
+
         /// <summary>
         ///     An optional object for flashCall verifications.
         ///     It allows you to specify dial time out parameter for flashCall.
@@ -18,6 +18,6 @@ namespace Sinch.Verification.Start.Request
         ///     if the verification request was triggered from your backend (no SDK client)
         ///     through an Application signed request.
         /// </summary>
-        public FlashCallOptions FlashCallOptions { get; set; }
+        public FlashCallOptions? FlashCallOptions { get; set; }
     }
 }

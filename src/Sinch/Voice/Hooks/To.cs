@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Voice.Hooks
 {
@@ -11,12 +11,12 @@ namespace Sinch.Voice.Hooks
         ///     The type of the destination.
         /// </summary>
         [JsonPropertyName("type")]
-        public string Type { get; set; }
+        public string? Type { get; set; }
 
         /// <summary>
         ///     The phone number, user name, or other identifier of the destination.
         /// </summary>
         [JsonPropertyName("endpoint")]
-        public string Endpoint { get; set; }
+        public string? Endpoint { get; set; }
     }
 }

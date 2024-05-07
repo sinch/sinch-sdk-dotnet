@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Sinch.Conversation.Messages.Message
 {
-    public class ChoiceMessage 
+    public sealed class ChoiceMessage : IOmniMessageOverride
     {
         /// <summary>
         ///     The number of choices is limited to 10.
@@ -12,14 +12,14 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required List<Choice> Choices { get; set; }
 #else
-        public List<Choice> Choices { get; set; }
+        public List<Choice> Choices { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     Gets or Sets TextMessage
         /// </summary>
-        public TextMessage TextMessage { get; set; }
+        public TextMessage? TextMessage { get; set; }
 
 
         /// <summary>

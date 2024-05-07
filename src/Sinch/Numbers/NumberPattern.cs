@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Sinch.Numbers
 {
@@ -12,13 +12,13 @@ namespace Sinch.Numbers
 #if NET7_0_OR_GREATER
         public required string Pattern { get; set; }
 #else
-        public string Pattern { get; set; }
+        public string Pattern { get; set; } = null!;
 #endif
 
         /// <summary>
         ///     Search pattern to apply. The options are, START, CONTAIN, and END.
         /// </summary>
-        public SearchPattern SearchPattern { get; set; }
+        public SearchPattern? SearchPattern { get; set; }
 
         internal IEnumerable<KeyValuePair<string, string>> GetQueryParamPairs()
         {

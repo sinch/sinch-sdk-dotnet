@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -6,11 +7,14 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
+using FluentAssertions.Json;
 using RichardSzalay.MockHttp;
 using Sinch.Conversation;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.List;
 using Sinch.Conversation.Messages.Message;
+using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
+using Sinch.Core;
 using Xunit;
 
 namespace Sinch.Tests.Conversation
@@ -32,7 +36,7 @@ namespace Sinch.Tests.Conversation
             var response = await Conversation.Messages.Get(messageId, MessageSource.ConversationSource);
 
             response.Should().NotBeNull();
-            response.AppMessage.ListMessage.Should().BeEquivalentTo(new ListMessage
+            response.AppMessage!.ListMessage.Should().BeEquivalentTo(new ListMessage
             {
                 Title = "title",
                 Sections = new List<ListSection>()
@@ -42,7 +46,7 @@ namespace Sinch.Tests.Conversation
                         Title = "sec1",
                         Items = new List<IListItem>()
                         {
-                            new ListItemChoice()
+                            new ChoiceItem()
                             {
                                 Title = "title",
                                 Description = "desc",
@@ -57,9 +61,9 @@ namespace Sinch.Tests.Conversation
                     new ListSection()
                     {
                         Title = "sec2",
-                        Items = new List<IListItem>()
+                        Items = new List<IListItem>
                         {
-                            new ListItemProduct()
+                            new ProductItem()
                             {
                                 Id = "id",
                                 Marketplace = "amazon"
@@ -69,7 +73,7 @@ namespace Sinch.Tests.Conversation
                 }
             });
             response.Direction.Should().Be(ConversationDirection.UndefinedDirection);
-            response.ContactMessage.ReplyTo.MessageId.Should().Be("string");
+            response.ContactMessage!.ReplyTo!.MessageId.Should().Be("string");
             response.ChannelIdentity.Should().BeEquivalentTo(new ChannelIdentity()
             {
                 AppId = "string",
@@ -205,13 +209,16 @@ namespace Sinch.Tests.Conversation
                                 {
                                     new
                                     {
-                                        title = "title",
-                                        description = "desc",
-                                        media = new
+                                        choice = new
                                         {
-                                            url = "http://localhost",
-                                        },
-                                        postback_data = "postback"
+                                            title = "title",
+                                            description = "desc",
+                                            media = new
+                                            {
+                                                url = "http://localhost",
+                                            },
+                                            postback_data = "postback"
+                                        }
                                     }
                                 }
                             },
@@ -222,8 +229,11 @@ namespace Sinch.Tests.Conversation
                                 {
                                     new
                                     {
-                                        id = "id",
-                                        marketplace = "amazon"
+                                        product = new
+                                        {
+                                            id = "id",
+                                            marketplace = "amazon"
+                                        }
                                     }
                                 }
                             }
@@ -293,10 +303,122 @@ namespace Sinch.Tests.Conversation
         {
             // the birthday format is YYYY-MM-DD
             var t = @"{ ""birthday"": ""2000-03-12"", ""name"": { ""full_name"": ""AAA""}, ""phone_numbers"":[] }";
-            
+
             var contact = JsonSerializer.Deserialize<ContactInfoMessage>(t);
-            
+
             contact.Birthday.Should().BeSameDateAs(new DateTime(2000, 03, 12));
         }
+
+        private FlowMessage _flowMessage = new FlowMessage()
+        {
+            Message = new FlowChannelSpecificMessage()
+            {
+                FlowId = "g",
+                Body = new WhatsAppInteractiveBody()
+                {
+                    Text = "body_text"
+                },
+                Footer = new WhatsAppInteractiveFooter()
+                {
+                    Text = "footer_text",
+                },
+                Header = new WhatsAppInteractiveVideoHeader()
+                {
+                    Video = new WhatsAppInteractiveHeaderMedia()
+                    {
+                        Link = "url_video"
+                    }
+                },
+                FlowAction = FlowChannelSpecificMessage.FlowActionType.Navigate,
+                FlowCta = "flow_cta",
+                FlowMode = FlowChannelSpecificMessage.FlowModeType.Published,
+                FlowToken = "flow_token",
+                FlowActionPayload = new FlowChannelSpecificMessageFlowActionPayload()
+                {
+                    Data = null,
+                    Screen = "a",
+                }
+            }
+        };
+
+        private const string FlowsRawJson =
+            "{\"message_type\":\"FLOWS\",\"message\":{\"flow_mode\":\"published\",\"flow_action\":\"navigate\",\"header\":{\"type\":\"video\",\"video\":{\"link\":\"url_video\"}},\"body\":{\"text\":\"body_text\"},\"footer\":{\"text\":\"footer_text\"},\"flow_id\":\"g\",\"flow_token\":\"flow_token\",\"flow_cta\":\"flow_cta\",\"flow_action_payload\":{\"screen\":\"a\",\"data\":null}}}";
+
+        [Fact]
+        public void SerializeFlowChannelSpecificMessage()
+        {
+            var val = JsonSerializer.Serialize(_flowMessage);
+            val.Should().BeValidJson().And.BeEquivalentTo(FlowsRawJson);
+        }
+
+        [Fact]
+        public void DeserializeFlowMessage()
+        {
+            var json = $"{{\"WHATSAPP\":{FlowsRawJson}}}";
+            var dict = JsonSerializer.Deserialize<Dictionary<ConversationChannel, IChannelSpecificMessage>>(json);
+            dict[ConversationChannel.WhatsApp].Should().BeEquivalentTo(_flowMessage);
+        }
+
+
+        [Theory]
+        [ClassData(typeof(OmniMessageTestData))]
+        public void DeserializeOmniMessageOverride(string json, object dataToCheck)
+        {
+            var dict = JsonSerializer
+                .Deserialize<Dictionary<ChannelSpecificTemplate, IOmniMessageOverride>>(json,
+                    options: new JsonSerializerOptions()
+                    {
+                        PropertyNamingPolicy = SnakeCaseNamingPolicy.Instance
+                    });
+            dict.Should().ContainKey(ChannelSpecificTemplate.WhatsApp).WhoseValue.Should()
+                .BeEquivalentTo(dataToCheck);
+        }
+    }
+
+    public class OmniMessageTestData : IEnumerable<object[]>
+    {
+        private static readonly string Text = @"
+            {
+              ""WHATSAPP"": {
+                  ""text_message"": {
+                    ""text"": ""hello""
+                  }
+              }
+            }";
+        private static readonly string Media = @"
+            {
+              ""WHATSAPP"": {
+                  ""media_message"": {
+                    ""url"": ""https://hello.net""
+                  }
+              }
+            }";
+        private static readonly string Template = @"
+            {
+              ""WHATSAPP"": {
+                  ""template_reference"": {
+                    ""template_id"": ""id"",
+                    ""version"": ""3""
+                  }
+              }
+            }";
+
+        private readonly List<object[]> _data = new()
+        {
+            new object[] { Text, new TextMessage("hello") },
+            new object[] { Media, new MediaMessage()
+            {
+                Url = new Uri("https://hello.net")
+            }},
+            new object[] { Template, new TemplateReference()
+            {
+                TemplateId = "id",
+                Version = "3"
+            }},
+        };
+
+        public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
-using Sinch.Conversation.Messages;
 using Sinch.Conversation.Messages.Message;
 
 namespace Sinch.Conversation.Conversations.InjectMessage
@@ -13,12 +12,12 @@ namespace Sinch.Conversation.Conversations.InjectMessage
     public sealed class InjectMessageRequest
     {
         [JsonIgnore]
-        public string ConversationId { get; set; }
+        public string? ConversationId { get; set; }
 
         /// <summary>
         ///     Gets or Sets Direction
         /// </summary>
-        public ConversationDirection Direction { get; set; }
+        public ConversationDirection? Direction { get; set; }
 
         /// <summary>
         ///     The processed time of the message in UTC timezone. Must be less than current_time and greater than (current_time -
@@ -33,31 +32,31 @@ namespace Sinch.Conversation.Conversations.InjectMessage
         /// <summary>
         ///     Gets or Sets AppMessage
         /// </summary>
-        public AppMessage AppMessage { get; set; }
+        public AppMessage? AppMessage { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets ChannelIdentity
         /// </summary>
-        public ChannelIdentity ChannelIdentity { get; set; }
+        public ChannelIdentity? ChannelIdentity { get; set; }
 
 
         /// <summary>
         ///     The ID of the contact registered in the conversation provided.
         /// </summary>
-        public string ContactId { get; set; }
+        public string? ContactId { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets ContactMessage
         /// </summary>
-        public ContactMessage ContactMessage { get; set; }
+        public ContactMessage? ContactMessage { get; set; }
 
 
         /// <summary>
         ///     Optional. Metadata associated with the contact. Up to 1024 characters long.
         /// </summary>
-        public string Metadata { get; set; }
+        public string? Metadata { get; set; }
 
 
         /// <summary>

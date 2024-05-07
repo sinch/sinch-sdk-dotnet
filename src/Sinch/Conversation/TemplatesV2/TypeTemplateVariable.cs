@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 
 namespace Sinch.Conversation.TemplatesV2
 {
@@ -7,14 +7,14 @@ namespace Sinch.Conversation.TemplatesV2
         /// <summary>
         ///     Gets or Sets Key
         /// </summary>
-        public string Key { get; set; }
-        
+        public string? Key { get; set; }
+
 
         /// <summary>
         ///     Gets or Sets PreviewValue
         /// </summary>
-        public string PreviewValue { get; set; }
-        
+        public string? PreviewValue { get; set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object

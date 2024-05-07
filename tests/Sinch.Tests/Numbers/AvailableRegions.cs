@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -29,7 +29,7 @@ namespace Sinch.Tests.Numbers
                     }
                 }));
 
-            var response = await Numbers.Regions.List(null);
+            var response = await Numbers.Regions.List(new List<Types>());
 
             response.Count().Should().Be(3);
         }

@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Hooks.Models
@@ -12,8 +12,8 @@ namespace Sinch.Conversation.Hooks.Models
         ///     Gets or Sets Conversation
         /// </summary>
         [JsonPropertyName("conversation")]
-        public Conversations.Conversation Conversation { get; set; }
-        
+        public Conversations.Conversation? Conversation { get; set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object

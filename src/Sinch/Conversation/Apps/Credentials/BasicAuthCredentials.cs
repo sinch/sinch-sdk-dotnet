@@ -1,4 +1,4 @@
-﻿namespace Sinch.Conversation.Apps.Credentials
+namespace Sinch.Conversation.Apps.Credentials
 {
     /// <summary>
     ///     It consists of a username and a password.
@@ -11,7 +11,7 @@
 #if NET7_0_OR_GREATER
         public required string Password { get; set; }
 #else
-        public string Password { get; set; }
+        public string Password { get; set; } = null!;
 #endif
 
 
@@ -21,7 +21,7 @@
 #if NET7_0_OR_GREATER
         public required string Username { get; set; }
 #else
-        public string Username { get; set; }
+        public string Username { get; set; } = null!;
 #endif
     }
 }

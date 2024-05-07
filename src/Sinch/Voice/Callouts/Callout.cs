@@ -23,7 +23,7 @@ namespace Sinch.Voice.Callouts
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<CalloutResponse> Tts(TtsCalloutRequest request, CancellationToken cancellationToken = default);
+        Task<CalloutResponse> Tts(TextToSpeechCalloutRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     The conference callout calls a phone number or a user.
@@ -49,9 +49,9 @@ namespace Sinch.Voice.Callouts
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchVoiceCallout> _logger;
+        private readonly ILoggerAdapter<ISinchVoiceCallout>? _logger;
 
-        public SinchCallout(ILoggerAdapter<ISinchVoiceCallout> logger, Uri baseAddress, IHttp http)
+        public SinchCallout(ILoggerAdapter<ISinchVoiceCallout>? logger, Uri baseAddress, IHttp http)
         {
             _logger = logger;
             _baseAddress = baseAddress;
@@ -59,15 +59,15 @@ namespace Sinch.Voice.Callouts
         }
 
         /// <inheritdoc />
-        public Task<CalloutResponse> Tts(TtsCalloutRequest request, CancellationToken cancellationToken = default)
+        public Task<CalloutResponse> Tts(TextToSpeechCalloutRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, "calling/v1/callouts");
             _logger?.LogDebug("Making Tts callout request...");
             return _http.Send<object, CalloutResponse>(uri, HttpMethod.Post, new
-                {
-                    method = CalloutType.Tts.Value,
-                    ttsCallout = request
-                },
+            {
+                method = CalloutType.Tts.Value,
+                ttsCallout = request
+            },
                 cancellationToken);
         }
 
@@ -78,10 +78,10 @@ namespace Sinch.Voice.Callouts
             var uri = new Uri(_baseAddress, "calling/v1/callouts");
             _logger?.LogDebug("Making Conference callout request...");
             return _http.Send<object, CalloutResponse>(uri, HttpMethod.Post, new
-                {
-                    method = CalloutType.Conference.Value,
-                    conferenceCallout = request
-                },
+            {
+                method = CalloutType.Conference.Value,
+                conferenceCallout = request
+            },
                 cancellationToken);
         }
 
@@ -91,10 +91,10 @@ namespace Sinch.Voice.Callouts
             var uri = new Uri(_baseAddress, "calling/v1/callouts");
             _logger?.LogDebug("Making Custom callout request...");
             return _http.Send<object, CalloutResponse>(uri, HttpMethod.Post, new
-                {
-                    method = CalloutType.Custom.Value,
-                    customCallout = request
-                },
+            {
+                method = CalloutType.Custom.Value,
+                customCallout = request
+            },
                 cancellationToken);
         }
     }

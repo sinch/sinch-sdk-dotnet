@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Contacts;
 
@@ -13,14 +13,14 @@ namespace Sinch.Conversation.Hooks.Models
         ///     Gets or Sets PreservedContact
         /// </summary>
         [JsonPropertyName("preserved_contact")]
-        public Contact PreservedContact { get; set; }
+        public Contact? PreservedContact { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets DeletedContact
         /// </summary>
         [JsonPropertyName("deleted_contact")]
-        public Contact DeletedContact { get; set; }
+        public Contact? DeletedContact { get; set; }
 
 
         /// <summary>

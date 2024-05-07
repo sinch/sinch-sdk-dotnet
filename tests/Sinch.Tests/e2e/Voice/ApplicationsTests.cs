@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Voice;
@@ -24,13 +24,13 @@ namespace Sinch.Tests.e2e.Voice
                 new()
                 {
                     Number = "+48128128",
-                    Applicationkey = "991",
+                    ApplicationKey = "991",
                     Capability = Capability.Voice
                 },
                 new()
                 {
                     Number = "+8800",
-                    Applicationkey = null,
+                    ApplicationKey = null,
                     Capability = Capability.Sms
                 }
             });

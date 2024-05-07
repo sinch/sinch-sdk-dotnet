@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Verification.Common
@@ -23,13 +23,13 @@ namespace Sinch.Verification.Common
         ///     Currently only number type is supported.
         /// </summary>
         [JsonPropertyName("type")]
-        public IdentityType Type { get; set; }
+        public IdentityType? Type { get; set; }
 
         /// <summary>
         ///     For type number use an E.164-compatible phone number.
         /// </summary>
         [JsonPropertyName("endpoint")]
-        public string Endpoint { get; set; }
+        public string? Endpoint { get; set; }
     }
 
     [JsonConverter(typeof(EnumRecordJsonConverter<IdentityType>))]

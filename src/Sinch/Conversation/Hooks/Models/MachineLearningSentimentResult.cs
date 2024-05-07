@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -19,22 +19,22 @@ namespace Sinch.Conversation.Hooks.Models
         ///     The message text that was analyzed.
         /// </summary>
         [JsonPropertyName("message")]
-        public string Message { get; set; }
-        
+        public string? Message { get; set; }
+
 
         /// <summary>
         ///     An array of JSON objects made up of sentiment and score pairs, where the score represents the likelihood that the message communicates the corresponding sentiment.
         /// </summary>
         [JsonPropertyName("results")]
-        public List<SentimentResult> Results { get; set; }
-        
+        public List<SentimentResult>? Results { get; set; }
+
 
         /// <summary>
         ///     The likelihood that the assigned sentiment represents the emotional context of the analyzed text. 1 is the maximum value, representing the highest likelihood that the message text matches the sentiment, and 0 is the minimum value, representing the lowest likelihood that the message text matches the sentiment.
         /// </summary>
         [JsonPropertyName("score")]
         public float Score { get; set; }
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object

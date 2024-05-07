@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
@@ -19,28 +19,28 @@ namespace Sinch.Conversation.Hooks.Models
         ///     Event&#39;s ID
         /// </summary>
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
 
         /// <summary>
         ///     Comment&#39;s text
         /// </summary>
         [JsonPropertyName("text")]
-        public string Text { get; set; }
+        public string? Text { get; set; }
 
 
         /// <summary>
         ///     Instagram&#39;s URL of the live broadcast or the post on which the comment was made (permalink).
         /// </summary>
         [JsonPropertyName("commented_on")]
-        public string CommentedOn { get; set; }
+        public string? CommentedOn { get; set; }
 
 
         /// <summary>
         ///     Username of the account that commented in the live broadcast or post.
         /// </summary>
         [JsonPropertyName("user")]
-        public string User { get; set; }
+        public string? User { get; set; }
 
 
         /// <summary>

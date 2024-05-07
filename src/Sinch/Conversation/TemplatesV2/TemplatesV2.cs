@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
@@ -78,10 +78,10 @@ namespace Sinch.Conversation.TemplatesV2
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchConversationTemplatesV2> _logger;
+        private readonly ILoggerAdapter<ISinchConversationTemplatesV2>? _logger;
         private readonly string _projectId;
 
-        public TemplatesV2(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationTemplatesV2> logger,
+        public TemplatesV2(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationTemplatesV2>? logger,
             IHttp http)
         {
             _projectId = projectId;
@@ -111,12 +111,12 @@ namespace Sinch.Conversation.TemplatesV2
             _logger?.LogDebug("Listing all template of {projectId}", _projectId);
             var response =
                 await _http.Send<ListTemplatesResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
-            return response.Templates;
+            return response.Templates ?? new List<Template>();
         }
 
         private class ListTemplatesResponse
         {
-            public List<Template> Templates { get; set; }
+            public List<Template>? Templates { get; set; }
         }
 
         /// <inheritdoc />
@@ -125,7 +125,8 @@ namespace Sinch.Conversation.TemplatesV2
             var uri = new Uri(_baseAddress, $"v2/projects/{_projectId}/templates");
 
             _logger?.LogDebug("Creating a template in {projectId}", _projectId);
-            return _http.Send<CreateTemplateRequest, Template>(uri, HttpMethod.Post, template, cancellationToken: cancellationToken);
+            return _http.Send<CreateTemplateRequest, Template>(uri, HttpMethod.Post, template,
+                cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
@@ -152,7 +153,7 @@ namespace Sinch.Conversation.TemplatesV2
             var response =
                 await _http.Send<ListTranslationsResponse>(builder.Uri, HttpMethod.Get,
                     cancellationToken: cancellationToken);
-            return response.Translations;
+            return response.Translations ?? new List<TemplateTranslation>();
         }
 
         public Task<Template> Update(UpdateTemplateRequest template, CancellationToken cancellationToken = default)
@@ -165,7 +166,8 @@ namespace Sinch.Conversation.TemplatesV2
             var uri = new Uri(_baseAddress, $"v2/projects/{_projectId}/templates/{template.Id}");
 
             _logger?.LogDebug("Updating a template with {templateId} in {projectId}", template.Id, _projectId);
-            return _http.Send<UpdateTemplateRequest, Template>(uri, HttpMethod.Put, template, cancellationToken: cancellationToken);
+            return _http.Send<UpdateTemplateRequest, Template>(uri, HttpMethod.Put, template,
+                cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
@@ -179,12 +181,12 @@ namespace Sinch.Conversation.TemplatesV2
             var uri = new Uri(_baseAddress, $"v2/projects/{_projectId}/templates/{templateId}");
 
             _logger?.LogDebug("Deleting a template with {templateId} in {projectId}", templateId, _projectId);
-            return _http.Send<object>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
+            return _http.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
         }
 
         private class ListTranslationsResponse
         {
-            public List<TemplateTranslation> Translations { get; set; }
+            public List<TemplateTranslation>? Translations { get; set; }
         }
     }
 }

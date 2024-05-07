@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Sinch.Conversation;
 
 namespace Sinch.Tests.Conversation

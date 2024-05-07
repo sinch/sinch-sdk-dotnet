@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Hooks.Models
@@ -12,7 +12,7 @@ namespace Sinch.Conversation.Hooks.Models
         ///     Gets or Sets PaymentStatusUpdateEvent
         /// </summary>
         [JsonPropertyName("payment_status_update_event")]
-        public PaymentStatusUpdateEvent PaymentStatusUpdateEvent { get; set; }
+        public PaymentStatusUpdateEvent? PaymentStatusUpdateEvent { get; set; }
 
 
         /// <summary>

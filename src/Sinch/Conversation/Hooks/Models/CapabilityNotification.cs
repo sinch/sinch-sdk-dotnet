@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Messages.Message;
@@ -14,48 +14,48 @@ namespace Sinch.Conversation.Hooks.Models
         ///     Gets or Sets Channel
         /// </summary>
         [JsonPropertyName("channel")]
-        public ConversationChannel Channel { get; set; }
+        public ConversationChannel? Channel { get; set; }
 
 
         /// <summary>
         ///     Status indicating the recipient&#39;s capability on the channel.
         /// </summary>
         [JsonPropertyName("capability_status")]
-        public CapabilityStatus CapabilityStatus { get; set; }
+        public CapabilityStatus? CapabilityStatus { get; set; }
 
         /// <summary>
         ///     ID generated when submitting the capability request. Can be used to detect duplicates.
         /// </summary>
         [JsonPropertyName("request_id")]
-        public string RequestId { get; set; }
+        public string? RequestId { get; set; }
 
 
         /// <summary>
         ///     The ID of the contact.
         /// </summary>
         [JsonPropertyName("contact_id")]
-        public string ContactId { get; set; }
+        public string? ContactId { get; set; }
 
 
         /// <summary>
         ///     The channel identity. For example, a phone number for SMS, WhatsApp, and Viber Business.
         /// </summary>
         [JsonPropertyName("identity")]
-        public string Identity { get; set; }
+        public string? Identity { get; set; }
 
 
         /// <summary>
         ///     When capability_status is set to CAPABILITY_PARTIAL, this field includes a list of the supported channel-specific capabilities reported by the channel.
         /// </summary>
         [JsonPropertyName("channel_capabilities")]
-        public List<string> ChannelCapabilities { get; set; }
+        public List<string>? ChannelCapabilities { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets Reason
         /// </summary>
         [JsonPropertyName("reason")]
-        public Reason Reason { get; set; }
+        public Reason? Reason { get; set; }
 
 
         /// <summary>

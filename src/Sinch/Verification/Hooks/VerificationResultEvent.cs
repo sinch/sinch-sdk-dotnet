@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Hooks
@@ -15,55 +15,55 @@ namespace Sinch.Verification.Hooks
         ///     The ID of the verification request.
         /// </summary>
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         ///     The type of the event.
         /// </summary>
         [JsonPropertyName("event")]
-        public string Event { get; set; }
+        public string? Event { get; set; }
 
         /// <summary>
         ///     The verification method.
         /// </summary>
         [JsonPropertyName("method")]
-        public VerificationMethodEx Method { get; set; }
+        public VerificationMethodEx? Method { get; set; }
 
         /// <summary>
         ///     Specifies the type of endpoint that will be verified and the particular endpoint.
         ///     `number` is currently the only supported endpoint type.
         /// </summary>
         [JsonPropertyName("identity")]
-        public Identity Identity { get; set; }
+        public Identity? Identity { get; set; }
 
         /// <summary>
         ///     The status of the verification request.
         /// </summary>
         [JsonPropertyName("status")]
-        public VerificationStatus Status { get; set; }
-        
+        public VerificationStatus? Status { get; set; }
+
         /// <summary>
         ///     Displays the reason why a verification has FAILED, was DENIED, or was ABORTED.
         /// </summary>
         [JsonPropertyName("reason")]
-        public Reason Reason { get; set; }
+        public Reason? Reason { get; set; }
 
         /// <summary>
         ///     The reference ID that was optionally passed together with the verification request.
         /// </summary>
         [JsonPropertyName("reference")]
-        public string Reference { get; set; }
-    
+        public string? Reference { get; set; }
+
         /// <summary>
         ///     Free text that the client is sending, used to show if the call/SMS was intercepted or not.
         /// </summary>
         [JsonPropertyName("source")]
-        public Source Source { get; set; }
+        public Source? Source { get; set; }
 
         /// <summary>
         ///     A custom string that can be provided during a verification request.
         /// </summary>
         [JsonPropertyName("custom")]
-        public string Custom { get; set; }
+        public string? Custom { get; set; }
     }
 }

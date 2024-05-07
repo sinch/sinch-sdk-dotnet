@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Nodes;
+using System.Text.Json.Nodes;
 using FluentAssertions;
 using Xunit;
 
@@ -24,7 +24,7 @@ namespace Sinch.Tests.Conversation
             conversation.GetPropertiesMask().Should().BeEquivalentTo(
                 "active_channel,active,app_id,contact_id,metadata,metadata_json,correlation_id");
         }
-        
+
         [Fact]
         public void UpdateMaskConversationOnlyOneField()
         {

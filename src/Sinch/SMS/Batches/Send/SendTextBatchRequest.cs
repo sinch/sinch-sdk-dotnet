@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Sinch.SMS.Batches.Send
 {
@@ -11,7 +11,7 @@ namespace Sinch.SMS.Batches.Send
         public required string Body { get; set; }
 
 #else
-        public string Body { get; set; }
+        public string Body { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace Sinch.SMS.Batches.Send
         ///         learn more about parameterization.
         ///     </see>
         /// </summary>
-        public Dictionary<string, Dictionary<string, string>> Parameters { get; set; }
+        public Dictionary<string, Dictionary<string, string>>? Parameters { get; set; }
 
         /// <summary>
         ///     Regular SMS

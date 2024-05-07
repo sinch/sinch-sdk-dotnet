@@ -1,13 +1,13 @@
-﻿namespace Sinch.Conversation.Events
+namespace Sinch.Conversation.Events
 {
     public class ListEventsRequest
     {
-        public string ConversationId { get; set; }
+        public string? ConversationId { get; set; }
 
-        public string ContactId { get; set; }
+        public string? ContactId { get; set; }
 
         public int? PageSize { get; set; }
 
-        public string PageToken { get; set; }
+        public string? PageToken { get; set; }
     }
 }

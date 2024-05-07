@@ -1,7 +1,7 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Collections.Generic;
 using System.Text.Json.Nodes;
 
 namespace Sinch
@@ -11,13 +11,14 @@ namespace Sinch
     /// </summary>
     public sealed class SinchApiException : HttpRequestException
     {
-        private SinchApiException(string message, Exception inner, HttpStatusCode statusCode) : base(message, inner,
+        private SinchApiException(string? message, Exception? inner, HttpStatusCode? statusCode) : base(message, inner,
             statusCode)
         {
             Details = new List<JsonNode>();
         }
 
-        internal SinchApiException(HttpStatusCode statusCode, string message, Exception inner, ApiErrorResponse authApiError)
+        internal SinchApiException(HttpStatusCode statusCode, string? message, Exception? inner,
+            ApiErrorResponse? authApiError)
             : this($"{message}:{authApiError?.Error?.Message ?? authApiError?.Text}", inner, statusCode)
         {
             // https://developers.sinch.com/docs/sms/api-reference/status-codes/#4xx---user-errors
@@ -29,9 +30,9 @@ namespace Sinch
             Details = details?.Details ?? new List<JsonNode>();
         }
 
-        public string DetailedMessage { get; init; }
+        public string? DetailedMessage { get; init; }
 
-        public string Status { get; init; }
+        public string? Status { get; init; }
 
         public List<JsonNode> Details { get; init; }
     }

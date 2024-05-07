@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Sinch.SMS.DeliveryReports.Get
 {
     public sealed class GetDeliveryReportResponse
     {
-#pragma warning disable CS1570 
+#pragma warning disable CS1570
 
         /// <summary>
         ///     The type of webhook for the delivery report.
@@ -15,13 +15,13 @@ namespace Sinch.SMS.DeliveryReports.Get
         ///         the difference between the two.
         ///     </see>
         /// </summary>
-#pragma warning restore CA2200 
-        public DeliveryReportType Type { get; set; }
+#pragma warning restore CA2200
+        public DeliveryReportType? Type { get; set; }
 
         /// <summary>
         ///     The ID of the batch this delivery report belongs to.
         /// </summary>
-        public string BatchId { get; set; }
+        public string? BatchId { get; set; }
 
         /// <summary>
         ///     The total number of messages for the batch
@@ -31,11 +31,11 @@ namespace Sinch.SMS.DeliveryReports.Get
         /// <summary>
         ///     The client identifier of the batch this delivery report belongs to, if set when submitting batch.
         /// </summary>
-        public string ClientReference { get; set; }
+        public string? ClientReference { get; set; }
 
         /// <summary>
         ///     Array with status objects. Only status codes with at least one recipient will be listed.
         /// </summary>
-        public IEnumerable<DeliveryReportStatusVerbose> Statuses { get; set; }
+        public IEnumerable<DeliveryReportStatusVerbose>? Statuses { get; set; }
     }
 }

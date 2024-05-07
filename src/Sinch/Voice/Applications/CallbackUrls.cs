@@ -1,10 +1,10 @@
-﻿using System.Text;
+using System.Text;
 
 namespace Sinch.Voice.Applications
 {
     public class Callbacks
     {
-        public CallbackUrls Url { get; set; }
+        public CallbackUrls? Url { get; set; }
     }
 
     /// <summary>
@@ -15,14 +15,14 @@ namespace Sinch.Voice.Applications
         /// <summary>
         ///     Your primary callback URL
         /// </summary>
-        public string Primary { get; set; }
+        public string? Primary { get; set; }
 
 
         /// <summary>
         ///     Your fallback callback URL (returned if configured). It is used only if Sinch platform gets a timeout or error from
         ///     your primary callback URL.
         /// </summary>
-        public string Fallback { get; set; }
+        public string? Fallback { get; set; }
 
 
         /// <summary>

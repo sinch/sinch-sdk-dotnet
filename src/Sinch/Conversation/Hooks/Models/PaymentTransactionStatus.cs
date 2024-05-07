@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Conversation.Hooks.Models
@@ -9,7 +9,7 @@ namespace Sinch.Conversation.Hooks.Models
     [JsonConverter(typeof(EnumRecordJsonConverter<PaymentTransactionStatus>))]
     public record PaymentTransactionStatus(string Value) : EnumRecord(Value)
     {
-        
+
         public static readonly PaymentTransactionStatus PaymentStatusTransactionUnknown = new("PAYMENT_STATUS_TRANSACTION_UNKNOWN");
         public static readonly PaymentTransactionStatus PaymentStatusTransactionPending = new("PAYMENT_STATUS_TRANSACTION_PENDING");
         public static readonly PaymentTransactionStatus PaymentStatusTransactionFailed = new("PAYMENT_STATUS_TRANSACTION_FAILED");

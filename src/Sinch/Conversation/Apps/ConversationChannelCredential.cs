@@ -1,6 +1,6 @@
-﻿using System.Text;
+using System.Text;
+using System.Text.Json.Serialization;
 using Sinch.Conversation.Apps.Credentials;
-using Sinch.Conversation.Messages;
 
 namespace Sinch.Conversation.Apps
 {
@@ -15,7 +15,7 @@ namespace Sinch.Conversation.Apps
 #if NET7_0_OR_GREATER
         public required ConversationChannel Channel { get; set; }
 #else
-        public ConversationChannel Channel { get; set; }
+        public ConversationChannel Channel { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -25,49 +25,53 @@ namespace Sinch.Conversation.Apps
         ///     Note: leaving channel_callback_secret empty for channels
         ///     with callback verification will disable the verification.
         /// </summary>
-        public string CallbackSecret { get; set; }
+        public string? CallbackSecret { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets MmsCredentials
         /// </summary>
-        public MmsCredentials MmsCredentials { get; set; }
+        public MmsCredentials? MmsCredentials { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets KakaotalkCredentials
         /// </summary>
-        public KakaoTalkCredentials KakaotalkCredentials { get; set; }
+        [JsonPropertyName("kakaotalk_credentials")]
+        public KakaoTalkCredentials? KakaoTalkCredentials { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets StaticBearer
         /// </summary>
-        public StaticBearerCredential StaticBearer { get; set; }
+        public StaticBearerCredential? StaticBearer { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets StaticToken
         /// </summary>
-        public StaticTokenCredential StaticToken { get; set; }
+        public StaticTokenCredential? StaticToken { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets TelegramCredentials
         /// </summary>
-        public TelegramCredentials TelegramCredentials { get; set; }
+        public TelegramCredentials? TelegramCredentials { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets LineCredentials
         /// </summary>
-        public LineCredentials LineCredentials { get; set; }
+        public LineCredentials? LineCredentials { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets WechatCredentials
         /// </summary>
-        public WeChatCredentials WechatCredentials { get; set; }
+        public WeChatCredentials? WechatCredentials { get; set; }
+
+        [JsonPropertyName("kakaotalkchat_credentials")]
+        public KakaoTalkChatCredentials? KakaoTalkChatCredentials { get; set; }
 
 
         /// <summary>
@@ -81,7 +85,7 @@ namespace Sinch.Conversation.Apps
             sb.Append("  CallbackSecret: ").Append(CallbackSecret).Append("\n");
             sb.Append("  Channel: ").Append(Channel).Append("\n");
             sb.Append("  MmsCredentials: ").Append(MmsCredentials).Append("\n");
-            sb.Append("  KakaotalkCredentials: ").Append(KakaotalkCredentials).Append("\n");
+            sb.Append("  KakaoTalkCredentials: ").Append(KakaoTalkCredentials).Append("\n");
             sb.Append("  StaticBearer: ").Append(StaticBearer).Append("\n");
             sb.Append("  StaticToken: ").Append(StaticToken).Append("\n");
             sb.Append("  TelegramCredentials: ").Append(TelegramCredentials).Append("\n");

@@ -1,12 +1,9 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Conversation;
 using Sinch.Conversation.Common;
-using Sinch.Conversation.Events;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Transcoding;
 using Xunit;
@@ -29,9 +26,9 @@ namespace Sinch.Tests.e2e.Conversation
                 },
                 AppMessage = new AppMessage(new TextMessage("aaa"))
                 {
-                    ExplicitChannelMessage = new JsonObject()
+                    ExplicitChannelMessage = new Dictionary<ConversationChannel, JsonValue>()
                     {
-                        [ConversationChannel.WhatsApp.Value] = "data",
+                        { ConversationChannel.WhatsApp, JsonValue.Create("data") }
                     },
                     Agent = new Agent()
                     {

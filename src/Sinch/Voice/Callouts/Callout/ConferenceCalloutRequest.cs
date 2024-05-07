@@ -8,7 +8,7 @@ namespace Sinch.Voice.Callouts.Callout
 #if NET7_0_OR_GREATER
         public required Destination Destination { get; set; }
 #else
-        public Destination Destination { get; set; }
+        public Destination Destination { get; set; } = null!;
 #endif
         /// <summary>
         ///     The conferenceId of the conference to which you want the callee to join. If the conferenceId doesn't exist a
@@ -17,17 +17,17 @@ namespace Sinch.Voice.Callouts.Callout
 #if NET7_0_OR_GREATER
         public required string ConferenceId { get; set; }
 #else
-        public string ConferenceId { get; set; }
+        public string ConferenceId { get; set; } = null!;
 #endif
         /// <inheritdoc cref="ConferenceDtmfOptions" />
-        public ConferenceDtmfOptions ConferenceDtmfOptions { get; set; }
+        public ConferenceDtmfOptions? ConferenceDtmfOptions { get; set; }
 
         /// <summary>
         ///     The number that will be displayed as the icoming caller,
         ///     to set your own CLI, you may use your verified number or your Dashboard virtual number,
         ///     it must be in E.164 format.
         /// </summary>
-        public string Cli { get; set; }
+        public string? Cli { get; set; }
 
         /// <summary>
         ///     When the destination picks up, this DTMF tones will be played to the callee.
@@ -36,9 +36,9 @@ namespace Sinch.Voice.Callouts.Callout
         ///     by a 0.5s pause and finally the DTMF tone for "#". This can be used if the callout destination for
         ///     instance require a conference PIN code or an extension to be entered.
         /// </summary>
-        public string Dtmf { get; set; }
-        
-            // TODO: add description when updated in docs: https://developers.sinch.com/docs/voice/api-reference/voice/tag/Callouts/#tag/Callouts/operation/Callouts!path=conferenceCallout/maxDuration&t=request
+        public string? Dtmf { get; set; }
+
+        // TODO: add description when updated in docs: https://developers.sinch.com/docs/voice/api-reference/voice/tag/Callouts/#tag/Callouts/operation/Callouts!path=conferenceCallout/maxDuration&t=request
         public int? MaxDuration { get; set; }
 
         /// <summary>
@@ -72,24 +72,24 @@ namespace Sinch.Voice.Callouts.Callout
         ///     Supported languages and voices are detailed
         ///     <see href="https://developers.sinch.com/docs/voice/api-reference/voice-locales/">here</see>.
         /// </summary>
-        public string Locale { get; set; }
+        public string? Locale { get; set; }
 
         /// <summary>
         ///     The text that will be spoken as a greeting.
         /// </summary>
-        public string Greeting { get; set; }
+        public string? Greeting { get; set; }
 
         /// <summary>
         ///     Can be used to input custom data.
         /// </summary>
-        public string Custom { get; set; }
+        public string? Custom { get; set; }
 
         /// <inheritdoc cref="MohClass"/>
-        public MohClass MohClass { get; set; }
+        public MohClass? MohClass { get; set; }
 
         /// <summary>
         ///     Can be either pstn for PSTN endpoint or mxp for data (app or web) clients.
         /// </summary>
-        public Domain Domain { get; set; }
+        public Domain? Domain { get; set; }
     }
 }

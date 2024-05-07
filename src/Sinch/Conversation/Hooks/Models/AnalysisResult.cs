@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -13,36 +13,36 @@ namespace Sinch.Conversation.Hooks.Models
         ///     An array that contains the analyses of the sentiments of the corresponding messages.
         /// </summary>
         [JsonPropertyName("ml_sentiment_result")]
-        public List<MachineLearningSentimentResult> MlSentimentResult { get; set; }
-        
+        public List<MachineLearningSentimentResult>? MlSentimentResult { get; set; }
+
 
         /// <summary>
         ///     An array that contains the analyses of the intentions of, and entities within, the corresponding messages.
         /// </summary>
         [JsonPropertyName("ml_nlu_result")]
-        public List<MachineLearningNLUResult> MlNluResult { get; set; }
-        
+        public List<MachineLearningNLUResult>? MlNluResult { get; set; }
+
 
         /// <summary>
         ///     An array that contains the image recognition analyses of the images identified in the corresponding messages.
         /// </summary>
         [JsonPropertyName("ml_image_recognition_result")]
-        public List<MachineLearningImageRecognitionResult> MlImageRecognitionResult { get; set; }
-        
+        public List<MachineLearningImageRecognitionResult>? MlImageRecognitionResult { get; set; }
+
 
         /// <summary>
         ///     An array that contains the PII analysis of the corresponding messages.
         /// </summary>
         [JsonPropertyName("ml_pii_result")]
-        public List<MachineLearningPIIResult> MlPiiResult { get; set; }
-        
+        public List<MachineLearningPIIResult>? MlPiiResult { get; set; }
+
 
         /// <summary>
         ///     An array that contains the analyses of the offenses of the corresponding messages.
         /// </summary>
         [JsonPropertyName("ml_offensive_analysis_result")]
-        public List<OffensiveAnalysis> MlOffensiveAnalysisResult { get; set; }
-        
+        public List<OffensiveAnalysis>? MlOffensiveAnalysisResult { get; set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object

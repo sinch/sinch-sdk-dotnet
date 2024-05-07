@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Nodes;
+using System.Text.Json.Nodes;
 
 namespace Sinch.Conversation.Events.EventTypes
 {
@@ -10,6 +10,6 @@ namespace Sinch.Conversation.Events.EventTypes
         /// <summary>
         ///     Arbitrary data set to the event. A valid JSON object.
         /// </summary>
-        public JsonObject Payload { get; set; }
+        public JsonObject? Payload { get; set; }
     }
 }

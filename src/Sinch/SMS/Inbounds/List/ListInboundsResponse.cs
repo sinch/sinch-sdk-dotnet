@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Sinch.SMS.Inbounds.List
 {
@@ -10,6 +10,6 @@ namespace Sinch.SMS.Inbounds.List
 
         public int Count { get; set; }
 
-        public IEnumerable<Inbound> Inbounds { get; set; }
+        public IEnumerable<IInbound>? Inbounds { get; set; }
     }
 }

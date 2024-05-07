@@ -1,13 +1,13 @@
-﻿namespace Sinch.Verification.Start.Response
+namespace Sinch.Verification.Start.Response
 {
     public class StartSmsVerificationResponse : VerificationStartResponseBase, IStartVerificationResponse
     {
         /// <summary>
         ///     The response contains the template of the SMS to be expected and intercepted.
         /// </summary>
-        public SmsInfo Sms { get; set; }
+        public SmsInfo? Sms { get; set; }
     }
-    
+
     /// <summary>
     ///     The response contains the template of the SMS to be expected and intercepted.
     /// </summary>
@@ -16,8 +16,8 @@
         /// <summary>
         ///     The expected template for the SMS response.
         /// </summary>
-        public string Template { get; set; }
-        
+        public string? Template { get; set; }
+
         /// <summary>
         ///     The amount of time in seconds that the client should wait for the SMS.
         /// </summary>

@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Voice.Calls.Actions
@@ -18,7 +18,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     Used to override where PSTN call is connected. If not specified, the extension the client called is used.
         /// </summary>
         [JsonPropertyName("number")]
-        public string Number { get; set; }
+        public string? Number { get; set; }
 
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     is used.
         /// </summary>
         [JsonPropertyName("locale")]
-        public string Locale { get; set; }
+        public string? Locale { get; set; }
 
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     shown as the CLI. To set your own CLI, you may use your verified number or your Dashboard virtual number.
         /// </summary>
         [JsonPropertyName("cli")]
-        public string Cli { get; set; }
+        public string? Cli { get; set; }
 
 
         /// <summary>
@@ -71,21 +71,21 @@ namespace Sinch.Voice.Calls.Actions
         ///     progress while the DTMF is sent.
         /// </summary>
         [JsonPropertyName("dtmf")]
-        public string Dtmf { get; set; }
+        public string? Dtmf { get; set; }
 
 
         /// <summary>
         ///     The locale&#39;s tone to play while ringing.
         /// </summary>
         [JsonPropertyName("indications")]
-        public string Indications { get; set; }
+        public string? Indications { get; set; }
 
 
         /// <summary>
         ///     An optional property used to enable <see href="https://developers.sinch.com/docs/voice/api-reference/amd_v2">Answering Machine Detection (AMD).</see>
         /// </summary>
         [JsonPropertyName("amd")]
-        public Amd Amd { get; set; }
+        public Amd? Amd { get; set; }
 
 
         /// <summary>
@@ -110,8 +110,8 @@ namespace Sinch.Voice.Calls.Actions
             return sb.ToString();
         }
     }
-    
-    
+
+
     public class Amd
     {
         /// <summary>

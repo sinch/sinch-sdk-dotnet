@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Sinch.SMS.Groups
@@ -8,12 +8,12 @@ namespace Sinch.SMS.Groups
         /// <summary>
         ///     The ID used to reference this group.
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         ///     Name of group, if set.
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         ///     The number of members currently in the group.
@@ -34,9 +34,9 @@ namespace Sinch.SMS.Groups
         ///     Phone numbers (MSISDNs) of child group will be included in this group.
         ///     If present, this group will be auto populated. Constraints: Elements must be group IDs.
         /// </summary>
-        public HashSet<string> ChildGroups { get; set; }
+        public HashSet<string>? ChildGroups { get; set; }
 
-        public AutoUpdate AutoUpdate { get; set; }
+        public AutoUpdate? AutoUpdate { get; set; }
     }
 
     public class AutoUpdate
@@ -46,10 +46,10 @@ namespace Sinch.SMS.Groups
         ///     <see href="https://community.sinch.com/t5/Glossary/MO-Mobile-Originated/ta-p/7618">MO</see>.
         ///     Constraints: Must be valid MSISDN or short code.
         /// </summary>
-        public string To { get; set; }
+        public string? To { get; set; }
 
-        public string Add { get; set; }
+        public string? Add { get; set; }
 
-        public string Remove { get; set; }
+        public string? Remove { get; set; }
     }
 }

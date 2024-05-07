@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -24,17 +24,23 @@ namespace Sinch.SMS.Batches.Send
             var type = descriptor.Value.GetString();
             if (type == SmsType.MtText.Value)
             {
-                return elem.Deserialize<SendTextBatchRequest>(options);
+                return elem.Deserialize<SendTextBatchRequest>(options) ??
+                       throw new InvalidOperationException(
+                           $"{nameof(SendTextBatchRequest)} deserialization result is null");
             }
 
             if (type == SmsType.MtBinary.Value)
             {
-                return elem.Deserialize<SendBinaryBatchRequest>(options);
+                return elem.Deserialize<SendBinaryBatchRequest>(options) ??
+                       throw new InvalidOperationException(
+                           $"{nameof(SendBinaryBatchRequest)} deserialization result is null");
             }
 
             if (type == SmsType.MtMedia.Value)
             {
-                return elem.Deserialize<SendMediaBatchRequest>(options);
+                return elem.Deserialize<SendMediaBatchRequest>(options) ??
+                       throw new InvalidOperationException(
+                           $"{nameof(SendMediaBatchRequest)} deserialization result is null");
             }
 
             throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
@@ -70,14 +76,14 @@ namespace Sinch.SMS.Batches.Send
 #if NET7_0_OR_GREATER
         public required List<string> To { get; set; }
 #else
-        public List<string> To { get; set; }
+        public List<string> To { get; set; } = null!;
 #endif
 
         /// <summary>
         ///     Sender number. Must be valid phone number, short code or alphanumeric.
         ///     Required if Automatic Default Originator not configured.
         /// </summary>
-        public string From { get; set; }
+        public string? From { get; set; }
 
         public abstract SmsType Type { get; }
 
@@ -85,7 +91,7 @@ namespace Sinch.SMS.Batches.Send
         ///     Request delivery report callback.<br/><br/>
         ///     Note that delivery reports can be fetched from the API regardless of this setting.
         /// </summary>
-        public DeliveryReport DeliveryReport { get; set; }
+        public DeliveryReport? DeliveryReport { get; set; }
 
         /// <summary>
         ///     If set in the future, the message will be delayed until send_at occurs. Must be before expire_at.
@@ -105,13 +111,13 @@ namespace Sinch.SMS.Batches.Send
         ///     <see href="https://community.sinch.com/t5/SMS/How-do-I-assign-a-callback-URL-to-an-SMS-service-plan/ta-p/8414">here</see>
         ///     .
         /// </summary>
-        public Uri CallbackUrl { get; set; }
+        public Uri? CallbackUrl { get; set; }
 
         /// <summary>
         ///     The client identifier of a batch message.
         ///     If set, the identifier will be added in the delivery report/callback of this batch
         /// </summary>
-        public string ClientReference { get; set; }
+        public string? ClientReference { get; set; }
 
         /// <summary>
         ///     If set to <c>true</c>, then

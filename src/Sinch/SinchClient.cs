@@ -109,16 +109,9 @@ namespace Sinch
         /// </summary>
         /// <param name="appKey"></param>
         /// <param name="appSecret"></param>
-        /// <param name="callingRegion">See <see cref="CallingRegion" />. Defaults to <see cref="CallingRegion.Global" /></param>
-        /// <param name="authStrategy">
-        ///     Choose which authentication to use.
-        ///     Defaults to Application Sign request and it's a recommended approach.
-        /// </param>
+        /// <param name="voiceRegion">See <see cref="VoiceRegion" />. Defaults to <see cref="VoiceRegion.Global" /></param>
         /// <returns></returns>
-        public ISinchVoiceClient Voice(string appKey, string appSecret, CallingRegion callingRegion = null,
-            AuthStrategy authStrategy = AuthStrategy.ApplicationSign);
-
-        public ISinchFaxClient Fax { get; }
+        public ISinchVoiceClient Voice(string appKey, string appSecret, VoiceRegion? voiceRegion = null);
     }
 
     public class SinchClient : ISinchClient
@@ -133,46 +126,21 @@ namespace Sinch
         private const string AuthApiUrl = "https://auth.sinch.com";
         private const string TemplatesApiUrlTemplate = "https://{0}.template.api.sinch.com/";
 
-        private readonly LoggerFactory _loggerFactory;
-        private readonly HttpClient _httpClient;
-
-        private readonly ApiUrlOverrides _apiUrlOverrides;
-
-
-        private readonly string _keyId;
-        private readonly string _keySecret;
-        private readonly string _projectId;
-
+        private readonly ApiUrlOverrides? _apiUrlOverrides;
         private readonly ISinchAuth _auth;
         private readonly ISinchConversation _conversation;
+        private readonly HttpClient _httpClient;
+
+        private readonly string? _keyId;
+        private readonly string? _keySecret;
+        private readonly string? _projectId;
+
+        private readonly LoggerFactory? _loggerFactory;
+
         private readonly ISinchNumbers _numbers;
         private readonly ISinchSms _sms;
-        private readonly ILoggerAdapter<ISinchClient> _logger;
+        private readonly ILoggerAdapter<ISinchClient>? _logger;
         private readonly ISinchFaxClient _fax;
-
-        private void ValidateCommonCredentials()
-        {
-            var exceptions = new List<Exception>();
-            if (string.IsNullOrEmpty(_keyId))
-            {
-                exceptions.Add(new InvalidOperationException("keyId should have a value"));
-            }
-
-            if (string.IsNullOrEmpty(_projectId))
-            {
-                exceptions.Add(new InvalidOperationException("projectId should have a value"));
-            }
-
-            if (string.IsNullOrEmpty(_keySecret))
-            {
-                exceptions.Add(new InvalidOperationException("keySecret should have a value"));
-            }
-
-            if (exceptions.Any())
-            {
-                throw new AggregateException("Credentials are missing", exceptions);
-            }
-        }
 
         /// <summary>
         ///     Initialize a new <see cref="SinchClient" />
@@ -182,8 +150,8 @@ namespace Sinch
         /// <param name="projectId">Your project id.</param>
         /// <param name="options">Optional. See: <see cref="SinchOptions" /></param>
         /// <exception cref="ArgumentNullException"></exception>
-        public SinchClient(string projectId, string keyId, string keySecret,
-            Action<SinchOptions> options = default)
+        public SinchClient(string? projectId, string? keyId, string? keySecret,
+            Action<SinchOptions>? options = default)
         {
             _projectId = projectId;
             _keyId = keyId;
@@ -208,15 +176,16 @@ namespace Sinch
             _apiUrlOverrides = optionsObj.ApiUrlOverrides;
 
             ISinchAuth auth =
-                new OAuth(_keyId, _keySecret, _httpClient, _loggerFactory?.Create<OAuth>(),
+                // exception is throw when trying to get OAuth or Oauth dependant clients if credentials are missing
+                new OAuth(_keyId!, _keySecret!, _httpClient, _loggerFactory?.Create<OAuth>(),
                     new Uri(_apiUrlOverrides?.AuthUrl ?? AuthApiUrl));
             _auth = auth;
-            var httpCamelCase = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(),
+            var httpCamelCase = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(),
                 JsonNamingPolicy.CamelCase);
-            var httpSnakeCaseOAuth = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(),
+            var httpSnakeCaseOAuth = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(),
                 SnakeCaseNamingPolicy.Instance);
 
-            _numbers = new Numbers.Numbers(_projectId, new Uri(_apiUrlOverrides?.NumbersUrl ?? NumbersApiUrl),
+            _numbers = new Numbers.Numbers(_projectId!, new Uri(_apiUrlOverrides?.NumbersUrl ?? NumbersApiUrl),
                 _loggerFactory, httpCamelCase);
 
             _sms = InitSms(optionsObj, httpSnakeCaseOAuth);
@@ -227,61 +196,15 @@ namespace Sinch
             var templatesBaseAddress = new Uri(_apiUrlOverrides?.TemplatesUrl ??
                                                string.Format(TemplatesApiUrlTemplate,
                                                    optionsObj.ConversationRegion.Value));
-            _conversation = new SinchConversationClient(_projectId, conversationBaseAddress
+            _conversation = new SinchConversationClient(_projectId!, conversationBaseAddress
                 , templatesBaseAddress,
                 _loggerFactory, httpSnakeCaseOAuth);
-            _fax = new FaxClient(projectId, new Uri(FaxApiUrl), _loggerFactory, httpCamelCase);
+            _fax = new FaxClient(projectId!, new Uri(FaxApiUrl), _loggerFactory, httpCamelCase);
 
             _logger?.LogInformation("SinchClient initialized.");
         }
 
-        private SmsClient InitSms(SinchOptions optionsObj, IHttp httpSnakeCase)
-        {
-            if (optionsObj.ServicePlanIdOptions != null)
-            {
-                _logger?.LogInformation("Initializing SMS client with {service_plan_id} in {region}",
-                    optionsObj.ServicePlanIdOptions.ServicePlanId,
-                    optionsObj.ServicePlanIdOptions.HostingRegion.Value);
-                var bearerSnakeHttp = new Http(new BearerAuth(optionsObj.ServicePlanIdOptions.ApiToken), _httpClient,
-                    _loggerFactory?.Create<Http>(),
-                    SnakeCaseNamingPolicy.Instance);
-                return new SmsClient(new ServicePlanId(optionsObj.ServicePlanIdOptions.ServicePlanId),
-                    BuildServicePlanIdSmsBaseAddress(optionsObj.ServicePlanIdOptions.HostingRegion,
-                        _apiUrlOverrides?.SmsUrl),
-                    _loggerFactory, bearerSnakeHttp);
-            }
-
-            _logger?.LogInformation("Initializing SMS client with {project_id} in {region}", _projectId,
-                optionsObj.SmsHostingRegion.Value);
-            return new SmsClient(new ProjectId(_projectId),
-                BuildSmsBaseAddress(optionsObj.SmsHostingRegion, _apiUrlOverrides?.SmsUrl),
-                _loggerFactory,
-                httpSnakeCase);
-        }
-
-        private static Uri BuildServicePlanIdSmsBaseAddress(SmsServicePlanIdHostingRegion smsServicePlanIdHostingRegion,
-            string smsUrlOverride)
-        {
-            if (!string.IsNullOrEmpty(smsUrlOverride)) return new Uri(smsUrlOverride);
-
-            return new Uri(string.Format(SmsApiServicePlanIdUrlTemplate,
-                smsServicePlanIdHostingRegion.Value.ToLowerInvariant()));
-        }
-
-        private static Uri BuildSmsBaseAddress(SmsHostingRegion smsHostingRegion, string smsUrlOverride)
-        {
-            if (!string.IsNullOrEmpty(smsUrlOverride)) return new Uri(smsUrlOverride);
-
-            // General SMS rest api uses service_plan_id to performs calls
-            // But SDK is based on single-account model which uses project_id
-            // Thus, baseAddress for sms api is using a special endpoint where service_plan_id is replaced with projectId
-            // for each provided endpoint
-            return new Uri(string.Format(SmsApiUrlTemplate, smsHostingRegion.Value.ToLowerInvariant()));
-        }
-
-        #region ISinchClient public members
-
-        /// <inheritdoc/>       
+        /// <inheritdoc />
         public ISinchNumbers Numbers
         {
             get
@@ -349,15 +272,14 @@ namespace Sinch
             else
                 auth = new BasicAuth(appKey, appSecret);
 
-            var http = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(), JsonNamingPolicy.CamelCase);
+            var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
             return new SinchVerificationClient(new Uri(_apiUrlOverrides?.VerificationUrl ?? VerificationApiUrl),
                 _loggerFactory, http);
         }
 
         /// <inheritdoc />
         public ISinchVoiceClient Voice(string appKey, string appSecret,
-            CallingRegion callingRegion = default,
-            AuthStrategy authStrategy = AuthStrategy.ApplicationSign)
+            VoiceRegion? voiceRegion = default)
         {
             if (string.IsNullOrEmpty(appKey))
                 throw new ArgumentNullException(nameof(appKey), "The value should be present");
@@ -365,20 +287,76 @@ namespace Sinch
             if (string.IsNullOrEmpty(appSecret))
                 throw new ArgumentNullException(nameof(appSecret), "The value should be present");
 
-            ISinchAuth auth;
-            if (authStrategy == AuthStrategy.ApplicationSign)
-                auth = new ApplicationSignedAuth(appKey, appSecret);
-            else
-                auth = new BasicAuth(appKey, appSecret);
+            ISinchAuth auth = new ApplicationSignedAuth(appKey, appSecret);
 
-            callingRegion ??= CallingRegion.Global;
+            voiceRegion ??= VoiceRegion.Global;
 
-            var http = new Http(auth, _httpClient, _loggerFactory?.Create<Http>(), JsonNamingPolicy.CamelCase);
+            var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
             return new SinchVoiceClient(
-                new Uri(_apiUrlOverrides?.VoiceUrl ?? string.Format(VoiceApiUrlTemplate, callingRegion.Value)),
-                _loggerFactory, http);
+                new Uri(_apiUrlOverrides?.VoiceUrl ?? string.Format(VoiceApiUrlTemplate, voiceRegion.Value)),
+                _loggerFactory, http, (auth as ApplicationSignedAuth)!);
         }
 
-        #endregion
+        private void ValidateCommonCredentials()
+        {
+            var exceptions = new List<Exception>();
+            if (string.IsNullOrEmpty(_keyId))
+                exceptions.Add(new InvalidOperationException("keyId should have a value"));
+
+            if (string.IsNullOrEmpty(_projectId))
+                exceptions.Add(new InvalidOperationException("projectId should have a value"));
+
+            if (string.IsNullOrEmpty(_keySecret))
+                exceptions.Add(new InvalidOperationException("keySecret should have a value"));
+
+            if (exceptions.Any()) throw new AggregateException("Credentials are missing", exceptions);
+        }
+
+        private SmsClient InitSms(SinchOptions optionsObj, IHttp httpSnakeCase)
+        {
+            if (optionsObj.ServicePlanIdOptions != null)
+            {
+                _logger?.LogInformation("Initializing SMS client with {service_plan_id} in {region}",
+                    optionsObj.ServicePlanIdOptions.ServicePlanId,
+                    optionsObj.ServicePlanIdOptions.Region.Value);
+                var bearerSnakeHttp = new Http(new BearerAuth(optionsObj.ServicePlanIdOptions.ApiToken), _httpClient,
+                    _loggerFactory?.Create<IHttp>(),
+                    SnakeCaseNamingPolicy.Instance);
+                return new SmsClient(new ServicePlanId(optionsObj.ServicePlanIdOptions.ServicePlanId),
+                    BuildServicePlanIdSmsBaseAddress(optionsObj.ServicePlanIdOptions.Region,
+                        _apiUrlOverrides?.SmsUrl),
+                    _loggerFactory, bearerSnakeHttp);
+            }
+
+            _logger?.LogInformation("Initializing SMS client with {project_id} in {region}", _projectId,
+                optionsObj.SmsRegion.Value);
+
+            return new SmsClient(
+                new ProjectId(
+                    _projectId!), // exception is throw when trying to get SMS client property if _projectId is null
+                BuildSmsBaseAddress(optionsObj.SmsRegion, _apiUrlOverrides?.SmsUrl),
+                _loggerFactory,
+                httpSnakeCase);
+        }
+
+        private static Uri BuildServicePlanIdSmsBaseAddress(SmsServicePlanIdRegion smsServicePlanIdRegion,
+            string? smsUrlOverride)
+        {
+            if (!string.IsNullOrEmpty(smsUrlOverride)) return new Uri(smsUrlOverride);
+
+            return new Uri(string.Format(SmsApiServicePlanIdUrlTemplate,
+                smsServicePlanIdRegion.Value.ToLowerInvariant()));
+        }
+
+        private static Uri BuildSmsBaseAddress(SmsRegion smsRegion, string? smsUrlOverride)
+        {
+            if (!string.IsNullOrEmpty(smsUrlOverride)) return new Uri(smsUrlOverride);
+
+            // General SMS rest api uses service_plan_id to performs calls
+            // But SDK is based on single-account model which uses project_id
+            // Thus, baseAddress for sms api is using a special endpoint where service_plan_id is replaced with projectId
+            // for each provided endpoint
+            return new Uri(string.Format(SmsApiUrlTemplate, smsRegion.Value.ToLowerInvariant()));
+        }
     }
 }

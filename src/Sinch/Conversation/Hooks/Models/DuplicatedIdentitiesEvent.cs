@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -13,8 +13,8 @@ namespace Sinch.Conversation.Hooks.Models
         ///     Gets or Sets DuplicatedIdentities
         /// </summary>
         [JsonPropertyName("duplicated_identities")]
-        public List<DuplicatedIdentitiesEventDuplicatedIdentitiesInner> DuplicatedIdentities { get; set; }
-        
+        public List<DuplicatedIdentitiesEventDuplicatedIdentitiesInner>? DuplicatedIdentities { get; set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object

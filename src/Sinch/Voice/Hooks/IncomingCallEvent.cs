@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -15,55 +15,55 @@ namespace Sinch.Voice.Hooks
     ///     If there is no response to the callback within the timeout period, an error message is played, and the call is
     ///     disconnected.
     /// </summary>
-    public class IncomingCallEvent
+    public class IncomingCallEvent : IVoiceEvent
     {
         /// <summary>
         ///     Must have the value ice.
         /// </summary>
         [JsonPropertyName("event")]
-        public string Event { get; set; }
+        public EventType? Event { get; set; }
 
 
         /// <summary>
         ///     The unique ID assigned to this call.
         /// </summary>
         [JsonPropertyName("callId")]
-        public string CallId { get; set; }
+        public string? CallId { get; set; }
 
 
         /// <summary>
         ///     The path of the API resource.
         /// </summary>
         [JsonPropertyName("callResourceUrl")]
-        public string CallResourceUrl { get; set; }
+        public string? CallResourceUrl { get; set; }
 
 
         /// <summary>
         ///     The timestamp in UTC format.
         /// </summary>
         [JsonPropertyName("timestamp")]
-        public DateTime Timestamp { get; set; }
+        public DateTime? Timestamp { get; set; }
 
 
         /// <summary>
         ///     The current API version.
         /// </summary>
         [JsonPropertyName("version")]
-        public int Version { get; set; }
+        public int? Version { get; set; }
 
 
         /// <summary>
         ///     A string that can be used to pass custom information related to the call.
         /// </summary>
         [JsonPropertyName("custom")]
-        public string Custom { get; set; }
+        public string? Custom { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets UserRate
         /// </summary>
         [JsonPropertyName("userRate")]
-        public Rate UserRate { get; set; }
+        public Rate? UserRate { get; set; }
 
 
         /// <summary>
@@ -72,49 +72,49 @@ namespace Sinch.Voice.Hooks
         ///     Call Event request.  It must be in [E.164](https://community.sinch.com/t5/Glossary/E-164/ta-p/7537) format.
         /// </summary>
         [JsonPropertyName("cli")]
-        public string Cli { get; set; }
+        public string? Cli { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets To
         /// </summary>
         [JsonPropertyName("to")]
-        public To To { get; set; }
+        public To? To { get; set; }
 
 
         /// <summary>
         ///     The domain destination of the incoming call.
         /// </summary>
         [JsonPropertyName("domain")]
-        public CallDomain Domain { get; set; }
+        public CallDomain? Domain { get; set; }
 
 
         /// <summary>
         ///     The unique application key. You can find it in the Sinch [dashboard](https://dashboard.sinch.com/voice/apps).
         /// </summary>
         [JsonPropertyName("applicationKey")]
-        public string ApplicationKey { get; set; }
+        public string? ApplicationKey { get; set; }
 
 
         /// <summary>
         ///     The origination domain of the incoming call.
         /// </summary>
         [JsonPropertyName("originationType")]
-        public OriginationType OriginationType { get; set; }
+        public OriginationType? OriginationType { get; set; }
 
 
         /// <summary>
         ///     The duration of the call in seconds.
         /// </summary>
         [JsonPropertyName("duration")]
-        public int Duration { get; set; }
+        public int? Duration { get; set; }
 
 
         /// <summary>
         ///     The redirected dialled number identification service.
         /// </summary>
         [JsonPropertyName("rdnis")]
-        public string Rdnis { get; set; }
+        public string? Rdnis { get; set; }
 
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace Sinch.Voice.Hooks
         ///     more about call headers [here](https://developers.sinch.com/docs/voice/api-reference/call-headers).
         /// </summary>
         [JsonPropertyName("callHeaders")]
-        public List<CallHeader> CallHeaders { get; set; }
+        public List<CallHeader>? CallHeaders { get; set; }
 
 
         /// <summary>

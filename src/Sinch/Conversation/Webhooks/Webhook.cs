@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 using Sinch.Core;
 
@@ -9,18 +9,18 @@ namespace Sinch.Conversation.Webhooks
     /// </summary>
     public class Webhook : PropertyMaskQuery
     {
-        private WebhookTargetType _targetType;
-        private string _appId;
-        private ClientCredentials _clientCredentials;
-        private string _id;
-        private string _secret;
-        private string _target;
-        private List<WebhookTrigger> _triggers;
+        private WebhookTargetType? _targetType;
+        private string _appId = null!;
+        private ClientCredentials? _clientCredentials;
+        private string? _id;
+        private string? _secret;
+        private string _target = null!;
+        private List<WebhookTrigger> _triggers = null!;
 
         /// <summary>
         ///     Gets or sets the target type.
         /// </summary>
-        public WebhookTargetType TargetType
+        public WebhookTargetType? TargetType
         {
             get => _targetType;
             set
@@ -50,7 +50,7 @@ namespace Sinch.Conversation.Webhooks
         /// <summary>
         ///     Gets or sets the client credentials.
         /// </summary>
-        public ClientCredentials ClientCredentials
+        public ClientCredentials? ClientCredentials
         {
             get => _clientCredentials;
             set
@@ -63,7 +63,7 @@ namespace Sinch.Conversation.Webhooks
         /// <summary>
         ///     Gets or sets the ID of the webhook.
         /// </summary>
-        public string Id
+        public string? Id
         {
             get => _id;
             set
@@ -77,7 +77,7 @@ namespace Sinch.Conversation.Webhooks
         ///     Optional secret to be used to sign contents of webhooks sent by the Conversation API.
         ///     You can then use the secret to verify the signature.
         /// </summary>
-        public string Secret
+        public string? Secret
         {
             get => _secret;
             set

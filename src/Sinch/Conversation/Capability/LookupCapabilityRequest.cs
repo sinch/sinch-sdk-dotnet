@@ -1,4 +1,4 @@
-﻿using Sinch.Conversation.Common;
+using Sinch.Conversation.Common;
 
 namespace Sinch.Conversation.Capability
 {
@@ -10,7 +10,7 @@ namespace Sinch.Conversation.Capability
 #if NET7_0_OR_GREATER
         public required string AppId { get; set; }
 #else
-        public string AppId { get; set; }
+        public string AppId { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -19,12 +19,12 @@ namespace Sinch.Conversation.Capability
 #if NET7_0_OR_GREATER
         public required IRecipient Recipient { get; set; }
 #else
-        public IRecipient Recipient { get; set; }
+        public IRecipient Recipient { get; set; } = null!;
 #endif
 
         /// <summary>
         ///     ID for the asynchronous response, will be generated if not set. Currently this field is not used for idempotency.
         /// </summary>
-        public string RequestId { get; set; }
+        public string? RequestId { get; set; }
     }
 }

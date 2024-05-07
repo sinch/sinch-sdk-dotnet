@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Sinch.SMS.Groups.Create
 {
@@ -7,13 +7,13 @@ namespace Sinch.SMS.Groups.Create
         /// <summary>
         ///     Name of the group
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         ///     Initial list of phone numbers in <see href="https://community.sinch.com/t5/Glossary/E-164/ta-p/7537">E.164</see>
         ///     format <see href="https://community.sinch.com/t5/Glossary/MSISDN/ta-p/7628">MSISDNs</see> for the group.
         /// </summary>
-        public List<string> Members { get; set; }
+        public List<string>? Members { get; set; }
 
         /// <summary>
         ///     Phone numbers (<see href="https://community.sinch.com/t5/Glossary/MSISDN/ta-p/7628">MSISDNs</see>)
@@ -21,8 +21,8 @@ namespace Sinch.SMS.Groups.Create
         ///     If present then this group will be auto populated. <br /><br />
         ///     Elements must be group IDs.
         /// </summary>
-        public List<string> ChildGroups { get; set; }
+        public List<string>? ChildGroups { get; set; }
 
-        public AutoUpdateEdit AutoUpdate { get; set; }
+        public AutoUpdateEdit? AutoUpdate { get; set; }
     }
 }

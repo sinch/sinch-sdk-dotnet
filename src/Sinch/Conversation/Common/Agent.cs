@@ -1,5 +1,3 @@
-﻿using Sinch.Conversation.Events.AppEvents;
-
 namespace Sinch.Conversation.Common
 {
     /// <summary>
@@ -10,13 +8,13 @@ namespace Sinch.Conversation.Common
         /// <summary>
         ///     Agent's display name
         /// </summary>
-        public string DisplayName { get; set; }
+        public string? DisplayName { get; set; }
 
-        public AgentType Type { get; set; }
+        public AgentType? Type { get; set; }
 
         /// <summary>
         ///     The Agent's picture url.
         /// </summary>
-        public string PictureUrl { get; set; }
+        public string? PictureUrl { get; set; }
     }
 }

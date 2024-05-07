@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Hooks.Models;
 
@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets UnsupportedCallback
         /// </summary>
         [JsonPropertyName("unsupported_callback")]
-        public UnsupportedCallback UnsupportedCallback { get; set; }
+        public UnsupportedCallback? UnsupportedCallback { get; set; }
 
 
         /// <summary>

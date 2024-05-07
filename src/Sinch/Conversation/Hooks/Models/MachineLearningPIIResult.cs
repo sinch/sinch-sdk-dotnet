@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Hooks.Models
@@ -6,21 +6,22 @@ namespace Sinch.Conversation.Hooks.Models
     /// <summary>
     ///     An object that contains the PII analysis of the corresponding messages.
     /// </summary>
+    // ReSharper disable once InconsistentNaming
     public sealed class MachineLearningPIIResult
     {
         /// <summary>
         ///     The message text that was analyzed.
         /// </summary>
         [JsonPropertyName("message")]
-        public string Message { get; set; }
-        
+        public string? Message { get; set; }
+
 
         /// <summary>
         ///     The redacted message text in which sensitive information was replaced with appropriate masks. A MISC mask is applied to a term that has been identified as PII, but with low confidence regarding which type of mask to assign.
         /// </summary>
         [JsonPropertyName("masked")]
-        public string Masked { get; set; }
-        
+        public string? Masked { get; set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object

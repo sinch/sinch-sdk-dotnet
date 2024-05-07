@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Http;
 using Microsoft.Extensions.Logging;
 using Sinch.Conversation;
@@ -11,16 +11,16 @@ namespace Sinch
         /// <summary>
         ///     A logger factory used to create ILogger inside the SDK to enable logging
         /// </summary>
-        public ILoggerFactory LoggerFactory { get; set; }
+        public ILoggerFactory? LoggerFactory { get; set; }
 
         /// <summary>
         ///     A HttpClient to use. If not provided, HttpClient will be created and managed by <see cref="SinchClient"></see>
         ///     itself
         /// </summary>
-        public HttpClient HttpClient { get; set; }
+        public HttpClient? HttpClient { get; set; }
 
         /// <summary>
-        ///     Set's the hosting region for the SMS service.
+        ///     Set's the region for the SMS service.
         ///     <br/><br/>
         ///     The difference between this option and
         ///     <see href="https://developers.sinch.com/docs/sms/api-reference/#base-url">SMS base URL</see>
@@ -29,7 +29,7 @@ namespace Sinch
         ///     <br /><br />
         ///     Defaults to "us"
         /// </summary>
-        public SmsHostingRegion SmsHostingRegion { get; set; } = SmsHostingRegion.Us;
+        public SmsRegion SmsRegion { get; set; } = SmsRegion.Us;
 
         /// <summary>
         ///     Set's the regions for the Conversation api.
@@ -38,10 +38,10 @@ namespace Sinch
         public ConversationRegion ConversationRegion { get; set; } = ConversationRegion.Us;
 
         /// <inheritdoc cref="ApiUrlOverrides"/>
-        public ApiUrlOverrides ApiUrlOverrides { get; set; }
+        public ApiUrlOverrides? ApiUrlOverrides { get; set; }
 
 
-        internal ServicePlanIdOptions ServicePlanIdOptions { get; private set; }
+        internal ServicePlanIdOptions? ServicePlanIdOptions { get; private set; }
 
         /// <summary>
         ///     Use SMS API with `service plan id` and compatible region.
@@ -49,29 +49,29 @@ namespace Sinch
         /// </summary>
         /// <param name="servicePlanId">Your service plan id</param>
         /// <param name="apiToken"></param>
-        /// <param name="hostingRegion">Region to use. Defaults to <see cref="SmsServicePlanIdHostingRegion.Us" /></param>
+        /// <param name="servicePlanIdRegion">Region to use. Defaults to <see cref="SmsServicePlanIdRegion.Us" /></param>
         /// <exception cref="ArgumentNullException">throws if service plan id or region is null or an empty string</exception>
         public void UseServicePlanIdWithSms(string servicePlanId,
-            string apiToken, SmsServicePlanIdHostingRegion hostingRegion = default)
+            string apiToken, SmsServicePlanIdRegion? servicePlanIdRegion = default)
         {
-            hostingRegion ??= SmsServicePlanIdHostingRegion.Us;
+            servicePlanIdRegion ??= SmsServicePlanIdRegion.Us;
 
-            ServicePlanIdOptions = new ServicePlanIdOptions(servicePlanId, hostingRegion, apiToken);
+            ServicePlanIdOptions = new ServicePlanIdOptions(servicePlanId, servicePlanIdRegion, apiToken);
         }
     }
 
     internal class ServicePlanIdOptions
     {
-        public ServicePlanIdOptions(string servicePlanId, SmsServicePlanIdHostingRegion hostingRegion, string apiToken)
+        public ServicePlanIdOptions(string servicePlanId, SmsServicePlanIdRegion region, string apiToken)
         {
             if (string.IsNullOrEmpty(servicePlanId))
             {
                 throw new ArgumentNullException(nameof(servicePlanId), "Should have a value");
             }
 
-            if (hostingRegion is null)
+            if (region is null)
             {
-                throw new ArgumentNullException(nameof(hostingRegion), "Should have a value");
+                throw new ArgumentNullException(nameof(region), "Should have a value");
             }
 
             if (string.IsNullOrEmpty(apiToken))
@@ -80,13 +80,13 @@ namespace Sinch
             }
 
             ServicePlanId = servicePlanId;
-            HostingRegion = hostingRegion;
+            Region = region;
             ApiToken = apiToken;
         }
 
         public string ApiToken { get; }
 
-        public SmsServicePlanIdHostingRegion HostingRegion { get; }
+        public SmsServicePlanIdRegion Region { get; }
 
         public string ServicePlanId { get; }
     }
@@ -99,37 +99,37 @@ namespace Sinch
         /// <summary>
         ///     Overrides SMS api base url
         /// </summary>
-        public string SmsUrl { get; init; }
+        public string? SmsUrl { get; init; }
 
         /// <summary>
         ///     Overrides Conversation api base url
         /// </summary>
-        public string ConversationUrl { get; init; }
+        public string? ConversationUrl { get; init; }
 
         /// <summary>
         ///     Overrides Templates api base url.
         ///     Templates is treated as part of conversation api, but it has another base address.
         /// </summary>
-        public string TemplatesUrl { get; init; }
+        public string? TemplatesUrl { get; init; }
 
         /// <summary>
         ///     Overrides Voice api base url
         /// </summary>
-        public string VoiceUrl { get; init; }
+        public string? VoiceUrl { get; init; }
 
         /// <summary>
         ///     Overrides Verification api base url
         /// </summary>
-        public string VerificationUrl { get; init; }
+        public string? VerificationUrl { get; init; }
 
         /// <summary>
         ///     Overrides Auth api base url
         /// </summary>
-        public string AuthUrl { get; init; }
+        public string? AuthUrl { get; init; }
 
         /// <summary>
         ///     Overrides Numbers api base url
         /// </summary>
-        public string NumbersUrl { get; init; }
+        public string? NumbersUrl { get; init; }
     }
 }

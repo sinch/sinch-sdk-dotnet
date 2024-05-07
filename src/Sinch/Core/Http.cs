@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -33,7 +33,8 @@ namespace Sinch.Core
         /// <returns></returns>
         Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default);
-        public Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream, string fileName, CancellationToken cancellationToken = default);
+        
+        Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream, string fileName, CancellationToken cancellationToken = default);
         /// <summary>
         ///     Use to send http request with a body
         /// </summary>
@@ -48,17 +49,24 @@ namespace Sinch.Core
             CancellationToken cancellationToken = default);
     }
 
+    /// <summary>
+    ///     Represents an empty response for cases where no json is expected.
+    /// </summary>
+    public class EmptyResponse
+    {
+    }
+
     /// <inheritdoc /> 
     internal class Http : IHttp
     {
         private readonly HttpClient _httpClient;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
-        private readonly ILoggerAdapter<Http> _logger;
+        private readonly ILoggerAdapter<IHttp>? _logger;
         private readonly ISinchAuth _auth;
         private readonly string _userAgentHeaderValue;
 
 
-        public Http(ISinchAuth auth, HttpClient httpClient, ILoggerAdapter<Http> logger,
+        public Http(ISinchAuth auth, HttpClient httpClient, ILoggerAdapter<IHttp>? logger,
             JsonNamingPolicy jsonNamingPolicy)
         {
             _logger = logger;
@@ -67,14 +75,9 @@ namespace Sinch.Core
             _jsonSerializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web)
             {
                 PropertyNamingPolicy = jsonNamingPolicy,
-                AllowTrailingCommas = true,
-                
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                Converters ={
-                    new JsonStringEnumConverter()
-                }
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             };
-            var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo()!.Assembly!.FullName!).Version!.ToString();
+            var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo().Assembly.FullName!).Version!.ToString();
             _userAgentHeaderValue =
                 $"sinch-sdk/{sdkVersion} (csharp/{RuntimeInformation.FrameworkDescription};;)";
         }
@@ -97,12 +100,12 @@ namespace Sinch.Core
             return SendHttpContent<TResponse>(uri, HttpMethod.Post, content, cancellationToken);
 
         }
+        
         public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default)
         {
             return Send<object, TResponse>(uri, httpMethod, null, cancellationToken);
         }
-
 
         private async Task<TResponse> SendHttpContent<TResponse>(Uri uri, HttpMethod httpMethod, HttpContent httpContent,
          CancellationToken cancellationToken = default)
@@ -111,7 +114,6 @@ namespace Sinch.Core
             while (true)
             {
                 _logger?.LogDebug("Sending request to {uri}", uri);
-
 
 #if DEBUG
                 Debug.WriteLine($"Request uri: {uri}");
@@ -132,10 +134,17 @@ namespace Sinch.Core
                     var now = DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture);
                     const string headerName = "x-timestamp";
                     msg.Headers.Add(headerName, now);
+
+                    var bytes = Array.Empty<byte>();
+                    if (msg.Content is not null)
+                    {
+                        bytes = await msg.Content.ReadAsByteArrayAsync(cancellationToken);
+                    }
+
                     token = appSignAuth.GetSignedAuth(
-                        msg.Content?.ReadAsByteArrayAsync(cancellationToken).GetAwaiter().GetResult(),
+                        bytes,
                         msg.Method.ToString().ToUpperInvariant(), msg.RequestUri.PathAndQuery,
-                        $"{headerName}:{now}", msg.Content?.Headers?.ContentType?.ToString());
+                        $"{headerName}:{now}", msg.Content?.Headers.ContentType?.ToString());
                     retry = false;
                 }
                 else
@@ -154,8 +163,8 @@ namespace Sinch.Core
                 {
                     // will not retry when no "expired" header for a token.
                     const string wwwAuthenticateHeader = "www-authenticate";
-                    if (_auth.Scheme == AuthSchemes.Bearer && true == result.Headers?.Contains(wwwAuthenticateHeader) &&
-                        false == result.Headers?.GetValues(wwwAuthenticateHeader)?.Contains("expired"))
+                    if (_auth.Scheme == AuthSchemes.Bearer && result.Headers.Contains(wwwAuthenticateHeader) &&
+                        !result.Headers.GetValues(wwwAuthenticateHeader).Contains("expired"))
                     {
                         _logger?.LogDebug("OAuth Unauthorized");
                     }
@@ -168,23 +177,32 @@ namespace Sinch.Core
 
                 await result.EnsureSuccessApiStatusCode();
                 _logger?.LogDebug("Finished processing request for {uri}", uri);
-                foreach (var header in result.Headers)
-                {
-                    _logger?.LogDebug("Header: {header} = {value}", header.Key, header.Value);
-                }
-                
-                var json = await result.Content.ReadAsStringAsync(cancellationToken);
-                
-                    if (result.IsJson())
-                        return await result.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken,
-                                   options: _jsonSerializerOptions)
-                               ?? throw new NullReferenceException(
-                                   $"{nameof(TResponse)} is null");
+                if (result.IsJson())
+                    return await result.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken,
+                               options: _jsonSerializerOptions)
+                           ?? throw new InvalidOperationException(
+                               $"{typeof(TResponse).Name} is null");
 
-                    _logger?.LogWarning("Response is not json, but {content}",
-                        await result.Content.ReadAsStringAsync(cancellationToken));
-                    return default;
-                
+                // if empty response is expected, any non related response is dropped
+                if (typeof(TResponse) == typeof(EmptyResponse))
+                {
+                    // if not empty content, check what is there for debug purposes.
+                    // C# EmptyContent class is internal, so checking it by the name
+                    // for more details, see: https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http/src/System/Net/Http/EmptyContent.cs
+                    if (result.Content.GetType().Name != "EmptyContent")
+                    {
+                        _logger?.LogDebug("Expected empty content, but got {content}",
+                            await result.Content.ReadAsStringAsync(cancellationToken));
+                    }
+
+                    return (TResponse)(object)new EmptyResponse();
+                }
+
+                // unexpected content, log warning and throw exception
+                _logger?.LogWarning("Response is not json, but {content}",
+                    await result.Content.ReadAsStringAsync(cancellationToken));
+
+                throw new InvalidOperationException("The response is not Json or EmptyResponse");
             }
         }
 
@@ -196,7 +214,7 @@ namespace Sinch.Core
                 request == null ? null : JsonContent.Create(request, options: _jsonSerializerOptions);
 
 
-            return await SendHttpContent<TResponse>(uri: uri, httpMethod: httpMethod, httpContent: httpContent, cancellationToken: cancellationToken);
+            return await SendHttpContent<TResponse>(uri: uri, httpMethod: httpMethod, httpContent, cancellationToken: cancellationToken);
         }
 
         public Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest request, Stream stream, string fileName, CancellationToken cancellationToken = default)
@@ -205,4 +223,3 @@ namespace Sinch.Core
         }
     }
 }
-

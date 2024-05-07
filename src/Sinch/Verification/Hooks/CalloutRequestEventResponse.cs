@@ -1,11 +1,11 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Verification.Hooks
 {
     public class CalloutRequestEventResponse : RequestEventResponseBase
     {
         [JsonPropertyName("callout")]
-        public Callout Callout { get; set; }
+        public Callout? Callout { get; set; }
     }
 
     public class Callout
@@ -16,13 +16,13 @@ namespace Sinch.Verification.Hooks
         ///     If you want to set your own code, you can specify it in the response to the Verification Request Event.
         /// </summary>
         [JsonPropertyName("code")]
-        public string Code { get; set; }
-        
+        public string? Code { get; set; }
+
         /// <summary>
         ///     An object defining various properties for the text-to-speech message.
         /// </summary>
         [JsonPropertyName("speech")]
-        public Speech Speech { get; set; }
+        public Speech? Speech { get; set; }
     }
 
     public class Speech
@@ -32,6 +32,6 @@ namespace Sinch.Verification.Hooks
         ///     Currently, only en-US is supported.
         /// </summary>
         [JsonPropertyName("locale")]
-        public string Locale { get; set; }
+        public string? Locale { get; set; }
     }
 }

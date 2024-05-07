@@ -1,4 +1,4 @@
-﻿namespace Sinch.Conversation
+namespace Sinch.Conversation
 {
     /// <summary>
     ///     Represents the Conversation region options.

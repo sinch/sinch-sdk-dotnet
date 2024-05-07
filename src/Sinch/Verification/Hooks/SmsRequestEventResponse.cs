@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Verification.Hooks
@@ -6,7 +6,7 @@ namespace Sinch.Verification.Hooks
     public class SmsRequestEventResponse : RequestEventResponseBase
     {
         [JsonPropertyName("sms")]
-        public Sms Sms { get; set; }
+        public Sms? Sms { get; set; }
     }
 
     public class Sms
@@ -17,12 +17,12 @@ namespace Sinch.Verification.Hooks
         ///     If you want to set your own PIN, you can specify it in the response to the Verification Request Event.
         /// </summary>
         [JsonPropertyName("code")]
-        public string Code { get; set; }
+        public string? Code { get; set; }
 
         /// <summary>
         ///     The SMS verification content language. Set in the verification request.
         /// </summary>
         [JsonPropertyName("acceptLanguage")]
-        public List<string> AcceptLanguage { get; set; }
+        public List<string>? AcceptLanguage { get; set; }
     }
 }

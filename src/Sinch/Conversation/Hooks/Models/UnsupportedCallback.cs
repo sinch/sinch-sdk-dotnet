@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
 
@@ -26,35 +26,35 @@ namespace Sinch.Conversation.Hooks.Models
         ///     Normally a JSON payload as sent by the channel.
         /// </summary>
         [JsonPropertyName("payload")]
-        public string Payload { get; set; }
+        public string? Payload { get; set; }
 
 
         /// <summary>
         ///     The message ID.
         /// </summary>
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
 
         /// <summary>
         ///     The ID of the contact. This field is blank if not supported.
         /// </summary>
         [JsonPropertyName("contact_id")]
-        public string ContactId { get; set; }
+        public string? ContactId { get; set; }
 
 
         /// <summary>
         ///     The ID of the conversation this message is part of. This field is blank if not supported.
         /// </summary>
         [JsonPropertyName("conversation_id")]
-        public string ConversationId { get; set; }
+        public string? ConversationId { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets ChannelIdentity
         /// </summary>
         [JsonPropertyName("channel_identity")]
-        public ChannelIdentity ChannelIdentity { get; set; }
+        public ChannelIdentity? ChannelIdentity { get; set; }
 
 
         /// <summary>

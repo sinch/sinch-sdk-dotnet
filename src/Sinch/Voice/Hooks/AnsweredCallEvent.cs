@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.Json.Serialization;
 using Sinch.Voice.Calls.Actions;
 
@@ -14,54 +14,54 @@ namespace Sinch.Voice.Hooks
     ///     enabled, the amd object will also be present on ACE callbacks.
     ///     Note: ACE Callbacks are not issued for InApp Calls (destination: username), only PSTN and SIP calls.
     /// </summary>
-    public class AnsweredCallEvent
+    public class AnsweredCallEvent : IVoiceEvent
     {
         /// <summary>
         ///     Must have the value ace.
         /// </summary>
         [JsonPropertyName("event")]
-        public string Event { get; }
+        public EventType? Event { get; set; }
 
 
         /// <summary>
         ///     The unique ID assigned to this call.
         /// </summary>
         [JsonPropertyName("callId")]
-        public string CallId { get; set; }
+        public string? CallId { get; set; }
 
 
         /// <summary>
         ///     The path of the API resource.
         /// </summary>
         [JsonPropertyName("callResourceUrl")]
-        public string CallResourceUrl { get; set; }
+        public string? CallResourceUrl { get; set; }
 
 
         /// <summary>
         ///     The timestamp in UTC format.
         /// </summary>
         [JsonPropertyName("timestamp")]
-        public DateTime Timestamp { get; set; }
+        public DateTime? Timestamp { get; set; }
 
 
         /// <summary>
         ///     The current API version.
         /// </summary>
         [JsonPropertyName("version")]
-        public int Version { get; set; }
+        public int? Version { get; set; }
 
 
         /// <summary>
         ///     A string that can be used to pass custom information related to the call.
         /// </summary>
         [JsonPropertyName("custom")]
-        public string Custom { get; set; }
+        public string? Custom { get; set; }
 
         /// <summary>
         ///     If [Answering Machine Detection (AMD)](https://developers.sinch.com/docs/voice/api-reference/amd_v2) is enabled,
         ///     this object contains information about whether the call was answered by a machine.
         /// </summary>
         [JsonPropertyName("amd")]
-        public Amd Amd { get; set; }
+        public Amd? Amd { get; set; }
     }
 }

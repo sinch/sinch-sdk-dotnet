@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Sinch.Conversation.Messages.Message
 {
-    public class CarouselMessage
+    public sealed class CarouselMessage : IOmniMessageOverride
     {
         /// <summary>
         ///     A list of up to 10 cards.
@@ -11,14 +11,14 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required List<CardMessage> Cards { get; set; }
 #else
-        public List<CardMessage> Cards { get; set; }
+        public List<CardMessage> Cards { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     Optional. Outer choices on the carousel level. The number of outer choices is limited to 3.
         /// </summary>
-        public List<Choice> Choices { get; set; }
+        public List<Choice>? Choices { get; set; }
 
 
         /// <summary>

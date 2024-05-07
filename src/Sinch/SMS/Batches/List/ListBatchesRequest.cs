@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sinch.Core;
@@ -21,7 +21,7 @@ namespace Sinch.SMS.Batches.List
         ///     Only list messages sent from this sender number.
         ///     Must be phone numbers or short code.
         /// </summary>
-        public IList<string> From { get; set; }
+        public List<string>? From { get; set; }
 
         /// <summary>
         ///     Only list messages received at or after this date/time.
@@ -36,21 +36,21 @@ namespace Sinch.SMS.Batches.List
         /// <summary>
         ///     Client reference to include
         /// </summary>
-        public string ClientReference { get; set; }
+        public string? ClientReference { get; set; }
 
         internal string GetQueryString()
         {
             var kvp = new List<KeyValuePair<string, string>>();
-            
+
             if (Page.HasValue)
             {
-                kvp.Add(new KeyValuePair<string, string>("page", Page.ToString()));
+                kvp.Add(new KeyValuePair<string, string>("page", Page.ToString()!));
             }
-            
-            
+
+
             if (PageSize.HasValue)
             {
-                kvp.Add(new KeyValuePair<string, string>("page_size", PageSize.ToString()));
+                kvp.Add(new KeyValuePair<string, string>("page_size", PageSize.ToString()!));
             }
 
             if (From?.Any() is true) kvp.Add(new KeyValuePair<string, string>("from", string.Join(',', From)));

@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Hooks.Models
@@ -12,15 +12,15 @@ namespace Sinch.Conversation.Hooks.Models
         ///     Empty object denoting the contact is composing a message.
         /// </summary>
         [JsonPropertyName("composing_event")]
-        public object ComposingEvent { get; set; }
-        
+        public object? ComposingEvent { get; set; }
+
 
         /// <summary>
         ///     Gets or Sets CommentEvent
         /// </summary>
         [JsonPropertyName("comment_event")]
-        public CommentEvent CommentEvent { get; set; }
-        
+        public CommentEvent? CommentEvent { get; set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object

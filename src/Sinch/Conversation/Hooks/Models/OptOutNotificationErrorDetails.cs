@@ -12,8 +12,8 @@ namespace Sinch.Conversation.Hooks.Models
         ///     Human-readable error description.
         /// </summary>
         [JsonPropertyName("description")]
-        public string Description { get; set; }
-        
+        public string? Description { get; set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object

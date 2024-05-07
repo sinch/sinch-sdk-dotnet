@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Sinch.Numbers.Active.List
 {
@@ -7,11 +7,11 @@ namespace Sinch.Numbers.Active.List
 #if NET7_0_OR_GREATER
         public required IEnumerable<ActiveNumber> ActiveNumbers { get; set; }
 #else
-        public IEnumerable<ActiveNumber> ActiveNumbers { get; set; }
+        public IEnumerable<ActiveNumber> ActiveNumbers { get; set; } = null!;
 #endif
 
 
-        public string NextPageToken { get; set; }
+        public string? NextPageToken { get; set; }
 
         public int TotalSize { get; set; }
     }

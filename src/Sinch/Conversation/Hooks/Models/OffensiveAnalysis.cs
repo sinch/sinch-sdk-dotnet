@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Hooks.Models
@@ -18,22 +18,22 @@ namespace Sinch.Conversation.Hooks.Models
         ///     Either the message text or the URL of the image that was analyzed.
         /// </summary>
         [JsonPropertyName("message")]
-        public string Message { get; set; }
-        
+        public string? Message { get; set; }
+
 
         /// <summary>
         ///     URL of the image that was analyzed.
         /// </summary>
         [JsonPropertyName("url")]
-        public string Url { get; set; }
-        
+        public string? Url { get; set; }
+
 
         /// <summary>
         ///     The likelihood that the assigned evaluation represents the analyzed message correctly. 1 is the maximum value, representing the highest likelihood that the content of the message matches the evaluation. 0 is the minimum value, representing the lowest likelihood that the content of the message matches the evaluation.
         /// </summary>
         [JsonPropertyName("score")]
-        public float Score { get; set; }
-        
+        public float? Score { get; set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object

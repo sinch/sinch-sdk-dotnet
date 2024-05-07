@@ -1,4 +1,4 @@
-﻿namespace Sinch.Conversation.Common
+namespace Sinch.Conversation.Common
 {
     public class ChannelIdentity
     {
@@ -8,18 +8,18 @@
         ///     different channel identities on different Conversation API apps. These can be thought of as virtual identities that
         ///     are app-specific and, therefore, the app_id must be included in the API call.
         /// </summary>
-        public string AppId { get; set; }
+        public string? AppId { get; set; }
 
         /// <summary>
         ///     The channel identity. This will differ from channel to channel. For example, a phone number for SMS, WhatsApp, and
         ///     Viber Business.
         /// </summary>
-        public string Identity { get; set; }
+        public string? Identity { get; set; }
 
         /// <summary>
         ///     The identifier of the channel you want to include. Must be one of the enum values. See
         ///     <see cref="ConversationChannel" /> fields.
         /// </summary>
-        public ConversationChannel Channel { get; set; }
+        public ConversationChannel? Channel { get; set; }
     }
 }

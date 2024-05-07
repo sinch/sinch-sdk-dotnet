@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Sinch.Core;
 using Sinch.Logger;
 using Sinch.SMS.Batches;
@@ -64,11 +64,11 @@ namespace Sinch.SMS
         /// <param name="baseAddress"></param>
         /// <param name="loggerFactory"></param>
         /// <param name="http"></param>
-        internal SmsClient(ProjectId projectId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http) : this(
+        internal SmsClient(ProjectId projectId, Uri baseAddress, LoggerFactory? loggerFactory, IHttp http) : this(
             projectId.Value, baseAddress, loggerFactory, http)
         {
         }
-        
+
         /// <summary>
         ///     Creates an instance of Sms service with service plan id
         /// </summary>
@@ -76,7 +76,8 @@ namespace Sinch.SMS
         /// <param name="baseAddress"></param>
         /// <param name="loggerFactory"></param>
         /// <param name="http"></param>
-        internal SmsClient(ServicePlanId servicePlanId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http) : this(
+        internal SmsClient(ServicePlanId servicePlanId, Uri baseAddress, LoggerFactory? loggerFactory,
+            IHttp http) : this(
             servicePlanId.Value, baseAddress, loggerFactory, http)
         {
             IsUsingServicePlanId = true;
@@ -91,7 +92,7 @@ namespace Sinch.SMS
         /// <param name="baseAddress"></param>
         /// <param name="loggerFactory"></param>
         /// <param name="http"></param>
-        private SmsClient(string projectIdOrServicePlanId, Uri baseAddress, LoggerFactory loggerFactory, IHttp http)
+        private SmsClient(string projectIdOrServicePlanId, Uri baseAddress, LoggerFactory? loggerFactory, IHttp http)
         {
             Batches = new Batches.Batches(projectIdOrServicePlanId, baseAddress,
                 loggerFactory?.Create<ISinchSmsBatches>(), http);

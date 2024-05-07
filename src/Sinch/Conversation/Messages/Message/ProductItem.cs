@@ -1,11 +1,11 @@
-﻿using System.Text;
+using System.Text;
 
 namespace Sinch.Conversation.Messages.Message
 {
     /// <summary>
     ///     A message component for interactive messages, containing a product.
     /// </summary>
-    public sealed class ListItemProduct : IListItem
+    public sealed class ProductItem : IListItem
     {
         /// <summary>
         ///     Required parameter. The ID for the product.
@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required string Id { get; set; }
 #else
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
 #endif
 
 
@@ -23,26 +23,26 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required string Marketplace { get; set; }
 #else
-        public string Marketplace { get; set; }
+        public string Marketplace { get; set; } = null!;
 #endif
 
 
         /// <summary>
         ///     Output only. The quantity of the chosen product.
         /// </summary>
-        public int Quantity { get; set; }
+        public int? Quantity { get; set; }
 
 
         /// <summary>
         ///     Output only. The price for one unit of the chosen product.
         /// </summary>
-        public float ItemPrice { get; set; }
+        public float? ItemPrice { get; set; }
 
 
         /// <summary>
         ///     Output only. The currency of the item_price.
         /// </summary>
-        public string Currency { get; set; }
+        public string? Currency { get; set; }
 
 
         /// <summary>

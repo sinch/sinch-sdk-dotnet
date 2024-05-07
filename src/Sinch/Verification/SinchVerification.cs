@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -135,9 +135,9 @@ namespace Sinch.Verification
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<SinchVerification> _logger;
+        private readonly ILoggerAdapter<SinchVerification>? _logger;
 
-        public SinchVerification(ILoggerAdapter<SinchVerification> logger, Uri baseAddress, IHttp http)
+        public SinchVerification(ILoggerAdapter<SinchVerification>? logger, Uri baseAddress, IHttp http)
         {
             _logger = logger;
             _baseAddress = baseAddress;
@@ -155,7 +155,8 @@ namespace Sinch.Verification
                 Method = request.Method,
                 Reference = request.Reference
             }, cancellationToken);
-            return result as StartSmsVerificationResponse;
+            return result as StartSmsVerificationResponse ??
+                   throw new InvalidOperationException($"{nameof(StartSmsVerificationResponse)} result is null.");
         }
 
         /// <inheritdoc />
@@ -167,7 +168,8 @@ namespace Sinch.Verification
                 Identity = Identity.Number(phoneNumber),
                 Method = VerificationMethodEx.Sms
             }, cancellationToken);
-            return result as StartSmsVerificationResponse;
+            return result as StartSmsVerificationResponse ??
+                   throw new InvalidOperationException($"{nameof(StartSmsVerificationResponse)} result is null.");
         }
 
         /// <inheritdoc />
@@ -182,7 +184,8 @@ namespace Sinch.Verification
                 Reference = request.Reference,
                 FlashCallOptions = request.FlashCallOptions
             }, cancellationToken);
-            return result as StartFlashCallVerificationResponse;
+            return result as StartFlashCallVerificationResponse ??
+                   throw new InvalidOperationException($"{nameof(StartFlashCallVerificationResponse)} result is null.");
         }
 
         /// <inheritdoc />
@@ -196,7 +199,8 @@ namespace Sinch.Verification
                 Method = request.Method,
                 Reference = request.Reference
             }, cancellationToken);
-            return result as StartCalloutVerificationResponse;
+            return result as StartCalloutVerificationResponse ??
+                   throw new InvalidOperationException($"{nameof(StartCalloutVerificationResponse)} result is null.");
         }
 
         /// <inheritdoc />
@@ -210,7 +214,8 @@ namespace Sinch.Verification
                 Method = request.Method,
                 Reference = request.Reference
             }, cancellationToken);
-            return result as StartDataVerificationResponse;
+            return result as StartDataVerificationResponse ??
+                   throw new InvalidOperationException($"{nameof(StartDataVerificationResponse)} result is null.");
         }
 
 
@@ -228,7 +233,8 @@ namespace Sinch.Verification
             CancellationToken cancellationToken = default)
         {
             var result = await ReportIdentity(endpoint, request, cancellationToken);
-            return result as ReportSmsVerificationResponse;
+            return result as ReportSmsVerificationResponse ??
+                   throw new InvalidOperationException($"{nameof(ReportSmsVerificationResponse)} result is null.");
         }
 
         public async Task<ReportFlashCallVerificationResponse> ReportFlashCallByIdentity(string endpoint,
@@ -236,7 +242,9 @@ namespace Sinch.Verification
             CancellationToken cancellationToken = default)
         {
             var result = await ReportIdentity(endpoint, request, cancellationToken);
-            return result as ReportFlashCallVerificationResponse;
+            return result as ReportFlashCallVerificationResponse ??
+                   throw new InvalidOperationException(
+                       $"{nameof(ReportFlashCallVerificationResponse)} result is null.");
         }
 
         public async Task<ReportCalloutVerificationResponse> ReportCalloutByIdentity(string endpoint,
@@ -244,7 +252,8 @@ namespace Sinch.Verification
             CancellationToken cancellationToken = default)
         {
             var result = await ReportIdentity(endpoint, request, cancellationToken);
-            return result as ReportCalloutVerificationResponse;
+            return result as ReportCalloutVerificationResponse ??
+                   throw new InvalidOperationException($"{nameof(ReportCalloutVerificationResponse)} result is null.");
         }
 
         private Task<IVerificationReportResponse> ReportId(string id, VerifyReportRequest request,
@@ -261,7 +270,8 @@ namespace Sinch.Verification
             CancellationToken cancellationToken = default)
         {
             var result = await ReportId(id, request, cancellationToken);
-            return result as ReportSmsVerificationResponse;
+            return result as ReportSmsVerificationResponse ??
+                   throw new InvalidOperationException($"{nameof(ReportSmsVerificationResponse)} result is null.");
         }
 
         /// <inheritdoc />
@@ -270,7 +280,9 @@ namespace Sinch.Verification
             CancellationToken cancellationToken = default)
         {
             var result = await ReportId(id, request, cancellationToken);
-            return result as ReportFlashCallVerificationResponse;
+            return result as ReportFlashCallVerificationResponse ??
+                   throw new InvalidOperationException(
+                       $"{nameof(ReportFlashCallVerificationResponse)} result is null.");
         }
 
         /// <inheritdoc />
@@ -279,7 +291,8 @@ namespace Sinch.Verification
             CancellationToken cancellationToken = default)
         {
             var result = await ReportId(id, request, cancellationToken);
-            return result as ReportCalloutVerificationResponse;
+            return result as ReportCalloutVerificationResponse ??
+                   throw new InvalidOperationException($"{nameof(ReportCalloutVerificationResponse)} result is null.");
         }
 
         private Task<IStartVerificationResponse> Start(StartVerificationRequest request,

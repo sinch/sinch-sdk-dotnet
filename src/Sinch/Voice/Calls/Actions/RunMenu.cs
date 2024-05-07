@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Core;
@@ -37,14 +37,14 @@ namespace Sinch.Voice.Calls.Actions
         ///     property is required in order to select the input language.
         /// </summary>
         [JsonPropertyName("locale")]
-        public string Locale { get; set; }
+        public string? Locale { get; set; }
 
 
         /// <summary>
         ///     Selects the menu item from the &#x60;menus&#x60; array to play first.
         /// </summary>
         [JsonPropertyName("mainMenu")]
-        public string MainMenu { get; set; }
+        public string? MainMenu { get; set; }
 
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     no menu has an &#x60;id&#x60; value of &#x60;main&#x60;, an error is returned.
         /// </summary>
         [JsonPropertyName("menus")]
-        public List<Menu> Menus { get; set; }
+        public List<Menu>? Menus { get; set; }
 
         public string Name { get; } = "runMenu";
 
@@ -96,7 +96,7 @@ namespace Sinch.Voice.Calls.Actions
 #if NET7_0_OR_GREATER
         public required string Id { get; set; }
 #else
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
 #endif
 
 
@@ -112,7 +112,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     more information.
         /// </summary>
         [JsonPropertyName("mainPrompt")]
-        public string MainPrompt { get; set; }
+        public string? MainPrompt { get; set; }
 
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     more information.
         /// </summary>
         [JsonPropertyName("repeatPrompt")]
-        public string RepeatPrompt { get; set; }
+        public string? RepeatPrompt { get; set; }
 
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Sinch.Voice.Calls.Actions
         ///     The set of options available in the menu.
         /// </summary>
         [JsonPropertyName("options")]
-        public List<Option> Options { get; set; }
+        public List<Option>? Options { get; set; }
 
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace Sinch.Voice.Calls.Actions
 #if NET7_0_OR_GREATER
         public required string Dtmf { get; set; }
 #else
-        public string Dtmf { get; set; }
+        public string Dtmf { get; set; } = null!;
 #endif
 
 
@@ -216,7 +216,7 @@ namespace Sinch.Voice.Calls.Actions
 #if NET7_0_OR_GREATER
         public required DtmfAction Action { get; set; }
 #else
-        public DtmfAction Action { get; set; }
+        public DtmfAction Action { get; set; } = null!;
 #endif
 
 

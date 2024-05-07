@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Voice
 {
@@ -13,7 +13,7 @@ namespace Sinch.Voice
         ///     Determines what DTMF mode the participant will use in the call.
         /// </summary>
         [JsonPropertyName("mode")]
-        public DtmfMode Mode { get; set; }
+        public DtmfMode? Mode { get; set; }
 
         /// <summary>
         ///     The maximum number of accepted digits before sending the collected input via a PIE callback.

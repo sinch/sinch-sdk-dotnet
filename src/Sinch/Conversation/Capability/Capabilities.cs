@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,10 +34,10 @@ namespace Sinch.Conversation.Capability
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchConversationCapabilities> _logger;
+        private readonly ILoggerAdapter<ISinchConversationCapabilities>? _logger;
         private readonly string _projectId;
 
-        public Capabilities(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationCapabilities> logger,
+        public Capabilities(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationCapabilities>? logger,
             IHttp http)
         {
             _projectId = projectId;
