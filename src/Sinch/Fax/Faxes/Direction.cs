@@ -1,4 +1,4 @@
-﻿namespace Sinch.Fax.Faxes
+namespace Sinch.Fax.Faxes
 {
 
 

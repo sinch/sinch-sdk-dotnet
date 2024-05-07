@@ -1,4 +1,4 @@
-﻿namespace Sinch.Fax.Faxes
+namespace Sinch.Fax.Faxes
 {
     /// <summary>
     /// When your receive a callback from the fax api notifying you of a failure, it will contain two values that can help you understand what went wrong: an errorCode and an type.

@@ -33,7 +33,7 @@ namespace Sinch.Core
         /// <returns></returns>
         Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default);
-        
+
         Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream, string fileName, CancellationToken cancellationToken = default);
         /// <summary>
         ///     Use to send http request with a body
@@ -100,7 +100,7 @@ namespace Sinch.Core
             return SendHttpContent<TResponse>(uri, HttpMethod.Post, content, cancellationToken);
 
         }
-        
+
         public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default)
         {

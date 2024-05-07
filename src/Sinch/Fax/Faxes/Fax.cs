@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -34,7 +34,7 @@ namespace Sinch.Fax.Faxes
         [ReadOnly(true)]
         public FaxStatus Status { get; init; }
         [ReadOnly(true)]
-        
+
         public Money Price { get; init; }
         [ReadOnly(true)]
         [NotMapped]

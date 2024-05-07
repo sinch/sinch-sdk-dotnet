@@ -1,12 +1,12 @@
-﻿using System.Text;
+using System.Text;
 
 namespace Sinch.Fax.Faxes
 {
     public class ListOptions
     {
-        public  string  CreateTime { get; set; } = null;
+        public string CreateTime { get; set; } = null;
 
-        
+
         public string CreateTimeAfter { get; set; } = null;
         public string CreateTimeBefore { get; set; } = null;
         public Direction? Direction { get; set; } = null;
@@ -20,7 +20,7 @@ namespace Sinch.Fax.Faxes
         {
             var queryString = new StringBuilder();
 
-            if (!string.IsNullOrEmpty(CreateTime) )
+            if (!string.IsNullOrEmpty(CreateTime))
             {
                 queryString.Append($"createTime={CreateTime}&");
             }
@@ -57,6 +57,6 @@ namespace Sinch.Fax.Faxes
                 queryString.Append($"&pageSize={PageSize}");
             }
             return queryString.ToString();
-        }       
+        }
     }
 }
