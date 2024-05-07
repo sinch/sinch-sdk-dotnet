@@ -12,12 +12,9 @@ To use Sinch services, you'll need a Sinch account and access keys. You can sign
 
 For more information on the Sinch APIs on which this SDK is based, refer to the official [developer documentation portal](https://developers.sinch.com/).
 
-> [!WARNING]
-> This SDK is currently available to selected developers for preview use only. It is being provided for the purpose of collecting feedback, and should not be used in production environments.
-
 - [Installation](#installation)
 - [Getting started](#getting-started)
-  - [Client initialization](#client-initialization)
+- [Client initialization](#client-initialization)
 - [Supported Sinch products](#supported-sinch-products)
 - [Logging, HttpClient and additional options](#logging-httpclient-and-additional-options)
 - [Handling Exceptions](#handling-exceptions)
@@ -27,7 +24,7 @@ For more information on the Sinch APIs on which this SDK is based, refer to the 
 SinchSDK can be installed using the Nuget package manager or the `dotnet` CLI.
 
 ```
-dotnet add package Sinch --prerelease
+dotnet add package Sinch
 ```
 
 ## Getting started
@@ -126,13 +123,12 @@ using Sinch;
 using Sinch.SMS.Batches.Send;
 
 try {
-    var batch = await sinch.Sms.Batches.Send(new SendBatchRequest
+    var batch = await sinch.Sms.Batches.Send(new SendTextBatchRequest()
     {
         Body = "Hello, World!",
-        DeliveryReport = DeliveryReport.None,
         To = new List<string>()
         {
-            123456789
+            "+123456789"
         }
     });
 }
