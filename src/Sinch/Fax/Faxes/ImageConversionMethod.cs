@@ -1,12 +1,18 @@
+using System.Text.Json.Serialization;
+using Sinch.Core;
+
 namespace Sinch.Fax.Faxes
 {
     /// <summary>
-    /// When sending a fax, you can choose between two different methods of converting the document to a faxable image. Default is Halftone and should be used for most documents. Monochrome should be used for documents that are already black and white.
+    /// Determines how documents are converted to black and white. Defaults to value selected on Fax Service object.
     /// </summary>
-    public enum ImageConversionMethod
+    /// <value>Determines how documents are converted to black and white. Defaults to value selected on Fax Service object.</value>
+    [JsonConverter(typeof(EnumRecordJsonConverter<ImageConversionMethod>))]
+    public record ImageConversionMethod(string Value) : EnumRecord(Value)
     {
-        HALFTONE,
-        MONOCHROME
+
+        public static readonly ImageConversionMethod Halftone = new("HALFTONE");
+        public static readonly ImageConversionMethod Monochrome = new("MONOCHROME");
     }
 
 }

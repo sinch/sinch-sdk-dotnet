@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -108,11 +108,16 @@ namespace Sinch.Fax.Faxes
         public string? CallbackUrl { get; set; }
 
         /// <summary>
-        ///     Valid values aer multipart/form-data or application/json
+        /// The content type of the callback.
         /// </summary>
+        [JsonPropertyName("callbackContentType")]
         public CallbackContentType? CallbackContentType { get; set; }
 
-        public ImageConversionMethod ImageConversionMethod { get; set; }
+        /// <summary>
+        /// Determines how documents are converted to black and white. Defaults to value selected on Fax Service object.
+        /// </summary>
+        [JsonPropertyName("imageConversionMethod")]
+        public ImageConversionMethod? ImageConversionMethod { get; set; }
 
         /// <summary>
         /// Gets or Sets ErrorType

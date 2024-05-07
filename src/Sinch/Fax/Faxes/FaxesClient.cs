@@ -18,7 +18,6 @@ namespace Sinch.Fax.Faxes
 
     internal sealed class FaxesClient : ISinchFaxFaxes
     {
-        private readonly string _projectId;
         private readonly Uri _uri;
 
         private readonly IHttp _http;
@@ -27,7 +26,6 @@ namespace Sinch.Fax.Faxes
 
         internal FaxesClient(string projectId, Uri uri, ILoggerAdapter<ISinchFaxFaxes>? loggerAdapter, IHttp httpClient)
         {
-            _projectId = projectId;
 
             _loggerAdapter = loggerAdapter;
             _http = httpClient;
@@ -62,19 +60,19 @@ namespace Sinch.Fax.Faxes
 
         public async Task<Fax> Send(Fax fax, Stream fileContent, string fileName)
         {
-            Fax result = await _http.SendMultipart<Fax, Fax>(_uri, fax, fileContent, fileName);
+            var result = await _http.SendMultipart<Fax, Fax>(_uri, fax, fileContent, fileName);
             return result;
         }
 
         public async Task<ListOfFaxes> List()
         {
-            return await List(new ListOptions());
+            return await List(new ListFaxesRequest());
         }
 
-        public async Task<ListOfFaxes> List(ListOptions listOptions)
+        public async Task<ListOfFaxes> List(ListFaxesRequest listFaxesRequest)
         {
             var uribuilder = new UriBuilder(_uri.ToString());
-            uribuilder.Query = listOptions.ToQueryString();
+            uribuilder.Query = listFaxesRequest.ToQueryString();
 
             return await _http.Send<ListOfFaxes>(uribuilder.Uri, HttpMethod.Get);
         }

@@ -140,7 +140,7 @@ namespace Sinch
         private readonly ISinchNumbers _numbers;
         private readonly ISinchSms _sms;
         private readonly ILoggerAdapter<ISinchClient>? _logger;
-        private readonly ISinchFaxClient _fax;
+        private readonly ISinchFax _fax;
 
         /// <summary>
         ///     Initialize a new <see cref="SinchClient" />
@@ -199,7 +199,7 @@ namespace Sinch
             _conversation = new SinchConversationClient(_projectId!, conversationBaseAddress
                 , templatesBaseAddress,
                 _loggerFactory, httpSnakeCaseOAuth);
-            _fax = new FaxClient(projectId!, new Uri(FaxApiUrl), _loggerFactory, httpCamelCase);
+            _fax = new Fax.Fax(projectId!, new Uri(FaxApiUrl), _loggerFactory, httpCamelCase);
 
             _logger?.LogInformation("SinchClient initialized.");
         }
@@ -246,8 +246,8 @@ namespace Sinch
             }
         }
 
-        /// <inheritdoc/>
-        public ISinchFaxClient Fax
+        /// <inheritdoc cref="ISinchFax"/>
+        public ISinchFax Fax
         {
             get
             {

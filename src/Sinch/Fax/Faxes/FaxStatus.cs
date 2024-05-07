@@ -1,27 +1,20 @@
+using System.Text.Json.Serialization;
+using Sinch.Core;
+
 namespace Sinch.Fax.Faxes
 {
     /// <summary>
     /// The status of the fax
     /// </summary>
-    public enum FaxStatus
+    /// <value>The status of the fax</value>
+    [JsonConverter(typeof(EnumRecordJsonConverter<FaxStatus>))]
+    public record FaxStatus(string Value) : EnumRecord(Value)
     {
-        /// <summary>
-        /// The operation is currently in a queue on a server and should be executed very soon.
-        /// </summary>
-        QUEUED,
-        /// <summary>
-        /// The fax is currently being sent (OUTBOUND) or received (INBOUND).
-        /// </summary>
-        IN_PROGRESS,
-        /// <summary>
-        /// The fax operation succeeded. Everything went as normally planned.
-        /// </summary>
-        COMPLETED,
-        /// <summary>
-        /// The fax operation failed. Details of the error can be found in the error_code field. For OUTBOUND fax, this means that NONE of the recipients received the fax.
-        /// </summary>
-        /// <see cref="ErrorType"/>"/>
-        FAILURE
 
+        public static readonly FaxStatus Queued = new("QUEUED");
+        public static readonly FaxStatus InProgress = new("IN_PROGRESS");
+        public static readonly FaxStatus Completed = new("COMPLETED");
+        public static readonly FaxStatus Failure = new("FAILURE");
     }
+
 }

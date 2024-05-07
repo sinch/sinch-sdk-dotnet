@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Fax.Faxes
@@ -14,7 +14,7 @@ namespace Sinch.Fax.Faxes
         /// </summary>
         [JsonPropertyName("currencyCode")]
         [JsonInclude]
-        public string CurrencyCode { get; private set; }
+        public string? CurrencyCode { get; private set; }
 
 
         /// <summary>
@@ -23,7 +23,6 @@ namespace Sinch.Fax.Faxes
         [JsonPropertyName("amount")]
         [JsonInclude]
         public float Amount { get; private set; }
-
 
         /// <summary>
         ///     Returns the string presentation of the object

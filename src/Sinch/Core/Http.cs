@@ -88,8 +88,8 @@ namespace Sinch.Core
             string fileName, CancellationToken cancellationToken = default)
         {
             var content = new MultipartFormDataContent();
-            var props = request.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public |
-                                                        BindingFlags.DeclaredOnly);
+            var props = request!.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public |
+                                                         BindingFlags.DeclaredOnly);
             foreach (var prop in props)
             {
                 var value = prop.GetValue(request);
