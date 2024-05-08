@@ -1,6 +1,8 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
@@ -14,54 +16,40 @@ namespace Sinch.Fax.Faxes
     /// </summary>
     public interface ISinchFaxFaxes
     {
+        public Task<Fax> Send(CreateFaxRequest request, CancellationToken cancellationToken = default);
     }
 
     internal sealed class FaxesClient : ISinchFaxFaxes
     {
         private readonly Uri _uri;
-
         private readonly IHttp _http;
-        private ILoggerAdapter<ISinchFaxFaxes>? _loggerAdapter;
-        private FileExtensionContentTypeProvider _mimeMapper;
+        private readonly ILoggerAdapter<ISinchFaxFaxes>? _loggerAdapter;
 
         internal FaxesClient(string projectId, Uri uri, ILoggerAdapter<ISinchFaxFaxes>? loggerAdapter, IHttp httpClient)
         {
-
             _loggerAdapter = loggerAdapter;
             _http = httpClient;
-            _mimeMapper = new FileExtensionContentTypeProvider();
-            uri = new Uri(uri, $"/v3/projects/{projectId}/faxes");
-            _uri = uri;
+            _uri = new Uri(uri, $"/v3/projects/{projectId}/faxes");
         }
 
-        /// <summary>
-        /// Send a fax
-        /// </summary>
-        /// <param name="to">Number to send to</param>
-        /// <param name="filePath">Path to file to fax</param>
-        /// <param name="from">Sinch number you want to set as from </param>
-        /// <param name="callbackUrl"></param>
-        /// <param name="contentUrl">Callback url to notify when fax is completed or failed</param>
-        public async Task<Fax> Send(string to, string filePath, string? from = null, string? callbackUrl = null,
-            string[]? contentUrl = null)
+        public Task<Fax> Send(CreateFaxRequest request, CancellationToken cancellationToken = default)
         {
-            var fileContent = File.OpenRead(filePath);
-            var fileName = Path.GetFileName(filePath);
-            var fax = new Fax
+            if (request.FileContent is not null)
             {
-                To = to,
-                From = from,
-                CallbackUrl = callbackUrl,
-                ContentUrl = contentUrl
-            };
-            return await Send(fax, fileContent, fileName);
-        }
+                _loggerAdapter?.LogInformation("Sending a fax with file content...");
+                return _http.SendMultipart<CreateFaxRequest, Fax>(_uri, request, request.FileContent,
+                    request.FileName!, cancellationToken: cancellationToken);
+            }
 
+            if (request.ContentUrl?.Any() == true)
+            {
+                _loggerAdapter?.LogInformation("Sending a fax with content urls...");
+                return _http.Send<CreateFaxRequest, Fax>(_uri, HttpMethod.Post, request,
+                    cancellationToken: cancellationToken);
+            }
 
-        public async Task<Fax> Send(Fax fax, Stream fileContent, string fileName)
-        {
-            var result = await _http.SendMultipart<Fax, Fax>(_uri, fax, fileContent, fileName);
-            return result;
+            throw new InvalidOperationException(
+                "Neither content urls or file content provided for a create fax request.");
         }
 
         public async Task<ListOfFaxes> List()
@@ -71,10 +59,10 @@ namespace Sinch.Fax.Faxes
 
         public async Task<ListOfFaxes> List(ListFaxesRequest listFaxesRequest)
         {
-            var uribuilder = new UriBuilder(_uri.ToString());
-            uribuilder.Query = listFaxesRequest.ToQueryString();
+            var uriBuilder = new UriBuilder(_uri.ToString());
+            uriBuilder.Query = listFaxesRequest.ToQueryString();
 
-            return await _http.Send<ListOfFaxes>(uribuilder.Uri, HttpMethod.Get);
+            return await _http.Send<ListOfFaxes>(uriBuilder.Uri, HttpMethod.Get);
         }
 
         public async Task<Fax> GetAsync(string faxId)

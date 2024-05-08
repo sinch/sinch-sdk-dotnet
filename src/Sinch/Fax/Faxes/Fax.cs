@@ -35,8 +35,13 @@ namespace Sinch.Fax.Faxes
         [JsonPropertyName("to")]
         public string? To { get; set; }
 
+        /// <summary>
+        ///     Give us any URL on the Internet (including ones with basic authentication) At least one file or contentUrl parameter is required. <br/><br/>
+        ///     Please note: If you are passing fax a secure URL (starting with https://), make sure that your SSL certificate (including your intermediate cert, if you have one) is installed properly, valid, and up-to-date.
+        ///     If the file parameter is specified as well, content from URLs will be rendered before content from files.
+        /// </summary>
         [JsonPropertyName("contentUrl")]
-        public string[]? ContentUrl { get; set; }
+        public List<string>? ContentUrl { get; set; }
 
         /// <summary>
         ///     The number of pages in the fax.
@@ -92,7 +97,12 @@ namespace Sinch.Fax.Faxes
         [JsonPropertyName("headerTimeZone")]
         public string? HeaderTimeZone { get; set; }
 
-        public int RetryDelaySeconds { get; set; }
+        /// <summary>
+        ///     The number of seconds to wait between retries if the fax is not yet completed.
+        /// </summary>
+        [JsonPropertyName("retryDelaySeconds")]
+        public int? RetryDelaySeconds { get; set; }
+        
         public int CancelTimeoutMinutes { get; set; }
 
         /// <summary>

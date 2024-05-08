@@ -202,7 +202,7 @@ namespace Sinch
                 _loggerFactory, httpSnakeCaseOAuth);
 
             var faxUrl = ResolveFaxUrl(optionsObj?.FaxRegion);
-            _fax = new Fax.Fax(projectId!, faxUrl, _loggerFactory, httpCamelCase);
+            _fax = new Fax.FaxClient(projectId!, faxUrl, _loggerFactory, httpCamelCase);
 
             _logger?.LogInformation("SinchClient initialized.");
         }
