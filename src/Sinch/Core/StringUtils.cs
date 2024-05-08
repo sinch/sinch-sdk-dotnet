@@ -14,6 +14,16 @@ namespace Sinch.Core
                 .ToLower();
         }
 
+        public static string PascalToCamelCase(string str)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                throw new ArgumentNullException(nameof(str));
+            }
+
+            return char.ToLower(str[0]) + str[1..];
+        }
+
         public static string ToQueryString(IEnumerable<KeyValuePair<string, string>> queryParams, bool encode = true)
         {
             return string.Join("&", queryParams.Select(kvp =>

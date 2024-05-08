@@ -107,6 +107,40 @@ namespace Sinch.Core
             return StringUtils.ToQueryString(list);
         }
 
+        public static string ToQueryString<T>(T obj, Func<string?, string?> namingConverter)
+        {
+            var props = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public |
+                                                BindingFlags.DeclaredOnly);
+            var list = new List<KeyValuePair<string, string>>();
+            foreach (var prop in props)
+            {
+                if (!prop.CanRead)
+                    continue;
+                var propVal = prop.GetValue(obj);
+
+                if (propVal is null) continue;
+
+                var propName = namingConverter.Invoke(prop.Name);
+                if (string.IsNullOrEmpty(propName))
+                {
+                    continue;
+                }
+
+                var propType = prop.PropertyType;
+                if (typeof(IEnumerable).IsAssignableFrom(propType) &&
+                    propType != typeof(string))
+                {
+                    list.AddRange(ParamsFromObject(propName, (propVal as IEnumerable)!));
+                }
+                else
+                {
+                    list.Add(new(propName, ToQueryParamString(propVal)));
+                }
+            }
+
+            return StringUtils.ToQueryString(list);
+        }
+
         private static IEnumerable<KeyValuePair<string, string>> ParamsFromObject(string paramName, IEnumerable obj)
         {
             return obj.Cast<object>().Select(o =>

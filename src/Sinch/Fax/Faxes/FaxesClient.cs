@@ -17,6 +17,8 @@ namespace Sinch.Fax.Faxes
     public interface ISinchFaxFaxes
     {
         public Task<Fax> Send(CreateFaxRequest request, CancellationToken cancellationToken = default);
+
+        Task<ListFaxResponse> List(ListFaxesRequest listFaxesRequest, CancellationToken cancellationToken = default);
     }
 
     internal sealed class FaxesClient : ISinchFaxFaxes
@@ -52,17 +54,16 @@ namespace Sinch.Fax.Faxes
                 "Neither content urls or file content provided for a create fax request.");
         }
 
-        public async Task<ListOfFaxes> List()
+        public async Task<ListFaxResponse> List(ListFaxesRequest listFaxesRequest,
+            CancellationToken cancellationToken = default)
         {
-            return await List(new ListFaxesRequest());
-        }
+            _loggerAdapter?.LogInformation("Fetching a list of faxes");
+            var uriBuilder = new UriBuilder(_uri.ToString())
+            {
+                Query =listFaxesRequest.ToQueryString()
+            };
 
-        public async Task<ListOfFaxes> List(ListFaxesRequest listFaxesRequest)
-        {
-            var uriBuilder = new UriBuilder(_uri.ToString());
-            uriBuilder.Query = listFaxesRequest.ToQueryString();
-
-            return await _http.Send<ListOfFaxes>(uriBuilder.Uri, HttpMethod.Get);
+            return await _http.Send<ListFaxResponse>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
 
         public async Task<Fax> GetAsync(string faxId)
