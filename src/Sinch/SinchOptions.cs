@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using Microsoft.Extensions.Logging;
 using Sinch.Conversation;
+using Sinch.Fax;
 using Sinch.SMS;
 
 namespace Sinch
@@ -36,6 +37,11 @@ namespace Sinch
         ///     Defaults to "us"
         /// </summary>
         public ConversationRegion ConversationRegion { get; set; } = ConversationRegion.Us;
+
+        /// <summary>
+        ///     Set's the regions for the Fax api.
+        /// </summary>
+        public FaxRegion? FaxRegion { get; set; }
 
         /// <inheritdoc cref="ApiUrlOverrides"/>
         public ApiUrlOverrides? ApiUrlOverrides { get; set; }
@@ -131,5 +137,10 @@ namespace Sinch
         ///     Overrides Numbers api base url
         /// </summary>
         public string? NumbersUrl { get; init; }
+        
+        /// <summary>
+        ///     Overrides Fax api base url
+        /// </summary>
+        public string? FaxUrl { get; init; }
     }
 }

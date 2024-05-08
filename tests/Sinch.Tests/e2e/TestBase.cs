@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using DotNetEnv;
 
 namespace Sinch.Tests.e2e
@@ -41,6 +41,7 @@ namespace Sinch.Tests.e2e
                     VerificationUrl = GetTestUrl("MOCK_VERIFICATION_PORT"),
                     // templates treated as conversation api in doppelganger 
                     TemplatesUrl = GetTestUrl("MOCK_CONVERSATION_PORT"),
+                    FaxUrl = GetTestUrl("MOCK_FAX_PORT"),
                 };
             });
         }

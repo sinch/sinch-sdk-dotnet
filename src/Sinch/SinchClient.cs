@@ -121,6 +121,7 @@ namespace Sinch
         private const string SmsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
         private const string SmsApiServicePlanIdUrlTemplate = "https://{0}.sms.api.sinch.com";
         private const string FaxApiUrl = "https://fax.api.sinch.com/";
+        private const string FaxApiUrlTemplate = "https://{0}.fax.api.sinch.com/";
         private const string ConversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
         private const string VoiceApiUrlTemplate = "https://{0}.api.sinch.com/";
         private const string AuthApiUrl = "https://auth.sinch.com";
@@ -199,9 +200,26 @@ namespace Sinch
             _conversation = new SinchConversationClient(_projectId!, conversationBaseAddress
                 , templatesBaseAddress,
                 _loggerFactory, httpSnakeCaseOAuth);
-            _fax = new Fax.Fax(projectId!, new Uri(FaxApiUrl), _loggerFactory, httpCamelCase);
+
+            var faxUrl = ResolveFaxUrl(optionsObj?.FaxRegion);
+            _fax = new Fax.Fax(projectId!, faxUrl, _loggerFactory, httpCamelCase);
 
             _logger?.LogInformation("SinchClient initialized.");
+        }
+
+        private Uri ResolveFaxUrl(FaxRegion? faxRegion)
+        {
+            if (!string.IsNullOrEmpty(_apiUrlOverrides?.FaxUrl))
+            {
+                return new Uri(_apiUrlOverrides.FaxUrl);
+            }
+
+            if (!string.IsNullOrEmpty(faxRegion?.Value))
+            {
+                return new Uri(string.Format(FaxApiUrlTemplate, faxRegion.Value));
+            }
+
+            return new Uri(FaxApiUrl);
         }
 
         /// <inheritdoc />
