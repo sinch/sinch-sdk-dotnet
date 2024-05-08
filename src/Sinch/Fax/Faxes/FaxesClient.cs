@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Core;
@@ -19,6 +21,9 @@ namespace Sinch.Fax.Faxes
         public Task<Fax> Send(CreateFaxRequest request, CancellationToken cancellationToken = default);
 
         Task<ListFaxResponse> List(ListFaxesRequest listFaxesRequest, CancellationToken cancellationToken = default);
+
+        IAsyncEnumerable<Fax> ListAuto(ListFaxesRequest listFaxesRequest,
+            CancellationToken cancellationToken = default);
     }
 
     internal sealed class FaxesClient : ISinchFaxFaxes
@@ -60,10 +65,26 @@ namespace Sinch.Fax.Faxes
             _loggerAdapter?.LogInformation("Fetching a list of faxes");
             var uriBuilder = new UriBuilder(_uri.ToString())
             {
-                Query =listFaxesRequest.ToQueryString()
+                Query = listFaxesRequest.ToQueryString()
             };
 
             return await _http.Send<ListFaxResponse>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
+        }
+
+        public async IAsyncEnumerable<Fax> ListAuto(ListFaxesRequest listFaxesRequest,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            _loggerAdapter?.LogDebug("Auto Listing faxes");
+
+            var response = await List(listFaxesRequest, cancellationToken);
+            while (!Utils.IsLastPage(response.PageNumber, response.PageSize, response.TotalItems))
+            {
+                if (response.Faxes != null)
+                    foreach (var contact in response.Faxes)
+                        yield return contact;
+                listFaxesRequest.Page = (response.PageNumber + 1).ToString();
+                response = await List(listFaxesRequest, cancellationToken);
+            }
         }
 
         public async Task<Fax> GetAsync(string faxId)
