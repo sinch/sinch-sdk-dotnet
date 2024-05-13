@@ -16,7 +16,7 @@ namespace Sinch
         {
             Details = new List<JsonNode>();
         }
-
+        
         internal SinchApiException(HttpStatusCode statusCode, string? message, Exception? inner,
             ApiErrorResponse? authApiError)
             : this($"{message}:{authApiError?.Error?.Message ?? authApiError?.Text}", inner, statusCode)
@@ -25,15 +25,15 @@ namespace Sinch
             // there can be nested error object or simple { text: "", code: "code" } not nested object with api errors
             // nested object takes precedence in fields population
             var details = authApiError?.Error;
-            Status = details?.Status ?? authApiError?.Code;
+            Status = details?.Status ?? authApiError?.Code?.ToString();
             DetailedMessage = details?.Message ?? authApiError?.Text;
             Details = details?.Details ?? new List<JsonNode>();
         }
-
+        
         public string? DetailedMessage { get; init; }
-
+        
         public string? Status { get; init; }
-
+        
         public List<JsonNode> Details { get; init; }
     }
 }

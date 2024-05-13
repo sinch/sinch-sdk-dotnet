@@ -15,6 +15,7 @@ namespace Sinch.Fax.Faxes
         ///     The id of a fax
         /// </summary>
         [JsonPropertyName("id")]
+        [JsonInclude]
         public string? Id { get; private set; }
 
         /// <summary>
@@ -47,6 +48,7 @@ namespace Sinch.Fax.Faxes
         ///     The number of pages in the fax.
         /// </summary>
         [JsonPropertyName("numberOfPages")]
+        [JsonInclude]
         public int NumberOfPages { get; private set; }
 
         /// <summary>
@@ -65,18 +67,21 @@ namespace Sinch.Fax.Faxes
         ///     The bar codes found in the fax. This field is populated when sinch detects bar codes on incoming faxes.
         /// </summary>
         [JsonPropertyName("barCodes")]
+        [JsonInclude]
         public List<Barcode>? BarCodes { get; private set; }
 
         /// <summary>
         ///     A timestamp representing the time when the initial API call was made.
         /// </summary>
         [JsonPropertyName("createTime")]
+        [JsonInclude]
         public DateTime CreateTime { get; private set; }
 
         /// <summary>
         ///     If the job is complete, this is a timestamp representing the time the job was completed.
         /// </summary>
         [JsonPropertyName("completedTime")]
+        [JsonInclude]
         public DateTime CompletedTime { get; private set; }
 
         /// <summary>
@@ -139,24 +144,28 @@ namespace Sinch.Fax.Faxes
         ///     One of the error numbers listed in the [Fax Error Messages section](#FaxErrors).
         /// </summary>
         [JsonPropertyName("errorId")]
+        [JsonInclude]
         public int ErrorId { get; private set; }
 
         /// <summary>
         ///     One of the error codes listed in the [Fax Error Messages section](#FaxErrors).
         /// </summary>
         [JsonPropertyName("errorCode")]
+        [JsonInclude]
         public string? ErrorCode { get; private set; }
 
         /// <summary>
         ///     The &#x60;Id&#x60; of the project associated with the call.
         /// </summary>
         [JsonPropertyName("projectId")]
+        [JsonInclude]
         public string? ProjectId { get; private set; }
 
         /// <summary>
         ///     ID of the fax service used.
         /// </summary>
         [JsonPropertyName("serviceId")]
+        [JsonInclude]
         public string? ServiceId { get; private set; }
 
         /// <summary>
@@ -169,12 +178,14 @@ namespace Sinch.Fax.Faxes
         ///     The number of times the fax has been retried.
         /// </summary>
         [JsonPropertyName("retryCount")]
+        [JsonInclude]
         public int? RetryCount { get; private set; }
 
         /// <summary>
         ///     Only shown on the fax result. This indicates if the content of the fax is stored with Sinch. (true or false)
         /// </summary>
         [JsonPropertyName("hasFile")]
+        [JsonInclude]
         public bool? HasFile { get; private set; }
 
         /// <summary>

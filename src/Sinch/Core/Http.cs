@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -14,6 +15,7 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Auth;
+using Sinch.Fax.Faxes;
 using Sinch.Logger;
 
 namespace Sinch.Core
@@ -89,23 +91,58 @@ namespace Sinch.Core
         {
             var content = new MultipartFormDataContent();
             var props = request!.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public |
-                                                         BindingFlags.DeclaredOnly);
+                                                         BindingFlags.DeclaredOnly)
+                .Where(DoesntHaveJsonIgnoreAttribute).Where(x => x.GetValue(request) != null);
             foreach (var prop in props)
             {
                 var value = prop.GetValue(request);
-                if (value != null)
+                if (value == null)
                 {
-                    var stringValue = value.ToString();
-                    if (stringValue != null)
+                    continue;
+                }
+                
+                var type = value.GetType();
+                if (type == typeof(List<string>))
+                {
+                    var asString = string.Join(',', (value as List<string>)!);
+                    content.Add(new StringContent(asString), prop.Name);
+                }
+                
+                if (type == typeof(Dictionary<string, string>))
+                {
+                    foreach (var (key, val) in (value as Dictionary<string, string>)!)
                     {
-                        content.Add(new StringContent(stringValue), prop.Name);
+                        content.Add(new StringContent(val), $"{prop.Name}[{key}]");
+                    }
+                }
+                else
+                {
+                    var str = value.ToString();
+                    if (!string.IsNullOrEmpty(str))
+                    {
+                        content.Add(new StringContent(str), prop.Name);
                     }
                 }
             }
             
             stream.Position = 0;
-            content.Add(new StreamContent(stream), "file", fileName);
+            var isContentType = new FileExtensionContentTypeProvider().TryGetContentType(fileName, out var contentType);
+            var streamContent = new StreamContent(stream)
+            {
+                Headers =
+                {
+                    ContentType = isContentType ? new MediaTypeHeaderValue(contentType!) : null
+                }
+            };
+            content.Add(streamContent, "file", fileName);
+            
+            
             return SendHttpContent<TResponse>(uri, HttpMethod.Post, content, cancellationToken);
+            
+            bool DoesntHaveJsonIgnoreAttribute(PropertyInfo prop)
+            {
+                return !prop.GetCustomAttributes(typeof(JsonIgnoreAttribute)).Any();
+            }
         }
         
         public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
@@ -189,7 +226,9 @@ namespace Sinch.Core
 #if DEBUG
                 try
                 {
-                    using var jDoc = JsonDocument.Parse(await result.Content.ReadAsStringAsync(cancellationToken));
+                    var responseStr = await result.Content.ReadAsStringAsync(cancellationToken);
+                    Debug.WriteLine($"Response string: {responseStr}");
+                    using var jDoc = JsonDocument.Parse(responseStr);
                     Debug.WriteLine(
                         $"Response content: {JsonSerializer.Serialize(jDoc, new JsonSerializerOptions() { WriteIndented = true })}");
                 }

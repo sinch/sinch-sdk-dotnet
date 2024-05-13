@@ -417,7 +417,7 @@ namespace Sinch.Fax.Faxes
             return Mappings.TryGetValue(extension, out contentType);
         }
 
-        internal static string? GetExtension(string path)
+        private static string? GetExtension(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
             {

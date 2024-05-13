@@ -18,7 +18,7 @@ namespace Sinch.Fax.Faxes
     /// </summary>
     public interface ISinchFaxFaxes
     {
-        public Task<Fax> Send(CreateFaxRequest request, CancellationToken cancellationToken = default);
+        public Task<Fax> Send(SendFaxRequest request, CancellationToken cancellationToken = default);
 
         Task<ListFaxResponse> List(ListFaxesRequest listFaxesRequest, CancellationToken cancellationToken = default);
 
@@ -39,19 +39,19 @@ namespace Sinch.Fax.Faxes
             _uri = new Uri(uri, $"/v3/projects/{projectId}/faxes");
         }
 
-        public Task<Fax> Send(CreateFaxRequest request, CancellationToken cancellationToken = default)
+        public Task<Fax> Send(SendFaxRequest request, CancellationToken cancellationToken = default)
         {
             if (request.FileContent is not null)
             {
-                _loggerAdapter?.LogInformation("Sending a fax with file content...");
-                return _http.SendMultipart<CreateFaxRequest, Fax>(_uri, request, request.FileContent,
+                _loggerAdapter?.LogInformation("Sending fax with file content...");
+                return _http.SendMultipart<SendFaxRequest, Fax>(_uri, request, request.FileContent,
                     request.FileName!, cancellationToken: cancellationToken);
             }
 
             if (request.ContentUrl?.Any() == true)
             {
-                _loggerAdapter?.LogInformation("Sending a fax with content urls...");
-                return _http.Send<CreateFaxRequest, Fax>(_uri, HttpMethod.Post, request,
+                _loggerAdapter?.LogInformation("Sending fax with content urls...");
+                return _http.Send<SendFaxRequest, Fax>(_uri, HttpMethod.Post, request,
                     cancellationToken: cancellationToken);
             }
 

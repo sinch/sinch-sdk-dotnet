@@ -10,9 +10,12 @@ namespace Sinch.Fax.Faxes
     [JsonConverter(typeof(EnumRecordJsonConverter<ImageConversionMethod>))]
     public record ImageConversionMethod(string Value) : EnumRecord(Value)
     {
-
         public static readonly ImageConversionMethod Halftone = new("HALFTONE");
         public static readonly ImageConversionMethod Monochrome = new("MONOCHROME");
+        
+        public override string ToString()
+        {
+            return Value;
+        }
     }
-
 }
