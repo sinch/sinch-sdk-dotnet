@@ -128,12 +128,14 @@ namespace Sinch.Tests
                 .BeEquivalentTo("669E367E-6BBA-48AB-AF15-266871C28135:h6rXrFayOoggyHW4ymnLlfSDkZZPg6j98lHzvOXVjvw=");
         }
 
-        [Fact]
-        public void AppSignatureWithEmptyBody()
+        [Theory]
+        [InlineData(new byte[0])]
+        [InlineData(null)]
+        public void AppSignatureWithEmptyBody(byte[] data)
         {
             var auth = new ApplicationSignedAuth("669E367E-6BBA-48AB-AF15-266871C28135", "BeIukql3pTKJ8RGL5zo0DA==");
 
-            var result = auth.GetSignedAuth(null, "POST", "/verification/v1/verifications",
+            var result = auth.GetSignedAuth(data, "POST", "/verification/v1/verifications",
                 "x-timestamp:2014-06-04T13:41:58Z",
                 "application/json");
 

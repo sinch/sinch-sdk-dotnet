@@ -120,7 +120,11 @@ namespace Sinch
         private const string SmsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
         private const string SmsApiServicePlanIdUrlTemplate = "https://{0}.sms.api.sinch.com";
         private const string ConversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
+
         private const string VoiceApiUrlTemplate = "https://{0}.api.sinch.com/";
+
+        // apparently, management api for applications have a different set url
+        private const string VoiceApiApplicationManagementUrl = "https://callingapi.sinch.com/";
         private const string AuthApiUrl = "https://auth.sinch.com";
         private const string TemplatesApiUrlTemplate = "https://{0}.template.api.sinch.com/";
 
@@ -281,7 +285,8 @@ namespace Sinch
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
             return new SinchVoiceClient(
                 new Uri(_apiUrlOverrides?.VoiceUrl ?? string.Format(VoiceApiUrlTemplate, voiceRegion.Value)),
-                _loggerFactory, http, (auth as ApplicationSignedAuth)!);
+                _loggerFactory, http, (auth as ApplicationSignedAuth)!,
+                new Uri(_apiUrlOverrides?.VoiceUrl ?? VoiceApiApplicationManagementUrl));
         }
 
         private void ValidateCommonCredentials()

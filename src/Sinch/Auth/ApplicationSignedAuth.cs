@@ -38,7 +38,7 @@ namespace Sinch.Auth
         public Task<string> GetAuthToken(bool force = false)
         {
             var encodedBody = string.Empty;
-            if (_jsonBodyInBytes is not null)
+            if (_jsonBodyInBytes is not null && _jsonBodyInBytes.Length > 0)
             {
                 var md5Bytes = MD5.HashData(_jsonBodyInBytes);
                 encodedBody = Convert.ToBase64String(md5Bytes);
