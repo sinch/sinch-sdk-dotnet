@@ -57,14 +57,15 @@ namespace Sinch.Voice
         private readonly ILoggerAdapter<ISinchVoiceClient>? _logger;
 
         public SinchVoiceClient(Uri baseAddress, LoggerFactory? loggerFactory,
-            IHttp http, ApplicationSignedAuth applicationSignedAuth)
+            IHttp http, ApplicationSignedAuth applicationSignedAuth, Uri applicationManagementBaseAddress)
         {
             _applicationSignedAuth = applicationSignedAuth;
             _logger = loggerFactory?.Create<ISinchVoiceClient>();
             Callouts = new SinchCallout(loggerFactory?.Create<ISinchVoiceCallout>(), baseAddress, http);
             Calls = new SinchCalls(loggerFactory?.Create<ISinchVoiceCalls>(), baseAddress, http);
             Conferences = new SinchConferences(loggerFactory?.Create<ISinchVoiceConferences>(), baseAddress, http);
-            Applications = new SinchApplications(loggerFactory?.Create<ISinchVoiceApplications>(), baseAddress, http);
+            Applications = new SinchApplications(loggerFactory?.Create<ISinchVoiceApplications>(),
+                applicationManagementBaseAddress, http);
         }
 
         /// <inheritdoc />
