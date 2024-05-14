@@ -13,7 +13,7 @@ namespace Sinch.Fax.Faxes
         /// The fax was received on one of your sinch numbers.
         /// </summary>
         public static readonly Direction Inbound = new("INBOUND");
-        
+
         /// <summary>
         /// The fax was sent by you via the api.
         /// </summary>

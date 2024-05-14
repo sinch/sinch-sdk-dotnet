@@ -107,7 +107,7 @@ namespace Sinch.Fax.Faxes
         /// </summary>
         [JsonPropertyName("retryDelaySeconds")]
         public int? RetryDelaySeconds { get; set; }
-        
+
         public int CancelTimeoutMinutes { get; set; }
 
         /// <summary>
@@ -237,5 +237,10 @@ namespace Sinch.Fax.Faxes
     {
         public static readonly CallbackContentType MultipartFormData = new("multipart/form-data");
         public static readonly CallbackContentType ApplicationJson = new("application/json");
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
     }
 }

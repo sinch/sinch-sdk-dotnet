@@ -137,7 +137,7 @@ namespace Sinch
         ///     Overrides Numbers api base url
         /// </summary>
         public string? NumbersUrl { get; init; }
-        
+
         /// <summary>
         ///     Overrides Fax api base url
         /// </summary>

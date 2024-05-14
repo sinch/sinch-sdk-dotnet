@@ -16,7 +16,7 @@ namespace Sinch
         {
             Details = new List<JsonNode>();
         }
-        
+
         internal SinchApiException(HttpStatusCode statusCode, string? message, Exception? inner,
             ApiErrorResponse? authApiError)
             : this($"{message}:{authApiError?.Error?.Message ?? authApiError?.Text}", inner, statusCode)
@@ -29,11 +29,20 @@ namespace Sinch
             DetailedMessage = details?.Message ?? authApiError?.Text;
             Details = details?.Details ?? new List<JsonNode>();
         }
-        
+
+        internal SinchApiException(HttpStatusCode statusCode, string? message, Exception? inner,
+            ApiError? apiError)
+            : this($"{message}:{apiError?.Message}", inner, statusCode)
+        {
+            Status = apiError?.Status;
+            DetailedMessage = apiError?.Message;
+            Details = apiError?.Details ?? new List<JsonNode>();
+        }
+
         public string? DetailedMessage { get; init; }
-        
+
         public string? Status { get; init; }
-        
+
         public List<JsonNode> Details { get; init; }
     }
 }

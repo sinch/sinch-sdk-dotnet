@@ -12,10 +12,10 @@ namespace Sinch.Fax.Faxes
     {
         public static readonly ImageConversionMethod Halftone = new("HALFTONE");
         public static readonly ImageConversionMethod Monochrome = new("MONOCHROME");
-        
+
         public override string ToString()
         {
-            return Value;
+            return base.ToString();
         }
     }
 }

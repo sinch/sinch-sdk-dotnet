@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using DotNetEnv;
 
 namespace Sinch.Tests.e2e

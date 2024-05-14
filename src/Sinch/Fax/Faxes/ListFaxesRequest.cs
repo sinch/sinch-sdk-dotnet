@@ -96,7 +96,7 @@ namespace Sinch.Fax.Faxes
             }
 
             return StringUtils.ToQueryString(queryString);
-            
+
         }
     }
 }
