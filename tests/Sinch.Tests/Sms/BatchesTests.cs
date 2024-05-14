@@ -41,7 +41,7 @@ namespace Sinch.Tests.Sms
             from_npi = 18,
             udh = "udh_"
         };
-
+        
         [Fact]
         public async Task SendTextBatch()
         {

@@ -33,8 +33,4 @@
       </None>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="e2e\Fax\" />
-    </ItemGroup>
-
 </Project>

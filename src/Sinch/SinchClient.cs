@@ -24,7 +24,7 @@ namespace Sinch
         ///     </see>
         /// </summary>
         public ISinchAuth Auth { get; }
-
+        
         /// <summary>
         ///     The Numbers API enables you to search for, view, and activate numbers.
         ///     It's considered a precursor to other APIs in the Sinch product family.
@@ -43,7 +43,7 @@ namespace Sinch
         ///     </see>
         /// </summary>
         public ISinchNumbers Numbers { get; }
-
+        
         /// <summary>
         ///     Send and receive SMS through a single connection for timely and cost-efficient communications using
         ///     the Sinch SMS API.<br /><br />
@@ -52,7 +52,7 @@ namespace Sinch
         ///     </see>
         /// </summary>
         public ISinchSms Sms { get; }
-
+        
         /// <summary>
         ///     Send and receive messages globally over SMS, RCS, WhatsApp, Viber Business,
         ///     Facebook messenger and other popular channels using the Sinch Conversation API.<br /><br />
@@ -61,7 +61,9 @@ namespace Sinch
         ///     <see href="https://developers.sinch.com/docs/conversation/api-reference/">Learn more.</see>
         /// </summary>
         public ISinchConversation Conversation { get; }
-
+        
+        public ISinchFax Fax { get; }
+        
         /// <summary>
         ///     Verify users with SMS, flash calls (missed calls), a regular call, or data verification.
         ///     This document serves as a user guide and documentation on how to use the Sinch Verification REST APIs.
@@ -96,7 +98,7 @@ namespace Sinch
         /// <returns></returns>
         public ISinchVerificationClient Verification(string appKey, string appSecret,
             AuthStrategy authStrategy = AuthStrategy.ApplicationSign);
-
+        
         /// <summary>
         ///     When using Sinch for voice calling, the Sinch dashboard works as a big telephony switch.
         ///     The dashboard handles incoming phone calls (also known as incoming call “legs”),
@@ -113,7 +115,7 @@ namespace Sinch
         /// <returns></returns>
         public ISinchVoiceClient Voice(string appKey, string appSecret, VoiceRegion? voiceRegion = null);
     }
-
+    
     public class SinchClient : ISinchClient
     {
         private const string VerificationApiUrl = "https://verification.api.sinch.com/";
@@ -126,23 +128,23 @@ namespace Sinch
         private const string VoiceApiUrlTemplate = "https://{0}.api.sinch.com/";
         private const string AuthApiUrl = "https://auth.sinch.com";
         private const string TemplatesApiUrlTemplate = "https://{0}.template.api.sinch.com/";
-
+        
         private readonly ApiUrlOverrides? _apiUrlOverrides;
         private readonly ISinchAuth _auth;
         private readonly ISinchConversation _conversation;
         private readonly HttpClient _httpClient;
-
+        
         private readonly string? _keyId;
         private readonly string? _keySecret;
         private readonly string? _projectId;
-
+        
         private readonly LoggerFactory? _loggerFactory;
-
+        
         private readonly ISinchNumbers _numbers;
         private readonly ISinchSms _sms;
         private readonly ILoggerAdapter<ISinchClient>? _logger;
         private readonly ISinchFax _fax;
-
+        
         /// <summary>
         ///     Initialize a new <see cref="SinchClient" />
         /// </summary>
@@ -157,25 +159,25 @@ namespace Sinch
             _projectId = projectId;
             _keyId = keyId;
             _keySecret = keySecret;
-
+            
             var optionsObj = new SinchOptions();
             options?.Invoke(optionsObj);
-
+            
             if (optionsObj.LoggerFactory is not null) _loggerFactory = new LoggerFactory(optionsObj.LoggerFactory);
             _logger = _loggerFactory?.Create<ISinchClient>();
             _logger?.LogInformation("Initializing SinchClient...");
-
-
+            
+            
             if (string.IsNullOrEmpty(projectId)) _logger?.LogWarning($"{nameof(projectId)} is not set!");
-
+            
             if (string.IsNullOrEmpty(keyId)) _logger?.LogWarning($"{nameof(keyId)} is not set!");
-
+            
             if (string.IsNullOrEmpty(keySecret)) _logger?.LogWarning($"{nameof(keySecret)} is not set!");
-
+            
             _httpClient = optionsObj.HttpClient ?? new HttpClient();
-
+            
             _apiUrlOverrides = optionsObj.ApiUrlOverrides;
-
+            
             ISinchAuth auth =
                 // exception is throw when trying to get OAuth or Oauth dependant clients if credentials are missing
                 new OAuth(_keyId!, _keySecret!, _httpClient, _loggerFactory?.Create<OAuth>(),
@@ -185,12 +187,12 @@ namespace Sinch
                 JsonNamingPolicy.CamelCase);
             var httpSnakeCaseOAuth = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(),
                 SnakeCaseNamingPolicy.Instance);
-
+            
             _numbers = new Numbers.Numbers(_projectId!, new Uri(_apiUrlOverrides?.NumbersUrl ?? NumbersApiUrl),
                 _loggerFactory, httpCamelCase);
-
+            
             _sms = InitSms(optionsObj, httpSnakeCaseOAuth);
-
+            
             var conversationBaseAddress = new Uri(_apiUrlOverrides?.ConversationUrl ??
                                                   string.Format(ConversationApiUrlTemplate,
                                                       optionsObj.ConversationRegion.Value));
@@ -200,28 +202,28 @@ namespace Sinch
             _conversation = new SinchConversationClient(_projectId!, conversationBaseAddress
                 , templatesBaseAddress,
                 _loggerFactory, httpSnakeCaseOAuth);
-
+            
             var faxUrl = ResolveFaxUrl(optionsObj.FaxRegion);
             _fax = new FaxClient(projectId!, faxUrl, _loggerFactory, httpCamelCase);
-
+            
             _logger?.LogInformation("SinchClient initialized.");
         }
-
+        
         private Uri ResolveFaxUrl(FaxRegion? faxRegion)
         {
             if (!string.IsNullOrEmpty(_apiUrlOverrides?.FaxUrl))
             {
                 return new Uri(_apiUrlOverrides.FaxUrl);
             }
-
+            
             if (!string.IsNullOrEmpty(faxRegion?.Value))
             {
                 return new Uri(string.Format(FaxApiUrlTemplate, faxRegion.Value));
             }
-
+            
             return new Uri(FaxApiUrl);
         }
-
+        
         /// <inheritdoc />
         public ISinchNumbers Numbers
         {
@@ -231,7 +233,7 @@ namespace Sinch
                 return _numbers;
             }
         }
-
+        
         /// <inheritdoc />
         public ISinchSms Sms
         {
@@ -242,7 +244,7 @@ namespace Sinch
                 return _sms;
             }
         }
-
+        
         /// <inheritdoc />
         public ISinchConversation Conversation
         {
@@ -252,8 +254,8 @@ namespace Sinch
                 return _conversation;
             }
         }
-
-
+        
+        
         /// <inheritdoc />
         public ISinchAuth Auth
         {
@@ -263,7 +265,7 @@ namespace Sinch
                 return _auth;
             }
         }
-
+        
         /// <inheritdoc cref="ISinchFax"/>
         public ISinchFax Fax
         {
@@ -273,63 +275,63 @@ namespace Sinch
                 return _fax;
             }
         }
-
+        
         /// <inheritdoc/>
         public ISinchVerificationClient Verification(string appKey, string appSecret,
             AuthStrategy authStrategy = AuthStrategy.ApplicationSign)
         {
             if (string.IsNullOrEmpty(appKey))
                 throw new ArgumentNullException(nameof(appKey), "The value should be present");
-
+            
             if (string.IsNullOrEmpty(appSecret))
                 throw new ArgumentNullException(nameof(appSecret), "The value should be present");
-
+            
             ISinchAuth auth;
             if (authStrategy == AuthStrategy.ApplicationSign)
                 auth = new ApplicationSignedAuth(appKey, appSecret);
             else
                 auth = new BasicAuth(appKey, appSecret);
-
+            
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
             return new SinchVerificationClient(new Uri(_apiUrlOverrides?.VerificationUrl ?? VerificationApiUrl),
                 _loggerFactory, http);
         }
-
+        
         /// <inheritdoc />
         public ISinchVoiceClient Voice(string appKey, string appSecret,
             VoiceRegion? voiceRegion = default)
         {
             if (string.IsNullOrEmpty(appKey))
                 throw new ArgumentNullException(nameof(appKey), "The value should be present");
-
+            
             if (string.IsNullOrEmpty(appSecret))
                 throw new ArgumentNullException(nameof(appSecret), "The value should be present");
-
+            
             ISinchAuth auth = new ApplicationSignedAuth(appKey, appSecret);
-
+            
             voiceRegion ??= VoiceRegion.Global;
-
+            
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
             return new SinchVoiceClient(
                 new Uri(_apiUrlOverrides?.VoiceUrl ?? string.Format(VoiceApiUrlTemplate, voiceRegion.Value)),
                 _loggerFactory, http, (auth as ApplicationSignedAuth)!);
         }
-
+        
         private void ValidateCommonCredentials()
         {
             var exceptions = new List<Exception>();
             if (string.IsNullOrEmpty(_keyId))
                 exceptions.Add(new InvalidOperationException("keyId should have a value"));
-
+            
             if (string.IsNullOrEmpty(_projectId))
                 exceptions.Add(new InvalidOperationException("projectId should have a value"));
-
+            
             if (string.IsNullOrEmpty(_keySecret))
                 exceptions.Add(new InvalidOperationException("keySecret should have a value"));
-
+            
             if (exceptions.Any()) throw new AggregateException("Credentials are missing", exceptions);
         }
-
+        
         private SmsClient InitSms(SinchOptions optionsObj, IHttp httpSnakeCase)
         {
             if (optionsObj.ServicePlanIdOptions != null)
@@ -345,10 +347,10 @@ namespace Sinch
                         _apiUrlOverrides?.SmsUrl),
                     _loggerFactory, bearerSnakeHttp);
             }
-
+            
             _logger?.LogInformation("Initializing SMS client with {project_id} in {region}", _projectId,
                 optionsObj.SmsRegion.Value);
-
+            
             return new SmsClient(
                 new ProjectId(
                     _projectId!), // exception is throw when trying to get SMS client property if _projectId is null
@@ -356,20 +358,20 @@ namespace Sinch
                 _loggerFactory,
                 httpSnakeCase);
         }
-
+        
         private static Uri BuildServicePlanIdSmsBaseAddress(SmsServicePlanIdRegion smsServicePlanIdRegion,
             string? smsUrlOverride)
         {
             if (!string.IsNullOrEmpty(smsUrlOverride)) return new Uri(smsUrlOverride);
-
+            
             return new Uri(string.Format(SmsApiServicePlanIdUrlTemplate,
                 smsServicePlanIdRegion.Value.ToLowerInvariant()));
         }
-
+        
         private static Uri BuildSmsBaseAddress(SmsRegion smsRegion, string? smsUrlOverride)
         {
             if (!string.IsNullOrEmpty(smsUrlOverride)) return new Uri(smsUrlOverride);
-
+            
             // General SMS rest api uses service_plan_id to performs calls
             // But SDK is based on single-account model which uses project_id
             // Thus, baseAddress for sms api is using a special endpoint where service_plan_id is replaced with projectId
