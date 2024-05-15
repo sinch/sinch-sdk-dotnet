@@ -103,7 +103,8 @@ namespace Sinch.Fax.Faxes
         [JsonPropertyName("retryDelaySeconds")]
         public int? RetryDelaySeconds { get; set; }
         
-        public int CancelTimeoutMinutes { get; set; }
+        [JsonPropertyName("cancelTimeoutMinutes")]
+        public int? CancelTimeoutMinutes { get; set; }
         
         /// <summary>
         ///     You can use this to attach labels to your call that you can use in your applications. It is a key value store.
@@ -145,7 +146,7 @@ namespace Sinch.Fax.Faxes
         ///     One of the error codes listed in the [Fax Error Messages section](#FaxErrors).
         /// </summary>
         [JsonPropertyName("errorCode")]
-        public string? ErrorCode { get; set; }
+        public int? ErrorCode { get; set; }
         
         /// <summary>
         ///     The &#x60;Id&#x60; of the project associated with the call.
