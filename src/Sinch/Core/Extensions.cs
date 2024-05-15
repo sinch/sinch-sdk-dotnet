@@ -46,5 +46,10 @@ namespace Sinch.Core
         {
             return httpResponseMessage.Content.Headers.ContentType?.MediaType == "application/json";
         }
+
+        public static bool IsPdf(this HttpResponseMessage httpResponseMessage)
+        {
+            return httpResponseMessage.Content.Headers.ContentType?.MediaType == "application/pdf";
+        }
     }
 }

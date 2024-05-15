@@ -243,6 +243,17 @@ namespace Sinch.Core
                 }
 #endif
 
+                if (result.IsPdf())
+                {
+                    if (typeof(TResponse) != typeof(Stream))
+                    {
+                        throw new InvalidOperationException(
+                            "Received pdf, but expected response type is not a Stream.");
+                    }
+
+                    return (TResponse)(object)await result.Content.ReadAsStreamAsync(cancellationToken);
+                }
+
                 if (result.IsJson())
                     return await result.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken,
                                options: _jsonSerializerOptions)

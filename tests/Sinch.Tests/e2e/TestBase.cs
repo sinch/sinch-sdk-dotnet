@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using DotNetEnv;
 
 namespace Sinch.Tests.e2e
@@ -9,12 +9,12 @@ namespace Sinch.Tests.e2e
         ///     It's the same value as in doppleganger common.defaultProjectId, so it's shared and common. 
         /// </summary>
         protected const string ProjectId = "e15b2651-daac-4ccb-92e8-e3066d1d033b";
-        
+
         protected readonly ISinchClient SinchClientMockStudio;
-        
+
         // MockStudio should be removed and all contract testing should go to mock server version
         protected readonly ISinchClient SinchClientMockServer;
-        
+
         protected TestBase()
         {
             Env.Load();
@@ -28,7 +28,7 @@ namespace Sinch.Tests.e2e
                         SmsUrl = "http://localhost:8002"
                     };
                 });
-            
+
             SinchClientMockServer = new SinchClient(ProjectId, "key_id", "key_secret", options =>
             {
                 options.ApiUrlOverrides = new ApiUrlOverrides()
@@ -45,7 +45,7 @@ namespace Sinch.Tests.e2e
                 };
             });
         }
-        
+
         private string GetTestUrl(string portEnvVar) =>
             $"http://localhost:{Environment.GetEnvironmentVariable(portEnvVar)}";
     }

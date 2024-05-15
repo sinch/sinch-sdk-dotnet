@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using FluentAssertions;
 using Sinch.Core;
 using Xunit;
@@ -16,7 +16,7 @@ namespace Sinch.Tests
         {
             StringUtils.PascalToCamelCase(input).Should().BeEquivalentTo(output);
         }
-        
+
         [Theory]
         [InlineData("")]
         [InlineData(null)]

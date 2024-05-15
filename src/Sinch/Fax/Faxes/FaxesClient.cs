@@ -28,7 +28,7 @@ namespace Sinch.Fax.Faxes
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public Task<Fax> Send(SendFaxRequest request, CancellationToken cancellationToken = default);
-        
+
         /// <summary>
         ///     List faxes sent (OUTBOUND) or received (INBOUND), set parameters to filter the list. 
         /// </summary>
@@ -36,10 +36,10 @@ namespace Sinch.Fax.Faxes
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<ListFaxResponse> List(ListFaxesRequest listFaxesRequest, CancellationToken cancellationToken = default);
-        
+
         IAsyncEnumerable<Fax> ListAuto(ListFaxesRequest listFaxesRequest,
             CancellationToken cancellationToken = default);
-        
+
         /// <summary>
         ///     Get fax information using the ID number of the fax.
         /// </summary>
@@ -47,21 +47,37 @@ namespace Sinch.Fax.Faxes
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<Fax> Get(string id, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Delete the fax content for a fax using the ID number of the fax. Please note that this only deletes the content of the fax from storage.
+        /// </summary>
+        /// <param name="id">The ID of the fax.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Successful task if response is 204.</returns>
+        Task Delete(string id, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Download the fax content. Currently, supports only pdf.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<Stream> DownloadContent(string id, CancellationToken cancellationToken = default);
     }
-    
+
     internal sealed class FaxesClient : ISinchFaxFaxes
     {
         private readonly Uri _uri;
         private readonly IHttp _http;
         private readonly ILoggerAdapter<ISinchFaxFaxes>? _loggerAdapter;
-        
+
         internal FaxesClient(string projectId, Uri uri, ILoggerAdapter<ISinchFaxFaxes>? loggerAdapter, IHttp httpClient)
         {
             _loggerAdapter = loggerAdapter;
             _http = httpClient;
             _uri = new Uri(uri, $"/v3/projects/{projectId}/faxes");
         }
-        
+
         public Task<Fax> Send(SendFaxRequest request, CancellationToken cancellationToken = default)
         {
             if (request.FileContent is not null)
@@ -70,18 +86,18 @@ namespace Sinch.Fax.Faxes
                 return _http.SendMultipart<SendFaxRequest, Fax>(_uri, request, request.FileContent,
                     request.FileName!, cancellationToken: cancellationToken);
             }
-            
+
             if (request.ContentUrl?.Any() == true)
             {
                 _loggerAdapter?.LogInformation("Sending fax with content urls...");
                 return _http.Send<SendFaxRequest, Fax>(_uri, HttpMethod.Post, request,
                     cancellationToken: cancellationToken);
             }
-            
+
             throw new InvalidOperationException(
                 "Neither content urls or file content provided for a create fax request.");
         }
-        
+
         public async Task<ListFaxResponse> List(ListFaxesRequest listFaxesRequest,
             CancellationToken cancellationToken = default)
         {
@@ -90,15 +106,15 @@ namespace Sinch.Fax.Faxes
             {
                 Query = listFaxesRequest.ToQueryString()
             };
-            
+
             return await _http.Send<ListFaxResponse>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
-        
+
         public async IAsyncEnumerable<Fax> ListAuto(ListFaxesRequest listFaxesRequest,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _loggerAdapter?.LogDebug("Auto Listing faxes");
-            
+
             var response = await List(listFaxesRequest, cancellationToken);
             while (!Utils.IsLastPage(response.PageNumber, response.PageSize, response.TotalItems))
             {
@@ -109,7 +125,7 @@ namespace Sinch.Fax.Faxes
                 response = await List(listFaxesRequest, cancellationToken);
             }
         }
-        
+
         /// <inheritdoc />
         public Task<Fax> Get(string id, CancellationToken cancellationToken = default)
         {
@@ -117,19 +133,45 @@ namespace Sinch.Fax.Faxes
             {
                 throw new ArgumentNullException(nameof(id), "Fax id should have a value.");
             }
-            
+
             _loggerAdapter?.LogInformation("Getting the fax with {id}", id);
             var uriBuilder = new UriBuilder(_uri);
             uriBuilder.Path += "/" + id;
             return _http.Send<Fax>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
-        
+
+        public Task Delete(string id, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentNullException(nameof(id), "Fax id should have a value.");
+            }
+
+            _loggerAdapter?.LogInformation("Deleting content of the fax with {id}", id);
+            var uriBuilder = new UriBuilder(_uri);
+            uriBuilder.Path += "/" + id;
+            return _http.Send<EmptyResponse>(uriBuilder.Uri, HttpMethod.Delete, cancellationToken);
+        }
+
+        public Task<Stream> DownloadContent(string id, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentNullException(nameof(id), "Fax id should have a value.");
+            }
+
+            _loggerAdapter?.LogInformation("Deleting content of the fax with {id}", id);
+            var uriBuilder = new UriBuilder(_uri);
+            uriBuilder.Path += $"/{id}/file.pdf"; // only pdf is supported for now
+            return _http.Send<Stream>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
+        }
+
         public async Task<Fax> GetAsync(string faxId)
         {
             var url = new Uri(_uri, $"/{faxId}");
             return await _http.Send<Fax>(url, HttpMethod.Get);
         }
-        
+
         public async Task<Stream> Download(string id)
         {
             var url = new Uri(_uri, $"/{id}.pdf");

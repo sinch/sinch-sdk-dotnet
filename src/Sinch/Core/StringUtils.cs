@@ -37,7 +37,7 @@ namespace Sinch.Core
         {
             return date.ToString("O", CultureInfo.InvariantCulture);
         }
-        
+
         public static string ToIso8601NoTicks(DateTime date)
         {
             return date.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
