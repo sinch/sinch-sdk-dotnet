@@ -54,7 +54,7 @@ namespace Sinch.Fax.Faxes
         /// <param name="id">The ID of the fax.</param>
         /// <param name="cancellationToken"></param>
         /// <returns>Successful task if response is 204.</returns>
-        Task Delete(string id, CancellationToken cancellationToken = default);
+        Task DeleteContent(string id, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Download the fax content. Currently, supports only pdf.
@@ -140,7 +140,7 @@ namespace Sinch.Fax.Faxes
             return _http.Send<Fax>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
 
-        public Task Delete(string id, CancellationToken cancellationToken = default)
+        public Task DeleteContent(string id, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -149,7 +149,7 @@ namespace Sinch.Fax.Faxes
 
             _loggerAdapter?.LogInformation("Deleting content of the fax with {id}", id);
             var uriBuilder = new UriBuilder(_uri);
-            uriBuilder.Path += "/" + id;
+            uriBuilder.Path += $"/{id}/file";
             return _http.Send<EmptyResponse>(uriBuilder.Uri, HttpMethod.Delete, cancellationToken);
         }
 
