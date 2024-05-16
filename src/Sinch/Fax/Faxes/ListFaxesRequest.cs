@@ -17,10 +17,9 @@ namespace Sinch.Fax.Faxes
         ///     Filters faxes created on the specified date in UTC
         /// </summary>
         /// <param name="createTime"></param>
-        public ListFaxesRequest(DateTime createTime)
+        public ListFaxesRequest(DateOnly createTime)
         {
-
-            CreateTime = new DateTime(createTime.Ticks, DateTimeKind.Utc);
+            CreateTime = createTime;
         }
 
         /// <summary>
@@ -28,13 +27,13 @@ namespace Sinch.Fax.Faxes
         /// </summary>
         /// <param name="createTimeAfter"></param>
         /// <param name="createTimeBefore"></param>
-        public ListFaxesRequest(DateTime createTimeAfter, DateTime createTimeBefore)
+        public ListFaxesRequest(DateTime? createTimeAfter, DateTime? createTimeBefore)
         {
             CreateTimeAfter = createTimeAfter;
             CreateTimeBefore = createTimeBefore;
         }
 
-        public DateTime? CreateTime { get; private set; }
+        public DateOnly? CreateTime { get; private set; }
 
         public DateTime? CreateTimeAfter { get; private set; }
 
@@ -52,18 +51,24 @@ namespace Sinch.Fax.Faxes
         {
             var queryString = new List<KeyValuePair<string, string>>();
 
-            if (CreateTime.HasValue)
+            if (CreateTime.HasValue) // mutually exclusive 
             {
                 queryString.Add(new("createTime",
-                    StringUtils.ToIso8601NoTicks(CreateTime.Value)));
+                    StringUtils.ToIso8601(CreateTime.Value)));
             }
-
-            if (CreateTimeAfter.HasValue && CreateTimeBefore.HasValue)
+            else
             {
-                queryString.Add(new("createTime>=",
-                    StringUtils.ToIso8601(CreateTimeAfter.Value)));
-                queryString.Add(new("createTime<=",
-                    StringUtils.ToIso8601(CreateTimeBefore.Value)));
+                if (CreateTimeAfter.HasValue)
+                {
+                    queryString.Add(new("createTime>",
+                        StringUtils.ToIso8601NoTicks(CreateTimeAfter.Value)));
+                }
+
+                if (CreateTimeBefore.HasValue)
+                {
+                    queryString.Add(new("createTime<",
+                        StringUtils.ToIso8601NoTicks(CreateTimeBefore.Value)));
+                }
             }
 
             if (Direction != null)

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Sinch.Core;
@@ -154,7 +153,8 @@ namespace Sinch.Fax.Faxes
         }
     }
 
-    public sealed class Base64File
+    /// TODO: think about if it's worth implementing base64 send
+    internal sealed class Base64File
     {
         /// <summary>
         ///     Base64 encoded file content.
