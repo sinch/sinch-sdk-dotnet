@@ -7,7 +7,7 @@ namespace Sinch.Fax.Faxes
     public class ListFaxesRequest
     {
         /// <summary>
-        ///     Does not filter taxes by creation date 
+        ///     Does not specify createTime filter, the default value of the server is used.
         /// </summary>
         public ListFaxesRequest()
         {
@@ -25,8 +25,8 @@ namespace Sinch.Fax.Faxes
         /// <summary>
         ///     Filters faxes created in a time range in UTC
         /// </summary>
-        /// <param name="createTimeAfter"></param>
-        /// <param name="createTimeBefore"></param>
+        /// <param name="createTimeAfter">Faxes created after the date inclusive.</param>
+        /// <param name="createTimeBefore">Faxes created before the date inclusive.</param>
         public ListFaxesRequest(DateTime? createTimeAfter, DateTime? createTimeBefore)
         {
             CreateTimeAfter = createTimeAfter;
@@ -40,11 +40,40 @@ namespace Sinch.Fax.Faxes
 
         public DateTime? CreateTimeBefore { get; private set; }
 
+        /// <summary>
+        ///     Limits results to faxes with the specified direction.
+        /// </summary>
         public Direction? Direction { get; set; }
+
+        /// <summary>
+        ///     Limits results to faxes with the specified status.
+        /// </summary>
         public FaxStatus? Status { get; set; }
+
+        /// <summary>
+        ///     A phone number that you want to use to filter results. The parameter search with startsWith,
+        ///     so you can pass a partial number to get all faxes sent to numbers that start with the number you passed.   
+        /// </summary>
+        /// <example>+14155552222</example>
         public string? To { get; set; }
+
+        /// <summary>
+        ///     A phone number that you want to use to filter results. The parameter search with startsWith,
+        ///     so you can pass a partial number to get all faxes sent to numbers that start with the number you passed.
+        /// </summary>
+        /// <example>+15551235656</example>
         public string? From { get; set; }
+
+        /// <summary>
+        ///     The page you want to retrieve returned from a previous List request, if any
+        /// </summary>
         public int? Page { get; set; }
+
+        /// <summary>
+        ///     The maximum number of items to return per request. The default is 100 and the maximum is 1000.
+        ///     If you need to export larger amounts and pagination is not suitable for you can use
+        ///     the Export function in the dashboard.
+        /// </summary>
         public int? PageSize { get; set; }
 
         public string ToQueryString()
