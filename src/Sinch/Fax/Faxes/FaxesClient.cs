@@ -36,7 +36,13 @@ namespace Sinch.Fax.Faxes
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<ListFaxResponse> List(ListFaxesRequest listFaxesRequest, CancellationToken cancellationToken = default);
-
+        
+        /// <summary>
+        ///     Automatically List faxes sent (OUTBOUND) or received (INBOUND), set parameters to filter the list. 
+        /// </summary>
+        /// <param name="listFaxesRequest"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         IAsyncEnumerable<Fax> ListAuto(ListFaxesRequest listFaxesRequest,
             CancellationToken cancellationToken = default);
 
@@ -77,7 +83,8 @@ namespace Sinch.Fax.Faxes
             _http = httpClient;
             _uri = new Uri(uri, $"/v3/projects/{projectId}/faxes");
         }
-
+        
+        /// <inheritdoc />
         public Task<Fax> Send(SendFaxRequest request, CancellationToken cancellationToken = default)
         {
             if (request.FileContent is not null)
@@ -97,7 +104,8 @@ namespace Sinch.Fax.Faxes
             throw new InvalidOperationException(
                 "Neither content urls or file content provided for a create fax request.");
         }
-
+        
+        /// <inheritdoc />
         public async Task<ListFaxResponse> List(ListFaxesRequest listFaxesRequest,
             CancellationToken cancellationToken = default)
         {
@@ -109,7 +117,8 @@ namespace Sinch.Fax.Faxes
 
             return await _http.Send<ListFaxResponse>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
-
+        
+        /// <inheritdoc />
         public async IAsyncEnumerable<Fax> ListAuto(ListFaxesRequest listFaxesRequest,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
@@ -139,7 +148,8 @@ namespace Sinch.Fax.Faxes
             uriBuilder.Path += "/" + id;
             return _http.Send<Fax>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
-
+        
+        /// <inheritdoc />
         public Task DeleteContent(string id, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(id))
@@ -147,12 +157,13 @@ namespace Sinch.Fax.Faxes
                 throw new ArgumentNullException(nameof(id), "Fax id should have a value.");
             }
 
-            _loggerAdapter?.LogInformation("Deleting content of the fax with {id}", id);
+            _loggerAdapter?.LogInformation("Deleting the content of the fax with {id}", id);
             var uriBuilder = new UriBuilder(_uri);
             uriBuilder.Path += $"/{id}/file";
             return _http.Send<EmptyResponse>(uriBuilder.Uri, HttpMethod.Delete, cancellationToken);
         }
-
+        
+        /// <inheritdoc />
         public Task<Stream> DownloadContent(string id, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(id))
@@ -160,23 +171,10 @@ namespace Sinch.Fax.Faxes
                 throw new ArgumentNullException(nameof(id), "Fax id should have a value.");
             }
 
-            _loggerAdapter?.LogInformation("Deleting content of the fax with {id}", id);
+            _loggerAdapter?.LogInformation("Downloading the content of the fax with {id}", id);
             var uriBuilder = new UriBuilder(_uri);
             uriBuilder.Path += $"/{id}/file.pdf"; // only pdf is supported for now
             return _http.Send<Stream>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
-        }
-
-        public async Task<Fax> GetAsync(string faxId)
-        {
-            var url = new Uri(_uri, $"/{faxId}");
-            return await _http.Send<Fax>(url, HttpMethod.Get);
-        }
-
-        public async Task<Stream> Download(string id)
-        {
-            var url = new Uri(_uri, $"/{id}.pdf");
-            var result = await _http.Send<Stream>(url, HttpMethod.Get);
-            return result;
         }
     }
 }
