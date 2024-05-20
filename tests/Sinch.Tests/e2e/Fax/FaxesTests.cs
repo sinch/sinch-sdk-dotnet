@@ -133,7 +133,7 @@ namespace Sinch.Tests.e2e.Fax
                 PageNumber = 1,
                 TotalPages = 1,
                 PageSize = 100,
-                TotalItems = 18,
+                TotalItems = 1,
                 Faxes = new List<Sinch.Fax.Faxes.Fax>()
                 {
                     _fax
