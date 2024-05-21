@@ -5,6 +5,7 @@ namespace Sinch.Core
 {
     internal static class StreamExtensions
     {
+        // NOTE: not used, may be used in send fax json request
         public static string ConvertToBase64(this Stream stream)
         {
             if (stream is MemoryStream memoryStream)
