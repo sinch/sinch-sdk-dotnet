@@ -28,10 +28,6 @@ namespace Sinch.Fax.Faxes
         
         [JsonIgnore]
         internal string? FileName { get; }
-        //
-        // [JsonInclude]
-        // [JsonPropertyName("files")]
-        // public List<Base64File> Files { get; private set; }
         
         /// <summary>
         ///     Creates a fax with attached content
@@ -120,8 +116,8 @@ namespace Sinch.Fax.Faxes
         /// <summary>
         ///     The content type of the callback.
         /// </summary>
-        [JsonPropertyName("callbackContentType")]
-        public CallbackUrlContentType? CallbackContentType { get; set; }
+        [JsonPropertyName("callbackUrlContentType")]
+        public CallbackUrlContentType? CallbackUrlContentType { get; set; }
         
         /// <summary>
         ///     Determines how documents are converted to black and white. Defaults to value selected on Fax Service object.
