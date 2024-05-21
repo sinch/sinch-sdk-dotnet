@@ -8,7 +8,7 @@ namespace Examples.Fax
         {
             var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET");
             await using var responseStream = await sinchClient.Fax.Faxes.DownloadContent("FAX_ID");
-            
+
             if (!Path.Exists("C:\\Downloads\\"))
             {
                 Directory.CreateDirectory("C:\\Downloads\\");

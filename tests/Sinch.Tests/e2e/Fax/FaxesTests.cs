@@ -14,7 +14,7 @@ namespace Sinch.Tests.e2e.Fax
         {
             Id = "01HXVD9FPQ8MAJ2650W0KTY7D4",
             Direction = Direction.Outbound,
-            To = "+12015555555",
+            To = new List<string>() { "+12015555555" },
             ContentUrl = new List<string>()
             {
                 "https://developers.sinch.com/fax/fax.pdf",
@@ -23,7 +23,6 @@ namespace Sinch.Tests.e2e.Fax
             NumberOfPages = 0,
             Status = FaxStatus.InProgress,
             CreateTime = DateTime.Parse("2024-05-14T11:20:05Z", null, DateTimeStyles.AdjustToUniversal),
-            CompletedTime = DateTime.Parse("0001-01-01T00:00:00", null, DateTimeStyles.AdjustToUniversal),
             HeaderPageNumbers = true,
             HeaderTimeZone = "America/New_York",
             RetryDelaySeconds = 60,
@@ -57,7 +56,7 @@ namespace Sinch.Tests.e2e.Fax
                 ProjectId = ProjectId,
                 MaxRetries = 3,
                 ImageConversionMethod = ImageConversionMethod.Halftone,
-                To = "+12015555555",
+                To = new List<string>() { "+12015555555" },
                 RetryDelaySeconds = 60,
                 ContentUrl = new List<string>()
                 {

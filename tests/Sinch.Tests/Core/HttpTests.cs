@@ -20,14 +20,14 @@ namespace Sinch.Tests.Core
     {
         private readonly ISinchAuth _tokenManagerMock;
         private readonly MockHttpMessageHandler _httpMessageHandlerMock;
-        
+
         public HttpTests()
         {
             _tokenManagerMock = Substitute.For<ISinchAuth>();
             _tokenManagerMock.Scheme.Returns("Bearer");
             _httpMessageHandlerMock = new MockHttpMessageHandler();
         }
-        
+
         [Fact]
         public async Task ForceNewToken()
         {
@@ -37,7 +37,7 @@ namespace Sinch.Tests.Core
             _tokenManagerMock
                 .GetAuthToken(true)
                 .Returns("second_token");
-            
+
             var uri = new Uri("http://sinch.com/items");
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer first_token")
@@ -45,22 +45,22 @@ namespace Sinch.Tests.Core
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer second_token")
                 .Respond(HttpStatusCode.OK);
-            
+
             var httpClient = new HttpClient(_httpMessageHandlerMock);
             var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
-            
+
             var response = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
-            
+
             await response.Should().NotThrowAsync();
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
-        
+
         [Fact]
         public async Task ForceNewTokenOnlyOnce()
         {
             _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
                 .Returns("first_token", "second_token", "third_token");
-            
+
             var uri = new Uri("http://sinch.com/items");
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer first_token")
@@ -70,20 +70,20 @@ namespace Sinch.Tests.Core
                 .Respond(HttpStatusCode.Unauthorized);
             var httpClient = new HttpClient(_httpMessageHandlerMock);
             var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
-            
+
             Func<Task<object>> response = () => http.Send<object>(uri, HttpMethod.Get);
-            
+
             var ex = await response.Should().ThrowAsync<SinchApiException>();
             ex.Where(x => x.StatusCode == HttpStatusCode.Unauthorized);
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
-        
+
         [Fact]
         public async Task OauthThrowExceptionIfTokenNotExpired()
         {
             _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
                 .Returns("first_token");
-            
+
             var uri = new Uri("http://sinch.com/items");
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer first_token")
@@ -91,17 +91,17 @@ namespace Sinch.Tests.Core
                 {
                     new("www-authenticate", "no")
                 }, (HttpContent)null);
-            
+
             var httpClient = new HttpClient(_httpMessageHandlerMock);
             var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
-            
+
             Func<Task<object>> response = () => http.Send<object>(uri, HttpMethod.Get);
-            
+
             var ex = await response.Should().ThrowAsync<SinchApiException>();
             ex.Which.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
-        
+
         [Fact]
         public async Task NewTokenFetchedIfWwwExpiredIsPresent()
         {
@@ -111,40 +111,40 @@ namespace Sinch.Tests.Core
             _tokenManagerMock
                 .GetAuthToken(true)
                 .Returns("second_token");
-            
+
             var uri = new Uri("http://sinch.com/items");
-            
+
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer first_token")
                 .Respond(HttpStatusCode.Unauthorized, new KeyValuePair<string, string>[]
                 {
                     new("www-authenticate", "expired")
                 }, (HttpContent)null);
-            
+
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer second_token")
                 .Respond(HttpStatusCode.OK);
-            
+
             var httpClient = new HttpClient(_httpMessageHandlerMock);
             var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
-            
+
             var response = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
-            
+
             await response.Should().NotThrowAsync();
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
-        
+
         [Fact]
         public async Task SendSinchHeader()
         {
             _tokenManagerMock
                 .GetAuthToken(Arg.Any<bool>())
                 .Returns("first_token");
-            
+
             var uri = new Uri("http://sinch.com/items");
-            
+
             var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo().Assembly.FullName).Version.ToString();
-            
+
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer first_token")
                 // net framework splits header value at whitespace and returns list of values
@@ -155,15 +155,15 @@ namespace Sinch.Tests.Core
                     $"(csharp/{RuntimeInformation.FrameworkDescription};;)"
                 })
                 .Respond(HttpStatusCode.OK);
-            
+
             var httpClient = new HttpClient(_httpMessageHandlerMock);
             var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
-            
+
             await http.Send<EmptyResponse>(uri, HttpMethod.Get);
-            
+
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
-        
+
         [Fact]
         public async Task SendMultipartFormData()
         {
@@ -188,10 +188,10 @@ namespace Sinch.Tests.Core
                 },
                 HeaderPageNumbers = true,
             };
-            
+
             await http.SendMultipart<SendFaxRequest, EmptyResponse>(uri, faxRequest,
                 faxRequest.FileContent!, faxRequest.FileName!);
-            
+
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
     }
