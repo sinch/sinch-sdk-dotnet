@@ -89,12 +89,14 @@ namespace Sinch.Fax.Faxes
             {
                 if (CreateTimeAfter.HasValue)
                 {
+                    // result will be inclusive createTime>=
                     queryString.Add(new("createTime>",
                         StringUtils.ToIso8601NoTicks(CreateTimeAfter.Value)));
                 }
 
                 if (CreateTimeBefore.HasValue)
                 {
+                    // result will be inclusive createTime<=
                     queryString.Add(new("createTime<",
                         StringUtils.ToIso8601NoTicks(CreateTimeBefore.Value)));
                 }
