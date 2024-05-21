@@ -73,9 +73,20 @@ namespace Sinch.Core
             throw new InvalidOperationException($"Failed to parse {enumType.Name} enum for value {value}");
         }
 
-        public static bool IsLastPage(int page, int pageSize, int totalCount)
+        public static bool IsLastPage(int page, int pageSize, int totalCount, PageStart pageStart = PageStart.Zero)
         {
-            return (page + 1) * pageSize >= totalCount;
+            switch (pageStart)
+            {
+                case PageStart.Zero:
+                    page += 1;
+                    break;
+                case PageStart.First:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(pageStart), pageStart, null);
+            }
+
+            return page * pageSize >= totalCount;
         }
 
         public static string ToSnakeCaseQueryString<T>(T obj) where T : class
@@ -177,5 +188,11 @@ namespace Sinch.Core
         {
             throw new InvalidOperationException($"{type.Name} deserialization result is null");
         }
+    }
+
+    internal enum PageStart
+    {
+        Zero = 0,
+        First = 1,
     }
 }
