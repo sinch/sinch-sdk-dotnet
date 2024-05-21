@@ -23,11 +23,12 @@ namespace Sinch.Fax.Faxes
         ///     Fax content may be supplied via one or more files or URLs of supported filetypes.<br/><br/>
         ///     If you supply a callbackUrl the callback will be sent as multipart/form-data with the content
         ///     of the fax as an attachment to the body, unless you specify callbackUrlContentType as application/json.
+        ///     If you specify more than one receiver, list will have more then one faxes.
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task<Fax> Send(SendFaxRequest request, CancellationToken cancellationToken = default);
+        public Task<List<Fax>> Send(SendFaxRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     List faxes sent (OUTBOUND) or received (INBOUND), set parameters to filter the list. 
@@ -85,20 +86,35 @@ namespace Sinch.Fax.Faxes
         }
 
         /// <inheritdoc />
-        public Task<Fax> Send(SendFaxRequest request, CancellationToken cancellationToken = default)
+        // the fax will return ONE fax if there is ONE TO number, but an array if there  is > 1 
+        public async Task<List<Fax>> Send(SendFaxRequest request, CancellationToken cancellationToken = default)
         {
             if (request.FileContent is not null)
             {
                 _loggerAdapter?.LogInformation("Sending fax with file content...");
-                return _http.SendMultipart<SendFaxRequest, Fax>(_uri, request, request.FileContent,
+                if (request.To.Count > 1)
+                {
+                    return await _http.SendMultipart<SendFaxRequest, List<Fax>>(_uri, request, request.FileContent,
+                        request.FileName!, cancellationToken: cancellationToken);
+                }
+
+                var fax = await _http.SendMultipart<SendFaxRequest, Fax>(_uri, request, request.FileContent,
                     request.FileName!, cancellationToken: cancellationToken);
+                return new List<Fax>() { fax };
             }
 
             if (request.ContentUrl?.Any() == true)
             {
                 _loggerAdapter?.LogInformation("Sending fax with content urls...");
-                return _http.Send<SendFaxRequest, Fax>(_uri, HttpMethod.Post, request,
+                if (request.To.Count > 1)
+                {
+                    return await _http.Send<SendFaxRequest, List<Fax>>(_uri, HttpMethod.Post, request,
+                        cancellationToken: cancellationToken);
+                }
+
+                var fax = await _http.Send<SendFaxRequest, Fax>(_uri, HttpMethod.Post, request,
                     cancellationToken: cancellationToken);
+                return new List<Fax>() { fax };
             }
 
             throw new InvalidOperationException(

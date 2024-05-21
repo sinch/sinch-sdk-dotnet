@@ -55,9 +55,9 @@ namespace Sinch.Fax.Faxes
         /// </summary>
         [JsonPropertyName("to")]
 #if NET7_0_OR_GREATER
-        public required string To { get; set; }
+        public required List<string> To { get; set; }
 #else
-        public string To { get; set; } = null!;
+        public List<string> To { get; set; } = null!;
 #endif
 
 

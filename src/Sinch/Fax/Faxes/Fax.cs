@@ -33,7 +33,7 @@ namespace Sinch.Fax.Faxes
         ///     A phone number in [E.164](https://community.sinch.com/t5/Glossary/E-164/ta-p/7537) format, including the leading &#39;+&#39;.
         /// </summary>
         [JsonPropertyName("to")]
-        public List<string>? To { get; set; }
+        public string? To { get; set; }
 
         /// <summary>
         ///     Give us any URL on the Internet (including ones with basic authentication) At least one file or contentUrl parameter is required. <br/><br/>

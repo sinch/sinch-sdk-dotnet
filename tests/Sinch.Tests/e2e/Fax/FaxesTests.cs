@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Fax.Faxes;
@@ -14,7 +15,7 @@ namespace Sinch.Tests.e2e.Fax
         {
             Id = "01HXVD9FPQ8MAJ2650W0KTY7D4",
             Direction = Direction.Outbound,
-            To = new List<string>() { "+12015555555" },
+            To = "+12015555555",
             ContentUrl = new List<string>()
             {
                 "https://developers.sinch.com/fax/fax.pdf",
@@ -42,9 +43,9 @@ namespace Sinch.Tests.e2e.Fax
                 "http://fax-db/fax2.pdf",
             })
             {
-                To = "+12015555555"
+                To = new List<string>() { "+12015555555" }
             });
-            response.Should().BeEquivalentTo(new Sinch.Fax.Faxes.Fax()
+            response.First().Should().BeEquivalentTo(new Sinch.Fax.Faxes.Fax()
             {
                 Id = "01HXVD9FPQ8MAJ2650W0KTY7D4",
                 Direction = Direction.Outbound,
@@ -56,8 +57,9 @@ namespace Sinch.Tests.e2e.Fax
                 ProjectId = ProjectId,
                 MaxRetries = 3,
                 ImageConversionMethod = ImageConversionMethod.Halftone,
-                To = new List<string>() { "+12015555555" },
+                To = "+12015555555",
                 RetryDelaySeconds = 60,
+                CallbackUrlContentType = CallbackUrlContentType.MultipartFormData,
                 ContentUrl = new List<string>()
                 {
                     "http://fax-db/fax1.pdf",

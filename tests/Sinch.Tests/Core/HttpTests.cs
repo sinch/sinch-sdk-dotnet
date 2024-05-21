@@ -170,6 +170,7 @@ namespace Sinch.Tests.Core
             var uri = new Uri("http://hello.fax");
             _httpMessageHandlerMock.Expect(HttpMethod.Post, uri.ToString())
                 .WithPartialContent("To\r\n\r\n123")
+                .WithPartialContent("To\r\n\r\n456")
                 .WithPartialContent("MaxRetries\r\n\r\n3")
                 .WithPartialContent("\"Labels[hello]\"\r\n\r\nworld")
                 .WithPartialContent("\"Labels[no]\"\r\n\r\nidea")
@@ -179,7 +180,7 @@ namespace Sinch.Tests.Core
             var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
             var faxRequest = new SendFaxRequest(new MemoryStream(), "file.pdf")
             {
-                To = "123",
+                To = new List<string>() { "123", "456" },
                 MaxRetries = 3,
                 Labels = new Dictionary<string, string>()
                 {
