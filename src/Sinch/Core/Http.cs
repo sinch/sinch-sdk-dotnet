@@ -108,7 +108,7 @@ namespace Sinch.Core
         
         /// <summary>
         ///     Builds multi-part form data. Not to generic solutions as it handles some types specifically for SendFax request
-        ///     As Dict<string, string> without nested typing as Dictionary<string, List<string>>,
+        ///     As map{string, string{>} without nested typing as map{string,list{string}}
         ///     So, for any future use, keep that in mind to make the solution more generic.
         /// </summary>
         /// <param name="request"></param>
