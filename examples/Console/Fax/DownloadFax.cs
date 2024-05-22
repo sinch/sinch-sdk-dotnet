@@ -7,17 +7,19 @@ namespace Examples.Fax
         public static async Task Example()
         {
             var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET");
-            var faxId = "FAX_ID";
-            await using var responseStream = await sinchClient.Fax.Faxes.DownloadContent("faxId");
+            const string faxId = "FAX_ID";
 
-            if (!Path.Exists("C:\\Downloads\\"))
+            await using var contentResult = await sinchClient.Fax.Faxes.DownloadContent("faxId");
+            const string directory = @"C:\Downloads\";
+            if (!Path.Exists(directory))
             {
-                Directory.CreateDirectory("C:\\Downloads\\");
+                Directory.CreateDirectory(directory);
             }
 
             await using var fileStream =
-                new FileStream($"C:\\Downloads\\{faxId}.pdf", FileMode.Create, FileAccess.Write);
-            await responseStream.CopyToAsync(fileStream);
+                new FileStream(Path.Combine(directory, contentResult.FileName ?? $"{faxId}.pdf"), FileMode.Create,
+                    FileAccess.Write);
+            await contentResult.Stream.CopyToAsync(fileStream);
         }
     }
 }

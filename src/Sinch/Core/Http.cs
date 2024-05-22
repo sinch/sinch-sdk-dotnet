@@ -263,13 +263,19 @@ namespace Sinch.Core
                 // NOTE: there wil probably be other files supported in the future
                 if (result.IsPdf())
                 {
-                    if (typeof(TResponse) != typeof(Stream))
+                    if (typeof(TResponse) != typeof(ContentResult))
                     {
                         throw new InvalidOperationException(
-                            "Received pdf, but expected response type is not a Stream.");
+                            $"Received pdf, but expected response type is not a {nameof(ContentResult)}.");
                     }
 
-                    return (TResponse)(object)await result.Content.ReadAsStreamAsync(cancellationToken);
+                    // yes, the header currently returns double quotes ""IFOFJSLJ12313.pdf""
+                    var fileName = result.Content.Headers.ContentDisposition?.FileName?.Trim('"');
+                    return (TResponse)(object)new ContentResult()
+                    {
+                        Stream = await result.Content.ReadAsStreamAsync(cancellationToken),
+                        FileName = fileName
+                    };
                 }
 
                 if (result.IsJson())
