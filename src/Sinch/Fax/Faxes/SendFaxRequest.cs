@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Sinch.Core;
@@ -51,15 +52,16 @@ namespace Sinch.Fax.Faxes
         }
 
         /// <summary>
-        ///     A phone number in [E.164](https://community.sinch.com/t5/Glossary/E-164/ta-p/7537) format, including the leading &#39;+&#39;.
+        ///     A list of phone numbers in [E.164](https://community.sinch.com/t5/Glossary/E-164/ta-p/7537) format, including the leading &#39;+&#39;.
         /// </summary>
+        [JsonInclude]
         [JsonPropertyName("to")]
-#if NET7_0_OR_GREATER
-        public required List<string> To { get; set; }
-#else
-        public List<string> To { get; set; } = null!;
-#endif
+        public List<string>? To { get; private set; }
 
+        internal void SetTo(List<string> to)
+        {
+            To = to.ToList();
+        }
 
         /// <summary>
         ///     A phone number in [E.164](https://community.sinch.com/t5/Glossary/E-164/ta-p/7537) format, including the leading &#39;+&#39;.

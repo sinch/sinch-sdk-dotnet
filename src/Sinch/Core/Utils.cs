@@ -80,7 +80,7 @@ namespace Sinch.Core
                 case PageStart.Zero:
                     page += 1;
                     break;
-                case PageStart.First:
+                case PageStart.One:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(pageStart), pageStart, null);
@@ -193,6 +193,6 @@ namespace Sinch.Core
     internal enum PageStart
     {
         Zero = 0,
-        First = 1,
+        One = 1,
     }
 }

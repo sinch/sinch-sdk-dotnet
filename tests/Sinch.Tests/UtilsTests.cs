@@ -28,17 +28,17 @@ namespace Sinch.Tests
         [Fact]
         public void LastPageFirst()
         {
-            Utils.IsLastPage(1, 10, 2, PageStart.First).Should().BeTrue();
-            Utils.IsLastPage(1, 10, 9, PageStart.First).Should().BeTrue();
-            Utils.IsLastPage(4, 1, 4, PageStart.First).Should().BeTrue();
+            Utils.IsLastPage(1, 10, 2, PageStart.One).Should().BeTrue();
+            Utils.IsLastPage(1, 10, 9, PageStart.One).Should().BeTrue();
+            Utils.IsLastPage(4, 1, 4, PageStart.One).Should().BeTrue();
         }
 
         [Fact]
         public void NotLastPageFirst()
         {
-            Utils.IsLastPage(1, 10, 12, PageStart.First).Should().BeFalse();
-            Utils.IsLastPage(1, 10, 11, PageStart.First).Should().BeFalse();
-            Utils.IsLastPage(4, 1, 6, PageStart.First).Should().BeFalse();
+            Utils.IsLastPage(1, 10, 12, PageStart.One).Should().BeFalse();
+            Utils.IsLastPage(1, 10, 11, PageStart.One).Should().BeFalse();
+            Utils.IsLastPage(4, 1, 6, PageStart.One).Should().BeFalse();
         }
 
 

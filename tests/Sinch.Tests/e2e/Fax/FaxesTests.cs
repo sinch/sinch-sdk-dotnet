@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Fax.Faxes;
@@ -37,15 +36,9 @@ namespace Sinch.Tests.e2e.Fax
         [Fact]
         public async Task SendContentUrls()
         {
-            var response = await FaxClient.Faxes.Send(new SendFaxRequest(new List<string>()
-            {
-                "http://fax-db/fax1.pdf",
-                "http://fax-db/fax2.pdf",
-            })
-            {
-                To = new List<string>() { "+12015555555" }
-            });
-            response.First().Should().BeEquivalentTo(new Sinch.Fax.Faxes.Fax()
+            var response = await FaxClient.Faxes.Send("+12015555555",
+                new SendFaxRequest(new List<string>() { "http://fax-db/fax1.pdf", "http://fax-db/fax2.pdf" }));
+            response.Should().BeEquivalentTo(new Sinch.Fax.Faxes.Fax()
             {
                 Id = "01HXVD9FPQ8MAJ2650W0KTY7D4",
                 Direction = Direction.Outbound,
@@ -66,6 +59,14 @@ namespace Sinch.Tests.e2e.Fax
                     "http://fax-db/fax2.pdf",
                 }
             });
+        }
+
+        [Fact]
+        public async Task SendManyRecipients()
+        {
+            var response = await FaxClient.Faxes.Send(new List<string>() { "+12015555555", "+12015555554" },
+                new SendFaxRequest(new List<string>() { "http://fax-db/fax1.pdf" }));
+            response.Should().HaveCount(2);
         }
 
         [Fact]

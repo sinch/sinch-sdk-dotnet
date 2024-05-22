@@ -180,7 +180,6 @@ namespace Sinch.Tests.Core
             var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
             var faxRequest = new SendFaxRequest(new MemoryStream(), "file.pdf")
             {
-                To = new List<string>() { "123", "456" },
                 MaxRetries = 3,
                 Labels = new Dictionary<string, string>()
                 {
@@ -189,6 +188,7 @@ namespace Sinch.Tests.Core
                 },
                 HeaderPageNumbers = true,
             };
+            faxRequest.SetTo(new List<string>() { "123", "456" });
 
             await http.SendMultipart<SendFaxRequest, EmptyResponse>(uri, faxRequest,
                 faxRequest.FileContent!, faxRequest.FileName!);
