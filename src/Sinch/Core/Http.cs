@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -13,6 +15,7 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Auth;
+using Sinch.Fax.Faxes;
 using Sinch.Logger;
 
 namespace Sinch.Core
@@ -31,6 +34,9 @@ namespace Sinch.Core
         /// <typeparam name="TResponse">The type of the response object.</typeparam>
         /// <returns></returns>
         Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
+            CancellationToken cancellationToken = default);
+
+        Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream, string fileName,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -80,23 +86,104 @@ namespace Sinch.Core
                 $"sinch-sdk/{sdkVersion} (csharp/{RuntimeInformation.FrameworkDescription};;)";
         }
 
+        public Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream,
+            string fileName, CancellationToken cancellationToken = default)
+        {
+            var content = BuildMultipartFormDataContent(request);
+
+            stream.Position = 0;
+            var isContentType = new FileExtensionContentTypeProvider().TryGetContentType(fileName, out var contentType);
+            var streamContent = new StreamContent(stream)
+            {
+                Headers =
+                {
+                    ContentType = isContentType ? new MediaTypeHeaderValue(contentType!) : null
+                }
+            };
+            content.Add(streamContent, "file", fileName);
+
+
+            return SendHttpContent<TResponse>(uri, HttpMethod.Post, content, cancellationToken);
+        }
+
+        /// <summary>
+        ///     Builds multi-part form data. Not to generic solutions as it handles some types specifically for SendFax request
+        ///     As map{string, string{>} without nested typing as map{string,list{string}}
+        ///     So, for any future use, keep that in mind to make the solution more generic.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <typeparam name="TRequest"></typeparam>
+        /// <returns></returns>
+        private static MultipartFormDataContent BuildMultipartFormDataContent<TRequest>(TRequest request)
+        {
+            {
+                var content = new MultipartFormDataContent();
+                var props = request!.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public |
+                                                             BindingFlags.DeclaredOnly)
+                    .Where(DoesntHaveJsonIgnoreAttribute).Where(HasNonNullValue);
+                foreach (var prop in props)
+                {
+                    var value = prop.GetValue(request);
+                    if (value == null)
+                    {
+                        continue;
+                    }
+
+                    var type = value.GetType();
+                    if (type == typeof(List<string>))
+                    {
+                        var asString = string.Join(',', (value as List<string>)!);
+                        content.Add(new StringContent(asString), prop.Name);
+                    }
+                    else if (type == typeof(Dictionary<string, string>))
+                    {
+                        foreach (var (key, val) in (value as Dictionary<string, string>)!)
+                        {
+                            var strVal = prop.Name + "[" + key + "]";
+                            content.Add(new StringContent(val), strVal);
+                        }
+                    }
+                    else
+                    {
+                        var str = value.ToString();
+                        if (!string.IsNullOrEmpty(str))
+                        {
+                            content.Add(new StringContent(str), prop.Name);
+                        }
+                    }
+                }
+
+                return content;
+            }
+
+            bool DoesntHaveJsonIgnoreAttribute(PropertyInfo prop)
+            {
+                return !prop.GetCustomAttributes(typeof(JsonIgnoreAttribute)).Any();
+            }
+
+            bool HasNonNullValue(PropertyInfo x)
+            {
+                return x.GetValue(request) != null;
+            }
+        }
+
         public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default)
         {
-            return Send<object, TResponse>(uri, httpMethod, null, cancellationToken);
+            return Send<EmptyResponse, TResponse>(uri, httpMethod, null, cancellationToken);
         }
 
-        public async Task<TResponse> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest? request,
+        private async Task<TResponse> SendHttpContent<TResponse>(Uri uri, HttpMethod httpMethod,
+            HttpContent? httpContent,
             CancellationToken cancellationToken = default)
         {
             var retry = true;
             while (true)
             {
                 _logger?.LogDebug("Sending request to {uri}", uri);
-                HttpContent? httpContent =
-                    request == null ? null : JsonContent.Create(request, options: _jsonSerializerOptions);
 
 #if DEBUG
+                Debug.WriteLine($"Http Method: {httpMethod}");
                 Debug.WriteLine($"Request uri: {uri}");
                 Debug.WriteLine($"Request body: {httpContent?.ReadAsStringAsync(cancellationToken).Result}");
 #endif
@@ -156,8 +243,41 @@ namespace Sinch.Core
                     }
                 }
 
-                await result.EnsureSuccessApiStatusCode();
+                await result.EnsureSuccessApiStatusCode(_jsonSerializerOptions);
                 _logger?.LogDebug("Finished processing request for {uri}", uri);
+
+#if DEBUG
+                try
+                {
+                    var responseStr = await result.Content.ReadAsStringAsync(cancellationToken);
+                    Debug.WriteLine($"Response string: {responseStr}");
+                    using var jDoc = JsonDocument.Parse(responseStr);
+                    Debug.WriteLine(
+                        $"Response content: {JsonSerializer.Serialize(jDoc, new JsonSerializerOptions() { WriteIndented = true })}");
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine($"Failed to parse json {e.Message}");
+                }
+#endif
+                // NOTE: there wil probably be other files supported in the future
+                if (result.IsPdf())
+                {
+                    if (typeof(TResponse) != typeof(ContentResult))
+                    {
+                        throw new InvalidOperationException(
+                            $"Received pdf, but expected response type is not a {nameof(ContentResult)}.");
+                    }
+
+                    // yes, the header currently returns double quotes ""IFOFJSLJ12313.pdf""
+                    var fileName = result.Content.Headers.ContentDisposition?.FileName?.Trim('"');
+                    return (TResponse)(object)new ContentResult()
+                    {
+                        Stream = await result.Content.ReadAsStreamAsync(cancellationToken),
+                        FileName = fileName
+                    };
+                }
+
                 if (result.IsJson())
                     return await result.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken,
                                options: _jsonSerializerOptions)
@@ -185,6 +305,17 @@ namespace Sinch.Core
 
                 throw new InvalidOperationException("The response is not Json or EmptyResponse");
             }
+        }
+
+        public async Task<TResponse> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest? request,
+            CancellationToken cancellationToken = default)
+        {
+            HttpContent? httpContent =
+                request == null ? null : JsonContent.Create(request, options: _jsonSerializerOptions);
+
+
+            return await SendHttpContent<TResponse>(uri: uri, httpMethod: httpMethod, httpContent,
+                cancellationToken: cancellationToken);
         }
     }
 }

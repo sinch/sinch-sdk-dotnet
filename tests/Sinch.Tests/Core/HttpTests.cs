@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
@@ -10,6 +11,7 @@ using NSubstitute;
 using RichardSzalay.MockHttp;
 using Sinch.Auth;
 using Sinch.Core;
+using Sinch.Fax.Faxes;
 using Xunit;
 
 namespace Sinch.Tests.Core
@@ -158,6 +160,37 @@ namespace Sinch.Tests.Core
             var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
 
             await http.Send<EmptyResponse>(uri, HttpMethod.Get);
+
+            _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
+        public async Task SendMultipartFormData()
+        {
+            var uri = new Uri("http://hello.fax");
+            _httpMessageHandlerMock.Expect(HttpMethod.Post, uri.ToString())
+                .WithPartialContent("To\r\n\r\n123,456")
+                .WithPartialContent("MaxRetries\r\n\r\n3")
+                .WithPartialContent("\"Labels[hello]\"\r\n\r\nworld")
+                .WithPartialContent("\"Labels[no]\"\r\n\r\nidea")
+                .WithPartialContent("HeaderPageNumbers\r\n\r\nTrue")
+                .Respond(HttpStatusCode.OK);
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+            var faxRequest = new SendFaxRequest(new MemoryStream(), "file.pdf")
+            {
+                MaxRetries = 3,
+                Labels = new Dictionary<string, string>()
+                {
+                    { "hello", "world" },
+                    { "no", "idea" }
+                },
+                HeaderPageNumbers = true,
+            };
+            faxRequest.SetTo(new List<string>() { "123", "456" });
+
+            await http.SendMultipart<SendFaxRequest, EmptyResponse>(uri, faxRequest,
+                faxRequest.FileContent!, faxRequest.FileName!);
 
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }

@@ -6,6 +6,7 @@ using System.Text.Json;
 using Sinch.Auth;
 using Sinch.Conversation;
 using Sinch.Core;
+using Sinch.Fax;
 using Sinch.Logger;
 using Sinch.Numbers;
 using Sinch.SMS;
@@ -60,6 +61,8 @@ namespace Sinch
         ///     <see href="https://developers.sinch.com/docs/conversation/api-reference/">Learn more.</see>
         /// </summary>
         public ISinchConversation Conversation { get; }
+
+        public ISinchFax Fax { get; }
 
         /// <summary>
         ///     Verify users with SMS, flash calls (missed calls), a regular call, or data verification.
@@ -119,6 +122,8 @@ namespace Sinch
         private const string NumbersApiUrl = "https://numbers.api.sinch.com/";
         private const string SmsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
         private const string SmsApiServicePlanIdUrlTemplate = "https://{0}.sms.api.sinch.com";
+        private const string FaxApiUrl = "https://fax.api.sinch.com/";
+        private const string FaxApiUrlTemplate = "https://{0}.fax.api.sinch.com/";
         private const string ConversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
 
         private const string VoiceApiUrlTemplate = "https://{0}.api.sinch.com/";
@@ -140,9 +145,9 @@ namespace Sinch
         private readonly LoggerFactory? _loggerFactory;
 
         private readonly ISinchNumbers _numbers;
-
         private readonly ISinchSms _sms;
         private readonly ILoggerAdapter<ISinchClient>? _logger;
+        private readonly ISinchFax _fax;
 
         /// <summary>
         ///     Initialize a new <see cref="SinchClient" />
@@ -202,7 +207,25 @@ namespace Sinch
                 , templatesBaseAddress,
                 _loggerFactory, httpSnakeCaseOAuth);
 
+            var faxUrl = ResolveFaxUrl(optionsObj.FaxRegion);
+            _fax = new FaxClient(projectId!, faxUrl, _loggerFactory, httpCamelCase);
+
             _logger?.LogInformation("SinchClient initialized.");
+        }
+
+        private Uri ResolveFaxUrl(FaxRegion? faxRegion)
+        {
+            if (!string.IsNullOrEmpty(_apiUrlOverrides?.FaxUrl))
+            {
+                return new Uri(_apiUrlOverrides.FaxUrl);
+            }
+
+            if (!string.IsNullOrEmpty(faxRegion?.Value))
+            {
+                return new Uri(string.Format(FaxApiUrlTemplate, faxRegion.Value));
+            }
+
+            return new Uri(FaxApiUrl);
         }
 
         /// <inheritdoc />
@@ -247,7 +270,17 @@ namespace Sinch
             }
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="ISinchFax"/>
+        public ISinchFax Fax
+        {
+            get
+            {
+                ValidateCommonCredentials();
+                return _fax;
+            }
+        }
+
+        /// <inheritdoc/>
         public ISinchVerificationClient Verification(string appKey, string appSecret,
             AuthStrategy authStrategy = AuthStrategy.ApplicationSign)
         {
