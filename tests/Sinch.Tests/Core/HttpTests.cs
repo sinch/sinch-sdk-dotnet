@@ -169,8 +169,7 @@ namespace Sinch.Tests.Core
         {
             var uri = new Uri("http://hello.fax");
             _httpMessageHandlerMock.Expect(HttpMethod.Post, uri.ToString())
-                .WithPartialContent("To\r\n\r\n123")
-                .WithPartialContent("To\r\n\r\n456")
+                .WithPartialContent("To\r\n\r\n123,456")
                 .WithPartialContent("MaxRetries\r\n\r\n3")
                 .WithPartialContent("\"Labels[hello]\"\r\n\r\nworld")
                 .WithPartialContent("\"Labels[no]\"\r\n\r\nidea")

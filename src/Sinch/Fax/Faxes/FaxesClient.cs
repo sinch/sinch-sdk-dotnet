@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Core;
@@ -111,8 +112,15 @@ namespace Sinch.Fax.Faxes
             return faxes.First();
         }
 
-        /// <inheritdoc />
+
         // the fax will return a PLAIN fax if there is ONE TO number, but an array if there  is > 1 
+        private class SendFaxResponse
+        {
+            [JsonPropertyName("faxes")]
+            public List<Fax> Faxes { get; set; }
+        }
+
+        /// <inheritdoc />
         public async Task<List<Fax>> Send(List<string> to, SendFaxRequest request,
             CancellationToken cancellationToken = default)
         {
@@ -122,8 +130,10 @@ namespace Sinch.Fax.Faxes
                 _loggerAdapter?.LogInformation("Sending fax with file content...");
                 if (request.To!.Count > 1)
                 {
-                    return await _http.SendMultipart<SendFaxRequest, List<Fax>>(_uri, request, request.FileContent,
+                    var faxResponse = await _http.SendMultipart<SendFaxRequest, SendFaxResponse>(_uri, request,
+                        request.FileContent,
                         request.FileName!, cancellationToken: cancellationToken);
+                    return faxResponse.Faxes;
                 }
 
                 var fax = await _http.SendMultipart<SendFaxRequest, Fax>(_uri, request, request.FileContent,
@@ -136,8 +146,9 @@ namespace Sinch.Fax.Faxes
                 _loggerAdapter?.LogInformation("Sending fax with content urls...");
                 if (request.To!.Count > 1)
                 {
-                    return await _http.Send<SendFaxRequest, List<Fax>>(_uri, HttpMethod.Post, request,
+                    var faxResponse = await _http.Send<SendFaxRequest, SendFaxResponse>(_uri, HttpMethod.Post, request,
                         cancellationToken: cancellationToken);
+                    return faxResponse.Faxes;
                 }
 
                 var fax = await _http.Send<SendFaxRequest, Fax>(_uri, HttpMethod.Post, request,
