@@ -1,5 +1,6 @@
 using System;
 using Sinch.Core;
+using Sinch.Fax.Emails;
 using Sinch.Fax.Faxes;
 using Sinch.Logger;
 
@@ -13,6 +14,9 @@ namespace Sinch.Fax
     {
         /// <inheritdoc cref="ISinchFaxFaxes" />
         public ISinchFaxFaxes Faxes { get; }
+
+        /// <inheritdoc cref="ISinchFaxEmails" />
+        public ISinchFaxEmails Emails { get; }
     }
 
     internal class FaxClient : ISinchFax
@@ -20,8 +24,13 @@ namespace Sinch.Fax
         internal FaxClient(string projectId, Uri baseAddress, LoggerFactory? loggerFactory, IHttp http)
         {
             Faxes = new FaxesClient(projectId, baseAddress, loggerFactory?.Create<ISinchFaxFaxes>(), http);
+            Emails = new EmailsClient(projectId, baseAddress, loggerFactory?.Create<ISinchFaxEmails>(), http);
         }
 
+        /// <inheritdoc />
         public ISinchFaxFaxes Faxes { get; }
+
+        /// <inheritdoc />
+        public ISinchFaxEmails Emails { get; }
     }
 }
