@@ -29,12 +29,12 @@ namespace Sinch.Fax.Emails
         /// <param name="pageSize">Number of items to return on each page.</param>
         /// <param name="cancellationToken"></param>
         /// <returns>An object of page with a list of email addresses</returns>
-        Task<ListEmailsResponse<string>> List(string serviceId, string phoneNumber, int? pageNumber = 1,
+        Task<ListEmailsResponse<string>> ListForNumber(string serviceId, string phoneNumber, int? pageNumber = 1,
             int? pageSize = 1000,
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     List emails for a number.
+        ///     List emails
         /// </summary>
         /// <param name="pageNumber">he page number to fetch. If not specified, the first page will be returned.</param>
         /// <param name="pageSize">Number of items to return on each page.</param>
@@ -52,12 +52,12 @@ namespace Sinch.Fax.Emails
         /// <param name="pageSize">Number of items to return on each page.</param>
         /// <param name="cancellationToken"></param>
         /// <returns>A list of emails addresses</returns>
-        IAsyncEnumerable<string> ListAuto(string serviceId, string phoneNumber, int? pageNumber = 1,
+        IAsyncEnumerable<string> ListForNumberAuto(string serviceId, string phoneNumber, int? pageNumber = 1,
             int? pageSize = 1000,
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Auto List emails for a number.
+        ///     Auto List emails
         /// </summary>
         /// <param name="pageNumber">The page number to fetch. If not specified, the first page will be returned.</param>
         /// <param name="pageSize">Number of items to return on each page.</param>
@@ -135,7 +135,7 @@ namespace Sinch.Fax.Emails
         }
 
         /// <inheritdoc />
-        public Task<ListEmailsResponse<string>> List(string serviceId, string phoneNumber, int? pageNumber,
+        public Task<ListEmailsResponse<string>> ListForNumber(string serviceId, string phoneNumber, int? pageNumber,
             int? pageSize,
             CancellationToken cancellationToken = default)
         {
@@ -183,7 +183,7 @@ namespace Sinch.Fax.Emails
         }
 
 
-        public async IAsyncEnumerable<string> ListAuto(string serviceId, string phoneNumber, int? pageNumber,
+        public async IAsyncEnumerable<string> ListForNumberAuto(string serviceId, string phoneNumber, int? pageNumber,
             int? pageSize,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
@@ -192,18 +192,26 @@ namespace Sinch.Fax.Emails
             ListEmailsResponse<string> response;
             do
             {
-                response = await List(serviceId, phoneNumber, pageNumber, pageSize, cancellationToken);
+                response = await ListForNumber(serviceId, phoneNumber, pageNumber, pageSize, cancellationToken);
                 foreach (var contact in response.Emails)
                     yield return contact;
                 pageNumber += 1;
             } while (!Utils.IsLastPage(response.PageNumber, response.PageSize, response.TotalItems, PageStart.One));
         }
 
-        // NOTE!: regarding weird behavior of List does it need list auto?
-        public IAsyncEnumerable<EmailAddress> ListAuto(int? pageNumber, int? pageSize,
-            CancellationToken cancellationToken = default)
+        public async IAsyncEnumerable<EmailAddress> ListAuto(int? pageNumber, int? pageSize,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            _logger?.LogDebug("Auto Listing emails");
+
+            ListEmailsResponse<EmailAddress> response;
+            do
+            {
+                response = await List(pageNumber, pageSize, cancellationToken);
+                foreach (var email in response.Emails)
+                    yield return email;
+                pageNumber += 1;
+            } while (!Utils.IsLastPage(response.PageNumber, response.PageSize, response.TotalItems, PageStart.One));
         }
 
         /// <inheritdoc />

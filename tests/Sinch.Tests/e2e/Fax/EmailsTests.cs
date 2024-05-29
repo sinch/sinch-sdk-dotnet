@@ -50,7 +50,7 @@ namespace Sinch.Tests.e2e.Fax
         [Fact]
         public async Task ListEmailsPlain()
         {
-            var response = await FaxClient.Emails.List("01HXGS1GE2SXS6HKQDMPYM1JHY", "+12015555554", pageNumber: 1,
+            var response = await FaxClient.Emails.ListForNumber("01HXGS1GE2SXS6HKQDMPYM1JHY", "+12015555554", pageNumber: 1,
                 pageSize: 2);
             response.Should().BeEquivalentTo(new ListEmailsResponse<string>()
             {
@@ -68,7 +68,7 @@ namespace Sinch.Tests.e2e.Fax
         [Fact]
         public async Task ListEmailsPlainAuto()
         {
-            var emails = FaxClient.Emails.ListAuto("01HXGS1GE2SXS6HKQDMPYM1JHY", "+12015555554", pageNumber: 1,
+            var emails = FaxClient.Emails.ListForNumberAuto("01HXGS1GE2SXS6HKQDMPYM1JHY", "+12015555554", pageNumber: 1,
                 pageSize: 2);
             var counter = 0;
             await foreach (var email in emails)
