@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
@@ -117,7 +116,7 @@ namespace Sinch.Fax.Faxes
         private class SendFaxResponse
         {
             [JsonPropertyName("faxes")]
-            public List<Fax> Faxes { get; set; }
+            public List<Fax> Faxes { get; set; } = new();
         }
 
         /// <inheritdoc />
