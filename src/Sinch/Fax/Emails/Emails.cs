@@ -25,22 +25,22 @@ namespace Sinch.Fax.Emails
         /// </summary>
         /// <param name="serviceId">The serviceId containing the numbers you want to list.</param>
         /// <param name="phoneNumber">The phone number you want to get emails for.</param>
-        /// <param name="pageNumber">The page number to fetch. If not specified, the first page will be returned.</param>
+        /// <param name="page">The page number to fetch. If not specified, the first page will be returned.</param>
         /// <param name="pageSize">Number of items to return on each page.</param>
         /// <param name="cancellationToken"></param>
         /// <returns>An object of page with a list of email addresses</returns>
-        Task<ListEmailsResponse<string>> ListForNumber(string serviceId, string phoneNumber, int? pageNumber = 1,
+        Task<ListEmailsResponse<string>> ListForNumber(string serviceId, string phoneNumber, int? page = 1,
             int? pageSize = 1000,
             CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     List emails
         /// </summary>
-        /// <param name="pageNumber">he page number to fetch. If not specified, the first page will be returned.</param>
+        /// <param name="page">he page number to fetch. If not specified, the first page will be returned.</param>
         /// <param name="pageSize">Number of items to return on each page.</param>
         /// <param name="cancellationToken"></param>
         /// <returns>An object of page with a list of email addresses</returns>
-        Task<ListEmailsResponse<EmailAddress>> List(int? pageNumber = 1, int? pageSize = 1000,
+        Task<ListEmailsResponse<EmailAddress>> List(int? page = 1, int? pageSize = 1000,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -48,22 +48,22 @@ namespace Sinch.Fax.Emails
         /// </summary>
         /// <param name="serviceId">The serviceId containing the numbers you want to list.</param>
         /// <param name="phoneNumber">The phone number you want to get emails for.</param>
-        /// <param name="pageNumber">The page number to fetch. If not specified, the first page will be returned.</param>
+        /// <param name="page">The page number to fetch. If not specified, the first page will be returned.</param>
         /// <param name="pageSize">Number of items to return on each page.</param>
         /// <param name="cancellationToken"></param>
         /// <returns>A list of emails addresses</returns>
-        IAsyncEnumerable<string> ListForNumberAuto(string serviceId, string phoneNumber, int? pageNumber = 1,
+        IAsyncEnumerable<string> ListForNumberAuto(string serviceId, string phoneNumber, int? page = 1,
             int? pageSize = 1000,
             CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Auto List emails
         /// </summary>
-        /// <param name="pageNumber">The page number to fetch. If not specified, the first page will be returned.</param>
+        /// <param name="page">The page number to fetch. If not specified, the first page will be returned.</param>
         /// <param name="pageSize">Number of items to return on each page.</param>
         /// <param name="cancellationToken"></param>
         /// <returns>A list of emails addresses</returns>
-        IAsyncEnumerable<EmailAddress> ListAuto(int? pageNumber = 1, int? pageSize = 1000,
+        IAsyncEnumerable<EmailAddress> ListAuto(int? page = 1, int? pageSize = 1000,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -96,11 +96,11 @@ namespace Sinch.Fax.Emails
         ///     List configured numbers for an email
         /// </summary>
         /// <param name="email">The email you want to list numbers for.</param>
-        /// <param name="pageNumber">Optional. The page to fetch. If not specified, the first page will be returned.</param>
+        /// <param name="page">Optional. The page to fetch. If not specified, the first page will be returned.</param>
         /// <param name="pageSize">Number of items to return on each page.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ListNumbersResponse> ListNumbers(string email, int? pageNumber = 1, int? pageSize = 20,
+        Task<ListNumbersResponse> ListNumbers(string email, int? page = 1, int? pageSize = 20,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -109,9 +109,9 @@ namespace Sinch.Fax.Emails
         /// <param name="email">The email you want to list numbers for.</param>
         /// <param name="pageSize">Number of items to return on each page.</param>
         /// <param name="cancellationToken"></param>
-        /// <param name="pageNumber">Optional. The page to fetch. If not specified, the first page will be returned.</param>
+        /// <param name="page">Optional. The page to fetch. If not specified, the first page will be returned.</param>
         /// <returns></returns>
-        IAsyncEnumerable<ServicePhoneNumber> ListNumbersAuto(string email, int? pageNumber = 1, int? pageSize = 20,
+        IAsyncEnumerable<ServicePhoneNumber> ListNumbersAuto(string email, int? page = 1, int? pageSize = 20,
             CancellationToken cancellationToken = default);
     }
 
@@ -135,7 +135,7 @@ namespace Sinch.Fax.Emails
         }
 
         /// <inheritdoc />
-        public Task<ListEmailsResponse<string>> ListForNumber(string serviceId, string phoneNumber, int? pageNumber,
+        public Task<ListEmailsResponse<string>> ListForNumber(string serviceId, string phoneNumber, int? page,
             int? pageSize,
             CancellationToken cancellationToken = default)
         {
@@ -146,9 +146,9 @@ namespace Sinch.Fax.Emails
             var uriBuilder = new UriBuilder(_baseAddress);
             uriBuilder.Path += $"services/{serviceId}/numbers/{phoneNumber}/emails";
             var queryString = HttpUtility.ParseQueryString(string.Empty);
-            if (pageNumber.HasValue)
+            if (page.HasValue)
             {
-                queryString.Add("pageNumber", pageNumber.Value.ToString());
+                queryString.Add("page", page.Value.ToString());
             }
 
             if (pageSize.HasValue)
@@ -160,17 +160,16 @@ namespace Sinch.Fax.Emails
             return _http.Send<ListEmailsResponse<string>>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
 
-        // NOTE!: page number currently do nothing ???
-        public Task<ListEmailsResponse<EmailAddress>> List(int? pageNumber, int? pageSize,
+        public Task<ListEmailsResponse<EmailAddress>> List(int? page, int? pageSize,
             CancellationToken cancellationToken = default)
         {
             _logger?.LogInformation("Listing emails...");
 
             var uriBuilder = new UriBuilder(_apiBasePath);
             var queryString = HttpUtility.ParseQueryString(string.Empty);
-            if (pageNumber.HasValue)
+            if (page.HasValue)
             {
-                queryString.Add("pageNumber", pageNumber.Value.ToString());
+                queryString.Add("page", page.Value.ToString());
             }
 
             if (pageSize.HasValue)
@@ -183,7 +182,7 @@ namespace Sinch.Fax.Emails
         }
 
 
-        public async IAsyncEnumerable<string> ListForNumberAuto(string serviceId, string phoneNumber, int? pageNumber,
+        public async IAsyncEnumerable<string> ListForNumberAuto(string serviceId, string phoneNumber, int? page,
             int? pageSize,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
@@ -192,14 +191,14 @@ namespace Sinch.Fax.Emails
             ListEmailsResponse<string> response;
             do
             {
-                response = await ListForNumber(serviceId, phoneNumber, pageNumber, pageSize, cancellationToken);
+                response = await ListForNumber(serviceId, phoneNumber, page, pageSize, cancellationToken);
                 foreach (var contact in response.Emails)
                     yield return contact;
-                pageNumber += 1;
+                page += 1;
             } while (!Utils.IsLastPage(response.PageNumber, response.PageSize, response.TotalItems, PageStart.One));
         }
 
-        public async IAsyncEnumerable<EmailAddress> ListAuto(int? pageNumber, int? pageSize,
+        public async IAsyncEnumerable<EmailAddress> ListAuto(int? page, int? pageSize,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Auto Listing emails");
@@ -207,10 +206,10 @@ namespace Sinch.Fax.Emails
             ListEmailsResponse<EmailAddress> response;
             do
             {
-                response = await List(pageNumber, pageSize, cancellationToken);
+                response = await List(page, pageSize, cancellationToken);
                 foreach (var email in response.Emails)
                     yield return email;
-                pageNumber += 1;
+                page += 1;
             } while (!Utils.IsLastPage(response.PageNumber, response.PageSize, response.TotalItems, PageStart.One));
         }
 
@@ -261,7 +260,7 @@ namespace Sinch.Fax.Emails
             }, cancellationToken);
         }
 
-        public Task<ListNumbersResponse> ListNumbers(string email, int? pageNumber, int? pageSize,
+        public Task<ListNumbersResponse> ListNumbers(string email, int? page, int? pageSize,
             CancellationToken cancellationToken = default)
         {
             _logger?.LogInformation("Listing numbers for {email}...", email);
@@ -273,9 +272,9 @@ namespace Sinch.Fax.Emails
             uriBuilder.Path += $"/{email}/numbers";
 
             var queryString = HttpUtility.ParseQueryString(string.Empty);
-            if (pageNumber.HasValue)
+            if (page.HasValue)
             {
-                queryString.Add("pageNumber", pageNumber.Value.ToString());
+                queryString.Add("page", page.Value.ToString());
             }
 
             if (pageSize.HasValue)
@@ -288,7 +287,7 @@ namespace Sinch.Fax.Emails
             return _http.Send<ListNumbersResponse>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
 
-        public async IAsyncEnumerable<ServicePhoneNumber> ListNumbersAuto(string email, int? pageNumber, int? pageSize,
+        public async IAsyncEnumerable<ServicePhoneNumber> ListNumbersAuto(string email, int? page, int? pageSize,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             ExceptionUtils.CheckEmptyString(nameof(email), email);
@@ -298,10 +297,10 @@ namespace Sinch.Fax.Emails
             ListNumbersResponse response;
             do
             {
-                response = await ListNumbers(email, pageNumber, pageSize, cancellationToken);
+                response = await ListNumbers(email, page, pageSize, cancellationToken);
                 foreach (var number in response.PhoneNumbers)
                     yield return number;
-                pageNumber += 1;
+                page += 1;
             } while (!Utils.IsLastPage(response.PageNumber, response.PageSize, response.TotalItems, PageStart.One));
         }
     }
