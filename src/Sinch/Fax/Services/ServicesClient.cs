@@ -146,7 +146,7 @@ namespace Sinch.Fax.Services
 
         public Task<Service> Get(string serviceId, CancellationToken cancellationToken = default)
         {
-            _logger?.LogInformation("Getting a service with {id} for {project}", serviceId, _projectId);
+            _logger?.LogInformation("Getting a service with {id} for {projectId}", serviceId, _projectId);
             ExceptionUtils.CheckEmptyString(nameof(serviceId), serviceId);
             var uriBuilder = new UriBuilder(_apiBasePath);
             uriBuilder.Path += "/" + serviceId;
@@ -155,7 +155,7 @@ namespace Sinch.Fax.Services
 
         public Task<Service> Update(UpdateServiceRequest request, CancellationToken cancellationToken = default)
         {
-            _logger?.LogInformation("Updating a {serviceId} for {project}", request.Id, _projectId);
+            _logger?.LogInformation("Updating a {serviceId} for {projectId}", request.Id, _projectId);
             ExceptionUtils.CheckEmptyString(nameof(request.Id), request.Id);
 
             var uriBuilder = new UriBuilder(_apiBasePath);
@@ -166,7 +166,7 @@ namespace Sinch.Fax.Services
 
         public Task Delete(string serviceId, CancellationToken cancellationToken = default)
         {
-            _logger?.LogInformation("Deleting a {serviceId} from {project}", serviceId, _projectId);
+            _logger?.LogInformation("Deleting a {serviceId} from {projectId}", serviceId, _projectId);
             ExceptionUtils.CheckEmptyString(nameof(serviceId), serviceId);
 
             var uriBuilder = new UriBuilder(_apiBasePath);
@@ -176,7 +176,7 @@ namespace Sinch.Fax.Services
 
         public Task<ListServicesResponse> List(int? page, int? pageSize, CancellationToken cancellationToken = default)
         {
-            _logger?.LogInformation("Listing services for {project}", _projectId);
+            _logger?.LogInformation("Listing services for {projectId}", _projectId);
 
             var uriBuilder = new UriBuilder(_apiBasePath);
             var queryString = HttpUtility.ParseQueryString(string.Empty);
@@ -198,7 +198,7 @@ namespace Sinch.Fax.Services
         public async IAsyncEnumerable<Service> ListAuto(int? page, int? pageSize,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            _logger?.LogDebug("Auto Listing services for {project}", _projectId);
+            _logger?.LogDebug("Auto Listing services for {projectId}", _projectId);
 
             ListServicesResponse response;
             do
@@ -240,7 +240,7 @@ namespace Sinch.Fax.Services
             int? pageSize,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            _logger?.LogDebug("Auto Listing emails");
+            _logger?.LogDebug("Auto Listing emails for number...");
 
             ListEmailsResponse<string> response;
             do
@@ -252,10 +252,10 @@ namespace Sinch.Fax.Services
             } while (!Utils.IsLastPage(response.PageNumber, response.PageSize, response.TotalItems, PageStart.One));
         }
 
-        public Task<ListNumbersResponse> ListNumbers(string serviceId, int? page, int? pageSize,
+        public async Task<ListNumbersResponse> ListNumbers(string serviceId, int? page, int? pageSize,
             CancellationToken cancellationToken = default)
         {
-            _logger?.LogInformation("Listing numbers for {service}...", serviceId);
+            _logger?.LogInformation("Listing numbers for {serviceId}...", serviceId);
 
             ExceptionUtils.CheckEmptyString(nameof(serviceId), serviceId);
 
@@ -275,15 +275,23 @@ namespace Sinch.Fax.Services
             }
 
             uriBuilder.Query = queryString.ToString();
-
-            return _http.Send<ListNumbersResponse>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
+            var response =
+                await _http.Send<ListServiceNumbersResponse>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
+            return new ListNumbersResponse()
+            {
+                PhoneNumbers = response.Numbers,
+                PageNumber = response.PageNumber,
+                TotalItems = response.TotalItems,
+                PageSize = response.PageSize,
+                TotalPages = response.TotalPages
+            };
         }
 
         public async IAsyncEnumerable<ServicePhoneNumber> ListNumbersAuto(string serviceId, int? page,
             int? pageSize,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            _logger?.LogDebug("Auto Listing numbers for {service}", serviceId);
+            _logger?.LogDebug("Auto Listing numbers for {serviceId}", serviceId);
 
             ExceptionUtils.CheckEmptyString(nameof(serviceId), serviceId);
 

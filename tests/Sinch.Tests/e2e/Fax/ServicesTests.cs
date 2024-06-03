@@ -91,15 +91,29 @@ namespace Sinch.Tests.e2e.Fax
                 },
                 PageNumber = 1,
                 PageSize = 2,
-                TotalItems = 2,
-                TotalPages = 1,
+                TotalItems = 4,
+                TotalPages = 2,
             });
         }
 
         [Fact]
-        public async Task ListForNumber()
+        public async Task ListAuto()
         {
-            var response = await FaxClient.Services.ListEmailsForNumber("01HXGS1GE2SXS6HKQDMPYM1JHY", "+12015555554",
+            var response = FaxClient.Services.ListAuto(1, 2);
+            int counter = 0;
+            await foreach (var item in response)
+            {
+                item.Should().NotBeNull();
+                counter++;
+            }
+
+            counter.Should().Be(4);
+        }
+
+        [Fact]
+        public async Task ListEmailsForNumber()
+        {
+            var response = await FaxClient.Services.ListEmailsForNumber(_service.Id!, "+12015555554",
                 page: 1,
                 pageSize: 2);
             response.Should().BeEquivalentTo(new ListEmailsResponse<string>()
@@ -116,9 +130,9 @@ namespace Sinch.Tests.e2e.Fax
         }
 
         [Fact]
-        public async Task ListForNumberAuto()
+        public async Task ListEmailsForNumberAuto()
         {
-            var emails = FaxClient.Services.ListEmailsForNumberAuto("01HXGS1GE2SXS6HKQDMPYM1JHY", "+12015555554",
+            var emails = FaxClient.Services.ListEmailsForNumberAuto(_service.Id!, "+12015555554",
                 page: 1,
                 pageSize: 2);
             var counter = 0;
@@ -138,9 +152,9 @@ namespace Sinch.Tests.e2e.Fax
             response.Should().BeEquivalentTo(new ListNumbersResponse()
             {
                 PageNumber = 1,
-                TotalPages = 1,
+                TotalPages = 2,
                 PageSize = 2,
-                TotalItems = 2,
+                TotalItems = 4,
                 PhoneNumbers = new List<ServicePhoneNumber>()
                 {
                     new ServicePhoneNumber()
@@ -157,6 +171,20 @@ namespace Sinch.Tests.e2e.Fax
                     }
                 }
             });
+        }
+
+        [Fact]
+        public async Task ListNumbersAuto()
+        {
+            var response = FaxClient.Services.ListNumbersAuto(_service.Id!, 1, 2);
+            int counter = 0;
+            await foreach (var number in response)
+            {
+                number.Should().NotBeNull();
+                counter++;
+            }
+
+            counter.Should().Be(4);
         }
     }
 }
