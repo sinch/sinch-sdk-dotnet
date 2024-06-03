@@ -38,6 +38,7 @@ namespace Sinch.Fax
         /// <inheritdoc />
         public ISinchFaxEmails Emails { get; }
         
+        /// <inheritdoc />
         public ISinchFaxServices Services { get; }
     }
 }
