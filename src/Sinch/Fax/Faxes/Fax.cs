@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
-using Sinch.Core;
 
 namespace Sinch.Fax.Faxes
 {
@@ -214,22 +213,6 @@ namespace Sinch.Fax.Faxes
             sb.Append($"  {nameof(HasFile)}: ").Append(HasFile).Append('\n');
             sb.Append("}\n");
             return sb.ToString();
-        }
-    }
-
-    /// <summary>
-    /// The content type of the callback.
-    /// </summary>
-    /// <value>The content type of the callback.</value>
-    [JsonConverter(typeof(EnumRecordJsonConverter<CallbackUrlContentType>))]
-    public record CallbackUrlContentType(string Value) : EnumRecord(Value)
-    {
-        public static readonly CallbackUrlContentType MultipartFormData = new("multipart/form-data");
-        public static readonly CallbackUrlContentType ApplicationJson = new("application/json");
-
-        public override string ToString()
-        {
-            return base.ToString();
         }
     }
 }

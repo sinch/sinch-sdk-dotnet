@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Sinch.Core;
+using Sinch.Fax.Services;
 using Sinch.Logger;
 
 namespace Sinch.Fax.Emails
@@ -120,44 +121,26 @@ namespace Sinch.Fax.Emails
         private readonly string _projectId;
         private readonly Uri _apiBasePath;
         private readonly IHttp _http;
+        private readonly ISinchFaxServices _services;
         private readonly ILoggerAdapter<ISinchFaxEmails>? _logger;
-        private readonly Uri _baseAddress;
 
 
         internal EmailsClient(string projectId, Uri baseAddress, ILoggerAdapter<ISinchFaxEmails>? loggerAdapter,
-            IHttp httpClient)
+            IHttp httpClient, ISinchFaxServices services)
         {
             _logger = loggerAdapter;
             _http = httpClient;
+            _services = services;
             _projectId = projectId;
-            _baseAddress = baseAddress;
             _apiBasePath = new Uri(baseAddress, $"/v3/projects/{projectId}/emails");
         }
 
-        /// <inheritdoc />
+
         public Task<ListEmailsResponse<string>> ListForNumber(string serviceId, string phoneNumber, int? page,
             int? pageSize,
             CancellationToken cancellationToken = default)
         {
-            _logger?.LogInformation("Listing emails for {serviceId} and {number}", serviceId, phoneNumber);
-            ExceptionUtils.CheckEmptyString(nameof(serviceId), serviceId);
-            ExceptionUtils.CheckEmptyString(nameof(phoneNumber), phoneNumber);
-
-            var uriBuilder = new UriBuilder(_baseAddress);
-            uriBuilder.Path += $"services/{serviceId}/numbers/{phoneNumber}/emails";
-            var queryString = HttpUtility.ParseQueryString(string.Empty);
-            if (page.HasValue)
-            {
-                queryString.Add("page", page.Value.ToString());
-            }
-
-            if (pageSize.HasValue)
-            {
-                queryString.Add("pageSize", pageSize.Value.ToString());
-            }
-
-            uriBuilder.Query = queryString.ToString();
-            return _http.Send<ListEmailsResponse<string>>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
+            return _services.ListEmailsForNumber(serviceId, phoneNumber, page, pageSize, cancellationToken);
         }
 
         public Task<ListEmailsResponse<EmailAddress>> List(int? page, int? pageSize,
@@ -181,22 +164,13 @@ namespace Sinch.Fax.Emails
             return _http.Send<ListEmailsResponse<EmailAddress>>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
 
-
-        public async IAsyncEnumerable<string> ListForNumberAuto(string serviceId, string phoneNumber, int? page,
+        public IAsyncEnumerable<string> ListForNumberAuto(string serviceId, string phoneNumber, int? page,
             int? pageSize,
-            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken = default)
         {
-            _logger?.LogDebug("Auto Listing emails");
-
-            ListEmailsResponse<string> response;
-            do
-            {
-                response = await ListForNumber(serviceId, phoneNumber, page, pageSize, cancellationToken);
-                foreach (var contact in response.Emails)
-                    yield return contact;
-                page += 1;
-            } while (!Utils.IsLastPage(response.PageNumber, response.PageSize, response.TotalItems, PageStart.One));
+            return _services.ListEmailsForNumberAuto(serviceId, phoneNumber, page, pageSize, cancellationToken);
         }
+
 
         public async IAsyncEnumerable<EmailAddress> ListAuto(int? page, int? pageSize,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
