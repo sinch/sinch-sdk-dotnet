@@ -15,14 +15,14 @@ namespace Sinch.Fax
     {
         /// <inheritdoc cref="ISinchFaxFaxes" />
         public ISinchFaxFaxes Faxes { get; }
-        
+
         /// <inheritdoc cref="ISinchFaxEmails" />
         public ISinchFaxEmails Emails { get; }
-        
+
         /// <inheritdoc cref="ISinchFaxServices" />
         public ISinchFaxServices Services { get; }
     }
-    
+
     internal class FaxClient : ISinchFax
     {
         internal FaxClient(string projectId, Uri baseAddress, LoggerFactory? loggerFactory, IHttp http)
@@ -31,13 +31,13 @@ namespace Sinch.Fax
             Services = new ServicesClient(projectId, baseAddress, loggerFactory?.Create<ISinchFaxServices>(), http);
             Emails = new EmailsClient(projectId, baseAddress, loggerFactory?.Create<ISinchFaxEmails>(), http, Services);
         }
-        
+
         /// <inheritdoc />
         public ISinchFaxFaxes Faxes { get; }
-        
+
         /// <inheritdoc />
         public ISinchFaxEmails Emails { get; }
-        
+
         /// <inheritdoc />
         public ISinchFaxServices Services { get; }
     }
