@@ -143,7 +143,7 @@ namespace Sinch.Tests.Core
 
             var uri = new Uri("http://sinch.com/items");
 
-            var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo().Assembly.FullName).Version.ToString();
+            var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo()!.Assembly!.FullName!).Version!.ToString();
 
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer first_token")

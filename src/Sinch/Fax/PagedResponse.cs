@@ -1,4 +1,4 @@
-namespace Sinch.Fax.Emails
+namespace Sinch.Fax
 {
     public class PagedResponse
     {

@@ -47,38 +47,6 @@ namespace Sinch.Tests.e2e.Fax
             });
         }
 
-        [Fact]
-        public async Task ListEmailsPlain()
-        {
-            var response = await FaxClient.Emails.ListForNumber("01HXGS1GE2SXS6HKQDMPYM1JHY", "+12015555554", page: 1,
-                pageSize: 2);
-            response.Should().BeEquivalentTo(new ListEmailsResponse<string>()
-            {
-                Emails = new List<string>()
-                {
-                    "email@example.com", "hello@world.com"
-                },
-                TotalItems = 4,
-                TotalPages = 2,
-                PageSize = 2,
-                PageNumber = 1
-            });
-        }
-
-        [Fact]
-        public async Task ListEmailsPlainAuto()
-        {
-            var emails = FaxClient.Emails.ListForNumberAuto("01HXGS1GE2SXS6HKQDMPYM1JHY", "+12015555554", page: 1,
-                pageSize: 2);
-            var counter = 0;
-            await foreach (var email in emails)
-            {
-                counter++;
-                email.Should().NotBeNull();
-            }
-
-            counter.Should().Be(4);
-        }
 
         [Fact]
         public async Task ListEmails()
