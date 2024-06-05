@@ -39,12 +39,7 @@ namespace Sinch.Fax.Hooks
         /// </summary>
         [JsonPropertyName("fax")]
         public Faxes.Fax? Fax { get; set; }
-        
-        /// <summary>
-        ///     
-        /// </summary>
-        [JsonPropertyName("files")]
-        public List<Base64File> Files { get; set; } = new();
+
 
 
         /// <summary>
