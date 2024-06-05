@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Sinch.Core;
+using Sinch.Fax.Faxes;
 
 namespace Sinch.Fax.Hooks
 {
@@ -37,6 +39,12 @@ namespace Sinch.Fax.Hooks
         /// </summary>
         [JsonPropertyName("fax")]
         public Faxes.Fax? Fax { get; set; }
+        
+        /// <summary>
+        ///     
+        /// </summary>
+        [JsonPropertyName("files")]
+        public List<Base64File> Files { get; set; } = new();
 
 
         /// <summary>
