@@ -151,8 +151,8 @@ namespace Sinch.Fax.Faxes
         }
     }
 
-    /// TODO: think about if it's worth implementing base64 send
-    internal sealed class Base64File
+    /// TODO: implement sending base 64 files.
+    public sealed class Base64File
     {
         /// <summary>
         ///     Base64 encoded file content.
@@ -165,7 +165,7 @@ namespace Sinch.Fax.Faxes
     }
 
     [JsonConverter(typeof(EnumRecordJsonConverter<FileType>))]
-    internal record FileType(string Value) : EnumRecord(Value)
+    public record FileType(string Value) : EnumRecord(Value)
     {
         // ReSharper disable InconsistentNaming
 
