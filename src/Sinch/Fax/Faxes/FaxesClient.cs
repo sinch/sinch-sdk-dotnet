@@ -140,9 +140,20 @@ namespace Sinch.Fax.Faxes
                 return new List<Fax>() { fax };
             }
 
-            if (request.ContentUrl?.Any() == true)
+            var sendingContentUrls = request.ContentUrl?.Any() == true;
+            var sendingBase64Files = request.Files?.Any() == true;
+            if (sendingContentUrls || sendingBase64Files)
             {
-                _loggerAdapter?.LogInformation("Sending fax with content urls...");
+                if (sendingContentUrls)
+                {
+                    _loggerAdapter?.LogInformation("Sending fax with content urls...");
+                }
+
+                if (sendingBase64Files)
+                {
+                    _loggerAdapter?.LogInformation("Sending fax with base64 files...");
+                }
+
                 if (request.To!.Count > 1)
                 {
                     var faxResponse = await _http.Send<SendFaxRequest, SendFaxResponse>(_uri, HttpMethod.Post, request,
@@ -156,7 +167,7 @@ namespace Sinch.Fax.Faxes
             }
 
             throw new InvalidOperationException(
-                "Neither content urls or file content provided for a create fax request.");
+                "Neither content urls or file content or base64 files provided for a create fax request.");
         }
 
         /// <inheritdoc />

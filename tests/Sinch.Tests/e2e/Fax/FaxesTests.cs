@@ -142,5 +142,26 @@ namespace Sinch.Tests.e2e.Fax
                 }
             });
         }
+
+        [Fact]
+        public async Task SendBase64Files()
+        {
+            _fax.ContentUrl = null;
+            var response = await FaxClient.Faxes.Send("+12015555555",
+                new SendFaxRequest(new List<Base64File>
+                {
+                    new Base64File()
+                    {
+                        File = "YWRzZnNhZGZhZnNkZnNhZA==",
+                        FileType = FileType.PDF,
+                    },
+                    new Base64File()
+                    {
+                        File = "YWRmc2hnZ2FkZmg0M2V0d3FhM3Jld2FydzEyMzQxMjM=",
+                        FileType = FileType.PDF,
+                    }
+                }));
+            response.Should().BeEquivalentTo(_fax);
+        }
     }
 }
