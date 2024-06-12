@@ -481,7 +481,7 @@ namespace Sinch.Tests.Conversation
             };
             _baseRequest.CorrelationId = "cor_id";
             _baseRequest.ProcessingStrategy = ProcessingStrategy.DispatchOnly;
-            _baseRequest.Ttl = "1800s";
+            _baseRequest.TtlSeconds = 1800;
             _baseRequest.Queue = MessageQueue.HighPriority;
             _baseRequest.MessageMetadata = "meta";
             _baseRequest.Message.ExplicitChannelOmniMessage =
