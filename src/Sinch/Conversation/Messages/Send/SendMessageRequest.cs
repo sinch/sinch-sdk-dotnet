@@ -172,7 +172,7 @@ namespace Sinch.Conversation.Messages.Send
             var str = reader.GetString();
             if (str is null) return null;
             str = str.Trim();
-            var val = str.TakeWhile(x => x == 's').ToString();
+            var val = new string(str.TakeWhile(char.IsNumber).ToArray());
             if (int.TryParse(val, out int result))
             {
                 return result;
