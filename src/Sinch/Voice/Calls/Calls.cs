@@ -75,10 +75,10 @@ namespace Sinch.Voice.Calls
             var uri = new Uri(_baseAddress, $"calling/v1/calls/id/{request.CallId}");
             _logger?.LogDebug("Updating a call with {id}", request.CallId);
             return _http.Send<object, EmptyResponse>(uri, HttpMethod.Patch, new
-            {
-                instructions = request.Instructions,
-                action = request.Action
-            },
+                {
+                    instructions = request.Instructions,
+                    action = request.Action
+                },
                 cancellationToken: cancellationToken);
         }
 

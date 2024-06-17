@@ -233,11 +233,11 @@ namespace Sinch.Conversation.Contacts
                 destinationId, _projectId);
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{destinationId}:merge");
             return _http.Send<object, Contact>(uri, HttpMethod.Post, new
-            {
-                source_id = sourceId,
-                // NOTE: keep in mind while this enum has only one value, it can change in the future.
-                strategy = "MERGE"
-            },
+                {
+                    source_id = sourceId,
+                    // NOTE: keep in mind while this enum has only one value, it can change in the future.
+                    strategy = "MERGE"
+                },
                 cancellationToken);
         }
     }
