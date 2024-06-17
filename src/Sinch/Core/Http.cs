@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -32,8 +33,8 @@ namespace Sinch.Core
         /// <typeparam name="TResponse">The type of the response object.</typeparam>
         /// <returns></returns>
         Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
-            CancellationToken cancellationToken = default, HttpHeaders? headers = null);
-        
+            CancellationToken cancellationToken = default, Dictionary<string, IEnumerable<string>>? headers = null);
+
         /// <summary>
         ///     Use to send http request with a body
         /// </summary>
@@ -46,16 +47,16 @@ namespace Sinch.Core
         /// <typeparam name="TResponse">The type of the response object.</typeparam>
         /// <returns></returns>
         Task<TResponse> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest httpContent,
-            CancellationToken cancellationToken = default, HttpHeaders? headers = null);
+            CancellationToken cancellationToken = default, Dictionary<string, IEnumerable<string>>? headers = null);
     }
-    
+
     /// <summary>
     ///     Represents an empty response for cases where no json is expected.
     /// </summary>
     public class EmptyResponse
     {
     }
-    
+
     /// <inheritdoc /> 
     internal class Http : IHttp
     {
@@ -64,8 +65,8 @@ namespace Sinch.Core
         private readonly ILoggerAdapter<IHttp>? _logger;
         private readonly ISinchAuth _auth;
         private readonly string _userAgentHeaderValue;
-        
-        
+
+
         public Http(ISinchAuth auth, HttpClient httpClient, ILoggerAdapter<IHttp>? logger,
             JsonNamingPolicy jsonNamingPolicy)
         {
@@ -81,15 +82,15 @@ namespace Sinch.Core
             _userAgentHeaderValue =
                 $"sinch-sdk/{sdkVersion} (csharp/{RuntimeInformation.FrameworkDescription};;)";
         }
-        
+
         public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
-            CancellationToken cancellationToken = default, HttpHeaders? headers = null)
+            CancellationToken cancellationToken = default, Dictionary<string, IEnumerable<string>>? headers = null)
         {
             return Send<object, TResponse>(uri, httpMethod, null, cancellationToken, headers);
         }
-        
+
         public async Task<TResponse> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest request,
-            CancellationToken cancellationToken = default, HttpHeaders? headers = null)
+            CancellationToken cancellationToken = default, Dictionary<string, IEnumerable<string>>? headers = null)
         {
             var retry = true;
             while (true)
@@ -97,51 +98,31 @@ namespace Sinch.Core
                 _logger?.LogDebug("Sending request to {uri}", uri);
                 HttpContent? httpContent =
                     request == null ? null : JsonContent.Create(request, options: _jsonSerializerOptions);
-                
+
 #if DEBUG
                 Debug.WriteLine($"Request uri: {uri}");
                 Debug.WriteLine($"Request body: {httpContent?.ReadAsStringAsync(cancellationToken).Result}");
 #endif
-                
+
                 using var msg = new HttpRequestMessage();
                 msg.RequestUri = uri;
                 msg.Method = httpMethod;
                 msg.Content = httpContent;
-                
-                string token;
-                // Due to all the additional params appSignAuth is requiring,
-                // it's makes sense to still keep it in Http to manage all the details.
-                // TODO: get insight how to refactor this ?!?!?!
-                if (_auth is ApplicationSignedAuth appSignAuth)
-                {
-                    var now = DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture);
-                    const string headerName = "x-timestamp";
-                    msg.Headers.Add(headerName, now);
-                    
-                    var bytes = Array.Empty<byte>();
-                    if (msg.Content is not null)
-                    {
-                        bytes = await msg.Content.ReadAsByteArrayAsync(cancellationToken);
-                    }
-                    
-                    token = appSignAuth.GetSignedAuth(
-                        bytes,
-                        msg.Method.ToString().ToUpperInvariant(), msg.RequestUri.PathAndQuery,
-                        $"{headerName}:{now}", msg.Content?.Headers.ContentType?.ToString());
-                    retry = false;
-                }
-                else
-                {
-                    // try force get new token if retrying
-                    token = await _auth.GetAuthToken(force: !retry);
-                }
-                
+
+                (var token, retry) = await Authenticate(msg, retry, cancellationToken);
+
                 msg.Headers.Authorization = new AuthenticationHeaderValue(_auth.Scheme, token);
-                
+
                 msg.Headers.Add("User-Agent", _userAgentHeaderValue);
-                
+
+                if (headers != null && headers.Any())
+                {
+                    AddOrOverrideHeaders(msg, headers);
+                }
+
+
                 var result = await _httpClient.SendAsync(msg, cancellationToken);
-                
+
                 if (result.StatusCode == HttpStatusCode.Unauthorized && retry)
                 {
                     // will not retry when no "expired" header for a token.
@@ -157,15 +138,16 @@ namespace Sinch.Core
                         continue;
                     }
                 }
-                
+
                 await result.EnsureSuccessApiStatusCode();
+
                 _logger?.LogDebug("Finished processing request for {uri}", uri);
                 if (result.IsJson())
                     return await result.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken,
                                options: _jsonSerializerOptions)
                            ?? throw new InvalidOperationException(
                                $"{typeof(TResponse).Name} is null");
-                
+
                 // if empty response is expected, any non related response is dropped
                 if (typeof(TResponse) == typeof(EmptyResponse))
                 {
@@ -177,16 +159,65 @@ namespace Sinch.Core
                         _logger?.LogDebug("Expected empty content, but got {content}",
                             await result.Content.ReadAsStringAsync(cancellationToken));
                     }
-                    
+
                     return (TResponse)(object)new EmptyResponse();
                 }
-                
+
                 // unexpected content, log warning and throw exception
                 _logger?.LogWarning("Response is not json, but {content}",
                     await result.Content.ReadAsStringAsync(cancellationToken));
-                
+
                 throw new InvalidOperationException("The response is not Json or EmptyResponse");
             }
+        }
+
+        private static void AddOrOverrideHeaders(HttpRequestMessage msg,
+            Dictionary<string, IEnumerable<string>> headers)
+        {
+            foreach (var header in headers)
+            {
+                if (msg.Headers.Contains(header.Key))
+                {
+                    msg.Headers.Remove(header.Key);
+                }
+
+                msg.Headers.Add(header.Key, header.Value);
+            }
+        }
+
+        private async Task<(string token, bool retry)> Authenticate(
+            HttpRequestMessage msg, bool retry,
+            CancellationToken cancellationToken = default)
+        {
+            string token;
+            // Due to all the additional params appSignAuth is requiring,
+            // it's makes sense to still keep it in Http to manage all the details.
+            // TODO: get insight how to refactor this ?!?!?!
+            if (_auth is ApplicationSignedAuth appSignAuth)
+            {
+                var now = DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture);
+                const string headerName = "x-timestamp";
+                msg.Headers.Add(headerName, now);
+
+                var bytes = Array.Empty<byte>();
+                if (msg.Content is not null)
+                {
+                    bytes = await msg.Content.ReadAsByteArrayAsync(cancellationToken);
+                }
+
+                token = appSignAuth.GetSignedAuth(
+                    bytes,
+                    msg.Method.ToString().ToUpperInvariant(), msg.RequestUri.PathAndQuery,
+                    $"{headerName}:{now}", msg.Content?.Headers.ContentType?.ToString());
+                retry = false;
+            }
+            else
+            {
+                // try force get new token if retrying
+                token = await _auth.GetAuthToken(force: !retry);
+            }
+
+            return (token, retry);
         }
     }
 }

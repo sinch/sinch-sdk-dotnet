@@ -161,5 +161,34 @@ namespace Sinch.Tests.Core
 
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
+
+        [Fact]
+        public async Task AddOwnHeaders()
+        {
+            _tokenManagerMock
+                .GetAuthToken(Arg.Any<bool>())
+                .Returns("first_token");
+
+            var uri = new Uri("http://sinch.com/items");
+
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .WithHeaderExact("Accept-Language", new[]
+                {
+                    "en-US",
+                    "uk-UA"
+                })
+                .Respond(HttpStatusCode.OK);
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+
+            await http.Send<EmptyResponse>(uri, HttpMethod.Get, headers: new Dictionary<string, IEnumerable<string>>()
+            {
+                { "Accept-Language", new[] { "en-US", "uk-UA" } }
+            });
+
+            _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
     }
 }
