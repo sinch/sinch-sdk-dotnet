@@ -213,7 +213,14 @@ namespace Sinch.Verification
                 Custom = request.Custom,
                 Identity = request.Identity,
                 Method = request.Method,
-                Reference = request.Reference
+                Reference = request.Reference,
+                CalloutOptions = new CalloutOptions()
+                {
+                    Speech = new SpeechEngineSetting()
+                    {
+                        Locale = request.Locale
+                    }
+                }
             }, cancellationToken);
             return result as StartCalloutVerificationResponse ??
                    throw new InvalidOperationException($"{nameof(StartCalloutVerificationResponse)} result is null.");

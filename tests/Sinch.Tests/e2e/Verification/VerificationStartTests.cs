@@ -166,7 +166,8 @@ namespace Sinch.Tests.e2e.Verification
             {
                 Identity = startVerificationRequest.Identity,
                 Reference = startVerificationRequest.Reference,
-                Custom = startVerificationRequest.Custom
+                Custom = startVerificationRequest.Custom,
+                Locale = "en-CA"
             });
             response.Should().BeEquivalentTo(new StartCalloutVerificationResponse
             {

@@ -4,7 +4,7 @@ using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Start.Request
 {
-    public class StartVerificationRequest
+    internal class StartVerificationRequest
     {
         /// <summary>
         ///     Specifies the type of endpoint that will be verified and the particular endpoint.
@@ -40,9 +40,32 @@ namespace Sinch.Verification.Start.Request
         ///     An optional object for SMS Verification, with default values assumed for all contained values if not provided.
         /// </summary>
         public SmsOptions? SmsOptions { get; set; }
+
+        /// <summary>
+        ///     An optional object for Phone Call Verification, with default values assumed for all contained values if not provided.
+        /// </summary>
+        [JsonPropertyName("calloutOptions")]
+        public CalloutOptions? CalloutOptions { get; set; }
     }
-    
-    public class SmsOptions
+
+    internal class CalloutOptions
+    {
+        /// <summary>
+        ///     Text-To-Speech engine settings
+        /// </summary>
+        [JsonPropertyName("speech")]
+        public SpeechEngineSetting? Speech { get; set; }
+    }
+
+    internal class SpeechEngineSetting
+    {
+        /// <summary>
+        ///     A language-region identifier according to IANA. Only a subset of those identifiers is accepted.
+        /// </summary>
+        public string? Locale { get; set; }
+    }
+
+    internal class SmsOptions
     {
         /// <summary>
         ///     The SMS template must include a placeholder {{CODE}} where the verification code will be inserted, and it can otherwise be customized as desired.
