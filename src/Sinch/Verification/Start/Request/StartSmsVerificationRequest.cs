@@ -10,5 +10,11 @@ namespace Sinch.Verification.Start.Request
         /// </summary>
         [JsonInclude]
         public override VerificationMethodEx Method { get; } = VerificationMethodEx.Sms;
+
+        /// <summary>
+        ///     Value of [Accept-Language](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language) header is used to determine the language of an SMS message.
+        /// </summary>
+        [JsonIgnore]
+        public string? AcceptLanguage { get; set; }
     }
 }
