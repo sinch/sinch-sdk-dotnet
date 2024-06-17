@@ -163,7 +163,13 @@ namespace Sinch.Verification
                 Custom = request.Custom,
                 Identity = request.Identity,
                 Method = request.Method,
-                Reference = request.Reference
+                Reference = request.Reference,
+                SmsOptions = new SmsOptions()
+                {
+                    CodeType = request.CodeType,
+                    Expiry = request.Expiry,
+                    Template = request.Template
+                }
             }, cancellationToken, headers: headers);
             return result as StartSmsVerificationResponse ??
                    throw new InvalidOperationException($"{nameof(StartSmsVerificationResponse)} result is null.");

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -28,8 +29,9 @@ namespace Sinch.Tests.e2e.Verification
             }
         };
 
+        // oas file based
         [Fact]
-        public async Task StartSmsVerification()
+        public async Task StartSmsVerificationOas()
         {
             var startVerificationRequest = new StartVerificationRequest
             {
@@ -65,6 +67,52 @@ namespace Sinch.Tests.e2e.Verification
                         Method = "some_string_value",
                         Href = "some_string_value",
                         Rel = "some_string_value"
+                    }
+                }
+            });
+        }
+
+        [Fact]
+        public async Task StartSmsVerification()
+        {
+            var startVerificationRequest = new StartVerificationRequest
+            {
+                Custom = "456",
+                Reference = "123",
+                Method = VerificationMethodEx.Sms,
+                Identity = new Identity
+                {
+                    Endpoint = "+49000000",
+                    Type = IdentityType.Number
+                }
+            };
+
+            var response = await VerificationClient.Verification.StartSms(new StartSmsVerificationRequest
+            {
+                Custom = startVerificationRequest.Custom,
+                Reference = startVerificationRequest.Reference,
+                Identity = startVerificationRequest.Identity,
+                AcceptLanguage = "en-US",
+                CodeType = CodeType.Alphanumeric,
+                Template = "{{CODE}} - to access all secrets",
+                Expiry = new TimeOnly(17, 32, 11)
+            });
+            response.Should().BeEquivalentTo(new StartSmsVerificationResponse
+            {
+                Id = "123",
+                Method = VerificationMethodEx.Sms,
+                Sms = new SmsInfo
+                {
+                    Template = "{{CODE}} - to access all secrets",
+                    InterceptionTimeout = 32
+                },
+                Links = new List<Links>
+                {
+                    new()
+                    {
+                        Method = "put",
+                        Href = "href",
+                        Rel = "status"
                     }
                 }
             });

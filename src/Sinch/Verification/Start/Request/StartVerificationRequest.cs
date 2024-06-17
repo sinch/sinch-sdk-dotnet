@@ -1,3 +1,5 @@
+using System;
+using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Start.Request
@@ -33,6 +35,30 @@ namespace Sinch.Verification.Start.Request
         ///     through an Application signed request.
         /// </summary>
         public FlashCallOptions? FlashCallOptions { get; set; }
+
+        /// <summary>
+        ///     An optional object for SMS Verification, with default values assumed for all contained values if not provided.
+        /// </summary>
+        public SmsOptions? SmsOptions { get; set; }
+    }
+    
+    public class SmsOptions
+    {
+        /// <summary>
+        ///     The SMS template must include a placeholder {{CODE}} where the verification code will be inserted, and it can otherwise be customized as desired.
+        /// </summary>
+        [JsonPropertyName("template")]
+        public string? Template { get; set; }
+
+        /// <summary>
+        ///     Accepted values for the type of code to be generated are Numeric, Alpha, and Alphanumeric.
+        /// </summary>
+        [JsonPropertyName("codeType")]
+        public CodeType? CodeType { get; set; }
+
+        [JsonPropertyName("expiry")]
+        [JsonConverter(typeof(TimeOnlyJsonConverter))]
+        public TimeOnly? Expiry { get; set; }
     }
 
     public class FlashCallOptions
