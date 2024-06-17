@@ -148,12 +148,10 @@ namespace Sinch.Fax.Faxes
                     "Neither content urls or file content or base64 files provided for a create fax request.");
             }
 
-            if (sendingContentUrls)
-            {
-                _loggerAdapter?.LogInformation(
-                    "Sending fax with content urls - {isContentUrls}; with base64 files - {isBase64Files}",
-                    sendingContentUrls, sendingBase64Files);
-            }
+            _loggerAdapter?.LogInformation(
+                "Sending fax with content urls - {isContentUrls}; with base64 files - {isBase64Files}",
+                sendingContentUrls, sendingBase64Files);
+
 
             if (request.To!.Count > 1)
             {
