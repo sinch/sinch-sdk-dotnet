@@ -142,32 +142,29 @@ namespace Sinch.Fax.Faxes
 
             var sendingContentUrls = request.ContentUrl?.Any() == true;
             var sendingBase64Files = request.Files?.Any() == true;
-            if (sendingContentUrls || sendingBase64Files)
+            if (!sendingBase64Files && !sendingContentUrls)
             {
-                if (sendingContentUrls)
-                {
-                    _loggerAdapter?.LogInformation("Sending fax with content urls...");
-                }
-
-                if (sendingBase64Files)
-                {
-                    _loggerAdapter?.LogInformation("Sending fax with base64 files...");
-                }
-
-                if (request.To!.Count > 1)
-                {
-                    var faxResponse = await _http.Send<SendFaxRequest, SendFaxResponse>(_uri, HttpMethod.Post, request,
-                        cancellationToken: cancellationToken);
-                    return faxResponse.Faxes;
-                }
-
-                var fax = await _http.Send<SendFaxRequest, Fax>(_uri, HttpMethod.Post, request,
-                    cancellationToken: cancellationToken);
-                return new List<Fax>() { fax };
+                throw new InvalidOperationException(
+                    "Neither content urls or file content or base64 files provided for a create fax request.");
             }
 
-            throw new InvalidOperationException(
-                "Neither content urls or file content or base64 files provided for a create fax request.");
+            if (sendingContentUrls)
+            {
+                _loggerAdapter?.LogInformation(
+                    "Sending fax with content urls - {isContentUrls}; with base64 files - {isBase64Files}",
+                    sendingContentUrls, sendingBase64Files);
+            }
+
+            if (request.To!.Count > 1)
+            {
+                var faxResponseList = await _http.Send<SendFaxRequest, SendFaxResponse>(_uri, HttpMethod.Post, request,
+                    cancellationToken: cancellationToken);
+                return faxResponseList.Faxes;
+            }
+
+            var faxJson = await _http.Send<SendFaxRequest, Fax>(_uri, HttpMethod.Post, request,
+                cancellationToken: cancellationToken);
+            return new List<Fax>() { faxJson };
         }
 
         /// <inheritdoc />

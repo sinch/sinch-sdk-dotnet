@@ -37,7 +37,10 @@ namespace Sinch.Tests.e2e.Fax
         public async Task SendContentUrls()
         {
             var response = await FaxClient.Faxes.Send("+12015555555",
-                new SendFaxRequest(new List<string>() { "http://fax-db/fax1.pdf", "http://fax-db/fax2.pdf" }));
+                new SendFaxRequest()
+                {
+                    ContentUrl = new List<string>() { "http://fax-db/fax1.pdf", "http://fax-db/fax2.pdf" }
+                });
             response.Should().BeEquivalentTo(new Sinch.Fax.Faxes.Fax()
             {
                 Id = "01HXVD9FPQ8MAJ2650W0KTY7D4",
@@ -65,7 +68,10 @@ namespace Sinch.Tests.e2e.Fax
         public async Task SendManyRecipients()
         {
             var response = await FaxClient.Faxes.Send(new List<string>() { "+12015555555", "+12015555554" },
-                new SendFaxRequest(new List<string>() { "http://fax-db/fax1.pdf" }));
+                new SendFaxRequest()
+                {
+                    ContentUrl = new List<string>() { "http://fax-db/fax1.pdf" }
+                });
             response.Should().HaveCount(2);
         }
 

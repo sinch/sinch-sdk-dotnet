@@ -10,18 +10,9 @@ namespace Sinch.Fax.Faxes
 {
     public class SendFaxRequest : IDisposable, IAsyncDisposable
     {
-        [Obsolete("Required for system text json", true)]
         public SendFaxRequest()
         {
-        }
 
-        /// <summary>
-        ///     Creates a fax with contentUrls
-        /// </summary>
-        /// <param name="contentUrl"></param>
-        public SendFaxRequest(List<string> contentUrl)
-        {
-            ContentUrl = contentUrl;
         }
 
         [JsonIgnore]
@@ -97,7 +88,7 @@ namespace Sinch.Fax.Faxes
         /// </summary>
         [JsonPropertyName("contentUrl")]
         [JsonInclude]
-        public List<string>? ContentUrl { get; private set; }
+        public List<string>? ContentUrl { get; set; }
 
         /// <summary>
         ///     Text that will be displayed at the top of each page of the fax. 50 characters maximum. Default header text is \&quot;-\&quot;. Note that the header is not applied until the fax is transmitted, so it will not appear on fax PDFs or thumbnails.
