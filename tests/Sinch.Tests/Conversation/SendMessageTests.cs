@@ -4,6 +4,7 @@ using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
@@ -13,7 +14,9 @@ using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Messages.Send;
+using Sinch.Core;
 using Xunit;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Sinch.Tests.Conversation
 {
@@ -481,7 +484,7 @@ namespace Sinch.Tests.Conversation
             };
             _baseRequest.CorrelationId = "cor_id";
             _baseRequest.ProcessingStrategy = ProcessingStrategy.DispatchOnly;
-            _baseRequest.Ttl = "1800s";
+            _baseRequest.TtlSeconds = 1800;
             _baseRequest.Queue = MessageQueue.HighPriority;
             _baseRequest.MessageMetadata = "meta";
             _baseRequest.Message.ExplicitChannelOmniMessage =
@@ -499,6 +502,24 @@ namespace Sinch.Tests.Conversation
             var response = await Conversation.Messages.Send(_baseRequest);
 
             response.Should().NotBeNull();
+        }
+
+        [Theory]
+        [InlineData("300s", 300)]
+        [InlineData("  300s ", 300)]
+        [InlineData(null, null)]
+        [InlineData("", null)]
+        [InlineData("   ", null)]
+        public void DeserializeTll(string actual, int? expected)
+        {
+            // NOTE: api doesn't return TTL for deserialization anywhere
+            _baseMessageExpected.ttl = actual;
+            var json = JsonConvert.SerializeObject(_baseMessageExpected as object);
+            var result = JsonSerializer.Deserialize<SendMessageRequest>(json, new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = new SnakeCaseNamingPolicy()
+            });
+            result.TtlSeconds.Should().Be(expected);
         }
     }
 }
