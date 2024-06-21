@@ -73,9 +73,20 @@ namespace Sinch.Core
             throw new InvalidOperationException($"Failed to parse {enumType.Name} enum for value {value}");
         }
 
-        public static bool IsLastPage(int page, int pageSize, int totalCount)
+        public static bool IsLastPage(int page, int pageSize, int totalCount, PageStart pageStart = PageStart.Zero)
         {
-            return (page + 1) * pageSize >= totalCount;
+            switch (pageStart)
+            {
+                case PageStart.Zero:
+                    page += 1;
+                    break;
+                case PageStart.One:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(pageStart), pageStart, null);
+            }
+
+            return page * pageSize >= totalCount;
         }
 
         public static string ToSnakeCaseQueryString<T>(T obj) where T : class
@@ -92,6 +103,40 @@ namespace Sinch.Core
                 if (propVal is null) continue;
 
                 var propName = StringUtils.ToSnakeCase(prop.Name);
+                var propType = prop.PropertyType;
+                if (typeof(IEnumerable).IsAssignableFrom(propType) &&
+                    propType != typeof(string))
+                {
+                    list.AddRange(ParamsFromObject(propName, (propVal as IEnumerable)!));
+                }
+                else
+                {
+                    list.Add(new(propName, ToQueryParamString(propVal)));
+                }
+            }
+
+            return StringUtils.ToQueryString(list);
+        }
+
+        public static string ToQueryString<T>(T obj, Func<string?, string?> namingConverter)
+        {
+            var props = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public |
+                                                BindingFlags.DeclaredOnly);
+            var list = new List<KeyValuePair<string, string>>();
+            foreach (var prop in props)
+            {
+                if (!prop.CanRead)
+                    continue;
+                var propVal = prop.GetValue(obj);
+
+                if (propVal is null) continue;
+
+                var propName = namingConverter.Invoke(prop.Name);
+                if (string.IsNullOrEmpty(propName))
+                {
+                    continue;
+                }
+
                 var propType = prop.PropertyType;
                 if (typeof(IEnumerable).IsAssignableFrom(propType) &&
                     propType != typeof(string))
@@ -143,5 +188,11 @@ namespace Sinch.Core
         {
             throw new InvalidOperationException($"{type.Name} deserialization result is null");
         }
+    }
+
+    internal enum PageStart
+    {
+        Zero = 0,
+        One = 1,
     }
 }

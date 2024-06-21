@@ -7,7 +7,7 @@ namespace Sinch
     {
         public ApiError? Error { get; set; }
 
-        public string? Code { get; set; }
+        public int? Code { get; set; }
 
         public string? Text { get; set; }
     }
