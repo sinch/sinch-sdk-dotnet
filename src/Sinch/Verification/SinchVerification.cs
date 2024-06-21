@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -148,13 +149,28 @@ namespace Sinch.Verification
         public async Task<StartSmsVerificationResponse> StartSms(StartSmsVerificationRequest request,
             CancellationToken cancellationToken = default)
         {
+            Dictionary<string, IEnumerable<string>>? headers = null;
+            if (request.AcceptLanguage != null)
+            {
+                headers = new Dictionary<string, IEnumerable<string>>()
+                {
+                    { "Accept-Language", new[] { request.AcceptLanguage } }
+                };
+            }
+
             var result = await Start(new StartVerificationRequest
             {
                 Custom = request.Custom,
                 Identity = request.Identity,
                 Method = request.Method,
-                Reference = request.Reference
-            }, cancellationToken);
+                Reference = request.Reference,
+                SmsOptions = new SmsOptions()
+                {
+                    CodeType = request.CodeType,
+                    Expiry = request.Expiry,
+                    Template = request.Template
+                }
+            }, cancellationToken, headers: headers);
             return result as StartSmsVerificationResponse ??
                    throw new InvalidOperationException($"{nameof(StartSmsVerificationResponse)} result is null.");
         }
@@ -197,7 +213,14 @@ namespace Sinch.Verification
                 Custom = request.Custom,
                 Identity = request.Identity,
                 Method = request.Method,
-                Reference = request.Reference
+                Reference = request.Reference,
+                CalloutOptions = new CalloutOptions()
+                {
+                    Speech = new SpeechEngineSetting()
+                    {
+                        Locale = request.Locale
+                    }
+                }
             }, cancellationToken);
             return result as StartCalloutVerificationResponse ??
                    throw new InvalidOperationException($"{nameof(StartCalloutVerificationResponse)} result is null.");
@@ -296,12 +319,12 @@ namespace Sinch.Verification
         }
 
         private Task<IStartVerificationResponse> Start(StartVerificationRequest request,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken = default, Dictionary<string, IEnumerable<string>>? headers = null)
         {
             var uri = new Uri(_baseAddress, "verification/v1/verifications");
             _logger?.LogDebug("Starting verification...");
             return _http.Send<StartVerificationRequest, IStartVerificationResponse>(uri, HttpMethod.Post, request,
-                cancellationToken);
+                cancellationToken, headers: headers);
         }
 
         private Task<IVerificationReportResponse> Report(VerifyReportRequest request,
