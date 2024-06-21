@@ -10,5 +10,10 @@ namespace Sinch.Verification.Start.Request
         /// </summary>
         [JsonInclude]
         public override VerificationMethodEx Method { get; } = VerificationMethodEx.Callout;
+
+        /// <summary>
+        ///     Text-To-Speech engine setting. A language-region identifier according to IANA. Only a subset of those identifiers is accepted.
+        /// </summary>
+        public string? Locale { get; set; }
     }
 }

@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.Message;
 
@@ -118,11 +121,11 @@ namespace Sinch.Conversation.Messages.Send
         ///     The timeout allotted for sending the message, expressed in seconds.
         ///     Passed to channels which support it and emulated by the Conversation API for channels without ttl
         ///     support but with message retract/unsend functionality. Channel failover will not be performed for
-        ///     messages with an expired TTL. The format is an integer with the suffix &#x60;s&#x60; (for seconds).
-        ///     Valid integer range is 3 to 315,576,000,000 (inclusive). Example values include &#x60;10s&#x60;
-        ///     (10 seconds) and &#x60;86400s&#x60; (24 hours).
+        ///     messages with an expired TTL. 
         /// </summary>
-        public string? Ttl { get; set; }
+        [JsonPropertyName("ttl")]
+        [JsonConverter(typeof(TimeToLiveConverter))]
+        public int? TtlSeconds { get; set; }
 
 
         /// <summary>
@@ -154,11 +157,34 @@ namespace Sinch.Conversation.Messages.Send
             sb.Append("  ConversationMetadata: ").Append(ConversationMetadata).Append("\n");
             sb.Append("  Queue: ").Append(Queue).Append("\n");
             sb.Append("  Recipient: ").Append(Recipient).Append("\n");
-            sb.Append("  Ttl: ").Append(Ttl).Append("\n");
+            sb.Append("  Ttl: ").Append(TtlSeconds).Append("\n");
             sb.Append("  ProcessingStrategy: ").Append(ProcessingStrategy).Append("\n");
             sb.Append("  CorrelationId: ").Append(CorrelationId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
+        }
+    }
+
+    public class TimeToLiveConverter : JsonConverter<int?>
+    {
+        public override int? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            var str = reader.GetString();
+            if (str is null) return null;
+            str = str.Trim();
+            var val = new string(str.TakeWhile(char.IsNumber).ToArray());
+            if (int.TryParse(val, out int result))
+            {
+                return result;
+            }
+
+            return null;
+        }
+
+        public override void Write(Utf8JsonWriter writer, int? value, JsonSerializerOptions options)
+        {
+            string? result = value.HasValue ? value.Value + "s" : null;
+            JsonSerializer.Serialize(writer, result, options);
         }
     }
 }
