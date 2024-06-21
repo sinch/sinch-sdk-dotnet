@@ -7,7 +7,7 @@ namespace Sinch.Tests
 {
     public class JsonMatcher : IMockedRequestMatcher
     {
-        private readonly JToken _json;
+        private readonly JToken _expectedJson;
 
         /// <summary>
         ///     Initialized a JsonMatcher from anonymous object
@@ -15,12 +15,12 @@ namespace Sinch.Tests
         /// <param name="obj"></param>
         public JsonMatcher(object obj)
         {
-            _json = JToken.FromObject(obj);
+            _expectedJson = JToken.FromObject(obj);
         }
 
         public JsonMatcher(string expectedJson)
         {
-            _json = JToken.Parse(expectedJson);
+            _expectedJson = JToken.Parse(expectedJson);
         }
 
         public bool Matches(HttpRequestMessage message)
@@ -28,8 +28,8 @@ namespace Sinch.Tests
             if (message.Content == null) return false;
             var content = message.Content.ReadAsStringAsync().Result;
             var actual = JToken.Parse(content);
-            actual.Should().BeEquivalentTo(_json);
-            return JToken.DeepEquals(_json, actual);
+            actual.Should().BeEquivalentTo(_expectedJson);
+            return JToken.DeepEquals(_expectedJson, actual);
         }
     }
 }
