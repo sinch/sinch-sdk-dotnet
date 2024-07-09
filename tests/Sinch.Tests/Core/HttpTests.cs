@@ -77,6 +77,48 @@ namespace Sinch.Tests.Core
         }
 
         [Fact]
+        public async Task NewTokenOnlyOnceAfterSuccessfulRefresh()
+        {
+            _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
+                .Returns("first_token", "second_token", "second_token", "third_token");
+
+            var uri = new Uri("http://sinch.com/items");
+
+            // first token expires
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .Respond(HttpStatusCode.Unauthorized);
+
+            // new token is okay
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer second_token")
+                .Respond(HttpStatusCode.OK);
+
+            // and now second token is expired
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer second_token")
+                .Respond(HttpStatusCode.Unauthorized);
+
+            // third token should be ok
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer third_token")
+                .Respond(HttpStatusCode.OK);
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+
+            Func<Task<EmptyResponse>> op1 = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
+            Func<Task<EmptyResponse>> op2 = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
+
+            // first call refreshes token and set it to second token
+            await op1.Should().NotThrowAsync();
+            // second token, used in second request should be replaced with third token
+            await op2.Should().NotThrowAsync();
+
+            _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
         public async Task OauthThrowExceptionIfTokenNotExpired()
         {
             _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
@@ -116,7 +158,8 @@ namespace Sinch.Tests.Core
                 .WithHeaders("Authorization", "Bearer first_token")
                 .Respond(HttpStatusCode.Unauthorized, new KeyValuePair<string, string>[]
                 {
-                    new("www-authenticate", "expired")
+                    new("www-authenticate",
+                        "Bearer error=\"invalid_token\", error_description=\"Jwt expired at 2024-07-08T22:12:28Z\", error_uri=\"https://tools.ietf.org/html/rfc6750#section-3.1\"")
                 }, (HttpContent)null);
 
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
