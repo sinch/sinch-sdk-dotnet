@@ -76,48 +76,6 @@ namespace Sinch.Tests.Core
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 
-        // [Fact]
-        // public async Task ActualizeTokenBetweenTwoRequests()
-        // {
-        //     _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
-        //         .Returns("first_token", "second_token", "second_token", "third_token");
-        //
-        //     var uri = new Uri("http://sinch.com/items");
-        //
-        //     // first token expires
-        //     _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
-        //         .WithHeaders("Authorization", "Bearer first_token")
-        //         .Respond(HttpStatusCode.Unauthorized);
-        //
-        //     // new token is okay
-        //     _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
-        //         .WithHeaders("Authorization", "Bearer second_token")
-        //         .Respond(HttpStatusCode.OK);
-        //
-        //     // and now second token is expired
-        //     _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
-        //         .WithHeaders("Authorization", "Bearer second_token")
-        //         .Respond(HttpStatusCode.Unauthorized);
-        //
-        //     // third token should be ok
-        //     _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
-        //         .WithHeaders("Authorization", "Bearer third_token")
-        //         .Respond(HttpStatusCode.OK);
-        //
-        //     var httpClient = new HttpClient(_httpMessageHandlerMock);
-        //     var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
-        //
-        //     Func<Task<EmptyResponse>> op1 = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
-        //     Func<Task<EmptyResponse>> op2 = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
-        //
-        //     // first call refreshes token and set it to second token
-        //     await op1.Should().NotThrowAsync();
-        //     // second token, used in second request should be replaced with third token
-        //     await op2.Should().NotThrowAsync();
-        //
-        //     _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
-        // }
-
         [Fact]
         public async Task OauthThrowExceptionIfTokenNotExpired()
         {
