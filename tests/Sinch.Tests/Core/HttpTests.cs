@@ -116,7 +116,8 @@ namespace Sinch.Tests.Core
                 .WithHeaders("Authorization", "Bearer first_token")
                 .Respond(HttpStatusCode.Unauthorized, new KeyValuePair<string, string>[]
                 {
-                    new("www-authenticate", "expired")
+                    new("www-authenticate",
+                        "Bearer error=\"invalid_token\", error_description=\"Jwt expired at 2024-07-08T22:12:28Z\", error_uri=\"https://tools.ietf.org/html/rfc6750#section-3.1\"")
                 }, (HttpContent)null);
 
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
