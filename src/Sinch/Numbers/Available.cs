@@ -21,6 +21,7 @@ namespace Sinch.Numbers
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        [Obsolete($"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.RentAny)} instead.")]
         Task<ActiveNumber> RentAny(RentAnyNumberRequest request,
             CancellationToken cancellationToken = default);
 
@@ -36,6 +37,7 @@ namespace Sinch.Numbers
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        [Obsolete($"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.Rent)} instead.")]
         Task<ActiveNumber> Rent(string phoneNumber,
             RentActiveNumberRequest request, CancellationToken cancellationToken = default);
 
@@ -49,6 +51,8 @@ namespace Sinch.Numbers
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        [Obsolete(
+            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.SearchForAvailableNumbers)} instead.")]
         Task<ListAvailableNumbersResponse> List(
             ListAvailableNumbersRequest request, CancellationToken cancellationToken = default);
 
@@ -62,6 +66,8 @@ namespace Sinch.Numbers
         /// </param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        [Obsolete(
+            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.CheckAvailability)} instead.")]
         Task<AvailableNumber> CheckAvailability(string phoneNumber,
             CancellationToken cancellationToken = default);
     }
@@ -83,7 +89,6 @@ namespace Sinch.Numbers
         }
 
         /// <inheritdoc />
-        [Obsolete($"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.RentAny)} instead.")]
         public Task<ActiveNumber> RentAny(RentAnyNumberRequest request,
             CancellationToken cancellationToken = default)
         {
@@ -96,7 +101,6 @@ namespace Sinch.Numbers
         }
 
         /// <inheritdoc />
-        [Obsolete($"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.Rent)} instead.")]
         public Task<ActiveNumber> Rent(string phoneNumber, RentActiveNumberRequest request,
             CancellationToken cancellationToken = default)
         {
@@ -106,8 +110,6 @@ namespace Sinch.Numbers
         }
 
         /// <inheritdoc />
-        [Obsolete(
-            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.SearchForAvailableNumbers)} instead.")]
         public Task<ListAvailableNumbersResponse> List(ListAvailableNumbersRequest request,
             CancellationToken cancellationToken = default)
         {
@@ -119,8 +121,6 @@ namespace Sinch.Numbers
         }
 
         /// <inheritdoc />
-        [Obsolete(
-            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.CheckAvailability)} instead.")]
         public async Task<AvailableNumber> CheckAvailability(string phoneNumber,
             CancellationToken cancellationToken = default)
         {

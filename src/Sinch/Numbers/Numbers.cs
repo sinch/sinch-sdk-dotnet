@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
 using Sinch.Numbers.Active;
+using Sinch.Numbers.Active.List;
+using Sinch.Numbers.Active.Update;
 using Sinch.Numbers.Available;
 using Sinch.Numbers.Available.List;
 using Sinch.Numbers.Available.Rent;
@@ -48,6 +51,26 @@ namespace Sinch.Numbers
         /// <inheritdoc cref="ISinchNumbersAvailable.CheckAvailability" />
         Task<AvailableNumber> CheckAvailability(string phoneNumber,
             CancellationToken cancellationToken = default);
+
+        /// <inheritdoc cref="ISinchNumbersActive.Release" />
+        Task<ActiveNumber> Release(
+            string phoneNumber, CancellationToken cancellationToken = default);
+
+        /// <inheritdoc cref="ISinchNumbersActive.Get" />
+        Task<ActiveNumber> Get(string phoneNumber,
+            CancellationToken cancellationToken = default);
+
+        /// <inheritdoc cref="ISinchNumbersActive.Update" />
+        Task<ActiveNumber> Update(string phoneNumber,
+            UpdateActiveNumberRequest request, CancellationToken cancellationToken = default);
+
+        /// <inheritdoc cref="ISinchNumbersActive.List" />
+        Task<ListActiveNumbersResponse> List(ListActiveNumbersRequest request,
+            CancellationToken cancellationToken = default);
+
+        /// <inheritdoc cref="ISinchNumbersActive.ListAuto" />
+        IAsyncEnumerable<ActiveNumber> ListAuto(ListActiveNumbersRequest request,
+            CancellationToken cancellationToken = default);
     }
 
     public sealed class Numbers : ISinchNumbers
@@ -69,6 +92,9 @@ namespace Sinch.Numbers
 
         public ISinchNumbersAvailable Available { get; }
 
+        // disabling obsolete usage as in next major version, active and available interfaces will remain,
+        // but visibility changed to internal, and public interface will be available only through this methods
+#pragma warning disable CS0618 // Type or member is obsolete
         /// <inheritdoc />
         public Task<ActiveNumber> RentAny(RentAnyNumberRequest request, CancellationToken cancellationToken = default)
         {
@@ -95,5 +121,39 @@ namespace Sinch.Numbers
         {
             return Available.CheckAvailability(phoneNumber, cancellationToken);
         }
+
+        /// <inheritdoc />
+        public Task<ActiveNumber> Release(string phoneNumber, CancellationToken cancellationToken = default)
+        {
+            return Active.Release(phoneNumber, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<ActiveNumber> Get(string phoneNumber, CancellationToken cancellationToken = default)
+        {
+            return Active.Get(phoneNumber, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<ActiveNumber> Update(string phoneNumber, UpdateActiveNumberRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            return Active.Update(phoneNumber, request, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<ListActiveNumbersResponse> List(ListActiveNumbersRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            return Active.List(request, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public IAsyncEnumerable<ActiveNumber> ListAuto(ListActiveNumbersRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            return Active.ListAuto(request, cancellationToken);
+        }
+#pragma warning restore CS0618 // Type or member is obsolete
     }
 }
