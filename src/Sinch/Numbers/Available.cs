@@ -16,26 +16,28 @@ namespace Sinch.Numbers
     {
         /// <summary>
         ///     Search for and activate an available Sinch virtual number all in one API call.
-        ///     Currently the rentAny operation works only for US 10DLC numbers
+        ///     Currently, the rentAny operation works only for US 10DLC numbers
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        [Obsolete($"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.RentAny)} instead.")]
         Task<ActiveNumber> RentAny(RentAnyNumberRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Activate a virtual number to use with SMS products, Voice products, or both. <br /><br />
-        ///     You'll use SmsConfiguration to setup your number for SMS and VoiceConfiguration for Voice.
-        ///     To setup for both, add both objects. <br /><br />
+        ///     You'll use SmsConfiguration to set up your number for SMS and VoiceConfiguration for Voice.
+        ///     To set up for both, add both objects. <br /><br />
         ///     Note: You cannot add both objects if you only need to configure one object.
         ///     For example, if you only need to configure smsConfiguration for SMS messaging,
-        ///     do not add the voiceConfiguration object or it will result in an error.
+        ///     do not add the voiceConfiguration object, or it will result in an error.
         /// </summary>
         /// <param name="phoneNumber">Output only. The phone number in E.164 format with leading +.</param>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        [Obsolete($"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.Rent)} instead.")]
         Task<ActiveNumber> Rent(string phoneNumber,
             RentActiveNumberRequest request, CancellationToken cancellationToken = default);
 
@@ -49,6 +51,8 @@ namespace Sinch.Numbers
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        [Obsolete(
+            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.SearchForAvailableNumbers)} instead.")]
         Task<ListAvailableNumbersResponse> List(
             ListAvailableNumbersRequest request, CancellationToken cancellationToken = default);
 
@@ -62,6 +66,8 @@ namespace Sinch.Numbers
         /// </param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        [Obsolete(
+            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.CheckAvailability)} instead.")]
         Task<AvailableNumber> CheckAvailability(string phoneNumber,
             CancellationToken cancellationToken = default);
     }
