@@ -86,7 +86,7 @@ namespace Sinch.Core
         public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default, Dictionary<string, IEnumerable<string>>? headers = null)
         {
-            return Send<object, TResponse>(uri, httpMethod, null, cancellationToken, headers);
+            return Send<object, TResponse>(uri, httpMethod, null!, cancellationToken, headers);
         }
 
         public async Task<TResponse> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest request,
