@@ -12,7 +12,7 @@ public class ListActiveNumbers
             Environment.GetEnvironmentVariable("SINCH_KEY_ID")!,
             Environment.GetEnvironmentVariable("SINCH_KEY_SECRET")!
         );
-        ListActiveNumbersResponse response = await sinch.Numbers.Active.List(new ListActiveNumbersRequest
+        ListActiveNumbersResponse response = await sinch.Numbers.List(new ListActiveNumbersRequest
         {
             RegionCode = "US",
             Type = Types.Mobile
