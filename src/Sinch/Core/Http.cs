@@ -205,6 +205,11 @@ namespace Sinch.Core
                     bytes = await msg.Content.ReadAsByteArrayAsync(cancellationToken);
                 }
 
+                if (msg.RequestUri is null)
+                {
+                    throw new NullReferenceException("HttpRequestMessage request uri is null");
+                }
+
                 token = appSignAuth.GetSignedAuth(
                     bytes,
                     msg.Method.ToString().ToUpperInvariant(), msg.RequestUri.PathAndQuery,
