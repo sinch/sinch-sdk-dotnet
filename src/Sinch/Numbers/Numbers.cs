@@ -28,12 +28,14 @@ namespace Sinch.Numbers
         /// <summary>
         ///     You can use the Available Number API to search for available numbers or activate an available number.
         /// </summary>
+        [Obsolete($"This property is obsolete, use methods of this ({nameof(ISinchNumbers)}) interface instead.")]
         public ISinchNumbersAvailable Available { get; }
 
         /// <summary>
         ///     You can use the Active Number API to manage numbers you own. Assign numbers to projects,
         ///     release numbers from projects, or list all numbers assigned to a project.
         /// </summary>
+        [Obsolete($"This property is obsolete, use methods of this ({nameof(ISinchNumbers)}) interface instead.")]
         public ISinchNumbersActive Active { get; }
 
         /// <inheritdoc cref="ISinchNumbersAvailable.RentAny" />
