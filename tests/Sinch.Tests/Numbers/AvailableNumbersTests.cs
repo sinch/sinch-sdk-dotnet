@@ -39,7 +39,7 @@ namespace Sinch.Tests.Numbers
                 }
             };
 
-            var response = await Numbers.Available.Rent("+12025550134", request);
+            var response = await Numbers.Rent("+12025550134", request);
             response.Should().NotBeNull();
             response.PhoneNumber.Should().Be("+12025550134");
         }
@@ -70,7 +70,7 @@ namespace Sinch.Tests.Numbers
                     CampaignId = "campaign_id"
                 }
             };
-            var response = await Numbers.Available.RentAny(request);
+            var response = await Numbers.RentAny(request);
 
             response.Should().NotBeNull();
             response.PhoneNumber.Should().Be("+12025550134");
@@ -92,7 +92,7 @@ namespace Sinch.Tests.Numbers
                     availableNumbers = new[] { TestData.AvailableNumber }
                 }));
 
-            var response = await Numbers.Available.List(
+            var response = await Numbers.SearchForAvailableNumbers(
                 new Sinch.Numbers.Available.List.ListAvailableNumbersRequest
                 {
                     RegionCode = "US",
@@ -107,7 +107,7 @@ namespace Sinch.Tests.Numbers
                 });
 
             response.Should().NotBeNull();
-            response.AvailableNumbers.Count().Should().Be(1);
+            response.AvailableNumbers!.Count().Should().Be(1);
         }
 
         [Fact]
@@ -119,7 +119,7 @@ namespace Sinch.Tests.Numbers
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(TestData.AvailableNumber));
 
-            var response = await Numbers.Available.CheckAvailability("+12025550134");
+            var response = await Numbers.CheckAvailability("+12025550134");
 
             response.Should().NotBeNull();
             response.PhoneNumber.Should().Be("+12025550134");
@@ -152,7 +152,7 @@ namespace Sinch.Tests.Numbers
                     }
                 }));
 
-            Func<Task<AvailableNumber>> response = () => Numbers.Available.CheckAvailability("+12025550");
+            Func<Task<AvailableNumber>> response = () => Numbers.CheckAvailability("+12025550");
 
             var exception = await response.Should().ThrowAsync<SinchApiException>();
             var node = exception.And.Details!.First();

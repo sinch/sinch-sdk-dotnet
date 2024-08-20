@@ -25,6 +25,8 @@ namespace Sinch.Numbers
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        [Obsolete(
+            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.List)} instead.")]
         Task<ListActiveNumbersResponse> List(ListActiveNumbersRequest request,
             CancellationToken cancellationToken = default);
 
@@ -37,7 +39,7 @@ namespace Sinch.Numbers
         ///     scheduled provisioning status. You can also update the type of number, currency type and amount. Note: You cannot
         ///     add both objects if you only need to update one object. For example, if you only need to reconfigure
         ///     smsConfiguration for SMS messaging,
-        ///     do not add the voiceConfiguration object or it will result in an error.
+        ///     do not add the voiceConfiguration object, or it will result in an error.
         /// </summary>
         /// <param name="phoneNumber">
         ///     Output only. The phone number in
@@ -46,6 +48,8 @@ namespace Sinch.Numbers
         /// <param name="request">A request object</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        [Obsolete(
+            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.Update)} instead.")]
         Task<ActiveNumber> Update(string phoneNumber,
             UpdateActiveNumberRequest request, CancellationToken cancellationToken = default);
 
@@ -55,6 +59,8 @@ namespace Sinch.Numbers
         /// <param name="phoneNumber">Number to get info about</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        [Obsolete(
+            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.Get)} instead.")]
         Task<ActiveNumber> Get(string phoneNumber,
             CancellationToken cancellationToken = default);
 
@@ -68,9 +74,13 @@ namespace Sinch.Numbers
         /// </param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        [Obsolete(
+            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.Release)} instead.")]
         Task<ActiveNumber> Release(
             string phoneNumber, CancellationToken cancellationToken = default);
 
+        [Obsolete(
+            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.ListAuto)} instead.")]
         IAsyncEnumerable<ActiveNumber> ListAuto(ListActiveNumbersRequest request,
             CancellationToken cancellationToken = default);
     }
@@ -91,7 +101,9 @@ namespace Sinch.Numbers
             _http = http;
         }
 
-        public Task<ListActiveNumbersResponse> List(ListActiveNumbersRequest request, CancellationToken cancellationToken = default)
+
+        public Task<ListActiveNumbersResponse> List(ListActiveNumbersRequest request,
+            CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Fetching active numbers {request}", request);
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/activeNumbers?{request.GetQueryString()}");
@@ -122,7 +134,8 @@ namespace Sinch.Numbers
             _logger?.LogDebug("Updating a {number}", phoneNumber);
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/activeNumbers/{phoneNumber}");
 
-            return _http.Send<UpdateActiveNumberRequest, ActiveNumber>(uri, HttpMethod.Patch, request, cancellationToken);
+            return _http.Send<UpdateActiveNumberRequest, ActiveNumber>(uri, HttpMethod.Patch, request,
+                cancellationToken);
         }
 
         /// <inheritdoc />
