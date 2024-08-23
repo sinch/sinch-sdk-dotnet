@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
@@ -145,7 +147,7 @@ namespace Sinch.Tests.Core
 
             var uri = new Uri("http://sinch.com/items");
 
-            var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo().Assembly.FullName).Version.ToString();
+            var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo().Assembly.FullName!).Version!.ToString();
 
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer first_token")
@@ -266,6 +268,27 @@ namespace Sinch.Tests.Core
             await op2.Should().NotThrowAsync();
 
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
+        public async Task SendReceiveUnicode()
+        {
+            _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
+                .Returns("first_token");
+
+            var uri = new Uri("http://sinch.com/items");
+
+            // first token expires
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .WithContent(JsonSerializer.Serialize("😼"))
+                .Respond(HttpStatusCode.OK, JsonContent.Create("😼"));
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+            var op1 = await http.Send<string, string>(uri, HttpMethod.Get, "😼");
+
+            op1.Should().BeEquivalentTo("😼");
         }
     }
 }
