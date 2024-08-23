@@ -127,8 +127,8 @@ namespace Sinch.Core
                 {
                     // will not retry when no "expired" header for a token.
                     const string wwwAuthenticateHeader = "www-authenticate";
-                    if (_auth.Scheme == AuthSchemes.Bearer && result.Headers.Contains(wwwAuthenticateHeader) &&
-                        !result.Headers.GetValues(wwwAuthenticateHeader).Any(x => x.Contains("expired")))
+                    if (_auth.Scheme == AuthSchemes.Bearer && (!result.Headers.Contains(wwwAuthenticateHeader) ||
+                        !result.Headers.GetValues(wwwAuthenticateHeader).Any(x => x.Contains("expired"))))
                     {
                         _logger?.LogDebug("OAuth Unauthorized");
                     }
