@@ -198,7 +198,7 @@ namespace Sinch.Tests.Core
         }
 
         [Fact]
-        public async Task UnauthorizedIfExpiredHeaderIsNotPresent()
+        public async Task UnauthorizedAndNoSecondAuthCallIfExpiredHeaderIsNotPresent()
         {
             _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
                 .Returns("first_token");
@@ -217,8 +217,9 @@ namespace Sinch.Tests.Core
             await op1.Should().ThrowAsync<SinchApiException>();
         }
 
-        // This test is testing a positive scenario when server was running idle - without doing requests to sinch api -
-        // for a while, and token it was holding became expired. Also tests next request after, presumably, next idle, 
+        // This test is testing a positive scenario when server was holding previously fetched token for a while,
+        // and it became expired.
+        // Also tests next request, simulating the hold of token for some time again, 
         // making sure the scenario have the same behaviour between two *independent* requests.
         // 
         // send expired token -> sinch api
@@ -241,12 +242,12 @@ namespace Sinch.Tests.Core
                 .WithHeaders("Authorization", "Bearer first_token")
                 .Respond(HttpStatusCode.Unauthorized, _expiredHeader, (HttpContent)null);
 
-            // internally auth returns new valid token, and request to same endpoint now good
+            // internally auth fetches a new valid token, and request to same endpoint now good
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer second_token")
                 .Respond(HttpStatusCode.OK);
 
-            // simulating some idle here, the latest token is expired again for second request
+            // simulating the hold of token for some time here, the latest token is expired again for second request
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer second_token")
                 .Respond(HttpStatusCode.Unauthorized, _expiredHeader, (HttpContent)null);
