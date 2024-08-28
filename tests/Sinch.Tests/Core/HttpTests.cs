@@ -215,6 +215,8 @@ namespace Sinch.Tests.Core
             Func<Task<EmptyResponse>> op1 = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
 
             await op1.Should().ThrowAsync<SinchApiException>();
+            // only one call, returning cached token, is performed
+            _tokenManagerMock.Received(requiredNumberOfCalls: 1);
         }
 
         // This test is testing a positive scenario when server was holding previously fetched token for a while,
