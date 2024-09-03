@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
@@ -18,6 +20,12 @@ namespace Sinch.Tests.Core
     {
         private readonly ISinchAuth _tokenManagerMock;
         private readonly MockHttpMessageHandler _httpMessageHandlerMock;
+
+        private KeyValuePair<string, string>[] _expiredHeader = new KeyValuePair<string, string>[]
+        {
+            new("www-authenticate",
+                "Bearer error=\"invalid_token\", error_description=\"Jwt expired at 2024-07-08T22:12:28Z\", error_uri=\"https://tools.ietf.org/html/rfc6750#section-3.1\"")
+        };
 
         public HttpTests()
         {
@@ -39,7 +47,7 @@ namespace Sinch.Tests.Core
             var uri = new Uri("http://sinch.com/items");
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer first_token")
-                .Respond(HttpStatusCode.Unauthorized);
+                .Respond(HttpStatusCode.Unauthorized, _expiredHeader, (HttpContent)null);
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer second_token")
                 .Respond(HttpStatusCode.OK);
@@ -62,13 +70,14 @@ namespace Sinch.Tests.Core
             var uri = new Uri("http://sinch.com/items");
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer first_token")
-                .Respond(HttpStatusCode.Unauthorized);
+                .Respond(HttpStatusCode.Unauthorized, _expiredHeader, (HttpContent)null);
+
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer second_token")
                 .Respond(HttpStatusCode.Unauthorized);
             var httpClient = new HttpClient(_httpMessageHandlerMock);
-            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
 
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
             Func<Task<object>> response = () => http.Send<object>(uri, HttpMethod.Get);
 
             var ex = await response.Should().ThrowAsync<SinchApiException>();
@@ -114,11 +123,7 @@ namespace Sinch.Tests.Core
 
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer first_token")
-                .Respond(HttpStatusCode.Unauthorized, new KeyValuePair<string, string>[]
-                {
-                    new("www-authenticate",
-                        "Bearer error=\"invalid_token\", error_description=\"Jwt expired at 2024-07-08T22:12:28Z\", error_uri=\"https://tools.ietf.org/html/rfc6750#section-3.1\"")
-                }, (HttpContent)null);
+                .Respond(HttpStatusCode.Unauthorized, _expiredHeader, (HttpContent)null);
 
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer second_token")
@@ -142,7 +147,7 @@ namespace Sinch.Tests.Core
 
             var uri = new Uri("http://sinch.com/items");
 
-            var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo().Assembly.FullName).Version.ToString();
+            var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo().Assembly.FullName!).Version!.ToString();
 
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer first_token")
@@ -190,6 +195,103 @@ namespace Sinch.Tests.Core
             });
 
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
+        public async Task UnauthorizedAndNoSecondAuthCallIfExpiredHeaderIsNotPresent()
+        {
+            _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
+                .Returns("first_token");
+
+            var uri = new Uri("http://sinch.com/items");
+
+            // first token expires
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .Respond(HttpStatusCode.Unauthorized);
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+            Func<Task<EmptyResponse>> op1 = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
+
+            await op1.Should().ThrowAsync<SinchApiException>();
+            // only one function call, to read the token stored in cache, is performed
+            _tokenManagerMock.Received(requiredNumberOfCalls: 1);
+        }
+
+        // This test is testing a positive scenario when server was holding previously fetched token for a while,
+        // and it became expired.
+        // Also tests next request, simulating the hold of token for some time again, 
+        // making sure the scenario have the same behaviour between two *independent* requests.
+        // 
+        // send expired token -> sinch api
+        // 401 with expired header <- respond  
+        // request new token -> sinch auth
+        // save new token <- sinch auth returns new token
+        // use new token -> sinch api success
+        // idle some time, latest token become expired
+        // repeat the above
+        [Fact]
+        public async Task NewTokenIsFetchedBetweenTwoRequestsStartingFromExpired()
+        {
+            _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
+                .Returns("first_token", "second_token", "second_token", "third_token");
+
+            var uri = new Uri("http://sinch.com/items");
+
+            // first token expires, simulating state when server had token beforehand for some time already
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .Respond(HttpStatusCode.Unauthorized, _expiredHeader, (HttpContent)null);
+
+            // internally auth fetches a new valid token, and request to same endpoint now good
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer second_token")
+                .Respond(HttpStatusCode.OK);
+
+            // simulating the hold of token for some time here, the latest token is expired again for second request
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer second_token")
+                .Respond(HttpStatusCode.Unauthorized, _expiredHeader, (HttpContent)null);
+
+            // and should be the same scenario, internally auth fetched new token which is used in this request
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer third_token")
+                .Respond(HttpStatusCode.OK);
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+
+            Func<Task<EmptyResponse>> op1 = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
+            Func<Task<EmptyResponse>> op2 = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
+
+            // first call sees that token it's holding is expired, and fetches new token
+            await op1.Should().NotThrowAsync();
+            // now this call see a latest token is expired and should re fetched
+            await op2.Should().NotThrowAsync();
+
+            _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
+        public async Task SendReceiveUnicode()
+        {
+            _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
+                .Returns("first_token");
+
+            var uri = new Uri("http://sinch.com/items");
+
+            // first token expires
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .WithContent(JsonSerializer.Serialize("😼"))
+                .Respond(HttpStatusCode.OK, JsonContent.Create("😼"));
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+            var op1 = await http.Send<string, string>(uri, HttpMethod.Get, "😼");
+
+            op1.Should().BeEquivalentTo("😼");
         }
     }
 }
