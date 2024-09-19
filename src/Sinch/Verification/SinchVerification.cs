@@ -158,18 +158,23 @@ namespace Sinch.Verification
                 };
             }
 
+            SmsOptions? options = null;
+            if (request.CodeType != null || request.Expiry != null || request.Template != null)
+            {
+                options = new SmsOptions()
+                {
+                    CodeType = request.CodeType,
+                    Expiry = request.Expiry,
+                    Template = request.Template
+                };
+            }
             var result = await Start(new StartVerificationRequest
             {
                 Custom = request.Custom,
                 Identity = request.Identity,
                 Method = request.Method,
                 Reference = request.Reference,
-                SmsOptions = new SmsOptions()
-                {
-                    CodeType = request.CodeType,
-                    Expiry = request.Expiry,
-                    Template = request.Template
-                }
+                SmsOptions = options
             }, cancellationToken, headers: headers);
             return result as StartSmsVerificationResponse ??
                    throw new InvalidOperationException($"{nameof(StartSmsVerificationResponse)} result is null.");
