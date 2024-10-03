@@ -117,19 +117,11 @@ namespace Sinch.Tests.e2e.Verification
         [Fact]
         public async Task StartSmsVerificationNoOptions()
         {
-            var startVerificationRequest = new StartVerificationRequest
+            var response = await VerificationClient.Verification.StartSms(new StartSmsVerificationRequest
             {
                 Custom = "456",
                 Reference = "123",
-                Method = VerificationMethodEx.Sms,
-                Identity = Identity.Number("+49000000")
-            };
-
-            var response = await VerificationClient.Verification.StartSms(new StartSmsVerificationRequest
-            {
-                Custom = startVerificationRequest.Custom,
-                Reference = startVerificationRequest.Reference,
-                Identity = startVerificationRequest.Identity,
+                Identity = Identity.Number("+49000000"),
                 AcceptLanguage = "en-US"
             });
             response.Should().BeEquivalentTo(new StartSmsVerificationResponse
