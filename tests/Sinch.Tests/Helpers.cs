@@ -19,6 +19,19 @@ namespace Sinch.Tests
             return (T)field!.GetValue(instance)!;
         }
 
+        public static T InvokePrivateMethod<T, TInstance>(TInstance instance, string methodName, object[] parameters)
+        {
+            MethodInfo dynMethod = instance.GetType().GetMethod(methodName,
+                BindingFlags.NonPublic | BindingFlags.Instance);
+            if (dynMethod == null)
+            {
+                throw new InvalidOperationException($"{methodName} is not found on a type ${instance.GetType().Name}");
+            }
+
+            var returns = dynMethod.Invoke(instance, parameters);
+            return (T)returns;
+        }
+
         public static DateTime ParseUtc(string time)
         {
             return DateTime.Parse(time, CultureInfo.InvariantCulture).ToUniversalTime();

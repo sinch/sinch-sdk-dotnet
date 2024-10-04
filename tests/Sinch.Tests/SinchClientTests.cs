@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using FluentAssertions;
+using Sinch.Conversation;
 using Xunit;
 
 namespace Sinch.Tests

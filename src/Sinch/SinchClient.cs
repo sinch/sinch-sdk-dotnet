@@ -119,14 +119,13 @@ namespace Sinch
         private const string NumbersApiUrl = "https://numbers.api.sinch.com/";
         private const string SmsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
         private const string SmsApiServicePlanIdUrlTemplate = "https://{0}.sms.api.sinch.com";
-        private const string ConversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
 
         private const string VoiceApiUrlTemplate = "https://{0}.api.sinch.com/";
 
         // apparently, management api for applications have a different set url
         private const string VoiceApiApplicationManagementUrl = "https://callingapi.sinch.com/";
         private const string AuthApiUrl = "https://auth.sinch.com";
-        private const string TemplatesApiUrlTemplate = "https://{0}.template.api.sinch.com/";
+
 
         private readonly ApiUrlOverrides? _apiUrlOverrides;
         private readonly ISinchAuth _auth;
@@ -192,12 +191,9 @@ namespace Sinch
 
             _sms = InitSms(optionsObj, httpSnakeCaseOAuth);
 
-            var conversationBaseAddress = new Uri(_apiUrlOverrides?.ConversationUrl ??
-                                                  string.Format(ConversationApiUrlTemplate,
-                                                      optionsObj.ConversationRegion.Value));
-            var templatesBaseAddress = new Uri(_apiUrlOverrides?.TemplatesUrl ??
-                                               string.Format(TemplatesApiUrlTemplate,
-                                                   optionsObj.ConversationRegion.Value));
+            var conversationBaseAddress =
+                UrlResolver.ResolveConversationUrl(optionsObj.ConversationRegion, _apiUrlOverrides);
+            var templatesBaseAddress = UrlResolver.ResolveTemplateUrl(optionsObj.ConversationRegion, _apiUrlOverrides);
             _conversation = new SinchConversationClient(_projectId!, conversationBaseAddress
                 , templatesBaseAddress,
                 _loggerFactory, httpSnakeCaseOAuth);
