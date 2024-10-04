@@ -38,6 +38,8 @@ namespace Sinch.Tests.e2e
                     ConversationUrl = GetTestUrl("MOCK_CONVERSATION_PORT"),
                     NumbersUrl = GetTestUrl("MOCK_NUMBERS_PORT"),
                     VoiceUrl = GetTestUrl("MOCK_VOICE_PORT"),
+                    // Voice Application treated the same as voice in doppleganger
+                    VoiceApplicationManagementUrl = GetTestUrl("MOCK_VOICE_PORT"),
                     VerificationUrl = GetTestUrl("MOCK_VERIFICATION_PORT"),
                     // templates treated as conversation api in doppelganger 
                     TemplatesUrl = GetTestUrl("MOCK_CONVERSATION_PORT"),
