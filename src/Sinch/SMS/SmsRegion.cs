@@ -8,11 +8,11 @@ namespace Sinch.SMS
         /// <summary>
         ///     USA
         /// </summary>
-        public static readonly SmsRegion Us = new("Us");
+        public static readonly SmsRegion Us = new("us");
 
         /// <summary>
         ///     Ireland, Sweden
         /// </summary>
-        public static readonly SmsRegion Eu = new("Eu");
+        public static readonly SmsRegion Eu = new("eu");
     }
 }
