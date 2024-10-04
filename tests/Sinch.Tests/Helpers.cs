@@ -18,7 +18,8 @@ namespace Sinch.Tests
             var field = instance!.GetType().GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance);
             return (T)field!.GetValue(instance)!;
         }
-
+        
+        // Unused, but can be useful in future for tricky testing
         public static T InvokePrivateMethod<T, TInstance>(TInstance instance, string methodName, object[] parameters)
         {
             MethodInfo dynMethod = instance.GetType().GetMethod(methodName,
