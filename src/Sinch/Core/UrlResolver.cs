@@ -30,20 +30,20 @@ namespace Sinch.Core
                                conversationRegion.Value));
         }
 
-        public Uri ResolveAuthApiUrl()
+        public Uri ResolveAuth()
         {
             const string authApiUrl = "https://auth.sinch.com";
             return new Uri(_apiUrlOverrides?.AuthUrl ?? authApiUrl);
         }
 
 
-        public Uri ResolveVoiceApiUrl(VoiceRegion voiceRegion)
+        public Uri ResolveVoiceUrl(VoiceRegion voiceRegion)
         {
             const string voiceApiUrlTemplate = "https://{0}.api.sinch.com/";
             return new Uri(_apiUrlOverrides?.VoiceUrl ?? string.Format(voiceApiUrlTemplate, voiceRegion.Value));
         }
 
-        public Uri ResolveVoiceApiApplicationManagementUrl()
+        public Uri ResolveVoiceApplicationManagementUrl()
         {
             // apparently, management api for applications have a different set url
             const string voiceApiApplicationManagementUrl = "https://callingapi.sinch.com/";

@@ -62,7 +62,7 @@ namespace Sinch.Tests.Core
         [MemberData(nameof(AuthUrlResolveData))]
         public void ResolveAuthUrl(ApiUrlOverrides apiUrlOverrides)
         {
-            var authUrl = new UrlResolver(apiUrlOverrides).ResolveAuthApiUrl();
+            var authUrl = new UrlResolver(apiUrlOverrides).ResolveAuth();
             var expectedUrl = string.IsNullOrEmpty(apiUrlOverrides?.AuthUrl)
                 ? new Uri("https://auth.sinch.com")
                 : new Uri(apiUrlOverrides.AuthUrl);
@@ -117,7 +117,7 @@ namespace Sinch.Tests.Core
         [MemberData(nameof(VoiceUrlResolveData))]
         public void ResolveVoiceUrl(VoiceRegion voiceRegion, ApiUrlOverrides apiUrlOverrides)
         {
-            var voiceUrl = new UrlResolver(apiUrlOverrides).ResolveVoiceApiUrl(voiceRegion);
+            var voiceUrl = new UrlResolver(apiUrlOverrides).ResolveVoiceUrl(voiceRegion);
             var expectedUrl = string.IsNullOrEmpty(apiUrlOverrides?.VoiceUrl)
                 ? new Uri($"https://{voiceRegion.Value}.api.sinch.com/")
                 : new Uri(apiUrlOverrides.VoiceUrl);
@@ -150,7 +150,7 @@ namespace Sinch.Tests.Core
         [MemberData(nameof(VoiceApplicationManagementData))]
         public void ResolveVoiceApplicationManagementUrl(ApiUrlOverrides apiUrlOverrides)
         {
-            var voiceUrl = new UrlResolver(apiUrlOverrides).ResolveVoiceApiApplicationManagementUrl();
+            var voiceUrl = new UrlResolver(apiUrlOverrides).ResolveVoiceApplicationManagementUrl();
             var expectedUrl = string.IsNullOrEmpty(apiUrlOverrides?.VoiceApplicationManagementUrl)
                 ? new Uri($"https://callingapi.sinch.com/")
                 : new Uri(apiUrlOverrides.VoiceApplicationManagementUrl);

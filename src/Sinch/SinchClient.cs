@@ -168,7 +168,7 @@ namespace Sinch
             ISinchAuth auth =
                 // exception is throw when trying to get OAuth or Oauth dependant clients if credentials are missing
                 new OAuth(_keyId!, _keySecret!, _httpClient, _loggerFactory?.Create<OAuth>(),
-                    _urlResolver.ResolveAuthApiUrl());
+                    _urlResolver.ResolveAuth());
             _auth = auth;
             var httpCamelCase = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(),
                 JsonNamingPolicy.CamelCase);
@@ -269,9 +269,9 @@ namespace Sinch
 
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
             return new SinchVoiceClient(
-                _urlResolver.ResolveVoiceApiUrl(voiceRegion),
+                _urlResolver.ResolveVoiceUrl(voiceRegion),
                 _loggerFactory, http, (auth as ApplicationSignedAuth)!,
-                _urlResolver.ResolveVoiceApiApplicationManagementUrl());
+                _urlResolver.ResolveVoiceApplicationManagementUrl());
         }
 
         private void ValidateCommonCredentials()
