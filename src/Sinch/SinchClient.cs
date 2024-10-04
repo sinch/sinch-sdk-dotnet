@@ -115,7 +115,6 @@ namespace Sinch
 
     public class SinchClient : ISinchClient
     {
-        private readonly ApiUrlOverrides? _apiUrlOverrides;
         private readonly ISinchAuth _auth;
         private readonly ISinchConversation _conversation;
         private readonly HttpClient _httpClient;
@@ -164,8 +163,7 @@ namespace Sinch
 
             _httpClient = optionsObj.HttpClient ?? new HttpClient();
 
-            _apiUrlOverrides = optionsObj.ApiUrlOverrides;
-            _urlResolver = new UrlResolver(_apiUrlOverrides);
+            _urlResolver = new UrlResolver(optionsObj.ApiUrlOverrides);
 
             ISinchAuth auth =
                 // exception is throw when trying to get OAuth or Oauth dependant clients if credentials are missing
