@@ -115,20 +115,6 @@ namespace Sinch
 
     public class SinchClient : ISinchClient
     {
-        private const string VerificationApiUrl = "https://verification.api.sinch.com/";
-        private const string NumbersApiUrl = "https://numbers.api.sinch.com/";
-        private const string SmsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
-        private const string SmsApiServicePlanIdUrlTemplate = "https://{0}.sms.api.sinch.com";
-        private const string ConversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
-
-        private const string VoiceApiUrlTemplate = "https://{0}.api.sinch.com/";
-
-        // apparently, management api for applications have a different set url
-        private const string VoiceApiApplicationManagementUrl = "https://callingapi.sinch.com/";
-        private const string AuthApiUrl = "https://auth.sinch.com";
-        private const string TemplatesApiUrlTemplate = "https://{0}.template.api.sinch.com/";
-
-        private readonly ApiUrlOverrides? _apiUrlOverrides;
         private readonly ISinchAuth _auth;
         private readonly ISinchConversation _conversation;
         private readonly HttpClient _httpClient;
@@ -143,6 +129,8 @@ namespace Sinch
 
         private readonly ISinchSms _sms;
         private readonly ILoggerAdapter<ISinchClient>? _logger;
+        private readonly UrlResolver _urlResolver;
+
 
         /// <summary>
         ///     Initialize a new <see cref="SinchClient" />
@@ -175,29 +163,26 @@ namespace Sinch
 
             _httpClient = optionsObj.HttpClient ?? new HttpClient();
 
-            _apiUrlOverrides = optionsObj.ApiUrlOverrides;
+            _urlResolver = new UrlResolver(optionsObj.ApiUrlOverrides);
 
             ISinchAuth auth =
                 // exception is throw when trying to get OAuth or Oauth dependant clients if credentials are missing
                 new OAuth(_keyId!, _keySecret!, _httpClient, _loggerFactory?.Create<OAuth>(),
-                    new Uri(_apiUrlOverrides?.AuthUrl ?? AuthApiUrl));
+                    _urlResolver.ResolveAuth());
             _auth = auth;
             var httpCamelCase = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(),
                 JsonNamingPolicy.CamelCase);
             var httpSnakeCaseOAuth = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(),
                 SnakeCaseNamingPolicy.Instance);
 
-            _numbers = new Numbers.Numbers(_projectId!, new Uri(_apiUrlOverrides?.NumbersUrl ?? NumbersApiUrl),
+            _numbers = new Numbers.Numbers(_projectId!, _urlResolver.ResolveNumbersUrl(),
                 _loggerFactory, httpCamelCase);
 
             _sms = InitSms(optionsObj, httpSnakeCaseOAuth);
 
-            var conversationBaseAddress = new Uri(_apiUrlOverrides?.ConversationUrl ??
-                                                  string.Format(ConversationApiUrlTemplate,
-                                                      optionsObj.ConversationRegion.Value));
-            var templatesBaseAddress = new Uri(_apiUrlOverrides?.TemplatesUrl ??
-                                               string.Format(TemplatesApiUrlTemplate,
-                                                   optionsObj.ConversationRegion.Value));
+            var conversationBaseAddress =
+                _urlResolver.ResolveConversationUrl(optionsObj.ConversationRegion);
+            var templatesBaseAddress = _urlResolver.ResolveTemplateUrl(optionsObj.ConversationRegion);
             _conversation = new SinchConversationClient(_projectId!, conversationBaseAddress
                 , templatesBaseAddress,
                 _loggerFactory, httpSnakeCaseOAuth);
@@ -264,7 +249,7 @@ namespace Sinch
                 auth = new BasicAuth(appKey, appSecret);
 
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
-            return new SinchVerificationClient(new Uri(_apiUrlOverrides?.VerificationUrl ?? VerificationApiUrl),
+            return new SinchVerificationClient(_urlResolver.ResolveVerificationUrl(),
                 _loggerFactory, http);
         }
 
@@ -284,9 +269,9 @@ namespace Sinch
 
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
             return new SinchVoiceClient(
-                new Uri(_apiUrlOverrides?.VoiceUrl ?? string.Format(VoiceApiUrlTemplate, voiceRegion.Value)),
+                _urlResolver.ResolveVoiceUrl(voiceRegion),
                 _loggerFactory, http, (auth as ApplicationSignedAuth)!,
-                new Uri(_apiUrlOverrides?.VoiceUrl ?? VoiceApiApplicationManagementUrl));
+                _urlResolver.ResolveVoiceApplicationManagementUrl());
         }
 
         private void ValidateCommonCredentials()
@@ -315,8 +300,7 @@ namespace Sinch
                     _loggerFactory?.Create<IHttp>(),
                     SnakeCaseNamingPolicy.Instance);
                 return new SmsClient(new ServicePlanId(optionsObj.ServicePlanIdOptions.ServicePlanId),
-                    BuildServicePlanIdSmsBaseAddress(optionsObj.ServicePlanIdOptions.Region,
-                        _apiUrlOverrides?.SmsUrl),
+                    _urlResolver.ResolveSmsServicePlanIdUrl(optionsObj.ServicePlanIdOptions.Region),
                     _loggerFactory, bearerSnakeHttp);
             }
 
@@ -326,29 +310,9 @@ namespace Sinch
             return new SmsClient(
                 new ProjectId(
                     _projectId!), // exception is throw when trying to get SMS client property if _projectId is null
-                BuildSmsBaseAddress(optionsObj.SmsRegion, _apiUrlOverrides?.SmsUrl),
+                _urlResolver.ResolveSmsUrl(optionsObj.SmsRegion),
                 _loggerFactory,
                 httpSnakeCase);
-        }
-
-        private static Uri BuildServicePlanIdSmsBaseAddress(SmsServicePlanIdRegion smsServicePlanIdRegion,
-            string? smsUrlOverride)
-        {
-            if (!string.IsNullOrEmpty(smsUrlOverride)) return new Uri(smsUrlOverride);
-
-            return new Uri(string.Format(SmsApiServicePlanIdUrlTemplate,
-                smsServicePlanIdRegion.Value.ToLowerInvariant()));
-        }
-
-        private static Uri BuildSmsBaseAddress(SmsRegion smsRegion, string? smsUrlOverride)
-        {
-            if (!string.IsNullOrEmpty(smsUrlOverride)) return new Uri(smsUrlOverride);
-
-            // General SMS rest api uses service_plan_id to performs calls
-            // But SDK is based on single-account model which uses project_id
-            // Thus, baseAddress for sms api is using a special endpoint where service_plan_id is replaced with projectId
-            // for each provided endpoint
-            return new Uri(string.Format(SmsApiUrlTemplate, smsRegion.Value.ToLowerInvariant()));
         }
     }
 }
