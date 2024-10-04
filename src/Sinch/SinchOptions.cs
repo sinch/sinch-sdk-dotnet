@@ -118,7 +118,8 @@ namespace Sinch
         public string? VoiceUrl { get; init; }
 
         /// <summary>
-        ///     Overrides Voice api application management base url
+        ///     Overrides Voice api application management base url.
+        ///     Voice Application Management is treated as voice api, but it has another base address.
         /// </summary>
         public string? VoiceApplicationManagementUrl { get; init; }
 
