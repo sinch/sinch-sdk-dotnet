@@ -14,61 +14,53 @@ namespace Sinch.Core
             _apiUrlOverrides = apiUrlOverrides;
         }
 
-        private const string ConversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
-
         public Uri ResolveConversationUrl(ConversationRegion conversationRegion)
         {
+            const string conversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
             return new Uri(_apiUrlOverrides?.ConversationUrl ??
-                           string.Format(ConversationApiUrlTemplate,
+                           string.Format(conversationApiUrlTemplate,
                                conversationRegion.Value));
         }
-
-        private const string TemplatesApiUrlTemplate = "https://{0}.template.api.sinch.com/";
 
         public Uri ResolveTemplateUrl(ConversationRegion conversationRegion)
         {
+            const string templatesApiUrlTemplate = "https://{0}.template.api.sinch.com/";
             return new Uri(_apiUrlOverrides?.TemplatesUrl ??
-                           string.Format(TemplatesApiUrlTemplate,
+                           string.Format(templatesApiUrlTemplate,
                                conversationRegion.Value));
         }
 
-        private const string AuthApiUrl = "https://auth.sinch.com";
-
         public Uri ResolveAuthApiUrl()
         {
-            return new Uri(_apiUrlOverrides?.AuthUrl ?? AuthApiUrl);
+            const string authApiUrl = "https://auth.sinch.com";
+            return new Uri(_apiUrlOverrides?.AuthUrl ?? authApiUrl);
         }
 
-        private const string VoiceApiUrlTemplate = "https://{0}.api.sinch.com/";
 
         public Uri ResolveVoiceApiUrl(VoiceRegion voiceRegion)
         {
-            return new Uri(_apiUrlOverrides?.VoiceUrl ?? string.Format(VoiceApiUrlTemplate, voiceRegion.Value));
+            const string voiceApiUrlTemplate = "https://{0}.api.sinch.com/";
+            return new Uri(_apiUrlOverrides?.VoiceUrl ?? string.Format(voiceApiUrlTemplate, voiceRegion.Value));
         }
-
-        // apparently, management api for applications have a different set url
-        private const string VoiceApiApplicationManagementUrl = "https://callingapi.sinch.com/";
 
         public Uri ResolveVoiceApiApplicationManagementUrl()
         {
-            return new Uri(_apiUrlOverrides?.VoiceApplicationManagementUrl ?? VoiceApiApplicationManagementUrl);
+            // apparently, management api for applications have a different set url
+            const string voiceApiApplicationManagementUrl = "https://callingapi.sinch.com/";
+            return new Uri(_apiUrlOverrides?.VoiceApplicationManagementUrl ?? voiceApiApplicationManagementUrl);
         }
-
-        private const string VerificationApiUrl = "https://verification.api.sinch.com/";
 
         public Uri ResolveVerificationUrl()
         {
-            return new Uri(_apiUrlOverrides?.VerificationUrl ?? VerificationApiUrl);
+            const string verificationApiUrl = "https://verification.api.sinch.com/";
+            return new Uri(_apiUrlOverrides?.VerificationUrl ?? verificationApiUrl);
         }
-
-        private const string NumbersApiUrl = "https://numbers.api.sinch.com/";
 
         public Uri ResolveNumbersUrl()
         {
-            return new Uri(_apiUrlOverrides?.NumbersUrl ?? NumbersApiUrl);
+            const string numbersApiUrl = "https://numbers.api.sinch.com/";
+            return new Uri(_apiUrlOverrides?.NumbersUrl ?? numbersApiUrl);
         }
-
-        private const string SmsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
 
         public Uri ResolveSmsUrl(SmsRegion smsRegion)
         {
@@ -79,16 +71,16 @@ namespace Sinch.Core
             // But SDK is based on single-account model which uses project_id
             // Thus, baseAddress for sms api is using a special endpoint where service_plan_id is replaced with projectId
             // for each provided endpoint
-            return new Uri(string.Format(SmsApiUrlTemplate, smsRegion.Value));
+            const string smsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
+            return new Uri(string.Format(smsApiUrlTemplate, smsRegion.Value));
         }
-
-        private const string SmsApiServicePlanIdUrlTemplate = "https://{0}.sms.api.sinch.com";
 
         public Uri ResolveSmsServicePlanIdUrl(SmsServicePlanIdRegion smsServicePlanIdRegion)
         {
             if (!string.IsNullOrEmpty(_apiUrlOverrides?.SmsUrl)) return new Uri(_apiUrlOverrides.SmsUrl);
 
-            return new Uri(string.Format(SmsApiServicePlanIdUrlTemplate,
+            const string smsApiServicePlanIdUrlTemplate = "https://{0}.sms.api.sinch.com";
+            return new Uri(string.Format(smsApiServicePlanIdUrlTemplate,
                 smsServicePlanIdRegion.Value.ToLowerInvariant()));
         }
     }
