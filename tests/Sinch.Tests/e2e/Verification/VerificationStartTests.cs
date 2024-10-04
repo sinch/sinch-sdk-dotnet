@@ -80,11 +80,7 @@ namespace Sinch.Tests.e2e.Verification
                 Custom = "456",
                 Reference = "123",
                 Method = VerificationMethodEx.Sms,
-                Identity = new Identity
-                {
-                    Endpoint = "+49000000",
-                    Type = IdentityType.Number
-                }
+                Identity = Identity.Number("+49000000")
             };
 
             var response = await VerificationClient.Verification.StartSms(new StartSmsVerificationRequest
@@ -96,6 +92,37 @@ namespace Sinch.Tests.e2e.Verification
                 CodeType = CodeType.Alphanumeric,
                 Template = "{{CODE}} - to access all secrets",
                 Expiry = new TimeOnly(17, 32, 11)
+            });
+            response.Should().BeEquivalentTo(new StartSmsVerificationResponse
+            {
+                Id = "123",
+                Method = VerificationMethodEx.Sms,
+                Sms = new SmsInfo
+                {
+                    Template = "{{CODE}} - to access all secrets",
+                    InterceptionTimeout = 32
+                },
+                Links = new List<Links>
+                {
+                    new()
+                    {
+                        Method = "put",
+                        Href = "href",
+                        Rel = "status"
+                    }
+                }
+            });
+        }
+
+        [Fact]
+        public async Task StartSmsVerificationNoOptions()
+        {
+            var response = await VerificationClient.Verification.StartSms(new StartSmsVerificationRequest
+            {
+                Custom = "456",
+                Reference = "123",
+                Identity = Identity.Number("+49000000"),
+                AcceptLanguage = "en-US"
             });
             response.Should().BeEquivalentTo(new StartSmsVerificationResponse
             {
