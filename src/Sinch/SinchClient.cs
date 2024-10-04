@@ -120,12 +120,6 @@ namespace Sinch
         private const string SmsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
         private const string SmsApiServicePlanIdUrlTemplate = "https://{0}.sms.api.sinch.com";
 
-        private const string VoiceApiUrlTemplate = "https://{0}.api.sinch.com/";
-
-        // apparently, management api for applications have a different set url
-        private const string VoiceApiApplicationManagementUrl = "https://callingapi.sinch.com/";
-        private const string AuthApiUrl = "https://auth.sinch.com";
-
 
         private readonly ApiUrlOverrides? _apiUrlOverrides;
         private readonly ISinchAuth _auth;
@@ -179,7 +173,7 @@ namespace Sinch
             ISinchAuth auth =
                 // exception is throw when trying to get OAuth or Oauth dependant clients if credentials are missing
                 new OAuth(_keyId!, _keySecret!, _httpClient, _loggerFactory?.Create<OAuth>(),
-                    new Uri(_apiUrlOverrides?.AuthUrl ?? AuthApiUrl));
+                    UrlResolver.ResolveAuthApiUrl(_apiUrlOverrides));
             _auth = auth;
             var httpCamelCase = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(),
                 JsonNamingPolicy.CamelCase);
@@ -280,9 +274,9 @@ namespace Sinch
 
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
             return new SinchVoiceClient(
-                new Uri(_apiUrlOverrides?.VoiceUrl ?? string.Format(VoiceApiUrlTemplate, voiceRegion.Value)),
+                UrlResolver.ResolveVoiceApiUrl(voiceRegion, _apiUrlOverrides),
                 _loggerFactory, http, (auth as ApplicationSignedAuth)!,
-                new Uri(_apiUrlOverrides?.VoiceUrl ?? VoiceApiApplicationManagementUrl));
+                UrlResolver.ResolveVoiceApiApplicationManagementUrl(_apiUrlOverrides));
         }
 
         private void ValidateCommonCredentials()
