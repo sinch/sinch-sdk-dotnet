@@ -71,7 +71,7 @@ jobs:
           cd sinch-sdk-internal-specs/fixtures/python/ && java -jar wiremock-studio-2.32.0-17.jar &
 
       - name: Install dependencies
-        run: dotnet restore
+        run: dotnet restore -p:TargetFrameworks=${{ matrix.dotnet-version.tfm }}
 
       - name: Check Formatting
         run: dotnet format --verify-no-changes --verbosity diagnostic
