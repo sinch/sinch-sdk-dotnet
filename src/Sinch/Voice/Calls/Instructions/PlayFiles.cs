@@ -30,11 +30,8 @@ namespace Sinch.Voice.Calls.Instructions
         ///     https://developers.sinch.com/docs/voice/api-reference/voice/voice-locales
         /// </summary>
         [JsonPropertyName("locale")]
-#if NET7_0_OR_GREATER
-        public required string Locale { get; set; }
-#else
-        public string Locale { get; set; } = null!;
-#endif
+        public string? Locale { get; set; }
+
         public string Name { get; } = "playFiles";
 
 
