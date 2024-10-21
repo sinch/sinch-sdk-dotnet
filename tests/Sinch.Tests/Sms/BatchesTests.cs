@@ -243,7 +243,7 @@ namespace Sinch.Tests.Sms
                     per_recipient = new[]
                     {
                         new { recipient = "a", body = "c", encoding = "UTF-8", number_of_parts = 1 },
-                        new { recipient = "a", body = "c", encoding = "UTF-8" , number_of_parts = 3 }
+                        new { recipient = "a", body = "c", encoding = "UTF-8", number_of_parts = 3 }
                     }
                 }));
 
