@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -241,8 +242,8 @@ namespace Sinch.Tests.Sms
                     number_of_messages = 50,
                     per_recipient = new[]
                     {
-                        new { recipient = "a", message_part = "b", body = "c", encoding = "g" },
-                        new { recipient = "a", message_part = "b", body = "c", encoding = "g" }
+                        new { recipient = "a", body = "c", encoding = "UTF-8", number_of_parts = 1 },
+                        new { recipient = "a", body = "c", encoding = "UTF-8" , number_of_parts = 3 }
                     }
                 }));
 
@@ -270,6 +271,14 @@ namespace Sinch.Tests.Sms
             response.PerRecipient.Should().HaveCount(2);
             response.NumberOfMessages.Should().Be(50);
             response.NumberOfRecipients.Should().Be(5);
+
+            response.PerRecipient!.First().Should().BeEquivalentTo(new PerRecipient()
+            {
+                Body = "c",
+                Recipient = "a",
+                NumberOfParts = 1,
+                Encoding = "UTF-8"
+            });
         }
 
         [Fact]
