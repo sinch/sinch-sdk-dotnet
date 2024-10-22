@@ -42,6 +42,9 @@ namespace Sinch.Tests.Numbers
             var response = await Numbers.Rent("+12025550134", request);
             response.Should().NotBeNull();
             response.PhoneNumber.Should().Be("+12025550134");
+            response.SmsConfiguration!.ScheduledProvisioning!.CampaignId.Should()
+                .BeEquivalentTo("string");
+            response.VoiceConfiguration!.ScheduledVoiceProvisioning!.AppId.Should().BeEquivalentTo("string");
         }
 
         [Fact]
