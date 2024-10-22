@@ -25,7 +25,7 @@ namespace Sinch.SMS.Batches.DryRun
     {
         public string? Recipient { get; set; }
 
-        public string? MessagePart { get; set; }
+        public int? NumberOfParts { get; set; }
 
         public string? Body { get; set; }
 
