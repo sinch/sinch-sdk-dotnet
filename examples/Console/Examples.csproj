@@ -9,7 +9,6 @@
 
     <ItemGroup>
         <PackageReference Include="DotNetEnv" Version="2.5.0" />
-        <PackageReference Include="RestSharp" Version="110.2.0" />
     </ItemGroup>
 
     <ItemGroup>
