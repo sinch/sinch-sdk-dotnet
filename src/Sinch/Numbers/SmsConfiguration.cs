@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Sinch.Numbers
 {
     /// <summary>
@@ -29,6 +31,7 @@ namespace Sinch.Numbers
         ///     This object is temporary and will appear while the scheduled provisioning for SMS is processing.
         ///     Once it has successfully processed, only the ID of the SMS configuration will display.
         /// </summary>
-        public ScheduledProvisioning? ScheduledProvisioning { get; set; }
+        [JsonInclude]
+        public ScheduledProvisioning? ScheduledProvisioning { get; private set; }
     }
 }
