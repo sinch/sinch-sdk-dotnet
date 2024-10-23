@@ -101,6 +101,7 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("text_message")]
         public TextMessage? TextMessage { get; private set; }
 
 

@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Hooks
@@ -35,7 +36,7 @@ namespace Sinch.Conversation.Hooks
         ///     Context-dependent metadata. Refer to specific callback&#39;s documentation for exact information provided.
         /// </summary>
         [JsonPropertyName("message_metadata")]
-        public string? MessageMetadata { get; set; }
+        public JsonNode? MessageMetadata { get; set; }
 
 
         /// <summary>
