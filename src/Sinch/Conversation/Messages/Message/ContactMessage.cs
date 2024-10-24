@@ -53,6 +53,7 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("choice_response_message")]
         public ChoiceResponseMessage? ChoiceResponseMessage { get; private set; }
 
 
@@ -61,6 +62,7 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("fallback_message")]
         public FallbackMessage? FallbackMessage { get; private set; }
 
 
@@ -69,6 +71,7 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("location_message")]
         public LocationMessage? LocationMessage { get; private set; }
 
 
@@ -77,6 +80,7 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("media_card_message")]
         public MediaCarouselMessage? MediaCardMessage { get; private set; }
 
 
@@ -85,6 +89,7 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("media_message")]
         public MediaMessage? MediaMessage { get; private set; }
 
 
@@ -93,6 +98,7 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("reply_to")]
         public ReplyTo? ReplyTo { get; private set; }
 
 

@@ -52,7 +52,7 @@ namespace Sinch.Tests.Conversation
                                 Description = "desc",
                                 Media = new MediaMessage()
                                 {
-                                    Url = new Uri("http://localhost")
+                                    Url = "http://localhost"
                                 },
                                 PostbackData = "postback"
                             }
@@ -408,7 +408,7 @@ namespace Sinch.Tests.Conversation
             new object[] { Text, new TextMessage("hello") },
             new object[] { Media, new MediaMessage()
             {
-                Url = new Uri("https://hello.net")
+                Url = "https://hello.net"
             }},
             new object[] { Template, new TemplateReference()
             {

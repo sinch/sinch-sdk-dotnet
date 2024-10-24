@@ -575,8 +575,8 @@ namespace Sinch.Tests.e2e.Conversation
                 convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
             }
         }
-        
-         [Fact]
+
+        [Fact]
         public async Task MessageDeliveryReportQueued()
         {
             var json = await _httpClient.GetStringAsync("message-delivery-report/succeeded");
@@ -617,6 +617,333 @@ namespace Sinch.Tests.e2e.Conversation
                     x => x.Excluding(m =>
                         m.MessageMetadata));
                 var convEvent = callbackEvent.As<MessageDeliveryReceiptEvent>();
+                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+            }
+        }
+
+        [Fact]
+        public async Task MessageInboundSmartConversationRedaction()
+        {
+            var json = await _httpClient.GetStringAsync("message-inbound/smart-conversation-redaction");
+
+            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+
+            AssertEvent(result);
+
+            var resultPlain = JsonSerializer.Deserialize<ICallbackEvent>(json);
+
+            AssertEvent(resultPlain);
+
+            void AssertEvent(ICallbackEvent callbackEvent)
+            {
+                callbackEvent.Should().BeEquivalentTo(new MessageInboundSmartConversationRedactionEvent()
+                    {
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        EventTime = DateTime.Parse("2024-06-06T14:42:41.293Z").ToUniversalTime(),
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.240093543Z").ToUniversalTime(),
+                        CorrelationId = "correlatorId",
+                        MessageRedaction = new MessageInboundEventItem()
+                        {
+                            Id = "01W4FFL35P4NC4K35MESSAGE02",
+                            Direction = ConversationDirection.ToApp,
+                            ContactMessage = new ContactMessage(new TextMessage(
+                                "Hi, my real name is {PERSON} and I live in {LOCATION}. My credit card number is 4242 4242 4242 4242. What a beautiful day!")),
+                            ConversationId = "01W4FFL35P4NC4K35CONVERS01",
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                Channel = ConversationChannel.Messenger,
+                                Identity = "7968425018576406",
+                                AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                            },
+                            ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                            Metadata = "",
+                            ProcessingMode = ProcessingMode.Conversation,
+                            Injected = false,
+                            SenderId = "",
+                            AcceptTime = DateTime.Parse("2024-06-06T14:42:42.165Z").ToUniversalTime(),
+                        }
+                    },
+                    x => x.Excluding(m =>
+                        m.MessageMetadata));
+                var convEvent = callbackEvent.As<MessageInboundSmartConversationRedactionEvent>();
+                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+            }
+        }
+
+        [Fact]
+        public async Task MessageSubmitMedia()
+        {
+            var json = await _httpClient.GetStringAsync("message-submit/media");
+
+            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+
+            AssertEvent(result);
+
+            var resultPlain = JsonSerializer.Deserialize<ICallbackEvent>(json);
+
+            AssertEvent(resultPlain);
+
+            void AssertEvent(ICallbackEvent callbackEvent)
+            {
+                callbackEvent.Should().BeEquivalentTo(new MessageSubmitEvent()
+                    {
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        EventTime = DateTime.Parse("2024-06-06T14:42:42.475Z").ToUniversalTime(),
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.475Z").ToUniversalTime(),
+                        CorrelationId = "",
+                        MessageSubmitNotification = new MessageSubmitNotification()
+                        {
+                            MessageId = "01W4FFL35P4NC4K35MESSAGE04",
+                            ConversationId = "01W4FFL35P4NC4K35CONVERS01",
+
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                Channel = ConversationChannel.Messenger,
+                                Identity = "7968425018576406",
+                                AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                            },
+                            ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                            Metadata = "",
+                            ProcessingMode = ProcessingMode.Conversation,
+                            SubmittedMessage = new ContactMessage(new MediaMessage()
+                            {
+                                FilenameOverride = "",
+                                ThumbnailUrl = "",
+                                Url =
+                                    "https://scontent.xx.fbcdn.net/v/t1.15752-9/450470563_473474858617216_4192328888545460366_n.png?_nc_cat=102&ccb=1-7&_nc_sid=fc17b8&_nc_ohc=48P1Kdk4UiwQ7kNvgE60fDt&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEkgERuI-tu8rt1GGpOEcNU2-0bFkmG4mQkzbciZss10g&oe=66C0A0E0",
+                            })
+                        }
+                    },
+                    x => x.Excluding(m =>
+                        m.MessageMetadata));
+                var convEvent = callbackEvent.As<MessageSubmitEvent>();
+                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+            }
+        }
+
+        [Fact]
+        public async Task MessageSubmitText()
+        {
+            var json = await _httpClient.GetStringAsync("message-submit/text");
+
+            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+
+            AssertEvent(result);
+
+            var resultPlain = JsonSerializer.Deserialize<ICallbackEvent>(json);
+
+            AssertEvent(resultPlain);
+
+            void AssertEvent(ICallbackEvent callbackEvent)
+            {
+                callbackEvent.Should().BeEquivalentTo(new MessageSubmitEvent()
+                    {
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        EventTime = DateTime.Parse("2024-06-06T14:42:42.721Z").ToUniversalTime(),
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.721Z").ToUniversalTime(),
+                        CorrelationId = "correlatorId",
+                        MessageSubmitNotification = new MessageSubmitNotification()
+                        {
+                            MessageId = "01W4FFL35P4NC4K35MESSAGE03",
+                            ConversationId = "01W4FFL35P4NC4K35CONVERS01",
+
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                Channel = ConversationChannel.Rcs,
+                                Identity = "12015555555",
+                                AppId = "",
+                            },
+                            ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                            Metadata = "",
+                            ProcessingMode = ProcessingMode.Conversation,
+                            SubmittedMessage = new ContactMessage(new TextMessage("I \u2764\ufe0f Sinch")
+                            {
+                            })
+                        }
+                    },
+                    x => x.Excluding(m =>
+                        m.MessageMetadata));
+                var convEvent = callbackEvent.As<MessageSubmitEvent>();
+                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+            }
+        }
+
+        [Fact]
+        public async Task SmartConversationMedia()
+        {
+            var json = await _httpClient.GetStringAsync("smart-conversations/media");
+
+            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+
+            AssertEvent(result);
+
+            var resultPlain = JsonSerializer.Deserialize<ICallbackEvent>(json);
+
+            AssertEvent(resultPlain);
+
+            void AssertEvent(ICallbackEvent callbackEvent)
+            {
+                callbackEvent.Should().BeEquivalentTo(new SmartConversationsEvent()
+                    {
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        EventTime = DateTime.Parse("2024-06-06T14:42:42.094Z").ToUniversalTime(),
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:44.2069826Z").ToUniversalTime(),
+                        CorrelationId = "",
+                        SmartConversationNotification = new SmartConversationNotification()
+                        {
+                            MessageId = "01W4FFL35P4NC4K35MESSAGE04",
+                            ConversationId = "01W4FFL35P4NC4K35CONVERS01",
+
+                            ChannelIdentity = "7968425018576406",
+                            ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                            Channel = ConversationChannel.Messenger,
+                            AnalysisResults = new AnalysisResult()
+                            {
+                                MlImageRecognitionResult = new List<MachineLearningImageRecognitionResult>()
+                                {
+                                    new MachineLearningImageRecognitionResult()
+                                    {
+                                        Url =
+                                            "https://scontent.xx.fbcdn.net/v/t1.15752-9/450470563_473474858617216_4192328888545460366_n.png?_nc_cat=102&ccb=1-7&_nc_sid=fc17b8&_nc_ohc=48P1Kdk4UiwQ7kNvgE60fDt&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEkgERuI-tu8rt1GGpOEcNU2-0bFkmG4mQkzbciZss10g&oe=66C0A0E0"
+                                    }
+                                },
+                                MlOffensiveAnalysisResult = new List<OffensiveAnalysis>()
+                                {
+                                    new OffensiveAnalysis()
+                                    {
+                                        Message = "",
+                                        Url =
+                                            "https://scontent.xx.fbcdn.net/v/t1.15752-9/450470563_473474858617216_4192328888545460366_n.png?_nc_cat=102&ccb=1-7&_nc_sid=fc17b8&_nc_ohc=48P1Kdk4UiwQ7kNvgE60fDt&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEkgERuI-tu8rt1GGpOEcNU2-0bFkmG4mQkzbciZss10g&oe=66C0A0E0",
+                                        Evaluation = Evaluation.Safe,
+                                        Score = 0.3069f
+                                    }
+                                }
+                            }
+                        },
+                    },
+                    x => x.Excluding(m =>
+                        m.MessageMetadata));
+                var convEvent = callbackEvent.As<SmartConversationsEvent>();
+                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+            }
+        }
+
+        [Fact]
+        public async Task SmartConversationText()
+        {
+            var json = await _httpClient.GetStringAsync("smart-conversations/text");
+
+            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+
+            AssertEvent(result);
+
+            var resultPlain = JsonSerializer.Deserialize<ICallbackEvent>(json);
+
+            AssertEvent(resultPlain);
+
+            void AssertEvent(ICallbackEvent callbackEvent)
+            {
+                callbackEvent.Should().BeEquivalentTo(new SmartConversationsEvent()
+                    {
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        EventTime = DateTime.Parse("2024-06-06T14:42:42.1492634Z").ToUniversalTime(),
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.2198899Z").ToUniversalTime(),
+                        CorrelationId = "",
+                        SmartConversationNotification = new SmartConversationNotification()
+                        {
+                            MessageId = "01W4FFL35P4NC4K35MESSAGE03",
+                            ConversationId = "01W4FFL35P4NC4K35CONVERS01",
+
+                            ChannelIdentity = "12015555555",
+                            ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                            Channel = ConversationChannel.Rcs,
+                            AnalysisResults = new AnalysisResult()
+                            {
+                                MlSentimentResult = new List<MachineLearningSentimentResult>()
+                                {
+                                    new MachineLearningSentimentResult()
+                                    {
+                                        Message = "I \u2764\ufe0f Sinch",
+                                        Sentiment = Sentiment.Positive,
+                                        Score = 0.9041176f,
+                                        Results = new List<SentimentResult>()
+                                        {
+                                            new SentimentResult()
+                                            {
+                                                Sentiment = Sentiment.Negative,
+                                                Score = 0.0028852955f
+                                            },
+                                            new SentimentResult()
+                                            {
+                                                Sentiment = Sentiment.Neutral,
+                                                Score = 0.09299716f
+                                            },
+
+                                            new SentimentResult()
+                                            {
+                                                Sentiment = Sentiment.Positive,
+                                                Score = 0.9041176f
+                                            },
+                                        }
+                                    }
+                                },
+                                MlNluResult = new List<MachineLearningNLUResult>()
+                                {
+                                    new MachineLearningNLUResult()
+                                    {
+                                        Message = "I \u2764\ufe0f Sinch",
+                                        Intent = "chitchat.thank_you",
+                                        Score = 0.99831617f,
+                                        Results = new List<IntentResult>()
+                                        {
+                                            new IntentResult()
+                                            {
+                                                Intent = "chitchat.thank_you",
+                                                Score = 0.99831617f
+                                            },
+                                            new IntentResult()
+                                            {
+                                                Intent = "chitchat.one_moment_please",
+                                                Score =  0.00027679664f
+                                            },
+                                            new IntentResult()
+                                            {
+                                                Intent = "chitchat.bye",
+                                                Score =  0.0002178006f
+                                            }
+                                        }
+                                    },
+                                    
+                                },
+                                MlPiiResult = new List<MachineLearningPIIResult>()
+                                {
+                                    new MachineLearningPIIResult()
+                                    {
+                                        Message = "I \u2764\ufe0f Sinch",
+                                        Masked = "{PERSON} {PERSON} {PERSON}"
+                                    }
+                                },
+                                MlOffensiveAnalysisResult = new List<OffensiveAnalysis>()
+                                {
+                                    new OffensiveAnalysis()
+                                    {
+                                        Message = "I \u2764\ufe0f Sinch",
+                                        Url = "",
+                                        Evaluation = Evaluation.Safe,
+                                        Score = 0.9826318f
+                                    }
+                                }
+                            }
+                        },
+                    },
+                    x => x.Excluding(m =>
+                        m.MessageMetadata));
+                var convEvent = callbackEvent.As<SmartConversationsEvent>();
                 convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
             }
         }

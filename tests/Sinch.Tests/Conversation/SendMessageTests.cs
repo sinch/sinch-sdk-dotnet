@@ -244,8 +244,8 @@ namespace Sinch.Tests.Conversation
             };
             _baseRequest.Message = new AppMessage(new MediaMessage
             {
-                Url = new Uri("http://yup/ls"),
-                ThumbnailUrl = new Uri("https://img.c")
+                Url = "http://yup/ls",
+                ThumbnailUrl = "https://img.c"
             });
             HttpMessageHandlerMock
                 .When(HttpMethod.Post,
@@ -392,8 +392,8 @@ namespace Sinch.Tests.Conversation
                                 Description = "desc",
                                 Media = new MediaMessage()
                                 {
-                                    Url = new Uri("https://nolocalhost"),
-                                    ThumbnailUrl = new Uri("https://knowyourmeme.com/photos/377946")
+                                    Url = "https://nolocalhost",
+                                    ThumbnailUrl = "https://knowyourmeme.com/photos/377946"
                                 }
                             },
                             new ProductItem
