@@ -8,6 +8,7 @@ using FluentAssertions;
 using Sinch.Conversation;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Contacts;
+using Sinch.Conversation.Events.EventTypes;
 using Sinch.Conversation.Hooks;
 using Sinch.Conversation.Hooks.Models;
 using Sinch.Conversation.Messages.Message;
@@ -470,6 +471,55 @@ namespace Sinch.Tests.e2e.Conversation
                     x => x.Excluding(m =>
                         m.MessageMetadata));
                 var convEvent = callbackEvent.As<DeliveryEvent>();
+                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+            }
+        }
+        
+        [Fact]
+        public async Task EventInbound()
+        {
+            var json = await _httpClient.GetStringAsync("event-inbound");
+
+            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+
+            AssertEvent(result);
+
+            var resultPlain = JsonSerializer.Deserialize<ICallbackEvent>(json);
+
+            AssertEvent(resultPlain);
+
+            void AssertEvent(ICallbackEvent callbackEvent)
+            {
+                callbackEvent.Should().BeEquivalentTo(new InboundEvent()
+                    {
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        EventTime = DateTime.Parse("2024-06-06T14:42:42.379863404Z").ToUniversalTime(),
+                        CorrelationId = "",
+                        Event = new EventInboundAllOfEvent()
+                        {
+                            Direction = ConversationDirection.ToApp,
+                            ContactEvent = new ContactEvent()
+                            {
+                                ComposingEvent = new object()
+                            },
+                            Id = "01W4FFL35P4NC4K35EVENT0001",
+                            ConversationId = "01W4FFL35P4NC4K35CONVERS01",
+                            ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                Channel = ConversationChannel.Rcs,
+                                Identity = "12015555555",
+                                AppId = ""
+                            },
+                            AcceptTime = DateTime.Parse("2024-06-06T14:42:42.429455346Z").ToUniversalTime(),
+                            ProcessingMode = ProcessingMode.Conversation,
+                            
+                        }
+                    },
+                    x => x.Excluding(m =>
+                        m.MessageMetadata));
+                var convEvent = callbackEvent.As<InboundEvent>();
                 convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
             }
         }
