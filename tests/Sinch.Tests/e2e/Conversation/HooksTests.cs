@@ -378,5 +378,100 @@ namespace Sinch.Tests.e2e.Conversation
                     .Be("{}");
             }
         }
+
+        [Fact]
+        public async Task EventDeliveryReportFailed()
+        {
+            var json = await _httpClient.GetStringAsync("event-delivery-report/failed");
+
+            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+
+            AssertEvent(result);
+
+            var resultPlain = JsonSerializer.Deserialize<ICallbackEvent>(json);
+
+            AssertEvent(resultPlain);
+
+            void AssertEvent(ICallbackEvent callbackEvent)
+            {
+                callbackEvent.Should().BeEquivalentTo(new DeliveryEvent()
+                    {
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        CorrelationId = "",
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.208Z").ToUniversalTime(),
+                        EventTime = DateTime.Parse("2024-06-06T14:42:42.251277147Z").ToUniversalTime(),
+                        EventDeliveryReport = new EventDeliveryAllOfEventDeliveryReport()
+                        {
+                            EventId = "01W4FFL35P4NC4K35EVENT0003",
+                            Status = DeliveryStatus.Failed,
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                Channel = ConversationChannel.Messenger,
+                                Identity = "7968425018576406",
+                                AppId = "01W4FFL35P4NC4K35CONVAPP01"
+                            },
+                            ContactId = "",
+                            Reason = new Reason()
+                            {
+                                Code = "BAD_REQUEST",
+                                Description =
+                                    "The underlying channel reported: Message type [MESSAGE_NOT_SET] not supported on Messenger",
+                                SubCode = "UNSPECIFIED_SUB_CODE"
+                            },
+                            Metadata = "",
+                            ProcessingMode = ProcessingMode.Conversation
+                        }
+                    },
+                    x => x.Excluding(m =>
+                        m.MessageMetadata));
+                var convEvent = callbackEvent.As<DeliveryEvent>();
+                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+            }
+        }
+
+        [Fact]
+        public async Task EventDeliveryReportSucceeded()
+        {
+            var json = await _httpClient.GetStringAsync("event-delivery-report/succeeded");
+
+            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+
+            AssertEvent(result);
+
+            var resultPlain = JsonSerializer.Deserialize<ICallbackEvent>(json);
+
+            AssertEvent(resultPlain);
+
+            void AssertEvent(ICallbackEvent callbackEvent)
+            {
+                callbackEvent.Should().BeEquivalentTo(new DeliveryEvent()
+                    {
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        CorrelationId = "",
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.132Z").ToUniversalTime(),
+                        EventTime = DateTime.Parse("2024-06-06T14:42:42.891Z").ToUniversalTime(),
+                        EventDeliveryReport = new EventDeliveryAllOfEventDeliveryReport()
+                        {
+                            EventId = "01W4FFL35P4NC4K35EVENT0002",
+                            Status = DeliveryStatus.Delivered,
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                Channel = ConversationChannel.Messenger,
+                                Identity = "7968425018576406",
+                                AppId = "01W4FFL35P4NC4K35CONVAPP01"
+                            },
+                            ContactId = "",
+                            Metadata = "",
+                            ProcessingMode = ProcessingMode.Conversation
+                        }
+                    },
+                    x => x.Excluding(m =>
+                        m.MessageMetadata));
+                var convEvent = callbackEvent.As<DeliveryEvent>();
+                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+            }
+        }
     }
 }

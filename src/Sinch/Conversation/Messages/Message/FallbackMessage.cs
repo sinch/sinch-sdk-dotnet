@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -42,18 +43,21 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Gets or Sets Code
         /// </summary>
+        [JsonPropertyName("code")]
         public string? Code { get; set; }
 
 
         /// <summary>
         ///     A textual description of the reason.
         /// </summary>
+        [JsonPropertyName("description")]
         public string? Description { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets SubCode
         /// </summary>
+        [JsonPropertyName("sub_code")]
         public string? SubCode { get; set; }
 
 
