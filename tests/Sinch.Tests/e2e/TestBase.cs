@@ -15,6 +15,8 @@ namespace Sinch.Tests.e2e
         // MockStudio should be removed and all contract testing should go to mock server version
         protected readonly ISinchClient SinchClientMockServer;
 
+        protected readonly string WebhooksEventsBaseAddress;
+        
         protected TestBase()
         {
             Env.Load();
@@ -28,6 +30,7 @@ namespace Sinch.Tests.e2e
                         SmsUrl = "http://localhost:8002"
                     };
                 });
+            var conversationUrl = GetTestUrl("MOCK_CONVERSATION_PORT");
 
             SinchClientMockServer = new SinchClient(ProjectId, "key_id", "key_secret", options =>
             {
@@ -35,16 +38,18 @@ namespace Sinch.Tests.e2e
                 {
                     AuthUrl = GetTestUrl("MOCK_AUTH_PORT"),
                     SmsUrl = GetTestUrl("MOCK_SMS_PORT"),
-                    ConversationUrl = GetTestUrl("MOCK_CONVERSATION_PORT"),
+                    ConversationUrl = conversationUrl,
                     NumbersUrl = GetTestUrl("MOCK_NUMBERS_PORT"),
                     VoiceUrl = GetTestUrl("MOCK_VOICE_PORT"),
                     // Voice Application Management treated the same as voice in doppelganger
                     VoiceApplicationManagementUrl = GetTestUrl("MOCK_VOICE_PORT"),
                     VerificationUrl = GetTestUrl("MOCK_VERIFICATION_PORT"),
                     // templates treated as conversation api in doppelganger 
-                    TemplatesUrl = GetTestUrl("MOCK_CONVERSATION_PORT"),
+                    TemplatesUrl = conversationUrl,
                 };
             });
+            WebhooksEventsBaseAddress = conversationUrl + "/webhooks/conversation/";
+
         }
 
         private string GetTestUrl(string portEnvVar) =>

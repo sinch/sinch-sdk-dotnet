@@ -11,10 +11,9 @@ using Xunit;
 
 namespace Sinch.Tests.Conversation
 {
-    public class HooksTests
+    public class HooksTests : ConversationTestBase
     {
-        [Fact]
-        public void DeserializeContactEvent()
+        private string MessageData()
         {
             var messageData = new
             {
@@ -54,8 +53,31 @@ namespace Sinch.Tests.Conversation
                 correlation_id = "correlation-id-1"
             };
             var json = JsonSerializer.Serialize(messageData);
+            return json;
+        }
 
+        [Fact]
+        public void DeserializeContactEventManually()
+        {
+            var json = MessageData();
+            
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json);
+            
+            AssertMessageData(result);
+        }
+
+        [Fact]
+        public void DeserializeContactMessageBuiltIn()
+        {
+            var json = MessageData();
+
+            var result = Conversation.Webhooks.DeserializeCallbackEvent(json);
+            
+            AssertMessageData(result);
+        }
+
+        private static void AssertMessageData(ICallbackEvent result)
+        {
             result.Should().BeEquivalentTo(new MessageInboundEvent()
             {
                 AppId = "01EB37HMH1M6SV18ABNS3G135H",
