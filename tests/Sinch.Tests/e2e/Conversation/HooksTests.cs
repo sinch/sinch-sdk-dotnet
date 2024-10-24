@@ -12,6 +12,7 @@ using Sinch.Conversation.Hooks;
 using Sinch.Conversation.Hooks.Models;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Webhooks;
+using Sinch.Numbers.Hooks;
 using Xunit;
 
 namespace Sinch.Tests.e2e.Conversation
@@ -176,8 +177,8 @@ namespace Sinch.Tests.e2e.Conversation
                 callbackEvent.As<ContactUpdateEvent>().MessageMetadata!.GetValue<string>().Should().BeEmpty();
             }
         }
-        
-         [Fact]
+
+        [Fact]
         public async Task ContactMerge()
         {
             var json = await _httpClient.GetStringAsync("contact-merge");
@@ -222,7 +223,7 @@ namespace Sinch.Tests.e2e.Conversation
                             Metadata = "",
                             Language = ConversationLanguage.EnglishUS,
                         },
-                        DeletedContact =  new Contact()
+                        DeletedContact = new Contact()
                         {
                             Id = "01W4FFL35P4NC4K35CONTACT01",
                             ChannelIdentities = new List<ChannelIdentity>()
@@ -243,6 +244,138 @@ namespace Sinch.Tests.e2e.Conversation
                     }
                 }, x => x.Excluding(m => m.MessageMetadata));
                 callbackEvent.As<ContactMergeEvent>().MessageMetadata!.GetValue<string>().Should().BeEmpty();
+            }
+        }
+
+        [Fact]
+        public async Task ConversationDelete()
+        {
+            var json = await _httpClient.GetStringAsync("conversation-delete");
+
+            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+
+            AssertEvent(result);
+
+            var resultPlain = JsonSerializer.Deserialize<ICallbackEvent>(json);
+
+            AssertEvent(resultPlain);
+
+            void AssertEvent(ICallbackEvent callbackEvent)
+            {
+                callbackEvent.Should().BeEquivalentTo(new ConversationDeleteEvent()
+                    {
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        CorrelationId = "",
+                        ConversationDeleteNotification = new ConversationNotification()
+                        {
+                            Conversation = new Sinch.Conversation.Conversations.Conversation()
+                            {
+                                Id = "01W4FFL35P4NC4K35CONVERS01",
+                                AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                                ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                                LastReceived = DateTime.Parse("2024-06-06T14:42:42Z").ToUniversalTime(),
+                                ActiveChannel = ConversationChannel.Rcs,
+                                Active = false,
+                                Metadata = "",
+                                CorrelationId = "correlatorId"
+                            }
+                        }
+                    },
+                    x => x.Excluding(m =>
+                        m.MessageMetadata).Excluding(m => m.ConversationDeleteNotification.Conversation.MetadataJson));
+                var deleteEvent = callbackEvent.As<ConversationDeleteEvent>();
+                deleteEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+                deleteEvent.ConversationDeleteNotification!.Conversation!.MetadataJson!.ToJsonString().Should()
+                    .Be("{}");
+            }
+        }
+
+        [Fact]
+        public async Task ConversationStart()
+        {
+            var json = await _httpClient.GetStringAsync("conversation-start");
+
+            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+
+            AssertEvent(result);
+
+            var resultPlain = JsonSerializer.Deserialize<ICallbackEvent>(json);
+
+            AssertEvent(resultPlain);
+
+            void AssertEvent(ICallbackEvent callbackEvent)
+            {
+                callbackEvent.Should().BeEquivalentTo(new ConversationStartEvent()
+                    {
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        CorrelationId = "",
+                        ConversationStartNotification = new ConversationNotification()
+                        {
+                            Conversation = new Sinch.Conversation.Conversations.Conversation()
+                            {
+                                Id = "01W4FFL35P4NC4K35CONVERS01",
+                                AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                                ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                                LastReceived = new DateTime(),
+                                ActiveChannel = ConversationChannel.Unspecified,
+                                Active = true,
+                                Metadata = "",
+                                CorrelationId = "correlatorId",
+                            }
+                        }
+                    },
+                    x => x.Excluding(m =>
+                        m.MessageMetadata).Excluding(m => m.ConversationStartNotification.Conversation.MetadataJson));
+                var convEvent = callbackEvent.As<ConversationStartEvent>();
+                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+                convEvent.ConversationStartNotification!.Conversation!.MetadataJson!.ToJsonString().Should()
+                    .Be("{}");
+            }
+        }
+
+        [Fact]
+        public async Task ConversationStop()
+        {
+            var json = await _httpClient.GetStringAsync("conversation-stop");
+
+            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+
+            AssertEvent(result);
+
+            var resultPlain = JsonSerializer.Deserialize<ICallbackEvent>(json);
+
+            AssertEvent(resultPlain);
+
+            void AssertEvent(ICallbackEvent callbackEvent)
+            {
+                callbackEvent.Should().BeEquivalentTo(new ConversationStopEvent()
+                    {
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        CorrelationId = "",
+                        ConversationStopNotification = new ConversationNotification()
+                        {
+                            Conversation = new Sinch.Conversation.Conversations.Conversation()
+                            {
+                                Id = "01W4FFL35P4NC4K35CONVERS01",
+                                AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                                ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                                LastReceived = DateTime.Parse("2024-06-06T14:42:42Z").ToUniversalTime(),
+                                ActiveChannel = ConversationChannel.Rcs,
+                                Active = false,
+                                Metadata = "",
+                                CorrelationId = "correlatorId",
+                            }
+                        }
+                    },
+                    x => x.Excluding(m =>
+                        m.MessageMetadata).Excluding(m => m.ConversationStopNotification.Conversation.MetadataJson));
+                var convEvent = callbackEvent.As<ConversationStopEvent>();
+                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+                convEvent.ConversationStopNotification!.Conversation!.MetadataJson!.ToJsonString().Should()
+                    .Be("{}");
             }
         }
     }
