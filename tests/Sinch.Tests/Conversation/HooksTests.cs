@@ -60,9 +60,9 @@ namespace Sinch.Tests.Conversation
         public void DeserializeContactEventManually()
         {
             var json = MessageData();
-            
+
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json);
-            
+
             AssertMessageData(result);
         }
 
@@ -72,7 +72,7 @@ namespace Sinch.Tests.Conversation
             var json = MessageData();
 
             var result = Conversation.Webhooks.DeserializeCallbackEvent(json);
-            
+
             AssertMessageData(result);
         }
 

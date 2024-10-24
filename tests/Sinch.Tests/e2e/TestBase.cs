@@ -16,7 +16,7 @@ namespace Sinch.Tests.e2e
         protected readonly ISinchClient SinchClientMockServer;
 
         protected readonly string WebhooksEventsBaseAddress;
-        
+
         protected TestBase()
         {
             Env.Load();

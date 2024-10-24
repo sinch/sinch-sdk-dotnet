@@ -48,7 +48,7 @@ namespace Sinch.Core
         /// <returns></returns>
         Task<TResponse> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest httpContent,
             CancellationToken cancellationToken = default, Dictionary<string, IEnumerable<string>>? headers = null);
-        
+
         JsonSerializerOptions JsonSerializerOptions { get; }
     }
 
