@@ -21,6 +21,7 @@ namespace Sinch.Tests.e2e.Conversation
     // utilizes mocks initialized from sinch-mock-server json files
     // the models are from a custom endpoint, meaning no sinch client endpoint matches them
     // json is fetched with http requests, testing parsing here
+    // for two types: plain deser with JsonSerializer, and provided Deserialize from ISinchConversationWebhooks
     public class HooksTests : TestBase
     {
         private readonly HttpClient _httpClient;
@@ -474,7 +475,7 @@ namespace Sinch.Tests.e2e.Conversation
                 convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
             }
         }
-        
+
         [Fact]
         public async Task EventInbound()
         {
@@ -514,12 +515,108 @@ namespace Sinch.Tests.e2e.Conversation
                             },
                             AcceptTime = DateTime.Parse("2024-06-06T14:42:42.429455346Z").ToUniversalTime(),
                             ProcessingMode = ProcessingMode.Conversation,
-                            
                         }
                     },
                     x => x.Excluding(m =>
                         m.MessageMetadata));
                 var convEvent = callbackEvent.As<InboundEvent>();
+                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+            }
+        }
+
+        [Fact]
+        public async Task MessageDeliveryReportFailed()
+        {
+            var json = await _httpClient.GetStringAsync("message-delivery-report/failed");
+
+            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+
+            AssertEvent(result);
+
+            var resultPlain = JsonSerializer.Deserialize<ICallbackEvent>(json);
+
+            AssertEvent(resultPlain);
+
+            void AssertEvent(ICallbackEvent callbackEvent)
+            {
+                callbackEvent.Should().BeEquivalentTo(new MessageDeliveryReceiptEvent()
+                    {
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        EventTime = DateTime.Parse("2024-06-06T14:42:43Z").ToUniversalTime(),
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.721Z").ToUniversalTime(),
+                        CorrelationId = "correlatorId",
+                        MessageDeliveryReport = new MessageDeliveryReport()
+                        {
+                            MessageId = "01W4FFL35P4NC4K35MESSAGE05",
+                            ConversationId = "01W4FFL35P4NC4K35CONVERS01",
+                            Status = DeliveryStatus.Failed,
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                Channel = ConversationChannel.Rcs,
+                                Identity = "12016666666",
+                                AppId = "",
+                            },
+                            ContactId = "01W4FFL35P4NC4K35CONTACT02",
+                            Reason = new Reason()
+                            {
+                                Code = "RECIPIENT_NOT_REACHABLE",
+                                Description =
+                                    "The underlying channel reported: Unable to find rcs support for the given recipient",
+                                SubCode = "UNSPECIFIED_SUB_CODE",
+                            },
+                            Metadata = "",
+                            ProcessingMode = ProcessingMode.Conversation
+                        }
+                    },
+                    x => x.Excluding(m =>
+                        m.MessageMetadata));
+                var convEvent = callbackEvent.As<MessageDeliveryReceiptEvent>();
+                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+            }
+        }
+        
+         [Fact]
+        public async Task MessageDeliveryReportQueued()
+        {
+            var json = await _httpClient.GetStringAsync("message-delivery-report/succeeded");
+
+            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+
+            AssertEvent(result);
+
+            var resultPlain = JsonSerializer.Deserialize<ICallbackEvent>(json);
+
+            AssertEvent(resultPlain);
+
+            void AssertEvent(ICallbackEvent callbackEvent)
+            {
+                callbackEvent.Should().BeEquivalentTo(new MessageDeliveryReceiptEvent()
+                    {
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        EventTime = DateTime.Parse("2024-06-06T14:42:43.0093518Z").ToUniversalTime(),
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.721Z").ToUniversalTime(),
+                        CorrelationId = "correlatorId",
+                        MessageDeliveryReport = new MessageDeliveryReport()
+                        {
+                            MessageId = "01W4FFL35P4NC4K35MESSAGE01",
+                            ConversationId = "01W4FFL35P4NC4K35CONVERS01",
+                            Status = DeliveryStatus.QueuedOnChannel,
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                Channel = ConversationChannel.Rcs,
+                                Identity = "12015555555",
+                                AppId = "",
+                            },
+                            ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                            Metadata = "",
+                            ProcessingMode = ProcessingMode.Conversation
+                        }
+                    },
+                    x => x.Excluding(m =>
+                        m.MessageMetadata));
+                var convEvent = callbackEvent.As<MessageDeliveryReceiptEvent>();
                 convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
             }
         }
