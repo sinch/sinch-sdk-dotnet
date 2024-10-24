@@ -48,6 +48,8 @@ namespace Sinch.Core
         /// <returns></returns>
         Task<TResponse> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest httpContent,
             CancellationToken cancellationToken = default, Dictionary<string, IEnumerable<string>>? headers = null);
+        
+        JsonSerializerOptions JsonSerializerOptions { get; }
     }
 
     /// <summary>
@@ -148,7 +150,7 @@ namespace Sinch.Core
                            ?? throw new InvalidOperationException(
                                $"{typeof(TResponse).Name} is null");
 
-                // if empty response is expected, any non related response is dropped
+                // if empty response is expected, any non-related response is dropped
                 if (typeof(TResponse) == typeof(EmptyResponse))
                 {
                     // if not empty content, check what is there for debug purposes.
@@ -170,6 +172,8 @@ namespace Sinch.Core
                 throw new InvalidOperationException("The response is not Json or EmptyResponse");
             }
         }
+
+        public JsonSerializerOptions JsonSerializerOptions => _jsonSerializerOptions;
 
         private static void AddOrOverrideHeaders(HttpRequestMessage msg,
             Dictionary<string, IEnumerable<string>> headers)

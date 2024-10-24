@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.Extensions.Primitives;
+using Sinch.Conversation.Hooks;
 using Sinch.Core;
 using Sinch.Logger;
 
@@ -70,6 +73,12 @@ namespace Sinch.Conversation.Webhooks
         /// <param name="secret"></param>
         /// <returns>True, if produced signature match with that of a header.</returns>
         bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonObject body, string secret);
+
+        ICallbackEvent DeserializeCallbackEvent(string json);
+
+        ICallbackEvent DeserializeCallbackEvent(JsonNode json);
+
+        Task<ICallbackEvent> DeserializeCallbackEventAsync(Stream json, CancellationToken cancellationToken = default);
     }
 
     /// <inheritdoc />
@@ -163,7 +172,8 @@ namespace Sinch.Conversation.Webhooks
                 cancellationToken);
         }
 
-        public bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonObject body, string secret)
+        public bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonObject body,
+            string secret)
         {
             var headersCaseInsensitive =
                 new Dictionary<string, StringValues>(headers, StringComparer.InvariantCultureIgnoreCase);
@@ -200,6 +210,42 @@ namespace Sinch.Conversation.Webhooks
             var isValidSignature = string.Equals(calculatedSignature, signature, StringComparison.Ordinal);
             _logger?.LogInformation("The signature was validated with {success}", isValidSignature);
             return isValidSignature;
+        }
+
+        public ICallbackEvent DeserializeCallbackEvent(string json)
+        {
+            var jsonResult = JsonSerializer.Deserialize<ICallbackEvent>(json, _http.JsonSerializerOptions);
+            if (jsonResult == null)
+            {
+                throw new InvalidOperationException("Deserialization of callback event failed");
+            }
+
+            return jsonResult;
+        }
+
+        public ICallbackEvent DeserializeCallbackEvent(JsonNode json)
+        {
+            var jsonResult = json.Deserialize<ICallbackEvent>(_http.JsonSerializerOptions);
+            if (jsonResult == null)
+            {
+                throw new InvalidOperationException("Deserialization of callback event failed");
+            }
+
+            return jsonResult;
+        }
+
+        public async Task<ICallbackEvent> DeserializeCallbackEventAsync(Stream jsonStream,
+            CancellationToken cancellationToken = default)
+        {
+            var jsonResult =
+                await JsonSerializer.DeserializeAsync<ICallbackEvent>(jsonStream, _http.JsonSerializerOptions,
+                    cancellationToken);
+            if (jsonResult == null)
+            {
+                throw new InvalidOperationException("Deserialization of callback event failed");
+            }
+
+            return jsonResult;
         }
     }
 
