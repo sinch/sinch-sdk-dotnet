@@ -78,7 +78,7 @@ namespace Sinch.Tests.e2e.Conversation
                 callbackEvent.As<MessageInboundEvent>().MessageMetadata!.GetValue<string>().Should().BeEmpty();
             }
         }
-        
+
         [Fact]
         public async Task ContactDelete()
         {
@@ -123,6 +123,126 @@ namespace Sinch.Tests.e2e.Conversation
                     }
                 }, x => x.Excluding(m => m.MessageMetadata));
                 callbackEvent.As<ContactDeleteEvent>().MessageMetadata!.GetValue<string>().Should().BeEmpty();
+            }
+        }
+
+        [Fact]
+        public async Task ContactUpdate()
+        {
+            var json = await _httpClient.GetStringAsync("contact-update");
+
+            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+
+            AssertEvent(result);
+
+            var resultPlain = JsonSerializer.Deserialize<ICallbackEvent>(json);
+
+            AssertEvent(resultPlain);
+
+            void AssertEvent(ICallbackEvent callbackEvent)
+            {
+                callbackEvent.Should().BeEquivalentTo(new ContactUpdateEvent()
+                {
+                    AppId = "",
+                    AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.1646148Z").ToUniversalTime(),
+                    ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                    CorrelationId = "",
+                    ContactUpdateNotification = new ContactNotification()
+                    {
+                        Contact = new Contact()
+                        {
+                            Id = "01W4FFL35P4NC4K35CONTACT01",
+                            ChannelIdentities = new List<ChannelIdentity>()
+                            {
+                                new ChannelIdentity()
+                                {
+                                    Channel = ConversationChannel.Rcs,
+                                    Identity = "12015556666",
+                                    AppId = ""
+                                }
+                            },
+                            ChannelPriority = new List<ConversationChannel>()
+                            {
+                                ConversationChannel.Rcs
+                            },
+                            DisplayName = "Updated name with the Sinch SDK",
+                            Email = "",
+                            ExternalId = "",
+                            Metadata = "",
+                            Language = ConversationLanguage.French,
+                        }
+                    }
+                }, x => x.Excluding(m => m.MessageMetadata));
+                callbackEvent.As<ContactUpdateEvent>().MessageMetadata!.GetValue<string>().Should().BeEmpty();
+            }
+        }
+        
+         [Fact]
+        public async Task ContactMerge()
+        {
+            var json = await _httpClient.GetStringAsync("contact-merge");
+
+            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+
+            AssertEvent(result);
+
+            var resultPlain = JsonSerializer.Deserialize<ICallbackEvent>(json);
+
+            AssertEvent(resultPlain);
+
+            void AssertEvent(ICallbackEvent callbackEvent)
+            {
+                callbackEvent.Should().BeEquivalentTo(new ContactMergeEvent()
+                {
+                    AppId = "",
+                    AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.722089838Z").ToUniversalTime(),
+                    ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                    CorrelationId = "",
+                    ContactMergeNotification = new ContactMergeNotification()
+                    {
+                        PreservedContact = new Contact()
+                        {
+                            Id = "01W4FFL35P4NC4K35CONTACT02",
+                            ChannelIdentities = new List<ChannelIdentity>()
+                            {
+                                new ChannelIdentity()
+                                {
+                                    Channel = ConversationChannel.Mms,
+                                    Identity = "12016666666",
+                                    AppId = ""
+                                }
+                            },
+                            ChannelPriority = new List<ConversationChannel>()
+                            {
+                                ConversationChannel.Mms
+                            },
+                            DisplayName = "Destination Contact",
+                            Email = "",
+                            ExternalId = "",
+                            Metadata = "",
+                            Language = ConversationLanguage.EnglishUS,
+                        },
+                        DeletedContact =  new Contact()
+                        {
+                            Id = "01W4FFL35P4NC4K35CONTACT01",
+                            ChannelIdentities = new List<ChannelIdentity>()
+                            {
+                                new ChannelIdentity()
+                                {
+                                    Channel = ConversationChannel.Sms,
+                                    Identity = "12015555555",
+                                    AppId = ""
+                                }
+                            },
+                            DisplayName = "Source Contact",
+                            Email = "source@mail.com",
+                            ExternalId = "",
+                            Metadata = "Some metadata belonging to the source contact",
+                            Language = ConversationLanguage.French,
+                        }
+                    }
+                }, x => x.Excluding(m => m.MessageMetadata));
+                callbackEvent.As<ContactMergeEvent>().MessageMetadata!.GetValue<string>().Should().BeEmpty();
             }
         }
     }
