@@ -12,6 +12,6 @@ namespace Sinch.Voice.Callouts.Callout
     {
         public static readonly DestinationType Number = new("number");
         public static readonly DestinationType Username = new("username");
-
+        public static readonly DestinationType Sip = new("sip");
     }
 }
