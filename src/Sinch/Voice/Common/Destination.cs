@@ -54,9 +54,14 @@ namespace Sinch.Voice.Common
     [JsonConverter(typeof(EnumRecordJsonConverter<DestinationType>))]
     public record DestinationType(string Value) : EnumRecord(Value)
     {
-
-        public static readonly DestinationType Number = new("Number");
-        public static readonly DestinationType Username = new("Username");
+        /// <summary>
+        ///     Destination ptsn
+        /// </summary>
+        public static readonly DestinationType Number = new("number");
+        /// <summary>
+        ///     Destination mxp
+        /// </summary>
+        public static readonly DestinationType Username = new("username");
         public static readonly DestinationType Sip = new("sip");
         public static readonly DestinationType Did = new("did");
     }
