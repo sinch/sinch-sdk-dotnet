@@ -1,5 +1,6 @@
 using System;
 using Sinch.Conversation;
+using Sinch.Mailgun;
 using Sinch.SMS;
 using Sinch.Voice;
 
@@ -82,6 +83,26 @@ namespace Sinch.Core
             const string smsApiServicePlanIdUrlTemplate = "https://{0}.sms.api.sinch.com";
             return new Uri(string.Format(smsApiServicePlanIdUrlTemplate,
                 smsServicePlanIdRegion.Value.ToLowerInvariant()));
+        }
+
+        public Uri ResolveMailgunUrl(MailgunRegion mailgunRegion)
+        {
+            if (!string.IsNullOrEmpty(_apiUrlOverrides?.MailgunUrl)) return new Uri(_apiUrlOverrides.MailgunUrl);
+
+            string? mailgunUrl;
+            switch (mailgunRegion)
+            {
+                case MailgunRegion.Us:
+                    mailgunUrl = "https://api.mailgun.net";
+                    break;
+                case MailgunRegion.Eu:
+                    mailgunUrl = "https://api.eu.mailgun.net";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(mailgunRegion), mailgunRegion, "Unreachable");
+            }
+
+            return new Uri(mailgunUrl);
         }
     }
 }

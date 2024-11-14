@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FluentAssertions;
 using Sinch.Conversation;
 using Sinch.Core;
+using Sinch.Mailgun;
 using Sinch.SMS;
 using Sinch.Voice;
 using Xunit;
@@ -313,6 +314,60 @@ namespace Sinch.Tests.Core
                 ? new Uri($"https://{smsServicePlanIdRegion.Value}.sms.api.sinch.com/")
                 : new Uri(apiUrlOverrides.SmsUrl);
             smsUrl.Should().BeEquivalentTo(expectedUrl);
+        }
+
+        
+        public static IEnumerable<object[]> MailgunUrlData => new List<object[]>
+        {
+            new object[]
+            {
+                MailgunRegion.Us,
+                null,
+            },
+            new object[]
+            {
+                MailgunRegion.Eu,
+                null,
+            },
+            new object[]
+            {
+                MailgunRegion.Eu,
+                new ApiUrlOverrides()
+                {
+                    MailgunUrl = null
+                }
+            },
+            new object[]
+            {
+                MailgunRegion.Eu,
+                new ApiUrlOverrides()
+                {
+                    MailgunUrl = "https://my-mailgun-proxy.net"
+                }
+            },
+        };
+        [Theory]
+        [MemberData(nameof(MailgunUrlData))]
+        public void ResolveMailgunUrl(MailgunRegion region, ApiUrlOverrides apiUrlOverrides)
+        {
+            var actual = new UrlResolver(apiUrlOverrides).ResolveMailgunUrl(region);
+
+            if (apiUrlOverrides is { MailgunUrl: not null })
+            {
+                actual.Should().BeEquivalentTo(new Uri(apiUrlOverrides.MailgunUrl));
+            }
+            else
+            {
+                if (region == MailgunRegion.Eu)
+                {
+                    actual.Should().BeEquivalentTo(new Uri("https://api.eu.mailgun.net"));
+                }
+                else
+                {
+                    actual.Should().BeEquivalentTo(new Uri("https://api.mailgun.net"));
+                }
+            }
+            
         }
     }
 }

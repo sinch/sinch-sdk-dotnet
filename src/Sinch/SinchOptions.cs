@@ -137,5 +137,10 @@ namespace Sinch
         ///     Overrides Numbers api base url
         /// </summary>
         public string? NumbersUrl { get; init; }
+
+        /// <summary>
+        ///     Overrides Mailgun api base url
+        /// </summary>
+        public string? MailgunUrl { get; init; }
     }
 }

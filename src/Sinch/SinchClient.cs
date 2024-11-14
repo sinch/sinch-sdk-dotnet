@@ -7,6 +7,7 @@ using Sinch.Auth;
 using Sinch.Conversation;
 using Sinch.Core;
 using Sinch.Logger;
+using Sinch.Mailgun;
 using Sinch.Numbers;
 using Sinch.SMS;
 using Sinch.Verification;
@@ -111,6 +112,17 @@ namespace Sinch
         /// <param name="voiceRegion">See <see cref="VoiceRegion" />. Defaults to <see cref="VoiceRegion.Global" /></param>
         /// <returns></returns>
         public ISinchVoiceClient Voice(string appKey, string appSecret, VoiceRegion? voiceRegion = null);
+
+        /// <summary>
+        ///     APIs are at the heart of Mailgun.
+        ///     Our goal is to provide developers worldwide with an accessible and straightforward way to send,
+        ///     receive, and track emails effortlessly.
+        /// </summary>
+        /// <param name="apiKey">When you sign up for Mailgun, a primary account API key is generated.
+        /// This key allows you to perform all CRUD operations via our various API endpoints and for any of your sending domains. </param>
+        /// <param name="region"><see cref="MailgunRegion"/></param>
+        /// <returns></returns>
+        public ISinchMailgunClient Mailgun(string apiKey, MailgunRegion region);
     }
 
     public class SinchClient : ISinchClient
@@ -272,6 +284,12 @@ namespace Sinch
                 _urlResolver.ResolveVoiceUrl(voiceRegion),
                 _loggerFactory, http, (auth as ApplicationSignedAuth)!,
                 _urlResolver.ResolveVoiceApplicationManagementUrl());
+        }
+
+        public ISinchMailgunClient Mailgun(string apiKey, MailgunRegion region)
+        {
+            var baseUrl = _urlResolver.ResolveMailgunUrl(region);
+            return new SinchMailgunClient();
         }
 
         private void ValidateCommonCredentials()
