@@ -286,6 +286,7 @@ namespace Sinch
                 _urlResolver.ResolveVoiceApplicationManagementUrl());
         }
 
+        /// <inheritdoc />
         public ISinchMailgunClient Mailgun(string apiKey, MailgunRegion region)
         {
             if (string.IsNullOrEmpty(apiKey))
