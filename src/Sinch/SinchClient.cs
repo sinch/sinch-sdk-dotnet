@@ -288,8 +288,16 @@ namespace Sinch
 
         public ISinchMailgunClient Mailgun(string apiKey, MailgunRegion region)
         {
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                throw new ArgumentNullException(nameof(apiKey), "apiKey shouldn't be null or empty");
+            }
             var baseUrl = _urlResolver.ResolveMailgunUrl(region);
-            return new SinchMailgunClient();
+            var mailgunAuth = new BasicAuth(appKey: "api", appSecret: apiKey);
+            // NOTE: jsonNamingPolicy will not play a role here as property naming of mailgun is inconsistent
+            // meaning, all lifting will be done through JsonPropertyNamingAttribute
+            var http = new Http(mailgunAuth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
+            return new SinchMailgunClient(baseUrl, http, _loggerFactory);
         }
 
         private void ValidateCommonCredentials()

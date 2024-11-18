@@ -6,7 +6,13 @@ namespace Sinch.Mailgun
     /// </summary>
     public enum MailgunRegion
     {
+        /// <summary>
+        ///     United States region
+        /// </summary>
         Us,
+        /// <summary>
+        ///     Europe region
+        /// </summary>
         Eu
     }
 }

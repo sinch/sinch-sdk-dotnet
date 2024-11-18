@@ -316,7 +316,7 @@ namespace Sinch.Tests.Core
             smsUrl.Should().BeEquivalentTo(expectedUrl);
         }
 
-        
+
         public static IEnumerable<object[]> MailgunUrlData => new List<object[]>
         {
             new object[]
@@ -346,6 +346,7 @@ namespace Sinch.Tests.Core
                 }
             },
         };
+
         [Theory]
         [MemberData(nameof(MailgunUrlData))]
         public void ResolveMailgunUrl(MailgunRegion region, ApiUrlOverrides apiUrlOverrides)
@@ -367,7 +368,7 @@ namespace Sinch.Tests.Core
                     actual.Should().BeEquivalentTo(new Uri("https://api.mailgun.net"));
                 }
             }
-            
+
         }
     }
 }
