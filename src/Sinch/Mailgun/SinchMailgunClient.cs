@@ -9,7 +9,7 @@ namespace Sinch.Mailgun
     /// </summary>
     public interface ISinchMailgunClient
     {
-
+        // TBD: add domains
     }
 
     /// <inheritdoc />
@@ -17,7 +17,7 @@ namespace Sinch.Mailgun
     {
         public SinchMailgunClient(Uri baseUrl, Http http, LoggerFactory? loggerFactory = null)
         {
-
+            // TBD: implement domains 
         }
     }
 }
