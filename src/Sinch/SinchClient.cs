@@ -118,8 +118,8 @@ namespace Sinch
 
     public class SinchClient : ISinchClient
     {
-      
-        
+
+
         private readonly ISinchAuth _auth;
         private readonly ISinchConversation _conversation;
         private readonly HttpClient _httpClient;
