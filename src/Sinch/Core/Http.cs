@@ -225,7 +225,7 @@ namespace Sinch.Core
                     }
                 }
 
-                await result.EnsureSuccessApiStatusCode();
+                await result.EnsureSuccessApiStatusCode(_jsonSerializerOptions);
 
                 _logger?.LogDebug("Finished processing request for {uri}", uri);
 

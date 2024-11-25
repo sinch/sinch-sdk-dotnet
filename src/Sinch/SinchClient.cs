@@ -118,8 +118,7 @@ namespace Sinch
 
     public class SinchClient : ISinchClient
     {
-        private const string FaxApiUrl = "https://fax.api.sinch.com/";
-        private const string FaxApiUrlTemplate = "https://{0}.fax.api.sinch.com/";
+      
         
         private readonly ISinchAuth _auth;
         private readonly ISinchConversation _conversation;
@@ -194,25 +193,10 @@ namespace Sinch
                 , templatesBaseAddress,
                 _loggerFactory, httpSnakeCaseOAuth);
 
-            var faxUrl = ResolveFaxUrl(optionsObj.FaxRegion);
+            var faxUrl = _urlResolver.ResolveFaxUrl(optionsObj.FaxRegion);
             _fax = new FaxClient(projectId!, faxUrl, _loggerFactory, httpCamelCase);
 
             _logger?.LogInformation("SinchClient initialized.");
-        }
-
-        private Uri ResolveFaxUrl(FaxRegion? faxRegion)
-        {
-            if (!string.IsNullOrEmpty(_apiUrlOverrides?.FaxUrl))
-            {
-                return new Uri(_apiUrlOverrides.FaxUrl);
-            }
-
-            if (!string.IsNullOrEmpty(faxRegion?.Value))
-            {
-                return new Uri(string.Format(FaxApiUrlTemplate, faxRegion.Value));
-            }
-
-            return new Uri(FaxApiUrl);
         }
 
         /// <inheritdoc />
