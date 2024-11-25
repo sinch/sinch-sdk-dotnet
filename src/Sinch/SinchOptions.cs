@@ -114,7 +114,7 @@ namespace Sinch
 
         /// <summary>
         ///     Overrides Templates api base url.
-        ///     Templates is treated as part of conversation api, but it has another base address.
+        ///     Templates are treated as part of conversation api, but it has another base address.
         /// </summary>
         public string? TemplatesUrl { get; init; }
 
@@ -122,6 +122,12 @@ namespace Sinch
         ///     Overrides Voice api base url
         /// </summary>
         public string? VoiceUrl { get; init; }
+
+        /// <summary>
+        ///     Overrides Voice api application management base url.
+        ///     Voice Application Management is treated as voice api, but it has another base address.
+        /// </summary>
+        public string? VoiceApplicationManagementUrl { get; init; }
 
         /// <summary>
         ///     Overrides Verification api base url

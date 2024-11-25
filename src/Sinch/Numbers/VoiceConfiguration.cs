@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Numbers
 {
@@ -20,7 +21,8 @@ namespace Sinch.Numbers
         ///     This object is temporary and will appear while the scheduled voice provisioning is processing.
         ///     Once it has successfully processed, only the ID of the Voice configuration will display.
         /// </summary>
-        public ScheduledVoiceProvisioning? ScheduledVoiceProvisioning { get; set; }
+        [JsonInclude]
+        public ScheduledVoiceProvisioning? ScheduledVoiceProvisioning { get; private set; }
 
         /// <summary>
         ///     Timestamp when the status was last updated.

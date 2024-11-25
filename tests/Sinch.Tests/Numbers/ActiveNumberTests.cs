@@ -24,7 +24,7 @@ namespace Sinch.Tests.Numbers
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(TestData.ActiveNumber));
 
-            var response = await Numbers.Active.Get("+12025550134");
+            var response = await Numbers.Get("+12025550134");
 
             response.Should().NotBeNull();
             response.PhoneNumber.Should().Be("+12025550134");
@@ -47,7 +47,7 @@ namespace Sinch.Tests.Numbers
                     totalSize = 5
                 }));
 
-            var response = await Numbers.Active.List(new ListActiveNumbersRequest
+            var response = await Numbers.List(new ListActiveNumbersRequest
             {
                 RegionCode = "US",
                 Type = Types.Mobile,
@@ -96,7 +96,7 @@ namespace Sinch.Tests.Numbers
                 Capability = new List<Product> { Product.Sms, Product.Voice },
                 NumberPattern = new NumberPattern { Pattern = "2020", SearchPattern = SearchPattern.Contain }
             };
-            var response = await Numbers.Active.List(request);
+            var response = await Numbers.List(request);
 
             response.Should().NotBeNull();
             response.ActiveNumbers.Should().HaveCount(1);
@@ -113,7 +113,7 @@ namespace Sinch.Tests.Numbers
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(TestData.ActiveNumber));
 
-            var response = await Numbers.Active.Release("+12025550134");
+            var response = await Numbers.Release("+12025550134");
 
             response.Should().NotBeNull();
             response.PhoneNumber.Should().Be("+12025550134");
@@ -130,7 +130,7 @@ namespace Sinch.Tests.Numbers
                 .Respond(HttpStatusCode.OK, JsonContent.Create(TestData.ActiveNumber));
 
 
-            var response = await Numbers.Active.Update("+12025550134", new Sinch.Numbers.Active.Update.UpdateActiveNumberRequest
+            var response = await Numbers.Update("+12025550134", new Sinch.Numbers.Active.Update.UpdateActiveNumberRequest
             {
                 DisplayName = "Name",
                 SmsConfiguration = new SmsConfiguration
@@ -184,7 +184,7 @@ namespace Sinch.Tests.Numbers
                 }));
 
 
-            var res = Numbers.Active.ListAuto(new ListActiveNumbersRequest
+            var res = Numbers.ListAuto(new ListActiveNumbersRequest
             {
                 RegionCode = "US",
                 Type = Types.Mobile,
