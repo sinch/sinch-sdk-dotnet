@@ -28,9 +28,13 @@ namespace WebApiExamples.Controllers
                     // download if fax completed 
                     foreach (var file in completedFaxEvent.Files)
                     {
+                        if (file.File is null || completedFaxEvent.Fax is null)
+                        {
+                            continue;
+                        }
                         var bytes = Convert.FromBase64String(file.File);
                         var contents = new MemoryStream(bytes);
-                        var fileName = completedFaxEvent.Fax.Id + "." + file.FileType.Value.ToLower();
+                        var fileName = completedFaxEvent.Fax.Id + "." + file.FileType?.Value.ToLower();
                         await SaveFile(fileName, contents);
                     }
                     break;
