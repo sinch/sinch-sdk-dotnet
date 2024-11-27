@@ -9,7 +9,7 @@ namespace WebApiExamples.Controllers
     [Route("fax")]
     public class HandleFaxEventController : ControllerBase
     {
-        private List<string> _incomingFaxIds = new(); // track fax ids which was sent
+        private readonly List<string> _incomingFaxIds = new(); // track fax ids which was sent
 
         [HttpPost]
         [Route("event-json")]
@@ -19,7 +19,10 @@ namespace WebApiExamples.Controllers
             {
                 case IncomingFaxEvent incomingFaxEvent:
                     // just track fax ids for future
-                    _incomingFaxIds.Add(incomingFaxEvent.Fax.Id);
+                    if (incomingFaxEvent?.Fax?.Id is not null)
+                    {
+                        _incomingFaxIds.Add(incomingFaxEvent.Fax.Id);
+                    }
                     break;
                 case CompletedFaxEvent completedFaxEvent:
                     // download if fax completed 
