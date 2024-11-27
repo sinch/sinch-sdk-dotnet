@@ -6,6 +6,7 @@ using System.Text.Json;
 using Sinch.Auth;
 using Sinch.Conversation;
 using Sinch.Core;
+using Sinch.Fax;
 using Sinch.Logger;
 using Sinch.Numbers;
 using Sinch.SMS;
@@ -60,6 +61,12 @@ namespace Sinch
         ///     <see href="https://developers.sinch.com/docs/conversation/api-reference/">Learn more.</see>
         /// </summary>
         public ISinchConversation Conversation { get; }
+
+        /// <summary>
+        ///     Sinch Fax. Currently, in closed Beta support.
+        ///     You can always reach us at <see href="faxbetasupport@sinch.com">Fax API Closed Beta Support</see>.
+        /// </summary>
+        public ISinchFax Fax { get; }
 
         /// <summary>
         ///     Verify users with SMS, flash calls (missed calls), a regular call, or data verification.
@@ -131,6 +138,7 @@ namespace Sinch
         private readonly ILoggerAdapter<ISinchClient>? _logger;
         private readonly UrlResolver _urlResolver;
 
+        private readonly ISinchFax _fax;
 
         /// <summary>
         ///     Initialize a new <see cref="SinchClient" />
@@ -187,6 +195,9 @@ namespace Sinch
                 , templatesBaseAddress,
                 _loggerFactory, httpSnakeCaseOAuth);
 
+            var faxUrl = _urlResolver.ResolveFaxUrl(optionsObj.FaxRegion);
+            _fax = new FaxClient(projectId!, faxUrl, _loggerFactory, httpCamelCase);
+
             _logger?.LogInformation("SinchClient initialized.");
         }
 
@@ -232,7 +243,17 @@ namespace Sinch
             }
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="ISinchFax"/>
+        public ISinchFax Fax
+        {
+            get
+            {
+                ValidateCommonCredentials();
+                return _fax;
+            }
+        }
+
+        /// <inheritdoc/>
         public ISinchVerificationClient Verification(string appKey, string appSecret,
             AuthStrategy authStrategy = AuthStrategy.ApplicationSign)
         {

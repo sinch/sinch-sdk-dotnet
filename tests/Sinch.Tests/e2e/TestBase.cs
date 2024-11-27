@@ -8,7 +8,7 @@ namespace Sinch.Tests.e2e
         /// <summary>
         ///     It's the same value as in doppleganger common.defaultProjectId, so it's shared and common. 
         /// </summary>
-        private const string ProjectId = "e15b2651-daac-4ccb-92e8-e3066d1d033b";
+        protected const string ProjectId = "e15b2651-daac-4ccb-92e8-e3066d1d033b";
 
         protected readonly ISinchClient SinchClientMockStudio;
 
@@ -43,6 +43,7 @@ namespace Sinch.Tests.e2e
                     VerificationUrl = GetTestUrl("MOCK_VERIFICATION_PORT"),
                     // templates treated as conversation api in doppelganger 
                     TemplatesUrl = GetTestUrl("MOCK_CONVERSATION_PORT"),
+                    FaxUrl = GetTestUrl("MOCK_FAX_PORT"),
                 };
             });
         }
