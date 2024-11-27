@@ -62,6 +62,10 @@ namespace Sinch
         /// </summary>
         public ISinchConversation Conversation { get; }
 
+        /// <summary>
+        ///     Sinch Fax. Currently, in closed Beta support.
+        ///     You can always reach us at <see href="faxbetasupport@sinch.com">Fax API Closed Beta Support</see>.
+        /// </summary>
         public ISinchFax Fax { get; }
 
         /// <summary>
@@ -118,8 +122,6 @@ namespace Sinch
 
     public class SinchClient : ISinchClient
     {
-
-
         private readonly ISinchAuth _auth;
         private readonly ISinchConversation _conversation;
         private readonly HttpClient _httpClient;
