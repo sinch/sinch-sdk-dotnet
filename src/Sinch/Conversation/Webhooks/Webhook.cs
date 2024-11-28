@@ -92,7 +92,7 @@ namespace Sinch.Conversation.Webhooks
         ///     Maximum URL length is 742. The conversation-api.*.sinch.com subdomains are forbidden.
         /// </summary>
 #if NET7_0_OR_GREATER
-    public required string Target
+        public required string Target
 #else
         public string Target
 #endif

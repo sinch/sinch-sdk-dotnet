@@ -19,7 +19,7 @@ namespace Sinch.Conversation.TemplatesV2
         ///     Gets or Sets Translations
         /// </summary>
 #if NET7_0_OR_GREATER
-         public required List<TemplateTranslation> Translations { get; set; }
+        public required List<TemplateTranslation> Translations { get; set; }
 #else
         public List<TemplateTranslation> Translations { get; set; } = null!;
 #endif

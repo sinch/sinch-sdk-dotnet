@@ -21,7 +21,7 @@ namespace Sinch.SMS.Groups.Replace
         ///     <see href="https://community.sinch.com/t5/Glossary/E-164/ta-p/7537">E.164</see> format MSISDNs.
         /// </summary>
 #if NET7_0_OR_GREATER
-    public required List<string> Members { get; init; }
+        public required List<string> Members { get; init; }
 #else
         public List<string> Members { get; set; } = null!;
 #endif

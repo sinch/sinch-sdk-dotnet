@@ -16,7 +16,7 @@ namespace Sinch.SMS.Hooks
         /// </summary>
         [JsonPropertyName("body")]
 #if NET7_0_OR_GREATER
-    public required virtual string Body { get; set; }
+        public required virtual string Body { get; set; }
 #else
         public virtual string Body { get; set; } = null!;
 #endif
