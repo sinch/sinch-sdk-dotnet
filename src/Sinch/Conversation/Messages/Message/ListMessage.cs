@@ -15,11 +15,9 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     A title for the message that is displayed near the products or choices.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string Title { get; set; }
-#else
-        public string Title { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -31,11 +29,9 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     List of ListSection objects containing choices to be presented in the list message.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required List<ListSection> Sections { get; set; }
-#else
-        public List<ListSection> Sections { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

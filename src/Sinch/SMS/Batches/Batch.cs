@@ -87,12 +87,10 @@ namespace Sinch.SMS.Batches
         /// <summary>
         ///     The message content
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string Body { get; set; }
 
-#else
-        public string Body { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     Contains the parameters that will be used for customizing the message for each recipient.<br /><br />
@@ -181,11 +179,9 @@ namespace Sinch.SMS.Batches
         ///     The message content Base64 encoded.<br/><br/>
         ///     Max 140 bytes including <see cref="Udh"/>.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string Body { get; set; }
-#else
-        public string Body { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///         SMS in binary format.
@@ -208,11 +204,9 @@ namespace Sinch.SMS.Batches
         /// <summary>
         ///     The message content, including a URL to the media file
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required MediaBody Body { get; set; }
-#else
-        public MediaBody Body { get; set; } = null!;
-#endif
+
         /// <summary>
         ///     MMS
         /// </summary>

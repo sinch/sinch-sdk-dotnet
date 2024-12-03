@@ -14,22 +14,18 @@ namespace Sinch.Conversation.Messages.Message
         ///     Gets or Sets Name
         /// </summary>
         [JsonPropertyName("name")]
-#if NET7_0_OR_GREATER
+
         public required NameInfo Name { get; set; }
-#else
-        public NameInfo Name { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
         ///     Phone numbers of the contact
         /// </summary>
         [JsonPropertyName("phone_numbers")]
-#if NET7_0_OR_GREATER
+
         public required List<PhoneNumberInfo> PhoneNumbers { get; set; }
-#else
-        public List<PhoneNumberInfo> PhoneNumbers { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -96,11 +92,9 @@ namespace Sinch.Conversation.Messages.Message
         ///     Full name of the contact
         /// </summary>
         [JsonPropertyName("full_name")]
-#if NET7_0_OR_GREATER
+
         public required string FullName { get; set; }
-#else
-        public string FullName { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -166,11 +160,9 @@ namespace Sinch.Conversation.Messages.Message
         ///     Phone number with country code included.
         /// </summary>
         [JsonPropertyName("phone_number")]
-#if NET7_0_OR_GREATER
+
         public required string PhoneNumber { get; set; }
-#else
-        public string PhoneNumber { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -270,11 +262,9 @@ namespace Sinch.Conversation.Messages.Message
         ///     Email address.
         /// </summary>
         [JsonPropertyName("email_address")]
-#if NET7_0_OR_GREATER
+
         public required string EmailAddress { get; set; }
-#else
-        public string EmailAddress { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -350,11 +340,9 @@ namespace Sinch.Conversation.Messages.Message
         ///     The URL to be referenced
         /// </summary>
         [JsonPropertyName("url")]
-#if NET7_0_OR_GREATER
+
         public required string Url { get; set; }
-#else
-        public string Url { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

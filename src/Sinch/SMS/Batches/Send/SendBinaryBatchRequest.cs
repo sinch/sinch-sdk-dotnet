@@ -36,11 +36,9 @@ namespace Sinch.SMS.Batches.Send
         ///     The message content Base64 encoded.<br/><br/>
         ///     Max 140 bytes including <see cref="Udh"/>.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string Body { get; set; }
-#else
-        public string Body { get; set; } = null!;
-#endif
+
         /// <summary>
         ///         SMS in binary format.
         /// </summary>

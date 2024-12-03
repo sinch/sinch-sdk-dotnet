@@ -11,20 +11,16 @@ namespace Sinch.Conversation.Apps.Credentials
         ///     Kakaotalk Plus friend ID.
         /// </summary>
         [JsonPropertyName("kakaotalk_plus_friend_id")]
-#if NET7_0_OR_GREATER
+
         public required string KakaoTalkPlusFriendId { get; set; }
-#else
-        public string KakaoTalkPlusFriendId { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     InfoBank API KEY.
         /// </summary>
         [JsonPropertyName("api_key")]
-#if NET7_0_OR_GREATER
+
         public required string ApiKey { get; set; }
-#else
-        public string ApiKey { get; set; } = null!;
-#endif
+
     }
 }

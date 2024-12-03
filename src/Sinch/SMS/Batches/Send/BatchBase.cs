@@ -73,11 +73,9 @@ namespace Sinch.SMS.Batches.Send
         ///     List of Phone numbers and group IDs that will receive the batch.
         ///     <see href="https://community.sinch.com/t5/Glossary/MSISDN/ta-p/7628">More info</see>
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required List<string> To { get; set; }
-#else
-        public List<string> To { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     Sender number. Must be valid phone number, short code or alphanumeric.

@@ -10,11 +10,9 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Required parameter. Title for the choice item.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string Title { get; set; }
-#else
-        public string Title { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

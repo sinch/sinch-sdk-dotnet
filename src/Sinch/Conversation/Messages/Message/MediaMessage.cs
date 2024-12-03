@@ -17,11 +17,9 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Url to the media file.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required Uri Url { get; init; }
-#else
-        public Uri Url { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     Overrides the media file name.

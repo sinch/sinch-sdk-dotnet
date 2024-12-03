@@ -5,11 +5,9 @@ namespace Sinch.Voice.Callouts.Callout
 {
     public class TextToSpeechCalloutRequest
     {
-#if NET7_0_OR_GREATER
+
         public required Destination Destination { get; set; }
-#else
-        public Destination Destination { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     The number that will be displayed as the icoming caller,

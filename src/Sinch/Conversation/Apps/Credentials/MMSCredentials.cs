@@ -8,21 +8,17 @@ namespace Sinch.Conversation.Apps.Credentials
         /// <summary>
         ///     MMS Account ID.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string AccountId { get; set; }
-#else
-        public string AccountId { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
         ///     MMS API Key.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string ApiKey { get; set; }
-#else
-        public string ApiKey { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

@@ -17,11 +17,9 @@ namespace Sinch.Verification.Report.Request
         /// <summary>
         ///     The code which was received by the user submitting the SMS verification.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string Code { get; set; }
-#else
-        public string Code { get; set; } = null!;
-#endif
+
         /// <summary>
         ///     The sender ID of the SMS.
         /// </summary>

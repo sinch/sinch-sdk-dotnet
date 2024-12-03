@@ -8,29 +8,23 @@ namespace Sinch.Conversation.Transcoding
     /// </summary>
     public class TranscodeRequest
     {
-#if NET7_0_OR_GREATER
+
         public required string AppId { get; set; }
-#else
-        public string AppId { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     Message originating from an app
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required AppMessage AppMessage { get; set; }
-#else
-        public AppMessage AppMessage { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     The list of channels for which the message shall be transcoded to.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required List<ConversationChannel> Channels { get; set; }
-#else
-        public List<ConversationChannel> Channels { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     Optional.

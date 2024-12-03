@@ -12,11 +12,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     The content of the message (1024 characters maximum). Emojis and Markdown are supported.
         /// </summary>
         [JsonPropertyName("text")]
-#if NET7_0_OR_GREATER
+
         public required string Text { get; set; }
-#else
-        public string Text { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

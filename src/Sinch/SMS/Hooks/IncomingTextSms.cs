@@ -15,11 +15,9 @@ namespace Sinch.SMS.Hooks
         ///     Gets or Sets Body
         /// </summary>
         [JsonPropertyName("body")]
-#if NET7_0_OR_GREATER
+
         public required virtual string Body { get; set; }
-#else
-        public virtual string Body { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -39,11 +37,9 @@ namespace Sinch.SMS.Hooks
         /// <value>The phone number that sent the message.</value>
         /// <example>+11203494390</example>
         [JsonPropertyName("from")]
-#if NET7_0_OR_GREATER
+
         public required string From { get; set; }
-#else
-        public string From { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -52,11 +48,9 @@ namespace Sinch.SMS.Hooks
         /// <value>The ID of this inbound message.</value>
         /// <example>01FC66621XXXXX119Z8PMV1QPA</example>
         [JsonPropertyName("id")]
-#if NET7_0_OR_GREATER
+
         public required string Id { get; set; }
-#else
-        public string Id { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -73,11 +67,9 @@ namespace Sinch.SMS.Hooks
         ///     Formatted as <see href="https://en.wikipedia.org/wiki/ISO_8601">ISO-8601</see>: YYYY-MM-DDThh:mm:ss.SSSZ.
         /// </summary>
         [JsonPropertyName("received_at")]
-#if NET7_0_OR_GREATER
+
         public required DateTime ReceivedAt { get; set; }
-#else
-        public DateTime ReceivedAt { get; set; }
-#endif
+
 
 
         /// <summary>
@@ -95,22 +87,18 @@ namespace Sinch.SMS.Hooks
         ///     11203453453
         /// </example>
         [JsonPropertyName("to")]
-#if NET7_0_OR_GREATER
+
         public required string To { get; set; }
-#else
-        public string To { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
         ///     Gets or Sets Type
         /// </summary>
         [JsonPropertyName("type")]
-#if NET7_0_OR_GREATER
+
         public required Sinch.SMS.Inbounds.SmsType Type { get; set; }
-#else
-        public Sinch.SMS.Inbounds.SmsType Type { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

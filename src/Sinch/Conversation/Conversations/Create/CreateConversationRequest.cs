@@ -19,21 +19,17 @@ namespace Sinch.Conversation.Conversations.Create
         /// <summary>
         ///     The ID of the participating app.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string AppId { get; set; }
-#else
-        public string AppId { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
         ///     The ID of the participating contact.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string ContactId { get; set; }
-#else
-        public string ContactId { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
