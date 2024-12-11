@@ -335,7 +335,7 @@ namespace Sinch.Tests.Core
                 new("Override url", MailgunRegion.Eu, new ApiUrlOverrides()
                 {
                     MailgunUrl = "https://my-mailgun-proxy.net"
-                }, "https://my-mailgun-proxy.net")
+                }, "https://my-mailgun-proxy.net"),
             };
 
             public static IEnumerable<object[]> TestCasesData =>
@@ -354,6 +354,13 @@ namespace Sinch.Tests.Core
             var actual = new UrlResolver(data.ApiUrlOverrides).ResolveMailgunUrl(data.Region);
 
             actual.Should().BeEquivalentTo(new Uri(data.ExpectedUrl));
+        }
+
+        [Fact]
+        public void ThrowIfRegionIsUnexpected()
+        {
+            var op = () => new UrlResolver(new ApiUrlOverrides()).ResolveMailgunUrl((MailgunRegion)(-1));
+            op.Should().ThrowExactly<ArgumentOutOfRangeException>();
         }
     }
 }

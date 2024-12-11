@@ -99,7 +99,8 @@ namespace Sinch.Core
                     mailgunUrl = "https://api.eu.mailgun.net";
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(mailgunRegion), mailgunRegion, "Unreachable");
+                    throw new ArgumentOutOfRangeException(nameof(mailgunRegion), mailgunRegion,
+                        "Unexpected enum value.");
             }
 
             return new Uri(mailgunUrl);
