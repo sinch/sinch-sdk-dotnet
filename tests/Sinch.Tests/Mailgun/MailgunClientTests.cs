@@ -10,7 +10,7 @@ namespace Sinch.Tests.Mailgun
         [Fact]
         public void InitMailgunClient()
         {
-            var mailgun = new SinchClient(default, default, default).Mailgun("apikey", MailgunRegion.Eu);
+            var mailgun = new SinchClient().Mailgun("apikey", MailgunRegion.Eu);
 
             mailgun.Should().NotBeNull();
         }
@@ -20,7 +20,7 @@ namespace Sinch.Tests.Mailgun
         [InlineData(null)]
         public void FailEmptyApiKey(string apiKey)
         {
-            var mailgunCreation = () => new SinchClient(default, default, default).Mailgun(apiKey, MailgunRegion.Eu);
+            var mailgunCreation = () => new SinchClient().Mailgun(apiKey, MailgunRegion.Eu);
 
             mailgunCreation.Should().Throw<ArgumentNullException>();
         }

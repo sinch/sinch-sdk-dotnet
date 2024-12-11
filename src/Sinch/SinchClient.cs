@@ -143,6 +143,31 @@ namespace Sinch
         private readonly ILoggerAdapter<ISinchClient>? _logger;
         private readonly UrlResolver _urlResolver;
 
+        /// <summary>
+        ///     Initialize a new <see cref="SinchClient" /> without providing common credentials.
+        ///     Intended to be used for APIs which requires their own credentials:
+        ///     <list type="bullet">
+        ///         <item>
+        ///             <see cref="Mailgun"/>
+        ///         </item>
+        ///         <item>
+        ///             <see cref="Voice"/>
+        ///         </item>
+        ///         <item>
+        ///             <see cref="Verification"/>
+        ///         </item>
+        ///     </list>
+        ///     If you plan to use other APIs or not sure about what API you are planning to use, consider using main constructor
+        ///     <see cref="SinchClient(String?, String?, String?, Action&lt;SinchOptions>"/>
+        ///     <example>This shows how to increment an integer.
+        ///     <code>
+        ///     var mailgunClient = new SinchClient().Mailgun("apikey", MailgunRegion.Eu);
+        ///     </code>
+        ///  </example>
+        /// </summary>
+        public SinchClient() : this(null, null, null)
+        {
+        }
 
         /// <summary>
         ///     Initialize a new <see cref="SinchClient" />
@@ -293,6 +318,7 @@ namespace Sinch
             {
                 throw new ArgumentNullException(nameof(apiKey), "apiKey shouldn't be null or empty");
             }
+
             var baseUrl = _urlResolver.ResolveMailgunUrl(region);
             var mailgunAuth = new BasicAuth(appKey: "api", appSecret: apiKey);
             // NOTE: jsonNamingPolicy will not play a role here as property naming of mailgun is inconsistent
