@@ -160,12 +160,13 @@ namespace Sinch
         ///     If you plan to use other APIs or not sure about what API you are planning to use, consider using main constructor
         ///     <see cref="SinchClient(String?, String?, String?, Action&lt;SinchOptions>"/>
         ///     <example>
-        ///     <code>
-        ///     var mailgunClient = new SinchClient().Mailgun("apikey", MailgunRegion.Eu);
-        ///     </code>
-        ///  </example>
+        ///         <code>
+        ///         var mailgunClient = new SinchClient().Mailgun("apikey", MailgunRegion.Eu);
+        ///         </code>
+        ///     </example>
         /// </summary>
-        public SinchClient() : this(null, null, null)
+        /// <param name="options">Optional. See: <see cref="SinchOptions" /></param>
+        public SinchClient(Action<SinchOptions>? options = default) : this(null, null, null, options)
         {
         }
 
