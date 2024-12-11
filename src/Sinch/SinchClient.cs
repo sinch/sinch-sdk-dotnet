@@ -158,7 +158,7 @@ namespace Sinch
         ///         </item>
         ///     </list>
         ///     If you plan to use other APIs or not sure about what API you are planning to use, consider using main constructor
-        ///     <see cref="SinchClient(String?, String?, String?, Action&lt;SinchOptions>"/>
+        ///     <see cref="SinchClient(String?, String?, String?, Action&lt;SinchOptions>)"/>
         ///     <example>
         ///         <code>
         ///         var mailgunClient = new SinchClient().Mailgun("apikey", MailgunRegion.Eu);
