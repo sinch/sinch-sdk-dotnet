@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Sinch.Conversation;
 using Sinch.Core;
@@ -307,7 +308,8 @@ namespace Sinch.Tests.Core
 
         [Theory]
         [MemberData(nameof(SmsServicePlanIdUrlData))]
-        public void ResolveSmsServicePlanIdUrl(SmsServicePlanIdRegion smsServicePlanIdRegion, ApiUrlOverrides apiUrlOverrides)
+        public void ResolveSmsServicePlanIdUrl(SmsServicePlanIdRegion smsServicePlanIdRegion,
+            ApiUrlOverrides apiUrlOverrides)
         {
             var smsUrl = new UrlResolver(apiUrlOverrides).ResolveSmsServicePlanIdUrl(smsServicePlanIdRegion);
             var expectedUrl = string.IsNullOrEmpty(apiUrlOverrides?.SmsUrl)
@@ -316,59 +318,42 @@ namespace Sinch.Tests.Core
             smsUrl.Should().BeEquivalentTo(expectedUrl);
         }
 
-
-        public static IEnumerable<object[]> MailgunUrlData => new List<object[]>
+        public record ResolveMailgunUrlTestData(
+            string TestName,
+            MailgunRegion Region,
+            ApiUrlOverrides ApiUrlOverrides,
+            string ExpectedUrl)
         {
-            new object[]
+            private static readonly ResolveMailgunUrlTestData[] TestCases =
             {
-                MailgunRegion.Us,
-                null,
-            },
-            new object[]
-            {
-                MailgunRegion.Eu,
-                null,
-            },
-            new object[]
-            {
-                MailgunRegion.Eu,
-                new ApiUrlOverrides()
+                new("Default US Mailgun address", MailgunRegion.Us, null, "https://api.mailgun.net"),
+                new("Default EU Mailgun address", MailgunRegion.Eu, null, "https://api.eu.mailgun.net"),
+                new("Default EU region even if override set but null", MailgunRegion.Eu, new ApiUrlOverrides()
                 {
                     MailgunUrl = null
-                }
-            },
-            new object[]
-            {
-                MailgunRegion.Eu,
-                new ApiUrlOverrides()
+                }, "https://api.eu.mailgun.net"),
+                new("Override url", MailgunRegion.Eu, new ApiUrlOverrides()
                 {
                     MailgunUrl = "https://my-mailgun-proxy.net"
-                }
-            },
-        };
+                }, "https://my-mailgun-proxy.net")
+            };
+
+            public static IEnumerable<object[]> TestCasesData =>
+                TestCases.Select(testCase => new object[] { testCase });
+
+            public override string ToString()
+            {
+                return TestName;
+            }
+        }
 
         [Theory]
-        [MemberData(nameof(MailgunUrlData))]
-        public void ResolveMailgunUrl(MailgunRegion region, ApiUrlOverrides apiUrlOverrides)
+        [MemberData(nameof(ResolveMailgunUrlTestData.TestCasesData), MemberType = typeof(ResolveMailgunUrlTestData))]
+        public void ResolveMailgunUrl(ResolveMailgunUrlTestData data)
         {
-            var actual = new UrlResolver(apiUrlOverrides).ResolveMailgunUrl(region);
+            var actual = new UrlResolver(data.ApiUrlOverrides).ResolveMailgunUrl(data.Region);
 
-            if (apiUrlOverrides is { MailgunUrl: not null })
-            {
-                actual.Should().BeEquivalentTo(new Uri(apiUrlOverrides.MailgunUrl));
-            }
-            else
-            {
-                if (region == MailgunRegion.Eu)
-                {
-                    actual.Should().BeEquivalentTo(new Uri("https://api.eu.mailgun.net"));
-                }
-                else
-                {
-                    actual.Should().BeEquivalentTo(new Uri("https://api.mailgun.net"));
-                }
-            }
-
+            actual.Should().BeEquivalentTo(new Uri(data.ExpectedUrl));
         }
     }
 }
