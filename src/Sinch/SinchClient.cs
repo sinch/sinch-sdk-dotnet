@@ -159,7 +159,7 @@ namespace Sinch
         ///     </list>
         ///     If you plan to use other APIs or not sure about what API you are planning to use, consider using main constructor
         ///     <see cref="SinchClient(String?, String?, String?, Action&lt;SinchOptions>"/>
-        ///     <example>This shows how to increment an integer.
+        ///     <example>
         ///     <code>
         ///     var mailgunClient = new SinchClient().Mailgun("apikey", MailgunRegion.Eu);
         ///     </code>
