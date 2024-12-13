@@ -5,6 +5,7 @@ using Sinch.Conversation.Contacts;
 using Sinch.Conversation.Conversations;
 using Sinch.Conversation.Events;
 using Sinch.Conversation.Messages;
+using Sinch.Conversation.TemplatesV1;
 using Sinch.Conversation.Transcoding;
 using Sinch.Conversation.TemplatesV2;
 using Sinch.Conversation.Webhooks;
@@ -47,6 +48,8 @@ namespace Sinch.Conversation
 
         /// <inheritdoc cref="ISinchConversationTemplatesV2" />
         ISinchConversationTemplatesV2 TemplatesV2 { get; }
+
+        ISinchConversationTemplatesV1 TemplatesV1 { get; }
     }
 
     /// <inheritdoc />
@@ -65,13 +68,16 @@ namespace Sinch.Conversation
                 loggerFactory?.Create<ISinchConversationConversations>(), http);
             Webhooks = new Webhooks.Webhooks(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationWebhooks>(), http);
-            Events = new Events.Events(projectId, conversationBaseAddress, loggerFactory?.Create<ISinchConversationEvents>(), http);
+            Events = new Events.Events(projectId, conversationBaseAddress,
+                loggerFactory?.Create<ISinchConversationEvents>(), http);
             Transcoding = new Transcoding.Transcoding(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationTranscoding>(), http);
             Capabilities = new Capabilities(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationCapabilities>(), http);
             TemplatesV2 = new TemplatesV2.TemplatesV2(projectId, templatesBaseAddress,
                 loggerFactory?.Create<ISinchConversationTemplatesV2>(), http);
+            TemplatesV1 = new TemplatesV1.TemplatesV1(projectId, templatesBaseAddress,
+                loggerFactory?.Create<ISinchConversationTemplatesV1>(), http);
         }
 
         /// <inheritdoc />
@@ -100,5 +106,7 @@ namespace Sinch.Conversation
 
         /// <inheritdoc />
         public ISinchConversationTemplatesV2 TemplatesV2 { get; }
+
+        public ISinchConversationTemplatesV1 TemplatesV1 { get; }
     }
 }
