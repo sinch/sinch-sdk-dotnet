@@ -52,6 +52,11 @@ namespace Sinch.Conversation.TemplatesV1
         [JsonPropertyName("update_time")]
         public DateTime? UpdateTime { get; set; }
 
+        /// <summary>
+        ///     Gets or Sets Channel
+        /// </summary>
+        [JsonPropertyName("channel")]
+        public TemplateChannel? Channel { get; set; }
 
         /// <summary>
         ///     Returns the string presentation of the object

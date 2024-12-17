@@ -110,7 +110,7 @@ namespace Sinch.Conversation.TemplatesV1
             }
 
             _logger?.LogDebug("Updating a template with {templateId} in {projectId}", template.Id, _projectId);
-            return _http.Send<UpdateTemplateRequest, Template>(uri, HttpMethod.Put, template,
+            return _http.Send<UpdateTemplateRequest, Template>(uri, HttpMethod.Patch, template,
                 cancellationToken: cancellationToken);
         }
 
