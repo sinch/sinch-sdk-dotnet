@@ -7,8 +7,8 @@ namespace Sinch.Conversation.TemplatesV1
 {
     public sealed class CreateTemplateRequest
     {
-      
-         /// <summary>
+
+        /// <summary>
         ///     Gets or Sets Channel
         /// </summary>
         [JsonPropertyName("channel")]
@@ -49,7 +49,7 @@ namespace Sinch.Conversation.TemplatesV1
         ///     List of translations for the template.
         /// </summary>
         [JsonPropertyName("translations")]
-        public IList<TemplateTranslation>? Translations { get; set; }
+        public List<TemplateTranslation>? Translations { get; set; }
 
 
         /// <summary>
