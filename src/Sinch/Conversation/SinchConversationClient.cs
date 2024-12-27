@@ -49,6 +49,7 @@ namespace Sinch.Conversation
         /// <inheritdoc cref="ISinchConversationTemplatesV2" />
         ISinchConversationTemplatesV2 TemplatesV2 { get; }
 
+        /// <inheritdoc cref="ISinchConversationTemplatesV1" />
         ISinchConversationTemplatesV1 TemplatesV1 { get; }
     }
 

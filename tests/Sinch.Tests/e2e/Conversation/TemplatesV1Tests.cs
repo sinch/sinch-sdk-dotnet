@@ -127,6 +127,53 @@ namespace Sinch.Tests.e2e.Conversation
                     },
                 }
             });
+
+            response.Should().BeEquivalentTo(new Template()
+            {
+                Id = "01W4FFL35P4NC4K35TEMPLATE01",
+                Description = "Updated text template V1",
+                DefaultTranslation = "fr-FR",
+                Channel = TemplateChannel.Unspecfied,
+                CreateTime = Helpers.ParseUtc("2024-06-06T14:42:42Z"),
+                UpdateTime = Helpers.ParseUtc("2024-06-06T14:45:45Z"),
+                Translations = new List<TemplateTranslation>()
+                {
+                    new TemplateTranslation()
+                    {
+                        LanguageCode = "en-US",
+                        Version = "2",
+                        Content =
+                            "{\"text_message\":{\"text\":\"Hello ${name}. This text message template has been created with V1 API\"}}",
+                        Variables = new List<TypeTemplateVariable>()
+                        {
+                            new TypeTemplateVariable()
+                            {
+                                Key = "name",
+                                PreviewValue = "Professor Jones"
+                            }
+                        },
+                        CreateTime = Helpers.ParseUtc("2024-06-06T14:45:45Z"),
+                        UpdateTime = Helpers.ParseUtc("2024-06-06T14:45:45Z"),
+                    },
+                    new TemplateTranslation()
+                    {
+                        LanguageCode = "fr-FR",
+                        Version = "1",
+                        Content =
+                            "{\"text_message\":{\"text\":\"Bonjour ${name}. Ce message texte provient d'un template V1\"}}",
+                        Variables = new List<TypeTemplateVariable>()
+                        {
+                            new TypeTemplateVariable()
+                            {
+                                Key = "name",
+                                PreviewValue = "Professeur Jones"
+                            }
+                        },
+                        CreateTime = Helpers.ParseUtc("2024-06-06T14:45:45Z"),
+                        UpdateTime = Helpers.ParseUtc("2024-06-06T14:45:45Z"),
+                    },
+                }
+            });
         }
 
         [Fact]
@@ -143,7 +190,8 @@ namespace Sinch.Tests.e2e.Conversation
                     {
                         LanguageCode = "en-US",
                         Version = "1",
-                        Content = "{\"text_message\":{\"text\":\"Hello ${name}. Text message template created with V1 API\"}}",
+                        Content =
+                            "{\"text_message\":{\"text\":\"Hello ${name}. Text message template created with V1 API\"}}",
                         Variables = new List<TypeTemplateVariable>()
                         {
                             new TypeTemplateVariable()
@@ -155,6 +203,8 @@ namespace Sinch.Tests.e2e.Conversation
                     }
                 }
             });
+
+            template.Should().BeEquivalentTo(_template);
         }
     }
 }
