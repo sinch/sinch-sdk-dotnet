@@ -13,7 +13,7 @@ namespace Sinch.Tests.e2e.Conversation
             Id = "01W4FFL35P4NC4K35TEMPLATE01",
             Description = "Text template V1",
             DefaultTranslation = "en-US",
-            Channel = TemplateChannel.Unspecfied,
+            Channel = TemplateChannel.Unspecified,
             CreateTime = Helpers.ParseUtc("2024-06-06T14:42:42Z"),
             UpdateTime = Helpers.ParseUtc("2024-06-06T14:42:42Z"),
             Translations = new List<TemplateTranslation>()
@@ -62,7 +62,7 @@ namespace Sinch.Tests.e2e.Conversation
                 new Template()
                 {
                     Id = "01W4FFL35P4NC4K35TEMPLATE02",
-                    Channel = TemplateChannel.Unspecfied,
+                    Channel = TemplateChannel.Unspecified,
                     CreateTime = Helpers.ParseUtc("2024-06-06T15:50:00Z"),
                     UpdateTime = Helpers.ParseUtc("2024-06-06T15:52:52Z"),
                     DefaultTranslation = "en-US",
@@ -133,7 +133,7 @@ namespace Sinch.Tests.e2e.Conversation
                 Id = "01W4FFL35P4NC4K35TEMPLATE01",
                 Description = "Updated text template V1",
                 DefaultTranslation = "fr-FR",
-                Channel = TemplateChannel.Unspecfied,
+                Channel = TemplateChannel.Unspecified,
                 CreateTime = Helpers.ParseUtc("2024-06-06T14:42:42Z"),
                 UpdateTime = Helpers.ParseUtc("2024-06-06T14:45:45Z"),
                 Translations = new List<TemplateTranslation>()
