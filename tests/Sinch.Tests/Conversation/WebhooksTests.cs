@@ -1,7 +1,14 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using FluentAssertions;
 using Microsoft.Extensions.Primitives;
+using Sinch.Conversation;
+using Sinch.Conversation.Hooks;
+using Sinch.Conversation.Hooks.Models;
+using Sinch.Conversation.Messages.Message;
 using Xunit;
 
 namespace Sinch.Tests.Conversation
@@ -21,6 +28,77 @@ namespace Sinch.Tests.Conversation
                 { "x-sinch-webhook-signature", new[] { "6bpJoRmFoXVjfJIVglMoJzYXxnoxRujzR4k2GOXewOE=" } },
             }, JsonNode.Parse(str)!.AsObject(), "foo_secret1234");
             isValid.Should().BeTrue();
+        }
+
+        [Fact]
+        public void DeserializeCapabilityEvent()
+        {
+            string json =
+                Helpers.LoadResources("Conversation/Hooks/CapabilityEvent.json");
+
+            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<CapabilityEvent>();
+
+            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
+            result.Should().BeEquivalentTo(new CapabilityEvent()
+            {
+                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                ProjectId = "project id value",
+                AppId = "app id value",
+                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                MessageMetadata = "metadata value",
+                CorrelationId = "correlation id value",
+                CapabilityNotification = new CapabilityNotification()
+                {
+                    ContactId = "contact id value",
+                    Identity = "12345678910",
+                    Channel = ConversationChannel.WhatsApp,
+                    CapabilityStatus = CapabilityStatus.CapabilityPartial,
+                    RequestId = "request id value",
+                    ChannelCapabilities = new List<string>() { "capability value" },
+                    Reason = new Reason()
+                    {
+                        Code = "RECIPIENT_NOT_OPTED_IN",
+                        Description = "reason description",
+                        SubCode = "UNSPECIFIED_SUB_CODE"
+                    }
+                }
+            }, options => options.Excluding(x => x.MessageMetadata));
+        }
+
+        [Fact]
+        public void DeserializeChannelEvent()
+        {
+            string json =
+                Helpers.LoadResources("Conversation/Hooks/ChannelEvent.json");
+
+            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ChannelEvent>();
+
+            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
+            result.ChannelEventNotification?.ChannelEvent?.AdditionalData?["quality_rating"]?.GetValue<string>().Should()
+                .BeEquivalentTo("quality rating value");
+            result.Should().BeEquivalentTo(new ChannelEvent()
+                {
+                    AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    ProjectId = "project id value",
+                    AppId = "app id value",
+                    EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                    MessageMetadata = "metadata value",
+                    CorrelationId = "correlation id value",
+                    ChannelEventNotification = new ChannelEventNotification()
+                    {
+                        ChannelEvent = new EventNotification()
+                        {
+                            Channel = ConversationChannel.WhatsApp,
+                            EventType = "WHATS_APP_QUALITY_RATING_CHANGED",
+                            AdditionalData = new JsonObject()
+                            {
+                                ["quality_rating"] = "quality rating value"
+                            }
+                        }
+                    }
+                },
+                options => options.Excluding(x =>
+                    x.MessageMetadata).Excluding(x => x.ChannelEventNotification.ChannelEvent.AdditionalData));
         }
     }
 }
