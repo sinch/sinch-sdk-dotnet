@@ -17,7 +17,7 @@ namespace Sinch.Tests
         {
             return DateTime.Parse(time, CultureInfo.InvariantCulture).ToUniversalTime();
         }
-        
+
         /// <summary>
         ///     Loads a file from provided path nested in /Resources folder
         /// </summary>

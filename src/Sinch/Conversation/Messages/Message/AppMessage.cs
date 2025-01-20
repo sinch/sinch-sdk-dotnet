@@ -128,11 +128,11 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonPropertyName("channel_specific_message")]
         public Dictionary<ConversationChannel, IChannelSpecificMessage>? ChannelSpecificMessage { get; set; }
-        
+
         [JsonPropertyName("explicit_channel_omni_message")]
         public Dictionary<ChannelSpecificTemplate, IOmniMessageOverride>? ExplicitChannelOmniMessage { get; set; }
 
-        
+
         /// <inheritdoc cref="Agent" />
         [JsonPropertyName("agent")]
         public Agent? Agent { get; set; }

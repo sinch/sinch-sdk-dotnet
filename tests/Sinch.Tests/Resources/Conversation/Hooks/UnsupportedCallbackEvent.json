@@ -1,0 +1,21 @@
+{
+  "app_id": "app id value",
+  "accepted_time": "2020-11-17T16:05:51.724083Z",
+  "event_time": "2020-11-17T16:05:45Z",
+  "message_metadata": "metadata value",
+  "project_id": "project id value",
+  "correlation_id": "correlation id value",
+  "unsupported_callback": {
+    "channel": "MESSENGER",
+    "payload": "payload value",
+    "processing_mode": "DISPATCH",
+    "id": "id value",
+    "contact_id": "contact id",
+    "conversation_id": "conversation id",
+    "channel_identity": {
+      "app_id": "an app id",
+      "channel": "MESSENGER",
+      "identity": "an identity"
+    }
+  }
+}

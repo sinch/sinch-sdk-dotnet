@@ -25,7 +25,7 @@ namespace Sinch.Conversation.Hooks.Models
         /// </summary>
         [JsonPropertyName("shortlink_activated_event")]
         public ShortlinkActivatedEvent? ShortlinkActivatedEvent { get; set; }
-        
+
         /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>

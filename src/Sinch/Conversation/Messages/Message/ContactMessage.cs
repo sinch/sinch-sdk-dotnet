@@ -118,7 +118,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     The key in the map must point to a valid conversation channel as defined by the enum ConversationChannel.
         /// </summary>
         public Dictionary<ConversationChannel, JsonValue>? ExplicitChannelMessage { get; set; }
-        
+
         /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>
