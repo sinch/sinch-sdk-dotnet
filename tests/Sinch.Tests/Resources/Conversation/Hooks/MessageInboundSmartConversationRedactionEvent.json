@@ -1,0 +1,34 @@
+{
+  "app_id": "app id value",
+  "accepted_time": "2020-11-17T16:05:51.724083Z",
+  "event_time": "2020-11-17T16:05:45Z",
+  "message_metadata": "metadata value",
+  "project_id": "project id value",
+  "correlation_id": "correlation id value",
+  "message_redaction": {
+    "id": "id",
+    "direction": "TO_APP",
+    "contact_message": {
+      "media_message": {
+        "url": "an url value",
+        "thumbnail_url": "another url",
+        "filename_override": "filename override value"
+      },
+      "reply_to": {
+        "message_id": "message id value"
+      }
+    },
+    "channel_identity": {
+      "app_id": "an app id",
+      "channel": "MESSENGER",
+      "identity": "an identity"
+    },
+    "conversation_id": "conversation id",
+    "contact_id": "contact id",
+    "metadata": "metadata value",
+    "accept_time": "2020-11-17T16:05:51.724083Z",
+    "sender_id": "sender id",
+    "processing_mode": "DISPATCH",
+    "injected": true
+  }
+}

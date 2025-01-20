@@ -824,5 +824,181 @@ namespace Sinch.Tests.Conversation
                 options => options.Excluding(x => x.MessageMetadata)
                     .Excluding(x => x.MessageSubmitNotification.SubmittedMessage.ExplicitChannelMessage));
         }
+
+        [Fact]
+        public void DeserializeMessageRedactionEvent()
+        {
+            string json =
+                Helpers.LoadResources("Conversation/Hooks/MessageInboundSmartConversationRedactionEvent.json");
+
+            var result = JsonSerializer.Deserialize<ICallbackEvent>(json)
+                .As<MessageInboundSmartConversationRedactionEvent>();
+
+            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
+            result.Should().BeEquivalentTo(new MessageInboundSmartConversationRedactionEvent
+            {
+                AppId = "app id value",
+                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                ProjectId = "project id value",
+                CorrelationId = "correlation id value",
+                MessageRedaction = new MessageInboundEventItem()
+                {
+                    Id = "id",
+                    Direction = ConversationDirection.ToApp,
+                    ContactMessage = new ContactMessage(new MediaMessage
+                    {
+                        Url = "an url value",
+                        ThumbnailUrl = "another url",
+                        FilenameOverride = "filename override value"
+                    })
+                    {
+                        ReplyTo = new ReplyTo
+                        {
+                            MessageId = "message id value"
+                        }
+                    },
+                    ChannelIdentity = new ChannelIdentity
+                    {
+                        AppId = "an app id",
+                        Channel = ConversationChannel.Messenger,
+                        Identity = "an identity"
+                    },
+                    ConversationId = "conversation id",
+                    ContactId = "contact id",
+                    Metadata = "metadata value",
+                    AcceptTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    SenderId = "sender id",
+                    ProcessingMode = ProcessingMode.Dispatch,
+                    Injected = true
+                }
+            }, options => options.Excluding(x => x.MessageMetadata));
+        }
+
+        [Fact]
+        public void DeserializeSmartConversationNotificationEvent()
+        {
+            string json = Helpers.LoadResources("Conversation/Hooks/SmartConversationsEvent.json");
+
+            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<SmartConversationsEvent>();
+
+            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
+            result.Should().BeEquivalentTo(new SmartConversationsEvent
+            {
+                AppId = "app id value",
+                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                ProjectId = "project id value",
+                CorrelationId = "correlation id value",
+                SmartConversationNotification = new SmartConversationNotification
+                {
+                    ContactId = "contact id",
+                    ChannelIdentity = "channel identity",
+                    Channel = ConversationChannel.Messenger,
+                    MessageId = "message id",
+                    ConversationId = "conversation id",
+                    AnalysisResults = new AnalysisResult
+                    {
+                        MlSentimentResult = new List<MachineLearningSentimentResult>
+                        {
+                            new MachineLearningSentimentResult
+                            {
+                                Message = "message result",
+                                Results = new List<SentimentResult>
+                                {
+                                    new SentimentResult
+                                    {
+                                        Sentiment = Sentiment.Positive,
+                                        Score = 0.4f
+                                    }
+                                },
+                                Sentiment = Sentiment.Neutral,
+                                Score = 0.6f
+                            }
+                        },
+                        MlNluResult = new List<MachineLearningNLUResult>
+                        {
+                            new MachineLearningNLUResult
+                            {
+                                Message = "message ml_nlu_result",
+                                Results = new List<IntentResult>
+                                {
+                                    new IntentResult
+                                    {
+                                        Intent = "chitchat.greeting",
+                                        Score = 0.3f
+                                    }
+                                },
+                                Intent = "chitchat.compliment",
+                                Score = 0.2f
+                            }
+                        },
+                        MlImageRecognitionResult = new List<MachineLearningImageRecognitionResult>
+                        {
+                            new MachineLearningImageRecognitionResult
+                            {
+                                Url = "url value",
+                                DocumentImageClassification = new DocumentImageClassification
+                                {
+                                    DocType = "an image classification",
+                                    Confidence = 0.12f
+                                },
+                                OpticalCharacterRecognition = new OpticalCharacterRecognition
+                                {
+                                    Result = new List<OpticalCharacterRecognitionData>
+                                    {
+                                        new OpticalCharacterRecognitionData
+                                        {
+                                            Data = new List<string> { "string 1", "string 2" }
+                                        }
+                                    }
+                                },
+                                DocumentFieldClassification = new DocumentFieldClassification
+                                {
+                                    Result = new List<Dictionary<string, DocumentFieldData>>
+                                    {
+                                        new()
+                                        {
+                                            {
+                                                "John",
+                                                new DocumentFieldData
+                                                {
+                                                    Data = new List<string> { "a string" }
+                                                }
+                                            },
+                                            {
+                                                "Doe",
+                                                new DocumentFieldData
+                                                {
+                                                    Data = new List<string> { "another string" }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        MlPiiResult = new List<MachineLearningPIIResult>
+                        {
+                            new MachineLearningPIIResult
+                            {
+                                Message = "analyzed message",
+                                Masked = "masked analyzed message"
+                            }
+                        },
+                        MlOffensiveAnalysisResult = new List<OffensiveAnalysis>
+                        {
+                            new OffensiveAnalysis
+                            {
+                                Message = "message value",
+                                Url = "URL value",
+                                Evaluation = Evaluation.Unsafe,
+                                Score = 0.456f
+                            }
+                        }
+                    }
+                }
+            }, options => options.Excluding(x => x.MessageMetadata));
+        }
     }
 }

@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Hooks.Models
         ///     The result of the Document Field Classification process
         /// </summary>
         [JsonPropertyName("result")]
-        public List<Dictionary<string, string>>? Result { get; set; }
+        public List<Dictionary<string, DocumentFieldData>>? Result { get; set; }
 
 
         /// <summary>
@@ -31,4 +31,12 @@ namespace Sinch.Conversation.Hooks.Models
 
     }
 
+    public class DocumentFieldData
+    {
+        /// <summary>
+        ///    The data array contains the string(s) assigned to the corresponding document field.
+        /// </summary>
+        [JsonPropertyName("data")]
+        public List<string>? Data { get; set; }
+    }
 }
