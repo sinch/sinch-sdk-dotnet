@@ -265,25 +265,25 @@ namespace Sinch.Tests.e2e.Conversation
             void AssertEvent(ICallbackEvent callbackEvent)
             {
                 callbackEvent.Should().BeEquivalentTo(new ConversationDeleteEvent()
-                {
-                    AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                    ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
-                    CorrelationId = "",
-                    ConversationDeleteNotification = new ConversationNotification()
                     {
-                        Conversation = new Sinch.Conversation.Conversations.Conversation()
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        CorrelationId = "",
+                        ConversationDeleteNotification = new ConversationNotification()
                         {
-                            Id = "01W4FFL35P4NC4K35CONVERS01",
-                            AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                            ContactId = "01W4FFL35P4NC4K35CONTACT01",
-                            LastReceived = DateTime.Parse("2024-06-06T14:42:42Z").ToUniversalTime(),
-                            ActiveChannel = ConversationChannel.Rcs,
-                            Active = false,
-                            Metadata = "",
-                            CorrelationId = "correlatorId"
+                            Conversation = new Sinch.Conversation.Conversations.Conversation()
+                            {
+                                Id = "01W4FFL35P4NC4K35CONVERS01",
+                                AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                                ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                                LastReceived = DateTime.Parse("2024-06-06T14:42:42Z").ToUniversalTime(),
+                                ActiveChannel = ConversationChannel.Rcs,
+                                Active = false,
+                                Metadata = "",
+                                CorrelationId = "correlatorId"
+                            }
                         }
-                    }
-                },
+                    },
                     x => x.Excluding(m =>
                         m.MessageMetadata).Excluding(m => m.ConversationDeleteNotification.Conversation.MetadataJson));
                 var deleteEvent = callbackEvent.As<ConversationDeleteEvent>();
@@ -309,25 +309,25 @@ namespace Sinch.Tests.e2e.Conversation
             void AssertEvent(ICallbackEvent callbackEvent)
             {
                 callbackEvent.Should().BeEquivalentTo(new ConversationStartEvent()
-                {
-                    AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                    ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
-                    CorrelationId = "",
-                    ConversationStartNotification = new ConversationNotification()
                     {
-                        Conversation = new Sinch.Conversation.Conversations.Conversation()
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        CorrelationId = "",
+                        ConversationStartNotification = new ConversationNotification()
                         {
-                            Id = "01W4FFL35P4NC4K35CONVERS01",
-                            AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                            ContactId = "01W4FFL35P4NC4K35CONTACT01",
-                            LastReceived = new DateTime(),
-                            ActiveChannel = ConversationChannel.Unspecified,
-                            Active = true,
-                            Metadata = "",
-                            CorrelationId = "correlatorId",
+                            Conversation = new Sinch.Conversation.Conversations.Conversation()
+                            {
+                                Id = "01W4FFL35P4NC4K35CONVERS01",
+                                AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                                ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                                LastReceived = new DateTime(),
+                                ActiveChannel = ConversationChannel.Unspecified,
+                                Active = true,
+                                Metadata = "",
+                                CorrelationId = "correlatorId",
+                            }
                         }
-                    }
-                },
+                    },
                     x => x.Excluding(m =>
                         m.MessageMetadata).Excluding(m => m.ConversationStartNotification.Conversation.MetadataJson));
                 var convEvent = callbackEvent.As<ConversationStartEvent>();
@@ -353,25 +353,25 @@ namespace Sinch.Tests.e2e.Conversation
             void AssertEvent(ICallbackEvent callbackEvent)
             {
                 callbackEvent.Should().BeEquivalentTo(new ConversationStopEvent()
-                {
-                    AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                    ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
-                    CorrelationId = "",
-                    ConversationStopNotification = new ConversationNotification()
                     {
-                        Conversation = new Sinch.Conversation.Conversations.Conversation()
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        CorrelationId = "",
+                        ConversationStopNotification = new ConversationNotification()
                         {
-                            Id = "01W4FFL35P4NC4K35CONVERS01",
-                            AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                            ContactId = "01W4FFL35P4NC4K35CONTACT01",
-                            LastReceived = DateTime.Parse("2024-06-06T14:42:42Z").ToUniversalTime(),
-                            ActiveChannel = ConversationChannel.Rcs,
-                            Active = false,
-                            Metadata = "",
-                            CorrelationId = "correlatorId",
+                            Conversation = new Sinch.Conversation.Conversations.Conversation()
+                            {
+                                Id = "01W4FFL35P4NC4K35CONVERS01",
+                                AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                                ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                                LastReceived = DateTime.Parse("2024-06-06T14:42:42Z").ToUniversalTime(),
+                                ActiveChannel = ConversationChannel.Rcs,
+                                Active = false,
+                                Metadata = "",
+                                CorrelationId = "correlatorId",
+                            }
                         }
-                    }
-                },
+                    },
                     x => x.Excluding(m =>
                         m.MessageMetadata).Excluding(m => m.ConversationStopNotification.Conversation.MetadataJson));
                 var convEvent = callbackEvent.As<ConversationStopEvent>();
@@ -397,34 +397,34 @@ namespace Sinch.Tests.e2e.Conversation
             void AssertEvent(ICallbackEvent callbackEvent)
             {
                 callbackEvent.Should().BeEquivalentTo(new DeliveryEvent()
-                {
-                    AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                    ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
-                    CorrelationId = "",
-                    AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.208Z").ToUniversalTime(),
-                    EventTime = DateTime.Parse("2024-06-06T14:42:42.251277147Z").ToUniversalTime(),
-                    EventDeliveryReport = new EventDeliveryAllOfEventDeliveryReport()
                     {
-                        EventId = "01W4FFL35P4NC4K35EVENT0003",
-                        Status = DeliveryStatus.Failed,
-                        ChannelIdentity = new ChannelIdentity()
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        CorrelationId = "",
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.208Z").ToUniversalTime(),
+                        EventTime = DateTime.Parse("2024-06-06T14:42:42.251277147Z").ToUniversalTime(),
+                        EventDeliveryReport = new EventDeliveryAllOfEventDeliveryReport()
                         {
-                            Channel = ConversationChannel.Messenger,
-                            Identity = "7968425018576406",
-                            AppId = "01W4FFL35P4NC4K35CONVAPP01"
-                        },
-                        ContactId = "",
-                        Reason = new Reason()
-                        {
-                            Code = "BAD_REQUEST",
-                            Description =
+                            EventId = "01W4FFL35P4NC4K35EVENT0003",
+                            Status = DeliveryStatus.Failed,
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                Channel = ConversationChannel.Messenger,
+                                Identity = "7968425018576406",
+                                AppId = "01W4FFL35P4NC4K35CONVAPP01"
+                            },
+                            ContactId = "",
+                            Reason = new Reason()
+                            {
+                                Code = "BAD_REQUEST",
+                                Description =
                                     "The underlying channel reported: Message type [MESSAGE_NOT_SET] not supported on Messenger",
-                            SubCode = "UNSPECIFIED_SUB_CODE"
-                        },
-                        Metadata = "",
-                        ProcessingMode = ProcessingMode.Conversation
-                    }
-                },
+                                SubCode = "UNSPECIFIED_SUB_CODE"
+                            },
+                            Metadata = "",
+                            ProcessingMode = ProcessingMode.Conversation
+                        }
+                    },
                     x => x.Excluding(m =>
                         m.MessageMetadata));
                 var convEvent = callbackEvent.As<DeliveryEvent>();
@@ -448,27 +448,27 @@ namespace Sinch.Tests.e2e.Conversation
             void AssertEvent(ICallbackEvent callbackEvent)
             {
                 callbackEvent.Should().BeEquivalentTo(new DeliveryEvent()
-                {
-                    AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                    ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
-                    CorrelationId = "",
-                    AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.132Z").ToUniversalTime(),
-                    EventTime = DateTime.Parse("2024-06-06T14:42:42.891Z").ToUniversalTime(),
-                    EventDeliveryReport = new EventDeliveryAllOfEventDeliveryReport()
                     {
-                        EventId = "01W4FFL35P4NC4K35EVENT0002",
-                        Status = DeliveryStatus.Delivered,
-                        ChannelIdentity = new ChannelIdentity()
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        CorrelationId = "",
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.132Z").ToUniversalTime(),
+                        EventTime = DateTime.Parse("2024-06-06T14:42:42.891Z").ToUniversalTime(),
+                        EventDeliveryReport = new EventDeliveryAllOfEventDeliveryReport()
                         {
-                            Channel = ConversationChannel.Messenger,
-                            Identity = "7968425018576406",
-                            AppId = "01W4FFL35P4NC4K35CONVAPP01"
-                        },
-                        ContactId = "",
-                        Metadata = "",
-                        ProcessingMode = ProcessingMode.Conversation
-                    }
-                },
+                            EventId = "01W4FFL35P4NC4K35EVENT0002",
+                            Status = DeliveryStatus.Delivered,
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                Channel = ConversationChannel.Messenger,
+                                Identity = "7968425018576406",
+                                AppId = "01W4FFL35P4NC4K35CONVAPP01"
+                            },
+                            ContactId = "",
+                            Metadata = "",
+                            ProcessingMode = ProcessingMode.Conversation
+                        }
+                    },
                     x => x.Excluding(m =>
                         m.MessageMetadata));
                 var convEvent = callbackEvent.As<DeliveryEvent>();
@@ -492,31 +492,31 @@ namespace Sinch.Tests.e2e.Conversation
             void AssertEvent(ICallbackEvent callbackEvent)
             {
                 callbackEvent.Should().BeEquivalentTo(new InboundEvent()
-                {
-                    AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                    ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
-                    EventTime = DateTime.Parse("2024-06-06T14:42:42.379863404Z").ToUniversalTime(),
-                    CorrelationId = "",
-                    Event = new EventInboundAllOfEvent()
                     {
-                        Direction = ConversationDirection.ToApp,
-                        ContactEvent = new ContactEvent()
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        EventTime = DateTime.Parse("2024-06-06T14:42:42.379863404Z").ToUniversalTime(),
+                        CorrelationId = "",
+                        Event = new EventInboundAllOfEvent()
                         {
-                            ComposingEvent = new object()
-                        },
-                        Id = "01W4FFL35P4NC4K35EVENT0001",
-                        ConversationId = "01W4FFL35P4NC4K35CONVERS01",
-                        ContactId = "01W4FFL35P4NC4K35CONTACT01",
-                        ChannelIdentity = new ChannelIdentity()
-                        {
-                            Channel = ConversationChannel.Rcs,
-                            Identity = "12015555555",
-                            AppId = ""
-                        },
-                        AcceptTime = DateTime.Parse("2024-06-06T14:42:42.429455346Z").ToUniversalTime(),
-                        ProcessingMode = ProcessingMode.Conversation,
-                    }
-                },
+                            Direction = ConversationDirection.ToApp,
+                            ContactEvent = new ContactEvent()
+                            {
+                                ComposingEvent = new object()
+                            },
+                            Id = "01W4FFL35P4NC4K35EVENT0001",
+                            ConversationId = "01W4FFL35P4NC4K35CONVERS01",
+                            ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                Channel = ConversationChannel.Rcs,
+                                Identity = "12015555555",
+                                AppId = ""
+                            },
+                            AcceptTime = DateTime.Parse("2024-06-06T14:42:42.429455346Z").ToUniversalTime(),
+                            ProcessingMode = ProcessingMode.Conversation,
+                        }
+                    },
                     x => x.Excluding(m =>
                         m.MessageMetadata));
                 var convEvent = callbackEvent.As<InboundEvent>();
@@ -540,35 +540,35 @@ namespace Sinch.Tests.e2e.Conversation
             void AssertEvent(ICallbackEvent callbackEvent)
             {
                 callbackEvent.Should().BeEquivalentTo(new MessageDeliveryReceiptEvent()
-                {
-                    AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                    ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
-                    EventTime = DateTime.Parse("2024-06-06T14:42:43Z").ToUniversalTime(),
-                    AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.721Z").ToUniversalTime(),
-                    CorrelationId = "correlatorId",
-                    MessageDeliveryReport = new MessageDeliveryReport()
                     {
-                        MessageId = "01W4FFL35P4NC4K35MESSAGE05",
-                        ConversationId = "01W4FFL35P4NC4K35CONVERS01",
-                        Status = DeliveryStatus.Failed,
-                        ChannelIdentity = new ChannelIdentity()
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        EventTime = DateTime.Parse("2024-06-06T14:42:43Z").ToUniversalTime(),
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.721Z").ToUniversalTime(),
+                        CorrelationId = "correlatorId",
+                        MessageDeliveryReport = new MessageDeliveryReport()
                         {
-                            Channel = ConversationChannel.Rcs,
-                            Identity = "12016666666",
-                            AppId = "",
-                        },
-                        ContactId = "01W4FFL35P4NC4K35CONTACT02",
-                        Reason = new Reason()
-                        {
-                            Code = "RECIPIENT_NOT_REACHABLE",
-                            Description =
+                            MessageId = "01W4FFL35P4NC4K35MESSAGE05",
+                            ConversationId = "01W4FFL35P4NC4K35CONVERS01",
+                            Status = DeliveryStatus.Failed,
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                Channel = ConversationChannel.Rcs,
+                                Identity = "12016666666",
+                                AppId = "",
+                            },
+                            ContactId = "01W4FFL35P4NC4K35CONTACT02",
+                            Reason = new Reason()
+                            {
+                                Code = "RECIPIENT_NOT_REACHABLE",
+                                Description =
                                     "The underlying channel reported: Unable to find rcs support for the given recipient",
-                            SubCode = "UNSPECIFIED_SUB_CODE",
-                        },
-                        Metadata = "",
-                        ProcessingMode = ProcessingMode.Conversation
-                    }
-                },
+                                SubCode = "UNSPECIFIED_SUB_CODE",
+                            },
+                            Metadata = "",
+                            ProcessingMode = ProcessingMode.Conversation
+                        }
+                    },
                     x => x.Excluding(m =>
                         m.MessageMetadata));
                 var convEvent = callbackEvent.As<MessageDeliveryReceiptEvent>();
@@ -592,28 +592,28 @@ namespace Sinch.Tests.e2e.Conversation
             void AssertEvent(ICallbackEvent callbackEvent)
             {
                 callbackEvent.Should().BeEquivalentTo(new MessageDeliveryReceiptEvent()
-                {
-                    AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                    ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
-                    EventTime = DateTime.Parse("2024-06-06T14:42:43.0093518Z").ToUniversalTime(),
-                    AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.721Z").ToUniversalTime(),
-                    CorrelationId = "correlatorId",
-                    MessageDeliveryReport = new MessageDeliveryReport()
                     {
-                        MessageId = "01W4FFL35P4NC4K35MESSAGE01",
-                        ConversationId = "01W4FFL35P4NC4K35CONVERS01",
-                        Status = DeliveryStatus.QueuedOnChannel,
-                        ChannelIdentity = new ChannelIdentity()
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        EventTime = DateTime.Parse("2024-06-06T14:42:43.0093518Z").ToUniversalTime(),
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.721Z").ToUniversalTime(),
+                        CorrelationId = "correlatorId",
+                        MessageDeliveryReport = new MessageDeliveryReport()
                         {
-                            Channel = ConversationChannel.Rcs,
-                            Identity = "12015555555",
-                            AppId = "",
-                        },
-                        ContactId = "01W4FFL35P4NC4K35CONTACT01",
-                        Metadata = "",
-                        ProcessingMode = ProcessingMode.Conversation
-                    }
-                },
+                            MessageId = "01W4FFL35P4NC4K35MESSAGE01",
+                            ConversationId = "01W4FFL35P4NC4K35CONVERS01",
+                            Status = DeliveryStatus.QueuedOnChannel,
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                Channel = ConversationChannel.Rcs,
+                                Identity = "12015555555",
+                                AppId = "",
+                            },
+                            ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                            Metadata = "",
+                            ProcessingMode = ProcessingMode.Conversation
+                        }
+                    },
                     x => x.Excluding(m =>
                         m.MessageMetadata));
                 var convEvent = callbackEvent.As<MessageDeliveryReceiptEvent>();
@@ -637,33 +637,33 @@ namespace Sinch.Tests.e2e.Conversation
             void AssertEvent(ICallbackEvent callbackEvent)
             {
                 callbackEvent.Should().BeEquivalentTo(new MessageInboundSmartConversationRedactionEvent()
-                {
-                    AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                    ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
-                    EventTime = DateTime.Parse("2024-06-06T14:42:41.293Z").ToUniversalTime(),
-                    AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.240093543Z").ToUniversalTime(),
-                    CorrelationId = "correlatorId",
-                    MessageRedaction = new MessageInboundEventItem()
                     {
-                        Id = "01W4FFL35P4NC4K35MESSAGE02",
-                        Direction = ConversationDirection.ToApp,
-                        ContactMessage = new ContactMessage(new TextMessage(
-                                "Hi, my real name is {PERSON} and I live in {LOCATION}. My credit card number is 4242 4242 4242 4242. What a beautiful day!")),
-                        ConversationId = "01W4FFL35P4NC4K35CONVERS01",
-                        ChannelIdentity = new ChannelIdentity()
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        EventTime = DateTime.Parse("2024-06-06T14:42:41.293Z").ToUniversalTime(),
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.240093543Z").ToUniversalTime(),
+                        CorrelationId = "correlatorId",
+                        MessageRedaction = new MessageInboundEventItem()
                         {
-                            Channel = ConversationChannel.Messenger,
-                            Identity = "7968425018576406",
-                            AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                        },
-                        ContactId = "01W4FFL35P4NC4K35CONTACT01",
-                        Metadata = "",
-                        ProcessingMode = ProcessingMode.Conversation,
-                        Injected = false,
-                        SenderId = "",
-                        AcceptTime = DateTime.Parse("2024-06-06T14:42:42.165Z").ToUniversalTime(),
-                    }
-                },
+                            Id = "01W4FFL35P4NC4K35MESSAGE02",
+                            Direction = ConversationDirection.ToApp,
+                            ContactMessage = new ContactMessage(new TextMessage(
+                                "Hi, my real name is {PERSON} and I live in {LOCATION}. My credit card number is 4242 4242 4242 4242. What a beautiful day!")),
+                            ConversationId = "01W4FFL35P4NC4K35CONVERS01",
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                Channel = ConversationChannel.Messenger,
+                                Identity = "7968425018576406",
+                                AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                            },
+                            ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                            Metadata = "",
+                            ProcessingMode = ProcessingMode.Conversation,
+                            Injected = false,
+                            SenderId = "",
+                            AcceptTime = DateTime.Parse("2024-06-06T14:42:42.165Z").ToUniversalTime(),
+                        }
+                    },
                     x => x.Excluding(m =>
                         m.MessageMetadata));
                 var convEvent = callbackEvent.As<MessageInboundSmartConversationRedactionEvent>();
@@ -687,35 +687,35 @@ namespace Sinch.Tests.e2e.Conversation
             void AssertEvent(ICallbackEvent callbackEvent)
             {
                 callbackEvent.Should().BeEquivalentTo(new MessageSubmitEvent()
-                {
-                    AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                    ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
-                    EventTime = DateTime.Parse("2024-06-06T14:42:42.475Z").ToUniversalTime(),
-                    AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.475Z").ToUniversalTime(),
-                    CorrelationId = "",
-                    MessageSubmitNotification = new MessageSubmitNotification()
                     {
-                        MessageId = "01W4FFL35P4NC4K35MESSAGE04",
-                        ConversationId = "01W4FFL35P4NC4K35CONVERS01",
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        EventTime = DateTime.Parse("2024-06-06T14:42:42.475Z").ToUniversalTime(),
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.475Z").ToUniversalTime(),
+                        CorrelationId = "",
+                        MessageSubmitNotification = new MessageSubmitNotification()
+                        {
+                            MessageId = "01W4FFL35P4NC4K35MESSAGE04",
+                            ConversationId = "01W4FFL35P4NC4K35CONVERS01",
 
-                        ChannelIdentity = new ChannelIdentity()
-                        {
-                            Channel = ConversationChannel.Messenger,
-                            Identity = "7968425018576406",
-                            AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                        },
-                        ContactId = "01W4FFL35P4NC4K35CONTACT01",
-                        Metadata = "",
-                        ProcessingMode = ProcessingMode.Conversation,
-                        SubmittedMessage = new ContactMessage(new MediaMessage()
-                        {
-                            FilenameOverride = "",
-                            ThumbnailUrl = "",
-                            Url =
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                Channel = ConversationChannel.Messenger,
+                                Identity = "7968425018576406",
+                                AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                            },
+                            ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                            Metadata = "",
+                            ProcessingMode = ProcessingMode.Conversation,
+                            SubmittedMessage = new AppMessage(new MediaMessage()
+                            {
+                                FilenameOverride = "",
+                                ThumbnailUrl = "",
+                                Url =
                                     "https://scontent.xx.fbcdn.net/v/t1.15752-9/450470563_473474858617216_4192328888545460366_n.png?_nc_cat=102&ccb=1-7&_nc_sid=fc17b8&_nc_ohc=48P1Kdk4UiwQ7kNvgE60fDt&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEkgERuI-tu8rt1GGpOEcNU2-0bFkmG4mQkzbciZss10g&oe=66C0A0E0",
-                        })
-                    }
-                },
+                            })
+                        }
+                    },
                     x => x.Excluding(m =>
                         m.MessageMetadata));
                 var convEvent = callbackEvent.As<MessageSubmitEvent>();
@@ -739,31 +739,29 @@ namespace Sinch.Tests.e2e.Conversation
             void AssertEvent(ICallbackEvent callbackEvent)
             {
                 callbackEvent.Should().BeEquivalentTo(new MessageSubmitEvent()
-                {
-                    AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                    ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
-                    EventTime = DateTime.Parse("2024-06-06T14:42:42.721Z").ToUniversalTime(),
-                    AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.721Z").ToUniversalTime(),
-                    CorrelationId = "correlatorId",
-                    MessageSubmitNotification = new MessageSubmitNotification()
                     {
-                        MessageId = "01W4FFL35P4NC4K35MESSAGE03",
-                        ConversationId = "01W4FFL35P4NC4K35CONVERS01",
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        EventTime = DateTime.Parse("2024-06-06T14:42:42.721Z").ToUniversalTime(),
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.721Z").ToUniversalTime(),
+                        CorrelationId = "correlatorId",
+                        MessageSubmitNotification = new MessageSubmitNotification()
+                        {
+                            MessageId = "01W4FFL35P4NC4K35MESSAGE03",
+                            ConversationId = "01W4FFL35P4NC4K35CONVERS01",
 
-                        ChannelIdentity = new ChannelIdentity()
-                        {
-                            Channel = ConversationChannel.Rcs,
-                            Identity = "12015555555",
-                            AppId = "",
-                        },
-                        ContactId = "01W4FFL35P4NC4K35CONTACT01",
-                        Metadata = "",
-                        ProcessingMode = ProcessingMode.Conversation,
-                        SubmittedMessage = new ContactMessage(new TextMessage("I \u2764\ufe0f Sinch")
-                        {
-                        })
-                    }
-                },
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                Channel = ConversationChannel.Rcs,
+                                Identity = "12015555555",
+                                AppId = "",
+                            },
+                            ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                            Metadata = "",
+                            ProcessingMode = ProcessingMode.Conversation,
+                            SubmittedMessage = new AppMessage(new TextMessage("I \u2764\ufe0f Sinch"))
+                        }
+                    },
                     x => x.Excluding(m =>
                         m.MessageMetadata));
                 var convEvent = callbackEvent.As<MessageSubmitEvent>();
@@ -787,23 +785,23 @@ namespace Sinch.Tests.e2e.Conversation
             void AssertEvent(ICallbackEvent callbackEvent)
             {
                 callbackEvent.Should().BeEquivalentTo(new SmartConversationsEvent()
-                {
-                    AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                    ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
-                    EventTime = DateTime.Parse("2024-06-06T14:42:42.094Z").ToUniversalTime(),
-                    AcceptedTime = DateTime.Parse("2024-06-06T14:42:44.2069826Z").ToUniversalTime(),
-                    CorrelationId = "",
-                    SmartConversationNotification = new SmartConversationNotification()
                     {
-                        MessageId = "01W4FFL35P4NC4K35MESSAGE04",
-                        ConversationId = "01W4FFL35P4NC4K35CONVERS01",
-
-                        ChannelIdentity = "7968425018576406",
-                        ContactId = "01W4FFL35P4NC4K35CONTACT01",
-                        Channel = ConversationChannel.Messenger,
-                        AnalysisResults = new AnalysisResult()
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        EventTime = DateTime.Parse("2024-06-06T14:42:42.094Z").ToUniversalTime(),
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:44.2069826Z").ToUniversalTime(),
+                        CorrelationId = "",
+                        SmartConversationNotification = new SmartConversationNotification()
                         {
-                            MlImageRecognitionResult = new List<MachineLearningImageRecognitionResult>()
+                            MessageId = "01W4FFL35P4NC4K35MESSAGE04",
+                            ConversationId = "01W4FFL35P4NC4K35CONVERS01",
+
+                            ChannelIdentity = "7968425018576406",
+                            ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                            Channel = ConversationChannel.Messenger,
+                            AnalysisResults = new AnalysisResult()
+                            {
+                                MlImageRecognitionResult = new List<MachineLearningImageRecognitionResult>()
                                 {
                                     new MachineLearningImageRecognitionResult()
                                     {
@@ -811,7 +809,7 @@ namespace Sinch.Tests.e2e.Conversation
                                             "https://scontent.xx.fbcdn.net/v/t1.15752-9/450470563_473474858617216_4192328888545460366_n.png?_nc_cat=102&ccb=1-7&_nc_sid=fc17b8&_nc_ohc=48P1Kdk4UiwQ7kNvgE60fDt&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEkgERuI-tu8rt1GGpOEcNU2-0bFkmG4mQkzbciZss10g&oe=66C0A0E0"
                                     }
                                 },
-                            MlOffensiveAnalysisResult = new List<OffensiveAnalysis>()
+                                MlOffensiveAnalysisResult = new List<OffensiveAnalysis>()
                                 {
                                     new OffensiveAnalysis()
                                     {
@@ -822,9 +820,9 @@ namespace Sinch.Tests.e2e.Conversation
                                         Score = 0.3069f
                                     }
                                 }
-                        }
+                            }
+                        },
                     },
-                },
                     x => x.Excluding(m =>
                         m.MessageMetadata));
                 var convEvent = callbackEvent.As<SmartConversationsEvent>();
@@ -848,23 +846,23 @@ namespace Sinch.Tests.e2e.Conversation
             void AssertEvent(ICallbackEvent callbackEvent)
             {
                 callbackEvent.Should().BeEquivalentTo(new SmartConversationsEvent()
-                {
-                    AppId = "01W4FFL35P4NC4K35CONVAPP01",
-                    ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
-                    EventTime = DateTime.Parse("2024-06-06T14:42:42.1492634Z").ToUniversalTime(),
-                    AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.2198899Z").ToUniversalTime(),
-                    CorrelationId = "",
-                    SmartConversationNotification = new SmartConversationNotification()
                     {
-                        MessageId = "01W4FFL35P4NC4K35MESSAGE03",
-                        ConversationId = "01W4FFL35P4NC4K35CONVERS01",
-
-                        ChannelIdentity = "12015555555",
-                        ContactId = "01W4FFL35P4NC4K35CONTACT01",
-                        Channel = ConversationChannel.Rcs,
-                        AnalysisResults = new AnalysisResult()
+                        AppId = "01W4FFL35P4NC4K35CONVAPP01",
+                        ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
+                        EventTime = DateTime.Parse("2024-06-06T14:42:42.1492634Z").ToUniversalTime(),
+                        AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.2198899Z").ToUniversalTime(),
+                        CorrelationId = "",
+                        SmartConversationNotification = new SmartConversationNotification()
                         {
-                            MlSentimentResult = new List<MachineLearningSentimentResult>()
+                            MessageId = "01W4FFL35P4NC4K35MESSAGE03",
+                            ConversationId = "01W4FFL35P4NC4K35CONVERS01",
+
+                            ChannelIdentity = "12015555555",
+                            ContactId = "01W4FFL35P4NC4K35CONTACT01",
+                            Channel = ConversationChannel.Rcs,
+                            AnalysisResults = new AnalysisResult()
+                            {
+                                MlSentimentResult = new List<MachineLearningSentimentResult>()
                                 {
                                     new MachineLearningSentimentResult()
                                     {
@@ -892,7 +890,7 @@ namespace Sinch.Tests.e2e.Conversation
                                         }
                                     }
                                 },
-                            MlNluResult = new List<MachineLearningNLUResult>()
+                                MlNluResult = new List<MachineLearningNLUResult>()
                                 {
                                     new MachineLearningNLUResult()
                                     {
@@ -909,18 +907,17 @@ namespace Sinch.Tests.e2e.Conversation
                                             new IntentResult()
                                             {
                                                 Intent = "chitchat.one_moment_please",
-                                                Score =  0.00027679664f
+                                                Score = 0.00027679664f
                                             },
                                             new IntentResult()
                                             {
                                                 Intent = "chitchat.bye",
-                                                Score =  0.0002178006f
+                                                Score = 0.0002178006f
                                             }
                                         }
                                     },
-
                                 },
-                            MlPiiResult = new List<MachineLearningPIIResult>()
+                                MlPiiResult = new List<MachineLearningPIIResult>()
                                 {
                                     new MachineLearningPIIResult()
                                     {
@@ -928,7 +925,7 @@ namespace Sinch.Tests.e2e.Conversation
                                         Masked = "{PERSON} {PERSON} {PERSON}"
                                     }
                                 },
-                            MlOffensiveAnalysisResult = new List<OffensiveAnalysis>()
+                                MlOffensiveAnalysisResult = new List<OffensiveAnalysis>()
                                 {
                                     new OffensiveAnalysis()
                                     {
@@ -938,9 +935,9 @@ namespace Sinch.Tests.e2e.Conversation
                                         Score = 0.9826318f
                                     }
                                 }
-                        }
+                            }
+                        },
                     },
-                },
                     x => x.Excluding(m =>
                         m.MessageMetadata));
                 var convEvent = callbackEvent.As<SmartConversationsEvent>();

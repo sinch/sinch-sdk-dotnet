@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -40,14 +41,30 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     A generic URL message.
     /// </summary>
-    /// <param name="Title"></param>
-    /// <param name="Url"></param>
-    public record UrlMessage(string Title, Uri Url);
+    public class UrlMessage
+    {
+        [JsonPropertyName("title")]
+        public string? Title { get; set; }
+
+        [JsonPropertyName("url")]
+        public string? Url { get; set; }
+    }
 
     /// <summary>
     ///     Message for triggering a call.
     /// </summary>
-    /// <param name="PhoneNumber">Phone number in E.164 with leading +.</param>
-    /// <param name="Title">Title shown close to the phone number. The title is clickable in some cases.</param>
-    public record CallMessage(string PhoneNumber, string Title);
+    public class CallMessage
+    {
+        /// <summary>
+        ///     Phone number in E.164 with leading +.
+        /// </summary>
+        [JsonPropertyName("phone_number")]
+        public string? PhoneNumber { get; set; }
+
+        /// <summary>
+        ///     Title shown close to the phone number. The title is clickable in some cases.
+        /// </summary>
+        [JsonPropertyName("title")]
+        public string? Title { get; set; }
+    }
 }

@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
@@ -54,7 +56,7 @@ namespace Sinch.Conversation.Messages.Message
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("choice_response_message")]
-        public ChoiceResponseMessage? ChoiceResponseMessage { get; private set; }
+        public ChoiceResponseMessage? ChoiceResponseMessage { get; internal set; }
 
 
         /// <summary>
@@ -63,7 +65,7 @@ namespace Sinch.Conversation.Messages.Message
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("fallback_message")]
-        public FallbackMessage? FallbackMessage { get; private set; }
+        public FallbackMessage? FallbackMessage { get; internal set; }
 
 
         /// <summary>
@@ -72,7 +74,7 @@ namespace Sinch.Conversation.Messages.Message
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("location_message")]
-        public LocationMessage? LocationMessage { get; private set; }
+        public LocationMessage? LocationMessage { get; internal set; }
 
 
         /// <summary>
@@ -81,7 +83,7 @@ namespace Sinch.Conversation.Messages.Message
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("media_card_message")]
-        public MediaCarouselMessage? MediaCardMessage { get; private set; }
+        public MediaCarouselMessage? MediaCardMessage { get; internal set; }
 
 
         /// <summary>
@@ -90,7 +92,7 @@ namespace Sinch.Conversation.Messages.Message
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("media_message")]
-        public MediaMessage? MediaMessage { get; private set; }
+        public MediaMessage? MediaMessage { get; internal set; }
 
 
         /// <summary>
@@ -99,7 +101,7 @@ namespace Sinch.Conversation.Messages.Message
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("reply_to")]
-        public ReplyTo? ReplyTo { get; private set; }
+        public ReplyTo? ReplyTo { get; set; }
 
 
         /// <summary>
@@ -108,9 +110,15 @@ namespace Sinch.Conversation.Messages.Message
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("text_message")]
-        public TextMessage? TextMessage { get; private set; }
+        public TextMessage? TextMessage { get; internal set; }
 
 
+        /// <summary>
+        ///     Optional. Channel specific messages, overriding any transcoding.
+        ///     The key in the map must point to a valid conversation channel as defined by the enum ConversationChannel.
+        /// </summary>
+        public Dictionary<ConversationChannel, JsonValue>? ExplicitChannelMessage { get; set; }
+        
         /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>

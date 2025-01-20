@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Sinch.Conversation.Common
 {
     /// <summary>
@@ -8,13 +10,16 @@ namespace Sinch.Conversation.Common
         /// <summary>
         ///     Agent's display name
         /// </summary>
+        [JsonPropertyName("display_name")]
         public string? DisplayName { get; set; }
 
+        [JsonPropertyName("type")]
         public AgentType? Type { get; set; }
 
         /// <summary>
         ///     The Agent's picture url.
         /// </summary>
+        [JsonPropertyName("picture_url")]
         public string? PictureUrl { get; set; }
     }
 }

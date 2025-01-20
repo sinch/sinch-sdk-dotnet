@@ -23,38 +23,47 @@ namespace Sinch.Conversation.Messages.Message
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("text_message")]
         public TextMessage? TextMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("card_message")]
         public CardMessage? CardMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("carousel_message")]
         public CarouselMessage? CarouselMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("choice_message")]
         public ChoiceMessage? ChoiceMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("location_message")]
         public LocationMessage? LocationMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("media_message")]
         public MediaMessage? MediaMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("template_message")]
         public TemplateMessage? TemplateMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("list_message")]
         public ListMessage? ListMessage { get; private set; }
 
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("contact_info_message")]
         public ContactInfoMessage? ContactInfoMessage { get; private set; }
 
         public AppMessage(ChoiceMessage choiceMessage)
@@ -108,6 +117,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     Optional. Channel specific messages, overriding any transcoding.
         ///     The key in the map must point to a valid conversation channel as defined by the enum ConversationChannel.
         /// </summary>
+        [JsonPropertyName("explicit_channel_message")]
         public Dictionary<ConversationChannel, JsonValue>? ExplicitChannelMessage { get; set; }
 
         /// <summary>
@@ -116,12 +126,15 @@ namespace Sinch.Conversation.Messages.Message
         ///     the explicit_channel_message property, and may be easier to use.
         ///     The key in the map must point to a valid conversation channel as defined in the enum ConversationChannel.
         /// </summary>
+        [JsonPropertyName("channel_specific_message")]
         public Dictionary<ConversationChannel, IChannelSpecificMessage>? ChannelSpecificMessage { get; set; }
-
-
+        
+        [JsonPropertyName("explicit_channel_omni_message")]
         public Dictionary<ChannelSpecificTemplate, IOmniMessageOverride>? ExplicitChannelOmniMessage { get; set; }
 
-        /// <inheritdoc cref="Agent" />        
+        
+        /// <inheritdoc cref="Agent" />
+        [JsonPropertyName("agent")]
         public Agent? Agent { get; set; }
     }
 
