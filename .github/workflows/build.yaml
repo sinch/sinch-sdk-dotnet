@@ -8,6 +8,7 @@ env:
   MOCK_CONVERSATION_PORT: 6042
   MOCK_VERIFICATION_PORT: 6043
   MOCK_VOICE_PORT: 6044
+  MOCK_FAX_PORT: 6046
 
 jobs:
   build:
@@ -26,7 +27,7 @@ jobs:
           - 6042:6042
           - 6043:6043
           - 6044:6044
-    
+          - 6046:6046
     steps:
       - uses: actions/checkout@v4
         with:

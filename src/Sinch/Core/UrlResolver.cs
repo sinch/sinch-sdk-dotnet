@@ -1,5 +1,6 @@
 using System;
 using Sinch.Conversation;
+using Sinch.Fax;
 using Sinch.SMS;
 using Sinch.Voice;
 
@@ -82,6 +83,24 @@ namespace Sinch.Core
             const string smsApiServicePlanIdUrlTemplate = "https://{0}.sms.api.sinch.com";
             return new Uri(string.Format(smsApiServicePlanIdUrlTemplate,
                 smsServicePlanIdRegion.Value.ToLowerInvariant()));
+        }
+
+
+        public Uri ResolveFaxUrl(FaxRegion? faxRegion)
+        {
+            const string faxApiUrl = "https://fax.api.sinch.com/";
+            const string faxApiUrlTemplate = "https://{0}.fax.api.sinch.com/";
+            if (!string.IsNullOrEmpty(_apiUrlOverrides?.FaxUrl))
+            {
+                return new Uri(_apiUrlOverrides.FaxUrl);
+            }
+
+            if (!string.IsNullOrEmpty(faxRegion?.Value))
+            {
+                return new Uri(string.Format(faxApiUrlTemplate, faxRegion.Value));
+            }
+
+            return new Uri(faxApiUrl);
         }
     }
 }
