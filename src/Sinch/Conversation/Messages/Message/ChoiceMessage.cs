@@ -10,6 +10,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     The number of choices is limited to 10.
         /// </summary>
+        [JsonPropertyName("choices")]
 #if NET7_0_OR_GREATER
         public required List<Choice> Choices { get; set; }
 #else
@@ -20,6 +21,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Gets or Sets TextMessage
         /// </summary>
+        [JsonPropertyName("text_message")]
         public TextMessage? TextMessage { get; set; }
 
 
