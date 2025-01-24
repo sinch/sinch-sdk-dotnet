@@ -112,6 +112,13 @@ namespace Sinch.Conversation.Messages.Message
         [JsonPropertyName("text_message")]
         public TextMessage? TextMessage { get; internal set; }
 
+        /// <summary>
+        ///     Gets or Sets ProductResponseMessage
+        /// </summary>
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("product_response_message")]
+        public ProductResponseMessage? ProductResponseMessage { get; internal set; }
 
         /// <summary>
         ///     Optional. Channel specific messages, overriding any transcoding.
