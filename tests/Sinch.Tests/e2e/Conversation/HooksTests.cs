@@ -41,7 +41,7 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var json = await _httpClient.GetStringAsync("message-inbound");
 
-            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+            var result = _sinchConversationWebhooks.ParseEvent(json);
 
             AssertEvent(result);
 
@@ -87,7 +87,7 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var json = await _httpClient.GetStringAsync("contact-delete");
 
-            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+            var result = _sinchConversationWebhooks.ParseEvent(json);
 
             AssertEvent(result);
 
@@ -134,7 +134,7 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var json = await _httpClient.GetStringAsync("contact-update");
 
-            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+            var result = _sinchConversationWebhooks.ParseEvent(json);
 
             AssertEvent(result);
 
@@ -185,7 +185,7 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var json = await _httpClient.GetStringAsync("contact-merge");
 
-            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+            var result = _sinchConversationWebhooks.ParseEvent(json);
 
             AssertEvent(result);
 
@@ -254,7 +254,7 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var json = await _httpClient.GetStringAsync("conversation-delete");
 
-            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+            var result = _sinchConversationWebhooks.ParseEvent(json);
 
             AssertEvent(result);
 
@@ -298,7 +298,7 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var json = await _httpClient.GetStringAsync("conversation-start");
 
-            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+            var result = _sinchConversationWebhooks.ParseEvent(json);
 
             AssertEvent(result);
 
@@ -342,7 +342,7 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var json = await _httpClient.GetStringAsync("conversation-stop");
 
-            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+            var result = _sinchConversationWebhooks.ParseEvent(json);
 
             AssertEvent(result);
 
@@ -386,7 +386,7 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var json = await _httpClient.GetStringAsync("event-delivery-report/failed");
 
-            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+            var result = _sinchConversationWebhooks.ParseEvent(json);
 
             AssertEvent(result);
 
@@ -437,7 +437,7 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var json = await _httpClient.GetStringAsync("event-delivery-report/succeeded");
 
-            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+            var result = _sinchConversationWebhooks.ParseEvent(json);
 
             AssertEvent(result);
 
@@ -481,7 +481,7 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var json = await _httpClient.GetStringAsync("event-inbound");
 
-            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+            var result = _sinchConversationWebhooks.ParseEvent(json);
 
             AssertEvent(result);
 
@@ -529,7 +529,7 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var json = await _httpClient.GetStringAsync("message-delivery-report/failed");
 
-            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+            var result = _sinchConversationWebhooks.ParseEvent(json);
 
             AssertEvent(result);
 
@@ -581,7 +581,7 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var json = await _httpClient.GetStringAsync("message-delivery-report/succeeded");
 
-            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+            var result = _sinchConversationWebhooks.ParseEvent(json);
 
             AssertEvent(result);
 
@@ -626,7 +626,7 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var json = await _httpClient.GetStringAsync("message-inbound/smart-conversation-redaction");
 
-            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+            var result = _sinchConversationWebhooks.ParseEvent(json);
 
             AssertEvent(result);
 
@@ -676,7 +676,7 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var json = await _httpClient.GetStringAsync("message-submit/media");
 
-            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+            var result = _sinchConversationWebhooks.ParseEvent(json);
 
             AssertEvent(result);
 
@@ -728,7 +728,7 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var json = await _httpClient.GetStringAsync("message-submit/text");
 
-            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+            var result = _sinchConversationWebhooks.ParseEvent(json);
 
             AssertEvent(result);
 
@@ -774,7 +774,7 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var json = await _httpClient.GetStringAsync("smart-conversations/media");
 
-            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+            var result = _sinchConversationWebhooks.ParseEvent(json);
 
             AssertEvent(result);
 
@@ -835,7 +835,7 @@ namespace Sinch.Tests.e2e.Conversation
         {
             var json = await _httpClient.GetStringAsync("smart-conversations/text");
 
-            var result = _sinchConversationWebhooks.DeserializeCallbackEvent(json);
+            var result = _sinchConversationWebhooks.ParseEvent(json);
 
             AssertEvent(result);
 

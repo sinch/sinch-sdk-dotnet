@@ -34,7 +34,7 @@ public class ReceiveConversationCallbackController : ControllerBase
         // ReSharper disable once RedundantAssignment
         var callbackEvent = json.Deserialize<ICallbackEvent>();
         // or use Deserialize provided by SDK
-        callbackEvent = _sinch.Conversation.Webhooks.DeserializeCallbackEvent(json);
+        callbackEvent = _sinch.Conversation.Webhooks.ParseEvent(json);
         // do something with specific event
         switch (callbackEvent)
         {

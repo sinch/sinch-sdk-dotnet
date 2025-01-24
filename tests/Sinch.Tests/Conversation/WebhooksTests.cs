@@ -301,7 +301,7 @@ namespace Sinch.Tests.Conversation
                         Email = "an email",
                         ExternalId = "an external id",
                         Metadata = "metadata value",
-                        Language = ConversationLanguage.Unspecified
+                        Language = new ConversationLanguage("UNSPECIFIED")
                     }
                 }
             }, options => options.Excluding(x => x.MessageMetadata));

@@ -74,11 +74,11 @@ namespace Sinch.Conversation.Webhooks
         /// <returns>True, if produced signature match with that of a header.</returns>
         bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonObject body, string secret);
 
-        ICallbackEvent DeserializeCallbackEvent(string json);
+        ICallbackEvent ParseEvent(string json);
 
-        ICallbackEvent DeserializeCallbackEvent(JsonNode json);
+        ICallbackEvent ParseEvent(JsonNode json);
 
-        Task<ICallbackEvent> DeserializeCallbackEventAsync(Stream json, CancellationToken cancellationToken = default);
+        Task<ICallbackEvent> ParseEventAsync(Stream json, CancellationToken cancellationToken = default);
     }
 
     /// <inheritdoc />
@@ -212,7 +212,7 @@ namespace Sinch.Conversation.Webhooks
             return isValidSignature;
         }
 
-        public ICallbackEvent DeserializeCallbackEvent(string json)
+        public ICallbackEvent ParseEvent(string json)
         {
             var jsonResult = JsonSerializer.Deserialize<ICallbackEvent>(json, _http.JsonSerializerOptions);
             if (jsonResult == null)
@@ -223,7 +223,7 @@ namespace Sinch.Conversation.Webhooks
             return jsonResult;
         }
 
-        public ICallbackEvent DeserializeCallbackEvent(JsonNode json)
+        public ICallbackEvent ParseEvent(JsonNode json)
         {
             var jsonResult = json.Deserialize<ICallbackEvent>(_http.JsonSerializerOptions);
             if (jsonResult == null)
@@ -234,7 +234,7 @@ namespace Sinch.Conversation.Webhooks
             return jsonResult;
         }
 
-        public async Task<ICallbackEvent> DeserializeCallbackEventAsync(Stream jsonStream,
+        public async Task<ICallbackEvent> ParseEventAsync(Stream jsonStream,
             CancellationToken cancellationToken = default)
         {
             var jsonResult =

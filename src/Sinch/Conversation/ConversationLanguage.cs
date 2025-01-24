@@ -76,6 +76,5 @@ namespace Sinch.Conversation
         public static readonly ConversationLanguage Uzbek = new("UZ");
         public static readonly ConversationLanguage Vietnamese = new("VI");
         public static readonly ConversationLanguage Zulu = new("ZU");
-        public static readonly ConversationLanguage Unspecified = new("UNSPECIFIED");
     }
 }
