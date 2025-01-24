@@ -30,7 +30,7 @@ namespace Sinch.Tests.Conversation
                 { "x-sinch-webhook-signature-nonce", new[] { "01FJA8B4A7BM43YGWSG9GBV067" } },
                 { "x-sinch-webhook-signature-timestamp", new[] { "1634579353" } },
                 { "x-sinch-webhook-signature", new[] { "6bpJoRmFoXVjfJIVglMoJzYXxnoxRujzR4k2GOXewOE=" } },
-            }, JsonNode.Parse(str)!.AsObject(), "foo_secret1234");
+            }, str, "foo_secret1234");
             isValid.Should().BeTrue();
         }
 

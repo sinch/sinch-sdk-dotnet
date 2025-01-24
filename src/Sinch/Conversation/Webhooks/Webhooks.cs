@@ -72,7 +72,7 @@ namespace Sinch.Conversation.Webhooks
         /// <param name="body"></param>
         /// <param name="secret"></param>
         /// <returns>True, if produced signature match with that of a header.</returns>
-        bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonObject body, string secret);
+        bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonNode body, string secret);
 
         ICallbackEvent ParseEvent(string json);
 
@@ -172,7 +172,7 @@ namespace Sinch.Conversation.Webhooks
                 cancellationToken);
         }
 
-        public bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonObject body,
+        public bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonNode body,
             string secret)
         {
             var headersCaseInsensitive =
@@ -200,7 +200,7 @@ namespace Sinch.Conversation.Webhooks
                 return false;
             }
 
-            var signedData = new StringBuilder().AppendJoin('.', body.ToJsonString(), nonce, timestamp).ToString();
+            var signedData = new StringBuilder().AppendJoin('.', body.ToString(), nonce, timestamp).ToString();
 
             using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(secret));
             var hmacSha256 = hmac.ComputeHash(Encoding.UTF8.GetBytes(signedData));
