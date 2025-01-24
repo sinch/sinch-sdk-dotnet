@@ -12,7 +12,12 @@ namespace Sinch.Conversation.Messages.Message
         ///      The Id of the message that this is a response to
         /// </summary>
         [JsonPropertyName("message_id")]
-        public string? MessageId { get; set; }
+#if NET7_0_OR_GREATER
+        public required string MessageId { get; set; }
+#else
+        public string MessageId { get; set; } = null!;
+#endif
+
         /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>
