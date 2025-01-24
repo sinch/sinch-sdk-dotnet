@@ -50,6 +50,16 @@ namespace Sinch.Conversation.Messages.Message
             TextMessage = textMessage;
         }
 
+        public ContactMessage(ProductResponseMessage productResponseMessage)
+        {
+            ProductResponseMessage = productResponseMessage;
+        }
+
+        public ContactMessage(ChannelSpecificMessage channelSpecificMessage)
+        {
+            ChannelSpecificMessage = channelSpecificMessage;
+        }
+
         /// <summary>
         ///     Gets or Sets ChoiceResponseMessage
         /// </summary>
@@ -120,11 +130,11 @@ namespace Sinch.Conversation.Messages.Message
         [JsonPropertyName("product_response_message")]
         public ProductResponseMessage? ProductResponseMessage { get; internal set; }
 
-        /// <summary>
-        ///     Optional. Channel specific messages, overriding any transcoding.
-        ///     The key in the map must point to a valid conversation channel as defined by the enum ConversationChannel.
-        /// </summary>
-        public Dictionary<ConversationChannel, JsonValue>? ExplicitChannelMessage { get; set; }
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("channel_specific_message")]
+        public ChannelSpecificMessage? ChannelSpecificMessage { get; internal set; }
 
         /// <summary>
         ///     Returns the string presentation of the object

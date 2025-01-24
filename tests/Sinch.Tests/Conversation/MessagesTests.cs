@@ -385,6 +385,7 @@ namespace Sinch.Tests.Conversation
                   }
               }
             }";
+
         private static readonly string Media = @"
             {
               ""WHATSAPP"": {
@@ -393,6 +394,7 @@ namespace Sinch.Tests.Conversation
                   }
               }
             }";
+
         private static readonly string Template = @"
             {
               ""WHATSAPP"": {
@@ -406,19 +408,50 @@ namespace Sinch.Tests.Conversation
         private readonly List<object[]> _data = new()
         {
             new object[] { Text, new TextMessage("hello") },
-            new object[] { Media, new MediaMessage()
+            new object[]
             {
-                Url = "https://hello.net"
-            }},
-            new object[] { Template, new TemplateReference()
+                Media, new MediaMessage()
+                {
+                    Url = "https://hello.net"
+                }
+            },
+            new object[]
             {
-                TemplateId = "id",
-                Version = "3"
-            }},
+                Template, new TemplateReference()
+                {
+                    TemplateId = "id",
+                    Version = "3"
+                }
+            },
         };
 
         public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        [Fact]
+        public void DeserializeChannelSpecificNfmReplyMessage()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/ChannelSpecificContactMessageNfmReply.json");
+
+            var result = JsonSerializer.Deserialize<ContactMessage>(json);
+
+            result.Should().BeEquivalentTo(new ContactMessage(new ChannelSpecificMessage()
+            {
+                MessageType = ChannelSpecificMessageType.NfmReply,
+                Message = new ChannelSpecificMessageMessage()
+                {
+                    Type = ChannelSpecificMessageType.NfmReply,
+                    NfmReply = new WhatsAppInteractiveNfmReply()
+                    {
+                        Name = WhatsAppInteractiveNfmReply.NameEnum.AddressMessage,
+                        Body = "nfm reply body value",
+                        ResponseJson = "{\"key\": \"value\"}"
+                    }
+                }
+            }), options => options.Excluding(x => x.ChannelSpecificMessage.Message.NfmReply.ResponseJson));
+            result!.ChannelSpecificMessage!.Message!.NfmReply!.ResponseJson.ToString().Should()
+                .Be("{\"key\": \"value\"}");
+        }
     }
 }
