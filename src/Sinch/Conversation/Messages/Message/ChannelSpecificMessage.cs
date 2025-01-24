@@ -168,7 +168,7 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required string Body { get; set; }
 #else
-        public string Body { get; set; }
+        public string Body { get; set; } = null!;
 #endif
 
 

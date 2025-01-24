@@ -74,6 +74,16 @@ namespace Sinch.Conversation.Webhooks
         /// <returns>True, if produced signature match with that of a header.</returns>
         bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonNode body, string secret);
 
+        /// <summary>
+        ///     Validates callback request.
+        /// </summary>
+        /// <param name="headers"></param>
+        /// <param name="body"></param>
+        /// <param name="secret"></param>
+        /// <returns>True, if produced signature match with that of a header.</returns>
+        bool ValidateAuthenticationHeader(Dictionary<string, IEnumerable<string>> headers, JsonNode body,
+            string secret);
+
         ICallbackEvent ParseEvent(string json);
 
         ICallbackEvent ParseEvent(JsonNode json);
@@ -210,6 +220,13 @@ namespace Sinch.Conversation.Webhooks
             var isValidSignature = string.Equals(calculatedSignature, signature, StringComparison.Ordinal);
             _logger?.LogInformation("The signature was validated with {success}", isValidSignature);
             return isValidSignature;
+        }
+
+        public bool ValidateAuthenticationHeader(Dictionary<string, IEnumerable<string>> headers, JsonNode body,
+            string secret)
+        {
+            return ValidateAuthenticationHeader(headers.ToDictionary(x => x.Key,
+                x => new StringValues(x.Value.ToArray())), body, secret);
         }
 
         public ICallbackEvent ParseEvent(string json)
