@@ -6,7 +6,7 @@ using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Message
 {
-    public class ChannelSpecificMessage
+    public class ChannelSpecificContactMessage
     {
         /// <summary>
         /// The message type.
@@ -36,7 +36,7 @@ namespace Sinch.Conversation.Messages.Message
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(ChannelSpecificMessage)} {{\n");
+            sb.Append($"class {nameof(ChannelSpecificContactMessage)} {{\n");
             sb.Append($"  {nameof(MessageType)}: ").Append(MessageType).Append('\n');
             sb.Append($"  {nameof(Message)}: ").Append(Message).Append('\n');
             sb.Append("}\n");

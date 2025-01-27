@@ -436,7 +436,7 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ContactMessage>(json);
 
-            result.Should().BeEquivalentTo(new ContactMessage(new ChannelSpecificMessage()
+            result.Should().BeEquivalentTo(new ContactMessage(new ChannelSpecificContactMessage()
             {
                 MessageType = ChannelSpecificMessageType.NfmReply,
                 Message = new ChannelSpecificMessageContent()

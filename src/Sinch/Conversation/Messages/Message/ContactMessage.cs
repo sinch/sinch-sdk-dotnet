@@ -55,7 +55,7 @@ namespace Sinch.Conversation.Messages.Message
             ProductResponseMessage = productResponseMessage;
         }
 
-        public ContactMessage(ChannelSpecificMessage channelSpecificMessage)
+        public ContactMessage(ChannelSpecificContactMessage channelSpecificMessage)
         {
             ChannelSpecificMessage = channelSpecificMessage;
         }
@@ -134,7 +134,7 @@ namespace Sinch.Conversation.Messages.Message
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("channel_specific_message")]
-        public ChannelSpecificMessage? ChannelSpecificMessage { get; internal set; }
+        public ChannelSpecificContactMessage? ChannelSpecificMessage { get; internal set; }
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -151,6 +151,7 @@ namespace Sinch.Conversation.Messages.Message
             sb.Append("  MediaMessage: ").Append(MediaMessage).Append("\n");
             sb.Append("  ReplyTo: ").Append(ReplyTo).Append("\n");
             sb.Append("  TextMessage: ").Append(TextMessage).Append("\n");
+            sb.Append("  ChannelSpecificMessage: ").Append(ChannelSpecificMessage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
