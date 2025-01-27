@@ -24,9 +24,9 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonPropertyName("message")]
 #if NET7_0_OR_GREATER
-        public required ChannelSpecificMessageMessage Message { get; set; }
+        public required ChannelSpecificMessageContent Message { get; set; }
 #else
-        public ChannelSpecificMessageMessage Message { get; set; } = null!;
+        public ChannelSpecificMessageContent Message { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Sinch.Conversation.Messages.Message
         }
     }
 
-    public class ChannelSpecificMessageMessage
+    public class ChannelSpecificMessageContent
     {
         [JsonPropertyName("type")]
 #if NET7_0_OR_GREATER

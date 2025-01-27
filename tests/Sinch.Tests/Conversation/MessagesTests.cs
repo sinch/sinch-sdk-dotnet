@@ -439,7 +439,7 @@ namespace Sinch.Tests.Conversation
             result.Should().BeEquivalentTo(new ContactMessage(new ChannelSpecificMessage()
             {
                 MessageType = ChannelSpecificMessageType.NfmReply,
-                Message = new ChannelSpecificMessageMessage()
+                Message = new ChannelSpecificMessageContent()
                 {
                     Type = ChannelSpecificMessageType.NfmReply,
                     NfmReply = new WhatsAppInteractiveNfmReply()
