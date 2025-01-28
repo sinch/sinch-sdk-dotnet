@@ -1099,7 +1099,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeShortlinkActivatedEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/PaymentStatusUpdateEvent.json");
+            string json = Helpers.LoadResources("Conversation/Hooks/ShortlinkActivatedEvent.json");
 
             var result = JsonSerializer.Deserialize<ContactMessageEvent>(json);
 
