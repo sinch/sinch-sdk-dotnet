@@ -11,12 +11,14 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Optional. The raw fallback message if provided by the channel.
         /// </summary>
+        [JsonPropertyName("raw_message")]
         public string? RawMessage { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets Reason
         /// </summary>
+        [JsonPropertyName("reason")]
         public Reason? Reason { get; set; }
 
 

@@ -63,26 +63,20 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     Message for triggering a call.
     /// </summary>
-    public class CallMessage
+    /// <param name="PhoneNumber">Phone number in E.164 with leading +.</param>
+    /// <param name="Title">Title shown close to the phone number. The title is clickable in some cases.</param>
+    public sealed record CallMessage(string PhoneNumber, string Title)
     {
         /// <summary>
         ///     Phone number in E.164 with leading +.
         /// </summary>
         [JsonPropertyName("phone_number")]
-#if NET7_0_OR_GREATER
-        public required string PhoneNumber { get; set; }
-#else
-        public string PhoneNumber { get; set; } = null!;
-#endif
+        public string PhoneNumber { get; set; } = PhoneNumber;
 
         /// <summary>
         ///     Title shown close to the phone number. The title is clickable in some cases.
         /// </summary>
         [JsonPropertyName("title")]
-#if NET7_0_OR_GREATER
-        public required string Title { get; set; }
-#else
-        public string Title { get; set; } = null!;
-#endif
+        public string Title { get; set; } = Title;
     }
 }

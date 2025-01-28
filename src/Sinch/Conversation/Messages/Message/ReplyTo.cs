@@ -6,17 +6,14 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     If the contact message was a response to a previous App message then this field contains information about that.
     /// </summary>
-    public sealed class ReplyTo
+    /// <param name="MessageId">The Id of the message that this is a response to</param>
+    public sealed record ReplyTo(string MessageId)
     {
         /// <summary>
         ///      The Id of the message that this is a response to
         /// </summary>
         [JsonPropertyName("message_id")]
-#if NET7_0_OR_GREATER
-        public required string MessageId { get; set; }
-#else
-        public string MessageId { get; set; } = null!;
-#endif
+        public string MessageId { get; set; } = MessageId;
 
         /// <summary>
         ///     Returns the string presentation of the object
