@@ -33,7 +33,7 @@ namespace Sinch.Tests.e2e.Conversation
         [Fact]
         public async Task Create()
         {
-            var response = await SinchClientMockServer.Conversation.Webhooks.Create(new Webhook()
+            var response = await SinchClientMockServer.Conversation.Webhooks.Create(new CreateWebhookRequest()
             {
                 AppId = "01W4FFL35P4NC4K35CONVAPP001",
                 Secret = "CactusKnight_SurfsWaves",
@@ -62,7 +62,7 @@ namespace Sinch.Tests.e2e.Conversation
         [Fact]
         public async Task CreateInvalidValue()
         {
-            var op = () => SinchClientMockServer.Conversation.Webhooks.Create(new Webhook()
+            var op = () => SinchClientMockServer.Conversation.Webhooks.Create(new CreateWebhookRequest()
             {
                 AppId = "APPID",
                 Target = "http://localhost:8080",
@@ -185,7 +185,7 @@ namespace Sinch.Tests.e2e.Conversation
         [Fact]
         public async Task Update()
         {
-            var response = await SinchClientMockServer.Conversation.Webhooks.Update(new Webhook()
+            var response = await SinchClientMockServer.Conversation.Webhooks.Update(new UpdateWebhookRequest()
             {
                 Id = "ID",
                 AppId = "01W4FFL35P4NC4K35CONVAPP002",

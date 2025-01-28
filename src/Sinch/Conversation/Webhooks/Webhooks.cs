@@ -28,7 +28,7 @@ namespace Sinch.Conversation.Webhooks
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Webhook> Create(Webhook request, CancellationToken cancellationToken = default);
+        Task<Webhook> Create(CreateWebhookRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Get a webhook as specified by the webhook ID.
@@ -52,10 +52,10 @@ namespace Sinch.Conversation.Webhooks
         /// <summary>
         ///     Updates an existing webhook as specified by the webhook ID.
         /// </summary>
-        /// <param name="webhook">Don't forget to provide the ID of the webhook in the object.</param>
+        /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Webhook> Update(Webhook webhook, CancellationToken cancellationToken = default);
+        Task<Webhook> Update(UpdateWebhookRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Deletes a webhook as specified by the webhook ID.
@@ -109,11 +109,11 @@ namespace Sinch.Conversation.Webhooks
         }
 
         /// <inheritdoc />
-        public Task<Webhook> Create(Webhook request, CancellationToken cancellationToken = default)
+        public Task<Webhook> Create(CreateWebhookRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks");
             _logger?.LogDebug("Creating a webhook...");
-            return _http.Send<Webhook, Webhook>(uri, HttpMethod.Post, request,
+            return _http.Send<CreateWebhookRequest, Webhook>(uri, HttpMethod.Post, request,
                 cancellationToken);
         }
 
@@ -142,28 +142,28 @@ namespace Sinch.Conversation.Webhooks
         }
 
         /// <inheritdoc />
-        public Task<Webhook> Update(Webhook webhook, CancellationToken cancellationToken = default)
+        public Task<Webhook> Update(UpdateWebhookRequest request, CancellationToken cancellationToken = default)
         {
-            if (webhook is null)
+            if (request is null)
             {
-                throw new ArgumentNullException(nameof(webhook), "Should have a value");
+                throw new ArgumentNullException(nameof(request), "Should have a value");
             }
 
-            if (string.IsNullOrEmpty(webhook.Id))
+            if (string.IsNullOrEmpty(request.Id))
             {
-                throw new NullReferenceException($"{nameof(webhook)}.{nameof(webhook.Id)} shouldn't be null");
+                throw new NullReferenceException($"{nameof(request)}.{nameof(request.Id)} shouldn't be null");
             }
 
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{webhook.Id}");
+            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{request.Id}");
 
             var builder = new UriBuilder(uri);
             var queryString = HttpUtility.ParseQueryString(string.Empty);
-            var propMask = webhook.GetPropertiesMask();
+            var propMask = request.GetPropertiesMask();
             if (!string.IsNullOrEmpty(propMask)) queryString.Add("update_mask", propMask);
             builder.Query = queryString.ToString()!;
 
-            _logger?.LogDebug("Updating a webhook with {id}...", webhook.Id);
-            return _http.Send<Webhook, Webhook>(builder.Uri, HttpMethod.Patch, webhook,
+            _logger?.LogDebug("Updating a webhook with {id}...", request.Id);
+            return _http.Send<UpdateWebhookRequest, Webhook>(builder.Uri, HttpMethod.Patch, request,
                 cancellationToken);
         }
 

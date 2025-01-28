@@ -1,18 +1,31 @@
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Conversation.Webhooks
 {
-    /// <summary>
-    ///     Represents a destination for receiving callbacks from the Conversation API.
-    /// </summary>
-    public class Webhook
+    public class UpdateWebhookRequest : PropertyMaskQuery
     {
+        private WebhookTargetType? _targetType;
+        private string _appId = null!;
+        private ClientCredentials? _clientCredentials;
+        private string? _secret;
+        private string _target = null!;
+        private List<WebhookTrigger> _triggers = null!;
+
         /// <summary>
         ///     Gets or sets the target type.
         /// </summary>
-        public WebhookTargetType? TargetType { get; set; }
+        public WebhookTargetType? TargetType
+        {
+            get => _targetType;
+            set
+            {
+                SetFields.Add(nameof(TargetType));
+                _targetType = value;
+            }
+        }
 
         /// <summary>
         ///     The app that this webhook belongs to.
@@ -23,25 +36,47 @@ namespace Sinch.Conversation.Webhooks
         public string AppId
 #endif
         {
-            get;
-            set;
+            get => _appId;
+            set
+            {
+                SetFields.Add(nameof(AppId));
+                _appId = value;
+            }
         }
 
         /// <summary>
         ///     Gets or sets the client credentials.
         /// </summary>
-        public ClientCredentials? ClientCredentials { get; set; }
+        public ClientCredentials? ClientCredentials
+        {
+            get => _clientCredentials;
+            set
+            {
+                SetFields.Add(nameof(ClientCredentials));
+                _clientCredentials = value;
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the ID of the webhook.
         /// </summary>
-        public string? Id { get; set; }
+        [JsonIgnore]
+        // cannot use required here as System.Text.Json will throw an exception when serializing 
+        public string Id { get; set; } = null!;
 
         /// <summary>
         ///     Optional secret to be used to sign contents of webhooks sent by the Conversation API.
         ///     You can then use the secret to verify the signature.
         /// </summary>
-        public string? Secret { get; set; }
+        public string? Secret
+        {
+            get => _secret;
+            set
+            {
+                SetFields.Add(nameof(Secret));
+                _secret = value;
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the target URL where events should be sent to.
@@ -53,8 +88,12 @@ namespace Sinch.Conversation.Webhooks
         public string Target
 #endif
         {
-            get;
-            set;
+            get => _target;
+            set
+            {
+                SetFields.Add(nameof(Target));
+                _target = value;
+            }
         }
 
         /// <summary>
@@ -68,8 +107,12 @@ namespace Sinch.Conversation.Webhooks
         public List<WebhookTrigger> Triggers
 #endif
         {
-            get;
-            set;
+            get => _triggers;
+            set
+            {
+                SetFields.Add(nameof(Triggers));
+                _triggers = value;
+            }
         }
 
         /// <summary>
