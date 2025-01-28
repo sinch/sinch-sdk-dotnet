@@ -36,7 +36,7 @@ namespace Sinch.Conversation.Hooks
         ///     Context-dependent metadata. Refer to specific callback&#39;s documentation for exact information provided.
         /// </summary>
         [JsonPropertyName("message_metadata")]
-        public JsonNode? MessageMetadata { get; set; }
+        public string? MessageMetadata { get; set; }
 
 
         /// <summary>

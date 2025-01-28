@@ -449,9 +449,7 @@ namespace Sinch.Tests.Conversation
                         ResponseJson = "{\"key\": \"value\"}"
                     }
                 }
-            }), options => options.Excluding(x => x.ChannelSpecificMessage.Message.NfmReply.ResponseJson));
-            result!.ChannelSpecificMessage!.Message!.NfmReply!.ResponseJson.ToString().Should()
-                .Be("{\"key\": \"value\"}");
+            }));
         }
     }
 }

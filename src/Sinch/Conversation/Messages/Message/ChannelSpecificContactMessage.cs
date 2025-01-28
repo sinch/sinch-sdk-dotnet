@@ -155,9 +155,9 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonPropertyName("response_json")]
 #if NET7_0_OR_GREATER
-        public required JsonNode ResponseJson { get; set; }
+        public required string ResponseJson { get; set; }
 #else
-        public JsonNode ResponseJson { get; set; } = null!;
+        public string ResponseJson { get; set; } = null!;
 #endif
 
 

@@ -59,6 +59,7 @@ namespace Sinch.Tests.e2e.Conversation
                     EventTime = DateTime.Parse("2024-06-06T14:42:42.1492634Z").ToUniversalTime(),
                     ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
                     CorrelationId = "correlatorId",
+                    MessageMetadata = "",
                     Message = new MessageInboundEventItem()
                     {
                         Id = "01W4FFL35P4NC4K35MESSAGE01",
@@ -78,8 +79,7 @@ namespace Sinch.Tests.e2e.Conversation
                         },
                         ContactMessage = new ContactMessage(new TextMessage("Hello")),
                     },
-                }, x => x.Excluding(m => m.MessageMetadata));
-                callbackEvent.As<MessageInboundEvent>().MessageMetadata!.GetValue<string>().Should().BeEmpty();
+                });
             }
         }
 
@@ -116,6 +116,7 @@ namespace Sinch.Tests.e2e.Conversation
                     AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.726873733Z").ToUniversalTime(),
                     ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
                     CorrelationId = "",
+                    MessageMetadata = "",
                     ContactDeleteNotification = new ContactNotification()
                     {
                         Contact = new Contact()
@@ -137,8 +138,7 @@ namespace Sinch.Tests.e2e.Conversation
                             Language = ConversationLanguage.French,
                         }
                     }
-                }, x => x.Excluding(m => m.MessageMetadata));
-                callbackEvent.As<ContactDeleteEvent>().MessageMetadata!.GetValue<string>().Should().BeEmpty();
+                });
             }
         }
 
@@ -165,6 +165,7 @@ namespace Sinch.Tests.e2e.Conversation
                     AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.1646148Z").ToUniversalTime(),
                     ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
                     CorrelationId = "",
+                    MessageMetadata = "",
                     ContactUpdateNotification = new ContactNotification()
                     {
                         Contact = new Contact()
@@ -191,7 +192,6 @@ namespace Sinch.Tests.e2e.Conversation
                         }
                     }
                 }, x => x.Excluding(m => m.MessageMetadata));
-                callbackEvent.As<ContactUpdateEvent>().MessageMetadata!.GetValue<string>().Should().BeEmpty();
             }
         }
 
@@ -218,6 +218,7 @@ namespace Sinch.Tests.e2e.Conversation
                     AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.722089838Z").ToUniversalTime(),
                     ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
                     CorrelationId = "",
+                    MessageMetadata = "",
                     ContactMergeNotification = new ContactMergeNotification()
                     {
                         PreservedContact = new Contact()
@@ -261,8 +262,7 @@ namespace Sinch.Tests.e2e.Conversation
                             Language = ConversationLanguage.French,
                         }
                     }
-                }, x => x.Excluding(m => m.MessageMetadata));
-                callbackEvent.As<ContactMergeEvent>().MessageMetadata!.GetValue<string>().Should().BeEmpty();
+                });
             }
         }
 
@@ -288,6 +288,7 @@ namespace Sinch.Tests.e2e.Conversation
                     AppId = "01W4FFL35P4NC4K35CONVAPP01",
                     ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
                     CorrelationId = "",
+                    MessageMetadata = "",
                     ConversationDeleteNotification = new ConversationNotification()
                     {
                         Conversation = new Sinch.Conversation.Conversations.Conversation()
@@ -303,10 +304,8 @@ namespace Sinch.Tests.e2e.Conversation
                         }
                     }
                 },
-                    x => x.Excluding(m =>
-                        m.MessageMetadata).Excluding(m => m.ConversationDeleteNotification.Conversation.MetadataJson));
+                    x => x.Excluding(m => m.ConversationDeleteNotification.Conversation.MetadataJson));
                 var deleteEvent = callbackEvent.As<ConversationDeleteEvent>();
-                deleteEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
                 deleteEvent.ConversationDeleteNotification!.Conversation!.MetadataJson!.ToJsonString().Should()
                     .Be("{}");
             }
@@ -334,6 +333,7 @@ namespace Sinch.Tests.e2e.Conversation
                     AppId = "01W4FFL35P4NC4K35CONVAPP01",
                     ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
                     CorrelationId = "",
+                    MessageMetadata = "",
                     ConversationStartNotification = new ConversationNotification()
                     {
                         Conversation = new Sinch.Conversation.Conversations.Conversation()
@@ -352,7 +352,6 @@ namespace Sinch.Tests.e2e.Conversation
                     x => x.Excluding(m =>
                         m.MessageMetadata).Excluding(m => m.ConversationStartNotification.Conversation.MetadataJson));
                 var convEvent = callbackEvent.As<ConversationStartEvent>();
-                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
                 convEvent.ConversationStartNotification!.Conversation!.MetadataJson!.ToJsonString().Should()
                     .Be("{}");
             }
@@ -380,6 +379,7 @@ namespace Sinch.Tests.e2e.Conversation
                     AppId = "01W4FFL35P4NC4K35CONVAPP01",
                     ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
                     CorrelationId = "",
+                    MessageMetadata = "",
                     ConversationStopNotification = new ConversationNotification()
                     {
                         Conversation = new Sinch.Conversation.Conversations.Conversation()
@@ -398,7 +398,6 @@ namespace Sinch.Tests.e2e.Conversation
                     x => x.Excluding(m =>
                         m.MessageMetadata).Excluding(m => m.ConversationStopNotification.Conversation.MetadataJson));
                 var convEvent = callbackEvent.As<ConversationStopEvent>();
-                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
                 convEvent.ConversationStopNotification!.Conversation!.MetadataJson!.ToJsonString().Should()
                     .Be("{}");
             }
@@ -426,6 +425,7 @@ namespace Sinch.Tests.e2e.Conversation
                     AppId = "01W4FFL35P4NC4K35CONVAPP01",
                     ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
                     CorrelationId = "",
+                    MessageMetadata = "",
                     AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.208Z").ToUniversalTime(),
                     EventTime = DateTime.Parse("2024-06-06T14:42:42.251277147Z").ToUniversalTime(),
                     EventDeliveryReport = new EventDeliveryAllOfEventDeliveryReport()
@@ -453,7 +453,6 @@ namespace Sinch.Tests.e2e.Conversation
                     x => x.Excluding(m =>
                         m.MessageMetadata));
                 var convEvent = callbackEvent.As<DeliveryEvent>();
-                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
             }
         }
 
@@ -479,6 +478,7 @@ namespace Sinch.Tests.e2e.Conversation
                     AppId = "01W4FFL35P4NC4K35CONVAPP01",
                     ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
                     CorrelationId = "",
+                    MessageMetadata = "",
                     AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.132Z").ToUniversalTime(),
                     EventTime = DateTime.Parse("2024-06-06T14:42:42.891Z").ToUniversalTime(),
                     EventDeliveryReport = new EventDeliveryAllOfEventDeliveryReport()
@@ -495,11 +495,7 @@ namespace Sinch.Tests.e2e.Conversation
                         Metadata = "",
                         ProcessingMode = ProcessingMode.Conversation
                     }
-                },
-                    x => x.Excluding(m =>
-                        m.MessageMetadata));
-                var convEvent = callbackEvent.As<DeliveryEvent>();
-                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+                });
             }
         }
 
@@ -526,6 +522,7 @@ namespace Sinch.Tests.e2e.Conversation
                     ProjectId = "tinyfrog-jump-high-over-lilypadbasin",
                     EventTime = DateTime.Parse("2024-06-06T14:42:42.379863404Z").ToUniversalTime(),
                     CorrelationId = "",
+                    MessageMetadata = "",
                     Event = new EventInboundAllOfEvent()
                     {
                         Direction = ConversationDirection.ToApp,
@@ -545,11 +542,7 @@ namespace Sinch.Tests.e2e.Conversation
                         AcceptTime = DateTime.Parse("2024-06-06T14:42:42.429455346Z").ToUniversalTime(),
                         ProcessingMode = ProcessingMode.Conversation,
                     }
-                },
-                    x => x.Excluding(m =>
-                        m.MessageMetadata));
-                var convEvent = callbackEvent.As<InboundEvent>();
-                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+                });
             }
         }
 
@@ -577,6 +570,7 @@ namespace Sinch.Tests.e2e.Conversation
                     EventTime = DateTime.Parse("2024-06-06T14:42:43Z").ToUniversalTime(),
                     AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.721Z").ToUniversalTime(),
                     CorrelationId = "correlatorId",
+                    MessageMetadata = "",
                     MessageDeliveryReport = new MessageDeliveryReport()
                     {
                         MessageId = "01W4FFL35P4NC4K35MESSAGE05",
@@ -593,17 +587,13 @@ namespace Sinch.Tests.e2e.Conversation
                         {
                             Code = "RECIPIENT_NOT_REACHABLE",
                             Description =
-                                    "The underlying channel reported: Unable to find rcs support for the given recipient",
+                                "The underlying channel reported: Unable to find rcs support for the given recipient",
                             SubCode = "UNSPECIFIED_SUB_CODE",
                         },
                         Metadata = "",
                         ProcessingMode = ProcessingMode.Conversation
                     }
-                },
-                    x => x.Excluding(m =>
-                        m.MessageMetadata));
-                var convEvent = callbackEvent.As<MessageDeliveryReceiptEvent>();
-                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+                });
             }
         }
 
@@ -629,6 +619,7 @@ namespace Sinch.Tests.e2e.Conversation
                     EventTime = DateTime.Parse("2024-06-06T14:42:43.0093518Z").ToUniversalTime(),
                     AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.721Z").ToUniversalTime(),
                     CorrelationId = "correlatorId",
+                    MessageMetadata = "",
                     MessageDeliveryReport = new MessageDeliveryReport()
                     {
                         MessageId = "01W4FFL35P4NC4K35MESSAGE01",
@@ -644,11 +635,7 @@ namespace Sinch.Tests.e2e.Conversation
                         Metadata = "",
                         ProcessingMode = ProcessingMode.Conversation
                     }
-                },
-                    x => x.Excluding(m =>
-                        m.MessageMetadata));
-                var convEvent = callbackEvent.As<MessageDeliveryReceiptEvent>();
-                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+                });
             }
         }
 
@@ -676,6 +663,7 @@ namespace Sinch.Tests.e2e.Conversation
                     EventTime = DateTime.Parse("2024-06-06T14:42:41.293Z").ToUniversalTime(),
                     AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.240093543Z").ToUniversalTime(),
                     CorrelationId = "correlatorId",
+                    MessageMetadata = "",
                     MessageRedaction = new MessageInboundEventItem()
                     {
                         Id = "01W4FFL35P4NC4K35MESSAGE02",
@@ -696,11 +684,7 @@ namespace Sinch.Tests.e2e.Conversation
                         SenderId = "",
                         AcceptTime = DateTime.Parse("2024-06-06T14:42:42.165Z").ToUniversalTime(),
                     }
-                },
-                    x => x.Excluding(m =>
-                        m.MessageMetadata));
-                var convEvent = callbackEvent.As<MessageInboundSmartConversationRedactionEvent>();
-                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+                });
             }
         }
 
@@ -728,6 +712,7 @@ namespace Sinch.Tests.e2e.Conversation
                     EventTime = DateTime.Parse("2024-06-06T14:42:42.475Z").ToUniversalTime(),
                     AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.475Z").ToUniversalTime(),
                     CorrelationId = "",
+                    MessageMetadata = "",
                     MessageSubmitNotification = new MessageSubmitNotification()
                     {
                         MessageId = "01W4FFL35P4NC4K35MESSAGE04",
@@ -750,11 +735,7 @@ namespace Sinch.Tests.e2e.Conversation
                                     "https://scontent.xx.fbcdn.net/v/t1.15752-9/450470563_473474858617216_4192328888545460366_n.png?_nc_cat=102&ccb=1-7&_nc_sid=fc17b8&_nc_ohc=48P1Kdk4UiwQ7kNvgE60fDt&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEkgERuI-tu8rt1GGpOEcNU2-0bFkmG4mQkzbciZss10g&oe=66C0A0E0",
                         })
                     }
-                },
-                    x => x.Excluding(m =>
-                        m.MessageMetadata));
-                var convEvent = callbackEvent.As<MessageSubmitEvent>();
-                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+                });
             }
         }
 
@@ -782,6 +763,7 @@ namespace Sinch.Tests.e2e.Conversation
                     EventTime = DateTime.Parse("2024-06-06T14:42:42.721Z").ToUniversalTime(),
                     AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.721Z").ToUniversalTime(),
                     CorrelationId = "correlatorId",
+                    MessageMetadata = "",
                     MessageSubmitNotification = new MessageSubmitNotification()
                     {
                         MessageId = "01W4FFL35P4NC4K35MESSAGE03",
@@ -798,11 +780,7 @@ namespace Sinch.Tests.e2e.Conversation
                         ProcessingMode = ProcessingMode.Conversation,
                         SubmittedMessage = new AppMessage(new TextMessage("I \u2764\ufe0f Sinch"))
                     }
-                },
-                    x => x.Excluding(m =>
-                        m.MessageMetadata));
-                var convEvent = callbackEvent.As<MessageSubmitEvent>();
-                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+                });
             }
         }
 
@@ -829,6 +807,7 @@ namespace Sinch.Tests.e2e.Conversation
                     EventTime = DateTime.Parse("2024-06-06T14:42:42.094Z").ToUniversalTime(),
                     AcceptedTime = DateTime.Parse("2024-06-06T14:42:44.2069826Z").ToUniversalTime(),
                     CorrelationId = "",
+                    MessageMetadata = "",
                     SmartConversationNotification = new SmartConversationNotification()
                     {
                         MessageId = "01W4FFL35P4NC4K35MESSAGE04",
@@ -860,11 +839,7 @@ namespace Sinch.Tests.e2e.Conversation
                                 }
                         }
                     },
-                },
-                    x => x.Excluding(m =>
-                        m.MessageMetadata));
-                var convEvent = callbackEvent.As<SmartConversationsEvent>();
-                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+                });
             }
         }
 
@@ -892,6 +867,7 @@ namespace Sinch.Tests.e2e.Conversation
                     EventTime = DateTime.Parse("2024-06-06T14:42:42.1492634Z").ToUniversalTime(),
                     AcceptedTime = DateTime.Parse("2024-06-06T14:42:42.2198899Z").ToUniversalTime(),
                     CorrelationId = "",
+                    MessageMetadata = "",
                     SmartConversationNotification = new SmartConversationNotification()
                     {
                         MessageId = "01W4FFL35P4NC4K35MESSAGE03",
@@ -903,85 +879,81 @@ namespace Sinch.Tests.e2e.Conversation
                         AnalysisResults = new AnalysisResult()
                         {
                             MlSentimentResult = new List<MachineLearningSentimentResult>()
+                            {
+                                new MachineLearningSentimentResult()
                                 {
-                                    new MachineLearningSentimentResult()
+                                    Message = "I \u2764\ufe0f Sinch",
+                                    Sentiment = Sentiment.Positive,
+                                    Score = 0.9041176f,
+                                    Results = new List<SentimentResult>()
                                     {
-                                        Message = "I \u2764\ufe0f Sinch",
-                                        Sentiment = Sentiment.Positive,
-                                        Score = 0.9041176f,
-                                        Results = new List<SentimentResult>()
+                                        new SentimentResult()
                                         {
-                                            new SentimentResult()
-                                            {
-                                                Sentiment = Sentiment.Negative,
-                                                Score = 0.0028852955f
-                                            },
-                                            new SentimentResult()
-                                            {
-                                                Sentiment = Sentiment.Neutral,
-                                                Score = 0.09299716f
-                                            },
+                                            Sentiment = Sentiment.Negative,
+                                            Score = 0.0028852955f
+                                        },
+                                        new SentimentResult()
+                                        {
+                                            Sentiment = Sentiment.Neutral,
+                                            Score = 0.09299716f
+                                        },
 
-                                            new SentimentResult()
-                                            {
-                                                Sentiment = Sentiment.Positive,
-                                                Score = 0.9041176f
-                                            },
-                                        }
-                                    }
-                                },
-                            MlNluResult = new List<MachineLearningNLUResult>()
-                                {
-                                    new MachineLearningNLUResult()
-                                    {
-                                        Message = "I \u2764\ufe0f Sinch",
-                                        Intent = "chitchat.thank_you",
-                                        Score = 0.99831617f,
-                                        Results = new List<IntentResult>()
+                                        new SentimentResult()
                                         {
-                                            new IntentResult()
-                                            {
-                                                Intent = "chitchat.thank_you",
-                                                Score = 0.99831617f
-                                            },
-                                            new IntentResult()
-                                            {
-                                                Intent = "chitchat.one_moment_please",
-                                                Score = 0.00027679664f
-                                            },
-                                            new IntentResult()
-                                            {
-                                                Intent = "chitchat.bye",
-                                                Score = 0.0002178006f
-                                            }
-                                        }
-                                    },
-                                },
-                            MlPiiResult = new List<MachineLearningPIIResult>()
-                                {
-                                    new MachineLearningPIIResult()
-                                    {
-                                        Message = "I \u2764\ufe0f Sinch",
-                                        Masked = "{PERSON} {PERSON} {PERSON}"
-                                    }
-                                },
-                            MlOffensiveAnalysisResult = new List<OffensiveAnalysis>()
-                                {
-                                    new OffensiveAnalysis()
-                                    {
-                                        Message = "I \u2764\ufe0f Sinch",
-                                        Url = "",
-                                        Evaluation = Evaluation.Safe,
-                                        Score = 0.9826318f
+                                            Sentiment = Sentiment.Positive,
+                                            Score = 0.9041176f
+                                        },
                                     }
                                 }
+                            },
+                            MlNluResult = new List<MachineLearningNLUResult>()
+                            {
+                                new MachineLearningNLUResult()
+                                {
+                                    Message = "I \u2764\ufe0f Sinch",
+                                    Intent = "chitchat.thank_you",
+                                    Score = 0.99831617f,
+                                    Results = new List<IntentResult>()
+                                    {
+                                        new IntentResult()
+                                        {
+                                            Intent = "chitchat.thank_you",
+                                            Score = 0.99831617f
+                                        },
+                                        new IntentResult()
+                                        {
+                                            Intent = "chitchat.one_moment_please",
+                                            Score = 0.00027679664f
+                                        },
+                                        new IntentResult()
+                                        {
+                                            Intent = "chitchat.bye",
+                                            Score = 0.0002178006f
+                                        }
+                                    }
+                                },
+                            },
+                            MlPiiResult = new List<MachineLearningPIIResult>()
+                            {
+                                new MachineLearningPIIResult()
+                                {
+                                    Message = "I \u2764\ufe0f Sinch",
+                                    Masked = "{PERSON} {PERSON} {PERSON}"
+                                }
+                            },
+                            MlOffensiveAnalysisResult = new List<OffensiveAnalysis>()
+                            {
+                                new OffensiveAnalysis()
+                                {
+                                    Message = "I \u2764\ufe0f Sinch",
+                                    Url = "",
+                                    Evaluation = Evaluation.Safe,
+                                    Score = 0.9826318f
+                                }
+                            }
                         }
                     },
-                },
-                    x => x.Excluding(m =>
-                        m.MessageMetadata));
-                var convEvent = callbackEvent.As<SmartConversationsEvent>();
-                convEvent.MessageMetadata!.GetValue<string>().Should().BeEmpty();
+                });
             }
         }
     }

@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using FluentAssertions;
@@ -12,7 +10,6 @@ using Sinch.Conversation.Hooks;
 using Sinch.Conversation.Hooks.Models;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
-using Sinch.Numbers.Hooks;
 using Xunit;
 
 namespace Sinch.Tests.Conversation
@@ -42,7 +39,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<CapabilityEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.Should().BeEquivalentTo(new CapabilityEvent()
             {
                 AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
@@ -66,7 +62,7 @@ namespace Sinch.Tests.Conversation
                         SubCode = "UNSPECIFIED_SUB_CODE"
                     }
                 }
-            }, options => options.Excluding(x => x.MessageMetadata));
+            });
         }
 
         [Fact]
@@ -77,7 +73,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ChannelEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.ChannelEventNotification?.ChannelEvent?.AdditionalData?["quality_rating"]?.GetValue<string>()
                 .Should()
                 .BeEquivalentTo("quality rating value");
@@ -114,7 +109,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ContactCreateEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.Should().BeEquivalentTo(new ContactCreateEvent()
             {
                 AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
@@ -155,7 +149,7 @@ namespace Sinch.Tests.Conversation
                         Language = ConversationLanguage.Arabic
                     }
                 }
-            }, options => options.Excluding(x => x.MessageMetadata));
+            });
         }
 
         [Fact]
@@ -166,7 +160,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ContactDeleteEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.Should().BeEquivalentTo(new ContactDeleteEvent()
             {
                 AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
@@ -207,7 +200,7 @@ namespace Sinch.Tests.Conversation
                         Language = ConversationLanguage.Arabic
                     }
                 }
-            }, options => options.Excluding(x => x.MessageMetadata));
+            });
         }
 
 
@@ -219,7 +212,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ContactIdentitiesDuplicationEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.Should().BeEquivalentTo(new ContactIdentitiesDuplicationEvent()
             {
                 AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
@@ -244,7 +236,7 @@ namespace Sinch.Tests.Conversation
                         }
                     }
                 }
-            }, options => options.Excluding(x => x.MessageMetadata));
+            });
         }
 
         [Fact]
@@ -254,7 +246,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ContactMergeEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.Should().BeEquivalentTo(new ContactMergeEvent()
             {
                 AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
@@ -304,7 +295,7 @@ namespace Sinch.Tests.Conversation
                         Language = new ConversationLanguage("UNSPECIFIED")
                     }
                 }
-            }, options => options.Excluding(x => x.MessageMetadata));
+            });
         }
 
         [Fact]
@@ -314,7 +305,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ContactUpdateEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.Should().BeEquivalentTo(new ContactUpdateEvent()
             {
                 AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
@@ -323,7 +313,6 @@ namespace Sinch.Tests.Conversation
                 EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
                 MessageMetadata = "metadata value",
                 CorrelationId = "correlation id value",
-
                 ContactUpdateNotification = new ContactNotification()
                 {
                     Contact = new Contact()
@@ -347,7 +336,7 @@ namespace Sinch.Tests.Conversation
                         Language = ConversationLanguage.Arabic
                     }
                 }
-            }, options => options.Excluding(x => x.MessageMetadata));
+            });
         }
 
         [Fact]
@@ -357,7 +346,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ConversationDeleteEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.ConversationDeleteNotification?.Conversation?.MetadataJson?["metadata_json_key"]?
                 .GetValue<string>().Should().Be("metadata json value");
             result.Should().BeEquivalentTo(new ConversationDeleteEvent()
@@ -399,7 +387,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ConversationStartEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.ConversationStartNotification?.Conversation?.MetadataJson?["metadata_json_key"]?
                 .GetValue<string>().Should().Be("metadata json value");
             result.Should().BeEquivalentTo(new ConversationStartEvent()
@@ -441,7 +428,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ConversationStopEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.ConversationStopNotification?.Conversation?.MetadataJson?["metadata_json_key"]?
                 .GetValue<string>().Should().Be("metadata json value");
             result.Should().BeEquivalentTo(new ConversationStopEvent()
@@ -483,7 +469,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<DeliveryEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.Should().BeEquivalentTo(new DeliveryEvent()
             {
                 AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
@@ -524,7 +509,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<MessageDeliveryReceiptEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.Should().BeEquivalentTo(new MessageDeliveryReceiptEvent()
             {
                 AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
@@ -566,8 +550,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<InboundEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should()
-                .Be("metadata value"); // Assuming ComposingEvent is an empty object.
             result.Should().BeEquivalentTo(new InboundEvent()
             {
                 AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
@@ -607,7 +589,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<InboundEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.Should().BeEquivalentTo(new InboundEvent()
             {
                 AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
@@ -653,7 +634,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<MessageInboundEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.Should().BeEquivalentTo(new MessageInboundEvent
             {
                 AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
@@ -687,7 +667,7 @@ namespace Sinch.Tests.Conversation
                         }
                     }
                 }
-            }, options => options.Excluding(x => x.MessageMetadata));
+            });
         }
 
         [Fact]
@@ -697,7 +677,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<MessageSubmitEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.MessageSubmitNotification!.SubmittedMessage!.ExplicitChannelMessage![ConversationChannel.KakaoTalk]
                 .GetValue<string>().Should().BeEquivalentTo("foo value");
             result.Should().BeEquivalentTo(new MessageSubmitEvent
@@ -834,7 +813,6 @@ namespace Sinch.Tests.Conversation
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json)
                 .As<MessageInboundSmartConversationRedactionEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.Should().BeEquivalentTo(new MessageInboundSmartConversationRedactionEvent
             {
                 AppId = "app id value",
@@ -842,6 +820,7 @@ namespace Sinch.Tests.Conversation
                 EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
                 ProjectId = "project id value",
                 CorrelationId = "correlation id value",
+                MessageMetadata = "metadata value",
                 MessageRedaction = new MessageInboundEventItem()
                 {
                     Id = "id",
@@ -872,7 +851,7 @@ namespace Sinch.Tests.Conversation
                     ProcessingMode = ProcessingMode.Dispatch,
                     Injected = true
                 }
-            }, options => options.Excluding(x => x.MessageMetadata));
+            });
         }
 
         [Fact]
@@ -882,7 +861,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<SmartConversationsEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.Should().BeEquivalentTo(new SmartConversationsEvent
             {
                 AppId = "app id value",
@@ -890,6 +868,7 @@ namespace Sinch.Tests.Conversation
                 EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
                 ProjectId = "project id value",
                 CorrelationId = "correlation id value",
+                MessageMetadata = "metadata value",
                 SmartConversationNotification = new SmartConversationNotification
                 {
                     ContactId = "contact id",
@@ -998,7 +977,7 @@ namespace Sinch.Tests.Conversation
                         }
                     }
                 }
-            }, options => options.Excluding(x => x.MessageMetadata));
+            });
         }
 
         [Fact]
@@ -1008,7 +987,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<UnsupportedCallbackEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.Should().BeEquivalentTo(new UnsupportedCallbackEvent
             {
                 AppId = "app id value",
@@ -1016,6 +994,7 @@ namespace Sinch.Tests.Conversation
                 EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
                 ProjectId = "project id value",
                 CorrelationId = "correlation id value",
+                MessageMetadata = "metadata value",
                 UnsupportedCallback = new UnsupportedCallback
                 {
                     Channel = ConversationChannel.Messenger,
@@ -1031,7 +1010,7 @@ namespace Sinch.Tests.Conversation
                         Identity = "an identity"
                     }
                 }
-            }, options => options.Excluding(x => x.MessageMetadata));
+            });
         }
 
         [Fact]
@@ -1041,7 +1020,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<OptInEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.Should().BeEquivalentTo(new OptInEvent()
             {
                 AppId = "app id value",
@@ -1049,6 +1027,7 @@ namespace Sinch.Tests.Conversation
                 EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
                 ProjectId = "project id value",
                 CorrelationId = "correlation id value",
+                MessageMetadata = "metadata value",
                 OptInNotification = new OptInEventAllOfOptInNotification()
                 {
                     RequestId = "request id",
@@ -1061,7 +1040,7 @@ namespace Sinch.Tests.Conversation
                     },
                     ProcessingMode = ProcessingMode.Dispatch
                 }
-            }, options => options.Excluding(x => x.MessageMetadata));
+            });
         }
 
         [Fact]
@@ -1071,7 +1050,6 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<OptOutEvent>();
 
-            result.MessageMetadata?.GetValue<string>().Should().Be("metadata value");
             result.Should().BeEquivalentTo(new OptOutEvent()
             {
                 AppId = "app id value",
@@ -1079,6 +1057,7 @@ namespace Sinch.Tests.Conversation
                 EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
                 ProjectId = "project id value",
                 CorrelationId = "correlation id value",
+                MessageMetadata = "metadata value",
                 OptOutNotification = new OptOutNotification
                 {
                     RequestId = "request id",
@@ -1091,7 +1070,7 @@ namespace Sinch.Tests.Conversation
                     },
                     ProcessingMode = ProcessingMode.Dispatch
                 }
-            }, options => options.Excluding(x => x.MessageMetadata));
+            });
         }
     }
 }
