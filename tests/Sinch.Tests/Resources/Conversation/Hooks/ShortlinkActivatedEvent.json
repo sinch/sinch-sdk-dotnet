@@ -1,0 +1,9 @@
+{
+  "shortlink_activated_event": {
+    "payload": "payload value",
+    "title": "title value",
+    "ref": "ref value",
+    "source": "SHORTLINK",
+    "type": "OPEN_THREAD"
+  }
+}
