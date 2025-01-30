@@ -166,7 +166,11 @@ namespace Sinch.Tests.Conversation
                         {
                             new Choice
                             {
-                                CallMessage = new CallMessage("123", "Jhon")
+                                CallMessage = new CallMessage
+                                {
+                                    PhoneNumber = "123",
+                                    Title = "Jhon"
+                                }
                             }
                         }
                     }
