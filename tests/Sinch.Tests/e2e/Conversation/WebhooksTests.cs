@@ -185,9 +185,8 @@ namespace Sinch.Tests.e2e.Conversation
         [Fact]
         public async Task Update()
         {
-            var response = await SinchClientMockServer.Conversation.Webhooks.Update(new UpdateWebhookRequest()
+            var response = await SinchClientMockServer.Conversation.Webhooks.Update("ID", new UpdateWebhookRequest()
             {
-                Id = "ID",
                 AppId = "01W4FFL35P4NC4K35CONVAPP002",
                 Target = "https://my-callback-server.com/capability-optin-optout",
                 Triggers = new List<WebhookTrigger>()

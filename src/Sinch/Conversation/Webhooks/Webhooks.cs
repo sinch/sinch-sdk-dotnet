@@ -52,10 +52,12 @@ namespace Sinch.Conversation.Webhooks
         /// <summary>
         ///     Updates an existing webhook as specified by the webhook ID.
         /// </summary>
+        /// <param name="webhookId">The id of the webhook to update</param>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Webhook> Update(UpdateWebhookRequest request, CancellationToken cancellationToken = default);
+        Task<Webhook> Update(string webhookId, UpdateWebhookRequest request,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Deletes a webhook as specified by the webhook ID.
@@ -142,19 +144,20 @@ namespace Sinch.Conversation.Webhooks
         }
 
         /// <inheritdoc />
-        public Task<Webhook> Update(UpdateWebhookRequest request, CancellationToken cancellationToken = default)
+        public Task<Webhook> Update(string webhookId, UpdateWebhookRequest request,
+            CancellationToken cancellationToken = default)
         {
             if (request is null)
             {
                 throw new ArgumentNullException(nameof(request), "Should have a value");
             }
 
-            if (string.IsNullOrEmpty(request.Id))
+            if (string.IsNullOrEmpty(webhookId))
             {
-                throw new NullReferenceException($"{nameof(request)}.{nameof(request.Id)} shouldn't be null");
+                throw new NullReferenceException($"{nameof(request)}.{nameof(webhookId)} shouldn't be null");
             }
 
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{request.Id}");
+            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{webhookId}");
 
             var builder = new UriBuilder(uri);
             var queryString = HttpUtility.ParseQueryString(string.Empty);
@@ -162,7 +165,7 @@ namespace Sinch.Conversation.Webhooks
             if (!string.IsNullOrEmpty(propMask)) queryString.Add("update_mask", propMask);
             builder.Query = queryString.ToString()!;
 
-            _logger?.LogDebug("Updating a webhook with {id}...", request.Id);
+            _logger?.LogDebug("Updating a webhook with {id}...", webhookId);
             return _http.Send<UpdateWebhookRequest, Webhook>(builder.Uri, HttpMethod.Patch, request,
                 cancellationToken);
         }

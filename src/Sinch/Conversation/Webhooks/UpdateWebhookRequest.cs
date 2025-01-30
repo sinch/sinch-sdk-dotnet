@@ -58,13 +58,6 @@ namespace Sinch.Conversation.Webhooks
         }
 
         /// <summary>
-        ///     Gets or sets the ID of the webhook.
-        /// </summary>
-        [JsonIgnore]
-        // cannot use required here as System.Text.Json will throw an exception when serializing 
-        public string Id { get; set; } = null!;
-
-        /// <summary>
         ///     Optional secret to be used to sign contents of webhooks sent by the Conversation API.
         ///     You can then use the secret to verify the signature.
         /// </summary>
@@ -125,7 +118,6 @@ namespace Sinch.Conversation.Webhooks
             sb.Append("class Webhook {\n");
             sb.Append("  AppId: ").Append(AppId).Append("\n");
             sb.Append("  ClientCredentials: ").Append(ClientCredentials).Append("\n");
-            sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Target: ").Append(Target).Append("\n");
             sb.Append("  TargetType: ").Append(TargetType).Append("\n");
             sb.Append("  Triggers: ").Append(Triggers).Append("\n");
