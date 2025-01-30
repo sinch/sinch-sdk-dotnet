@@ -160,7 +160,7 @@ namespace Sinch.Tests.Conversation
                         Height = CardHeight.Tall,
                         MediaMessage = new MediaCarouselMessage()
                         {
-                            Url = new Uri("https://localmob"),
+                            Url = "https://localmob",
                         },
                         Choices = new List<Choice>
                         {

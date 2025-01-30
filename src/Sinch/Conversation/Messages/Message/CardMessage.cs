@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -12,29 +13,34 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         /// Gets or Sets Height
         /// </summary>
+        [JsonPropertyName("height")]
         public CardHeight? Height { get; set; }
 
         /// <summary>
         ///     You may include choices in your Card Message. The number of choices is limited to 10.
         /// </summary>
+        [JsonPropertyName("choices")]
         public List<Choice>? Choices { get; set; }
 
 
         /// <summary>
         ///     This is an optional description field that is displayed below the title on the card.
         /// </summary>
+        [JsonPropertyName("description")]
         public string? Description { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets MediaMessage
         /// </summary>
+        [JsonPropertyName("media_message")]
         public MediaCarouselMessage? MediaMessage { get; set; }
 
 
         /// <summary>
         ///     The title of the card message.
         /// </summary>
+        [JsonPropertyName("title")]
         public string? Title { get; set; }
 
 
@@ -58,6 +64,7 @@ namespace Sinch.Conversation.Messages.Message
 
     public class MediaCarouselMessage
     {
-        public Uri? Url { get; set; }
+        [JsonPropertyName("url")]
+        public string? Url { get; set; }
     }
 }

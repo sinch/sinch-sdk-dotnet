@@ -72,58 +72,6 @@ namespace Sinch.Conversation.Messages.Message
     }
 
     /// <summary>
-    ///     A WhatsApp interactive contact message containing the nfm_reply.
-    /// </summary>
-    public sealed class WhatsAppInteractiveNfmReplyChannelSpecificContactMessage
-    {
-        /// <summary>
-        /// The interactive message type.
-        /// </summary>
-        /// <value>The interactive message type.</value>
-        [JsonConverter(typeof(EnumRecordJsonConverter<TypeEnum>))]
-        public record TypeEnum(string Value) : EnumRecord(Value)
-        {
-            public static readonly TypeEnum NfmReply = new("nfm_reply");
-        }
-
-
-        /// <summary>
-        /// The interactive message type.
-        /// </summary>
-        [JsonPropertyName("type")]
-#if NET7_0_OR_GREATER
-        public required TypeEnum Type { get; set; }
-#else
-        public TypeEnum Type { get; set; } = null!;
-#endif
-
-        /// <summary>
-        ///     Gets or Sets NfmReply
-        /// </summary>
-        [JsonPropertyName("nfm_reply")]
-#if NET7_0_OR_GREATER
-        public required WhatsAppInteractiveNfmReply NfmReply { get; set; }
-#else
-        public WhatsAppInteractiveNfmReply NfmReply { get; set; } = null!;
-#endif
-
-
-        /// <summary>
-        ///     Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            sb.Append($"class {nameof(WhatsAppInteractiveNfmReplyChannelSpecificContactMessage)} {{\n");
-            sb.Append($"  {nameof(Type)}: ").Append(Type).Append('\n');
-            sb.Append($"  {nameof(NfmReply)}: ").Append(NfmReply).Append('\n');
-            sb.Append("}\n");
-            return sb.ToString();
-        }
-    }
-
-    /// <summary>
     ///     The interactive nfm reply message.
     /// </summary>
     public sealed class WhatsAppInteractiveNfmReply

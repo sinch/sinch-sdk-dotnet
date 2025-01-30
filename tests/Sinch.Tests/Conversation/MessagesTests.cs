@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Json;
@@ -15,6 +17,7 @@ using Sinch.Conversation.Messages.List;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
 using Sinch.Core;
+using Sinch.Numbers;
 using Xunit;
 
 namespace Sinch.Tests.Conversation
@@ -373,7 +376,155 @@ namespace Sinch.Tests.Conversation
             dict.Should().ContainKey(ChannelSpecificTemplate.WhatsApp).WhoseValue.Should()
                 .BeEquivalentTo(dataToCheck);
         }
+
+
+        [Fact]
+        public void DeserializeChannelSpecificNfmReplyMessage()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/ChannelSpecificContactMessageNfmReply.json");
+
+            var result = JsonSerializer.Deserialize<ContactMessage>(json);
+
+            result.Should().BeEquivalentTo(new ContactMessage(new ChannelSpecificContactMessage()
+            {
+                MessageType = ChannelSpecificMessageType.NfmReply,
+                Message = new ChannelSpecificMessageContent()
+                {
+                    Type = ChannelSpecificMessageType.NfmReply,
+                    NfmReply = new WhatsAppInteractiveNfmReply()
+                    {
+                        Name = WhatsAppInteractiveNfmReply.NameEnum.AddressMessage,
+                        Body = "nfm reply body value",
+                        ResponseJson = "{\"key\": \"value\"}"
+                    }
+                }
+            }));
+        }
+
+        [Fact]
+        public void DeserializeAppMessageContactInfoMessage()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/ContactInfoMessage.json");
+
+            var result = JsonSerializer.Deserialize<AppMessage>(json);
+
+            result.Should().BeEquivalentTo(new AppMessage(new ContactInfoMessage()
+            {
+                Name = new NameInfo()
+                {
+                    FullName = "full_name value",
+                    FirstName = "first_name value",
+                    LastName = "last_name value",
+                    MiddleName = "middle_name value",
+                    Prefix = "prefix value",
+                    Suffix = "suffix value"
+                },
+                PhoneNumbers = new List<PhoneNumberInfo>()
+                {
+                    new PhoneNumberInfo()
+                    {
+                        PhoneNumber = "phone_number value",
+                        Type = "type value"
+                    }
+                },
+                Addresses = new List<AddressInfo>()
+                {
+                    new AddressInfo()
+                    {
+                        City = "city value",
+                        Country = "country value",
+                        State = "state va@lue",
+                        Zip = "zip value",
+                        CountryCode = "country_code value"
+                    }
+                },
+                EmailAddresses = new List<EmailInfo>()
+                {
+                    new EmailInfo()
+                    {
+                        EmailAddress = "email_address value",
+                        Type = "type value"
+                    }
+                },
+                Organization = new OrganizationInfo()
+                {
+                    Company = "company value",
+                    Department = "department value",
+                    Title = "title value"
+                },
+                Urls = new List<UrlInfo>()
+                {
+                    new UrlInfo()
+                    {
+                        Url = "url value",
+                        Type = "type value"
+                    }
+                },
+                Birthday = new DateTime(1968, 07, 07)
+            }));
+        }
+
+        [Fact]
+        public void DeserializeWhatsAppInteractiveHeader()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/WhatsAppInteractiveHeader.json");
+
+            var result = JsonSerializer.Deserialize<WhatsAppInteractiveImageHeader>(json);
+
+            result.Should().BeEquivalentTo(new WhatsAppInteractiveImageHeader()
+            {
+                Image = new WhatsAppInteractiveHeaderMedia()
+                {
+                    Link = "an image URL link"
+                }
+            });
+        }
+
+        [Fact]
+        public void DeserializeWhatsAppInteractiveDocument()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/WhatsAppInteractiveDocument.json");
+
+            var result = JsonSerializer.Deserialize<WhatsAppInteractiveDocumentHeader>(json);
+
+            result.Should().BeEquivalentTo(new WhatsAppInteractiveDocumentHeader()
+            {
+                Document = new WhatsAppInteractiveHeaderMedia()
+                {
+                    Link = "a document URL link"
+                }
+            });
+        }
+
+        [Fact]
+        public void DeserializeContactMessageProductResponseMessage()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/ContactMessageProductResponseMessage.json");
+
+            var result = JsonSerializer.Deserialize<ContactMessage>(json);
+
+            result.Should().BeEquivalentTo(new ContactMessage(new ProductResponseMessage()
+            {
+                Products = new List<ProductItem>()
+                {
+                    new ProductItem()
+                    {
+                        Id = "product ID value",
+                        Marketplace = "marketplace value",
+                        Quantity = 4,
+                        ItemPrice = 3.14159f,
+                        Currency = "currency value"
+                    }
+                },
+                Title = "a product response message title value",
+                CatalogId = "catalog id value"
+            })
+            {
+                ReplyTo = new ReplyTo("message id value")
+            });
+        }
     }
+
 
     public class OmniMessageTestData : IEnumerable<object[]>
     {
@@ -428,28 +579,5 @@ namespace Sinch.Tests.Conversation
         public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        [Fact]
-        public void DeserializeChannelSpecificNfmReplyMessage()
-        {
-            var json = Helpers.LoadResources("Conversation/Messages/ChannelSpecificContactMessageNfmReply.json");
-
-            var result = JsonSerializer.Deserialize<ContactMessage>(json);
-
-            result.Should().BeEquivalentTo(new ContactMessage(new ChannelSpecificContactMessage()
-            {
-                MessageType = ChannelSpecificMessageType.NfmReply,
-                Message = new ChannelSpecificMessageContent()
-                {
-                    Type = ChannelSpecificMessageType.NfmReply,
-                    NfmReply = new WhatsAppInteractiveNfmReply()
-                    {
-                        Name = WhatsAppInteractiveNfmReply.NameEnum.AddressMessage,
-                        Body = "nfm reply body value",
-                        ResponseJson = "{\"key\": \"value\"}"
-                    }
-                }
-            }));
-        }
     }
 }
