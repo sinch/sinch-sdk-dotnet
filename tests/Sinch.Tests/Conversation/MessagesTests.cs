@@ -523,6 +523,113 @@ namespace Sinch.Tests.Conversation
                 ReplyTo = new ReplyTo("message id value")
             });
         }
+
+        [Fact]
+        public void DeserializeContactMessageChoiceMessage()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/ContactMessageChoiceResponseMessage.json");
+
+            var result = JsonSerializer.Deserialize<ContactMessage>(json);
+
+            result.Should().BeEquivalentTo(new ContactMessage(new ChoiceResponseMessage()
+            {
+                MessageId = "message id value",
+                PostbackData = "postback data value"
+            })
+            {
+                ReplyTo = new ReplyTo("message id value")
+            });
+        }
+
+        [Fact]
+        public void DeserializeContactMessageFallbackMessage()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/ContactMessageFallbackMessage.json");
+
+            var result = JsonSerializer.Deserialize<ContactMessage>(json);
+
+            result.Should().BeEquivalentTo(new ContactMessage(new FallbackMessage()
+            {
+                RawMessage = "raw message value",
+                Reason = new Reason()
+                {
+                    Code = "RECIPIENT_NOT_OPTED_IN",
+                    Description = "reason description",
+                    SubCode = "UNSPECIFIED_SUB_CODE"
+                }
+            })
+            {
+                ReplyTo = new ReplyTo("message id value")
+            });
+        }
+
+        [Fact]
+        public void DeserializeContactMessageLocationMessage()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/ContactMessageLocationMessage.json");
+
+            var result = JsonSerializer.Deserialize<ContactMessage>(json);
+
+            result.Should().BeEquivalentTo(new ContactMessage(new LocationMessage()
+            {
+                Label = "label value",
+                Title = "title value",
+                Coordinates = new Coordinates(47.6279809f, -2.8229159f)
+            })
+            {
+                ReplyTo = new ReplyTo("message id value")
+            });
+        }
+
+        [Fact]
+        public void DeserializeContactMessageMediaCardMessage()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/ContactMessageMediaCardMessage.json");
+
+            var result = JsonSerializer.Deserialize<ContactMessage>(json);
+
+            result.Should().BeEquivalentTo(new ContactMessage(new MediaCarouselMessage()
+            {
+                Caption = "caption value",
+                Url = "an url value",
+            })
+            {
+                ReplyTo = new ReplyTo("message id value")
+            });
+        }
+
+        [Fact]
+        public void DeserializeContactMessageMediaMessage()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/ContactMessageMediaMessage.json");
+
+            var result = JsonSerializer.Deserialize<ContactMessage>(json);
+
+            result.Should().BeEquivalentTo(new ContactMessage(new MediaMessage()
+            {
+                ThumbnailUrl = "another url",
+                FilenameOverride = "filename override value",
+                Url = "an url value",
+            })
+            {
+                ReplyTo = new ReplyTo("message id value")
+            });
+        }
+
+        [Fact]
+        public void DeserializeContactMessageTextMessage()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/ContactMessageTextMessage.json");
+
+            var result = JsonSerializer.Deserialize<ContactMessage>(json);
+
+            result.Should().BeEquivalentTo(new ContactMessage(new TextMessage("This is a text message.")
+            {
+            })
+            {
+                ReplyTo = new ReplyTo("message id value")
+            });
+        }
     }
 
 

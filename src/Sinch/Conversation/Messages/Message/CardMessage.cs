@@ -66,5 +66,8 @@ namespace Sinch.Conversation.Messages.Message
     {
         [JsonPropertyName("url")]
         public string? Url { get; set; }
+
+        [JsonPropertyName("caption")]
+        public string? Caption { get; set; }
     }
 }
