@@ -630,6 +630,834 @@ namespace Sinch.Tests.Conversation
                 ReplyTo = new ReplyTo("message id value")
             });
         }
+
+        [Fact]
+        public void DeserializeAppMessageCarouselMessage()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/AppMessageCarouselMessage.json");
+
+            var result = JsonSerializer.Deserialize<AppMessage>(json);
+
+            result.Should().BeEquivalentTo(new AppMessage(new CarouselMessage()
+            {
+                Cards = new List<CardMessage>()
+                {
+                    new CardMessage()
+                    {
+                        Title = "title value",
+                        Description = "description value",
+                        MediaMessage = new MediaCarouselMessage()
+                        {
+                            Url = "url value"
+                        },
+                        Height = CardHeight.Medium,
+                        Choices = new List<Choice>()
+                        {
+                            new Choice()
+                            {
+                                TextMessage = new TextMessage("This is a text message."),
+                                PostbackData = "postback_data text"
+                            },
+                            new Choice()
+                            {
+                                CallMessage = new CallMessage()
+                                {
+                                    Title = "title value",
+                                    PhoneNumber = "phone number value"
+                                },
+                                PostbackData = "postback_data call"
+                            },
+                            new Choice()
+                            {
+                                LocationMessage = new LocationMessage()
+                                {
+                                    Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                                    Title = "title value",
+                                    Label = "label value"
+                                },
+                                PostbackData = "postback_data location"
+                            },
+                            new Choice()
+                            {
+                                UrlMessage = new UrlMessage()
+                                {
+                                    Title = "title value",
+                                    Url = "an url value"
+                                },
+                                PostbackData = "postback_data url"
+                            }
+                        }
+                    }
+                },
+                Choices = new List<Choice>()
+                {
+                    new Choice()
+                    {
+                        CallMessage = new CallMessage()
+                        {
+                            Title = "title value",
+                            PhoneNumber = "phone number value"
+                        },
+                        PostbackData = "postback call_message data value"
+                    },
+                    new Choice()
+                    {
+                        LocationMessage = new LocationMessage()
+                        {
+                            Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                            Title = "title value",
+                            Label = "label value"
+                        },
+                        PostbackData = "postback location_message data value"
+                    },
+                    new Choice()
+                    {
+                        TextMessage = new TextMessage("This is a text message."),
+                        PostbackData = "postback text_message data value"
+                    },
+                    new Choice()
+                    {
+                        UrlMessage = new UrlMessage()
+                        {
+                            Title = "title value",
+                            Url = "an url value"
+                        },
+                        PostbackData = "postback url_message data value"
+                    }
+                }
+            })
+            {
+                ExplicitChannelMessage = new Dictionary<ConversationChannel, string>
+                {
+                    { ConversationChannel.KakaoTalk, "foo value" }
+                },
+                ExplicitChannelOmniMessage = new Dictionary<ChannelSpecificTemplate, IOmniMessageOverride>
+                {
+                    {
+                        ChannelSpecificTemplate.KakaoTalk, new ChoiceMessage()
+                        {
+                            TextMessage = new TextMessage("This is a text message."),
+                            Choices = new List<Choice>()
+                            {
+                                new Choice()
+                                {
+                                    CallMessage = new CallMessage()
+                                    {
+                                        Title = "title value",
+                                        PhoneNumber = "phone number value"
+                                    },
+                                    PostbackData = "postback call_message data value"
+                                },
+                                new Choice()
+                                {
+                                    LocationMessage = new LocationMessage()
+                                    {
+                                        Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                                        Title = "title value",
+                                        Label = "label value"
+                                    },
+                                    PostbackData = "postback location_message data value"
+                                },
+                                new Choice()
+                                {
+                                    TextMessage = new TextMessage("This is a text message."),
+                                    PostbackData = "postback text_message data value"
+                                },
+                                new Choice()
+                                {
+                                    UrlMessage = new UrlMessage()
+                                    {
+                                        Title = "title value",
+                                        Url = "an url value"
+                                    },
+                                    PostbackData = "postback url_message data value"
+                                }
+                            }
+                        }
+                    }
+                },
+                ChannelSpecificMessage = new Dictionary<ConversationChannel, IChannelSpecificMessage>()
+                {
+                    {
+                        ConversationChannel.Messenger, new FlowMessage()
+                        {
+                            Message = new FlowChannelSpecificMessage()
+                            {
+                                FlowId = "1",
+                                FlowCta = "Book!",
+                                Header = new WhatsAppInteractiveTextHeader()
+                                {
+                                    Text = "text header value"
+                                },
+                                Body = new WhatsAppInteractiveBody()
+                                {
+                                    Text = "Flow message body"
+                                },
+                                Footer = new WhatsAppInteractiveFooter()
+                                {
+                                    Text = "Flow message footer"
+                                },
+                                FlowToken = "AQAAAAACS5FpgQ_cAAAAAD0QI3s.",
+                                FlowMode = FlowChannelSpecificMessage.FlowModeType.Draft,
+                                FlowAction = FlowChannelSpecificMessage.FlowActionType.Navigate,
+                                FlowActionPayload = new FlowChannelSpecificMessageFlowActionPayload()
+                                {
+                                    Screen = "<SCREEN_NAME>",
+                                    Data = new JsonObject()
+                                    {
+                                        ["product_name"] = "name",
+                                        ["product_description"] = "description",
+                                        ["product_price"] = 100
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                Agent = new Agent()
+                {
+                    DisplayName = "display_name value",
+                    Type = AgentType.Bot,
+                    PictureUrl = "picture_url value"
+                }
+            });
+        }
+
+        [Fact]
+        public void DeserializeAppMessageChoiceMessage()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/AppMessageChoiceMessage.json");
+
+            var result = JsonSerializer.Deserialize<AppMessage>(json);
+
+            result.Should().BeEquivalentTo(new AppMessage(new ChoiceMessage()
+            {
+                TextMessage = new TextMessage("This is a text message."),
+                Choices = new List<Choice>()
+                {
+                    new Choice()
+                    {
+                        CallMessage = new CallMessage()
+                        {
+                            Title = "title value",
+                            PhoneNumber = "phone number value"
+                        },
+                        PostbackData = "postback call_message data value"
+                    },
+                    new Choice()
+                    {
+                        LocationMessage = new LocationMessage()
+                        {
+                            Title = "title value",
+                            Label = "label value",
+                            Coordinates = new Coordinates(47.6279809f, -2.8229159f)
+                        },
+                        PostbackData = "postback location_message data value"
+                    },
+                    new Choice()
+                    {
+                        TextMessage = new TextMessage("This is a text message."),
+                        PostbackData = "postback text_message data value"
+                    },
+                    new Choice()
+                    {
+                        UrlMessage = new UrlMessage()
+                        {
+                            Title = "title value",
+                            Url = "an url value"
+                        },
+                        PostbackData = "postback url_message data value"
+                    }
+                }
+            })
+            {
+                ExplicitChannelMessage = new Dictionary<ConversationChannel, string>
+                {
+                    { ConversationChannel.KakaoTalk, "foo value" }
+                },
+                ExplicitChannelOmniMessage = new Dictionary<ChannelSpecificTemplate, IOmniMessageOverride>
+                {
+                    {
+                        ChannelSpecificTemplate.KakaoTalk,
+                        new ChoiceMessage()
+                        {
+                            TextMessage = new TextMessage("This is a text message."),
+                            Choices = new List<Choice>()
+                            {
+                                new Choice()
+                                {
+                                    CallMessage = new CallMessage()
+                                    {
+                                        Title = "title value",
+                                        PhoneNumber = "phone number value"
+                                    },
+                                    PostbackData = "postback call_message data value"
+                                },
+                                new Choice()
+                                {
+                                    LocationMessage = new LocationMessage()
+                                    {
+                                        Title = "title value",
+                                        Label = "label value",
+                                        Coordinates = new Coordinates(47.6279809f, -2.8229159f)
+                                    },
+                                    PostbackData = "postback location_message data value"
+                                },
+                                new Choice()
+                                {
+                                    TextMessage = new TextMessage("This is a text message."),
+                                    PostbackData = "postback text_message data value"
+                                },
+                                new Choice()
+                                {
+                                    UrlMessage = new UrlMessage()
+                                    {
+                                        Title = "title value",
+                                        Url = "an url value"
+                                    },
+                                    PostbackData = "postback url_message data value"
+                                }
+                            }
+                        }
+                    }
+                },
+                ChannelSpecificMessage = new Dictionary<ConversationChannel, IChannelSpecificMessage>()
+                {
+                    {
+                        ConversationChannel.Messenger, new FlowMessage()
+                        {
+                            Message = new FlowChannelSpecificMessage()
+                            {
+                                FlowId = "1",
+                                FlowCta = "Book!",
+                                Header = new WhatsAppInteractiveTextHeader()
+                                {
+                                    Text = "text header value"
+                                },
+                                Body = new WhatsAppInteractiveBody()
+                                {
+                                    Text = "Flow message body"
+                                },
+                                Footer = new WhatsAppInteractiveFooter()
+                                {
+                                    Text = "Flow message footer"
+                                },
+                                FlowToken = "AQAAAAACS5FpgQ_cAAAAAD0QI3s.",
+                                FlowMode = FlowChannelSpecificMessage.FlowModeType.Draft,
+                                FlowAction = FlowChannelSpecificMessage.FlowActionType.Navigate,
+                                FlowActionPayload = new FlowChannelSpecificMessageFlowActionPayload()
+                                {
+                                    Screen = "<SCREEN_NAME>",
+                                    Data = new JsonObject()
+                                    {
+                                        ["product_name"] = "name",
+                                        ["product_description"] = "description",
+                                        ["product_price"] = 100
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                Agent = new Agent()
+                {
+                    DisplayName = "display_name value",
+                    Type = AgentType.Bot,
+                    PictureUrl = "picture_url value"
+                }
+            });
+        }
+
+        [Fact]
+        public void DeserializeAppMessageListMessage()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/AppMessageListMessage.json");
+
+            var result = JsonSerializer.Deserialize<AppMessage>(json);
+
+            result.Should().BeEquivalentTo(new AppMessage(new ListMessage()
+            {
+                Title = "a list message title value",
+                Sections = new List<ListSection>()
+                {
+                    new ListSection()
+                    {
+                        Title = "a list section title value",
+                        Items = new List<IListItem>()
+                        {
+                            new ChoiceItem()
+                            {
+                                Title = "choice title",
+                                Description = "description value",
+                                Media = new MediaMessage()
+                                {
+                                    Url = "an url value",
+                                    ThumbnailUrl = "another url",
+                                    FilenameOverride = "filename override value"
+                                },
+                                PostbackData = "postback value"
+                            }
+                        }
+                    }
+                },
+                Description = "description value",
+                MessageProperties = new ListMessageMessageProperties()
+                {
+                    CatalogId = "catalog ID value",
+                    Menu = "menu value"
+                }
+            })
+            {
+                ExplicitChannelMessage = new Dictionary<ConversationChannel, string>
+                {
+                    { ConversationChannel.KakaoTalk, "foo value" }
+                },
+                ExplicitChannelOmniMessage = new Dictionary<ChannelSpecificTemplate, IOmniMessageOverride>
+                {
+                    {
+                        ChannelSpecificTemplate.KakaoTalk,
+                        new ChoiceMessage()
+                        {
+                            TextMessage = new TextMessage("This is a text message."),
+                            Choices = new List<Choice>()
+                            {
+                                new Choice()
+                                {
+                                    CallMessage = new CallMessage()
+                                    {
+                                        Title = "title value",
+                                        PhoneNumber = "phone number value"
+                                    },
+                                    PostbackData = "postback call_message data value"
+                                },
+                                new Choice()
+                                {
+                                    LocationMessage = new LocationMessage()
+                                    {
+                                        Title = "title value",
+                                        Label = "label value",
+                                        Coordinates = new Coordinates(47.6279809f, -2.8229159f)
+                                    },
+                                    PostbackData = "postback location_message data value"
+                                },
+                                new Choice()
+                                {
+                                    TextMessage = new TextMessage("This is a text message."),
+                                    PostbackData = "postback text_message data value"
+                                },
+                                new Choice()
+                                {
+                                    UrlMessage = new UrlMessage()
+                                    {
+                                        Title = "title value",
+                                        Url = "an url value"
+                                    },
+                                    PostbackData = "postback url_message data value"
+                                }
+                            }
+                        }
+                    }
+                },
+                ChannelSpecificMessage = new Dictionary<ConversationChannel, IChannelSpecificMessage>()
+                {
+                    {
+                        ConversationChannel.Messenger, new FlowMessage()
+                        {
+                            Message = new FlowChannelSpecificMessage()
+                            {
+                                FlowId = "1",
+                                FlowCta = "Book!",
+                                Header = new WhatsAppInteractiveTextHeader()
+                                {
+                                    Text = "text header value"
+                                },
+                                Body = new WhatsAppInteractiveBody()
+                                {
+                                    Text = "Flow message body"
+                                },
+                                Footer = new WhatsAppInteractiveFooter()
+                                {
+                                    Text = "Flow message footer"
+                                },
+                                FlowToken = "AQAAAAACS5FpgQ_cAAAAAD0QI3s.",
+                                FlowMode = FlowChannelSpecificMessage.FlowModeType.Draft,
+                                FlowAction = FlowChannelSpecificMessage.FlowActionType.Navigate,
+                                FlowActionPayload = new FlowChannelSpecificMessageFlowActionPayload()
+                                {
+                                    Screen = "<SCREEN_NAME>",
+                                    Data = new JsonObject()
+                                    {
+                                        ["product_name"] = "name",
+                                        ["product_description"] = "description",
+                                        ["product_price"] = 100
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                Agent = new Agent()
+                {
+                    DisplayName = "display_name value",
+                    Type = AgentType.Bot,
+                    PictureUrl = "picture_url value"
+                }
+            });
+        }
+
+        [Fact]
+        public void DeserializeAppMessageLocationMessage()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/AppMessageLocationMessage.json");
+
+            var result = JsonSerializer.Deserialize<AppMessage>(json);
+
+            result.Should().BeEquivalentTo(new AppMessage(new LocationMessage()
+            {
+                Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                Title = "title value",
+                Label = "label value"
+            })
+            {
+                ExplicitChannelMessage = new Dictionary<ConversationChannel, string>
+                {
+                    { ConversationChannel.KakaoTalk, "foo value" }
+                },
+                ExplicitChannelOmniMessage = new Dictionary<ChannelSpecificTemplate, IOmniMessageOverride>
+                {
+                    {
+                        ChannelSpecificTemplate.KakaoTalk,
+                        new ChoiceMessage()
+                        {
+                            TextMessage = new TextMessage("This is a text message."),
+                            Choices = new List<Choice>()
+                            {
+                                new Choice()
+                                {
+                                    CallMessage = new CallMessage()
+                                    {
+                                        Title = "title value",
+                                        PhoneNumber = "phone number value"
+                                    },
+                                    PostbackData = "postback call_message data value"
+                                },
+                                new Choice()
+                                {
+                                    LocationMessage = new LocationMessage()
+                                    {
+                                        Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                                        Title = "title value",
+                                        Label = "label value"
+                                    },
+                                    PostbackData = "postback location_message data value"
+                                },
+                                new Choice()
+                                {
+                                    TextMessage = new TextMessage("This is a text message."),
+                                    PostbackData = "postback text_message data value"
+                                },
+                                new Choice()
+                                {
+                                    UrlMessage = new UrlMessage()
+                                    {
+                                        Title = "title value",
+                                        Url = "an url value"
+                                    },
+                                    PostbackData = "postback url_message data value"
+                                }
+                            }
+                        }
+                    }
+                },
+                ChannelSpecificMessage = new Dictionary<ConversationChannel, IChannelSpecificMessage>()
+                {
+                    {
+                        ConversationChannel.Messenger, new FlowMessage()
+                        {
+                            Message = new FlowChannelSpecificMessage()
+                            {
+                                FlowId = "1",
+                                FlowCta = "Book!",
+                                Header = new WhatsAppInteractiveTextHeader()
+                                {
+                                    Text = "text header value"
+                                },
+                                Body = new WhatsAppInteractiveBody()
+                                {
+                                    Text = "Flow message body"
+                                },
+                                Footer = new WhatsAppInteractiveFooter()
+                                {
+                                    Text = "Flow message footer"
+                                },
+                                FlowToken = "AQAAAAACS5FpgQ_cAAAAAD0QI3s.",
+                                FlowMode = FlowChannelSpecificMessage.FlowModeType.Draft,
+                                FlowAction = FlowChannelSpecificMessage.FlowActionType.Navigate,
+                                FlowActionPayload = new FlowChannelSpecificMessageFlowActionPayload()
+                                {
+                                    Screen = "<SCREEN_NAME>",
+                                    Data = new JsonObject()
+                                    {
+                                        ["product_name"] = "name",
+                                        ["product_description"] = "description",
+                                        ["product_price"] = 100
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                Agent = new Agent()
+                {
+                    DisplayName = "display_name value",
+                    Type = AgentType.Bot,
+                    PictureUrl = "picture_url value"
+                }
+            });
+        }
+
+        [Fact]
+        public void DeserializeAppMessageMediaMessage()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/AppMessageMediaMessage.json");
+
+            var result = JsonSerializer.Deserialize<AppMessage>(json);
+
+            result.Should().BeEquivalentTo(new AppMessage(new MediaMessage()
+            {
+                Url = "an url value",
+                ThumbnailUrl = "another url",
+                FilenameOverride = "filename override value"
+            })
+            {
+                ExplicitChannelMessage = new Dictionary<ConversationChannel, string>
+                {
+                    { ConversationChannel.KakaoTalk, "foo value" }
+                },
+                ExplicitChannelOmniMessage = new Dictionary<ChannelSpecificTemplate, IOmniMessageOverride>
+                {
+                    {
+                        ChannelSpecificTemplate.KakaoTalk,
+                        new ChoiceMessage()
+                        {
+                            TextMessage = new TextMessage("This is a text message."),
+                            Choices = new List<Choice>()
+                            {
+                                new Choice()
+                                {
+                                    CallMessage = new CallMessage()
+                                    {
+                                        Title = "title value",
+                                        PhoneNumber = "phone number value"
+                                    },
+                                    PostbackData = "postback call_message data value"
+                                },
+                                new Choice()
+                                {
+                                    LocationMessage = new LocationMessage()
+                                    {
+                                        Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                                        Title = "title value",
+                                        Label = "label value"
+                                    },
+                                    PostbackData = "postback location_message data value"
+                                },
+                                new Choice()
+                                {
+                                    TextMessage = new TextMessage("This is a text message."),
+                                    PostbackData = "postback text_message data value"
+                                },
+                                new Choice()
+                                {
+                                    UrlMessage = new UrlMessage()
+                                    {
+                                        Title = "title value",
+                                        Url = "an url value"
+                                    },
+                                    PostbackData = "postback url_message data value"
+                                }
+                            }
+                        }
+                    }
+                },
+                ChannelSpecificMessage = new Dictionary<ConversationChannel, IChannelSpecificMessage>()
+                {
+                    {
+                        ConversationChannel.Messenger, new FlowMessage()
+                        {
+                            Message = new FlowChannelSpecificMessage()
+                            {
+                                FlowId = "1",
+                                FlowCta = "Book!",
+                                Header = new WhatsAppInteractiveTextHeader()
+                                {
+                                    Text = "text header value"
+                                },
+                                Body = new WhatsAppInteractiveBody()
+                                {
+                                    Text = "Flow message body"
+                                },
+                                Footer = new WhatsAppInteractiveFooter()
+                                {
+                                    Text = "Flow message footer"
+                                },
+                                FlowToken = "AQAAAAACS5FpgQ_cAAAAAD0QI3s.",
+                                FlowMode = FlowChannelSpecificMessage.FlowModeType.Draft,
+                                FlowAction = FlowChannelSpecificMessage.FlowActionType.Navigate,
+                                FlowActionPayload = new FlowChannelSpecificMessageFlowActionPayload()
+                                {
+                                    Screen = "<SCREEN_NAME>",
+                                    Data = new JsonObject()
+                                    {
+                                        ["product_name"] = "name",
+                                        ["product_description"] = "description",
+                                        ["product_price"] = 100
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                Agent = new Agent()
+                {
+                    DisplayName = "display_name value",
+                    Type = AgentType.Bot,
+                    PictureUrl = "picture_url value"
+                }
+            });
+        }
+
+        [Fact]
+        public void DeserializeAppMessageTemplateMessage()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/AppMessageTemplateMessage.json");
+
+            var result = JsonSerializer.Deserialize<AppMessage>(json);
+
+            result.Should().BeEquivalentTo(new AppMessage(new TemplateMessage()
+            {
+                ChannelTemplate = new Dictionary<ConversationChannel, TemplateReference>
+                {
+                    {
+                        ConversationChannel.KakaoTalk, new TemplateReference()
+                        {
+                            TemplateId = "my template ID value",
+                            Version = "a version",
+                            LanguageCode = "en-US"
+                        }
+                    }
+                },
+                OmniTemplate = new TemplateReference()
+                {
+                    TemplateId = "another template ID",
+                    Version = "another version",
+                    LanguageCode = "another language",
+                    Parameters = new Dictionary<string, string>()
+                    {
+                        {
+                            "name",
+                            "Value for the name parameter used in the version 1 and language \"en-US\" of the template"
+                        }
+                    }
+                }
+            })
+            {
+                ExplicitChannelMessage = new Dictionary<ConversationChannel, string>
+                {
+                    { ConversationChannel.KakaoTalk, "foo value" }
+                },
+                ExplicitChannelOmniMessage = new Dictionary<ChannelSpecificTemplate, IOmniMessageOverride>
+                {
+                    {
+                        ChannelSpecificTemplate.KakaoTalk,
+                        new ChoiceMessage()
+                        {
+                            TextMessage = new TextMessage("This is a text message."),
+                            Choices = new List<Choice>()
+                            {
+                                new Choice()
+                                {
+                                    CallMessage = new CallMessage()
+                                    {
+                                        Title = "title value",
+                                        PhoneNumber = "phone number value"
+                                    },
+                                    PostbackData = "postback call_message data value"
+                                },
+                                new Choice()
+                                {
+                                    LocationMessage = new LocationMessage()
+                                    {
+                                        Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                                        Title = "title value",
+                                        Label = "label value"
+                                    },
+                                    PostbackData = "postback location_message data value"
+                                },
+                                new Choice()
+                                {
+                                    TextMessage = new TextMessage("This is a text message."),
+                                    PostbackData = "postback text_message data value"
+                                },
+                                new Choice()
+                                {
+                                    UrlMessage = new UrlMessage()
+                                    {
+                                        Title = "title value",
+                                        Url = "an url value"
+                                    },
+                                    PostbackData = "postback url_message data value"
+                                }
+                            }
+                        }
+                    }
+                },
+                ChannelSpecificMessage = new Dictionary<ConversationChannel, IChannelSpecificMessage>()
+                {
+                    {
+                        ConversationChannel.Messenger, new FlowMessage()
+                        {
+                            Message = new FlowChannelSpecificMessage()
+                            {
+                                FlowId = "1",
+                                FlowCta = "Book!",
+                                Header = new WhatsAppInteractiveTextHeader()
+                                {
+                                    Text = "text header value"
+                                },
+                                Body = new WhatsAppInteractiveBody()
+                                {
+                                    Text = "Flow message body"
+                                },
+                                Footer = new WhatsAppInteractiveFooter()
+                                {
+                                    Text = "Flow message footer"
+                                },
+                                FlowToken = "AQAAAAACS5FpgQ_cAAAAAD0QI3s.",
+                                FlowMode = FlowChannelSpecificMessage.FlowModeType.Draft,
+                                FlowAction = FlowChannelSpecificMessage.FlowActionType.Navigate,
+                                FlowActionPayload = new FlowChannelSpecificMessageFlowActionPayload()
+                                {
+                                    Screen = "<SCREEN_NAME>",
+                                    Data = new JsonObject()
+                                    {
+                                        ["product_name"] = "name",
+                                        ["product_description"] = "description",
+                                        ["product_price"] = 100
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                Agent = new Agent()
+                {
+                    DisplayName = "display_name value",
+                    Type = AgentType.Bot,
+                    PictureUrl = "picture_url value"
+                }
+            });
+        }
     }
 
 

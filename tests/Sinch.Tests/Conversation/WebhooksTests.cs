@@ -1117,7 +1117,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeAppMessageCardMessage()
         {
-            var json = Helpers.LoadResources("Conversation/Hooks/AppMessageCardMessage.json");
+            var json = Helpers.LoadResources("Conversation/Messages/AppMessageCardMessage.json");
 
             var result = JsonSerializer.Deserialize<AppMessage>(json);
 
@@ -1127,7 +1127,8 @@ namespace Sinch.Tests.Conversation
                 Description = "description value",
                 MediaMessage = new MediaCarouselMessage()
                 {
-                    Url = "url value"
+                    Url = "url value",
+                    Caption = "caption value",
                 },
                 Height = CardHeight.Medium,
                 Choices = new List<Choice>()

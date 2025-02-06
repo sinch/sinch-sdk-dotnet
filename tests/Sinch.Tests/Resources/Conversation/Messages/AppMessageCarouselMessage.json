@@ -1,24 +1,55 @@
 {
-  "card_message": {
-    "title": "title value",
-    "description": "description value",
-    "media_message": {
-      "url": "url value"
-    },
-    "height": "MEDIUM",
-    "choices": [
+  "carousel_message": {
+    "cards": [
       {
-        "text_message": {
-          "text": "This is a text message."
+        "title": "title value",
+        "description": "description value",
+        "media_message": {
+          "url": "url value"
         },
-        "postback_data": "postback_data text"
-      },
+        "height": "MEDIUM",
+        "choices": [
+          {
+            "text_message": {
+              "text": "This is a text message."
+            },
+            "postback_data": "postback_data text"
+          },
+          {
+            "call_message": {
+              "title": "title value",
+              "phone_number": "phone number value"
+            },
+            "postback_data": "postback_data call"
+          },
+          {
+            "location_message": {
+              "coordinates": {
+                "latitude": 47.6279809,
+                "longitude": -2.8229159
+              },
+              "title": "title value",
+              "label": "label value"
+            },
+            "postback_data": "postback_data location"
+          },
+          {
+            "url_message": {
+              "title": "title value",
+              "url": "an url value"
+            },
+            "postback_data": "postback_data url"
+          }
+        ]
+      }
+    ],
+    "choices": [
       {
         "call_message": {
           "title": "title value",
           "phone_number": "phone number value"
         },
-        "postback_data": "postback_data call"
+        "postback_data": "postback call_message data value"
       },
       {
         "location_message": {
@@ -29,14 +60,20 @@
           "title": "title value",
           "label": "label value"
         },
-        "postback_data": "postback_data location"
+        "postback_data": "postback location_message data value"
+      },
+      {
+        "text_message": {
+          "text": "This is a text message."
+        },
+        "postback_data": "postback text_message data value"
       },
       {
         "url_message": {
           "title": "title value",
           "url": "an url value"
         },
-        "postback_data": "postback_data url"
+        "postback_data": "postback url_message data value"
       }
     ]
   },

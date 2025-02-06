@@ -279,7 +279,7 @@ namespace Sinch.Tests.Conversation
                 },
                 channel_template = new
                 {
-                    test = new
+                    MESSENGER = new
                     {
                         template_id = "abc",
                         version = "305",
@@ -303,10 +303,10 @@ namespace Sinch.Tests.Conversation
                     TemplateId = "tempid",
                     Version = "1.0"
                 },
-                ChannelTemplate = new Dictionary<string, TemplateReference>()
+                ChannelTemplate = new Dictionary<ConversationChannel, TemplateReference>()
                 {
                     {
-                        "test", new TemplateReference
+                        ConversationChannel.Messenger, new TemplateReference
                         {
                             TemplateId = "abc",
                             Version = "305",

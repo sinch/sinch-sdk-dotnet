@@ -161,12 +161,14 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Required if sending a product list message. The ID of the catalog to which the products belong.
         /// </summary>
+        [JsonPropertyName("catalog_id")]
         public string? CatalogId { get; set; }
 
 
         /// <summary>
         ///     Optional. Sets the text for the menu of a choice list message.
         /// </summary>
+        [JsonPropertyName("menu")]
         public string? Menu { get; set; }
 
 
