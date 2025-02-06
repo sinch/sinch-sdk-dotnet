@@ -588,7 +588,7 @@ namespace Sinch.Tests.Conversation
 
             var result = JsonSerializer.Deserialize<ContactMessage>(json);
 
-            result.Should().BeEquivalentTo(new ContactMessage(new MediaCarouselMessage()
+            result.Should().BeEquivalentTo(new ContactMessage(new MediaCardMessage()
             {
                 Caption = "caption value",
                 Url = "an url value",
@@ -646,7 +646,7 @@ namespace Sinch.Tests.Conversation
                     {
                         Title = "title value",
                         Description = "description value",
-                        MediaMessage = new MediaCarouselMessage()
+                        MediaMessage = new MediaMessage()
                         {
                             Url = "url value"
                         },

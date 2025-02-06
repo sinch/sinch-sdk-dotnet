@@ -34,7 +34,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     Gets or Sets MediaMessage
         /// </summary>
         [JsonPropertyName("media_message")]
-        public MediaCarouselMessage? MediaMessage { get; set; }
+        public MediaMessage? MediaMessage { get; set; }
 
 
         /// <summary>
@@ -60,14 +60,5 @@ namespace Sinch.Conversation.Messages.Message
             sb.Append("}\n");
             return sb.ToString();
         }
-    }
-
-    public class MediaCarouselMessage
-    {
-        [JsonPropertyName("url")]
-        public string? Url { get; set; }
-
-        [JsonPropertyName("caption")]
-        public string? Caption { get; set; }
     }
 }

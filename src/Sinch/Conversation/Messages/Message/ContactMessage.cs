@@ -30,7 +30,7 @@ namespace Sinch.Conversation.Messages.Message
             LocationMessage = locationMessage;
         }
 
-        public ContactMessage(MediaCarouselMessage mediaCardMessage)
+        public ContactMessage(MediaCardMessage mediaCardMessage)
         {
             MediaCardMessage = mediaCardMessage;
         }
@@ -93,7 +93,7 @@ namespace Sinch.Conversation.Messages.Message
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("media_card_message")]
-        public MediaCarouselMessage? MediaCardMessage { get; internal set; }
+        public MediaCardMessage? MediaCardMessage { get; internal set; }
 
 
         /// <summary>

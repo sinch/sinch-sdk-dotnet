@@ -158,7 +158,7 @@ namespace Sinch.Tests.Conversation
                         Description = "card description",
                         Title = "Title Card",
                         Height = CardHeight.Tall,
-                        MediaMessage = new MediaCarouselMessage()
+                        MediaMessage = new MediaMessage()
                         {
                             Url = "https://localmob",
                         },

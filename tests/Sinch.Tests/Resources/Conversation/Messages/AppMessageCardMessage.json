@@ -4,7 +4,6 @@
     "description": "description value",
     "media_message": {
       "url": "url value",
-      "caption": "caption value"
     },
     "height": "MEDIUM",
     "choices": [

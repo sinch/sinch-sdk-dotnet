@@ -1125,10 +1125,9 @@ namespace Sinch.Tests.Conversation
             {
                 Title = "title value",
                 Description = "description value",
-                MediaMessage = new MediaCarouselMessage()
+                MediaMessage = new MediaMessage()
                 {
                     Url = "url value",
-                    Caption = "caption value",
                 },
                 Height = CardHeight.Medium,
                 Choices = new List<Choice>()
