@@ -3,7 +3,7 @@
     "title": "title value",
     "description": "description value",
     "media_message": {
-      "url": "url value",
+      "url": "url value"
     },
     "height": "MEDIUM",
     "choices": [

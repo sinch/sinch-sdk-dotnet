@@ -76,7 +76,6 @@ namespace Sinch.Tests.Conversation
                 }
             });
             response.Direction.Should().Be(ConversationDirection.UndefinedDirection);
-            response.ContactMessage!.ReplyTo!.MessageId.Should().Be("string");
             response.ChannelIdentity.Should().BeEquivalentTo(new ChannelIdentity()
             {
                 AppId = "string",
@@ -255,43 +254,6 @@ namespace Sinch.Tests.Conversation
                     identity = "string"
                 },
                 contact_id = "string",
-                contact_message = new
-                {
-                    choice_response_message = new
-                    {
-                        message_id = "string",
-                        postback_data = "string"
-                    },
-                    fallback_message = new
-                    {
-                        raw_message = "string",
-                        reason = new { }
-                    },
-                    location_message = new
-                    {
-                        coordinates = new { },
-                        label = "string",
-                        title = "string"
-                    },
-                    media_card_message = new
-                    {
-                        caption = "string",
-                        url = "string"
-                    },
-                    media_message = new
-                    {
-                        thumbnail_url = "string",
-                        url = "string"
-                    },
-                    reply_to = new
-                    {
-                        message_id = "string"
-                    },
-                    text_message = new
-                    {
-                        text = "string"
-                    }
-                },
                 conversation_id = "string",
                 direction = "UNDEFINED_DIRECTION",
                 id = "string",
