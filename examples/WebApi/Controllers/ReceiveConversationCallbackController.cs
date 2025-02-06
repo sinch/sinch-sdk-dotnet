@@ -30,11 +30,9 @@ public class ReceiveConversationCallbackController : ControllerBase
             _logger.LogError("Failed to authorize received callback.");
             return Unauthorized();
         }
-        // you can use System.Text.Json Deserialize<T> method
-        // ReSharper disable once RedundantAssignment
-        var callbackEvent = json.Deserialize<ICallbackEvent>();
-        // or use Deserialize provided by SDK
-        callbackEvent = _sinch.Conversation.Webhooks.ParseEvent(json);
+        
+        var callbackEvent = _sinch.Conversation.Webhooks.ParseEvent(json);
+        
         // do something with specific event
         switch (callbackEvent)
         {
