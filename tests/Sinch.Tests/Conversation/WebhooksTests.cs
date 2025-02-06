@@ -57,9 +57,9 @@ namespace Sinch.Tests.Conversation
                     ChannelCapabilities = new List<string>() { "capability value" },
                     Reason = new Reason()
                     {
-                        Code = "RECIPIENT_NOT_OPTED_IN",
+                        Code = ReasonCode.RecipientNotOptedIn,
                         Description = "reason description",
-                        SubCode = "UNSPECIFIED_SUB_CODE"
+                        SubCode = ReasonSubCode.UnspecifiedSubCode
                     }
                 }
             });
@@ -491,9 +491,9 @@ namespace Sinch.Tests.Conversation
                     ContactId = "contact ID",
                     Reason = new Reason()
                     {
-                        Code = "RECIPIENT_NOT_OPTED_IN",
+                        Code = ReasonCode.RecipientNotOptedIn,
                         Description = "reason description",
-                        SubCode = "UNSPECIFIED_SUB_CODE"
+                        SubCode = ReasonSubCode.UnspecifiedSubCode
                     },
                     Metadata = "metadata value",
                     ProcessingMode = ProcessingMode.Dispatch
@@ -532,9 +532,9 @@ namespace Sinch.Tests.Conversation
                     ContactId = "contact ID",
                     Reason = new Reason()
                     {
-                        Code = "RECIPIENT_NOT_OPTED_IN",
+                        Code = ReasonCode.RecipientNotOptedIn,
                         Description = "reason description",
-                        SubCode = "UNSPECIFIED_SUB_CODE"
+                        SubCode = ReasonSubCode.UnspecifiedSubCode
                     },
                     Metadata = "metadata value",
                     ProcessingMode = ProcessingMode.Dispatch

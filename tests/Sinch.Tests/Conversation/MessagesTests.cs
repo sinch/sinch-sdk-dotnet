@@ -515,9 +515,9 @@ namespace Sinch.Tests.Conversation
                 RawMessage = "raw message value",
                 Reason = new Reason()
                 {
-                    Code = "RECIPIENT_NOT_OPTED_IN",
+                    Code = ReasonCode.RecipientNotOptedIn,
                     Description = "reason description",
-                    SubCode = "UNSPECIFIED_SUB_CODE"
+                    SubCode = ReasonSubCode.UnspecifiedSubCode
                 }
             })
             {

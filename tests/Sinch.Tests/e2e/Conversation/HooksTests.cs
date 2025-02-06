@@ -441,10 +441,10 @@ namespace Sinch.Tests.e2e.Conversation
                         ContactId = "",
                         Reason = new Reason()
                         {
-                            Code = "BAD_REQUEST",
+                            Code = ReasonCode.BadRequest,
                             Description =
                                     "The underlying channel reported: Message type [MESSAGE_NOT_SET] not supported on Messenger",
-                            SubCode = "UNSPECIFIED_SUB_CODE"
+                            SubCode = ReasonSubCode.UnspecifiedSubCode
                         },
                         Metadata = "",
                         ProcessingMode = ProcessingMode.Conversation
@@ -585,10 +585,10 @@ namespace Sinch.Tests.e2e.Conversation
                         ContactId = "01W4FFL35P4NC4K35CONTACT02",
                         Reason = new Reason()
                         {
-                            Code = "RECIPIENT_NOT_REACHABLE",
+                            Code = ReasonCode.RecipientNotReachable,
                             Description =
                                 "The underlying channel reported: Unable to find rcs support for the given recipient",
-                            SubCode = "UNSPECIFIED_SUB_CODE",
+                            SubCode = ReasonSubCode.UnspecifiedSubCode
                         },
                         Metadata = "",
                         ProcessingMode = ProcessingMode.Conversation
@@ -669,7 +669,7 @@ namespace Sinch.Tests.e2e.Conversation
                         Id = "01W4FFL35P4NC4K35MESSAGE02",
                         Direction = ConversationDirection.ToApp,
                         ContactMessage = new ContactMessage(new TextMessage(
-                                "Hi, my real name is {PERSON} and I live in {LOCATION}. My credit card number is 4242 4242 4242 4242. What a beautiful day!")),
+                            "Hi, my real name is {PERSON} and I live in {LOCATION}. My credit card number is 4242 4242 4242 4242. What a beautiful day!")),
                         ConversationId = "01W4FFL35P4NC4K35CONVERS01",
                         ChannelIdentity = new ChannelIdentity()
                         {
@@ -732,7 +732,7 @@ namespace Sinch.Tests.e2e.Conversation
                             FilenameOverride = "",
                             ThumbnailUrl = "",
                             Url =
-                                    "https://scontent.xx.fbcdn.net/v/t1.15752-9/450470563_473474858617216_4192328888545460366_n.png?_nc_cat=102&ccb=1-7&_nc_sid=fc17b8&_nc_ohc=48P1Kdk4UiwQ7kNvgE60fDt&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEkgERuI-tu8rt1GGpOEcNU2-0bFkmG4mQkzbciZss10g&oe=66C0A0E0",
+                                "https://scontent.xx.fbcdn.net/v/t1.15752-9/450470563_473474858617216_4192328888545460366_n.png?_nc_cat=102&ccb=1-7&_nc_sid=fc17b8&_nc_ohc=48P1Kdk4UiwQ7kNvgE60fDt&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEkgERuI-tu8rt1GGpOEcNU2-0bFkmG4mQkzbciZss10g&oe=66C0A0E0",
                         })
                     }
                 });
@@ -819,24 +819,24 @@ namespace Sinch.Tests.e2e.Conversation
                         AnalysisResults = new AnalysisResult()
                         {
                             MlImageRecognitionResult = new List<MachineLearningImageRecognitionResult>()
+                            {
+                                new MachineLearningImageRecognitionResult()
                                 {
-                                    new MachineLearningImageRecognitionResult()
-                                    {
-                                        Url =
-                                            "https://scontent.xx.fbcdn.net/v/t1.15752-9/450470563_473474858617216_4192328888545460366_n.png?_nc_cat=102&ccb=1-7&_nc_sid=fc17b8&_nc_ohc=48P1Kdk4UiwQ7kNvgE60fDt&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEkgERuI-tu8rt1GGpOEcNU2-0bFkmG4mQkzbciZss10g&oe=66C0A0E0"
-                                    }
-                                },
-                            MlOffensiveAnalysisResult = new List<OffensiveAnalysis>()
-                                {
-                                    new OffensiveAnalysis()
-                                    {
-                                        Message = "",
-                                        Url =
-                                            "https://scontent.xx.fbcdn.net/v/t1.15752-9/450470563_473474858617216_4192328888545460366_n.png?_nc_cat=102&ccb=1-7&_nc_sid=fc17b8&_nc_ohc=48P1Kdk4UiwQ7kNvgE60fDt&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEkgERuI-tu8rt1GGpOEcNU2-0bFkmG4mQkzbciZss10g&oe=66C0A0E0",
-                                        Evaluation = Evaluation.Safe,
-                                        Score = 0.3069f
-                                    }
+                                    Url =
+                                        "https://scontent.xx.fbcdn.net/v/t1.15752-9/450470563_473474858617216_4192328888545460366_n.png?_nc_cat=102&ccb=1-7&_nc_sid=fc17b8&_nc_ohc=48P1Kdk4UiwQ7kNvgE60fDt&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEkgERuI-tu8rt1GGpOEcNU2-0bFkmG4mQkzbciZss10g&oe=66C0A0E0"
                                 }
+                            },
+                            MlOffensiveAnalysisResult = new List<OffensiveAnalysis>()
+                            {
+                                new OffensiveAnalysis()
+                                {
+                                    Message = "",
+                                    Url =
+                                        "https://scontent.xx.fbcdn.net/v/t1.15752-9/450470563_473474858617216_4192328888545460366_n.png?_nc_cat=102&ccb=1-7&_nc_sid=fc17b8&_nc_ohc=48P1Kdk4UiwQ7kNvgE60fDt&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEkgERuI-tu8rt1GGpOEcNU2-0bFkmG4mQkzbciZss10g&oe=66C0A0E0",
+                                    Evaluation = Evaluation.Safe,
+                                    Score = 0.3069f
+                                }
+                            }
                         }
                     },
                 });
