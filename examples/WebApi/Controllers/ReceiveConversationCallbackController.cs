@@ -30,9 +30,9 @@ public class ReceiveConversationCallbackController : ControllerBase
             _logger.LogError("Failed to authorize received callback.");
             return Unauthorized();
         }
-        
+
         var callbackEvent = _sinch.Conversation.Webhooks.ParseEvent(json);
-        
+
         // do something with specific event
         switch (callbackEvent)
         {
