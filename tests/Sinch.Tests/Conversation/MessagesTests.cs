@@ -338,8 +338,6 @@ namespace Sinch.Tests.Conversation
         }
 
 
-
-
         [Fact]
         public void DeserializeWhatsAppInteractiveHeader()
         {
@@ -372,7 +370,34 @@ namespace Sinch.Tests.Conversation
             });
         }
 
+        [Fact]
+        public void DeserializeWhatsAppInteractiveVideoHeader()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/WhatsAppInteractiveVideoHeader.json");
 
+            var result = JsonSerializer.Deserialize<WhatsAppInteractiveVideoHeader>(json);
+
+            result.Should().BeEquivalentTo(new WhatsAppInteractiveVideoHeader()
+            {
+                Video = new WhatsAppInteractiveHeaderMedia()
+                {
+                    Link = "a video URL link"
+                }
+            });
+        }
+
+        [Fact]
+        public void DeserializeWhatsAppInteractiveTextHeader()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/WhatsAppInteractiveTextHeader.json");
+
+            var result = JsonSerializer.Deserialize<WhatsAppInteractiveTextHeader>(json);
+
+            result.Should().BeEquivalentTo(new WhatsAppInteractiveTextHeader()
+            {
+                Text = "text header value"
+            });
+        }
     }
 
 
