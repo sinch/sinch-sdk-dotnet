@@ -1161,7 +1161,7 @@ namespace Sinch.Tests.Conversation.Messages
                 }
             });
         }
-        
+
         [Fact]
         public void DeserializeAppMessageListMessageProduct()
         {

@@ -65,6 +65,26 @@ namespace Sinch.Conversation.Messages.Message
     /// </summary>
     public sealed class CallMessage
     {
+        [JsonConstructor]
+        public CallMessage()
+        {
+        }
+
+        /// <summary>
+        ///     Create an instance of CallMessage
+        /// </summary>
+        /// <param name="phoneNumber">Phone number in E.164 with leading +.</param>
+        /// <param name="title">Title shown close to the phone number. The title is clickable in some cases.</param>
+        [Obsolete(
+            message:
+            "This method is obsolete and will be removed in a future version. Consider initializing properties directly",
+            error: false)]
+        public CallMessage(string phoneNumber, string title)
+        {
+            PhoneNumber = phoneNumber;
+            Title = title;
+        }
+
         /// <summary>
         ///     Phone number in E.164 with leading +.
         /// </summary>
