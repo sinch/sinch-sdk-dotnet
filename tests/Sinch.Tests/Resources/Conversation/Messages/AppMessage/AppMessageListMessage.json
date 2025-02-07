@@ -10,11 +10,9 @@
               "title": "choice title",
               "description": "description value",
               "media": {
-                "media_message": {
-                  "url": "an url value",
-                  "thumbnail_url": "another url",
-                  "filename_override": "filename override value"
-                }
+                "url": "an url value",
+                "thumbnail_url": "another url",
+                "filename_override": "filename override value"
               },
               "postback_data": "postback value"
             }
