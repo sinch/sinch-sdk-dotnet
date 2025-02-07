@@ -40,11 +40,6 @@ namespace Sinch.Conversation.Messages.Message
             MediaMessage = mediaMessage;
         }
 
-        public ContactMessage(ReplyTo replyTo)
-        {
-            ReplyTo = replyTo;
-        }
-
         public ContactMessage(TextMessage textMessage)
         {
             TextMessage = textMessage;
