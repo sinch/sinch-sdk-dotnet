@@ -1161,5 +1161,42 @@ namespace Sinch.Tests.Conversation.Messages
                 }
             });
         }
+        
+        [Fact]
+        public void DeserializeAppMessageListMessageProduct()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/AppMessage/AppMessageListMessageProduct.json");
+
+            var result = JsonSerializer.Deserialize<AppMessage>(json);
+
+            result.Should().BeEquivalentTo(new AppMessage(new ListMessage()
+            {
+                Title = "a list message title value",
+                Sections = new List<ListSection>()
+                {
+                    new ListSection()
+                    {
+                        Title = "a list section title value",
+                        Items = new List<IListItem>()
+                        {
+                            new ProductItem()
+                            {
+                                Id = "product ID value",
+                                Marketplace = "marketplace value",
+                                Quantity = 4,
+                                ItemPrice = 3.14159f,
+                                Currency = "currency value"
+                            }
+                        }
+                    }
+                },
+                Description = "description value",
+                MessageProperties = new ListMessageMessageProperties()
+                {
+                    CatalogId = "catalog ID value",
+                    Menu = "menu value"
+                }
+            }));
+        }
     }
 }
