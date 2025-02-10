@@ -519,10 +519,7 @@ namespace Sinch.Tests.Conversation
             // NOTE: api doesn't return TTL for deserialization anywhere
             _baseMessageExpected.ttl = actual;
             var json = JsonConvert.SerializeObject(_baseMessageExpected as object);
-            var result = JsonSerializer.Deserialize<SendMessageRequest>(json, new JsonSerializerOptions()
-            {
-                PropertyNamingPolicy = new SnakeCaseNamingPolicy()
-            });
+            var result = DeserializeAsConversationClient<SendMessageRequest>(json);
             result.TtlSeconds.Should().Be(expected);
         }
     }

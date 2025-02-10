@@ -14,7 +14,7 @@ namespace Sinch.Tests.Conversation.Messages
             var json = Helpers.LoadResources(
                 "Conversation/Messages/ContactMessage/ContactMessageChannelSpecificContactMessageNfmReply.json");
 
-            var result = JsonSerializer.Deserialize<ContactMessage>(json);
+            var result = DeserializeAsConversationClient<ContactMessage>(json);
 
             result.Should().BeEquivalentTo(new ContactMessage(new ChannelSpecificContactMessage()
             {
@@ -38,7 +38,7 @@ namespace Sinch.Tests.Conversation.Messages
             var json = Helpers.LoadResources(
                 "Conversation/Messages/ContactMessage/ContactMessageProductResponseMessage.json");
 
-            var result = JsonSerializer.Deserialize<ContactMessage>(json);
+            var result = DeserializeAsConversationClient<ContactMessage>(json);
 
             result.Should().BeEquivalentTo(new ContactMessage(new ProductResponseMessage()
             {
@@ -67,7 +67,7 @@ namespace Sinch.Tests.Conversation.Messages
             var json = Helpers.LoadResources(
                 "Conversation/Messages/ContactMessage/ContactMessageChoiceResponseMessage.json");
 
-            var result = JsonSerializer.Deserialize<ContactMessage>(json);
+            var result = DeserializeAsConversationClient<ContactMessage>(json);
 
             result.Should().BeEquivalentTo(new ContactMessage(new ChoiceResponseMessage()
             {
@@ -84,7 +84,7 @@ namespace Sinch.Tests.Conversation.Messages
         {
             var json = Helpers.LoadResources("Conversation/Messages/ContactMessage/ContactMessageFallbackMessage.json");
 
-            var result = JsonSerializer.Deserialize<ContactMessage>(json);
+            var result = DeserializeAsConversationClient<ContactMessage>(json);
 
             result.Should().BeEquivalentTo(new ContactMessage(new FallbackMessage()
             {
@@ -106,7 +106,7 @@ namespace Sinch.Tests.Conversation.Messages
         {
             var json = Helpers.LoadResources("Conversation/Messages/ContactMessage/ContactMessageLocationMessage.json");
 
-            var result = JsonSerializer.Deserialize<ContactMessage>(json);
+            var result = DeserializeAsConversationClient<ContactMessage>(json);
 
             result.Should().BeEquivalentTo(new ContactMessage(new LocationMessage()
             {
@@ -125,7 +125,7 @@ namespace Sinch.Tests.Conversation.Messages
             var json = Helpers.LoadResources(
                 "Conversation/Messages/ContactMessage/ContactMessageMediaCardMessage.json");
 
-            var result = JsonSerializer.Deserialize<ContactMessage>(json);
+            var result = DeserializeAsConversationClient<ContactMessage>(json);
 
             result.Should().BeEquivalentTo(new ContactMessage(new MediaCardMessage()
             {
@@ -142,7 +142,7 @@ namespace Sinch.Tests.Conversation.Messages
         {
             var json = Helpers.LoadResources("Conversation/Messages/ContactMessage/ContactMessageMediaMessage.json");
 
-            var result = JsonSerializer.Deserialize<ContactMessage>(json);
+            var result = DeserializeAsConversationClient<ContactMessage>(json);
 
             result.Should().BeEquivalentTo(new ContactMessage(new MediaMessage()
             {
@@ -160,7 +160,7 @@ namespace Sinch.Tests.Conversation.Messages
         {
             var json = Helpers.LoadResources("Conversation/Messages/ContactMessage/ContactMessageTextMessage.json");
 
-            var result = JsonSerializer.Deserialize<ContactMessage>(json);
+            var result = DeserializeAsConversationClient<ContactMessage>(json);
 
             result.Should().BeEquivalentTo(new ContactMessage(new TextMessage("This is a text message."))
             {
