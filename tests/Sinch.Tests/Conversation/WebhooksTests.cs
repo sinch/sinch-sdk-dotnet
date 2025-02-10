@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Text.Json;
 using System.Text.Json.Nodes;
 using FluentAssertions;
 using Microsoft.Extensions.Primitives;
@@ -37,32 +36,39 @@ namespace Sinch.Tests.Conversation
             string json =
                 Helpers.LoadResources("Conversation/Hooks/CapabilityEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<CapabilityEvent>();
+            var resultParse = Conversation.Webhooks.ParseEvent(json).As<CapabilityEvent>();
+            AssertEvent(resultParse);
 
-            result.Should().BeEquivalentTo(new CapabilityEvent()
+            var resultDeserialize = Deserialize<ICallbackEvent>(json).As<CapabilityEvent>();
+            AssertEvent(resultDeserialize);
+
+            void AssertEvent(CapabilityEvent actual)
             {
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                ProjectId = "project id value",
-                AppId = "app id value",
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                MessageMetadata = "metadata value",
-                CorrelationId = "correlation id value",
-                CapabilityNotification = new CapabilityNotification()
+                actual.Should().BeEquivalentTo(new CapabilityEvent()
                 {
-                    ContactId = "contact id value",
-                    Identity = "12345678910",
-                    Channel = ConversationChannel.WhatsApp,
-                    CapabilityStatus = CapabilityStatus.CapabilityPartial,
-                    RequestId = "request id value",
-                    ChannelCapabilities = new List<string>() { "capability value" },
-                    Reason = new Reason()
+                    AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    ProjectId = "project id value",
+                    AppId = "app id value",
+                    EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                    MessageMetadata = "metadata value",
+                    CorrelationId = "correlation id value",
+                    CapabilityNotification = new CapabilityNotification()
                     {
-                        Code = ReasonCode.RecipientNotOptedIn,
-                        Description = "reason description",
-                        SubCode = ReasonSubCode.UnspecifiedSubCode
+                        ContactId = "contact id value",
+                        Identity = "12345678910",
+                        Channel = ConversationChannel.WhatsApp,
+                        CapabilityStatus = CapabilityStatus.CapabilityPartial,
+                        RequestId = "request id value",
+                        ChannelCapabilities = new List<string>() { "capability value" },
+                        Reason = new Reason()
+                        {
+                            Code = ReasonCode.RecipientNotOptedIn,
+                            Description = "reason description",
+                            SubCode = ReasonSubCode.UnspecifiedSubCode
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
         [Fact]
@@ -71,34 +77,41 @@ namespace Sinch.Tests.Conversation
             string json =
                 Helpers.LoadResources("Conversation/Hooks/ChannelEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ChannelEvent>();
+            var resultParse = Conversation.Webhooks.ParseEvent(json).As<ChannelEvent>();
+            AssertEvent(resultParse);
 
-            result.ChannelEventNotification?.ChannelEvent?.AdditionalData?["quality_rating"]?.GetValue<string>()
-                .Should()
-                .BeEquivalentTo("quality rating value");
-            result.Should().BeEquivalentTo(new ChannelEvent()
+            var result = Deserialize<ICallbackEvent>(json).As<ChannelEvent>();
+            AssertEvent(result);
+
+            void AssertEvent(ChannelEvent actual)
             {
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                ProjectId = "project id value",
-                AppId = "app id value",
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                MessageMetadata = "metadata value",
-                CorrelationId = "correlation id value",
-                ChannelEventNotification = new ChannelEventNotification()
+                actual.ChannelEventNotification?.ChannelEvent?.AdditionalData?["quality_rating"]?.GetValue<string>()
+                    .Should()
+                    .BeEquivalentTo("quality rating value");
+                actual.Should().BeEquivalentTo(new ChannelEvent()
                 {
-                    ChannelEvent = new EventNotification()
+                    AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    ProjectId = "project id value",
+                    AppId = "app id value",
+                    EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                    MessageMetadata = "metadata value",
+                    CorrelationId = "correlation id value",
+                    ChannelEventNotification = new ChannelEventNotification()
                     {
-                        Channel = ConversationChannel.WhatsApp,
-                        EventType = "WHATS_APP_QUALITY_RATING_CHANGED",
-                        AdditionalData = new JsonObject()
+                        ChannelEvent = new EventNotification()
                         {
-                            ["quality_rating"] = "quality rating value"
+                            Channel = ConversationChannel.WhatsApp,
+                            EventType = "WHATS_APP_QUALITY_RATING_CHANGED",
+                            AdditionalData = new JsonObject()
+                            {
+                                ["quality_rating"] = "quality rating value"
+                            }
                         }
                     }
-                }
-            },
-                options => options.Excluding(x =>
-                    x.MessageMetadata).Excluding(x => x.ChannelEventNotification.ChannelEvent.AdditionalData));
+                },
+                    options => options.Excluding(x =>
+                        x.MessageMetadata).Excluding(x => x.ChannelEventNotification.ChannelEvent.AdditionalData));
+            }
         }
 
         [Fact]
@@ -107,49 +120,55 @@ namespace Sinch.Tests.Conversation
             string json =
                 Helpers.LoadResources("Conversation/Hooks/ContactCreateEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ContactCreateEvent>();
+            var parseResult = Conversation.Webhooks.ParseEvent(json).As<ContactCreateEvent>();
+            AssertEvent(parseResult);
+            var result = Deserialize<ICallbackEvent>(json).As<ContactCreateEvent>();
+            AssertEvent(result);
 
-            result.Should().BeEquivalentTo(new ContactCreateEvent()
+            void AssertEvent(ContactCreateEvent actual)
             {
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                ProjectId = "project id value",
-                AppId = "app id value",
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                MessageMetadata = "metadata value",
-                CorrelationId = "correlation id value",
-
-                ContactCreateNotification = new ContactNotification()
+                actual.Should().BeEquivalentTo(new ContactCreateEvent()
                 {
-                    Contact = new Contact()
+                    AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    ProjectId = "project id value",
+                    AppId = "app id value",
+                    EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                    MessageMetadata = "metadata value",
+                    CorrelationId = "correlation id value",
+
+                    ContactCreateNotification = new ContactNotification()
                     {
-                        Id = "my created contact ID",
-                        ChannelIdentities = new List<ChannelIdentity>()
+                        Contact = new Contact()
                         {
-                            new ChannelIdentity()
+                            Id = "my created contact ID",
+                            ChannelIdentities = new List<ChannelIdentity>()
                             {
-                                Channel = ConversationChannel.Mms,
-                                Identity = "33987654321",
+                                new ChannelIdentity()
+                                {
+                                    Channel = ConversationChannel.Mms,
+                                    Identity = "33987654321",
+                                },
+                                new ChannelIdentity()
+                                {
+                                    AppId = "my MESSENGER app id",
+                                    Channel = ConversationChannel.Messenger,
+                                    Identity = "+33987654321"
+                                }
                             },
-                            new ChannelIdentity()
+                            ChannelPriority = new List<ConversationChannel>()
                             {
-                                AppId = "my MESSENGER app id",
-                                Channel = ConversationChannel.Messenger,
-                                Identity = "+33987654321"
-                            }
-                        },
-                        ChannelPriority = new List<ConversationChannel>()
-                        {
-                            ConversationChannel.Mms,
-                            ConversationChannel.Messenger
-                        },
-                        DisplayName = "created from Dotnet SDK",
-                        Email = "foo@foo.com",
-                        ExternalId = "external id value",
-                        Metadata = "metadata value",
-                        Language = ConversationLanguage.Arabic
+                                ConversationChannel.Mms,
+                                ConversationChannel.Messenger
+                            },
+                            DisplayName = "created from Dotnet SDK",
+                            Email = "foo@foo.com",
+                            ExternalId = "external id value",
+                            Metadata = "metadata value",
+                            Language = ConversationLanguage.Arabic
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
         [Fact]
@@ -158,49 +177,56 @@ namespace Sinch.Tests.Conversation
             string json =
                 Helpers.LoadResources("Conversation/Hooks/ContactDeleteEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ContactDeleteEvent>();
+            var parseResult = Conversation.Webhooks.ParseEvent(json).As<ContactDeleteEvent>();
+            AssertEvent(parseResult);
 
-            result.Should().BeEquivalentTo(new ContactDeleteEvent()
+            var result = Deserialize<ICallbackEvent>(json).As<ContactDeleteEvent>();
+            AssertEvent(result);
+
+            void AssertEvent(ContactDeleteEvent actual)
             {
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                ProjectId = "project id value",
-                AppId = "app id value",
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                MessageMetadata = "metadata value",
-                CorrelationId = "correlation id value",
-
-                ContactDeleteNotification = new ContactNotification()
+                actual.Should().BeEquivalentTo(new ContactDeleteEvent()
                 {
-                    Contact = new Contact()
+                    AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    ProjectId = "project id value",
+                    AppId = "app id value",
+                    EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                    MessageMetadata = "metadata value",
+                    CorrelationId = "correlation id value",
+
+                    ContactDeleteNotification = new ContactNotification()
                     {
-                        Id = "my created contact ID",
-                        ChannelIdentities = new List<ChannelIdentity>()
+                        Contact = new Contact()
                         {
-                            new ChannelIdentity()
+                            Id = "my created contact ID",
+                            ChannelIdentities = new List<ChannelIdentity>()
                             {
-                                Channel = ConversationChannel.Mms,
-                                Identity = "33987654321",
+                                new ChannelIdentity()
+                                {
+                                    Channel = ConversationChannel.Mms,
+                                    Identity = "33987654321",
+                                },
+                                new ChannelIdentity()
+                                {
+                                    AppId = "my MESSENGER app id",
+                                    Channel = ConversationChannel.Messenger,
+                                    Identity = "+33987654321"
+                                }
                             },
-                            new ChannelIdentity()
+                            ChannelPriority = new List<ConversationChannel>()
                             {
-                                AppId = "my MESSENGER app id",
-                                Channel = ConversationChannel.Messenger,
-                                Identity = "+33987654321"
-                            }
-                        },
-                        ChannelPriority = new List<ConversationChannel>()
-                        {
-                            ConversationChannel.Mms,
-                            ConversationChannel.Messenger
-                        },
-                        DisplayName = "created from Dotnet SDK",
-                        Email = "foo@foo.com",
-                        ExternalId = "external id value",
-                        Metadata = "metadata value",
-                        Language = ConversationLanguage.Arabic
+                                ConversationChannel.Mms,
+                                ConversationChannel.Messenger
+                            },
+                            DisplayName = "created from Dotnet SDK",
+                            Email = "foo@foo.com",
+                            ExternalId = "external id value",
+                            Metadata = "metadata value",
+                            Language = ConversationLanguage.Arabic
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
 
@@ -210,33 +236,40 @@ namespace Sinch.Tests.Conversation
             string json =
                 Helpers.LoadResources("Conversation/Hooks/ContactIdentitiesDuplicationEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ContactIdentitiesDuplicationEvent>();
+            var parseResult = Conversation.Webhooks.ParseEvent(json).As<ContactIdentitiesDuplicationEvent>();
+            AssertEvent(parseResult);
 
-            result.Should().BeEquivalentTo(new ContactIdentitiesDuplicationEvent()
+            var result = Deserialize<ICallbackEvent>(json).As<ContactIdentitiesDuplicationEvent>();
+            AssertEvent(result);
+
+            void AssertEvent(ContactIdentitiesDuplicationEvent actual)
             {
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                ProjectId = "project id value",
-                AppId = "app id value",
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                MessageMetadata = "metadata value",
-                CorrelationId = "correlation id value",
-
-                DuplicatedContactIdentitiesNotification = new DuplicatedIdentitiesEvent()
+                actual.Should().BeEquivalentTo(new ContactIdentitiesDuplicationEvent()
                 {
-                    DuplicatedIdentities = new List<DuplicatedIdentitiesEventDuplicatedIdentitiesInner>()
+                    AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    ProjectId = "project id value",
+                    AppId = "app id value",
+                    EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                    MessageMetadata = "metadata value",
+                    CorrelationId = "correlation id value",
+
+                    DuplicatedContactIdentitiesNotification = new DuplicatedIdentitiesEvent()
                     {
-                        new DuplicatedIdentitiesEventDuplicatedIdentitiesInner()
+                        DuplicatedIdentities = new List<DuplicatedIdentitiesEventDuplicatedIdentitiesInner>()
                         {
-                            Channel = ConversationChannel.Messenger,
-                            ContactIds = new List<string>()
+                            new DuplicatedIdentitiesEventDuplicatedIdentitiesInner()
                             {
-                                "01EKA07N79THJ20ZSN6AS30TMW",
-                                "01EKA07N79THJ20ZSN6AS30TTT"
+                                Channel = ConversationChannel.Messenger,
+                                ContactIds = new List<string>()
+                                {
+                                    "01EKA07N79THJ20ZSN6AS30TMW",
+                                    "01EKA07N79THJ20ZSN6AS30TTT"
+                                }
                             }
                         }
                     }
-                }
-            });
+                });
+            }
         }
 
         [Fact]
@@ -244,58 +277,66 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/ContactMergeEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ContactMergeEvent>();
+            var parseResult = Conversation.Webhooks.ParseEvent(json).As<ContactMergeEvent>();
+            AssertEvent(parseResult);
 
-            result.Should().BeEquivalentTo(new ContactMergeEvent()
+            var result = Deserialize<ICallbackEvent>(json).As<ContactMergeEvent>();
+            AssertEvent(result);
+
+            void AssertEvent(ContactMergeEvent actual)
             {
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                ProjectId = "project id value",
-                AppId = "app id value",
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                MessageMetadata = "metadata value",
-                CorrelationId = "correlation id value",
-
-                ContactMergeNotification = new ContactMergeNotification()
+                actual.Should().BeEquivalentTo(new ContactMergeEvent()
                 {
-                    DeletedContact = new Contact()
+                    AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    ProjectId = "project id value",
+                    AppId = "app id value",
+                    EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                    MessageMetadata = "metadata value",
+                    CorrelationId = "correlation id value",
+
+                    ContactMergeNotification = new ContactMergeNotification()
                     {
-                        Id = "my created contact ID",
-                        ChannelIdentities = new List<ChannelIdentity>()
+                        DeletedContact = new Contact()
                         {
-                            new ChannelIdentity() { Channel = ConversationChannel.Mms, Identity = "33987654321" },
-                            new ChannelIdentity()
+                            Id = "my created contact ID",
+                            ChannelIdentities = new List<ChannelIdentity>()
                             {
-                                Channel = ConversationChannel.Messenger, Identity = "+33987654321",
-                                AppId = "my MESSENGER app id"
-                            }
+                                new ChannelIdentity() { Channel = ConversationChannel.Mms, Identity = "33987654321" },
+                                new ChannelIdentity()
+                                {
+                                    Channel = ConversationChannel.Messenger, Identity = "+33987654321",
+                                    AppId = "my MESSENGER app id"
+                                }
+                            },
+                            ChannelPriority = new List<ConversationChannel>()
+                                { ConversationChannel.Mms, ConversationChannel.Messenger },
+                            DisplayName = "created from Dotnet SDK",
+                            Email = "foo@foo.com",
+                            ExternalId = "external id value",
+                            Metadata = "metadata value",
+                            Language = ConversationLanguage.Arabic
                         },
-                        ChannelPriority = new List<ConversationChannel>()
-                            { ConversationChannel.Mms, ConversationChannel.Messenger },
-                        DisplayName = "created from Dotnet SDK",
-                        Email = "foo@foo.com",
-                        ExternalId = "external id value",
-                        Metadata = "metadata value",
-                        Language = ConversationLanguage.Arabic
-                    },
-                    PreservedContact = new Contact()
-                    {
-                        Id = "a contact id",
-                        ChannelIdentities = new List<ChannelIdentity>()
+                        PreservedContact = new Contact()
                         {
-                            new ChannelIdentity()
+                            Id = "a contact id",
+                            ChannelIdentities = new List<ChannelIdentity>()
                             {
-                                Channel = ConversationChannel.Sms, Identity = "a channel identity", AppId = "an app id"
-                            }
-                        },
-                        ChannelPriority = new List<ConversationChannel>() { ConversationChannel.Sms },
-                        DisplayName = "a display name",
-                        Email = "an email",
-                        ExternalId = "an external id",
-                        Metadata = "metadata value",
-                        Language = new ConversationLanguage("UNSPECIFIED")
+                                new ChannelIdentity()
+                                {
+                                    Channel = ConversationChannel.Sms, Identity = "a channel identity",
+                                    AppId = "an app id"
+                                }
+                            },
+                            ChannelPriority = new List<ConversationChannel>() { ConversationChannel.Sms },
+                            DisplayName = "a display name",
+                            Email = "an email",
+                            ExternalId = "an external id",
+                            Metadata = "metadata value",
+                            Language = new ConversationLanguage("UNSPECIFIED")
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
         [Fact]
@@ -303,40 +344,51 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/ContactUpdateEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ContactUpdateEvent>();
+            var resultParse = Conversation.Webhooks.ParseEvent(json).As<ContactUpdateEvent>();
+            AssertEvent(resultParse);
 
-            result.Should().BeEquivalentTo(new ContactUpdateEvent()
+            var resultDeserialize = Deserialize<ICallbackEvent>(json).As<ContactUpdateEvent>();
+            AssertEvent(resultDeserialize);
+
+            void AssertEvent(ContactUpdateEvent actual)
             {
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                ProjectId = "project id value",
-                AppId = "app id value",
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                MessageMetadata = "metadata value",
-                CorrelationId = "correlation id value",
-                ContactUpdateNotification = new ContactNotification()
+                actual.Should().BeEquivalentTo(new ContactUpdateEvent()
                 {
-                    Contact = new Contact()
+                    AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    ProjectId = "project id value",
+                    AppId = "app id value",
+                    EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                    MessageMetadata = "metadata value",
+                    CorrelationId = "correlation id value",
+                    ContactUpdateNotification = new ContactNotification()
                     {
-                        Id = "my created contact ID",
-                        ChannelIdentities = new List<ChannelIdentity>()
+                        Contact = new Contact()
                         {
-                            new ChannelIdentity() { Channel = ConversationChannel.Mms, Identity = "33987654321" },
-                            new ChannelIdentity()
+                            Id = "my created contact ID",
+                            ChannelIdentities = new List<ChannelIdentity>()
                             {
-                                Channel = ConversationChannel.Messenger, Identity = "+33987654321",
-                                AppId = "my MESSENGER app id"
-                            }
-                        },
-                        ChannelPriority = new List<ConversationChannel>()
-                            { ConversationChannel.Mms, ConversationChannel.Messenger },
-                        DisplayName = "created from Dotnet SDK",
-                        Email = "foo@foo.com",
-                        ExternalId = "external id value",
-                        Metadata = "metadata value",
-                        Language = ConversationLanguage.Arabic
+                                new ChannelIdentity() { Channel = ConversationChannel.Mms, Identity = "33987654321" },
+                                new ChannelIdentity()
+                                {
+                                    Channel = ConversationChannel.Messenger,
+                                    Identity = "+33987654321",
+                                    AppId = "my MESSENGER app id"
+                                }
+                            },
+                            ChannelPriority = new List<ConversationChannel>()
+                            {
+                                ConversationChannel.Mms,
+                                ConversationChannel.Messenger
+                            },
+                            DisplayName = "created from Dotnet SDK",
+                            Email = "foo@foo.com",
+                            ExternalId = "external id value",
+                            Metadata = "metadata value",
+                            Language = ConversationLanguage.Arabic
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
         [Fact]
@@ -344,40 +396,47 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/ConversationDeleteEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ConversationDeleteEvent>();
+            var resultParse = Conversation.Webhooks.ParseEvent(json).As<ConversationDeleteEvent>();
+            AssertEvent(resultParse);
 
-            result.ConversationDeleteNotification?.Conversation?.MetadataJson?["metadata_json_key"]?
-                .GetValue<string>().Should().Be("metadata json value");
-            result.Should().BeEquivalentTo(new ConversationDeleteEvent()
+            var resultDeserialize = Deserialize<ICallbackEvent>(json).As<ConversationDeleteEvent>();
+            AssertEvent(resultDeserialize);
+
+            void AssertEvent(ConversationDeleteEvent actual)
             {
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                ProjectId = "project id value",
-                AppId = "app id value",
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                MessageMetadata = "metadata value",
-                CorrelationId = "correlation id value",
+                actual.ConversationDeleteNotification?.Conversation?.MetadataJson?["metadata_json_key"]?
+                    .GetValue<string>().Should().Be("metadata json value");
 
-                ConversationDeleteNotification = new ConversationNotification()
+                actual.Should().BeEquivalentTo(new ConversationDeleteEvent()
                 {
-                    Conversation = new Sinch.Conversation.Conversations.Conversation()
+                    AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    ProjectId = "project id value",
+                    AppId = "app id value",
+                    EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                    MessageMetadata = "metadata value",
+                    CorrelationId = "correlation id value",
+                    ConversationDeleteNotification = new ConversationNotification()
                     {
-                        Active = true,
-                        ActiveChannel = ConversationChannel.WhatsApp,
-                        AppId = "conversation app Id",
-                        ContactId = "contact ID",
-                        Id = "a conversation id",
-                        LastReceived = Helpers.ParseUtc("2020-11-17T15:00:00Z"),
-                        Metadata = "metadata value",
-                        MetadataJson = new JsonObject()
-                            {
-                                { "metadata_json_key", "metadata json value" }
-                            },
-                        CorrelationId = "correlation id value"
+                        Conversation = new Sinch.Conversation.Conversations.Conversation()
+                        {
+                            Active = true,
+                            ActiveChannel = ConversationChannel.WhatsApp,
+                            AppId = "conversation app Id",
+                            ContactId = "contact ID",
+                            Id = "a conversation id",
+                            LastReceived = Helpers.ParseUtc("2020-11-17T15:00:00Z"),
+                            Metadata = "metadata value",
+                            MetadataJson = new JsonObject()
+                                {
+                                    { "metadata_json_key", "metadata json value" }
+                                },
+                            CorrelationId = "correlation id value"
+                        }
                     }
-                }
-            },
-                options => options.Excluding(x => x.MessageMetadata)
-                    .Excluding(x => x.ConversationDeleteNotification.Conversation.MetadataJson));
+                },
+                    options => options.Excluding(x => x.MessageMetadata)
+                        .Excluding(x => x.ConversationDeleteNotification.Conversation.MetadataJson));
+            }
         }
 
         [Fact]
@@ -385,40 +444,48 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/ConversationStartEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ConversationStartEvent>();
+            var resultParse = Conversation.Webhooks.ParseEvent(json).As<ConversationStartEvent>();
+            AssertEvent(resultParse);
 
-            result.ConversationStartNotification?.Conversation?.MetadataJson?["metadata_json_key"]?
-                .GetValue<string>().Should().Be("metadata json value");
-            result.Should().BeEquivalentTo(new ConversationStartEvent()
+            var resultDeserialize = Deserialize<ICallbackEvent>(json).As<ConversationStartEvent>();
+            AssertEvent(resultDeserialize);
+
+            void AssertEvent(ConversationStartEvent actual)
             {
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                ProjectId = "project id value",
-                AppId = "app id value",
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                MessageMetadata = "metadata value",
-                CorrelationId = "correlation id value",
+                actual.ConversationStartNotification?.Conversation?.MetadataJson?["metadata_json_key"]?
+                    .GetValue<string>().Should().Be("metadata json value");
 
-                ConversationStartNotification = new ConversationNotification()
-                {
-                    Conversation = new Sinch.Conversation.Conversations.Conversation()
+                actual.Should().BeEquivalentTo(
+                    new ConversationStartEvent()
                     {
-                        Active = true,
-                        ActiveChannel = ConversationChannel.WhatsApp,
-                        AppId = "conversation app Id",
-                        ContactId = "contact ID",
-                        Id = "a conversation id",
-                        LastReceived = Helpers.ParseUtc("2020-11-17T15:00:00Z"),
-                        Metadata = "metadata value",
-                        MetadataJson = new JsonObject()
+                        AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                        ProjectId = "project id value",
+                        AppId = "app id value",
+                        EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                        MessageMetadata = "metadata value",
+                        CorrelationId = "correlation id value",
+                        ConversationStartNotification = new ConversationNotification()
+                        {
+                            Conversation = new Sinch.Conversation.Conversations.Conversation()
                             {
-                                { "metadata_json_key", "metadata json value" }
-                            },
-                        CorrelationId = "correlation id value"
-                    }
-                }
-            },
-                options => options.Excluding(x => x.MessageMetadata)
-                    .Excluding(x => x.ConversationStartNotification.Conversation.MetadataJson));
+                                Active = true,
+                                ActiveChannel = ConversationChannel.WhatsApp,
+                                AppId = "conversation app Id",
+                                ContactId = "contact ID",
+                                Id = "a conversation id",
+                                LastReceived = Helpers.ParseUtc("2020-11-17T15:00:00Z"),
+                                Metadata = "metadata value",
+                                MetadataJson = new JsonObject()
+                                {
+                                    { "metadata_json_key", "metadata json value" }
+                                },
+                                CorrelationId = "correlation id value"
+                            }
+                        }
+                    },
+                    options => options.Excluding(x => x.MessageMetadata)
+                        .Excluding(x => x.ConversationStartNotification.Conversation.MetadataJson));
+            }
         }
 
         [Fact]
@@ -426,40 +493,48 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/ConversationStopEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<ConversationStopEvent>();
+            var resultParse = Conversation.Webhooks.ParseEvent(json).As<ConversationStopEvent>();
+            AssertEvent(resultParse);
 
-            result.ConversationStopNotification?.Conversation?.MetadataJson?["metadata_json_key"]?
-                .GetValue<string>().Should().Be("metadata json value");
-            result.Should().BeEquivalentTo(new ConversationStopEvent()
+            var resultDeserialize = Deserialize<ICallbackEvent>(json).As<ConversationStopEvent>();
+            AssertEvent(resultDeserialize);
+
+            void AssertEvent(ConversationStopEvent actual)
             {
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                ProjectId = "project id value",
-                AppId = "app id value",
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                MessageMetadata = "metadata value",
-                CorrelationId = "correlation id value",
+                actual.ConversationStopNotification?.Conversation?.MetadataJson?["metadata_json_key"]?
+                    .GetValue<string>().Should().Be("metadata json value");
 
-                ConversationStopNotification = new ConversationNotification()
-                {
-                    Conversation = new Sinch.Conversation.Conversations.Conversation()
+                actual.Should().BeEquivalentTo(
+                    new ConversationStopEvent()
                     {
-                        Active = true,
-                        ActiveChannel = ConversationChannel.WhatsApp,
-                        AppId = "conversation app Id",
-                        ContactId = "contact ID",
-                        Id = "a conversation id",
-                        LastReceived = Helpers.ParseUtc("2020-11-17T15:00:00Z"),
-                        Metadata = "metadata value",
-                        MetadataJson = new JsonObject()
+                        AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                        ProjectId = "project id value",
+                        AppId = "app id value",
+                        EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                        MessageMetadata = "metadata value",
+                        CorrelationId = "correlation id value",
+                        ConversationStopNotification = new ConversationNotification()
+                        {
+                            Conversation = new Sinch.Conversation.Conversations.Conversation()
                             {
-                                { "metadata_json_key", "metadata json value" }
-                            },
-                        CorrelationId = "correlation id value"
-                    }
-                }
-            },
-                options => options.Excluding(x => x.MessageMetadata)
-                    .Excluding(x => x.ConversationStopNotification.Conversation.MetadataJson));
+                                Active = true,
+                                ActiveChannel = ConversationChannel.WhatsApp,
+                                AppId = "conversation app Id",
+                                ContactId = "contact ID",
+                                Id = "a conversation id",
+                                LastReceived = Helpers.ParseUtc("2020-11-17T15:00:00Z"),
+                                Metadata = "metadata value",
+                                MetadataJson = new JsonObject()
+                                {
+                                    { "metadata_json_key", "metadata json value" }
+                                },
+                                CorrelationId = "correlation id value"
+                            }
+                        }
+                    },
+                    options => options.Excluding(x => x.MessageMetadata)
+                        .Excluding(x => x.ConversationStopNotification.Conversation.MetadataJson));
+            }
         }
 
         [Fact]
@@ -467,39 +542,45 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/EventDeliveryReportEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<DeliveryEvent>();
+            var resultParse = Conversation.Webhooks.ParseEvent(json).As<DeliveryEvent>();
+            AssertEvent(resultParse);
 
-            result.Should().BeEquivalentTo(new DeliveryEvent()
+            var resultDeserialize = Deserialize<ICallbackEvent>(json).As<DeliveryEvent>();
+            AssertEvent(resultDeserialize);
+
+            void AssertEvent(DeliveryEvent actual)
             {
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                ProjectId = "project id value",
-                AppId = "app id value",
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                MessageMetadata = "metadata value",
-                CorrelationId = "correlation id value",
-
-                EventDeliveryReport = new EventDeliveryAllOfEventDeliveryReport()
+                actual.Should().BeEquivalentTo(new DeliveryEvent()
                 {
-                    EventId = "event id",
-                    Status = DeliveryStatus.Delivered,
-                    ChannelIdentity = new ChannelIdentity()
+                    AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    ProjectId = "project id value",
+                    AppId = "app id value",
+                    EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                    MessageMetadata = "metadata value",
+                    CorrelationId = "correlation id value",
+                    EventDeliveryReport = new EventDeliveryAllOfEventDeliveryReport()
                     {
-                        AppId = "an app id",
-                        Channel = ConversationChannel.Messenger,
-                        Identity = "an identity"
-                    },
-                    ContactId = "contact ID",
-                    Reason = new Reason()
-                    {
-                        Code = ReasonCode.RecipientNotOptedIn,
-                        Description = "reason description",
-                        SubCode = ReasonSubCode.UnspecifiedSubCode
-                    },
-                    Metadata = "metadata value",
-                    ProcessingMode = ProcessingMode.Dispatch
-                }
-            },
-                options => options.Excluding(x => x.MessageMetadata));
+                        EventId = "event id",
+                        Status = DeliveryStatus.Delivered,
+                        ChannelIdentity = new ChannelIdentity()
+                        {
+                            AppId = "an app id",
+                            Channel = ConversationChannel.Messenger,
+                            Identity = "an identity"
+                        },
+                        ContactId = "contact ID",
+                        Reason = new Reason()
+                        {
+                            Code = ReasonCode.RecipientNotOptedIn,
+                            Description = "reason description",
+                            SubCode = ReasonSubCode.UnspecifiedSubCode
+                        },
+                        Metadata = "metadata value",
+                        ProcessingMode = ProcessingMode.Dispatch
+                    }
+                },
+                    options => options.Excluding(x => x.MessageMetadata));
+            }
         }
 
         [Fact]
@@ -507,40 +588,47 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/MessageDeliveryReceiptEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<MessageDeliveryReceiptEvent>();
+            var resultParse = Conversation.Webhooks.ParseEvent(json).As<MessageDeliveryReceiptEvent>();
+            AssertEvent(resultParse);
 
-            result.Should().BeEquivalentTo(new MessageDeliveryReceiptEvent()
+            var resultDeserialize = Deserialize<ICallbackEvent>(json).As<MessageDeliveryReceiptEvent>();
+            AssertEvent(resultDeserialize);
+
+            void AssertEvent(MessageDeliveryReceiptEvent actual)
             {
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                ProjectId = "project id value",
-                AppId = "app id value",
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                MessageMetadata = "metadata value",
-                CorrelationId = "correlation id value",
-
-                MessageDeliveryReport = new MessageDeliveryReport()
-                {
-                    MessageId = "message id",
-                    ConversationId = "conversation id",
-                    Status = DeliveryStatus.Delivered,
-                    ChannelIdentity = new ChannelIdentity()
+                actual.Should().BeEquivalentTo(
+                    new MessageDeliveryReceiptEvent()
                     {
-                        AppId = "an app id",
-                        Channel = ConversationChannel.Messenger,
-                        Identity = "an identity"
+                        AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                        ProjectId = "project id value",
+                        AppId = "app id value",
+                        EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                        MessageMetadata = "metadata value",
+                        CorrelationId = "correlation id value",
+                        MessageDeliveryReport = new MessageDeliveryReport()
+                        {
+                            MessageId = "message id",
+                            ConversationId = "conversation id",
+                            Status = DeliveryStatus.Delivered,
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                AppId = "an app id",
+                                Channel = ConversationChannel.Messenger,
+                                Identity = "an identity"
+                            },
+                            ContactId = "contact ID",
+                            Reason = new Reason()
+                            {
+                                Code = ReasonCode.RecipientNotOptedIn,
+                                Description = "reason description",
+                                SubCode = ReasonSubCode.UnspecifiedSubCode
+                            },
+                            Metadata = "metadata value",
+                            ProcessingMode = ProcessingMode.Dispatch
+                        }
                     },
-                    ContactId = "contact ID",
-                    Reason = new Reason()
-                    {
-                        Code = ReasonCode.RecipientNotOptedIn,
-                        Description = "reason description",
-                        SubCode = ReasonSubCode.UnspecifiedSubCode
-                    },
-                    Metadata = "metadata value",
-                    ProcessingMode = ProcessingMode.Dispatch
-                }
-            },
-                options => options.Excluding(x => x.MessageMetadata));
+                    options => options.Excluding(x => x.MessageMetadata));
+            }
         }
 
         [Fact]
@@ -548,38 +636,45 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/InboundContactEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<InboundEvent>();
+            var resultParse = Conversation.Webhooks.ParseEvent(json).As<InboundEvent>();
+            AssertEvent(resultParse);
 
-            result.Should().BeEquivalentTo(new InboundEvent()
+            var resultDeserialize = Deserialize<ICallbackEvent>(json).As<InboundEvent>();
+            AssertEvent(resultDeserialize);
+
+            void AssertEvent(InboundEvent actual)
             {
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                ProjectId = "project id value",
-                AppId = "app id value",
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                MessageMetadata = "metadata value",
-                CorrelationId = "correlation id value",
-
-                Event = new EventInboundAllOfEvent()
-                {
-                    Id = "event id",
-                    Direction = ConversationDirection.ToApp,
-                    ChannelIdentity = new ChannelIdentity()
+                actual.Should().BeEquivalentTo(
+                    new InboundEvent()
                     {
-                        AppId = "an app id",
-                        Channel = ConversationChannel.Messenger,
-                        Identity = "an identity"
+                        AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                        ProjectId = "project id value",
+                        AppId = "app id value",
+                        EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                        MessageMetadata = "metadata value",
+                        CorrelationId = "correlation id value",
+                        Event = new EventInboundAllOfEvent()
+                        {
+                            Id = "event id",
+                            Direction = ConversationDirection.ToApp,
+                            ChannelIdentity = new ChannelIdentity()
+                            {
+                                AppId = "an app id",
+                                Channel = ConversationChannel.Messenger,
+                                Identity = "an identity"
+                            },
+                            ContactId = "contact ID",
+                            ConversationId = "conversation id",
+                            AcceptTime = Helpers.ParseUtc("2020-11-17T16:07:15Z"),
+                            ProcessingMode = ProcessingMode.Dispatch,
+                            ContactEvent = new ContactEvent()
+                            {
+                                ComposingEvent = new object() // Empty object
+                            }
+                        }
                     },
-                    ContactId = "contact ID",
-                    ConversationId = "conversation id",
-                    AcceptTime = Helpers.ParseUtc("2020-11-17T16:07:15Z"),
-                    ProcessingMode = ProcessingMode.Dispatch,
-                    ContactEvent = new ContactEvent()
-                    {
-                        ComposingEvent = new object() // Empty object
-                    }
-                }
-            },
-                options => options.Excluding(x => x.MessageMetadata));
+                    options => options.Excluding(x => x.MessageMetadata));
+            }
         }
 
         [Fact]
@@ -587,44 +682,49 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/InboundContactMessageEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<InboundEvent>();
+            var resultParse = Conversation.Webhooks.ParseEvent(json).As<InboundEvent>();
+            AssertEvent(resultParse);
 
-            result.Should().BeEquivalentTo(new InboundEvent()
+            var resultDeserialize = Deserialize<ICallbackEvent>(json).As<InboundEvent>();
+            AssertEvent(resultDeserialize);
+
+            void AssertEvent(InboundEvent actual)
             {
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                ProjectId = "project id value",
-                AppId = "app id value",
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                MessageMetadata = "metadata value",
-                CorrelationId = "correlation id value",
-
-                Event = new EventInboundAllOfEvent()
+                actual.Should().BeEquivalentTo(new InboundEvent()
                 {
-                    Id = "event id",
-                    Direction = ConversationDirection.ToApp,
-                    ChannelIdentity = new ChannelIdentity()
+                    AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    ProjectId = "project id value",
+                    AppId = "app id value",
+                    EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                    MessageMetadata = "metadata value",
+                    CorrelationId = "correlation id value",
+                    Event = new EventInboundAllOfEvent()
                     {
-                        AppId = "an app id",
-                        Channel = ConversationChannel.Messenger,
-                        Identity = "an identity"
-                    },
-                    ContactId = "contact ID",
-                    ConversationId = "conversation id",
-                    AcceptTime = Helpers.ParseUtc("2020-11-17T16:07:15Z"),
-                    ProcessingMode = ProcessingMode.Dispatch,
-                    ContactMessageEvent = new ContactMessageEvent()
-                    {
-                        ReactionEvent = new ReactionEvent()
+                        Id = "event id",
+                        Direction = ConversationDirection.ToApp,
+                        ChannelIdentity = new ChannelIdentity()
                         {
-                            Emoji = "\uD83D\uDD25 Dotnet SDK",
-                            Action = ReactionAction.React,
-                            MessageId = "message id value",
-                            ReactionCategory = "reaction category"
+                            AppId = "an app id",
+                            Channel = ConversationChannel.Messenger,
+                            Identity = "an identity"
+                        },
+                        ContactId = "contact ID",
+                        ConversationId = "conversation id",
+                        AcceptTime = Helpers.ParseUtc("2020-11-17T16:07:15Z"),
+                        ProcessingMode = ProcessingMode.Dispatch,
+                        ContactMessageEvent = new ContactMessageEvent()
+                        {
+                            ReactionEvent = new ReactionEvent()
+                            {
+                                Emoji = "\uD83D\uDD25 Dotnet SDK",
+                                Action = ReactionAction.React,
+                                MessageId = "message id value",
+                                ReactionCategory = "reaction category"
+                            }
                         }
                     }
-                }
-            },
-                options => options.Excluding(x => x.MessageMetadata));
+                }, options => options.Excluding(x => x.MessageMetadata));
+            }
         }
 
         [Fact]
@@ -632,39 +732,46 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/MessageInboundEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<MessageInboundEvent>();
+            var resultParse = Conversation.Webhooks.ParseEvent(json).As<MessageInboundEvent>();
+            AssertEvent(resultParse);
 
-            result.Should().BeEquivalentTo(new MessageInboundEvent
+            var resultDeserialize = Deserialize<ICallbackEvent>(json).As<MessageInboundEvent>();
+            AssertEvent(resultDeserialize);
+
+            void AssertEvent(MessageInboundEvent actual)
             {
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                ProjectId = "project id value",
-                AppId = "app id value",
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                MessageMetadata = "metadata value",
-                CorrelationId = "correlation id value",
-                Message = new MessageInboundEventItem()
+                actual.Should().BeEquivalentTo(new MessageInboundEvent
                 {
-                    Id = "event id",
-                    Direction = ConversationDirection.ToApp,
-                    ChannelIdentity = new ChannelIdentity
+                    AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    ProjectId = "project id value",
+                    AppId = "app id value",
+                    EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                    MessageMetadata = "metadata value",
+                    CorrelationId = "correlation id value",
+                    Message = new MessageInboundEventItem()
                     {
-                        AppId = "an app id",
-                        Channel = ConversationChannel.Messenger,
-                        Identity = "an identity"
-                    },
-                    ContactId = "contact ID",
-                    ConversationId = "conversation id",
-                    Metadata = "metadata value",
-                    AcceptTime = Helpers.ParseUtc("2020-11-17T16:07:15Z"),
-                    SenderId = "sender id value",
-                    ProcessingMode = ProcessingMode.Dispatch,
-                    Injected = true,
-                    ContactMessage = new ContactMessage(new TextMessage("This is a text message."))
-                    {
-                        ReplyTo = new ReplyTo("message id value")
+                        Id = "event id",
+                        Direction = ConversationDirection.ToApp,
+                        ChannelIdentity = new ChannelIdentity
+                        {
+                            AppId = "an app id",
+                            Channel = ConversationChannel.Messenger,
+                            Identity = "an identity"
+                        },
+                        ContactId = "contact ID",
+                        ConversationId = "conversation id",
+                        Metadata = "metadata value",
+                        AcceptTime = Helpers.ParseUtc("2020-11-17T16:07:15Z"),
+                        SenderId = "sender id value",
+                        ProcessingMode = ProcessingMode.Dispatch,
+                        Injected = true,
+                        ContactMessage = new ContactMessage(new TextMessage("This is a text message."))
+                        {
+                            ReplyTo = new ReplyTo("message id value")
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
         [Fact]
@@ -672,129 +779,139 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/MessageSubmitEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<MessageSubmitEvent>();
+            var resultParse = Conversation.Webhooks.ParseEvent(json).As<MessageSubmitEvent>();
+            AssertEvent(resultParse);
 
-            result.Should().BeEquivalentTo(new MessageSubmitEvent
+            var resultDeserialize = Deserialize<ICallbackEvent>(json).As<MessageSubmitEvent>();
+            AssertEvent(resultDeserialize);
+
+            void AssertEvent(MessageSubmitEvent actual)
             {
-                AppId = "app id value",
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                ProjectId = "project id value",
-                CorrelationId = "correlation id value",
-                MessageMetadata = "metadata value",
-                MessageSubmitNotification = new MessageSubmitNotification
-                {
-                    MessageId = "message id",
-                    ConversationId = "conversation id",
-                    ChannelIdentity = new ChannelIdentity
+                actual.Should().BeEquivalentTo(
+                    new MessageSubmitEvent
                     {
-                        AppId = "an app id",
-                        Channel = ConversationChannel.Messenger,
-                        Identity = "an identity"
-                    },
-                    ContactId = "contact ID",
-                    SubmittedMessage = new AppMessage(new TextMessage("This is a text message."))
-                    {
-                        ExplicitChannelMessage = new Dictionary<ConversationChannel, string>
+                        AppId = "app id value",
+                        AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                        EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                        ProjectId = "project id value",
+                        CorrelationId = "correlation id value",
+                        MessageMetadata = "metadata value",
+                        MessageSubmitNotification = new MessageSubmitNotification
                         {
-                            { ConversationChannel.KakaoTalk, "foo value" }
-                        },
-                        ExplicitChannelOmniMessage = new Dictionary<ChannelSpecificTemplate, IOmniMessageOverride>
-                        {
+                            MessageId = "message id",
+                            ConversationId = "conversation id",
+                            ChannelIdentity = new ChannelIdentity
                             {
-                                ChannelSpecificTemplate.KakaoTalk,
-                                new ChoiceMessage
+                                AppId = "an app id",
+                                Channel = ConversationChannel.Messenger,
+                                Identity = "an identity"
+                            },
+                            ContactId = "contact ID",
+                            SubmittedMessage = new AppMessage(new TextMessage("This is a text message."))
+                            {
+                                ExplicitChannelMessage = new Dictionary<ConversationChannel, string>
                                 {
-                                    TextMessage = new TextMessage("This is a text message."),
-                                    Choices = new List<Choice>
+                                    { ConversationChannel.KakaoTalk, "foo value" }
+                                },
+                                ExplicitChannelOmniMessage =
+                                    new Dictionary<ChannelSpecificTemplate, IOmniMessageOverride>
                                     {
-                                        new Choice
                                         {
-                                            CallMessage = new CallMessage
+                                            ChannelSpecificTemplate.KakaoTalk,
+                                            new ChoiceMessage
                                             {
-                                                PhoneNumber = "phone number value",
-                                                Title = "title value",
-                                            },
-                                            PostbackData = "postback call_message data value"
-                                        },
-                                        new Choice
-                                        {
-                                            LocationMessage = new LocationMessage
-                                            {
-                                                Coordinates = new Coordinates(47.6279809f, -2.8229159f),
-                                                Title = "title value",
-                                                Label = "label value"
-                                            },
-                                            PostbackData = "postback location_message data value"
-                                        },
-                                        new Choice
-                                        {
-                                            TextMessage = new TextMessage("This is a text message."),
-                                            PostbackData = "postback text_message data value"
-                                        },
-                                        new Choice
-                                        {
-                                            UrlMessage = new UrlMessage
-                                            {
-                                                Title = "title value",
-                                                Url = "an url value"
-                                            },
-                                            PostbackData = "postback url_message data value"
+                                                TextMessage = new TextMessage("This is a text message."),
+                                                Choices = new List<Choice>
+                                                {
+                                                    new Choice
+                                                    {
+                                                        CallMessage = new CallMessage
+                                                        {
+                                                            PhoneNumber = "phone number value",
+                                                            Title = "title value",
+                                                        },
+                                                        PostbackData = "postback call_message data value"
+                                                    },
+                                                    new Choice
+                                                    {
+                                                        LocationMessage = new LocationMessage
+                                                        {
+                                                            Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                                                            Title = "title value",
+                                                            Label = "label value"
+                                                        },
+                                                        PostbackData = "postback location_message data value"
+                                                    },
+                                                    new Choice
+                                                    {
+                                                        TextMessage = new TextMessage("This is a text message."),
+                                                        PostbackData = "postback text_message data value"
+                                                    },
+                                                    new Choice
+                                                    {
+                                                        UrlMessage = new UrlMessage
+                                                        {
+                                                            Title = "title value",
+                                                            Url = "an url value"
+                                                        },
+                                                        PostbackData = "postback url_message data value"
+                                                    }
+                                                }
+                                            }
                                         }
-                                    }
-                                }
-                            }
-                        },
-                        ChannelSpecificMessage = new Dictionary<ConversationChannel, IChannelSpecificMessage>
-                        {
-                            {
-                                ConversationChannel.Messenger,
-                                new FlowMessage()
+                                    },
+                                ChannelSpecificMessage = new Dictionary<ConversationChannel, IChannelSpecificMessage>
                                 {
-                                    Message = new FlowChannelSpecificMessage()
                                     {
-                                        FlowId = "1",
-                                        FlowCta = "Book!",
-                                        Header = new WhatsAppInteractiveTextHeader()
+                                        ConversationChannel.Messenger,
+                                        new FlowMessage()
                                         {
-                                            Text = "text header value",
-                                        },
-                                        Body = new()
-                                        {
-                                            Text = "text body value",
-                                        },
-                                        Footer = new WhatsAppInteractiveFooter()
-                                        {
-                                            Text = "Flow message footer"
-                                        },
-                                        FlowToken = "AQAAAAACS5FpgQ_cAAAAAD0QI3s.",
-                                        FlowMode = FlowChannelSpecificMessage.FlowModeType.Draft,
-                                        FlowAction = FlowChannelSpecificMessage.FlowActionType.Navigate,
-                                        FlowActionPayload = new FlowChannelSpecificMessageFlowActionPayload()
-                                        {
-                                            Screen = "<SCREEN_NAME>",
-                                            Data = new JsonObject()
+                                            Message = new FlowChannelSpecificMessage()
                                             {
-                                                ["product_name"] = "name",
-                                                ["product_description"] = "description",
-                                                ["product_price"] = 100
+                                                FlowId = "1",
+                                                FlowCta = "Book!",
+                                                Header = new WhatsAppInteractiveTextHeader()
+                                                {
+                                                    Text = "text header value",
+                                                },
+                                                Body = new WhatsAppInteractiveBody()
+                                                {
+                                                    Text = "text body value",
+                                                },
+                                                Footer = new WhatsAppInteractiveFooter()
+                                                {
+                                                    Text = "Flow message footer"
+                                                },
+                                                FlowToken = "AQAAAAACS5FpgQ_cAAAAAD0QI3s.",
+                                                FlowMode = FlowChannelSpecificMessage.FlowModeType.Draft,
+                                                FlowAction = FlowChannelSpecificMessage.FlowActionType.Navigate,
+                                                FlowActionPayload = new FlowChannelSpecificMessageFlowActionPayload()
+                                                {
+                                                    Screen = "<SCREEN_NAME>",
+                                                    Data = new JsonObject()
+                                                    {
+                                                        ["product_name"] = "name",
+                                                        ["product_description"] = "description",
+                                                        ["product_price"] = 100
+                                                    }
+                                                }
                                             }
                                         }
                                     }
+                                },
+                                Agent = new Agent
+                                {
+                                    DisplayName = "display_name value",
+                                    Type = AgentType.Bot,
+                                    PictureUrl = "picture_url value"
                                 }
-                            }
-                        },
-                        Agent = new Agent
-                        {
-                            DisplayName = "display_name value",
-                            Type = AgentType.Bot,
-                            PictureUrl = "picture_url value"
+                            },
+                            Metadata = "metadata value",
+                            ProcessingMode = ProcessingMode.Dispatch
                         }
                     },
-                    Metadata = "metadata value",
-                    ProcessingMode = ProcessingMode.Dispatch
-                }
-            });
+                    options => options.Excluding(x => x.MessageMetadata));
+            }
         }
 
         [Fact]
@@ -803,45 +920,53 @@ namespace Sinch.Tests.Conversation
             string json =
                 Helpers.LoadResources("Conversation/Hooks/MessageInboundSmartConversationRedactionEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json)
+            var resultParse = Conversation.Webhooks.ParseEvent(json)
                 .As<MessageInboundSmartConversationRedactionEvent>();
+            AssertEvent(resultParse);
 
-            result.Should().BeEquivalentTo(new MessageInboundSmartConversationRedactionEvent
+            var resultDeserialize = Deserialize<ICallbackEvent>(json)
+                .As<MessageInboundSmartConversationRedactionEvent>();
+            AssertEvent(resultDeserialize);
+
+            void AssertEvent(MessageInboundSmartConversationRedactionEvent actual)
             {
-                AppId = "app id value",
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                ProjectId = "project id value",
-                CorrelationId = "correlation id value",
-                MessageMetadata = "metadata value",
-                MessageRedaction = new MessageInboundEventItem()
+                actual.Should().BeEquivalentTo(new MessageInboundSmartConversationRedactionEvent
                 {
-                    Id = "id",
-                    Direction = ConversationDirection.ToApp,
-                    ContactMessage = new ContactMessage(new MediaMessage
+                    AppId = "app id value",
+                    AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                    ProjectId = "project id value",
+                    CorrelationId = "correlation id value",
+                    MessageMetadata = "metadata value",
+                    MessageRedaction = new MessageInboundEventItem
                     {
-                        Url = "an url value",
-                        ThumbnailUrl = "another url",
-                        FilenameOverride = "filename override value"
-                    })
-                    {
-                        ReplyTo = new ReplyTo("message id value")
-                    },
-                    ChannelIdentity = new ChannelIdentity
-                    {
-                        AppId = "an app id",
-                        Channel = ConversationChannel.Messenger,
-                        Identity = "an identity"
-                    },
-                    ConversationId = "conversation id",
-                    ContactId = "contact id",
-                    Metadata = "metadata value",
-                    AcceptTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                    SenderId = "sender id",
-                    ProcessingMode = ProcessingMode.Dispatch,
-                    Injected = true
-                }
-            });
+                        Id = "id",
+                        Direction = ConversationDirection.ToApp,
+                        ContactMessage = new ContactMessage(new MediaMessage
+                        {
+                            Url = "an url value",
+                            ThumbnailUrl = "another url",
+                            FilenameOverride = "filename override value"
+                        })
+                        {
+                            ReplyTo = new ReplyTo("message id value")
+                        },
+                        ChannelIdentity = new ChannelIdentity
+                        {
+                            AppId = "an app id",
+                            Channel = ConversationChannel.Messenger,
+                            Identity = "an identity"
+                        },
+                        ConversationId = "conversation id",
+                        ContactId = "contact id",
+                        Metadata = "metadata value",
+                        AcceptTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                        SenderId = "sender id",
+                        ProcessingMode = ProcessingMode.Dispatch,
+                        Injected = true
+                    }
+                });
+            }
         }
 
         [Fact]
@@ -849,125 +974,127 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/SmartConversationsEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<SmartConversationsEvent>();
+            var resultParse = Conversation.Webhooks.ParseEvent(json).As<SmartConversationsEvent>();
+            AssertEvent(resultParse);
 
-            result.Should().BeEquivalentTo(new SmartConversationsEvent
+            var resultDeserialize = Deserialize<ICallbackEvent>(json).As<SmartConversationsEvent>();
+            AssertEvent(resultDeserialize);
+
+            void AssertEvent(SmartConversationsEvent actual)
             {
-                AppId = "app id value",
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                ProjectId = "project id value",
-                CorrelationId = "correlation id value",
-                MessageMetadata = "metadata value",
-                SmartConversationNotification = new SmartConversationNotification
+                actual.Should().BeEquivalentTo(new SmartConversationsEvent
                 {
-                    ContactId = "contact id",
-                    ChannelIdentity = "channel identity",
-                    Channel = ConversationChannel.Messenger,
-                    MessageId = "message id",
-                    ConversationId = "conversation id",
-                    AnalysisResults = new AnalysisResult
+                    AppId = "app id value",
+                    AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                    ProjectId = "project id value",
+                    CorrelationId = "correlation id value",
+                    MessageMetadata = "metadata value",
+                    SmartConversationNotification = new SmartConversationNotification
                     {
-                        MlSentimentResult = new List<MachineLearningSentimentResult>
+                        ContactId = "contact id",
+                        ChannelIdentity = "channel identity",
+                        Channel = ConversationChannel.Messenger,
+                        MessageId = "message id",
+                        ConversationId = "conversation id",
+                        AnalysisResults = new AnalysisResult
                         {
-                            new MachineLearningSentimentResult
+                            MlSentimentResult = new List<MachineLearningSentimentResult>
                             {
-                                Message = "message result",
-                                Results = new List<SentimentResult>
+                                new MachineLearningSentimentResult
                                 {
-                                    new SentimentResult
+                                    Message = "message result",
+                                    Results = new List<SentimentResult>
                                     {
-                                        Sentiment = Sentiment.Positive,
-                                        Score = 0.4f
-                                    }
-                                },
-                                Sentiment = Sentiment.Neutral,
-                                Score = 0.6f
-                            }
-                        },
-                        MlNluResult = new List<MachineLearningNLUResult>
-                        {
-                            new MachineLearningNLUResult
-                            {
-                                Message = "message ml_nlu_result",
-                                Results = new List<IntentResult>
-                                {
-                                    new IntentResult
-                                    {
-                                        Intent = "chitchat.greeting",
-                                        Score = 0.3f
-                                    }
-                                },
-                                Intent = "chitchat.compliment",
-                                Score = 0.2f
-                            }
-                        },
-                        MlImageRecognitionResult = new List<MachineLearningImageRecognitionResult>
-                        {
-                            new MachineLearningImageRecognitionResult
-                            {
-                                Url = "url value",
-                                DocumentImageClassification = new DocumentImageClassification
-                                {
-                                    DocType = "an image classification",
-                                    Confidence = 0.12f
-                                },
-                                OpticalCharacterRecognition = new OpticalCharacterRecognition
-                                {
-                                    Result = new List<OpticalCharacterRecognitionData>
-                                    {
-                                        new OpticalCharacterRecognitionData
+                                        new SentimentResult
                                         {
-                                            Data = new List<string> { "string 1", "string 2" }
+                                            Sentiment = Sentiment.Positive,
+                                            Score = 0.4f
                                         }
-                                    }
-                                },
-                                DocumentFieldClassification = new DocumentFieldClassification
+                                    },
+                                    Sentiment = Sentiment.Neutral,
+                                    Score = 0.6f
+                                }
+                            },
+                            MlNluResult = new List<MachineLearningNLUResult>
+                            {
+                                new MachineLearningNLUResult
                                 {
-                                    Result = new List<Dictionary<string, DocumentFieldData>>
+                                    Message = "message ml_nlu_result",
+                                    Results = new List<IntentResult>
                                     {
-                                        new()
+                                        new IntentResult
                                         {
+                                            Intent = "chitchat.greeting",
+                                            Score = 0.3f
+                                        }
+                                    },
+                                    Intent = "chitchat.compliment",
+                                    Score = 0.2f
+                                }
+                            },
+                            MlImageRecognitionResult = new List<MachineLearningImageRecognitionResult>
+                            {
+                                new MachineLearningImageRecognitionResult
+                                {
+                                    Url = "url value",
+                                    DocumentImageClassification = new DocumentImageClassification
+                                    {
+                                        DocType = "an image classification",
+                                        Confidence = 0.12f
+                                    },
+                                    OpticalCharacterRecognition = new OpticalCharacterRecognition
+                                    {
+                                        Result = new List<OpticalCharacterRecognitionData>
+                                        {
+                                            new OpticalCharacterRecognitionData
                                             {
-                                                "John",
-                                                new DocumentFieldData
-                                                {
-                                                    Data = new List<string> { "a string" }
-                                                }
-                                            },
+                                                Data = new List<string> { "string 1", "string 2" }
+                                            }
+                                        }
+                                    },
+                                    DocumentFieldClassification = new DocumentFieldClassification
+                                    {
+                                        Result = new List<Dictionary<string, DocumentFieldData>>
+                                        {
+                                            new Dictionary<string, DocumentFieldData>
                                             {
-                                                "Doe",
-                                                new DocumentFieldData
                                                 {
-                                                    Data = new List<string> { "another string" }
+                                                    "John",
+                                                    new DocumentFieldData { Data = new List<string> { "a string" } }
+                                                },
+                                                {
+                                                    "Doe",
+                                                    new DocumentFieldData
+                                                        { Data = new List<string> { "another string" } }
                                                 }
                                             }
                                         }
                                     }
                                 }
-                            }
-                        },
-                        MlPiiResult = new List<MachineLearningPIIResult>
-                        {
-                            new MachineLearningPIIResult
+                            },
+                            MlPiiResult = new List<MachineLearningPIIResult>
                             {
-                                Message = "analyzed message",
-                                Masked = "masked analyzed message"
-                            }
-                        },
-                        MlOffensiveAnalysisResult = new List<OffensiveAnalysis>
-                        {
-                            new OffensiveAnalysis
+                                new MachineLearningPIIResult
+                                {
+                                    Message = "analyzed message",
+                                    Masked = "masked analyzed message"
+                                }
+                            },
+                            MlOffensiveAnalysisResult = new List<OffensiveAnalysis>
                             {
-                                Message = "message value",
-                                Url = "URL value",
-                                Evaluation = Evaluation.Unsafe,
-                                Score = 0.456f
+                                new OffensiveAnalysis
+                                {
+                                    Message = "message value",
+                                    Url = "URL value",
+                                    Evaluation = Evaluation.Unsafe,
+                                    Score = 0.456f
+                                }
                             }
                         }
                     }
-                }
-            });
+                });
+            }
         }
 
         [Fact]
@@ -975,32 +1102,39 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/UnsupportedCallbackEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<UnsupportedCallbackEvent>();
+            var resultParse = Conversation.Webhooks.ParseEvent(json).As<UnsupportedCallbackEvent>();
+            AssertEvent(resultParse);
 
-            result.Should().BeEquivalentTo(new UnsupportedCallbackEvent
+            var resultDeserialize = Deserialize<ICallbackEvent>(json).As<UnsupportedCallbackEvent>();
+            AssertEvent(resultDeserialize);
+
+            void AssertEvent(UnsupportedCallbackEvent actual)
             {
-                AppId = "app id value",
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                ProjectId = "project id value",
-                CorrelationId = "correlation id value",
-                MessageMetadata = "metadata value",
-                UnsupportedCallback = new UnsupportedCallback
+                actual.Should().BeEquivalentTo(new UnsupportedCallbackEvent
                 {
-                    Channel = ConversationChannel.Messenger,
-                    Payload = "payload value",
-                    ProcessingMode = ProcessingMode.Dispatch,
-                    Id = "id value",
-                    ContactId = "contact id",
-                    ConversationId = "conversation id",
-                    ChannelIdentity = new ChannelIdentity
+                    AppId = "app id value",
+                    AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                    ProjectId = "project id value",
+                    CorrelationId = "correlation id value",
+                    MessageMetadata = "metadata value",
+                    UnsupportedCallback = new UnsupportedCallback
                     {
-                        AppId = "an app id",
                         Channel = ConversationChannel.Messenger,
-                        Identity = "an identity"
+                        Payload = "payload value",
+                        ProcessingMode = ProcessingMode.Dispatch,
+                        Id = "id value",
+                        ContactId = "contact id",
+                        ConversationId = "conversation id",
+                        ChannelIdentity = new ChannelIdentity
+                        {
+                            AppId = "an app id",
+                            Channel = ConversationChannel.Messenger,
+                            Identity = "an identity"
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
         [Fact]
@@ -1008,29 +1142,36 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/OptInEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<OptInEvent>();
+            var resultParse = Conversation.Webhooks.ParseEvent(json).As<OptInEvent>();
+            AssertEvent(resultParse);
 
-            result.Should().BeEquivalentTo(new OptInEvent()
+            var resultDeserialize = Deserialize<ICallbackEvent>(json).As<OptInEvent>();
+            AssertEvent(resultDeserialize);
+
+            void AssertEvent(OptInEvent actual)
             {
-                AppId = "app id value",
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                ProjectId = "project id value",
-                CorrelationId = "correlation id value",
-                MessageMetadata = "metadata value",
-                OptInNotification = new OptInEventAllOfOptInNotification()
+                actual.Should().BeEquivalentTo(new OptInEvent()
                 {
-                    RequestId = "request id",
-                    ContactId = "contact id",
-                    Channel = ConversationChannel.WhatsApp,
-                    Status = OptInStatus.OptInFailed,
-                    ErrorDetails = new OptInNotificationErrorDetails()
+                    AppId = "app id value",
+                    AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                    ProjectId = "project id value",
+                    CorrelationId = "correlation id value",
+                    MessageMetadata = "metadata value",
+                    OptInNotification = new OptInEventAllOfOptInNotification()
                     {
-                        Description = "Error description value"
-                    },
-                    ProcessingMode = ProcessingMode.Dispatch
-                }
-            });
+                        RequestId = "request id",
+                        ContactId = "contact id",
+                        Channel = ConversationChannel.WhatsApp,
+                        Status = OptInStatus.OptInFailed,
+                        ErrorDetails = new OptInNotificationErrorDetails()
+                        {
+                            Description = "Error description value"
+                        },
+                        ProcessingMode = ProcessingMode.Dispatch
+                    }
+                });
+            }
         }
 
         [Fact]
@@ -1038,29 +1179,36 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/OptOutEvent.json");
 
-            var result = JsonSerializer.Deserialize<ICallbackEvent>(json).As<OptOutEvent>();
+            var resultParse = Conversation.Webhooks.ParseEvent(json).As<OptOutEvent>();
+            AssertEvent(resultParse);
 
-            result.Should().BeEquivalentTo(new OptOutEvent()
+            var resultDeserialize = Deserialize<ICallbackEvent>(json).As<OptOutEvent>();
+            AssertEvent(resultDeserialize);
+
+            void AssertEvent(OptOutEvent actual)
             {
-                AppId = "app id value",
-                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
-                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
-                ProjectId = "project id value",
-                CorrelationId = "correlation id value",
-                MessageMetadata = "metadata value",
-                OptOutNotification = new OptOutNotification
+                actual.Should().BeEquivalentTo(new OptOutEvent()
                 {
-                    RequestId = "request id",
-                    ContactId = "contact id",
-                    Channel = ConversationChannel.WhatsApp,
-                    Status = OptOutStatus.OptOutFailed,
-                    ErrorDetails = new OptOutNotificationErrorDetails()
+                    AppId = "app id value",
+                    AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                    EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                    ProjectId = "project id value",
+                    CorrelationId = "correlation id value",
+                    MessageMetadata = "metadata value",
+                    OptOutNotification = new OptOutNotification
                     {
-                        Description = "Error description value"
-                    },
-                    ProcessingMode = ProcessingMode.Dispatch
-                }
-            });
+                        RequestId = "request id",
+                        ContactId = "contact id",
+                        Channel = ConversationChannel.WhatsApp,
+                        Status = OptOutStatus.OptOutFailed,
+                        ErrorDetails = new OptOutNotificationErrorDetails()
+                        {
+                            Description = "Error description value"
+                        },
+                        ProcessingMode = ProcessingMode.Dispatch
+                    }
+                });
+            }
         }
 
         [Fact]
@@ -1068,7 +1216,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/CommentEvent.json");
 
-            var result = JsonSerializer.Deserialize<ContactEvent>(json);
+            var result = Deserialize<ContactEvent>(json);
 
             result.CommentEvent.Should().BeEquivalentTo(new CommentEvent()
             {
@@ -1085,7 +1233,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/PaymentStatusUpdateEvent.json");
 
-            var result = JsonSerializer.Deserialize<ContactMessageEvent>(json);
+            var result = Deserialize<ContactMessageEvent>(json);
 
             result.PaymentStatusUpdateEvent.Should().BeEquivalentTo(new PaymentStatusUpdateEvent()
             {
@@ -1101,7 +1249,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/Hooks/ShortlinkActivatedEvent.json");
 
-            var result = JsonSerializer.Deserialize<ContactMessageEvent>(json);
+            var result = Deserialize<ContactMessageEvent>(json);
 
             result.ShortlinkActivatedEvent.Should().BeEquivalentTo(new ShortlinkActivatedEvent()
             {
@@ -1113,6 +1261,5 @@ namespace Sinch.Tests.Conversation
                 ExistingThread = null
             });
         }
-
     }
 }
