@@ -267,7 +267,7 @@ namespace Sinch.Tests.Conversation
             // the birthday format is YYYY-MM-DD
             var t = @"{ ""birthday"": ""2000-03-12"", ""name"": { ""full_name"": ""AAA""}, ""phone_numbers"":[] }";
 
-            var contact = JsonSerializer.Deserialize<ContactInfoMessage>(t);
+            var contact = DeserializeAsConversationClient<ContactInfoMessage>(t);
 
             contact.Birthday.Should().BeSameDateAs(new DateTime(2000, 03, 12));
         }
@@ -318,7 +318,7 @@ namespace Sinch.Tests.Conversation
         public void DeserializeFlowMessage()
         {
             var json = $"{{\"WHATSAPP\":{FlowsRawJson}}}";
-            var dict = JsonSerializer.Deserialize<Dictionary<ConversationChannel, IChannelSpecificMessage>>(json);
+            var dict = DeserializeAsConversationClient<Dictionary<ConversationChannel, IChannelSpecificMessage>>(json);
             dict[ConversationChannel.WhatsApp].Should().BeEquivalentTo(_flowMessage);
         }
 
@@ -343,7 +343,7 @@ namespace Sinch.Tests.Conversation
         {
             var json = Helpers.LoadResources("Conversation/Messages/WhatsAppInteractiveHeader.json");
 
-            var result = JsonSerializer.Deserialize<WhatsAppInteractiveImageHeader>(json);
+            var result = DeserializeAsConversationClient<WhatsAppInteractiveImageHeader>(json);
 
             result.Should().BeEquivalentTo(new WhatsAppInteractiveImageHeader()
             {
@@ -359,7 +359,7 @@ namespace Sinch.Tests.Conversation
         {
             var json = Helpers.LoadResources("Conversation/Messages/WhatsAppInteractiveDocument.json");
 
-            var result = JsonSerializer.Deserialize<WhatsAppInteractiveDocumentHeader>(json);
+            var result = DeserializeAsConversationClient<WhatsAppInteractiveDocumentHeader>(json);
 
             result.Should().BeEquivalentTo(new WhatsAppInteractiveDocumentHeader()
             {
@@ -375,7 +375,7 @@ namespace Sinch.Tests.Conversation
         {
             var json = Helpers.LoadResources("Conversation/Messages/WhatsAppInteractiveVideoHeader.json");
 
-            var result = JsonSerializer.Deserialize<WhatsAppInteractiveVideoHeader>(json);
+            var result = DeserializeAsConversationClient<WhatsAppInteractiveVideoHeader>(json);
 
             result.Should().BeEquivalentTo(new WhatsAppInteractiveVideoHeader()
             {
@@ -391,7 +391,7 @@ namespace Sinch.Tests.Conversation
         {
             var json = Helpers.LoadResources("Conversation/Messages/WhatsAppInteractiveTextHeader.json");
 
-            var result = JsonSerializer.Deserialize<WhatsAppInteractiveTextHeader>(json);
+            var result = DeserializeAsConversationClient<WhatsAppInteractiveTextHeader>(json);
 
             result.Should().BeEquivalentTo(new WhatsAppInteractiveTextHeader()
             {
