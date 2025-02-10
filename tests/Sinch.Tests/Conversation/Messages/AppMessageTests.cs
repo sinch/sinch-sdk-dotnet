@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
 using System.Text.Json.Nodes;
 using FluentAssertions;
 using Sinch.Conversation;
@@ -18,7 +17,7 @@ namespace Sinch.Tests.Conversation.Messages
         {
             var json = Helpers.LoadResources("Conversation/Messages/AppMessage/AppMessageCarouselMessage.json");
 
-            var result = JsonSerializer.Deserialize<AppMessage>(json);
+            var result = DeserializeAsConversationClient<AppMessage>(json);
 
             result.Should().BeEquivalentTo(new AppMessage(new CarouselMessage()
             {
@@ -210,7 +209,7 @@ namespace Sinch.Tests.Conversation.Messages
         {
             var json = Helpers.LoadResources("Conversation/Messages/AppMessage/AppMessageChoiceMessage.json");
 
-            var result = JsonSerializer.Deserialize<AppMessage>(json);
+            var result = DeserializeAsConversationClient<AppMessage>(json);
 
             result.Should().BeEquivalentTo(new AppMessage(new ChoiceMessage()
             {
@@ -355,7 +354,7 @@ namespace Sinch.Tests.Conversation.Messages
         {
             var json = Helpers.LoadResources("Conversation/Messages/AppMessage/AppMessageListMessage.json");
 
-            var result = JsonSerializer.Deserialize<AppMessage>(json);
+            var result = DeserializeAsConversationClient<AppMessage>(json);
 
             result.Should().BeEquivalentTo(new AppMessage(new ListMessage()
             {
@@ -492,7 +491,7 @@ namespace Sinch.Tests.Conversation.Messages
         {
             var json = Helpers.LoadResources("Conversation/Messages/AppMessage/AppMessageLocationMessage.json");
 
-            var result = JsonSerializer.Deserialize<AppMessage>(json);
+            var result = DeserializeAsConversationClient<AppMessage>(json);
 
             result.Should().BeEquivalentTo(new AppMessage(new LocationMessage()
             {
@@ -603,7 +602,7 @@ namespace Sinch.Tests.Conversation.Messages
         {
             var json = Helpers.LoadResources("Conversation/Messages/AppMessage/AppMessageMediaMessage.json");
 
-            var result = JsonSerializer.Deserialize<AppMessage>(json);
+            var result = DeserializeAsConversationClient<AppMessage>(json);
 
             result.Should().BeEquivalentTo(new AppMessage(new MediaMessage()
             {
@@ -714,7 +713,7 @@ namespace Sinch.Tests.Conversation.Messages
         {
             var json = Helpers.LoadResources("Conversation/Messages/AppMessage/AppMessageTemplateMessage.json");
 
-            var result = JsonSerializer.Deserialize<AppMessage>(json);
+            var result = DeserializeAsConversationClient<AppMessage>(json);
 
             result.Should().BeEquivalentTo(new AppMessage(new TemplateMessage()
             {
@@ -847,7 +846,7 @@ namespace Sinch.Tests.Conversation.Messages
         {
             var json = Helpers.LoadResources("Conversation/Messages/AppMessage/AppMessageContactInfoMessage.json");
 
-            var result = JsonSerializer.Deserialize<AppMessage>(json);
+            var result = DeserializeAsConversationClient<AppMessage>(json);
 
             result.Should().BeEquivalentTo(new AppMessage(new ContactInfoMessage()
             {
@@ -911,7 +910,7 @@ namespace Sinch.Tests.Conversation.Messages
         {
             var json = Helpers.LoadResources("Conversation/Messages/AppMessage/AppMessageCardMessage.json");
 
-            var result = JsonSerializer.Deserialize<AppMessage>(json);
+            var result = DeserializeAsConversationClient<AppMessage>(json);
 
             result.Should().BeEquivalentTo(new AppMessage(new CardMessage()
             {
@@ -1062,7 +1061,7 @@ namespace Sinch.Tests.Conversation.Messages
         {
             var json = Helpers.LoadResources("Conversation/Messages/AppMessage/AppMessageTextMessage.json");
 
-            var result = JsonSerializer.Deserialize<AppMessage>(json);
+            var result = DeserializeAsConversationClient<AppMessage>(json);
 
             result.Should().BeEquivalentTo(new AppMessage(new TextMessage("This is a text message."))
             {
@@ -1167,7 +1166,7 @@ namespace Sinch.Tests.Conversation.Messages
         {
             var json = Helpers.LoadResources("Conversation/Messages/AppMessage/AppMessageListMessageProduct.json");
 
-            var result = JsonSerializer.Deserialize<AppMessage>(json);
+            var result = DeserializeAsConversationClient<AppMessage>(json);
 
             result.Should().BeEquivalentTo(new AppMessage(new ListMessage()
             {
