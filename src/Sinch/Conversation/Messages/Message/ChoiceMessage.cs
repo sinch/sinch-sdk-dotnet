@@ -45,6 +45,21 @@ namespace Sinch.Conversation.Messages.Message
     /// </summary>
     public class UrlMessage
     {
+        [JsonConstructor]
+        public UrlMessage()
+        {
+        }
+
+        [Obsolete(
+            message:
+            "This method is obsolete and will be removed in a future version. Consider initializing properties directly",
+            error: false)]
+        public UrlMessage(string title, Uri url)
+        {
+            Title = title;
+            Url = url.ToString();
+        }
+
         [JsonPropertyName("title")]
 #if NET7_0_OR_GREATER
         public required string? Title { get; set; }
