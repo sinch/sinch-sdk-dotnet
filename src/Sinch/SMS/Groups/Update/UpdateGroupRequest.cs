@@ -8,11 +8,9 @@ namespace Sinch.SMS.Groups.Update
         /// <summary>
         ///     ID of a group that you are interested in getting.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string GroupId { get; set; }
-#else
-        public string GroupId { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     The name of the group.

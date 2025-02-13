@@ -16,11 +16,8 @@ namespace Sinch.Conversation.Messages.Message
         ///     A title for the message that is displayed near the products or choices.
         /// </summary>
         [JsonPropertyName("title")]
-#if NET7_0_OR_GREATER
         public required string Title { get; set; }
-#else
-        public string Title { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -34,12 +31,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     List of ListSection objects containing choices to be presented in the list message.
         /// </summary>
         [JsonPropertyName("sections")]
-#if NET7_0_OR_GREATER
         public required List<ListSection> Sections { get; set; }
-#else
-        public List<ListSection> Sections { get; set; } = null!;
-#endif
-
 
         /// <summary>
         ///     Gets or Sets MessageProperties

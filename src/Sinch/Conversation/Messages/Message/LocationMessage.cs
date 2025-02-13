@@ -11,12 +11,10 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Gets or Sets Coordinates
         /// </summary>
+
         [JsonPropertyName("coordinates")]
-#if NET7_0_OR_GREATER
         public required Coordinates Coordinates { get; set; }
-#else
-        public Coordinates Coordinates { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -30,11 +28,8 @@ namespace Sinch.Conversation.Messages.Message
         ///     The title is shown close to the button or link that leads to a map showing the location. The title can be clickable in some cases.
         /// </summary>
         [JsonPropertyName("title")]
-#if NET7_0_OR_GREATER
         public required string Title { get; set; }
-#else
-        public string Title { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -61,23 +56,19 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     The latitude.
         /// </summary>
+
         [JsonPropertyName("latitude")]
-#if NET7_0_OR_GREATER
         public float Latitude { get; init; } = Latitude;
-#else
-        public float Latitude { get; } = Latitude;
-#endif
+
 
 
         /// <summary>
         ///     The longitude.
         /// </summary>
+
         [JsonPropertyName("longitude")]
-#if NET7_0_OR_GREATER
         public float Longitude { get; init; } = Longitude;
-#else
-        public float Longitude { get; } = Longitude;
-#endif
+
 
 
         /// <summary>

@@ -12,11 +12,9 @@ namespace Sinch.Conversation.Apps
         /// <summary>
         ///     Gets or Sets Channel
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required ConversationChannel Channel { get; set; }
-#else
-        public ConversationChannel Channel { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     The secret used to verify the channel callbacks for channels which support callback verification.

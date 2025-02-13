@@ -10,21 +10,17 @@ namespace Sinch.Conversation.Webhooks
         /// <summary>
         ///     The Client ID that will be used in the OAuth2 Client Credentials flow.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string ClientId { get; set; }
-#else
-        public string ClientId { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
         ///     The Client Secret that will be used in the OAuth2 Client Credentials flow.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string ClientSecret { get; set; }
-#else
-        public string ClientSecret { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -32,11 +28,9 @@ namespace Sinch.Conversation.Webhooks
         ///     token and &#x60;expires_in&#x60; value (in seconds). The &#x60;expires_in&#x60; value, which must be a minimum of
         ///     30 seconds and a maximum of 3600 seconds, is how long Sinch will save the access token before asking for a new one.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string Endpoint { get; set; }
-#else
-        public string Endpoint { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

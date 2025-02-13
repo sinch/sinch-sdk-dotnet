@@ -9,20 +9,16 @@ namespace Sinch.Conversation.TemplatesV2
         /// <summary>
         ///     The default translation to use if translation not specified. Specified as a BCP-47 &#x60;language_code&#x60; and the &#x60;language_code&#x60; must exist in the translations list.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string DefaultTranslation { get; set; }
-#else
-        public string DefaultTranslation { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     Gets or Sets Translations
         /// </summary>
-#if NET7_0_OR_GREATER
-         public required List<TemplateTranslation> Translations { get; set; }
-#else
-        public List<TemplateTranslation> Translations { get; set; } = null!;
-#endif
+
+        public required List<TemplateTranslation> Translations { get; set; }
+
 
 
         /// <summary>

@@ -9,11 +9,9 @@ namespace Sinch.Verification.Report.Request
         /// <summary>
         ///     A configuration object containing settings specific to Phone Call verifications.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required Callout Callout { get; set; }
-#else
-        public Callout Callout { get; set; } = null!;
-#endif
+
     }
 
     public class Callout

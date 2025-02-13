@@ -81,11 +81,9 @@ namespace Sinch.Auth
         private class AuthResponse
         {
             [JsonPropertyName("access_token")]
-#if NET7_0_OR_GREATER
-             public required string AccessToken { get; set; }
-#else
-            public string AccessToken { get; set; } = null!;
-#endif
+
+            public required string AccessToken { get; set; }
+
 
 
             /// <summary>

@@ -7,11 +7,9 @@ namespace Sinch.Voice.Applications.UpdateCallbackUrls
         /// <summary>
         ///     The unique identifying key of the application.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string ApplicationKey { get; set; }
-#else
-        public string? ApplicationKey { get; set; }
-#endif
+
         /// <summary>
         ///     Gets or Sets Url
         /// </summary>

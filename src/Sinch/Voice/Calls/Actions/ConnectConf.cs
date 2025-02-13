@@ -12,11 +12,9 @@ namespace Sinch.Voice.Calls.Actions
         ///     The unique identifier of the conference. Shouldn&#39;t exceed 64 characters.
         /// </summary>
         [JsonPropertyName("conferenceId")]
-#if NET7_0_OR_GREATER
+
         public required string ConferenceId { get; set; }
-#else
-        public string ConferenceId { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

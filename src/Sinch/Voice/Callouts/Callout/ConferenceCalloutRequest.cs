@@ -5,20 +5,16 @@ namespace Sinch.Voice.Callouts.Callout
         /// <summary>
         ///     The type of device and number or endpoint to call.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required Destination Destination { get; set; }
-#else
-        public Destination Destination { get; set; } = null!;
-#endif
+
         /// <summary>
         ///     The conferenceId of the conference to which you want the callee to join. If the conferenceId doesn't exist a
         ///     conference room will be created.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string ConferenceId { get; set; }
-#else
-        public string ConferenceId { get; set; } = null!;
-#endif
+
         /// <inheritdoc cref="ConferenceDtmfOptions" />
         public ConferenceDtmfOptions? ConferenceDtmfOptions { get; set; }
 
