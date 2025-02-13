@@ -11,7 +11,7 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonPropertyName("products")]
 #if NET7_0_OR_GREATER
-       public required List<ProductItem> Products { get; set; }
+        public required List<ProductItem> Products { get; set; }
 #else
         public List<ProductItem> Products { get; set; } = null!;
 #endif

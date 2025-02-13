@@ -52,7 +52,7 @@ namespace Sinch.Conversation.Webhooks
         ///     for a complete list.
         /// </summary>
 #if NET7_0_OR_GREATER
-        public required List<WebhookTrigger> Triggers { get;set;}
+        public required List<WebhookTrigger> Triggers { get; set; }
 #else
         public List<WebhookTrigger> Triggers { get; set; } = null!;
 #endif

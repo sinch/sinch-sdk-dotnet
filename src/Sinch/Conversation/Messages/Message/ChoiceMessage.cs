@@ -105,7 +105,7 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonPropertyName("phone_number")]
 #if NET7_0_OR_GREATER
-public required  string PhoneNumber { get; set; }
+        public required string PhoneNumber { get; set; }
 #else
         public string PhoneNumber { get; set; } = null!;
 #endif
@@ -116,7 +116,7 @@ public required  string PhoneNumber { get; set; }
         /// </summary>
         [JsonPropertyName("title")]
 #if NET7_0_OR_GREATER
-         public required string Title { get; set; }
+        public required string Title { get; set; }
 #else
         public string Title { get; set; } = null!;
 #endif
