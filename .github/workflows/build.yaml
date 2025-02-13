@@ -84,7 +84,7 @@ jobs:
         run: dotnet pack --configuration Release src/Sinch -p:PackageVersion=${{ steps.gitversion.outputs.semVer }} -p:Version=${{ steps.gitversion.outputs.semVer }} --no-restore
 
       - name: Archive nuget packages
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: package
           path: src/Sinch/bin/Release/*.nupkg

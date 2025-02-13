@@ -1,0 +1,10 @@
+{
+  "media_message": {
+    "thumbnail_url": "another url",
+    "url": "an url value",
+    "filename_override": "filename override value"
+  },
+  "reply_to": {
+    "message_id": "message id value"
+  }
+}

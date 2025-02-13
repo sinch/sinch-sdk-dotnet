@@ -14,6 +14,17 @@ namespace Sinch.Conversation.Hooks.Models
         [JsonPropertyName("payment_status_update_event")]
         public PaymentStatusUpdateEvent? PaymentStatusUpdateEvent { get; set; }
 
+        /// <summary>
+        ///     Gets or Sets ReactionEvent
+        /// </summary>
+        [JsonPropertyName("reaction_event")]
+        public ReactionEvent? ReactionEvent { get; set; }
+
+        /// <summary>
+        ///     Gets or Sets ReactionEvent
+        /// </summary>
+        [JsonPropertyName("shortlink_activated_event")]
+        public ShortlinkActivatedEvent? ShortlinkActivatedEvent { get; set; }
 
         /// <summary>
         ///     Returns the string presentation of the object

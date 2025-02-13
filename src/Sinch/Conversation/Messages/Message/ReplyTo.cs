@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -8,6 +9,12 @@ namespace Sinch.Conversation.Messages.Message
     /// <param name="MessageId">The Id of the message that this is a response to</param>
     public sealed record ReplyTo(string MessageId)
     {
+        /// <summary>
+        ///      The Id of the message that this is a response to
+        /// </summary>
+        [JsonPropertyName("message_id")]
+        public string MessageId { get; set; } = MessageId;
+
         /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>

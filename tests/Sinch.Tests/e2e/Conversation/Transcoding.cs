@@ -26,9 +26,9 @@ namespace Sinch.Tests.e2e.Conversation
                 },
                 AppMessage = new AppMessage(new TextMessage("aaa"))
                 {
-                    ExplicitChannelMessage = new Dictionary<ConversationChannel, JsonValue>()
+                    ExplicitChannelMessage = new Dictionary<ConversationChannel, string>()
                     {
-                        { ConversationChannel.WhatsApp, JsonValue.Create("data") }
+                        { ConversationChannel.WhatsApp, "data" }
                     },
                     Agent = new Agent()
                     {

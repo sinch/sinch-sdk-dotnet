@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Hooks

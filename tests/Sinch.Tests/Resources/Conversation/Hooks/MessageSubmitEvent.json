@@ -1,0 +1,105 @@
+{
+  "app_id": "app id value",
+  "accepted_time": "2020-11-17T16:05:51.724083Z",
+  "event_time": "2020-11-17T16:05:45Z",
+  "message_metadata": "metadata value",
+  "project_id": "project id value",
+  "correlation_id": "correlation id value",
+  "message_submit_notification": {
+    "message_id": "message id",
+    "conversation_id": "conversation id",
+    "channel_identity": {
+      "app_id": "an app id",
+      "channel": "MESSENGER",
+      "identity": "an identity"
+    },
+    "contact_id": "contact ID",
+    "submitted_message": {
+      "text_message": {
+        "text": "This is a text message."
+      },
+      "explicit_channel_message": {
+        "KAKAOTALK": "foo value"
+      },
+      "explicit_channel_omni_message": {
+        "KAKAOTALK": {
+          "choice_message": {
+            "text_message": {
+              "text": "This is a text message."
+            },
+            "choices": [
+              {
+                "call_message": {
+                  "title": "title value",
+                  "phone_number": "phone number value"
+                },
+                "postback_data": "postback call_message data value"
+              },
+              {
+                "location_message": {
+                  "coordinates": {
+                    "latitude": 47.6279809,
+                    "longitude": -2.8229159
+                  },
+                  "title": "title value",
+                  "label": "label value"
+                },
+                "postback_data": "postback location_message data value"
+              },
+              {
+                "text_message": {
+                  "text": "This is a text message."
+                },
+                "postback_data": "postback text_message data value"
+              },
+              {
+                "url_message": {
+                  "title": "title value",
+                  "url": "an url value"
+                },
+                "postback_data": "postback url_message data value"
+              }
+            ]
+          }
+        }
+      },
+      "channel_specific_message": {
+        "MESSENGER": {
+          "message_type": "FLOWS",
+          "message": {
+            "flow_id": "1",
+            "flow_cta": "Book!",
+            "header": {
+              "type": "text",
+              "text": "text header value"
+            },
+            "body": {
+              "text": "Flow message body"
+            },
+            "footer": {
+              "text": "Flow message footer"
+            },
+            "flow_token": "AQAAAAACS5FpgQ_cAAAAAD0QI3s.",
+            "flow_mode": "draft",
+            "flow_action": "navigate",
+            "flow_action_payload": {
+              "screen": "<SCREEN_NAME>",
+              "data": {
+                "product_name": "name",
+                "product_description": "description",
+                "product_price": 100
+              }
+            }
+          }
+        }
+      },
+      "agent": {
+        "display_name": "display_name value",
+        "type": "BOT",
+        "picture_url": "picture_url value"
+      }
+    },
+    "metadata": "metadata value",
+    "processing_mode": "DISPATCH"
+  }
+}

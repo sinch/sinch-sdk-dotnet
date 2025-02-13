@@ -33,30 +33,36 @@ namespace Sinch.Tests.e2e.Conversation
         [Fact]
         public async Task Create()
         {
-            var response = await SinchClientMockServer.Conversation.Webhooks.Create(new Webhook()
+            var response = await SinchClientMockServer.Conversation.Webhooks.Create(new CreateWebhookRequest()
             {
-                AppId = "APPID",
-                Secret = "secret",
-                Target = "http://localhost:8080",
+                AppId = "01W4FFL35P4NC4K35CONVAPP001",
+                Secret = "CactusKnight_SurfsWaves",
+                Target = "https://my-callback-server.com/capability",
                 TargetType = WebhookTargetType.Http,
                 Triggers = new List<WebhookTrigger>()
                 {
                     WebhookTrigger.Capability
-                },
-                ClientCredentials = new ClientCredentials()
-                {
-                    Endpoint = "a",
-                    ClientId = "b",
-                    ClientSecret = "c"
-                },
+                }
             });
-            response.Should().BeEquivalentTo(_webhookResponse);
+            response.Should().BeEquivalentTo(new Webhook()
+            {
+                Id = "01W4FFL35P4NC4K35WEBHOOK004",
+                AppId = "01W4FFL35P4NC4K35CONVAPP001",
+                Target = "https://my-callback-server.com/capability",
+                TargetType = WebhookTargetType.Http,
+                Secret = "CactusKnight_SurfsWaves",
+                Triggers = new List<WebhookTrigger>()
+                {
+                    WebhookTrigger.Capability
+                },
+                ClientCredentials = null
+            });
         }
 
         [Fact]
         public async Task CreateInvalidValue()
         {
-            var op = () => SinchClientMockServer.Conversation.Webhooks.Create(new Webhook()
+            var op = () => SinchClientMockServer.Conversation.Webhooks.Create(new CreateWebhookRequest()
             {
                 AppId = "APPID",
                 Target = "http://localhost:8080",
@@ -76,7 +82,24 @@ namespace Sinch.Tests.e2e.Conversation
         public async Task Get()
         {
             var response = await SinchClientMockServer.Conversation.Webhooks.Get("123");
-            response.Should().BeEquivalentTo(_webhookResponse);
+            response.Should().BeEquivalentTo(new Webhook()
+            {
+                Id = "01W4FFL35P4NC4K35WEBHOOK001",
+                AppId = "01W4FFL35P4NC4K35CONVAPP001",
+                Target = "https://my-callback-server.com/unsupported",
+                TargetType = WebhookTargetType.Http,
+                Secret = "VeganVampire_SipsTea",
+                Triggers = new List<WebhookTrigger>()
+                {
+                    WebhookTrigger.Unsupported
+                },
+                ClientCredentials = new ClientCredentials()
+                {
+                    Endpoint = "https://my-auth-server.com/oauth2/token",
+                    ClientId = "webhook-username",
+                    ClientSecret = "webhook-password"
+                }
+            });
         }
 
         [Fact]
@@ -90,14 +113,105 @@ namespace Sinch.Tests.e2e.Conversation
         public async Task List()
         {
             var response = await SinchClientMockServer.Conversation.Webhooks.List("appid");
-            response.Should().HaveCount(1);
+
+            var expected = new List<Webhook>
+            {
+                new Webhook
+                {
+                    Id = "01W4FFL35P4NC4K35WEBHOOK001",
+                    AppId = "01W4FFL35P4NC4K35CONVAPP001",
+                    Target = "https://my-callback-server.com/unsupported",
+                    TargetType = WebhookTargetType.Http,
+                    Secret = "VeganVampire_SipsTea",
+                    Triggers = new List<WebhookTrigger> { WebhookTrigger.Unsupported },
+                    ClientCredentials = new ClientCredentials
+                    {
+                        Endpoint = "https://my-auth-server.com/oauth2/token",
+                        ClientId = "webhook-username",
+                        ClientSecret = "webhook-password"
+                    }
+                },
+                new Webhook
+                {
+                    Id = "01W4FFL35P4NC4K35WEBHOOK002",
+                    AppId = "01W4FFL35P4NC4K35CONVAPP001",
+                    Target = "https://my-callback-server.com/contact",
+                    TargetType = WebhookTargetType.Http,
+                    Secret = "DiscoDragon_BuildsLego",
+                    Triggers = new List<WebhookTrigger>
+                    {
+                        WebhookTrigger.ContactCreate,
+                        WebhookTrigger.ContactDelete,
+                        WebhookTrigger.ContactIdentitiesDuplication,
+                        WebhookTrigger.ContactMerge,
+                        WebhookTrigger.ContactUpdate
+                    },
+                    ClientCredentials = null
+                },
+                new Webhook
+                {
+                    Id = "01W4FFL35P4NC4K35WEBHOOK003",
+                    AppId = "01W4FFL35P4NC4K35CONVAPP001",
+                    Target = "https://my-callback-server.com/conversation",
+                    TargetType = WebhookTargetType.Http,
+                    Secret = "PunkRockPenguin_GoesFishing",
+                    Triggers = new List<WebhookTrigger>
+                    {
+                        WebhookTrigger.ConversationDelete,
+                        WebhookTrigger.ConversationStart,
+                        WebhookTrigger.ConversationStop,
+                        WebhookTrigger.EventDelivery,
+                        WebhookTrigger.EventInbound,
+                        WebhookTrigger.MessageDelivery,
+                        WebhookTrigger.MessageInbound,
+                        WebhookTrigger.MessageSubmit
+                    },
+                    ClientCredentials = null
+                },
+                new Webhook
+                {
+                    Id = "01W4FFL35P4NC4K35WEBHOOK004",
+                    AppId = "01W4FFL35P4NC4K35CONVAPP001",
+                    Target = "https://my-callback-server.com/capability",
+                    TargetType = WebhookTargetType.Http,
+                    Secret = "CactusKnight_SurfsWaves",
+                    Triggers = new List<WebhookTrigger> { WebhookTrigger.Capability },
+                    ClientCredentials = null
+                }
+            };
+            response.Should().BeEquivalentTo(expected);
         }
 
         [Fact]
         public async Task Update()
         {
-            var response = await SinchClientMockServer.Conversation.Webhooks.Update(_webhookResponse);
-            response.Should().BeEquivalentTo(_webhookResponse);
+            var response = await SinchClientMockServer.Conversation.Webhooks.Update("ID", new UpdateWebhookRequest()
+            {
+                AppId = "01W4FFL35P4NC4K35CONVAPP002",
+                Target = "https://my-callback-server.com/capability-optin-optout",
+                Triggers = new List<WebhookTrigger>()
+                {
+                    WebhookTrigger.Capability,
+                    WebhookTrigger.OptIn,
+                    WebhookTrigger.OptOut
+                },
+                Secret = "SpacePanda_RidesUnicycle"
+            });
+            response.Should().BeEquivalentTo(new Webhook
+            {
+                Id = "01W4FFL35P4NC4K35WEBHOOK004",
+                AppId = "01W4FFL35P4NC4K35CONVAPP002",
+                Target = "https://my-callback-server.com/capability-optin-optout",
+                TargetType = WebhookTargetType.Http,
+                Secret = "SpacePanda_RidesUnicycle",
+                Triggers = new List<WebhookTrigger>
+                {
+                    WebhookTrigger.Capability,
+                    WebhookTrigger.OptIn,
+                    WebhookTrigger.OptOut
+                },
+                ClientCredentials = null
+            });
         }
     }
 }

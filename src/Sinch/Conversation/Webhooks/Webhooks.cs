@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.Extensions.Primitives;
+using Sinch.Conversation.Hooks;
 using Sinch.Core;
 using Sinch.Logger;
 
@@ -25,7 +28,7 @@ namespace Sinch.Conversation.Webhooks
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Webhook> Create(Webhook request, CancellationToken cancellationToken = default);
+        Task<Webhook> Create(CreateWebhookRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Get a webhook as specified by the webhook ID.
@@ -49,10 +52,12 @@ namespace Sinch.Conversation.Webhooks
         /// <summary>
         ///     Updates an existing webhook as specified by the webhook ID.
         /// </summary>
-        /// <param name="webhook">Don't forget to provide the ID of the webhook in the object.</param>
+        /// <param name="webhookId">The id of the webhook to update</param>
+        /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Webhook> Update(Webhook webhook, CancellationToken cancellationToken = default);
+        Task<Webhook> Update(string webhookId, UpdateWebhookRequest request,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Deletes a webhook as specified by the webhook ID.
@@ -69,7 +74,23 @@ namespace Sinch.Conversation.Webhooks
         /// <param name="body"></param>
         /// <param name="secret"></param>
         /// <returns>True, if produced signature match with that of a header.</returns>
-        bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonObject body, string secret);
+        bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonNode body, string secret);
+
+        /// <summary>
+        ///     Validates callback request.
+        /// </summary>
+        /// <param name="headers"></param>
+        /// <param name="body"></param>
+        /// <param name="secret"></param>
+        /// <returns>True, if produced signature match with that of a header.</returns>
+        bool ValidateAuthenticationHeader(Dictionary<string, IEnumerable<string>> headers, JsonNode body,
+            string secret);
+
+        ICallbackEvent ParseEvent(string json);
+
+        ICallbackEvent ParseEvent(JsonNode json);
+
+        Task<ICallbackEvent> ParseEventAsync(Stream json, CancellationToken cancellationToken = default);
     }
 
     /// <inheritdoc />
@@ -90,11 +111,11 @@ namespace Sinch.Conversation.Webhooks
         }
 
         /// <inheritdoc />
-        public Task<Webhook> Create(Webhook request, CancellationToken cancellationToken = default)
+        public Task<Webhook> Create(CreateWebhookRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks");
             _logger?.LogDebug("Creating a webhook...");
-            return _http.Send<Webhook, Webhook>(uri, HttpMethod.Post, request,
+            return _http.Send<CreateWebhookRequest, Webhook>(uri, HttpMethod.Post, request,
                 cancellationToken);
         }
 
@@ -123,28 +144,29 @@ namespace Sinch.Conversation.Webhooks
         }
 
         /// <inheritdoc />
-        public Task<Webhook> Update(Webhook webhook, CancellationToken cancellationToken = default)
+        public Task<Webhook> Update(string webhookId, UpdateWebhookRequest request,
+            CancellationToken cancellationToken = default)
         {
-            if (webhook is null)
+            if (request is null)
             {
-                throw new ArgumentNullException(nameof(webhook), "Should have a value");
+                throw new ArgumentNullException(nameof(request), "Should have a value");
             }
 
-            if (string.IsNullOrEmpty(webhook.Id))
+            if (string.IsNullOrEmpty(webhookId))
             {
-                throw new NullReferenceException($"{nameof(webhook)}.{nameof(webhook.Id)} shouldn't be null");
+                throw new NullReferenceException($"{nameof(request)}.{nameof(webhookId)} shouldn't be null");
             }
 
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{webhook.Id}");
+            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{webhookId}");
 
             var builder = new UriBuilder(uri);
             var queryString = HttpUtility.ParseQueryString(string.Empty);
-            var propMask = webhook.GetPropertiesMask();
+            var propMask = request.GetPropertiesMask();
             if (!string.IsNullOrEmpty(propMask)) queryString.Add("update_mask", propMask);
             builder.Query = queryString.ToString()!;
 
-            _logger?.LogDebug("Updating a webhook with {id}...", webhook.Id);
-            return _http.Send<Webhook, Webhook>(builder.Uri, HttpMethod.Patch, webhook,
+            _logger?.LogDebug("Updating a webhook with {id}...", webhookId);
+            return _http.Send<UpdateWebhookRequest, Webhook>(builder.Uri, HttpMethod.Patch, request,
                 cancellationToken);
         }
 
@@ -163,7 +185,8 @@ namespace Sinch.Conversation.Webhooks
                 cancellationToken);
         }
 
-        public bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonObject body, string secret)
+        public bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonNode body,
+            string secret)
         {
             var headersCaseInsensitive =
                 new Dictionary<string, StringValues>(headers, StringComparer.InvariantCultureIgnoreCase);
@@ -190,7 +213,7 @@ namespace Sinch.Conversation.Webhooks
                 return false;
             }
 
-            var signedData = new StringBuilder().AppendJoin('.', body.ToJsonString(), nonce, timestamp).ToString();
+            var signedData = new StringBuilder().AppendJoin('.', body.ToString(), nonce, timestamp).ToString();
 
             using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(secret));
             var hmacSha256 = hmac.ComputeHash(Encoding.UTF8.GetBytes(signedData));
@@ -200,6 +223,49 @@ namespace Sinch.Conversation.Webhooks
             var isValidSignature = string.Equals(calculatedSignature, signature, StringComparison.Ordinal);
             _logger?.LogInformation("The signature was validated with {success}", isValidSignature);
             return isValidSignature;
+        }
+
+        public bool ValidateAuthenticationHeader(Dictionary<string, IEnumerable<string>> headers, JsonNode body,
+            string secret)
+        {
+            return ValidateAuthenticationHeader(headers.ToDictionary(x => x.Key,
+                x => new StringValues(x.Value.ToArray())), body, secret);
+        }
+
+        public ICallbackEvent ParseEvent(string json)
+        {
+            var jsonResult = JsonSerializer.Deserialize<ICallbackEvent>(json, _http.JsonSerializerOptions);
+            if (jsonResult == null)
+            {
+                throw new InvalidOperationException("Deserialization of callback event failed");
+            }
+
+            return jsonResult;
+        }
+
+        public ICallbackEvent ParseEvent(JsonNode json)
+        {
+            var jsonResult = json.Deserialize<ICallbackEvent>(_http.JsonSerializerOptions);
+            if (jsonResult == null)
+            {
+                throw new InvalidOperationException("Deserialization of callback event failed");
+            }
+
+            return jsonResult;
+        }
+
+        public async Task<ICallbackEvent> ParseEventAsync(Stream jsonStream,
+            CancellationToken cancellationToken = default)
+        {
+            var jsonResult =
+                await JsonSerializer.DeserializeAsync<ICallbackEvent>(jsonStream, _http.JsonSerializerOptions,
+                    cancellationToken);
+            if (jsonResult == null)
+            {
+                throw new InvalidOperationException("Deserialization of callback event failed");
+            }
+
+            return jsonResult;
         }
     }
 

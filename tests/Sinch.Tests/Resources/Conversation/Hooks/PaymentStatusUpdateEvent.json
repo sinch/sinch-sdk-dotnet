@@ -1,0 +1,8 @@
+{
+  "payment_status_update_event": {
+    "reference_id": "a reference id",
+    "payment_status": "PAYMENT_STATUS_CAPTURED",
+    "payment_transaction_status": "PAYMENT_STATUS_TRANSACTION_PENDING",
+    "payment_transaction_id": "a payment transaction id"
+  }
+}

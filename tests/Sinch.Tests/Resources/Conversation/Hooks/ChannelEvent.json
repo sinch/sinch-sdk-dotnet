@@ -1,0 +1,17 @@
+{
+  "app_id": "app id value",
+  "accepted_time": "2020-11-17T16:05:51.724083Z",
+  "event_time": "2020-11-17T16:05:45Z",
+  "message_metadata": "metadata value",
+  "project_id": "project id value",
+  "correlation_id": "correlation id value",
+  "channel_event_notification": {
+    "channel_event": {
+      "channel": "WHATSAPP",
+      "event_type": "WHATS_APP_QUALITY_RATING_CHANGED",
+      "additional_data": {
+        "quality_rating": "quality rating value"
+      }
+    }
+  }
+}
