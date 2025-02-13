@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
@@ -28,7 +30,7 @@ namespace Sinch.Conversation.Messages.Message
             LocationMessage = locationMessage;
         }
 
-        public ContactMessage(MediaCarouselMessage mediaCardMessage)
+        public ContactMessage(MediaCardMessage mediaCardMessage)
         {
             MediaCardMessage = mediaCardMessage;
         }
@@ -38,14 +40,19 @@ namespace Sinch.Conversation.Messages.Message
             MediaMessage = mediaMessage;
         }
 
-        public ContactMessage(ReplyTo replyTo)
-        {
-            ReplyTo = replyTo;
-        }
-
         public ContactMessage(TextMessage textMessage)
         {
             TextMessage = textMessage;
+        }
+
+        public ContactMessage(ProductResponseMessage productResponseMessage)
+        {
+            ProductResponseMessage = productResponseMessage;
+        }
+
+        public ContactMessage(ChannelSpecificContactMessage channelSpecificMessage)
+        {
+            ChannelSpecificMessage = channelSpecificMessage;
         }
 
         /// <summary>
@@ -53,7 +60,8 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ChoiceResponseMessage? ChoiceResponseMessage { get; private set; }
+        [JsonPropertyName("choice_response_message")]
+        public ChoiceResponseMessage? ChoiceResponseMessage { get; internal set; }
 
 
         /// <summary>
@@ -61,7 +69,8 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public FallbackMessage? FallbackMessage { get; private set; }
+        [JsonPropertyName("fallback_message")]
+        public FallbackMessage? FallbackMessage { get; internal set; }
 
 
         /// <summary>
@@ -69,7 +78,8 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public LocationMessage? LocationMessage { get; private set; }
+        [JsonPropertyName("location_message")]
+        public LocationMessage? LocationMessage { get; internal set; }
 
 
         /// <summary>
@@ -77,7 +87,8 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public MediaCarouselMessage? MediaCardMessage { get; private set; }
+        [JsonPropertyName("media_card_message")]
+        public MediaCardMessage? MediaCardMessage { get; internal set; }
 
 
         /// <summary>
@@ -85,7 +96,8 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public MediaMessage? MediaMessage { get; private set; }
+        [JsonPropertyName("media_message")]
+        public MediaMessage? MediaMessage { get; internal set; }
 
 
         /// <summary>
@@ -93,7 +105,8 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ReplyTo? ReplyTo { get; private set; }
+        [JsonPropertyName("reply_to")]
+        public ReplyTo? ReplyTo { get; set; }
 
 
         /// <summary>
@@ -101,8 +114,22 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public TextMessage? TextMessage { get; private set; }
+        [JsonPropertyName("text_message")]
+        public TextMessage? TextMessage { get; internal set; }
 
+        /// <summary>
+        ///     Gets or Sets ProductResponseMessage
+        /// </summary>
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("product_response_message")]
+        public ProductResponseMessage? ProductResponseMessage { get; internal set; }
+
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("channel_specific_message")]
+        public ChannelSpecificContactMessage? ChannelSpecificMessage { get; internal set; }
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -119,6 +146,7 @@ namespace Sinch.Conversation.Messages.Message
             sb.Append("  MediaMessage: ").Append(MediaMessage).Append("\n");
             sb.Append("  ReplyTo: ").Append(ReplyTo).Append("\n");
             sb.Append("  TextMessage: ").Append(TextMessage).Append("\n");
+            sb.Append("  ChannelSpecificMessage: ").Append(ChannelSpecificMessage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

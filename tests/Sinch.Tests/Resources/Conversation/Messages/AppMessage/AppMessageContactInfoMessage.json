@@ -1,0 +1,45 @@
+{
+  "contact_info_message": {
+    "name": {
+      "full_name": "full_name value",
+      "first_name": "first_name value",
+      "last_name": "last_name value",
+      "middle_name": "middle_name value",
+      "prefix": "prefix value",
+      "suffix": "suffix value"
+    },
+    "phone_numbers": [
+      {
+        "phone_number": "phone_number value",
+        "type": "type value"
+      }
+    ],
+    "addresses": [
+      {
+        "city": "city value",
+        "country": "country value",
+        "state": "state va@lue",
+        "zip": "zip value",
+        "country_code": "country_code value"
+      }
+    ],
+    "email_addresses": [
+      {
+        "email_address": "email_address value",
+        "type": "type value"
+      }
+    ],
+    "organization": {
+      "company": "company value",
+      "department": "department value",
+      "title": "title value"
+    },
+    "urls": [
+      {
+        "url": "url value",
+        "type": "type value"
+      }
+    ],
+    "birthday": "1968-07-07"
+  }
+}

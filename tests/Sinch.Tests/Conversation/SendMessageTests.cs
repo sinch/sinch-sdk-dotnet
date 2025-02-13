@@ -158,15 +158,19 @@ namespace Sinch.Tests.Conversation
                         Description = "card description",
                         Title = "Title Card",
                         Height = CardHeight.Tall,
-                        MediaMessage = new MediaCarouselMessage()
+                        MediaMessage = new CardMessageMediaMessage()
                         {
-                            Url = new Uri("https://localmob"),
+                            Url = "https://localmob",
                         },
                         Choices = new List<Choice>
                         {
                             new Choice
                             {
-                                CallMessage = new("123", "Jhon"),
+                                CallMessage = new CallMessage
+                                {
+                                    PhoneNumber = "123",
+                                    Title = "Jhon"
+                                }
                             }
                         }
                     }
@@ -244,8 +248,8 @@ namespace Sinch.Tests.Conversation
             };
             _baseRequest.Message = new AppMessage(new MediaMessage
             {
-                Url = new Uri("http://yup/ls"),
-                ThumbnailUrl = new Uri("https://img.c")
+                Url = "http://yup/ls",
+                ThumbnailUrl = "https://img.c"
             });
             HttpMessageHandlerMock
                 .When(HttpMethod.Post,
@@ -275,7 +279,7 @@ namespace Sinch.Tests.Conversation
                 },
                 channel_template = new
                 {
-                    test = new
+                    MESSENGER = new
                     {
                         template_id = "abc",
                         version = "305",
@@ -299,10 +303,10 @@ namespace Sinch.Tests.Conversation
                     TemplateId = "tempid",
                     Version = "1.0"
                 },
-                ChannelTemplate = new Dictionary<string, TemplateReference>()
+                ChannelTemplate = new Dictionary<ConversationChannel, TemplateReference>()
                 {
                     {
-                        "test", new TemplateReference
+                        ConversationChannel.Messenger, new TemplateReference
                         {
                             TemplateId = "abc",
                             Version = "305",
@@ -392,8 +396,8 @@ namespace Sinch.Tests.Conversation
                                 Description = "desc",
                                 Media = new MediaMessage()
                                 {
-                                    Url = new Uri("https://nolocalhost"),
-                                    ThumbnailUrl = new Uri("https://knowyourmeme.com/photos/377946")
+                                    Url = "https://nolocalhost",
+                                    ThumbnailUrl = "https://knowyourmeme.com/photos/377946"
                                 }
                             },
                             new ProductItem
@@ -515,10 +519,7 @@ namespace Sinch.Tests.Conversation
             // NOTE: api doesn't return TTL for deserialization anywhere
             _baseMessageExpected.ttl = actual;
             var json = JsonConvert.SerializeObject(_baseMessageExpected as object);
-            var result = JsonSerializer.Deserialize<SendMessageRequest>(json, new JsonSerializerOptions()
-            {
-                PropertyNamingPolicy = new SnakeCaseNamingPolicy()
-            });
+            var result = DeserializeAsConversationClient<SendMessageRequest>(json);
             result.TtlSeconds.Should().Be(expected);
         }
     }

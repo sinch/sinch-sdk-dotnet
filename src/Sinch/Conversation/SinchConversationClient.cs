@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 using Sinch.Conversation.Apps;
 using Sinch.Conversation.Capability;
 using Sinch.Conversation.Contacts;
@@ -47,6 +48,11 @@ namespace Sinch.Conversation
 
         /// <inheritdoc cref="ISinchConversationTemplatesV2" />
         ISinchConversationTemplatesV2 TemplatesV2 { get; }
+
+        /// <summary>
+        ///     For internal use, JsonSerializerOption to be utilized for serialization and deserialization of all Conversation models
+        /// </summary>
+        internal JsonSerializerOptions JsonSerializerOptions { get; }
     }
 
     /// <inheritdoc />
@@ -55,6 +61,7 @@ namespace Sinch.Conversation
         internal SinchConversationClient(string projectId, Uri conversationBaseAddress, Uri templatesBaseAddress
             , LoggerFactory? loggerFactory, IHttp http)
         {
+            JsonSerializerOptions = http.JsonSerializerOptions;
             Messages = new Messages.Messages(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationMessages>(),
                 http);
@@ -65,7 +72,8 @@ namespace Sinch.Conversation
                 loggerFactory?.Create<ISinchConversationConversations>(), http);
             Webhooks = new Webhooks.Webhooks(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationWebhooks>(), http);
-            Events = new Events.Events(projectId, conversationBaseAddress, loggerFactory?.Create<ISinchConversationEvents>(), http);
+            Events = new Events.Events(projectId, conversationBaseAddress,
+                loggerFactory?.Create<ISinchConversationEvents>(), http);
             Transcoding = new Transcoding.Transcoding(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationTranscoding>(), http);
             Capabilities = new Capabilities(projectId, conversationBaseAddress,
@@ -100,5 +108,7 @@ namespace Sinch.Conversation
 
         /// <inheritdoc />
         public ISinchConversationTemplatesV2 TemplatesV2 { get; }
+
+        public JsonSerializerOptions JsonSerializerOptions { get; }
     }
 }

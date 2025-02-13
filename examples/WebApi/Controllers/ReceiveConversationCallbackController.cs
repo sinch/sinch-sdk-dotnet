@@ -31,7 +31,8 @@ public class ReceiveConversationCallbackController : ControllerBase
             return Unauthorized();
         }
 
-        var callbackEvent = json.Deserialize<ICallbackEvent>();
+        var callbackEvent = _sinch.Conversation.Webhooks.ParseEvent(json);
+
         // do something with specific event
         switch (callbackEvent)
         {

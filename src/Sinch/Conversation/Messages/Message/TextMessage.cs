@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -30,6 +31,8 @@ namespace Sinch.Conversation.Messages.Message
         }
 
         /// <summary>Text</summary>
+        [JsonPropertyName("text")]
+        [JsonInclude]
         public string Text { get; init; }
     }
 }

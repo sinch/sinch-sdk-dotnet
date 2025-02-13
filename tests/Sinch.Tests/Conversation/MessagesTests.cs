@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Json;
@@ -52,7 +53,7 @@ namespace Sinch.Tests.Conversation
                                 Description = "desc",
                                 Media = new MediaMessage()
                                 {
-                                    Url = new Uri("http://localhost")
+                                    Url = "http://localhost"
                                 },
                                 PostbackData = "postback"
                             }
@@ -73,7 +74,6 @@ namespace Sinch.Tests.Conversation
                 }
             });
             response.Direction.Should().Be(ConversationDirection.UndefinedDirection);
-            response.ContactMessage!.ReplyTo!.MessageId.Should().Be("string");
             response.ChannelIdentity.Should().BeEquivalentTo(new ChannelIdentity()
             {
                 AppId = "string",
@@ -252,43 +252,6 @@ namespace Sinch.Tests.Conversation
                     identity = "string"
                 },
                 contact_id = "string",
-                contact_message = new
-                {
-                    choice_response_message = new
-                    {
-                        message_id = "string",
-                        postback_data = "string"
-                    },
-                    fallback_message = new
-                    {
-                        raw_message = "string",
-                        reason = new { }
-                    },
-                    location_message = new
-                    {
-                        coordinates = new { },
-                        label = "string",
-                        title = "string"
-                    },
-                    media_card_message = new
-                    {
-                        caption = "string",
-                        url = "string"
-                    },
-                    media_message = new
-                    {
-                        thumbnail_url = "string",
-                        url = "string"
-                    },
-                    reply_to = new
-                    {
-                        message_id = "string"
-                    },
-                    text_message = new
-                    {
-                        text = "string"
-                    }
-                },
                 conversation_id = "string",
                 direction = "UNDEFINED_DIRECTION",
                 id = "string",
@@ -304,7 +267,7 @@ namespace Sinch.Tests.Conversation
             // the birthday format is YYYY-MM-DD
             var t = @"{ ""birthday"": ""2000-03-12"", ""name"": { ""full_name"": ""AAA""}, ""phone_numbers"":[] }";
 
-            var contact = JsonSerializer.Deserialize<ContactInfoMessage>(t);
+            var contact = DeserializeAsConversationClient<ContactInfoMessage>(t);
 
             contact.Birthday.Should().BeSameDateAs(new DateTime(2000, 03, 12));
         }
@@ -355,7 +318,7 @@ namespace Sinch.Tests.Conversation
         public void DeserializeFlowMessage()
         {
             var json = $"{{\"WHATSAPP\":{FlowsRawJson}}}";
-            var dict = JsonSerializer.Deserialize<Dictionary<ConversationChannel, IChannelSpecificMessage>>(json);
+            var dict = DeserializeAsConversationClient<Dictionary<ConversationChannel, IChannelSpecificMessage>>(json);
             dict[ConversationChannel.WhatsApp].Should().BeEquivalentTo(_flowMessage);
         }
 
@@ -373,7 +336,70 @@ namespace Sinch.Tests.Conversation
             dict.Should().ContainKey(ChannelSpecificTemplate.WhatsApp).WhoseValue.Should()
                 .BeEquivalentTo(dataToCheck);
         }
+
+
+        [Fact]
+        public void DeserializeWhatsAppInteractiveHeader()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/WhatsAppInteractiveHeader.json");
+
+            var result = DeserializeAsConversationClient<WhatsAppInteractiveImageHeader>(json);
+
+            result.Should().BeEquivalentTo(new WhatsAppInteractiveImageHeader()
+            {
+                Image = new WhatsAppInteractiveHeaderMedia()
+                {
+                    Link = "an image URL link"
+                }
+            });
+        }
+
+        [Fact]
+        public void DeserializeWhatsAppInteractiveDocument()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/WhatsAppInteractiveDocument.json");
+
+            var result = DeserializeAsConversationClient<WhatsAppInteractiveDocumentHeader>(json);
+
+            result.Should().BeEquivalentTo(new WhatsAppInteractiveDocumentHeader()
+            {
+                Document = new WhatsAppInteractiveHeaderMedia()
+                {
+                    Link = "a document URL link"
+                }
+            });
+        }
+
+        [Fact]
+        public void DeserializeWhatsAppInteractiveVideoHeader()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/WhatsAppInteractiveVideoHeader.json");
+
+            var result = DeserializeAsConversationClient<WhatsAppInteractiveVideoHeader>(json);
+
+            result.Should().BeEquivalentTo(new WhatsAppInteractiveVideoHeader()
+            {
+                Video = new WhatsAppInteractiveHeaderMedia()
+                {
+                    Link = "a video URL link"
+                }
+            });
+        }
+
+        [Fact]
+        public void DeserializeWhatsAppInteractiveTextHeader()
+        {
+            var json = Helpers.LoadResources("Conversation/Messages/WhatsAppInteractiveTextHeader.json");
+
+            var result = DeserializeAsConversationClient<WhatsAppInteractiveTextHeader>(json);
+
+            result.Should().BeEquivalentTo(new WhatsAppInteractiveTextHeader()
+            {
+                Text = "text header value"
+            });
+        }
     }
+
 
     public class OmniMessageTestData : IEnumerable<object[]>
     {
@@ -385,6 +411,7 @@ namespace Sinch.Tests.Conversation
                   }
               }
             }";
+
         private static readonly string Media = @"
             {
               ""WHATSAPP"": {
@@ -393,6 +420,7 @@ namespace Sinch.Tests.Conversation
                   }
               }
             }";
+
         private static readonly string Template = @"
             {
               ""WHATSAPP"": {
@@ -406,15 +434,21 @@ namespace Sinch.Tests.Conversation
         private readonly List<object[]> _data = new()
         {
             new object[] { Text, new TextMessage("hello") },
-            new object[] { Media, new MediaMessage()
+            new object[]
             {
-                Url = new Uri("https://hello.net")
-            }},
-            new object[] { Template, new TemplateReference()
+                Media, new MediaMessage()
+                {
+                    Url = "https://hello.net"
+                }
+            },
+            new object[]
             {
-                TemplateId = "id",
-                Version = "3"
-            }},
+                Template, new TemplateReference()
+                {
+                    TemplateId = "id",
+                    Version = "3"
+                }
+            },
         };
 
         public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();

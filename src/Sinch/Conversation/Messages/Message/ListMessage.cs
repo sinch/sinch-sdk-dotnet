@@ -15,6 +15,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     A title for the message that is displayed near the products or choices.
         /// </summary>
+        [JsonPropertyName("title")]
 #if NET7_0_OR_GREATER
         public required string Title { get; set; }
 #else
@@ -25,12 +26,14 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     This is an optional field, containing a description for the message.
         /// </summary>
+        [JsonPropertyName("description")]
         public string? Description { get; set; }
 
 
         /// <summary>
         ///     List of ListSection objects containing choices to be presented in the list message.
         /// </summary>
+        [JsonPropertyName("sections")]
 #if NET7_0_OR_GREATER
         public required List<ListSection> Sections { get; set; }
 #else
@@ -41,6 +44,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Gets or Sets MessageProperties
         /// </summary>
+        [JsonPropertyName("message_properties")]
         public ListMessageMessageProperties? MessageProperties { get; set; }
 
 
@@ -69,12 +73,14 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Optional parameter. Title for list section.
         /// </summary>
+        [JsonPropertyName("title")]
         public string? Title { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets Items
         /// </summary>
+        [JsonPropertyName("items")]
         public List<IListItem>? Items { get; set; }
 
 
@@ -161,12 +167,14 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Required if sending a product list message. The ID of the catalog to which the products belong.
         /// </summary>
+        [JsonPropertyName("catalog_id")]
         public string? CatalogId { get; set; }
 
 
         /// <summary>
         ///     Optional. Sets the text for the menu of a choice list message.
         /// </summary>
+        [JsonPropertyName("menu")]
         public string? Menu { get; set; }
 
 

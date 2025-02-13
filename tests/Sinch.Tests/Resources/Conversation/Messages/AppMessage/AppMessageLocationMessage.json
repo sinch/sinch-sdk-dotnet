@@ -1,0 +1,90 @@
+{
+  "location_message": {
+    "coordinates": {
+      "latitude": 47.6279809,
+      "longitude": -2.8229159
+    },
+    "label": "label value",
+    "title": "title value"
+  },
+  "explicit_channel_message": {
+    "KAKAOTALK": "foo value"
+  },
+  "explicit_channel_omni_message": {
+    "KAKAOTALK": {
+      "choice_message": {
+        "choices": [
+          {
+            "call_message": {
+              "phone_number": "phone number value",
+              "title": "title value"
+            },
+            "postback_data": "postback call_message data value"
+          },
+          {
+            "location_message": {
+              "coordinates": {
+                "latitude": 47.6279809,
+                "longitude": -2.8229159
+              },
+              "label": "label value",
+              "title": "title value"
+            },
+            "postback_data": "postback location_message data value"
+          },
+          {
+            "text_message": {
+              "text": "This is a text message."
+            },
+            "postback_data": "postback text_message data value"
+          },
+          {
+            "url_message": {
+              "title": "title value",
+              "url": "an url value"
+            },
+            "postback_data": "postback url_message data value"
+          }
+        ],
+        "text_message": {
+          "text": "This is a text message."
+        }
+      }
+    }
+  },
+  "channel_specific_message": {
+    "MESSENGER": {
+      "message_type": "FLOWS",
+      "message": {
+        "header": {
+          "type": "text",
+          "text": "text header value"
+        },
+        "body": {
+          "text": "Flow message body"
+        },
+        "footer": {
+          "text": "Flow message footer"
+        },
+        "flow_id": "1",
+        "flow_token": "AQAAAAACS5FpgQ_cAAAAAD0QI3s.",
+        "flow_mode": "draft",
+        "flow_cta": "Book!",
+        "flow_action": "navigate",
+        "flow_action_payload": {
+          "screen": "<SCREEN_NAME>",
+          "data": {
+            "product_price": 100,
+            "product_description": "description",
+            "product_name": "name"
+          }
+        }
+      }
+    }
+  },
+  "agent": {
+    "display_name": "display_name value",
+    "type": "BOT",
+    "picture_url": "picture_url value"
+  }
+}

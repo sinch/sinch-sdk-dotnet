@@ -34,6 +34,60 @@
       <None Update=".env.example">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="Resources\**\*">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Conversation\Messages\AppMessage\AppMessageCardMessage.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Conversation\Messages\AppMessage\AppMessageCarouselMessage.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Conversation\Messages\AppMessage\AppMessageChoiceMessage.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Conversation\Messages\AppMessage\AppMessageListMessage.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Conversation\Messages\AppMessage\AppMessageLocationMessage.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Conversation\Messages\AppMessage\AppMessageMediaMessage.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Conversation\Messages\AppMessage\AppMessageTemplateMessage.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Conversation\Messages\AppMessage\AppMessageContactInfoMessage.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Conversation\Messages\ContactMessage\ContactMessageChannelSpecificContactMessageNfmReply.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Conversation\Messages\ContactMessage\ContactMessageChoiceResponseMessage.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Conversation\Messages\ContactMessage\ContactMessageFallbackMessage.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Conversation\Messages\ContactMessage\ContactMessageLocationMessage.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Conversation\Messages\ContactMessage\ContactMessageMediaCardMessage.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Conversation\Messages\ContactMessage\ContactMessageMediaMessage.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Conversation\Messages\ContactMessage\ContactMessageProductResponseMessage.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Conversation\Messages\ContactMessage\ContactMessageTextMessage.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Resources\Conversation\Messages\AppMessage\AppMessageListMessageProduct.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

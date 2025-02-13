@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Hooks
         ///     Gets or Sets ChannelEventNotification
         /// </summary>
         [JsonPropertyName("channel_event_notification")]
-        public EventNotification? EventNotification { get; set; }
+        public ChannelEventNotification? ChannelEventNotification { get; set; }
 
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Sinch.Conversation.Hooks
             sb.Append($"  {nameof(ProjectId)}: ").Append(ProjectId).Append('\n');
             sb.Append($"  {nameof(MessageMetadata)}: ").Append(MessageMetadata).Append('\n');
             sb.Append($"  {nameof(CorrelationId)}: ").Append(CorrelationId).Append('\n');
-            sb.Append($"  {nameof(EventNotification)}: ").Append(EventNotification).Append('\n');
+            sb.Append($"  {nameof(ChannelEventNotification)}: ").Append(ChannelEventNotification).Append('\n');
             sb.Append("}\n");
             return sb.ToString();
         }
