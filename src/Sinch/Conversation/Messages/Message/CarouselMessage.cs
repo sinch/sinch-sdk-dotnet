@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -8,14 +9,14 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     A list of up to 10 cards.
         /// </summary>
-
+        [JsonPropertyName("cards")]
         public required List<CardMessage> Cards { get; set; }
-
 
 
         /// <summary>
         ///     Optional. Outer choices on the carousel level. The number of outer choices is limited to 3.
         /// </summary>
+        [JsonPropertyName("choices")]
         public List<Choice>? Choices { get; set; }
 
 

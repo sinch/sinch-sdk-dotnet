@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -11,6 +12,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     Gets or Sets Coordinates
         /// </summary>
 
+        [JsonPropertyName("coordinates")]
         public required Coordinates Coordinates { get; set; }
 
 
@@ -18,13 +20,14 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Label or name for the position.
         /// </summary>
+        [JsonPropertyName("label")]
         public string? Label { get; set; }
 
 
         /// <summary>
         ///     The title is shown close to the button or link that leads to a map showing the location. The title can be clickable in some cases.
         /// </summary>
-
+        [JsonPropertyName("title")]
         public required string Title { get; set; }
 
 
@@ -54,6 +57,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     The latitude.
         /// </summary>
 
+        [JsonPropertyName("latitude")]
         public float Latitude { get; init; } = Latitude;
 
 
@@ -62,6 +66,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     The longitude.
         /// </summary>
 
+        [JsonPropertyName("longitude")]
         public float Longitude { get; init; } = Longitude;
 
 

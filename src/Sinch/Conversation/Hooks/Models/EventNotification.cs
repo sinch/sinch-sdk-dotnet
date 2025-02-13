@@ -4,6 +4,12 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Hooks.Models
 {
+    public sealed class ChannelEventNotification
+    {
+        [JsonPropertyName("channel_event")]
+        public EventNotification? ChannelEvent { get; set; }
+    }
+
     /// <summary>
     ///     ChannelEventAllOfChannelEventNotification
     /// </summary>

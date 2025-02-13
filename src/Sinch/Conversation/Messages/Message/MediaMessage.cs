@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -11,19 +12,20 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     An optional parameter. Will be used where it is natively supported.
         /// </summary>
-        public Uri? ThumbnailUrl { get; set; }
+        [JsonPropertyName("thumbnail_url")]
+        public string? ThumbnailUrl { get; set; }
 
 
         /// <summary>
         ///     Url to the media file.
         /// </summary>
-
-        public required Uri Url { get; init; }
-
+        [JsonPropertyName("url")]
+        public required string Url { get; set; }
 
         /// <summary>
         ///     Overrides the media file name.
         /// </summary>
+        [JsonPropertyName("filename_override")]
         public string? FilenameOverride { get; set; }
 
         /// <summary>

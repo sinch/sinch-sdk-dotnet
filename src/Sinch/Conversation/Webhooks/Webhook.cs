@@ -7,116 +7,46 @@ namespace Sinch.Conversation.Webhooks
     /// <summary>
     ///     Represents a destination for receiving callbacks from the Conversation API.
     /// </summary>
-    public class Webhook : PropertyMaskQuery
+    public class Webhook
     {
-        private WebhookTargetType? _targetType;
-        private string _appId = null!;
-        private ClientCredentials? _clientCredentials;
-        private string? _id;
-        private string? _secret;
-        private string _target = null!;
-        private List<WebhookTrigger> _triggers = null!;
-
         /// <summary>
         ///     Gets or sets the target type.
         /// </summary>
-        public WebhookTargetType? TargetType
-        {
-            get => _targetType;
-            set
-            {
-                SetFields.Add(nameof(TargetType));
-                _targetType = value;
-            }
-        }
+        public WebhookTargetType? TargetType { get; set; }
 
         /// <summary>
         ///     The app that this webhook belongs to.
         /// </summary>
-
-        public required string AppId
-
-        {
-            get => _appId;
-            set
-            {
-                SetFields.Add(nameof(AppId));
-                _appId = value;
-            }
-        }
+        public required string AppId { get; set; }
 
         /// <summary>
         ///     Gets or sets the client credentials.
         /// </summary>
-        public ClientCredentials? ClientCredentials
-        {
-            get => _clientCredentials;
-            set
-            {
-                SetFields.Add(nameof(ClientCredentials));
-                _clientCredentials = value;
-            }
-        }
+        public ClientCredentials? ClientCredentials { get; set; }
 
         /// <summary>
         ///     Gets or sets the ID of the webhook.
         /// </summary>
-        public string? Id
-        {
-            get => _id;
-            set
-            {
-                SetFields.Add(nameof(Id));
-                _id = value;
-            }
-        }
+        public string? Id { get; set; }
 
         /// <summary>
         ///     Optional secret to be used to sign contents of webhooks sent by the Conversation API.
         ///     You can then use the secret to verify the signature.
         /// </summary>
-        public string? Secret
-        {
-            get => _secret;
-            set
-            {
-                SetFields.Add(nameof(Secret));
-                _secret = value;
-            }
-        }
+        public string? Secret { get; set; }
 
         /// <summary>
         ///     Gets or sets the target URL where events should be sent to.
         ///     Maximum URL length is 742. The conversation-api.*.sinch.com subdomains are forbidden.
         /// </summary>
-
-        public required string Target
-
-        {
-            get => _target;
-            set
-            {
-                SetFields.Add(nameof(Target));
-                _target = value;
-            }
-        }
+        public required string Target { get; set; }
 
         /// <summary>
         ///     An array of triggers that should trigger the webhook and result in an event being sent to the target URL.
         ///     Refer to the list of [Webhook Triggers](https://developers.sinch.com/docs/conversation/callbacks#webhook-triggers)
         ///     for a complete list.
         /// </summary>
-
-        public required List<WebhookTrigger> Triggers
-
-        {
-            get => _triggers;
-            set
-            {
-                SetFields.Add(nameof(Triggers));
-                _triggers = value;
-            }
-        }
+        public required List<WebhookTrigger> Triggers { get; set; }
 
         /// <summary>
         ///     Returns the string presentation of the object.

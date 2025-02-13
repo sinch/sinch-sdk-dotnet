@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -9,7 +10,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     The number of choices is limited to 10.
         /// </summary>
-
+        [JsonPropertyName("choices")]
         public required List<Choice> Choices { get; set; }
 
 
@@ -17,6 +18,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Gets or Sets TextMessage
         /// </summary>
+        [JsonPropertyName("text_message")]
         public TextMessage? TextMessage { get; set; }
 
 
@@ -38,14 +40,82 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     A generic URL message.
     /// </summary>
-    /// <param name="Title"></param>
-    /// <param name="Url"></param>
-    public record UrlMessage(string Title, Uri Url);
+    public class UrlMessage
+    {
+        [JsonConstructor]
+        public UrlMessage()
+        {
+        }
+
+        [Obsolete(
+            message:
+            "This method is obsolete and will be removed in a future version. Consider initializing properties directly",
+            error: false)]
+        public UrlMessage(string title, Uri url)
+        {
+            Title = title;
+            Url = url.ToString();
+        }
+
+        [JsonPropertyName("title")]
+#if NET7_0_OR_GREATER
+        public required string? Title { get; set; }
+#else
+        public string Title { get; set; } = null!;
+#endif
+
+        [JsonPropertyName("url")]
+#if NET7_0_OR_GREATER
+        public string? Url { get; set; }
+#else
+        public string Url { get; set; } = null!;
+#endif
+    }
 
     /// <summary>
     ///     Message for triggering a call.
     /// </summary>
-    /// <param name="PhoneNumber">Phone number in E.164 with leading +.</param>
-    /// <param name="Title">Title shown close to the phone number. The title is clickable in some cases.</param>
-    public record CallMessage(string PhoneNumber, string Title);
+    public sealed class CallMessage
+    {
+        [JsonConstructor]
+        public CallMessage()
+        {
+        }
+
+        /// <summary>
+        ///     Create an instance of CallMessage
+        /// </summary>
+        /// <param name="phoneNumber">Phone number in E.164 with leading +.</param>
+        /// <param name="title">Title shown close to the phone number. The title is clickable in some cases.</param>
+        [Obsolete(
+            message:
+            "This method is obsolete and will be removed in a future version. Consider initializing properties directly",
+            error: false)]
+        public CallMessage(string phoneNumber, string title)
+        {
+            PhoneNumber = phoneNumber;
+            Title = title;
+        }
+
+        /// <summary>
+        ///     Phone number in E.164 with leading +.
+        /// </summary>
+        [JsonPropertyName("phone_number")]
+#if NET7_0_OR_GREATER
+        public required string PhoneNumber { get; set; }
+#else
+        public string PhoneNumber { get; set; } = null!;
+#endif
+
+
+        /// <summary>
+        ///     Title shown close to the phone number. The title is clickable in some cases.
+        /// </summary>
+        [JsonPropertyName("title")]
+#if NET7_0_OR_GREATER
+        public required string Title { get; set; }
+#else
+        public string Title { get; set; } = null!;
+#endif
+    }
 }

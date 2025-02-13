@@ -1,0 +1,18 @@
+{
+  "app_id": "app id value",
+  "accepted_time": "2020-11-17T16:05:51.724083Z",
+  "event_time": "2020-11-17T16:05:45Z",
+  "message_metadata": "metadata value",
+  "project_id": "project id value",
+  "correlation_id": "correlation id value",
+  "opt_out_notification": {
+    "request_id": "request id",
+    "contact_id": "contact id",
+    "channel": "WHATSAPP",
+    "status": "OPT_OUT_FAILED",
+    "error_details": {
+      "description": "Error description value"
+    },
+    "processing_mode": "DISPATCH"
+  }
+}

@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -11,6 +12,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     Required parameter. Title for the choice item.
         /// </summary>
 
+        [JsonPropertyName("title")]
         public required string Title { get; set; }
 
 
@@ -18,18 +20,21 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Optional parameter. The description (or subtitle) of this choice item.
         /// </summary>
+        [JsonPropertyName("description")]
         public string? Description { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets Media
         /// </summary>
+        [JsonPropertyName("media")]
         public MediaMessage? Media { get; set; }
 
 
         /// <summary>
         ///     Optional parameter. Postback data that will be returned in the MO if the user selects this option.
         /// </summary>
+        [JsonPropertyName("postback_data")]
         public string? PostbackData { get; set; }
 
 

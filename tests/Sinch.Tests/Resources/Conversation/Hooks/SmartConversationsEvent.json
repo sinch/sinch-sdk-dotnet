@@ -1,0 +1,92 @@
+{
+  "app_id": "app id value",
+  "accepted_time": "2020-11-17T16:05:51.724083Z",
+  "event_time": "2020-11-17T16:05:45Z",
+  "message_metadata": "metadata value",
+  "project_id": "project id value",
+  "correlation_id": "correlation id value",
+  "smart_conversation_notification": {
+    "contact_id": "contact id",
+    "channel_identity": "channel identity",
+    "channel": "MESSENGER",
+    "message_id": "message id",
+    "conversation_id": "conversation id",
+    "analysis_results": {
+      "ml_sentiment_result": [
+        {
+          "message": "message result",
+          "results": [
+            {
+              "sentiment": "positive",
+              "score": 0.4
+            }
+          ],
+          "sentiment": "neutral",
+          "score": 0.6
+        }
+      ],
+      "ml_nlu_result": [
+        {
+          "message": "message ml_nlu_result",
+          "results": [
+            {
+              "intent": "chitchat.greeting",
+              "score": 0.3
+            }
+          ],
+          "intent": "chitchat.compliment",
+          "score": 0.2
+        }
+      ],
+      "ml_image_recognition_result": [
+        {
+          "url": "url value",
+          "document_image_classification": {
+            "doc_type": "an image classification",
+            "confidence": 0.12
+          },
+          "optical_character_recognition": {
+            "result": [
+              {
+                "data": [
+                  "string 1",
+                  "string 2"
+                ]
+              }
+            ]
+          },
+          "document_field_classification": {
+            "result": [
+              {
+                "John": {
+                  "data": [
+                    "a string"
+                  ]
+                },
+                "Doe": {
+                  "data": [
+                    "another string"
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "ml_pii_result": [
+        {
+          "message": "analyzed message",
+          "masked": "masked analyzed message"
+        }
+      ],
+      "ml_offensive_analysis_result": [
+        {
+          "message": "message value",
+          "url": "URL value",
+          "evaluation": "UNSAFE",
+          "score": 0.456
+        }
+      ]
+    }
+  }
+}

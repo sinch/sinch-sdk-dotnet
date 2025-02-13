@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -10,34 +11,34 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Required parameter. The ID for the product.
         /// </summary>
-
+        [JsonPropertyName("id")]
         public required string Id { get; set; }
-
 
 
         /// <summary>
         ///     Required parameter. The marketplace to which the product belongs.
         /// </summary>
-
+        [JsonPropertyName("marketplace")]
         public required string Marketplace { get; set; }
-
-
 
         /// <summary>
         ///     Output only. The quantity of the chosen product.
         /// </summary>
+        [JsonPropertyName("quantity")]
         public int? Quantity { get; set; }
 
 
         /// <summary>
         ///     Output only. The price for one unit of the chosen product.
         /// </summary>
+        [JsonPropertyName("item_price")]
         public float? ItemPrice { get; set; }
 
 
         /// <summary>
         ///     Output only. The currency of the item_price.
         /// </summary>
+        [JsonPropertyName("currency")]
         public string? Currency { get; set; }
 
 

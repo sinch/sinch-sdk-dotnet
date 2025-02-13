@@ -1,0 +1,26 @@
+{
+  "list_message": {
+    "title": "a list message title value",
+    "sections": [
+      {
+        "title": "a list section title value",
+        "items": [
+          {
+            "product": {
+              "id": "product ID value",
+              "marketplace": "marketplace value",
+              "quantity": 4,
+              "item_price": 3.14159,
+              "currency": "currency value"
+            }
+          }
+        ]
+      }
+    ],
+    "description": "description value",
+    "message_properties": {
+      "catalog_id": "catalog ID value",
+      "menu": "menu value"
+    }
+  }
+}

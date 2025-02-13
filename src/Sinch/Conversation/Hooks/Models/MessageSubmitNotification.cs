@@ -48,7 +48,7 @@ namespace Sinch.Conversation.Hooks.Models
         ///     Gets or Sets SubmittedMessage
         /// </summary>
         [JsonPropertyName("submitted_message")]
-        public ContactMessage? SubmittedMessage { get; set; }
+        public AppMessage? SubmittedMessage { get; set; }
 
 
         /// <summary>

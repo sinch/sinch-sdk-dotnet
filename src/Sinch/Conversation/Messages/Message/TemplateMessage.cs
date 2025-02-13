@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 
@@ -15,7 +16,8 @@ namespace Sinch.Conversation.Messages.Message
         ///     At least one of &#x60;channel_template&#x60; or &#x60;omni_template&#x60; needs to be present.
         ///     The key in the map must point to a valid conversation channel as defined by the enum ConversationChannel.
         /// </summary>
-        public Dictionary<string, TemplateReference>? ChannelTemplate { get; set; }
+        [JsonPropertyName("channel_template")]
+        public Dictionary<ConversationChannel, TemplateReference>? ChannelTemplate { get; set; }
 
 
         /// <summary>
@@ -23,6 +25,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     Template Store as AppMessage or it can reference external channel-specific template
         ///     such as WhatsApp Business Template.
         /// </summary>
+        [JsonPropertyName("omni_template")]
         public TemplateReference? OmniTemplate { get; set; }
 
 
@@ -50,7 +53,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     The ID of the template.
         /// </summary>
-
+        [JsonPropertyName("template_id")]
         public required string TemplateId { get; set; }
 
 
@@ -59,6 +62,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     Used to specify what version of a template to use. This will be used in conjunction with &#x60;language_code&#x60;.
         /// </summary>
 
+        [JsonPropertyName("version")]
         public required string Version { get; set; }
 
 
@@ -66,6 +70,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     The BCP-47 language code, such as &#x60;en-US&#x60; or &#x60;sr-Latn&#x60;. For more information,
         ///     see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. English is the default language_code.
         /// </summary>
+        [JsonPropertyName("language_code")]
         public string? LanguageCode { get; set; }
 
 
@@ -74,6 +79,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     Concrete values must be present for all defined parameters in the template.
         ///     Parameters can be different for different versions and/or languages of the template.
         /// </summary>
+        [JsonPropertyName("parameters")]
         public Dictionary<string, string>? Parameters { get; set; }
 
 

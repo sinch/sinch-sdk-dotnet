@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -10,7 +11,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     The message id containing the choice.
         /// </summary>
-
+        [JsonPropertyName("message_id")]
         public required string MessageId { get; set; }
 
 
@@ -19,6 +20,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     The postback_data defined in the selected choice.
         /// </summary>
 
+        [JsonPropertyName("postback_data")]
         public required string PostbackData { get; set; }
 
 
