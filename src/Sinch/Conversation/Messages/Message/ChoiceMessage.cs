@@ -58,18 +58,10 @@ namespace Sinch.Conversation.Messages.Message
         }
 
         [JsonPropertyName("title")]
-#if NET7_0_OR_GREATER
-        public required string? Title { get; set; }
-#else
-        public string Title { get; set; } = null!;
-#endif
+        public required string Title { get; set; }
 
         [JsonPropertyName("url")]
-#if NET7_0_OR_GREATER
-        public string? Url { get; set; }
-#else
-        public string Url { get; set; } = null!;
-#endif
+        public required string Url { get; set; }
     }
 
     /// <summary>
@@ -101,21 +93,13 @@ namespace Sinch.Conversation.Messages.Message
         ///     Phone number in E.164 with leading +.
         /// </summary>
         [JsonPropertyName("phone_number")]
-#if NET7_0_OR_GREATER
         public required string PhoneNumber { get; set; }
-#else
-        public string PhoneNumber { get; set; } = null!;
-#endif
 
 
         /// <summary>
         ///     Title shown close to the phone number. The title is clickable in some cases.
         /// </summary>
         [JsonPropertyName("title")]
-#if NET7_0_OR_GREATER
         public required string Title { get; set; }
-#else
-        public string Title { get; set; } = null!;
-#endif
     }
 }

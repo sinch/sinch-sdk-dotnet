@@ -30,11 +30,7 @@ namespace Sinch.Conversation.Webhooks
         /// <summary>
         ///     The app that this webhook belongs to.
         /// </summary>
-#if NET7_0_OR_GREATER
         public required string AppId
-#else
-        public string AppId
-#endif
         {
             get => _appId;
             set
@@ -75,11 +71,7 @@ namespace Sinch.Conversation.Webhooks
         ///     Gets or sets the target URL where events should be sent to.
         ///     Maximum URL length is 742. The conversation-api.*.sinch.com subdomains are forbidden.
         /// </summary>
-#if NET7_0_OR_GREATER
         public required string Target
-#else
-        public string Target
-#endif
         {
             get => _target;
             set
@@ -94,11 +86,7 @@ namespace Sinch.Conversation.Webhooks
         ///     Refer to the list of [Webhook Triggers](https://developers.sinch.com/docs/conversation/callbacks#webhook-triggers)
         ///     for a complete list.
         /// </summary>
-#if NET7_0_OR_GREATER
         public required List<WebhookTrigger> Triggers
-#else
-        public List<WebhookTrigger> Triggers
-#endif
         {
             get => _triggers;
             set
