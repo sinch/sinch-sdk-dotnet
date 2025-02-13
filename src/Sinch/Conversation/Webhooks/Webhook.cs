@@ -44,7 +44,7 @@ namespace Sinch.Conversation.Webhooks
         ///     Gets or sets the target URL where events should be sent to.
         ///     Maximum URL length is 742. The conversation-api.*.sinch.com subdomains are forbidden.
         /// </summary>
-        public required string Target
+        public required string Target { get; set; }
 
         /// <summary>
         ///     An array of triggers that should trigger the webhook and result in an event being sent to the target URL.
