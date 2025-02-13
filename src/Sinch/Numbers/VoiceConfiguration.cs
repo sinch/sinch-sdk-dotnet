@@ -10,11 +10,9 @@ namespace Sinch.Numbers
         ///     The appId can be found in your <see href="https://dashboard.sinch.com/voice/apps">Sinch Customer Dashboard</see>
         ///     under Voice, then apps.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string AppId { get; set; }
-#else
-        public string AppId { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

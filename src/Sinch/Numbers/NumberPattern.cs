@@ -9,11 +9,9 @@ namespace Sinch.Numbers
         ///     you can enter the sequence of numbers here.
         ///     <example>"2020"</example>
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string Pattern { get; set; }
-#else
-        public string Pattern { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     Search pattern to apply. The options are, START, CONTAIN, and END.

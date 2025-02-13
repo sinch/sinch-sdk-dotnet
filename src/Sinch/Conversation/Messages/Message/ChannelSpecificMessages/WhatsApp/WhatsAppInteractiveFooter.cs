@@ -12,11 +12,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     The footer content (60 characters maximum). Emojis, Markdown and links are supported.
         /// </summary>
         [JsonPropertyName("text")]
-#if NET7_0_OR_GREATER
+
         public required string Text { get; set; }
-#else
-        public string Text { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

@@ -9,21 +9,17 @@ namespace Sinch.Conversation.TemplatesV2
         /// <summary>
         ///     Id of a template to update
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string Id { get; set; }
-#else
-        public string Id { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
         ///     The version of the template. While creating a template, this will be defaulted to 1. When updating a template, you must supply the latest version of the template in order for the update to be successful.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required int Version { get; set; }
-#else
-        public int Version { get; set; }
-#endif
+
 
         /// <summary>
         ///     The default translation to use if translation not specified. Specified as a BCP-47 &#x60;language_code&#x60; and the &#x60;language_code&#x60; must exist in the translations list.

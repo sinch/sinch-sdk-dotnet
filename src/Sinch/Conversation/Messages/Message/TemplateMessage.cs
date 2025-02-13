@@ -54,22 +54,17 @@ namespace Sinch.Conversation.Messages.Message
         ///     The ID of the template.
         /// </summary>
         [JsonPropertyName("template_id")]
-#if NET7_0_OR_GREATER
         public required string TemplateId { get; set; }
-#else
-        public string TemplateId { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
         ///     Used to specify what version of a template to use. This will be used in conjunction with &#x60;language_code&#x60;.
         /// </summary>
+
         [JsonPropertyName("version")]
-#if NET7_0_OR_GREATER
         public required string Version { get; set; }
-#else
-        public string Version { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     The BCP-47 language code, such as &#x60;en-US&#x60; or &#x60;sr-Latn&#x60;. For more information,

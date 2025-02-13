@@ -17,12 +17,7 @@ namespace Sinch.Conversation.Webhooks
         /// <summary>
         ///     The app that this webhook belongs to.
         /// </summary>
-#if NET7_0_OR_GREATER
         public required string AppId { get; set; }
-#else
-        public string AppId { get; set; } = null!;
-#endif
-
 
         /// <summary>
         ///     Gets or sets the client credentials.
@@ -51,11 +46,7 @@ namespace Sinch.Conversation.Webhooks
         ///     Refer to the list of [Webhook Triggers](https://developers.sinch.com/docs/conversation/callbacks#webhook-triggers)
         ///     for a complete list.
         /// </summary>
-#if NET7_0_OR_GREATER
         public required List<WebhookTrigger> Triggers { get; set; }
-#else
-        public List<WebhookTrigger> Triggers { get; set; } = null!;
-#endif
 
         /// <summary>
         ///     Returns the string presentation of the object.

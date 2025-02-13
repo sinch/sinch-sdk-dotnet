@@ -7,38 +7,29 @@ namespace Sinch.SMS.Inbounds
         /// <summary>
         ///     The ID of this inbound message.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string Id { get; set; }
 
-#else
-        public string Id { get; set; } = null!;
 
-#endif
 
         /// <summary>
         ///     The phone number that sent the message.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string From { get; set; }
-#else
-        public string From { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
         ///     The Sinch phone number or short code to which the message was sent.
         /// </summary>
-#if NET7_0_OR_GREATER
-        public required string To { get; set; }
-#else
-        public string To { get; set; } = null!;
-#endif
 
-#if NET7_0_OR_GREATER
+        public required string To { get; set; }
+
+
+
         public required string Body { get; set; }
-#else
-        public string Body { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -63,10 +54,8 @@ namespace Sinch.SMS.Inbounds
         /// <summary>
         ///     When the system received the message.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required DateTime ReceivedAt { get; set; }
-#else
-        public DateTime ReceivedAt { get; set; }
-#endif
+
     }
 }

@@ -10,42 +10,34 @@ namespace Sinch.Numbers.Active
         ///     leading +. <br /> Example:
         ///     <example>+12025550134</example>
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string PhoneNumber { get; set; }
-#else
-        public string PhoneNumber { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     Project ID. Your project ID can be found on your
         ///     <see href="https://dashboard.sinch.com/settings/project-management">Sinch Customer Dashboard</see>
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string ProjectId { get; set; }
-#else
-        public string ProjectId { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
         ///     User supplied name for the phone number.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string DisplayName { get; set; }
-#else
-        public string DisplayName { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
         ///     ISO 3166-1 alpha-2 country code of the phone number.<br />
         ///     Example: US, UK or SE.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string RegionCode { get; set; }
-#else
-        public string RegionCode { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -56,20 +48,16 @@ namespace Sinch.Numbers.Active
         /// <summary>
         ///     The capability of the number.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required List<Product> Capability { get; set; }
-#else
-        public List<Product> Capability { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     An object giving details on currency code and the amount charged.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required Money Money { get; set; }
-#else
-        public Money Money { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

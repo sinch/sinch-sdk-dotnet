@@ -12,11 +12,9 @@ namespace Sinch.Verification.Report.Request
         ///     A configuration object containing settings specific to FlashCall verifications.
         /// </summary>
         [JsonPropertyName("flashcall")]
-#if NET7_0_OR_GREATER
+
         public required FlashCall FlashCall { get; set; }
-#else
-        public FlashCall FlashCall { get; set; } = null!;
-#endif
+
     }
 
     public class FlashCall
@@ -24,10 +22,8 @@ namespace Sinch.Verification.Report.Request
         /// <summary>
         ///     The caller ID of the FlashCall.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string Cli { get; set; }
-#else
-        public string Cli { get; set; } = null!;
-#endif
+
     }
 }

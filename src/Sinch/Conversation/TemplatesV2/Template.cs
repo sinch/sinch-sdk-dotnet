@@ -10,11 +10,9 @@ namespace Sinch.Conversation.TemplatesV2
         ///     The id of the template. Specify this yourself during creation. Otherwise, we will generate an ID for you. This must
         ///     be unique for a given project.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string Id { get; set; }
-#else
-        public string Id { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

@@ -14,21 +14,17 @@ namespace Sinch.Voice.Common
         /// Gets or Sets Type
         /// </summary>
         [JsonPropertyName("type")]
-#if NET7_0_OR_GREATER
+
         public required DestinationType Type { get; set; }
-#else 
-        public DestinationType Type { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     If the type is &#x60;number&#x60; the value of the endpoint is a phone number. If the type is &#x60;username&#x60; the value is the username for a data endpoint.
         /// </summary>
         [JsonPropertyName("endpoint")]
-#if NET7_0_OR_GREATER
+
         public required string Endpoint { get; set; }
-#else
-        public string Endpoint { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

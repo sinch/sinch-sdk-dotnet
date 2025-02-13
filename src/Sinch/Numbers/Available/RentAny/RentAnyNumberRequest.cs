@@ -15,20 +15,16 @@ namespace Sinch.Numbers.Available.RentAny
         ///         US, GB or SE.
         ///     </example>
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string RegionCode { get; set; }
-#else
-        public string RegionCode { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     Number type to filter by. MOBILE, LOCAL or TOLL_FREE.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required Types Type { get; set; }
-#else
-        public Types Type { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     Number capabilities to filter by, SMS and/or VOICE
