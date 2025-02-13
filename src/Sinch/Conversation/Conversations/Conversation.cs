@@ -24,6 +24,7 @@ namespace Sinch.Conversation.Conversations
         /// <summary>
         ///     Gets or Sets ActiveChannel
         /// </summary>
+        [JsonPropertyName("active_channel")]
         public ConversationChannel? ActiveChannel
         {
             get => _activeChannel;
@@ -38,6 +39,7 @@ namespace Sinch.Conversation.Conversations
         /// <summary>
         ///     Flag for whether this conversation is active.
         /// </summary>
+        [JsonPropertyName("active")]
         public bool? Active
         {
             get => _active;
@@ -51,6 +53,7 @@ namespace Sinch.Conversation.Conversations
         /// <summary>
         ///     The ID of the participating app.
         /// </summary>
+        [JsonPropertyName("app_id")]
         public string? AppId
         {
             get => _appId;
@@ -64,6 +67,7 @@ namespace Sinch.Conversation.Conversations
         /// <summary>
         ///     The ID of the participating contact.
         /// </summary>
+        [JsonPropertyName("contact_id")]
         public string? ContactId
         {
             get => _contactId;
@@ -77,17 +81,20 @@ namespace Sinch.Conversation.Conversations
         /// <summary>
         ///     The ID of the conversation.
         /// </summary>
+        [JsonPropertyName("id")]
         public string? Id { get; set; }
 
         /// <summary>
         ///     The timestamp of the latest message in the conversation.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        [JsonPropertyName("last_received")]
         public DateTime LastReceived { get; set; }
 
         /// <summary>
         ///     Arbitrary data set by the Conversation API clients. Up to 1024 characters long.
         /// </summary>
+        [JsonPropertyName("metadata")]
         public string? Metadata
         {
             get => _metadata;
@@ -102,6 +109,7 @@ namespace Sinch.Conversation.Conversations
         ///     Arbitrary data set by the Conversation API clients and/or provided in the conversation_metadata field of a
         ///     SendMessageRequest. A valid JSON object.
         /// </summary>
+        [JsonPropertyName("metadata_json")]
         public JsonObject? MetadataJson
         {
             get => _metadataJson;
@@ -112,6 +120,7 @@ namespace Sinch.Conversation.Conversations
             }
         }
 
+        [JsonPropertyName("correlation_id")]
         public string? CorrelationId
         {
             get => _correlationId;

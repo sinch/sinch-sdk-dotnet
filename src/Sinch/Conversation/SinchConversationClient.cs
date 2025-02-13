@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 using Sinch.Conversation.Apps;
 using Sinch.Conversation.Capability;
 using Sinch.Conversation.Contacts;
@@ -51,6 +52,11 @@ namespace Sinch.Conversation
 
         /// <inheritdoc cref="ISinchConversationTemplatesV1" />
         ISinchConversationTemplatesV1 TemplatesV1 { get; }
+
+        /// <summary>
+        ///     For internal use, JsonSerializerOption to be utilized for serialization and deserialization of all Conversation models
+        /// </summary>
+        internal JsonSerializerOptions JsonSerializerOptions { get; }
     }
 
     /// <inheritdoc />
@@ -59,6 +65,7 @@ namespace Sinch.Conversation
         internal SinchConversationClient(string projectId, Uri conversationBaseAddress, Uri templatesBaseAddress
             , LoggerFactory? loggerFactory, IHttp http)
         {
+            JsonSerializerOptions = http.JsonSerializerOptions;
             Messages = new Messages.Messages(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationMessages>(),
                 http);
@@ -109,5 +116,7 @@ namespace Sinch.Conversation
         public ISinchConversationTemplatesV2 TemplatesV2 { get; }
 
         public ISinchConversationTemplatesV1 TemplatesV1 { get; }
+
+        public JsonSerializerOptions JsonSerializerOptions { get; }
     }
 }

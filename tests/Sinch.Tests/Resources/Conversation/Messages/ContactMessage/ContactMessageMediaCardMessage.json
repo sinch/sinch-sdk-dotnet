@@ -1,0 +1,9 @@
+{
+  "media_card_message": {
+    "caption": "caption value",
+    "url": "an url value"
+  },
+  "reply_to": {
+    "message_id": "message id value"
+  }
+}

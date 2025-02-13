@@ -1,0 +1,9 @@
+{
+  "choice_response_message": {
+    "message_id": "message id value",
+    "postback_data": "postback data value"
+  },
+  "reply_to": {
+    "message_id": "message id value"
+  }
+}

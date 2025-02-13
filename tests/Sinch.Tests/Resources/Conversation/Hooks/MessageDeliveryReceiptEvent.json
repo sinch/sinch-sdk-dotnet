@@ -1,0 +1,26 @@
+{
+  "app_id": "app id value",
+  "accepted_time": "2020-11-17T16:05:51.724083Z",
+  "event_time": "2020-11-17T16:05:45Z",
+  "message_metadata": "metadata value",
+  "project_id": "project id value",
+  "correlation_id": "correlation id value",
+  "message_delivery_report": {
+    "message_id": "message id",
+    "conversation_id": "conversation id",
+    "status": "DELIVERED",
+    "channel_identity": {
+      "app_id": "an app id",
+      "channel": "MESSENGER",
+      "identity": "an identity"
+    },
+    "contact_id": "contact ID",
+    "reason": {
+      "code": "RECIPIENT_NOT_OPTED_IN",
+      "description": "reason description",
+      "sub_code": "UNSPECIFIED_SUB_CODE"
+    },
+    "metadata": "metadata value",
+    "processing_mode": "DISPATCH"
+  }
+}

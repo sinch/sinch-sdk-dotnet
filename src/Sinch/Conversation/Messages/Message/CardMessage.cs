@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
@@ -12,29 +13,34 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         /// Gets or Sets Height
         /// </summary>
+        [JsonPropertyName("height")]
         public CardHeight? Height { get; set; }
 
         /// <summary>
         ///     You may include choices in your Card Message. The number of choices is limited to 10.
         /// </summary>
+        [JsonPropertyName("choices")]
         public List<Choice>? Choices { get; set; }
 
 
         /// <summary>
         ///     This is an optional description field that is displayed below the title on the card.
         /// </summary>
+        [JsonPropertyName("description")]
         public string? Description { get; set; }
 
 
         /// <summary>
         ///     Gets or Sets MediaMessage
         /// </summary>
-        public MediaCarouselMessage? MediaMessage { get; set; }
+        [JsonPropertyName("media_message")]
+        public CardMessageMediaMessage? MediaMessage { get; set; }
 
 
         /// <summary>
         ///     The title of the card message.
         /// </summary>
+        [JsonPropertyName("title")]
         public string? Title { get; set; }
 
 
@@ -56,8 +62,15 @@ namespace Sinch.Conversation.Messages.Message
         }
     }
 
-    public class MediaCarouselMessage
+    /// <summary>
+    ///     A message containing an image media component.
+    /// </summary>
+    public class CardMessageMediaMessage
     {
-        public Uri? Url { get; set; }
+        /// <summary>
+        ///     Url to the media file.
+        /// </summary>
+        [JsonPropertyName("url")]
+        public string? Url { get; set; }
     }
 }

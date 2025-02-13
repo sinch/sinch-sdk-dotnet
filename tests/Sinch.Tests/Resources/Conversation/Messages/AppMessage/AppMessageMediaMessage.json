@@ -1,0 +1,87 @@
+{
+  "media_message": {
+    "url": "an url value",
+    "thumbnail_url": "another url",
+    "filename_override": "filename override value"
+  },
+  "explicit_channel_message": {
+    "KAKAOTALK": "foo value"
+  },
+  "explicit_channel_omni_message": {
+    "KAKAOTALK": {
+      "choice_message": {
+        "text_message": {
+          "text": "This is a text message."
+        },
+        "choices": [
+          {
+            "call_message": {
+              "title": "title value",
+              "phone_number": "phone number value"
+            },
+            "postback_data": "postback call_message data value"
+          },
+          {
+            "location_message": {
+              "coordinates": {
+                "latitude": 47.6279809,
+                "longitude": -2.8229159
+              },
+              "title": "title value",
+              "label": "label value"
+            },
+            "postback_data": "postback location_message data value"
+          },
+          {
+            "text_message": {
+              "text": "This is a text message."
+            },
+            "postback_data": "postback text_message data value"
+          },
+          {
+            "url_message": {
+              "title": "title value",
+              "url": "an url value"
+            },
+            "postback_data": "postback url_message data value"
+          }
+        ]
+      }
+    }
+  },
+  "channel_specific_message": {
+    "MESSENGER": {
+      "message": {
+        "flow_id": "1",
+        "flow_cta": "Book!",
+        "header": {
+          "type": "text",
+          "text": "text header value"
+        },
+        "body": {
+          "text": "Flow message body"
+        },
+        "footer": {
+          "text": "Flow message footer"
+        },
+        "flow_token": "AQAAAAACS5FpgQ_cAAAAAD0QI3s.",
+        "flow_mode": "draft",
+        "flow_action": "navigate",
+        "flow_action_payload": {
+          "screen": "<SCREEN_NAME>",
+          "data": {
+            "product_name": "name",
+            "product_description": "description",
+            "product_price": 100
+          }
+        }
+      },
+      "message_type": "FLOWS"
+    }
+  },
+  "agent": {
+    "display_name": "display_name value",
+    "type": "BOT",
+    "picture_url": "picture_url value"
+  }
+}

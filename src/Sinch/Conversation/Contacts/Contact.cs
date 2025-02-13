@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
 using Sinch.Core;
 
@@ -19,6 +20,7 @@ namespace Sinch.Conversation.Contacts
         /// <summary>
         ///     List of channel identities.
         /// </summary>
+        [JsonPropertyName("channel_identities")]
         public List<ChannelIdentity>? ChannelIdentities
         {
             get => _channelIdentities;
@@ -33,6 +35,7 @@ namespace Sinch.Conversation.Contacts
         /// <summary>
         ///     List of channels defining the channel priority.
         /// </summary>
+        [JsonPropertyName("channel_priority")]
         public List<ConversationChannel>? ChannelPriority
         {
             get => _channelPriority;
@@ -47,6 +50,7 @@ namespace Sinch.Conversation.Contacts
         /// <summary>
         ///     The display name. A default &#39;Unknown&#39; will be assigned if left empty.
         /// </summary>
+        [JsonPropertyName("display_name")]
         public string? DisplayName
         {
             get => _displayName;
@@ -61,6 +65,7 @@ namespace Sinch.Conversation.Contacts
         /// <summary>
         ///     Email of the contact.
         /// </summary>
+        [JsonPropertyName("email")]
         public string? Email
         {
             get => _email;
@@ -75,6 +80,7 @@ namespace Sinch.Conversation.Contacts
         /// <summary>
         ///     Contact identifier in an external system.
         /// </summary>
+        [JsonPropertyName("external_id")]
         public string? ExternalId
         {
             get => _externalId;
@@ -89,6 +95,7 @@ namespace Sinch.Conversation.Contacts
         /// <summary>
         ///     The ID of the contact.
         /// </summary>
+        [JsonPropertyName("id")]
         public string? Id
         {
             get => _id;
@@ -103,6 +110,7 @@ namespace Sinch.Conversation.Contacts
         /// <summary>
         ///     Gets or Sets Language
         /// </summary>
+        [JsonPropertyName("language")]
         public ConversationLanguage? Language
         {
             get => _language;
@@ -117,6 +125,7 @@ namespace Sinch.Conversation.Contacts
         /// <summary>
         ///     Metadata associated with the contact. Up to 1024 characters long.
         /// </summary>
+        [JsonPropertyName("metadata")]
         public string? Metadata
         {
             get => _metadata;

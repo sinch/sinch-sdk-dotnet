@@ -1,0 +1,34 @@
+{
+  "app_id": "app id value",
+  "accepted_time": "2020-11-17T16:05:51.724083Z",
+  "event_time": "2020-11-17T16:05:45Z",
+  "message_metadata": "metadata value",
+  "project_id": "project id value",
+  "correlation_id": "correlation id value",
+  "contact_create_notification": {
+    "contact": {
+      "id": "my created contact ID",
+      "channel_identities": [
+        {
+          "channel": "MMS",
+          "identity": "33987654321"
+        },
+        {
+          "channel": "MESSENGER",
+          "identity": "+33987654321",
+          "app_id": "my MESSENGER app id"
+        }
+      ],
+      "channel_priority": [
+        "MMS",
+        "MESSENGER"
+      ],
+      "display_name": "created from Dotnet SDK",
+      "email": "foo@foo.com",
+      "external_id": "external id value",
+      "metadata": "metadata value",
+      "language": "AR"
+    }
+  }
+}
+

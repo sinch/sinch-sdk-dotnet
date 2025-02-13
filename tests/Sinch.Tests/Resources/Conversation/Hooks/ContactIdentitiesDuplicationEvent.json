@@ -1,0 +1,19 @@
+{
+  "app_id": "app id value",
+  "accepted_time": "2020-11-17T16:05:51.724083Z",
+  "event_time": "2020-11-17T16:05:45Z",
+  "message_metadata": "metadata value",
+  "project_id": "project id value",
+  "correlation_id": "correlation id value",
+  "duplicated_contact_identities_notification": {
+    "duplicated_identities": [
+      {
+        "channel": "MESSENGER",
+        "contact_ids": [
+          "01EKA07N79THJ20ZSN6AS30TMW",
+          "01EKA07N79THJ20ZSN6AS30TTT"
+        ]
+      }
+    ]
+  }
+}
