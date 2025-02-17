@@ -6,6 +6,7 @@ using Sinch.Conversation.Contacts;
 using Sinch.Conversation.Conversations;
 using Sinch.Conversation.Events;
 using Sinch.Conversation.Messages;
+using Sinch.Conversation.TemplatesV1;
 using Sinch.Conversation.Transcoding;
 using Sinch.Conversation.TemplatesV2;
 using Sinch.Conversation.Webhooks;
@@ -49,6 +50,9 @@ namespace Sinch.Conversation
         /// <inheritdoc cref="ISinchConversationTemplatesV2" />
         ISinchConversationTemplatesV2 TemplatesV2 { get; }
 
+        /// <inheritdoc cref="ISinchConversationTemplatesV1" />
+        ISinchConversationTemplatesV1 TemplatesV1 { get; }
+
         /// <summary>
         ///     For internal use, JsonSerializerOption to be utilized for serialization and deserialization of all Conversation models
         /// </summary>
@@ -80,6 +84,8 @@ namespace Sinch.Conversation
                 loggerFactory?.Create<ISinchConversationCapabilities>(), http);
             TemplatesV2 = new TemplatesV2.TemplatesV2(projectId, templatesBaseAddress,
                 loggerFactory?.Create<ISinchConversationTemplatesV2>(), http);
+            TemplatesV1 = new TemplatesV1.TemplatesV1(projectId, templatesBaseAddress,
+                loggerFactory?.Create<ISinchConversationTemplatesV1>(), http);
         }
 
         /// <inheritdoc />
@@ -108,6 +114,8 @@ namespace Sinch.Conversation
 
         /// <inheritdoc />
         public ISinchConversationTemplatesV2 TemplatesV2 { get; }
+
+        public ISinchConversationTemplatesV1 TemplatesV1 { get; }
 
         public JsonSerializerOptions JsonSerializerOptions { get; }
     }
