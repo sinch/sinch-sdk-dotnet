@@ -65,7 +65,7 @@ namespace Sinch.Fax.Hooks
         public static readonly FaxEventType CompletedFax = new("FAX_COMPLETED");
     }
 
-    public class FaxEventConverter : JsonConverter<IFaxEvent>
+    public sealed class FaxEventConverter : JsonConverter<IFaxEvent>
     {
         public override IFaxEvent? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

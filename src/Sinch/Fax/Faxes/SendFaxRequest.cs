@@ -8,7 +8,7 @@ using Sinch.Core;
 
 namespace Sinch.Fax.Faxes
 {
-    public class SendFaxRequest : IDisposable, IAsyncDisposable
+    public sealed class SendFaxRequest : IDisposable, IAsyncDisposable
     {
         public SendFaxRequest()
         {

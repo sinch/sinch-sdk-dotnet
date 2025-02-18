@@ -4,7 +4,7 @@ using Sinch.Core;
 
 namespace Sinch.Fax.Faxes
 {
-    public class ListFaxesRequest
+    public sealed class ListFaxesRequest
     {
         /// <summary>
         ///     Does not specify createTime filter, the default value of the server is used.

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Sinch.Fax.Faxes
 {
-    public class ListFaxResponse
+    public sealed class ListFaxResponse
     {
         /// <summary>
         ///     Current page
