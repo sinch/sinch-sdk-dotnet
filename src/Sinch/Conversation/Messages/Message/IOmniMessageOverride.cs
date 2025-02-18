@@ -12,7 +12,7 @@ namespace Sinch.Conversation.Messages.Message
     {
     }
 
-    public class OmniMessageOverrideJsonConverter : JsonConverter<IOmniMessageOverride>
+    public sealed class OmniMessageOverrideJsonConverter : JsonConverter<IOmniMessageOverride>
     {
         private readonly Dictionary<string, Type> _propNameToTypeMap = new()
         {

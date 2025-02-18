@@ -3,7 +3,7 @@ using Sinch.Conversation.Messages.Message;
 
 namespace Sinch.Conversation.Messages.List
 {
-    public class ListMessagesResponse
+    public sealed class ListMessagesResponse
     {
         /// <summary>
         ///     List of messages associated to the referenced conversation.

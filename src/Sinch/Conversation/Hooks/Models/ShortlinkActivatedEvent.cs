@@ -5,7 +5,7 @@ namespace Sinch.Conversation.Hooks.Models
     /// <summary>
     ///     This functionality is currently only available for the Messenger and Instagram channels.
     /// </summary>
-    public class ShortlinkActivatedEvent
+    public sealed class ShortlinkActivatedEvent
     {
         /// <summary>
         /// Refers to the payload previously configured to be sent in the postback.

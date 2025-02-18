@@ -31,7 +31,7 @@ namespace Sinch.Conversation.Hooks.Models
 
     }
 
-    public class DocumentFieldData
+    public sealed class DocumentFieldData
     {
         /// <summary>
         ///    The data array contains the string(s) assigned to the corresponding document field.

@@ -5,7 +5,7 @@ using Sinch.Conversation.Events.EventTypes;
 
 namespace Sinch.Conversation.Events
 {
-    public class AppEvent
+    public sealed class AppEvent
     {
         [JsonConstructor]
         [Obsolete("Needed for System.Text.Json", true)]

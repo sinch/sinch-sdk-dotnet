@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Sinch.Conversation.TemplatesV2
 {
-    public class UpdateTemplateRequest
+    public sealed class UpdateTemplateRequest
     {
         /// <summary>
         ///     Id of a template to update

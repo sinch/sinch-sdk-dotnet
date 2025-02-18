@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
-    public class ContactMessage
+    public sealed class ContactMessage
     {
         // Thank you System.Text.Json -_-
         [JsonConstructor]

@@ -9,7 +9,7 @@ namespace Sinch.Conversation.Events
     /// <summary>
     ///     An event on a particular channel.
     /// </summary>
-    public class ConversationEvent
+    public sealed class ConversationEvent
     {
         /// <summary>
         /// Gets or Sets Direction
@@ -90,7 +90,7 @@ namespace Sinch.Conversation.Events
         }
     }
 
-    public class ConversationEventEvent
+    public sealed class ConversationEventEvent
     {
         // Thank you System.Text.Json -_-
         [JsonConstructor]

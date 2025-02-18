@@ -3,7 +3,7 @@ namespace Sinch.Conversation.Events.ContactEvents
     /// <summary>
     ///     An empty object. Represents a conversation deleted by the contact.
     /// </summary>
-    public class ConversationDeletedEvent
+    public sealed class ConversationDeletedEvent
     {
 
     }

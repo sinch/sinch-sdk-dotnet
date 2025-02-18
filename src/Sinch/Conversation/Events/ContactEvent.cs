@@ -8,7 +8,7 @@ namespace Sinch.Conversation.Events
     /// <summary>
     ///     The content of the events.
     /// </summary>
-    public class ContactEvent
+    public sealed class ContactEvent
     {
         // Thank you System.Text.Json -_-
         [JsonConstructor]

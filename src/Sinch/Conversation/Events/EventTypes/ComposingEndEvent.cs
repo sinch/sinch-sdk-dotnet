@@ -1,6 +1,6 @@
 namespace Sinch.Conversation.Events.EventTypes
 {
-    public class ComposingEndEvent
+    public sealed class ComposingEndEvent
     {
     }
 }

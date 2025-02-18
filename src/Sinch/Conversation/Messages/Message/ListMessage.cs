@@ -104,7 +104,7 @@ namespace Sinch.Conversation.Messages.Message
     {
     }
 
-    public class ListItemJsonConverter : JsonConverter<IListItem>
+    public sealed class ListItemJsonConverter : JsonConverter<IListItem>
     {
         public override IListItem? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

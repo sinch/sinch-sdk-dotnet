@@ -43,7 +43,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     A generic URL message.
     /// </summary>
-    public class UrlMessage
+    public sealed class UrlMessage
     {
         [JsonConstructor]
         public UrlMessage()

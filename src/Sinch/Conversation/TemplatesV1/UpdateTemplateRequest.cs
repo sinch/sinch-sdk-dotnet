@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.TemplatesV1
 {
-    public class UpdateTemplateRequest
+    public sealed class UpdateTemplateRequest
     {
         // TODO: make required when net9 merges
         /// <summary>

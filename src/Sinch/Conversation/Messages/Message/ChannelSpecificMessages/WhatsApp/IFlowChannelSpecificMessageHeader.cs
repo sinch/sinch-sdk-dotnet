@@ -15,7 +15,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         public WhatsAppHeaderType Type { get; }
     }
 
-    public class FlowChannelSpecificMessageHeaderJsonConverter : JsonConverter<IFlowChannelSpecificMessageHeader>
+    public sealed class FlowChannelSpecificMessageHeaderJsonConverter : JsonConverter<IFlowChannelSpecificMessageHeader>
     {
         public override IFlowChannelSpecificMessageHeader Read(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)
