@@ -5,7 +5,7 @@ using Sinch.Core;
 
 namespace Sinch.Voice.Applications.GetNumbers
 {
-    public class GetNumbersResponse
+    public sealed class GetNumbersResponse
     {
         /// <summary>
         ///     The object type. Will always be list of numbers, associated application keys and capabilities

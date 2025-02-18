@@ -6,7 +6,7 @@ namespace Sinch.Voice.Calls.Instructions
     /// <summary>
     ///     Plays DTMF tones in the call.
     /// </summary>
-    public class SendDtmf : IInstruction
+    public sealed class SendDtmf : IInstruction
     {
         public string Name { get; } = "sendDtmf";
 

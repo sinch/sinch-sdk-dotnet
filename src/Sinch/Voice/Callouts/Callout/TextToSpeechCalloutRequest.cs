@@ -3,7 +3,7 @@ using Sinch.Core;
 
 namespace Sinch.Voice.Callouts.Callout
 {
-    public class TextToSpeechCalloutRequest
+    public sealed class TextToSpeechCalloutRequest
     {
 #if NET7_0_OR_GREATER
         public required Destination Destination { get; set; }

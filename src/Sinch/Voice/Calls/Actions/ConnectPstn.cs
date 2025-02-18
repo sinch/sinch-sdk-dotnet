@@ -6,7 +6,7 @@ namespace Sinch.Voice.Calls.Actions
     /// <summary>
     ///     Determines how a PSTN call is connected.
     /// </summary>
-    public class ConnectPstn : IAction
+    public sealed class ConnectPstn : IAction
     {
         /// <summary>
         ///     The name property. 
@@ -112,7 +112,7 @@ namespace Sinch.Voice.Calls.Actions
     }
 
 
-    public class Amd
+    public sealed class Amd
     {
         /// <summary>
         ///     Sets whether AMD is enabled.
