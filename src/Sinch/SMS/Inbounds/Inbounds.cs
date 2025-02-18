@@ -40,7 +40,7 @@ namespace Sinch.SMS.Inbounds
         Task<IInbound> Get(string inboundId, CancellationToken cancellationToken = default);
     }
 
-    public class Inbounds : ISinchSmsInbounds
+    public sealed class Inbounds : ISinchSmsInbounds
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Sinch.SMS.Groups
 {
-    public class Group
+    public sealed class Group
     {
         /// <summary>
         ///     The ID used to reference this group.
@@ -39,7 +39,7 @@ namespace Sinch.SMS.Groups
         public AutoUpdate? AutoUpdate { get; set; }
     }
 
-    public class AutoUpdate
+    public sealed class AutoUpdate
     {
         /// <summary>
         ///     Short code or long number addressed in

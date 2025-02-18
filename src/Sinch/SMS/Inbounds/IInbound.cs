@@ -14,7 +14,7 @@ namespace Sinch.SMS.Inbounds
     {
     }
 
-    public class InboundJsonConverter : JsonConverter<IInbound>
+    public sealed class InboundJsonConverter : JsonConverter<IInbound>
     {
         public override IInbound? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

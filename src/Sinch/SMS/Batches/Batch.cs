@@ -72,7 +72,7 @@ namespace Sinch.SMS.Batches
         }
     }
 
-    public class TextBatch : BatchBase, IBatch
+    public sealed class TextBatch : BatchBase, IBatch
     {
         /// <summary>
         ///     Unique identifier for batch
@@ -135,7 +135,7 @@ namespace Sinch.SMS.Batches
     }
 
 
-    public class BinaryBatch : BatchBase, IBatch
+    public sealed class BinaryBatch : BatchBase, IBatch
     {
         /// <summary>
         ///     Unique identifier for batch
@@ -193,7 +193,7 @@ namespace Sinch.SMS.Batches
         public override SmsType Type { get; } = SmsType.MtBinary;
     }
 
-    public class MediaBatch : BatchBase, IBatch
+    public sealed class MediaBatch : BatchBase, IBatch
     {
         /// <summary>
         ///     Unique identifier for batch

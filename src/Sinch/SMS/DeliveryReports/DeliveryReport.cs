@@ -2,7 +2,7 @@ using System;
 
 namespace Sinch.SMS.DeliveryReports
 {
-    public class DeliveryReport
+    public sealed class DeliveryReport
     {
         /// <summary>
         ///     A timestamp of when the Delivery Report was created in the Sinch service.

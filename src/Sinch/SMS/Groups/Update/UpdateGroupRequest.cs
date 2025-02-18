@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.SMS.Groups.Update
 {
-    public class UpdateGroupRequest : IGroupUpdateRequest
+    public sealed class UpdateGroupRequest : IGroupUpdateRequest
     {
         /// <summary>
         ///     ID of a group that you are interested in getting.

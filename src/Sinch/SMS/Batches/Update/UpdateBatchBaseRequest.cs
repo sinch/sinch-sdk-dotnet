@@ -12,7 +12,7 @@ namespace Sinch.SMS.Batches.Update
     {
     }
 
-    public class UpdateBatchConverter : JsonConverter<IUpdateBatchRequest>
+    public sealed class UpdateBatchConverter : JsonConverter<IUpdateBatchRequest>
     {
         public override IUpdateBatchRequest Read(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)
