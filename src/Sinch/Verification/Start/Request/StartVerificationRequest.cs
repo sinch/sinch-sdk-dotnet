@@ -84,7 +84,7 @@ namespace Sinch.Verification.Start.Request
         public TimeOnly? Expiry { get; set; }
     }
 
-    public class FlashCallOptions
+    public sealed class FlashCallOptions
     {
         /// <summary>
         ///    The dial timeout in seconds. 

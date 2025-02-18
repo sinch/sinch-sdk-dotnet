@@ -1,6 +1,6 @@
 namespace Sinch.Verification.Start.Response
 {
-    public class Links
+    public sealed class Links
     {
         /// <summary>
         ///     The related action that can be performed on the initiated Verification.

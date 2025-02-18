@@ -9,7 +9,7 @@ namespace Sinch.Verification.Hooks
     ///     It's used to report the verification result to the developer's backend application.
     ///     This callback event is only triggered when the verification callback URL is specified in your dashboard.
     /// </summary>
-    public class VerificationResultEvent
+    public sealed class VerificationResultEvent
     {
         /// <summary>
         ///     The ID of the verification request.

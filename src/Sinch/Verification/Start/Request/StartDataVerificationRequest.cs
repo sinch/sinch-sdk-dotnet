@@ -3,7 +3,7 @@ using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Start.Request
 {
-    public class StartDataVerificationRequest : StartVerificationRequestBase
+    public sealed class StartDataVerificationRequest : StartVerificationRequestBase
     {
         /// <summary>
         ///     The type of the verification request. Set to Seamless

@@ -10,7 +10,7 @@ namespace Sinch.Verification.Common
         public PriceDetail? VerificationPrice { get; set; }
     }
 
-    public class Price : PriceBase
+    public sealed class Price : PriceBase
     {
         public PriceDetail? TerminationPrice { get; set; }
 

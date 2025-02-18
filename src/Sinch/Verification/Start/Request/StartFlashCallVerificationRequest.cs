@@ -3,7 +3,7 @@ using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Start.Request
 {
-    public class StartFlashCallVerificationRequest : StartVerificationRequestBase
+    public sealed class StartFlashCallVerificationRequest : StartVerificationRequestBase
     {
         /// <summary>
         ///     The type of the verification request. Set to SMS.

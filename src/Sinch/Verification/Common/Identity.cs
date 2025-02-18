@@ -3,7 +3,7 @@ using Sinch.Core;
 
 namespace Sinch.Verification.Common
 {
-    public class Identity
+    public sealed class Identity
     {
         /// <summary>
         ///     Creates an Identity with phone number.
