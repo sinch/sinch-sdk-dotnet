@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Sinch.Conversation.TemplatesV2
 {
-    public class Template
+    public sealed class Template
     {
         /// <summary>
         ///     The id of the template. Specify this yourself during creation. Otherwise, we will generate an ID for you. This must

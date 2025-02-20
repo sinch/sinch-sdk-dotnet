@@ -2,13 +2,13 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Verification.Hooks
 {
-    public class CalloutRequestEventResponse : RequestEventResponseBase
+    public sealed class CalloutRequestEventResponse : RequestEventResponseBase
     {
         [JsonPropertyName("callout")]
         public Callout? Callout { get; set; }
     }
 
-    public class Callout
+    public sealed class Callout
     {
         /// <summary>
         ///     The Phone Call PIN that should be entered by the user.
@@ -25,7 +25,7 @@ namespace Sinch.Verification.Hooks
         public Speech? Speech { get; set; }
     }
 
-    public class Speech
+    public sealed class Speech
     {
         /// <summary>
         ///     Indicates the language that should be used for the text-to-speech message.

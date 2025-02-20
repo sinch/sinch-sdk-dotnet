@@ -55,7 +55,7 @@ namespace Sinch.Verification.Status
     {
     }
 
-    public class VerificationStatusResponseConverter : JsonConverter<IVerificationStatusResponse?>
+    public sealed class VerificationStatusResponseConverter : JsonConverter<IVerificationStatusResponse?>
     {
         public override IVerificationStatusResponse? Read(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)

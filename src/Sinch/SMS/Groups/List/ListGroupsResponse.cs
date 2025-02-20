@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Sinch.SMS.Groups.List
 {
-    public class ListGroupsResponse
+    public sealed class ListGroupsResponse
     {
         /// <summary>
         ///     The requested page.

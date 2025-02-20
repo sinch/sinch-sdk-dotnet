@@ -104,7 +104,7 @@ namespace Sinch.Conversation.Messages.Message
     {
     }
 
-    public class ListItemJsonConverter : JsonConverter<IListItem>
+    public sealed class ListItemJsonConverter : JsonConverter<IListItem>
     {
         public override IListItem? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
@@ -149,12 +149,12 @@ namespace Sinch.Conversation.Messages.Message
         }
     }
 
-    internal class ListItemChoiceWrapper
+    internal sealed class ListItemChoiceWrapper
     {
         public ChoiceItem? Choice { get; set; }
     }
 
-    internal class ListItemProductWrapper
+    internal sealed class ListItemProductWrapper
     {
         public ProductItem? Product { get; set; }
     }

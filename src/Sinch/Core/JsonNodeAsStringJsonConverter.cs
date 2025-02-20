@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Core
 {
-    public class JsonNodeAsStringJsonConverter : JsonConverter<JsonNode>
+    public sealed class JsonNodeAsStringJsonConverter : JsonConverter<JsonNode>
     {
         public override JsonNode? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
@@ -25,7 +25,7 @@ namespace Sinch.Core
     }
 
     // JsonNode variant not working for object
-    public class JsonObjectAsStringJsonConverter : JsonConverter<JsonObject>
+    public sealed class JsonObjectAsStringJsonConverter : JsonConverter<JsonObject>
     {
         public override JsonObject? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

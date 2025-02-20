@@ -134,7 +134,7 @@ namespace Sinch.Conversation.Contacts
         Task<Contact> Merge(string destinationId, string sourceId, CancellationToken cancellationToken = default);
     }
 
-    internal class Contacts : ISinchConversationContacts
+    internal sealed class Contacts : ISinchConversationContacts
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

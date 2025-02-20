@@ -66,7 +66,7 @@ namespace Sinch
         }
     }
 
-    internal class ServicePlanIdOptions
+    internal sealed class ServicePlanIdOptions
     {
         public ServicePlanIdOptions(string servicePlanId, SmsServicePlanIdRegion region, string apiToken)
         {

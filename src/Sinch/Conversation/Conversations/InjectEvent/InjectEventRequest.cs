@@ -5,7 +5,7 @@ using Sinch.Conversation.Events;
 
 namespace Sinch.Conversation.Conversations.InjectEvent
 {
-    public class InjectEventRequest
+    public sealed class InjectEventRequest
     {
         // Thank you System.Text.Json -_-
         [JsonConstructor]

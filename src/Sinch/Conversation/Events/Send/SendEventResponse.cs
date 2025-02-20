@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Sinch.Conversation.Events.Send
 {
-    public class SendEventResponse
+    public sealed class SendEventResponse
     {
         /// <summary>
         ///     Accepted timestamp.

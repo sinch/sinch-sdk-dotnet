@@ -7,7 +7,7 @@ namespace Sinch.Conversation.Webhooks
     /// <summary>
     ///     Represents a destination for receiving callbacks from the Conversation API.
     /// </summary>
-    public class Webhook
+    public sealed class Webhook
     {
         /// <summary>
         ///     Gets or sets the target type.

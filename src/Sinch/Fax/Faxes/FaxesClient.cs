@@ -113,7 +113,7 @@ namespace Sinch.Fax.Faxes
 
 
         // the fax will return a PLAIN fax if there is ONE TO number, but an array if there  is > 1 
-        private class SendFaxResponse
+        private sealed class SendFaxResponse
         {
             [JsonPropertyName("faxes")]
             public List<Fax> Faxes { get; set; } = new();

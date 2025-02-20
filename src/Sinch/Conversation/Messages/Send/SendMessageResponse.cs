@@ -2,7 +2,7 @@ using System;
 
 namespace Sinch.Conversation.Messages.Send
 {
-    public class SendMessageResponse
+    public sealed class SendMessageResponse
     {
         /// <summary>
         ///     Timestamp when the Conversation API accepted the message for delivery to the referenced contact.

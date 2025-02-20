@@ -1,6 +1,6 @@
 namespace Sinch.Conversation.Events
 {
-    public class ListEventsRequest
+    public sealed class ListEventsRequest
     {
         public string? ConversationId { get; set; }
 

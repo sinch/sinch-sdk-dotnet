@@ -2,7 +2,7 @@ using Sinch.Conversation.Common;
 
 namespace Sinch.Conversation.Contacts.GetChannelProfile
 {
-    public class GetChannelProfileRequest
+    public sealed class GetChannelProfileRequest
     {
         /// <summary>
         ///     The recipient to check profile information. Requires either contact_id or identified_by.

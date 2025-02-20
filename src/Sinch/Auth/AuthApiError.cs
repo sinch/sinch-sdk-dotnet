@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Auth
 {
-    internal class AuthApiError
+    internal sealed class AuthApiError
     {
         public string? Error { get; set; }
 

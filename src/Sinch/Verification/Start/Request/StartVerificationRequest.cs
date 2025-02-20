@@ -4,7 +4,7 @@ using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Start.Request
 {
-    internal class StartVerificationRequest
+    internal sealed class StartVerificationRequest
     {
         /// <summary>
         ///     Specifies the type of endpoint that will be verified and the particular endpoint.
@@ -48,7 +48,7 @@ namespace Sinch.Verification.Start.Request
         public CalloutOptions? CalloutOptions { get; set; }
     }
 
-    internal class CalloutOptions
+    internal sealed class CalloutOptions
     {
         /// <summary>
         ///     Text-To-Speech engine settings
@@ -57,7 +57,7 @@ namespace Sinch.Verification.Start.Request
         public SpeechEngineSetting? Speech { get; set; }
     }
 
-    internal class SpeechEngineSetting
+    internal sealed class SpeechEngineSetting
     {
         /// <summary>
         ///     A language-region identifier according to IANA. Only a subset of those identifiers is accepted.
@@ -65,7 +65,7 @@ namespace Sinch.Verification.Start.Request
         public string? Locale { get; set; }
     }
 
-    internal class SmsOptions
+    internal sealed class SmsOptions
     {
         /// <summary>
         ///     The SMS template must include a placeholder {{CODE}} where the verification code will be inserted, and it can otherwise be customized as desired.
@@ -84,7 +84,7 @@ namespace Sinch.Verification.Start.Request
         public TimeOnly? Expiry { get; set; }
     }
 
-    public class FlashCallOptions
+    public sealed class FlashCallOptions
     {
         /// <summary>
         ///    The dial timeout in seconds. 

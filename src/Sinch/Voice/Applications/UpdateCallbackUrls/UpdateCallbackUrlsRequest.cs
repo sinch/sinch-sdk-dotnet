@@ -2,7 +2,7 @@ using System.Text;
 
 namespace Sinch.Voice.Applications.UpdateCallbackUrls
 {
-    public class UpdateCallbackUrlsRequest
+    public sealed class UpdateCallbackUrlsRequest
     {
         /// <summary>
         ///     The unique identifying key of the application.

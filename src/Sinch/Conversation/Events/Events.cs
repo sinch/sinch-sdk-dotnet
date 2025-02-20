@@ -57,7 +57,7 @@ namespace Sinch.Conversation.Events
             CancellationToken cancellationToken = default);
     }
 
-    internal class Events : ISinchConversationEvents
+    internal sealed class Events : ISinchConversationEvents
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

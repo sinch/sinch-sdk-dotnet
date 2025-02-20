@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Sinch.SMS.Batches.Send
 {
-    public class SendTextBatchRequest : BatchBase, ISendBatchRequest
+    public sealed class SendTextBatchRequest : BatchBase, ISendBatchRequest
     {
         /// <summary>
         ///     The message content

@@ -1,6 +1,6 @@
 namespace Sinch.Conversation.Contacts.GetChannelProfile
 {
-    public class ChannelProfile
+    public sealed class ChannelProfile
     {
         /// <summary>
         ///     The profile name.

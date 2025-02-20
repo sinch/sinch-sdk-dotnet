@@ -55,7 +55,7 @@ namespace Sinch.Conversation.TemplatesV1
         Task Delete(string templateId, CancellationToken cancellationToken = default);
     }
 
-    internal class TemplatesV1 : ISinchConversationTemplatesV1
+    internal sealed class TemplatesV1 : ISinchConversationTemplatesV1
     {
         private readonly string _projectId;
         private readonly Uri _baseAddress;
@@ -142,7 +142,7 @@ namespace Sinch.Conversation.TemplatesV1
             return _http.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
         }
 
-        private class ListTemplatesResponse
+        private sealed class ListTemplatesResponse
         {
             public List<Template>? Templates { get; set; }
         }

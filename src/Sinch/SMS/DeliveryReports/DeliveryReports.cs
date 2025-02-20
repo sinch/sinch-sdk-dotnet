@@ -54,7 +54,7 @@ namespace Sinch.SMS.DeliveryReports
     }
 
     /// <inheritdoc />
-    internal class DeliveryReports : ISinchSmsDeliveryReports
+    internal sealed class DeliveryReports : ISinchSmsDeliveryReports
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

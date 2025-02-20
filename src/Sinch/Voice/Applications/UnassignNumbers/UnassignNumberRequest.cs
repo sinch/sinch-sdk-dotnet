@@ -4,7 +4,7 @@ using Sinch.Voice.Applications.GetNumbers;
 
 namespace Sinch.Voice.Applications.UnassignNumbers
 {
-    public class UnassignNumberRequest
+    public sealed class UnassignNumberRequest
     {
         /// <summary>
         ///     (optional) indicates the DID capability that was assigned to the chosen application. Please note that the DID needs

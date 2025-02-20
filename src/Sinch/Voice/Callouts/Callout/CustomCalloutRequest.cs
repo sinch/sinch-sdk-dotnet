@@ -4,7 +4,7 @@ using Sinch.Core;
 
 namespace Sinch.Voice.Callouts.Callout
 {
-    public class CustomCalloutRequest
+    public sealed class CustomCalloutRequest
     {
         /// <summary>
         ///     The number that will be displayed as the icoming caller,

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
-    public class ProductResponseMessage
+    public sealed class ProductResponseMessage
     {
         /// <summary>
         ///     The selected products.

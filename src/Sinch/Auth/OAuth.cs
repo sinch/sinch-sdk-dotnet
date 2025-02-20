@@ -11,7 +11,7 @@ using Sinch.Logger;
 
 namespace Sinch.Auth
 {
-    internal class OAuth : ISinchAuth
+    internal sealed class OAuth : ISinchAuth
     {
         private readonly HttpClient _httpClient;
         private readonly string _keyId;
@@ -78,7 +78,7 @@ namespace Sinch.Auth
             return _token;
         }
 
-        private class AuthResponse
+        private sealed class AuthResponse
         {
             [JsonPropertyName("access_token")]
 #if NET7_0_OR_GREATER

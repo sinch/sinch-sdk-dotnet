@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.TemplatesV1
 {
-    public class TemplateTranslation
+    public sealed class TemplateTranslation
     {
         /// <summary>
         ///     This is the definition of the template with the language specified in the language_code field.
@@ -68,7 +68,7 @@ namespace Sinch.Conversation.TemplatesV1
         }
     }
 
-    public class TypeTemplateVariable
+    public sealed class TypeTemplateVariable
     {
         [JsonPropertyName("key")]
         public string? Key { get; set; }

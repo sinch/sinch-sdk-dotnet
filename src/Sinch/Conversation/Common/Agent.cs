@@ -5,7 +5,7 @@ namespace Sinch.Conversation.Common
     /// <summary>
     ///     Represents an agent that is involved in a conversation.
     /// </summary>
-    public class Agent
+    public sealed class Agent
     {
         /// <summary>
         ///     Agent's display name

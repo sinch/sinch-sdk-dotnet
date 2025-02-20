@@ -104,7 +104,7 @@ namespace Sinch.Conversation.Conversations
             CancellationToken cancellationToken = default);
     }
 
-    internal class ConversationsClient : ISinchConversationConversations
+    internal sealed class ConversationsClient : ISinchConversationConversations
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

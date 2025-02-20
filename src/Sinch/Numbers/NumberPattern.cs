@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Sinch.Numbers
 {
-    public class NumberPattern
+    public sealed class NumberPattern
     {
         /// <summary>
         ///     Sequence of digits to search for. If you prefer or need certain digits in sequential order,

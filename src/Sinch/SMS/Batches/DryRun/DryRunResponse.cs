@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Sinch.SMS.Batches.DryRun
 {
-    public class DryRunResponse
+    public sealed class DryRunResponse
     {
         /// <summary>
         ///     The number of recipients in the batch
@@ -21,7 +21,7 @@ namespace Sinch.SMS.Batches.DryRun
         public List<PerRecipient>? PerRecipient { get; set; }
     }
 
-    public class PerRecipient
+    public sealed class PerRecipient
     {
         public string? Recipient { get; set; }
 

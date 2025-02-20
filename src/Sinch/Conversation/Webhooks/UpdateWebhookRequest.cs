@@ -5,7 +5,7 @@ using Sinch.Core;
 
 namespace Sinch.Conversation.Webhooks
 {
-    public class UpdateWebhookRequest : PropertyMaskQuery
+    public sealed class UpdateWebhookRequest : PropertyMaskQuery
     {
         private WebhookTargetType? _targetType;
         private string _appId = null!;

@@ -30,7 +30,7 @@ namespace Sinch.Conversation.Capability
             CancellationToken cancellationToken = default);
     }
 
-    internal class Capabilities : ISinchConversationCapabilities
+    internal sealed class Capabilities : ISinchConversationCapabilities
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

@@ -2,7 +2,7 @@ using System.Text;
 
 namespace Sinch.Voice.Applications.QueryNumber
 {
-    public class QueryNumberResponse
+    public sealed class QueryNumberResponse
     {
         /// <summary>
         ///     The type of method.

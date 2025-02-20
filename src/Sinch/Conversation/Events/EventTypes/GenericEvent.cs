@@ -5,7 +5,7 @@ namespace Sinch.Conversation.Events.EventTypes
     /// <summary>
     ///     Event that contains only a flexible payload field.
     /// </summary>
-    public class GenericEvent
+    public sealed class GenericEvent
     {
         /// <summary>
         ///     Arbitrary data set to the event. A valid JSON object.

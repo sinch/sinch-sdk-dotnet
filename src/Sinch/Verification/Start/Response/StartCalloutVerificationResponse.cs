@@ -1,6 +1,6 @@
 namespace Sinch.Verification.Start.Response
 {
-    public class StartCalloutVerificationResponse : VerificationStartResponseBase, IStartVerificationResponse
+    public sealed class StartCalloutVerificationResponse : VerificationStartResponseBase, IStartVerificationResponse
     {
 
     }

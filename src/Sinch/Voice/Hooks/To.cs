@@ -6,7 +6,7 @@ namespace Sinch.Voice.Hooks
     /// <summary>
     ///     An object containing information about the recipient of the call.
     /// </summary>
-    public class To
+    public sealed class To
     {
         /// <summary>
         ///     The type of the destination.

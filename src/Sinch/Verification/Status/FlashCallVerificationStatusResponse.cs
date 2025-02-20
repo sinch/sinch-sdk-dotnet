@@ -3,7 +3,7 @@ using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Status
 {
-    public class FlashCallVerificationStatusResponse : VerificationStatusResponseBase, IVerificationStatusResponse
+    public sealed class FlashCallVerificationStatusResponse : VerificationStatusResponseBase, IVerificationStatusResponse
     {
         /// <summary>
         ///     Free text that the client is sending, used to show if the call/SMS was intercepted or not.

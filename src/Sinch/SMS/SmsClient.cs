@@ -55,7 +55,7 @@ namespace Sinch.SMS
 
     internal record ProjectId(string Value);
 
-    internal class SmsClient : ISinchSms
+    internal sealed class SmsClient : ISinchSms
     {
         /// <summary>
         ///     Creates an instance of Sms service with project id

@@ -6,7 +6,7 @@ namespace Sinch.Conversation.Transcoding
     /// <summary>
     ///     The message to be transcoded, and the app and channels for which the message is to be transcoded.
     /// </summary>
-    public class TranscodeRequest
+    public sealed class TranscodeRequest
     {
 #if NET7_0_OR_GREATER
         public required string AppId { get; set; }

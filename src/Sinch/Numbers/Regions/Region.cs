@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Sinch.Numbers.Regions
 {
-    public class Region
+    public sealed class Region
     {
         /// <summary>
         ///     ISO 3166-1 alpha-2 region code. Examples: US, UK or SE.

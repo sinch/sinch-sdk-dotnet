@@ -2,7 +2,7 @@ using System;
 
 namespace Sinch.Conversation.Conversations.InjectEvent
 {
-    public class InjectEventResponse
+    public sealed class InjectEventResponse
     {
         public string? EventId { get; set; }
 

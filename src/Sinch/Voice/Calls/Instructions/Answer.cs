@@ -5,7 +5,7 @@ namespace Sinch.Voice.Calls.Instructions
     /// <summary>
     ///     Forces the callee to answer the call.
     /// </summary>
-    public class Answer : IInstruction
+    public sealed class Answer : IInstruction
     {
         public string Name { get; } = "answer";
 

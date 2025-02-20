@@ -56,7 +56,7 @@ namespace Sinch.Voice.Calls
 
 
     /// <inheritdoc />
-    internal class SinchCalls : ISinchVoiceCalls
+    internal sealed class SinchCalls : ISinchVoiceCalls
     {
         private readonly ILoggerAdapter<ISinchVoiceCalls>? _logger;
         private readonly Uri _baseAddress;

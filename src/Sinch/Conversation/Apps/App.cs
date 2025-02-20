@@ -4,7 +4,7 @@ using Sinch.Conversation.Common;
 
 namespace Sinch.Conversation.Apps
 {
-    public class App
+    public sealed class App
     {
         /// <summary>
         ///     An array of channel credentials. The order of the credentials defines the app channel priority.

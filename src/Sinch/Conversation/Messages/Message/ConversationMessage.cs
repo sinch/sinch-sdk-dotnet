@@ -5,7 +5,7 @@ using Sinch.Conversation.Common;
 
 namespace Sinch.Conversation.Messages.Message
 {
-    public class ConversationMessage
+    public sealed class ConversationMessage
     {
         /// <summary>
         ///     Gets or Sets Direction

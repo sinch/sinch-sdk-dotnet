@@ -6,7 +6,7 @@ namespace Sinch.Fax.Faxes
     /// <summary>
     ///     
     /// </summary>
-    public class Money
+    public sealed class Money
 
     {
         /// <summary>

@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Verification.Common
 {
-    public class PriceDetail
+    public sealed class PriceDetail
     {
         /// <summary>
         ///     ISO 4217 currency code

@@ -1,6 +1,6 @@
 namespace Sinch.Verification.Start.Response
 {
-    public class StartSmsVerificationResponse : VerificationStartResponseBase, IStartVerificationResponse
+    public sealed class StartSmsVerificationResponse : VerificationStartResponseBase, IStartVerificationResponse
     {
         /// <summary>
         ///     The response contains the template of the SMS to be expected and intercepted.
@@ -11,7 +11,7 @@ namespace Sinch.Verification.Start.Response
     /// <summary>
     ///     The response contains the template of the SMS to be expected and intercepted.
     /// </summary>
-    public class SmsInfo
+    public sealed class SmsInfo
     {
         /// <summary>
         ///     The expected template for the SMS response.

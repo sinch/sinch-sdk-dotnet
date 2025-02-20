@@ -94,7 +94,7 @@ namespace Sinch.Conversation.Webhooks
     }
 
     /// <inheritdoc />
-    internal class Webhooks : ISinchConversationWebhooks
+    internal sealed class Webhooks : ISinchConversationWebhooks
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
@@ -269,7 +269,7 @@ namespace Sinch.Conversation.Webhooks
         }
     }
 
-    internal class ListWebhooksResponse
+    internal sealed class ListWebhooksResponse
     {
         // ReSharper disable once CollectionNeverUpdated.Global
         public List<Webhook>? Webhooks { get; set; }
