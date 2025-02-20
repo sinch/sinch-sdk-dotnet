@@ -114,7 +114,7 @@ namespace Sinch.Conversation.TemplatesV2
             return response.Templates ?? new List<Template>();
         }
 
-        private class ListTemplatesResponse
+        private sealed class ListTemplatesResponse
         {
             public List<Template>? Templates { get; set; }
         }
@@ -184,7 +184,7 @@ namespace Sinch.Conversation.TemplatesV2
             return _http.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
         }
 
-        private class ListTranslationsResponse
+        private sealed class ListTranslationsResponse
         {
             public List<TemplateTranslation>? Translations { get; set; }
         }

@@ -142,7 +142,7 @@ namespace Sinch.Conversation.TemplatesV1
             return _http.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
         }
 
-        private class ListTemplatesResponse
+        private sealed class ListTemplatesResponse
         {
             public List<Template>? Templates { get; set; }
         }

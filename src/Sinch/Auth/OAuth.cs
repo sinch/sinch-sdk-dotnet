@@ -78,7 +78,7 @@ namespace Sinch.Auth
             return _token;
         }
 
-        private class AuthResponse
+        private sealed class AuthResponse
         {
             [JsonPropertyName("access_token")]
 #if NET7_0_OR_GREATER

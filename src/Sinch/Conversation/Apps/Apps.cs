@@ -165,7 +165,7 @@ namespace Sinch.Conversation.Apps
                 cancellationToken: cancellationToken);
         }
 
-        private class ListResponse
+        private sealed class ListResponse
         {
             // ReSharper disable once CollectionNeverUpdated.Local
             public List<App>? Apps { get; set; }
