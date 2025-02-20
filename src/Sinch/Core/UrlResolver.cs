@@ -6,7 +6,7 @@ using Sinch.Voice;
 
 namespace Sinch.Core
 {
-    internal class UrlResolver
+    internal sealed class UrlResolver
     {
         private readonly ApiUrlOverrides? _apiUrlOverrides;
 

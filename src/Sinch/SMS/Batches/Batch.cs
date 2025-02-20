@@ -24,7 +24,7 @@ namespace Sinch.SMS.Batches
         public bool? Canceled { get; set; }
     }
 
-    internal class BatchConverter : JsonConverter<IBatch>
+    internal sealed class BatchConverter : JsonConverter<IBatch>
     {
         public override IBatch Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

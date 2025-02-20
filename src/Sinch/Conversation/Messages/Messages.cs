@@ -74,7 +74,7 @@ namespace Sinch.Conversation.Messages
     }
 
     /// <inheritdoc />
-    internal class Messages : ISinchConversationMessages
+    internal sealed class Messages : ISinchConversationMessages
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

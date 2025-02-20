@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 namespace Sinch.Logger
 {
     [SuppressMessage("Usage", "CA2254:Template should be a static expression")]
-    internal class LoggerAdapter<T> : ILoggerAdapter<T>
+    internal sealed class LoggerAdapter<T> : ILoggerAdapter<T>
     {
         private readonly ILogger<T> _logger;
 

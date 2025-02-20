@@ -74,7 +74,7 @@ namespace Sinch.Conversation.TemplatesV2
         Task Delete(string templateId, CancellationToken cancellationToken = default);
     }
 
-    internal class TemplatesV2 : ISinchConversationTemplatesV2
+    internal sealed class TemplatesV2 : ISinchConversationTemplatesV2
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

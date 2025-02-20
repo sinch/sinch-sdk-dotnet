@@ -64,7 +64,7 @@ namespace Sinch.Verification
             CancellationToken cancellationToken = default);
     }
 
-    internal class SinchVerificationStatus : ISinchVerificationStatus
+    internal sealed class SinchVerificationStatus : ISinchVerificationStatus
     {
         private readonly ILoggerAdapter<SinchVerificationStatus>? _logger;
         private readonly Uri _baseAddress;

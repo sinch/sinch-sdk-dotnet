@@ -132,7 +132,7 @@ namespace Sinch.Verification
             CancellationToken cancellationToken = default);
     }
 
-    internal class SinchVerification : ISinchVerification
+    internal sealed class SinchVerification : ISinchVerification
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

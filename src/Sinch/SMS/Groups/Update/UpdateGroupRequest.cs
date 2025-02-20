@@ -96,7 +96,7 @@ namespace Sinch.SMS.Groups.Update
     /// <summary>
     ///     Workaround to omit name property
     /// </summary>
-    internal class RequestWithoutName
+    internal sealed class RequestWithoutName
     {
         /// <summary>
         ///     Add a list of phone numbers (MSISDNs) to this group.

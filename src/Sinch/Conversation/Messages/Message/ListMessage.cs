@@ -149,12 +149,12 @@ namespace Sinch.Conversation.Messages.Message
         }
     }
 
-    internal class ListItemChoiceWrapper
+    internal sealed class ListItemChoiceWrapper
     {
         public ChoiceItem? Choice { get; set; }
     }
 
-    internal class ListItemProductWrapper
+    internal sealed class ListItemProductWrapper
     {
         public ProductItem? Product { get; set; }
     }

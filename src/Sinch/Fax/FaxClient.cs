@@ -23,7 +23,7 @@ namespace Sinch.Fax
         public ISinchFaxServices Services { get; }
     }
 
-    internal class FaxClient : ISinchFax
+    internal sealed class FaxClient : ISinchFax
     {
         internal FaxClient(string projectId, Uri baseAddress, LoggerFactory? loggerFactory, IHttp http)
         {

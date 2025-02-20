@@ -80,7 +80,7 @@ namespace Sinch.Conversation.Apps
         Task<App> Update(string appId, UpdateAppRequest request, CancellationToken cancellationToken = default);
     }
 
-    internal class Apps : ISinchConversationApps
+    internal sealed class Apps : ISinchConversationApps
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

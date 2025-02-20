@@ -60,7 +60,7 @@ namespace Sinch.Conversation
     }
 
     /// <inheritdoc />
-    internal class SinchConversationClient : ISinchConversation
+    internal sealed class SinchConversationClient : ISinchConversation
     {
         internal SinchConversationClient(string projectId, Uri conversationBaseAddress, Uri templatesBaseAddress
             , LoggerFactory? loggerFactory, IHttp http)

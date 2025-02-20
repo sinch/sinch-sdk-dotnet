@@ -65,7 +65,7 @@ namespace Sinch.Core
     }
 
     /// <inheritdoc /> 
-    internal class Http : IHttp
+    internal sealed class Http : IHttp
     {
         private readonly HttpClient _httpClient;
         private readonly JsonSerializerOptions _jsonSerializerOptions;

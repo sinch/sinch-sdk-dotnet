@@ -54,7 +54,7 @@ namespace Sinch.Voice.Conferences
 
 
     /// <inheritdoc />
-    internal class SinchConferences : ISinchVoiceConferences
+    internal sealed class SinchConferences : ISinchVoiceConferences
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

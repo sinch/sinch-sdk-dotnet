@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Sinch.Logger
 {
-    internal class LoggerFactory
+    internal sealed class LoggerFactory
     {
         private readonly ILoggerFactory _loggerFactory;
 

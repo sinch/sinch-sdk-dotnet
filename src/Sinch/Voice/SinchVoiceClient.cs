@@ -51,7 +51,7 @@ namespace Sinch.Voice
     }
 
     /// <inheritdoc />
-    internal class SinchVoiceClient : ISinchVoiceClient
+    internal sealed class SinchVoiceClient : ISinchVoiceClient
     {
         private readonly ApplicationSignedAuth _applicationSignedAuth;
         private readonly ILoggerAdapter<ISinchVoiceClient>? _logger;

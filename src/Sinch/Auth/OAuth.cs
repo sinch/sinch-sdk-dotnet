@@ -11,7 +11,7 @@ using Sinch.Logger;
 
 namespace Sinch.Auth
 {
-    internal class OAuth : ISinchAuth
+    internal sealed class OAuth : ISinchAuth
     {
         private readonly HttpClient _httpClient;
         private readonly string _keyId;

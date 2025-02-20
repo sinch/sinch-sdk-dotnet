@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 namespace Sinch.Core
 {
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-    internal class JsonInterfaceConverterAttribute : JsonConverterAttribute
+    internal sealed class JsonInterfaceConverterAttribute : JsonConverterAttribute
     {
         public JsonInterfaceConverterAttribute(Type convertedType) : base(convertedType)
         {
