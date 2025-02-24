@@ -122,136 +122,196 @@ namespace Sinch
 
     public sealed class SinchClient : ISinchClient
     {
-        private readonly ISinchAuth _auth;
-        private readonly ISinchConversation _conversation;
+        private readonly Lazy<ISinchConversation> _conversation;
         private readonly HttpClient _httpClient;
 
-        private readonly string? _keyId;
-        private readonly string? _keySecret;
-        private readonly string? _projectId;
+        private readonly SinchClientConfiguration _sinchClientConfiguration;
 
         private readonly LoggerFactory? _loggerFactory;
 
-        private readonly ISinchNumbers _numbers;
+        private readonly Lazy<ISinchNumbers> _numbers;
 
-        private readonly ISinchSms _sms;
+        private readonly Lazy<ISinchSms> _sms;
         private readonly ILoggerAdapter<ISinchClient>? _logger;
         private readonly UrlResolver _urlResolver;
 
-        private readonly ISinchFax _fax;
+        private readonly Lazy<ISinchFax> _fax;
+        private readonly Lazy<Http> _httpCamelCase;
 
-        /// <summary>
-        ///     Initialize a new <see cref="SinchClient" />
-        /// </summary>
-        /// <param name="keyId">Your Sinch Account key id.</param>
-        /// <param name="keySecret">Your Sinch Account key secret.</param>
-        /// <param name="projectId">Your project id.</param>
-        /// <param name="options">Optional. See: <see cref="SinchOptions" /></param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public SinchClient(string? projectId, string? keyId, string? keySecret,
-            Action<SinchOptions>? options = default)
+        private readonly Lazy<ISinchAuth> _sinchOauth;
+        private readonly Lazy<Http> _httpSnakeCase;
+
+        public SinchClient(SinchClientConfiguration clientConfiguration)
         {
-            _projectId = projectId;
-            _keyId = keyId;
-            _keySecret = keySecret;
+            _sinchClientConfiguration = clientConfiguration;
 
-            var optionsObj = new SinchOptions();
-            options?.Invoke(optionsObj);
-
-            if (optionsObj.LoggerFactory is not null) _loggerFactory = new LoggerFactory(optionsObj.LoggerFactory);
+            if (clientConfiguration.SinchOptions?.LoggerFactory is not null)
+                _loggerFactory = new LoggerFactory(clientConfiguration.SinchOptions.LoggerFactory);
             _logger = _loggerFactory?.Create<ISinchClient>();
             _logger?.LogInformation("Initializing SinchClient...");
 
+            if (_sinchClientConfiguration.SinchCommonCredentials == null)
+            {
+                _logger?.LogWarning($"{nameof(_sinchClientConfiguration.SinchCommonCredentials)} is not set!");
+            }
 
-            if (string.IsNullOrEmpty(projectId)) _logger?.LogWarning($"{nameof(projectId)} is not set!");
+            if (string.IsNullOrEmpty(_sinchClientConfiguration.SinchCommonCredentials?.ProjectId))
+                _logger?.LogWarning(
+                    $"{nameof(_sinchClientConfiguration.SinchCommonCredentials.ProjectId)} is not set!");
 
-            if (string.IsNullOrEmpty(keyId)) _logger?.LogWarning($"{nameof(keyId)} is not set!");
+            if (string.IsNullOrEmpty(_sinchClientConfiguration.SinchCommonCredentials?.ProjectId))
+                _logger?.LogWarning(
+                    $"{nameof(_sinchClientConfiguration.SinchCommonCredentials.ProjectId)} is not set!");
 
-            if (string.IsNullOrEmpty(keySecret)) _logger?.LogWarning($"{nameof(keySecret)} is not set!");
+            if (string.IsNullOrEmpty(_sinchClientConfiguration.SinchCommonCredentials?.ProjectId))
+                _logger?.LogWarning(
+                    $"{nameof(_sinchClientConfiguration.SinchCommonCredentials.ProjectId)} is not set!");
 
-            _httpClient = optionsObj.HttpClient ?? new HttpClient();
+            _httpClient = _sinchClientConfiguration.SinchOptions?.HttpClient ?? new HttpClient();
 
-            _urlResolver = new UrlResolver(optionsObj.ApiUrlOverrides);
+            _urlResolver = new UrlResolver(_sinchClientConfiguration.SinchOptions?.ApiUrlOverrides);
 
-            ISinchAuth auth =
-                // exception is throw when trying to get OAuth or Oauth dependant clients if credentials are missing
-                new OAuth(_keyId!, _keySecret!, _httpClient, _loggerFactory?.Create<OAuth>(),
-                    _urlResolver.ResolveAuth());
-            _auth = auth;
-            var httpCamelCase = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(),
-                JsonNamingPolicy.CamelCase);
-            var httpSnakeCaseOAuth = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(),
-                SnakeCaseNamingPolicy.Instance);
+            _sinchOauth = new Lazy<ISinchAuth>(() =>
+                {
+                    var commonCredentials = _sinchClientConfiguration.SinchCommonCredentials;
+                    var auth = new OAuth(commonCredentials!.KeyId!, commonCredentials.KeySecret!, _httpClient,
+                        _loggerFactory?.Create<OAuth>(),
+                        _sinchClientConfiguration.OAuthConfiguration.ResolveUrl()
+                    );
+                    return auth;
+                }
+            );
+            _httpCamelCase = new Lazy<Http>(() => new Http(_sinchOauth.Value, _httpClient,
+                _loggerFactory?.Create<IHttp>(),
+                JsonNamingPolicy.CamelCase));
 
-            _numbers = new Numbers.Numbers(_projectId!, _urlResolver.ResolveNumbersUrl(),
-                _loggerFactory, httpCamelCase);
+            _httpSnakeCase = new Lazy<Http>(() => new Http(_sinchOauth.Value, _httpClient,
+                _loggerFactory?.Create<IHttp>(),
+                SnakeCaseNamingPolicy.Instance));
 
-            _sms = InitSms(optionsObj, httpSnakeCaseOAuth);
+            _numbers = new Lazy<ISinchNumbers>(() =>
+            {
+                var commonCredentials = ValidateCommonCredentials();
 
-            var conversationBaseAddress =
-                _urlResolver.ResolveConversationUrl(optionsObj.ConversationRegion);
-            var templatesBaseAddress = _urlResolver.ResolveTemplateUrl(optionsObj.ConversationRegion);
-            _conversation = new SinchConversationClient(_projectId!, conversationBaseAddress
-                , templatesBaseAddress,
-                _loggerFactory, httpSnakeCaseOAuth);
+                return new Numbers.Numbers(commonCredentials.ProjectId,
+                    _sinchClientConfiguration.NumbersConfiguration.ResolveUrl(),
+                    _loggerFactory, _httpCamelCase.Value);
+            });
 
-            var faxUrl = _urlResolver.ResolveFaxUrl(optionsObj.FaxRegion);
-            _fax = new FaxClient(projectId!, faxUrl, _loggerFactory, httpCamelCase);
+            _sms = new Lazy<ISinchSms>(() =>
+                InitSms(_sinchClientConfiguration.SmsConfiguration, _httpSnakeCase.Value));
+
+
+            _conversation = new Lazy<ISinchConversation>(() =>
+            {
+                var validateCommonCredentials = ValidateCommonCredentials();
+                var conversationConfig = _sinchClientConfiguration.ConversationConfiguration;
+                var conversationBaseAddress =
+                    conversationConfig.ResolveConversationUrl();
+                var templatesBaseAddress = conversationConfig.ResolveTemplateUrl();
+                return new SinchConversationClient(validateCommonCredentials.ProjectId, conversationBaseAddress
+                    , templatesBaseAddress,
+                    _loggerFactory, _httpSnakeCase.Value);
+            });
+
+
+            _fax = new Lazy<ISinchFax>(() =>
+            {
+                var validateCommonCredentials = ValidateCommonCredentials();
+                var faxUrl = _urlResolver.ResolveFaxUrl(_sinchClientConfiguration.FaxConfiguration.Region);
+                return new FaxClient(validateCommonCredentials.ProjectId, faxUrl, _loggerFactory, _httpCamelCase.Value);
+            });
 
             _logger?.LogInformation("SinchClient initialized.");
         }
 
-        /// <inheritdoc />
-        public ISinchNumbers Numbers
+        // /// <summary>
+        // ///     Initialize a new <see cref="SinchClient" />
+        // /// </summary>
+        // /// <param name="keyId">Your Sinch Account key id.</param>
+        // /// <param name="keySecret">Your Sinch Account key secret.</param>
+        // /// <param name="projectId">Your project id.</param>
+        // /// <param name="options">Optional. See: <see cref="SinchOptions" /></param>
+        // /// <exception cref="ArgumentNullException"></exception>
+        // public SinchClient(string? projectId, string? keyId, string? keySecret,
+        //     Action<SinchOptions>? options = default)
+        // {
+        //     var optionsObj = new SinchOptions();
+        //     options?.Invoke(optionsObj);
+        //
+        //     if (optionsObj.LoggerFactory is not null) _loggerFactory = new LoggerFactory(optionsObj.LoggerFactory);
+        //     _logger = _loggerFactory?.Create<ISinchClient>();
+        //     _logger?.LogInformation("Initializing SinchClient...");
+        //
+        //
+        //     if (string.IsNullOrEmpty(projectId)) _logger?.LogWarning($"{nameof(projectId)} is not set!");
+        //
+        //     if (string.IsNullOrEmpty(keyId)) _logger?.LogWarning($"{nameof(keyId)} is not set!");
+        //
+        //     if (string.IsNullOrEmpty(keySecret)) _logger?.LogWarning($"{nameof(keySecret)} is not set!");
+        //
+        //     _httpClient = optionsObj.HttpClient ?? new HttpClient();
+        //
+        //     _urlResolver = new UrlResolver(optionsObj.ApiUrlOverrides);
+        //
+        //     ISinchAuth auth =
+        //         // exception is throw when trying to get OAuth or Oauth dependant clients if credentials are missing
+        //         new OAuth(_keyId!, _keySecret!, _httpClient, _loggerFactory?.Create<OAuth>(),
+        //             _urlResolver.ResolveAuth());
+        //     _auth = auth;
+        //     _httpCamelCase = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(),
+        //         JsonNamingPolicy.CamelCase);
+        //     var httpSnakeCaseOAuth = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(),
+        //         SnakeCaseNamingPolicy.Instance);
+        //
+        //
+        //     _sms = InitSms(optionsObj, httpSnakeCaseOAuth);
+        //
+        //     var conversationBaseAddress =
+        //         _urlResolver.ResolveConversationUrl(optionsObj.ConversationRegion);
+        //     var templatesBaseAddress = _urlResolver.ResolveTemplateUrl(optionsObj.ConversationRegion);
+        //     _conversation = new SinchConversationClient(_projectId!, conversationBaseAddress
+        //         , templatesBaseAddress,
+        //         _loggerFactory, httpSnakeCaseOAuth);
+        //
+        //     var faxUrl = _urlResolver.ResolveFaxUrl(optionsObj.FaxRegion);
+        //     _fax = new FaxClient(projectId!, faxUrl, _loggerFactory, httpCamelCase);
+        //
+        //     _logger?.LogInformation("SinchClient initialized.");
+        // }
+
+        private ISinchAuth CreateOAuth()
         {
-            get
-            {
-                ValidateCommonCredentials();
-                return _numbers;
-            }
+            var commonCredentials = _sinchClientConfiguration.SinchCommonCredentials;
+            var auth = new OAuth(commonCredentials!.KeyId!, commonCredentials.KeySecret!, _httpClient,
+                _loggerFactory?.Create<OAuth>(),
+                _sinchClientConfiguration.OAuthConfiguration.ResolveUrl()
+            );
+            return auth;
         }
 
         /// <inheritdoc />
-        public ISinchSms Sms
+        public ISinchNumbers Numbers => _numbers.Value;
+
+        private Http InitHttpCamelCase()
         {
-            get
-            {
-                if (!_sms.IsUsingServicePlanId)
-                    ValidateCommonCredentials();
-                return _sms;
-            }
+            var auth = CreateOAuth();
+            return new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(),
+                JsonNamingPolicy.CamelCase);
         }
 
         /// <inheritdoc />
-        public ISinchConversation Conversation
-        {
-            get
-            {
-                ValidateCommonCredentials();
-                return _conversation;
-            }
-        }
+        public ISinchSms Sms => _sms.Value;
+
+        /// <inheritdoc />
+        public ISinchConversation Conversation => _conversation.Value;
 
 
         /// <inheritdoc />
-        public ISinchAuth Auth
-        {
-            get
-            {
-                ValidateCommonCredentials();
-                return _auth;
-            }
-        }
+        public ISinchAuth Auth => _sinchOauth.Value;
 
         /// <inheritdoc cref="ISinchFax"/>
-        public ISinchFax Fax
-        {
-            get
-            {
-                ValidateCommonCredentials();
-                return _fax;
-            }
-        }
+        public ISinchFax Fax => _fax.Value;
 
         /// <inheritdoc/>
         public ISinchVerificationClient Verification(string appKey, string appSecret,
@@ -295,43 +355,43 @@ namespace Sinch
                 _urlResolver.ResolveVoiceApplicationManagementUrl());
         }
 
-        private void ValidateCommonCredentials()
+        private SinchCommonCredentials ValidateCommonCredentials()
         {
-            var exceptions = new List<Exception>();
-            if (string.IsNullOrEmpty(_keyId))
-                exceptions.Add(new InvalidOperationException("keyId should have a value"));
+            if (_sinchClientConfiguration.SinchCommonCredentials == null)
+            {
+                throw new ArgumentNullException($"{nameof(SinchClientConfiguration.SinchCommonCredentials)} is null.");
+            }
 
-            if (string.IsNullOrEmpty(_projectId))
-                exceptions.Add(new InvalidOperationException("projectId should have a value"));
-
-            if (string.IsNullOrEmpty(_keySecret))
-                exceptions.Add(new InvalidOperationException("keySecret should have a value"));
-
-            if (exceptions.Any()) throw new AggregateException("Credentials are missing", exceptions);
+            _sinchClientConfiguration.SinchCommonCredentials.Validate();
+            return _sinchClientConfiguration.SinchCommonCredentials;
         }
 
-        private SmsClient InitSms(SinchOptions optionsObj, IHttp httpSnakeCase)
+        private SmsClient InitSms(SinchSmsConfiguration sinchSmsConfiguration, IHttp httpSnakeCase)
         {
-            if (optionsObj.ServicePlanIdOptions != null)
+            if (sinchSmsConfiguration.ServicePlanIdConfiguration != null)
             {
+                var servicePlanIdConfig = sinchSmsConfiguration.ServicePlanIdConfiguration;
                 _logger?.LogInformation("Initializing SMS client with {service_plan_id} in {region}",
-                    optionsObj.ServicePlanIdOptions.ServicePlanId,
-                    optionsObj.ServicePlanIdOptions.Region.Value);
-                var bearerSnakeHttp = new Http(new BearerAuth(optionsObj.ServicePlanIdOptions.ApiToken), _httpClient,
+                    servicePlanIdConfig.ServicePlanId,
+                    servicePlanIdConfig.ServicePlanIdRegion.Value);
+                var bearerSnakeHttp = new Http(new BearerAuth(servicePlanIdConfig.ApiToken), _httpClient,
                     _loggerFactory?.Create<IHttp>(),
                     SnakeCaseNamingPolicy.Instance);
-                return new SmsClient(new ServicePlanId(optionsObj.ServicePlanIdOptions.ServicePlanId),
-                    _urlResolver.ResolveSmsServicePlanIdUrl(optionsObj.ServicePlanIdOptions.Region),
+                return new SmsClient(new ServicePlanId(servicePlanIdConfig.ServicePlanId),
+                    _urlResolver.ResolveSmsServicePlanIdUrl(servicePlanIdConfig.ServicePlanIdRegion),
                     _loggerFactory, bearerSnakeHttp);
             }
 
-            _logger?.LogInformation("Initializing SMS client with {project_id} in {region}", _projectId,
-                optionsObj.SmsRegion.Value);
+            var commonCredentials = ValidateCommonCredentials();
+            _logger?.LogInformation("Initializing SMS client with {project_id} in {region}",
+                commonCredentials.ProjectId,
+                sinchSmsConfiguration.Region);
 
             return new SmsClient(
                 new ProjectId(
-                    _projectId!), // exception is throw when trying to get SMS client property if _projectId is null
-                _urlResolver.ResolveSmsUrl(optionsObj.SmsRegion),
+                    commonCredentials
+                        .ProjectId), // exception is throw when trying to get SMS client property if _projectId is null
+                sinchSmsConfiguration.ResolveUrl(),
                 _loggerFactory,
                 httpSnakeCase);
         }

@@ -5,9 +5,15 @@ using Sinch;
 Env.Load();
 
 
-var sinch = new SinchClient(Environment.GetEnvironmentVariable("SINCH_PROJECT_ID")!,
-    Environment.GetEnvironmentVariable("SINCH_KEY_ID")!,
-    Environment.GetEnvironmentVariable("SINCH_KEY_SECRET")!);
+var sinch = new SinchClient(new SinchClientConfiguration()
+{
+    SinchCommonCredentials = new SinchCommonCredentials()
+    {
+        ProjectId = Environment.GetEnvironmentVariable("SINCH_PROJECT_ID")!,
+        KeyId = Environment.GetEnvironmentVariable("SINCH_KEY_ID")!,
+        KeySecret = Environment.GetEnvironmentVariable("SINCH_KEY_SECRET")!
+    }
+});
 _ = sinch.Verification(Environment.GetEnvironmentVariable("SINCH_APP_KEY")!,
     Environment.GetEnvironmentVariable("SINCH_APP_SECRET")!);
 

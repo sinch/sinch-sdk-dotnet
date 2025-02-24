@@ -10,8 +10,9 @@ namespace Examples
         /// </summary>
         public void Example()
         {
-            var sinchVoiceClient = new SinchClient(null, null, null).Voice("appKey", "appSecret");
-            var sinchVerificationClient = new SinchClient(null, null, null).Verification("appKey", "appSecret");
+            var sinchVoiceClient = new SinchClient(new SinchClientConfiguration()).Voice("appKey", "appSecret");
+            var sinchVerificationClient =
+                new SinchClient(new SinchClientConfiguration()).Verification("appKey", "appSecret");
         }
     }
 }

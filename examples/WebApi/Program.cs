@@ -13,15 +13,20 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-
 builder.Services.AddSingleton<ISinchClient>(_ => new SinchClient(
-    builder.Configuration["Sinch:ProjectId"],
-    builder.Configuration["Sinch:KeyId"]!,
-    builder.Configuration["Sinch:KeySecret"]!,
-    options =>
+    new SinchClientConfiguration()
     {
-        options.LoggerFactory = LoggerFactory.Create(config => { config.AddConsole(); });
-        options.HttpClient = new HttpClient();
+        SinchCommonCredentials = new SinchCommonCredentials()
+        {
+            KeySecret = builder.Configuration["Sinch:KeySecret"]!,
+            KeyId = builder.Configuration["Sinch:KeyId"]!,
+            ProjectId = builder.Configuration["Sinch:ProjectId"]!,
+        },
+        SinchOptions = new SinchOptions()
+        {
+            LoggerFactory = LoggerFactory.Create(config => { config.AddConsole(); }),
+            HttpClient = new HttpClient()
+        }
     }));
 
 var app = builder.Build();
