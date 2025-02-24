@@ -89,8 +89,10 @@ namespace Sinch.Tests.e2e
                 VoiceConfiguration = new SinchVoiceConfiguration()
                 {
                     AppKey = "669E367E-6BBA-48AB-AF15-266871C28135",
-                    AppSecret = "BeIukql3pTKJ8RGL5zo0DA=="
-                }
+                    AppSecret = "BeIukql3pTKJ8RGL5zo0DA==",
+                    VoiceUrlOverride = GetTestUrl("MOCK_VOICE_PORT"),
+                    ApplicationManagementUrlOverride = GetTestUrl("MOCK_VOICE_PORT")
+                },
             });
             // SinchClientMockServer = new SinchClient(ProjectId, "key_id", "key_secret", options =>
             // {

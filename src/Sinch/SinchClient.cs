@@ -121,7 +121,6 @@ namespace Sinch
 
         private readonly Lazy<ISinchSms> _sms;
         private readonly ILoggerAdapter<ISinchClient>? _logger;
-        private readonly UrlResolver _urlResolver;
 
         private readonly Lazy<ISinchFax> _fax;
 
@@ -158,25 +157,23 @@ namespace Sinch
 
             _httpClient = _sinchClientConfiguration.SinchOptions?.HttpClient ?? new HttpClient();
 
-            _urlResolver = new UrlResolver(_sinchClientConfiguration.SinchOptions?.ApiUrlOverrides);
-
             _sinchOauth = new Lazy<ISinchAuth>(() =>
                 {
                     var commonCredentials = ValidateCommonCredentials();
-                    var auth = new OAuth(commonCredentials!.KeyId!, commonCredentials.KeySecret, _httpClient,
+                    var auth = new OAuth(commonCredentials.KeyId, commonCredentials.KeySecret, _httpClient,
                         _loggerFactory?.Create<OAuth>(),
                         _sinchClientConfiguration.OAuthConfiguration.ResolveUrl()
                     );
                     return auth;
-                }
+                }, isThreadSafe: true
             );
             var httpCamelCase = new Lazy<Http>(() => new Http(_sinchOauth.Value, _httpClient,
                 _loggerFactory?.Create<IHttp>(),
-                JsonNamingPolicy.CamelCase));
+                JsonNamingPolicy.CamelCase), isThreadSafe: true);
 
             _httpSnakeCase = new Lazy<Http>(() => new Http(_sinchOauth.Value, _httpClient,
                 _loggerFactory?.Create<IHttp>(),
-                SnakeCaseNamingPolicy.Instance));
+                SnakeCaseNamingPolicy.Instance), isThreadSafe: true);
 
             _numbers = new Lazy<ISinchNumbers>(() =>
             {
@@ -185,10 +182,10 @@ namespace Sinch
                 return new Numbers.Numbers(commonCredentials.ProjectId,
                     _sinchClientConfiguration.NumbersConfiguration.ResolveUrl(),
                     _loggerFactory, httpCamelCase.Value);
-            });
+            }, isThreadSafe: true);
 
             _sms = new Lazy<ISinchSms>(() =>
-                InitSms(_sinchClientConfiguration.SmsConfiguration));
+                InitSms(_sinchClientConfiguration.SmsConfiguration), isThreadSafe: true);
 
 
             _conversation = new Lazy<ISinchConversation>(() =>
@@ -201,15 +198,15 @@ namespace Sinch
                 return new SinchConversationClient(validateCommonCredentials.ProjectId, conversationBaseAddress
                     , templatesBaseAddress,
                     _loggerFactory, _httpSnakeCase.Value);
-            });
+            }, isThreadSafe: true);
 
 
             _fax = new Lazy<ISinchFax>(() =>
             {
                 var validateCommonCredentials = ValidateCommonCredentials();
-                var faxUrl = _urlResolver.ResolveFaxUrl(_sinchClientConfiguration.FaxConfiguration.Region);
+                var faxUrl = _sinchClientConfiguration.FaxConfiguration.ResolveUrl();
                 return new FaxClient(validateCommonCredentials.ProjectId, faxUrl, _loggerFactory, httpCamelCase.Value);
-            });
+            }, isThreadSafe: true);
             _verification = new Lazy<ISinchVerificationClient>(() =>
             {
                 var config = _sinchClientConfiguration.VerificationConfiguration?.Validate();
@@ -228,7 +225,7 @@ namespace Sinch
                 var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
                 return new SinchVerificationClient(config.ResolveUrl(),
                     _loggerFactory, http);
-            });
+            }, isThreadSafe: true);
 
             _voice = new Lazy<ISinchVoiceClient>(() =>
             {
@@ -245,7 +242,7 @@ namespace Sinch
                     config.ResolveUrl(),
                     _loggerFactory, http, (auth as ApplicationSignedAuth)!,
                     config.ResolveApplicationManagementUrl());
-            });
+            }, isThreadSafe: true);
             _logger?.LogInformation("SinchClient initialized.");
         }
 
@@ -295,7 +292,7 @@ namespace Sinch
                     _loggerFactory?.Create<IHttp>(),
                     SnakeCaseNamingPolicy.Instance);
                 return new SmsClient(new ServicePlanId(servicePlanIdConfig.ServicePlanId),
-                    _urlResolver.ResolveSmsServicePlanIdUrl(servicePlanIdConfig.ServicePlanIdRegion),
+                    sinchSmsConfiguration.ServicePlanIdConfiguration.ResolveUrl(),
                     _loggerFactory, bearerSnakeHttp);
             }
 
