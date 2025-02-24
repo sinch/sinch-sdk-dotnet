@@ -26,7 +26,7 @@ namespace Sinch.Verification
 
             return this;
         }
-        
+
         public Uri ResolveUrl()
         {
             const string verificationApiUrl = "https://verification.api.sinch.com/";

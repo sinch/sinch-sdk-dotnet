@@ -6,6 +6,7 @@ using Sinch.Fax;
 using Sinch.Numbers;
 using Sinch.SMS;
 using Sinch.Verification;
+using Sinch.Voice;
 
 namespace Sinch.Tests.e2e
 {
@@ -84,6 +85,11 @@ namespace Sinch.Tests.e2e
                     AppSecret = "app_secret",
                     AuthStrategy = AuthStrategy.Basic, // only for e2e tests, not visible in public API
                     UrlOverride = GetTestUrl("MOCK_VERIFICATION_PORT"),
+                },
+                VoiceConfiguration = new SinchVoiceConfiguration()
+                {
+                    AppKey = "669E367E-6BBA-48AB-AF15-266871C28135",
+                    AppSecret = "BeIukql3pTKJ8RGL5zo0DA=="
                 }
             });
             // SinchClientMockServer = new SinchClient(ProjectId, "key_id", "key_secret", options =>

@@ -104,11 +104,8 @@ namespace Sinch
         ///     Similarly, the outgoing call leg can be over
         ///     data (to another smartphone or web application using the Sinch SDKs) or the PSTN network.
         /// </summary>
-        /// <param name="appKey"></param>
-        /// <param name="appSecret"></param>
-        /// <param name="voiceRegion">See <see cref="VoiceRegion" />. Defaults to <see cref="VoiceRegion.Global" /></param>
         /// <returns></returns>
-        public ISinchVoiceClient Voice(string appKey, string appSecret, VoiceRegion? voiceRegion = null);
+        public ISinchVoiceClient Voice { get; }
     }
 
     public sealed class SinchClient : ISinchClient
@@ -131,6 +128,7 @@ namespace Sinch
         private readonly Lazy<ISinchAuth> _sinchOauth;
         private readonly Lazy<Http> _httpSnakeCase;
         private readonly Lazy<ISinchVerificationClient> _verification;
+        private readonly Lazy<ISinchVoiceClient> _voice;
 
         public SinchClient(SinchClientConfiguration clientConfiguration)
         {
@@ -231,6 +229,23 @@ namespace Sinch
                 return new SinchVerificationClient(config.ResolveUrl(),
                     _loggerFactory, http);
             });
+
+            _voice = new Lazy<ISinchVoiceClient>(() =>
+            {
+                var config = _sinchClientConfiguration.VoiceConfiguration;
+                if (config == null)
+                {
+                    throw new InvalidOperationException($"{nameof(SinchVoiceConfiguration)} is not set.");
+                }
+
+                ISinchAuth auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
+
+                var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
+                return new SinchVoiceClient(
+                    config.ResolveUrl(),
+                    _loggerFactory, http, (auth as ApplicationSignedAuth)!,
+                    config.ResolveApplicationManagementUrl());
+            });
             _logger?.LogInformation("SinchClient initialized.");
         }
 
@@ -255,25 +270,7 @@ namespace Sinch
 
 
         /// <inheritdoc />
-        public ISinchVoiceClient Voice(string appKey, string appSecret,
-            VoiceRegion? voiceRegion = null)
-        {
-            if (string.IsNullOrEmpty(appKey))
-                throw new ArgumentNullException(nameof(appKey), "The value should be present");
-
-            if (string.IsNullOrEmpty(appSecret))
-                throw new ArgumentNullException(nameof(appSecret), "The value should be present");
-
-            ISinchAuth auth = new ApplicationSignedAuth(appKey, appSecret);
-
-            voiceRegion ??= VoiceRegion.Global;
-
-            var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
-            return new SinchVoiceClient(
-                _urlResolver.ResolveVoiceUrl(voiceRegion),
-                _loggerFactory, http, (auth as ApplicationSignedAuth)!,
-                _urlResolver.ResolveVoiceApplicationManagementUrl());
-        }
+        public ISinchVoiceClient Voice => _voice.Value;
 
         private SinchCommonCredentials ValidateCommonCredentials()
         {

@@ -18,10 +18,14 @@ namespace Sinch.Tests.Voice
                     ProjectId = "PROJECT_ID",
                     KeyId = "KEY_ID",
                     KeySecret = "KEY_SECRET"
+                },
+                VoiceConfiguration = new SinchVoiceConfiguration()
+                {
+                    AppKey = "key",
+                    AppSecret = "secret",
                 }
             });
-            var voiceClient = client.Voice("key", "secret");
-            var baseUrl = Helpers.GetPrivateField<Uri, ISinchVoiceCallout>(voiceClient.Callouts, "_baseAddress");
+            var baseUrl = Helpers.GetPrivateField<Uri, ISinchVoiceCallout>(client.Voice.Callouts, "_baseAddress");
             baseUrl.Should().BeEquivalentTo(new Uri("https://calling.api.sinch.com/"));
         }
 
@@ -35,9 +39,15 @@ namespace Sinch.Tests.Voice
                     ProjectId = "PROJECT_ID",
                     KeyId = "KEY_ID",
                     KeySecret = "KEY_SECRET"
+                },
+                VoiceConfiguration = new SinchVoiceConfiguration()
+                {
+                    AppKey = "key",
+                    AppSecret = "secret",
+                    Region = VoiceRegion.SouthEastAsia1
                 }
             });
-            var voiceClient = client.Voice("key", "secret", VoiceRegion.SouthEastAsia1);
+            var voiceClient = client.Voice;
             var baseUrl = Helpers.GetPrivateField<Uri, ISinchVoiceCallout>(voiceClient.Callouts, "_baseAddress");
             baseUrl.Should().BeEquivalentTo(new Uri("https://calling-apse1.api.sinch.com/"));
         }

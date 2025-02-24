@@ -8,6 +8,7 @@ using Sinch.Fax;
 using Sinch.Numbers;
 using Sinch.SMS;
 using Sinch.Verification;
+using Sinch.Voice;
 
 namespace Sinch
 {
@@ -32,6 +33,7 @@ namespace Sinch
         public SinchFaxConfiguration FaxConfiguration { get; init; } = new SinchFaxConfiguration();
 
         public SinchVerificationConfiguration? VerificationConfiguration { get; init; }
+        public SinchVoiceConfiguration? VoiceConfiguration { get; init; }
     }
 
     public sealed class SinchCommonCredentials
