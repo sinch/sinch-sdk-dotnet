@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using Sinch.Auth;
@@ -93,15 +91,8 @@ namespace Sinch
         ///         </item>
         ///     </list>
         /// </summary>
-        /// <param name="appKey"></param>
-        /// <param name="appSecret"></param>
-        /// <param name="authStrategy">
-        ///     Choose which authentication to use.
-        ///     Defaults to Application Sign request and it's a recommended approach.
-        /// </param>
         /// <returns></returns>
-        public ISinchVerificationClient Verification(string appKey, string appSecret,
-            AuthStrategy authStrategy = AuthStrategy.ApplicationSign);
+        public ISinchVerificationClient Verification { get; }
 
         /// <summary>
         ///     When using Sinch for voice calling, the Sinch dashboard works as a big telephony switch.
@@ -136,10 +127,10 @@ namespace Sinch
         private readonly UrlResolver _urlResolver;
 
         private readonly Lazy<ISinchFax> _fax;
-        private readonly Lazy<Http> _httpCamelCase;
 
         private readonly Lazy<ISinchAuth> _sinchOauth;
         private readonly Lazy<Http> _httpSnakeCase;
+        private readonly Lazy<ISinchVerificationClient> _verification;
 
         public SinchClient(SinchClientConfiguration clientConfiguration)
         {
@@ -174,14 +165,14 @@ namespace Sinch
             _sinchOauth = new Lazy<ISinchAuth>(() =>
                 {
                     var commonCredentials = ValidateCommonCredentials();
-                    var auth = new OAuth(commonCredentials!.KeyId!, commonCredentials.KeySecret!, _httpClient,
+                    var auth = new OAuth(commonCredentials!.KeyId!, commonCredentials.KeySecret, _httpClient,
                         _loggerFactory?.Create<OAuth>(),
                         _sinchClientConfiguration.OAuthConfiguration.ResolveUrl()
                     );
                     return auth;
                 }
             );
-            _httpCamelCase = new Lazy<Http>(() => new Http(_sinchOauth.Value, _httpClient,
+            var httpCamelCase = new Lazy<Http>(() => new Http(_sinchOauth.Value, _httpClient,
                 _loggerFactory?.Create<IHttp>(),
                 JsonNamingPolicy.CamelCase));
 
@@ -195,7 +186,7 @@ namespace Sinch
 
                 return new Numbers.Numbers(commonCredentials.ProjectId,
                     _sinchClientConfiguration.NumbersConfiguration.ResolveUrl(),
-                    _loggerFactory, _httpCamelCase.Value);
+                    _loggerFactory, httpCamelCase.Value);
             });
 
             _sms = new Lazy<ISinchSms>(() =>
@@ -219,86 +210,32 @@ namespace Sinch
             {
                 var validateCommonCredentials = ValidateCommonCredentials();
                 var faxUrl = _urlResolver.ResolveFaxUrl(_sinchClientConfiguration.FaxConfiguration.Region);
-                return new FaxClient(validateCommonCredentials.ProjectId, faxUrl, _loggerFactory, _httpCamelCase.Value);
+                return new FaxClient(validateCommonCredentials.ProjectId, faxUrl, _loggerFactory, httpCamelCase.Value);
             });
+            _verification = new Lazy<ISinchVerificationClient>(() =>
+            {
+                var config = _sinchClientConfiguration.VerificationConfiguration?.Validate();
+                if (config == null)
+                {
+                    throw new InvalidOperationException($"{nameof(SinchVerificationConfiguration)} is not set.");
+                }
 
+                ISinchAuth auth;
+                if (config.AuthStrategy == AuthStrategy.ApplicationSign)
+                    auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
+                else
+                    auth = new BasicAuth(config.AppKey, config.AppSecret);
+
+
+                var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
+                return new SinchVerificationClient(config.ResolveUrl(),
+                    _loggerFactory, http);
+            });
             _logger?.LogInformation("SinchClient initialized.");
-        }
-
-        // /// <summary>
-        // ///     Initialize a new <see cref="SinchClient" />
-        // /// </summary>
-        // /// <param name="keyId">Your Sinch Account key id.</param>
-        // /// <param name="keySecret">Your Sinch Account key secret.</param>
-        // /// <param name="projectId">Your project id.</param>
-        // /// <param name="options">Optional. See: <see cref="SinchOptions" /></param>
-        // /// <exception cref="ArgumentNullException"></exception>
-        // public SinchClient(string? projectId, string? keyId, string? keySecret,
-        //     Action<SinchOptions>? options = default)
-        // {
-        //     var optionsObj = new SinchOptions();
-        //     options?.Invoke(optionsObj);
-        //
-        //     if (optionsObj.LoggerFactory is not null) _loggerFactory = new LoggerFactory(optionsObj.LoggerFactory);
-        //     _logger = _loggerFactory?.Create<ISinchClient>();
-        //     _logger?.LogInformation("Initializing SinchClient...");
-        //
-        //
-        //     if (string.IsNullOrEmpty(projectId)) _logger?.LogWarning($"{nameof(projectId)} is not set!");
-        //
-        //     if (string.IsNullOrEmpty(keyId)) _logger?.LogWarning($"{nameof(keyId)} is not set!");
-        //
-        //     if (string.IsNullOrEmpty(keySecret)) _logger?.LogWarning($"{nameof(keySecret)} is not set!");
-        //
-        //     _httpClient = optionsObj.HttpClient ?? new HttpClient();
-        //
-        //     _urlResolver = new UrlResolver(optionsObj.ApiUrlOverrides);
-        //
-        //     ISinchAuth auth =
-        //         // exception is throw when trying to get OAuth or Oauth dependant clients if credentials are missing
-        //         new OAuth(_keyId!, _keySecret!, _httpClient, _loggerFactory?.Create<OAuth>(),
-        //             _urlResolver.ResolveAuth());
-        //     _auth = auth;
-        //     _httpCamelCase = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(),
-        //         JsonNamingPolicy.CamelCase);
-        //     var httpSnakeCaseOAuth = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(),
-        //         SnakeCaseNamingPolicy.Instance);
-        //
-        //
-        //     _sms = InitSms(optionsObj, httpSnakeCaseOAuth);
-        //
-        //     var conversationBaseAddress =
-        //         _urlResolver.ResolveConversationUrl(optionsObj.ConversationRegion);
-        //     var templatesBaseAddress = _urlResolver.ResolveTemplateUrl(optionsObj.ConversationRegion);
-        //     _conversation = new SinchConversationClient(_projectId!, conversationBaseAddress
-        //         , templatesBaseAddress,
-        //         _loggerFactory, httpSnakeCaseOAuth);
-        //
-        //     var faxUrl = _urlResolver.ResolveFaxUrl(optionsObj.FaxRegion);
-        //     _fax = new FaxClient(projectId!, faxUrl, _loggerFactory, httpCamelCase);
-        //
-        //     _logger?.LogInformation("SinchClient initialized.");
-        // }
-
-        private ISinchAuth CreateOAuth()
-        {
-            var commonCredentials = _sinchClientConfiguration.SinchCommonCredentials;
-            var auth = new OAuth(commonCredentials!.KeyId!, commonCredentials.KeySecret!, _httpClient,
-                _loggerFactory?.Create<OAuth>(),
-                _sinchClientConfiguration.OAuthConfiguration.ResolveUrl()
-            );
-            return auth;
         }
 
         /// <inheritdoc />
         public ISinchNumbers Numbers => _numbers.Value;
-
-        private Http InitHttpCamelCase()
-        {
-            var auth = CreateOAuth();
-            return new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(),
-                JsonNamingPolicy.CamelCase);
-        }
 
         /// <inheritdoc />
         public ISinchSms Sms => _sms.Value;
@@ -314,29 +251,12 @@ namespace Sinch
         public ISinchFax Fax => _fax.Value;
 
         /// <inheritdoc/>
-        public ISinchVerificationClient Verification(string appKey, string appSecret,
-            AuthStrategy authStrategy = AuthStrategy.ApplicationSign)
-        {
-            if (string.IsNullOrEmpty(appKey))
-                throw new ArgumentNullException(nameof(appKey), "The value should be present");
+        public ISinchVerificationClient Verification => _verification.Value;
 
-            if (string.IsNullOrEmpty(appSecret))
-                throw new ArgumentNullException(nameof(appSecret), "The value should be present");
-
-            ISinchAuth auth;
-            if (authStrategy == AuthStrategy.ApplicationSign)
-                auth = new ApplicationSignedAuth(appKey, appSecret);
-            else
-                auth = new BasicAuth(appKey, appSecret);
-
-            var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
-            return new SinchVerificationClient(_urlResolver.ResolveVerificationUrl(),
-                _loggerFactory, http);
-        }
 
         /// <inheritdoc />
         public ISinchVoiceClient Voice(string appKey, string appSecret,
-            VoiceRegion? voiceRegion = default)
+            VoiceRegion? voiceRegion = null)
         {
             if (string.IsNullOrEmpty(appKey))
                 throw new ArgumentNullException(nameof(appKey), "The value should be present");

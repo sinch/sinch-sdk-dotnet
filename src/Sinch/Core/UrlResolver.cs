@@ -51,12 +51,6 @@ namespace Sinch.Core
             return new Uri(_apiUrlOverrides?.VoiceApplicationManagementUrl ?? voiceApiApplicationManagementUrl);
         }
 
-        public Uri ResolveVerificationUrl()
-        {
-            const string verificationApiUrl = "https://verification.api.sinch.com/";
-            return new Uri(_apiUrlOverrides?.VerificationUrl ?? verificationApiUrl);
-        }
-
         public Uri ResolveNumbersUrl()
         {
             const string numbersApiUrl = "https://numbers.api.sinch.com/";

@@ -7,6 +7,7 @@ using Sinch.Conversation;
 using Sinch.Fax;
 using Sinch.Numbers;
 using Sinch.SMS;
+using Sinch.Verification;
 
 namespace Sinch
 {
@@ -29,6 +30,8 @@ namespace Sinch
             new SinchConversationConfiguration();
 
         public SinchFaxConfiguration FaxConfiguration { get; init; } = new SinchFaxConfiguration();
+
+        public SinchVerificationConfiguration? VerificationConfiguration { get; init; }
     }
 
     public sealed class SinchCommonCredentials
@@ -53,7 +56,7 @@ namespace Sinch
             var exceptions = new List<Exception>();
             if (string.IsNullOrEmpty(ProjectId))
                 exceptions.Add(new InvalidOperationException($"{nameof(ProjectId)} should have a value"));
-            
+
             if (string.IsNullOrEmpty(KeyId))
                 exceptions.Add(new InvalidOperationException($"{nameof(KeyId)} should have a value"));
 

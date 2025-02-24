@@ -5,6 +5,7 @@ using Sinch.Conversation;
 using Sinch.Core;
 using Sinch.Fax;
 using Sinch.SMS;
+using Sinch.Verification;
 using Sinch.Voice;
 using Xunit;
 
@@ -184,7 +185,12 @@ namespace Sinch.Tests.Core
         [MemberData(nameof(VerificationUrlData))]
         public void ResolveVerificationUrl(ApiUrlOverrides apiUrlOverrides)
         {
-            var verificationUrl = new UrlResolver(apiUrlOverrides).ResolveVerificationUrl();
+            var verificationUrl = new SinchVerificationConfiguration()
+            {
+                AppKey = "appKey",
+                AppSecret = "appSecret",
+                UrlOverride = apiUrlOverrides.VerificationUrl
+            };
             var expectedUrl = string.IsNullOrEmpty(apiUrlOverrides?.VerificationUrl)
                 ? new Uri($"https://verification.api.sinch.com/")
                 : new Uri(apiUrlOverrides.VerificationUrl);
