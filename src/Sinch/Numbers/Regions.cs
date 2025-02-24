@@ -25,7 +25,7 @@ namespace Sinch.Numbers
             CancellationToken cancellationToken = default);
     }
 
-    internal class AvailableRegions : ISinchNumbersRegions
+    internal sealed class AvailableRegions : ISinchNumbersRegions
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

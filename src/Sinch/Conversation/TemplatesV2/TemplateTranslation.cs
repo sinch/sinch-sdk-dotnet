@@ -6,7 +6,7 @@ using Sinch.Conversation.Messages.Message;
 
 namespace Sinch.Conversation.TemplatesV2
 {
-    public class TemplateTranslation
+    public sealed class TemplateTranslation
     {
         // Thank you System.Text.Json -_-
         [JsonConstructor]

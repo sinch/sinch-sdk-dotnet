@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace Sinch.Core
 {
-    internal class SnakeCaseNamingPolicy : JsonNamingPolicy
+    internal sealed class SnakeCaseNamingPolicy : JsonNamingPolicy
     {
         public static SnakeCaseNamingPolicy Instance { get; } = new();
 

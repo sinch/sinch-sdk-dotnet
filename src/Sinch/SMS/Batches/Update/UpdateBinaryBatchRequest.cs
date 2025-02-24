@@ -1,6 +1,6 @@
 namespace Sinch.SMS.Batches.Update
 {
-    public class UpdateBinaryBatchRequest : UpdateBatchBaseRequest, IUpdateBatchRequest
+    public sealed class UpdateBinaryBatchRequest : UpdateBatchBaseRequest, IUpdateBatchRequest
     {
         public override SmsType Type { get; } = SmsType.MtBinary;
 

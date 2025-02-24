@@ -3,7 +3,7 @@ using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Report.Request
 {
-    public class ReportFlashCallVerificationRequest : VerifyReportRequest
+    public sealed class ReportFlashCallVerificationRequest : VerifyReportRequest
     {
         /// <inheritdoc />
         public override string Method { get; } = VerificationMethod.FlashCall.Value;
@@ -17,7 +17,7 @@ namespace Sinch.Verification.Report.Request
 
     }
 
-    public class FlashCall
+    public sealed class FlashCall
     {
         /// <summary>
         ///     The caller ID of the FlashCall.

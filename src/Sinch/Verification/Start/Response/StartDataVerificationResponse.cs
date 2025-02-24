@@ -1,6 +1,6 @@
 namespace Sinch.Verification.Start.Response
 {
-    public class StartDataVerificationResponse : VerificationStartResponseBase, IStartVerificationResponse
+    public sealed class StartDataVerificationResponse : VerificationStartResponseBase, IStartVerificationResponse
     {
         /// <summary>
         ///     The response contains the target URI.
@@ -8,7 +8,7 @@ namespace Sinch.Verification.Start.Response
         public Seamless? Seamless { get; set; }
     }
 
-    public class Seamless
+    public sealed class Seamless
     {
         /// <summary>
         ///     The target URI.

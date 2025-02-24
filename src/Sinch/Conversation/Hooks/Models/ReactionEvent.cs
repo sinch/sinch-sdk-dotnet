@@ -3,7 +3,7 @@ using Sinch.Core;
 
 namespace Sinch.Conversation.Hooks.Models
 {
-    public class ReactionEvent
+    public sealed class ReactionEvent
     {
         /// <summary>
         ///     Indicates that an emoji reaction was placed on a message. This value is the string representation of the emoji. For example: "\u{2764}\u{FE0F}"

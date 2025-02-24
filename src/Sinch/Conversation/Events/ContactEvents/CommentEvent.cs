@@ -3,7 +3,7 @@ namespace Sinch.Conversation.Events.ContactEvents
     /// <summary>
     ///     The user sent a comment outside of the main conversation context
     /// </summary>
-    public class CommentEvent
+    public sealed class CommentEvent
     {
         /// <summary>
         ///     Required. The text of the comment.

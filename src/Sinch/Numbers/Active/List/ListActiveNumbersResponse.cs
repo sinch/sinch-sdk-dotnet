@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Sinch.Numbers.Active.List
 {
-    public class ListActiveNumbersResponse
+    public sealed class ListActiveNumbersResponse
     {
 
         public required IEnumerable<ActiveNumber> ActiveNumbers { get; set; }

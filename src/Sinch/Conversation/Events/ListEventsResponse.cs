@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Sinch.Conversation.Events
 {
-    public class ListEventsResponse
+    public sealed class ListEventsResponse
     {
         /// <summary>
         ///     List of <see cref="ConversationEvent"/>

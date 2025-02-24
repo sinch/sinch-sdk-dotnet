@@ -159,7 +159,7 @@ namespace Sinch.Conversation.Messages.Send
         }
     }
 
-    public class TimeToLiveConverter : JsonConverter<int?>
+    public sealed class TimeToLiveConverter : JsonConverter<int?>
     {
         public override int? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

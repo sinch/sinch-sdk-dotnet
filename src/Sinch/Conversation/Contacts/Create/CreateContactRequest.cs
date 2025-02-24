@@ -4,7 +4,7 @@ using Sinch.Conversation.Common;
 
 namespace Sinch.Conversation.Contacts.Create
 {
-    public class CreateContactRequest
+    public sealed class CreateContactRequest
     {
         /// <summary>
         ///     List of channel identities. Array must contain at least one item.

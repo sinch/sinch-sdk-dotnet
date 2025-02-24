@@ -2,7 +2,7 @@ using System;
 
 namespace Sinch.SMS.Inbounds
 {
-    public class BinaryInbound : IInbound
+    public sealed class BinaryInbound : IInbound
     {
         /// <summary>
         ///     The ID of this inbound message.

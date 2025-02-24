@@ -6,7 +6,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     A message component for interactive messages, containing a choice.
     /// </summary>
-    public class ChoiceItem : IListItem
+    public sealed class ChoiceItem : IListItem
     {
         /// <summary>
         ///     Required parameter. Title for the choice item.

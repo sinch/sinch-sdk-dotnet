@@ -3,7 +3,7 @@ using Sinch.SMS.Batches.Send;
 
 namespace Sinch.SMS.Batches.Update
 {
-    public class UpdateMediaBatchRequest : UpdateBatchBaseRequest, IUpdateBatchRequest
+    public sealed class UpdateMediaBatchRequest : UpdateBatchBaseRequest, IUpdateBatchRequest
     {
         public override SmsType Type { get; } = SmsType.MtMedia;
 

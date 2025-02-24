@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Common
 {
-    public class ChannelIdentity
+    public sealed class ChannelIdentity
     {
         /// <summary>
         ///     Required if using a channel that uses app-scoped channel identities. Currently, FB Messenger, Viber Bot, Instagram,

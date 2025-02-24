@@ -4,7 +4,7 @@ using Sinch.SMS.Batches.Send;
 
 namespace Sinch.SMS.Batches.DryRun
 {
-    public class DryRunRequest
+    public sealed class DryRunRequest
     {
         /// <summary>
         ///     Whether to include per recipient details in the response

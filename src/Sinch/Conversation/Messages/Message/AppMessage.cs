@@ -10,7 +10,7 @@ using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Message
 {
-    public class AppMessage
+    public sealed class AppMessage
     {
         // Thank you System.Text.Json -_-
         [JsonConstructor]
@@ -161,7 +161,7 @@ namespace Sinch.Conversation.Messages.Message
         public static readonly ChannelSpecificTemplate WeChat = new ChannelSpecificTemplate("WECHAT");
     }
 
-    public class ChannelSpecificMessageJsonInterfaceConverter : JsonConverter<IChannelSpecificMessage>
+    public sealed class ChannelSpecificMessageJsonInterfaceConverter : JsonConverter<IChannelSpecificMessage>
     {
         public override IChannelSpecificMessage Read(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)
@@ -185,7 +185,7 @@ namespace Sinch.Conversation.Messages.Message
         }
     }
 
-    public class FlowMessage : IChannelSpecificMessage
+    public sealed class FlowMessage : IChannelSpecificMessage
     {
         [JsonPropertyName("message_type")]
         [JsonInclude]

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Sinch.SMS.Batches.Update
 {
-    public class UpdateTextBatchRequest : UpdateBatchBaseRequest, IUpdateBatchRequest
+    public sealed class UpdateTextBatchRequest : UpdateBatchBaseRequest, IUpdateBatchRequest
     {
         public override SmsType Type { get; } = SmsType.MtText;
 

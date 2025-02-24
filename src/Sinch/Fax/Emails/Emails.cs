@@ -116,7 +116,7 @@ namespace Sinch.Fax.Emails
             CancellationToken cancellationToken = default);
     }
 
-    internal class EmailsClient : ISinchFaxEmails
+    internal sealed class EmailsClient : ISinchFaxEmails
     {
         private readonly string _projectId;
         private readonly Uri _apiBasePath;

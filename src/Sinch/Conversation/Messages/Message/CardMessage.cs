@@ -65,7 +65,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     A message containing an image media component.
     /// </summary>
-    public class CardMessageMediaMessage
+    public sealed class CardMessageMediaMessage
     {
         /// <summary>
         ///     Url to the media file.

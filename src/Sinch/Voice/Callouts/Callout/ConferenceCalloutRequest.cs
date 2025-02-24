@@ -1,6 +1,6 @@
 namespace Sinch.Voice.Callouts.Callout
 {
-    public class ConferenceCalloutRequest
+    public sealed class ConferenceCalloutRequest
     {
         /// <summary>
         ///     The type of device and number or endpoint to call.

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Sinch.Conversation.TemplatesV2
 {
-    public class CreateTemplateRequest
+    public sealed class CreateTemplateRequest
     {
         /// <summary>
         ///     The default translation to use if translation not specified. Specified as a BCP-47 &#x60;language_code&#x60; and the &#x60;language_code&#x60; must exist in the translations list.

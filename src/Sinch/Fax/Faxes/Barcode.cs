@@ -13,7 +13,7 @@ namespace Sinch.Fax.Faxes
     /// <summary>
     /// The bar codes found in the fax. This field is populated when sinch detects bar codes on incoming faxes.
     /// </summary>
-    public class Barcode
+    public sealed class Barcode
     {
         /// <summary>
         /// The type of barcode found.

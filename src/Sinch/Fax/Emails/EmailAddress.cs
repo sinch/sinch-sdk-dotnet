@@ -7,7 +7,7 @@ namespace Sinch.Fax.Emails
     /// <summary>
     /// Object from emails/ endoint that is used to send and recieve a fax via email
     /// </summary>
-    public class EmailAddress
+    public sealed class EmailAddress
     {
         /// <summary>
         ///     Gets or Sets VarEmail

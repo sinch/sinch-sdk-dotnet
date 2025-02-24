@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Sinch.SMS.Batches.List
 {
-    public class ListBatchesResponse
+    public sealed class ListBatchesResponse
     {
         /// <summary>
         ///     The requested page.

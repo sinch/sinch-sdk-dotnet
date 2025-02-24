@@ -3,13 +3,13 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Verification.Hooks
 {
-    public class SmsRequestEventResponse : RequestEventResponseBase
+    public sealed class SmsRequestEventResponse : RequestEventResponseBase
     {
         [JsonPropertyName("sms")]
         public Sms? Sms { get; set; }
     }
 
-    public class Sms
+    public sealed class Sms
     {
         /// <summary>
         ///     The SMS PIN that should be used.

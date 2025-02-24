@@ -1,6 +1,6 @@
 namespace Sinch.Voice.Callouts.Callout
 {
-    public class Destination
+    public sealed class Destination
     {
         /// <summary>
         ///     Can be of type number for PSTN endpoints or of type username for data endpoints.

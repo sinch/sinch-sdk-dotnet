@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Sinch.Auth
 {
-    public class BearerAuth : ISinchAuth
+    public sealed class BearerAuth : ISinchAuth
     {
         private readonly string _apiToken;
 

@@ -6,14 +6,14 @@ using System.Text.Json.Serialization;
 namespace Sinch.Core
 {
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
-    internal class JsonInterfaceConverterAttribute : JsonConverterAttribute
+    internal sealed class JsonInterfaceConverterAttribute : JsonConverterAttribute
     {
         public JsonInterfaceConverterAttribute(Type convertedType) : base(convertedType)
         {
         }
     }
 
-    public class InterfaceConverter<T> : JsonConverter<T?> where T : class
+    public sealed class InterfaceConverter<T> : JsonConverter<T?> where T : class
     {
         public override T? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
