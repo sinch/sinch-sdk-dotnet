@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Sinch.Auth;
 using Sinch.Conversation;
@@ -50,14 +51,14 @@ namespace Sinch
         internal void Validate()
         {
             var exceptions = new List<Exception>();
+            if (string.IsNullOrEmpty(ProjectId))
+                exceptions.Add(new InvalidOperationException($"{nameof(ProjectId)} should have a value"));
+            
             if (string.IsNullOrEmpty(KeyId))
-                exceptions.Add(new InvalidOperationException("keyId should have a value"));
+                exceptions.Add(new InvalidOperationException($"{nameof(KeyId)} should have a value"));
 
             if (string.IsNullOrEmpty(KeySecret))
-                exceptions.Add(new InvalidOperationException("projectId should have a value"));
-
-            if (string.IsNullOrEmpty(ProjectId))
-                exceptions.Add(new InvalidOperationException("keySecret should have a value"));
+                exceptions.Add(new InvalidOperationException($"{nameof(KeySecret)} should have a value"));
 
             if (exceptions.Any()) throw new AggregateException("Credentials are missing", exceptions);
         }

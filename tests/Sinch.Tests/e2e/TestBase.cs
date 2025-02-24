@@ -1,5 +1,10 @@
 using System;
 using DotNetEnv;
+using Sinch.Auth;
+using Sinch.Conversation;
+using Sinch.Fax;
+using Sinch.Numbers;
+using Sinch.SMS;
 
 namespace Sinch.Tests.e2e
 {
@@ -20,37 +25,77 @@ namespace Sinch.Tests.e2e
         protected TestBase()
         {
             Env.Load();
-            SinchClientMockStudio = new SinchClient(ProjectId, "key_id", "key_secret",
-                options =>
+            SinchClientMockStudio = new SinchClient(new SinchClientConfiguration()
+            {
+                SinchCommonCredentials = new SinchCommonCredentials()
                 {
-                    options.ApiUrlOverrides = new ApiUrlOverrides()
-                    {
-                        AuthUrl = "http://localhost:8001",
-                        NumbersUrl = "http://localhost:8000",
-                        SmsUrl = "http://localhost:8002"
-                    };
-                });
+                    ProjectId = ProjectId,
+                    KeyId = "key_id",
+                    KeySecret = "key_secret",
+                },
+                OAuthConfiguration = new OAuthConfiguration()
+                {
+                    UrlOverride = "http://localhost:8001"
+                },
+                NumbersConfiguration = new SinchNumbersConfiguration()
+                {
+                    UrlOverride = "http://localhost:8000",
+                },
+                SmsConfiguration = new SinchSmsConfiguration()
+                {
+                    UrlOverride = "http://localhost:8002",
+                }
+            });
             var conversationUrl = GetTestUrl("MOCK_CONVERSATION_PORT");
 
-            SinchClientMockServer = new SinchClient(ProjectId, "key_id", "key_secret", options =>
+            SinchClientMockServer = new SinchClient(new SinchClientConfiguration()
             {
-                options.ApiUrlOverrides = new ApiUrlOverrides()
+                SinchCommonCredentials = new SinchCommonCredentials()
                 {
-                    AuthUrl = GetTestUrl("MOCK_AUTH_PORT"),
-                    SmsUrl = GetTestUrl("MOCK_SMS_PORT"),
-                    ConversationUrl = conversationUrl,
-                    NumbersUrl = GetTestUrl("MOCK_NUMBERS_PORT"),
-                    VoiceUrl = GetTestUrl("MOCK_VOICE_PORT"),
-                    // Voice Application Management treated the same as voice in doppelganger
-                    VoiceApplicationManagementUrl = GetTestUrl("MOCK_VOICE_PORT"),
-                    VerificationUrl = GetTestUrl("MOCK_VERIFICATION_PORT"),
-                    // templates treated as conversation api in doppelganger 
-                    FaxUrl = GetTestUrl("MOCK_FAX_PORT"),
-                    TemplatesUrl = conversationUrl,
-                };
+                    ProjectId = ProjectId,
+                    KeyId = "key_id",
+                    KeySecret = "key_secret",
+                },
+                OAuthConfiguration = new OAuthConfiguration()
+                {
+                    UrlOverride = GetTestUrl("MOCK_AUTH_PORT"),
+                },
+                SmsConfiguration = new SinchSmsConfiguration()
+                {
+                    UrlOverride = GetTestUrl("MOCK_SMS_PORT"),
+                },
+                ConversationConfiguration = new SinchConversationConfiguration()
+                {
+                    ConversationUrlOverride = conversationUrl,
+                    TemplateUrlOverride = conversationUrl,
+                },
+                NumbersConfiguration = new SinchNumbersConfiguration()
+                {
+                    UrlOverride = GetTestUrl("MOCK_NUMBERS_PORT"),
+                },
+                FaxConfiguration = new SinchFaxConfiguration()
+                {
+                    UrlOverride = GetTestUrl("MOCK_FAX_PORT"),
+                }
             });
+            // SinchClientMockServer = new SinchClient(ProjectId, "key_id", "key_secret", options =>
+            // {
+            //     options.ApiUrlOverrides = new ApiUrlOverrides()
+            //     {
+            //         AuthUrl = GetTestUrl("MOCK_AUTH_PORT"),
+            //         SmsUrl = GetTestUrl("MOCK_SMS_PORT"),
+            //         ConversationUrl = conversationUrl,
+            //         NumbersUrl = GetTestUrl("MOCK_NUMBERS_PORT"),
+            //         VoiceUrl = GetTestUrl("MOCK_VOICE_PORT"),
+            //         // Voice Application Management treated the same as voice in doppelganger
+            //         VoiceApplicationManagementUrl = GetTestUrl("MOCK_VOICE_PORT"),
+            //         VerificationUrl = GetTestUrl("MOCK_VERIFICATION_PORT"),
+            //         // templates treated as conversation api in doppelganger 
+            //         FaxUrl = GetTestUrl("MOCK_FAX_PORT"),
+            //         TemplatesUrl = conversationUrl,
+            //     };
+            // });
             WebhooksEventsBaseAddress = conversationUrl + "/webhooks/conversation/";
-
         }
 
         private string GetTestUrl(string portEnvVar) =>

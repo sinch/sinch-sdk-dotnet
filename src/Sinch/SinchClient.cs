@@ -173,7 +173,7 @@ namespace Sinch
 
             _sinchOauth = new Lazy<ISinchAuth>(() =>
                 {
-                    var commonCredentials = _sinchClientConfiguration.SinchCommonCredentials;
+                    var commonCredentials = ValidateCommonCredentials();
                     var auth = new OAuth(commonCredentials!.KeyId!, commonCredentials.KeySecret!, _httpClient,
                         _loggerFactory?.Create<OAuth>(),
                         _sinchClientConfiguration.OAuthConfiguration.ResolveUrl()
@@ -199,7 +199,7 @@ namespace Sinch
             });
 
             _sms = new Lazy<ISinchSms>(() =>
-                InitSms(_sinchClientConfiguration.SmsConfiguration, _httpSnakeCase.Value));
+                InitSms(_sinchClientConfiguration.SmsConfiguration));
 
 
             _conversation = new Lazy<ISinchConversation>(() =>
@@ -366,7 +366,7 @@ namespace Sinch
             return _sinchClientConfiguration.SinchCommonCredentials;
         }
 
-        private SmsClient InitSms(SinchSmsConfiguration sinchSmsConfiguration, IHttp httpSnakeCase)
+        private SmsClient InitSms(SinchSmsConfiguration sinchSmsConfiguration)
         {
             if (sinchSmsConfiguration.ServicePlanIdConfiguration != null)
             {
@@ -393,7 +393,7 @@ namespace Sinch
                         .ProjectId), // exception is throw when trying to get SMS client property if _projectId is null
                 sinchSmsConfiguration.ResolveUrl(),
                 _loggerFactory,
-                httpSnakeCase);
+                _httpSnakeCase.Value);
         }
     }
 }

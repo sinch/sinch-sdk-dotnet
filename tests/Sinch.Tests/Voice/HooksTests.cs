@@ -10,7 +10,15 @@ namespace Sinch.Tests.Voice
 {
     public class HooksTests
     {
-        private readonly ISinchVoiceClient _voiceClient = new SinchClient(default, default, default).Voice(
+        private readonly ISinchVoiceClient _voiceClient = new SinchClient(new SinchClientConfiguration()
+        {
+            SinchCommonCredentials = new SinchCommonCredentials()
+            {
+                ProjectId = "PROJECT_ID",
+                KeyId = "KEY_ID",
+                KeySecret = "KEY_SECRET"
+            }
+        }).Voice(
             "669E367E-6BBA-48AB-AF15-266871C28135",
             "BeIukql3pTKJ8RGL5zo0DA==");
 

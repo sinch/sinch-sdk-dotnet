@@ -19,12 +19,15 @@ namespace Sinch.Tests.Sms
             const string apiToken = "api_token_x";
             MockHttpMessageHandler httpMessageHandlerMock = new();
             var httpClient = new HttpClient(httpMessageHandlerMock);
-            var sinchClient = new SinchClient("TEST", "TESTKEY", "TESTSECRET",
-                options =>
+            var sinchClient = new SinchClient(new SinchClientConfiguration()
+            {
+                SmsConfiguration =
+                    SinchSmsConfiguration.WithServicePlanId(servicePlanId, apiToken, SmsServicePlanIdRegion.Au),
+                SinchOptions = new SinchOptions()
                 {
-                    options.HttpClient = httpClient;
-                    options.UseServicePlanIdWithSms(servicePlanId, apiToken, SmsServicePlanIdRegion.Au);
-                });
+                    HttpClient = httpClient
+                }
+            });
 
             var batchId = "b1";
             // in url AU region should be set and path param contain service plan id

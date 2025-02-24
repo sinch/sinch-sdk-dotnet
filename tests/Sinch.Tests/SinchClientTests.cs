@@ -17,26 +17,42 @@ namespace Sinch.Tests
         [InlineData(null, "keySecret", "keySecret")]
         public void InitSinchClientWithoutCredentials(string projectId, string keyId, string keySecret)
         {
-            var sinch = new SinchClient(projectId, keyId, keySecret);
+            var sinch = new SinchClient(new SinchClientConfiguration()
+            {
+                SinchCommonCredentials = new SinchCommonCredentials()
+                {
+                    ProjectId = projectId,
+                    KeyId = keyId,
+                    KeySecret = keySecret,
+                }
+            });
             sinch.Should().NotBeNull();
         }
 
         [Theory]
         [InlineData(null, null, null,
-            "Credentials are missing (keyId should have a value) (projectId should have a value) (keySecret should have a value)")]
+            "Credentials are missing (ProjectId should have a value) (KeyId should have a value) (KeySecret should have a value)")]
         [InlineData("projectId", null, null,
-            "Credentials are missing (keyId should have a value) (keySecret should have a value)")]
+            "Credentials are missing (KeyId should have a value) (KeySecret should have a value)")]
         [InlineData(null, "keyId", null,
-            "Credentials are missing (projectId should have a value) (keySecret should have a value)")]
+            "Credentials are missing (ProjectId should have a value) (KeySecret should have a value)")]
         [InlineData(null, null, "keySecret",
-            "Credentials are missing (keyId should have a value) (projectId should have a value)")]
-        [InlineData("projectId", "keySecret", null, "Credentials are missing (keySecret should have a value)")]
-        [InlineData("projectId", null, "keySecret", "Credentials are missing (keyId should have a value)")]
-        [InlineData(null, "keySecret", "keySecret", "Credentials are missing (projectId should have a value)")]
+            "Credentials are missing (ProjectId should have a value) (KeyId should have a value)")]
+        [InlineData("projectId", "keySecret", null, "Credentials are missing (KeySecret should have a value)")]
+        [InlineData("projectId", null, "keySecret", "Credentials are missing (KeyId should have a value)")]
+        [InlineData(null, "keySecret", "keySecret", "Credentials are missing (ProjectId should have a value)")]
         public void ThrowAggregateExceptionWhenAccessingCommonCredentialsProducts(string projectId, string keyId,
             string keySecret, string message)
         {
-            var sinch = new SinchClient(projectId, keyId, keySecret);
+            var sinch = new SinchClient(new SinchClientConfiguration()
+            {
+                SinchCommonCredentials = new SinchCommonCredentials()
+                {
+                    ProjectId = projectId,
+                    KeyId = keyId,
+                    KeySecret = keySecret,
+                }
+            });
             var smsOp = () => sinch.Sms;
             var aggregateExceptionSms = smsOp.Should().Throw<AggregateException>().Which;
             aggregateExceptionSms.Message.Should().BeEquivalentTo(message);
@@ -57,7 +73,15 @@ namespace Sinch.Tests
         [Fact]
         public void GetServiceWithoutExceptionsIfCredentialsAreSet()
         {
-            var sinch = new SinchClient("projectId", "keyId", "keySecret");
+            var sinch = new SinchClient(new SinchClientConfiguration()
+            {
+                SinchCommonCredentials = new SinchCommonCredentials()
+                {
+                    ProjectId = "projectid",
+                    KeyId = "keyid",
+                    KeySecret = "keysecret",
+                }
+            });
             sinch.Conversation.Should().NotBeNull();
             sinch.Sms.Should().NotBeNull();
             sinch.Auth.Should().NotBeNull();
@@ -67,7 +91,15 @@ namespace Sinch.Tests
         [Fact]
         public void InitializeOwnHttpIfNotPassed()
         {
-            var sinch = new SinchClient("proj", "id", "secret");
+            var sinch = new SinchClient(new SinchClientConfiguration()
+            {
+                SinchCommonCredentials = new SinchCommonCredentials()
+                {
+                    ProjectId = "projectid",
+                    KeyId = "keyid",
+                    KeySecret = "keysecret",
+                }
+            });
             Helpers.GetPrivateField<HttpClient, SinchClient>(sinch, "_httpClient").Should().NotBeNull();
         }
 
@@ -75,8 +107,13 @@ namespace Sinch.Tests
         public void InitSinchClientWithCustomHttpClient()
         {
             var httpClient = new HttpClient();
-            var sinch = new SinchClient("TEST_PROJECT_ID", "TEST_KEY", "TEST_KEY_SECRET",
-                options => { options.HttpClient = httpClient; });
+            var sinch = new SinchClient(new SinchClientConfiguration()
+            {
+                SinchOptions = new SinchOptions()
+                {
+                    HttpClient = httpClient,
+                }
+            });
             sinch.Should().NotBeNull();
             Helpers.GetPrivateField<HttpClient, SinchClient>(sinch, "_httpClient").Should().Be(httpClient);
         }
