@@ -10,7 +10,7 @@ namespace Sinch.Tests.Fax
     {
         public record FaxUrlTestCase(
             string TestName,
-            FaxRegion? Region,
+            FaxRegion Region,
             string UrlOverride,
             string ExpectedUrl)
         {
