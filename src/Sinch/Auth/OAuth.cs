@@ -11,7 +11,7 @@ using Sinch.Logger;
 
 namespace Sinch.Auth
 {
-    public sealed class OAuthConfiguration
+    public sealed class SinchOAuthConfiguration
     {
         public string? UrlOverride { get; init; }
 

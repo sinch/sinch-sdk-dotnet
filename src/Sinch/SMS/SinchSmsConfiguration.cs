@@ -36,7 +36,7 @@ namespace Sinch.SMS
             };
         }
 
-        public Uri ResolveUrl()
+        internal Uri ResolveUrl()
         {
             // ReSharper disable once ConvertIfStatementToReturnStatement
             if (!string.IsNullOrEmpty(UrlOverride)) return new Uri(UrlOverride);
@@ -60,7 +60,7 @@ namespace Sinch.SMS
 
         internal required string ApiToken { get; init; }
 
-        public Uri ResolveUrl()
+        internal Uri ResolveUrl()
         {
             if (!string.IsNullOrEmpty(UrlOverride)) return new Uri(UrlOverride);
 

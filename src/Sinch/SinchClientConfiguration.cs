@@ -23,7 +23,7 @@ namespace Sinch
 
         public SinchNumbersConfiguration NumbersConfiguration { get; init; } = new SinchNumbersConfiguration();
 
-        public OAuthConfiguration OAuthConfiguration { get; init; } = new OAuthConfiguration();
+        public SinchOAuthConfiguration SinchOAuthConfiguration { get; init; } = new SinchOAuthConfiguration();
 
         public SinchSmsConfiguration SmsConfiguration { get; init; } = new SinchSmsConfiguration();
 

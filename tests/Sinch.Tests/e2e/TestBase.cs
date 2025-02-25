@@ -35,7 +35,7 @@ namespace Sinch.Tests.e2e
                     KeyId = "key_id",
                     KeySecret = "key_secret",
                 },
-                OAuthConfiguration = new OAuthConfiguration()
+                SinchOAuthConfiguration = new SinchOAuthConfiguration()
                 {
                     UrlOverride = "http://localhost:8001"
                 },
@@ -58,7 +58,7 @@ namespace Sinch.Tests.e2e
                     KeyId = "key_id",
                     KeySecret = "key_secret",
                 },
-                OAuthConfiguration = new OAuthConfiguration()
+                SinchOAuthConfiguration = new SinchOAuthConfiguration()
                 {
                     UrlOverride = GetTestUrl("MOCK_AUTH_PORT"),
                 },

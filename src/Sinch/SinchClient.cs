@@ -162,7 +162,7 @@ namespace Sinch
                     var commonCredentials = ValidateCommonCredentials();
                     var auth = new OAuth(commonCredentials.KeyId, commonCredentials.KeySecret, _httpClient,
                         _loggerFactory?.Create<OAuth>(),
-                        _sinchClientConfiguration.OAuthConfiguration.ResolveUrl()
+                        _sinchClientConfiguration.SinchOAuthConfiguration.ResolveUrl()
                     );
                     return auth;
                 }, isThreadSafe: true
