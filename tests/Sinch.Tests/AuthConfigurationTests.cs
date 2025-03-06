@@ -15,7 +15,7 @@ namespace Sinch.Tests
         {
             private static readonly AuthUrlTestCase[] TestCases =
             {
-                new("Default Auth URL", null, "https://auth.sinch.com"),
+                new("Default Auth URL", null, "https://auth.sinch.com/"),
                 new("Custom override", "https://hello.world", "https://hello.world/")
             };
 

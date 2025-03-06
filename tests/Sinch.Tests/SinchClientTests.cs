@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
 
@@ -41,7 +42,7 @@ namespace Sinch.Tests
         [InlineData("projectId", "keySecret", null, "Credentials are missing (KeySecret should have a value)")]
         [InlineData("projectId", null, "keySecret", "Credentials are missing (KeyId should have a value)")]
         [InlineData(null, "keySecret", "keySecret", "Credentials are missing (ProjectId should have a value)")]
-        public void ThrowAggregateExceptionWhenAccessingCommonCredentialsProducts(string projectId, string keyId,
+        public async Task ThrowAggregateExceptionWhenAccessingCommonCredentialsProducts(string projectId, string keyId,
             string keySecret, string message)
         {
             var sinch = new SinchClient(new SinchClientConfiguration()
@@ -53,16 +54,16 @@ namespace Sinch.Tests
                     KeySecret = keySecret,
                 }
             });
-            var smsOp = () => sinch.Sms;
-            var aggregateExceptionSms = smsOp.Should().Throw<AggregateException>().Which;
+            var smsOp = () => sinch.Sms.Batches.Get("1");
+            var aggregateExceptionSms = (await smsOp.Should().ThrowAsync<AggregateException>()).Which;
             aggregateExceptionSms.Message.Should().BeEquivalentTo(message);
 
-            var conversationOp = () => sinch.Conversation;
-            var aggregateExceptionConversation = conversationOp.Should().Throw<AggregateException>().Which;
+            var conversationOp = () => sinch.Conversation.Messages.Get("1");
+            var aggregateExceptionConversation = (await conversationOp.Should().ThrowAsync<AggregateException>()).Which;
             aggregateExceptionConversation.Message.Should().BeEquivalentTo(message);
 
-            var numbersOp = () => sinch.Numbers;
-            var aggregateExceptionNumbers = numbersOp.Should().Throw<AggregateException>().Which;
+            var numbersOp = () => sinch.Numbers.Get("+31231321");
+            var aggregateExceptionNumbers = (await numbersOp.Should().ThrowAsync<AggregateException>()).Which;
             aggregateExceptionNumbers.Message.Should().BeEquivalentTo(message);
 
             var authOp = () => sinch.Auth;
