@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using Sinch.Conversation;
+using Sinch.Core;
 
 namespace Sinch.Tests.Conversation
 {
@@ -12,7 +13,7 @@ namespace Sinch.Tests.Conversation
         {
             Conversation = new SinchConversationClient(ProjectId,
                 new Uri("https://us.conversation.api.sinch.com"), new Uri("https://us.template.api.sinch.com"),
-                null, HttpSnakeCase);
+                null, new Lazy<IHttp>(HttpSnakeCase));
         }
 
         /// <summary>

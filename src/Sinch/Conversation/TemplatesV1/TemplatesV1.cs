@@ -60,10 +60,10 @@ namespace Sinch.Conversation.TemplatesV1
         private readonly string _projectId;
         private readonly Uri _baseAddress;
         private readonly ILoggerAdapter<ISinchConversationTemplatesV1>? _logger;
-        private readonly IHttp _http;
+        private readonly Lazy<IHttp> _http;
 
         public TemplatesV1(string projectId, Uri templatesBaseAddress,
-            ILoggerAdapter<ISinchConversationTemplatesV1>? logger, IHttp http)
+            ILoggerAdapter<ISinchConversationTemplatesV1>? logger, Lazy<IHttp> http)
         {
             _projectId = projectId;
             _baseAddress = templatesBaseAddress;
@@ -78,7 +78,7 @@ namespace Sinch.Conversation.TemplatesV1
 
             _logger?.LogDebug("Listing all template of {projectId}", _projectId);
             var response =
-                await _http.Send<ListTemplatesResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
+                await _http.Value.Send<ListTemplatesResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
             return response.Templates ?? new List<Template>();
         }
 
@@ -88,7 +88,7 @@ namespace Sinch.Conversation.TemplatesV1
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/templates");
 
             _logger?.LogDebug("Creating a template in {projectId}", _projectId);
-            return _http.Send<CreateTemplateRequest, Template>(uri, HttpMethod.Post, request,
+            return _http.Value.Send<CreateTemplateRequest, Template>(uri, HttpMethod.Post, request,
                 cancellationToken: cancellationToken);
         }
 
@@ -110,7 +110,7 @@ namespace Sinch.Conversation.TemplatesV1
             }
 
             _logger?.LogDebug("Updating a template with {templateId} in {projectId}", template.Id, _projectId);
-            return _http.Send<UpdateTemplateRequest, Template>(uri, HttpMethod.Patch, template,
+            return _http.Value.Send<UpdateTemplateRequest, Template>(uri, HttpMethod.Patch, template,
                 cancellationToken: cancellationToken);
         }
 
@@ -125,7 +125,7 @@ namespace Sinch.Conversation.TemplatesV1
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/templates/{templateId}");
 
             _logger?.LogDebug($"Getting a template with {templateId}...", templateId);
-            return _http.Send<Template>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
+            return _http.Value.Send<Template>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
@@ -139,7 +139,7 @@ namespace Sinch.Conversation.TemplatesV1
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/templates/{templateId}");
 
             _logger?.LogDebug("Deleting a template with {templateId} in {projectId}", templateId, _projectId);
-            return _http.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
+            return _http.Value.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
         }
 
         private sealed class ListTemplatesResponse

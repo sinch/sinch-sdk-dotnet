@@ -125,7 +125,7 @@ namespace Sinch
         private readonly Lazy<ISinchFax> _fax;
 
         private readonly Lazy<ISinchAuth> _sinchOauth;
-        private readonly Lazy<Http> _httpSnakeCase;
+        private readonly Lazy<IHttp> _httpSnakeCase;
         private readonly Lazy<ISinchVerificationClient> _verification;
         private readonly Lazy<ISinchVoiceClient> _voice;
 
@@ -167,11 +167,11 @@ namespace Sinch
                     return auth;
                 }, isThreadSafe: true
             );
-            var httpCamelCase = new Lazy<Http>(() => new Http(_sinchOauth.Value, _httpClient,
+            var httpCamelCase = new Lazy<Http>(() => new Http(_sinchOauth, _httpClient,
                 _loggerFactory?.Create<IHttp>(),
                 JsonNamingPolicy.CamelCase), isThreadSafe: true);
 
-            _httpSnakeCase = new Lazy<Http>(() => new Http(_sinchOauth.Value, _httpClient,
+            _httpSnakeCase = new Lazy<IHttp>(() => new Http(_sinchOauth, _httpClient,
                 _loggerFactory?.Create<IHttp>(),
                 SnakeCaseNamingPolicy.Instance), isThreadSafe: true);
 
@@ -190,14 +190,21 @@ namespace Sinch
 
             _conversation = new Lazy<ISinchConversation>(() =>
             {
-                var validateCommonCredentials = ValidateCommonCredentials();
                 var conversationConfig = _sinchClientConfiguration.ConversationConfiguration;
                 var conversationBaseAddress =
                     conversationConfig.ResolveConversationUrl();
                 var templatesBaseAddress = conversationConfig.ResolveTemplateUrl();
-                return new SinchConversationClient(validateCommonCredentials.ProjectId, conversationBaseAddress
-                    , templatesBaseAddress,
-                    _loggerFactory, _httpSnakeCase.Value);
+
+                return new SinchConversationClient(
+                    _sinchClientConfiguration.SinchCommonCredentials
+                        ?.ProjectId
+                    !, // common credentials, alongside projectId, will be validated as part of lazy call to http
+                       // this is needed for working of Conversation.Webhooks.ParseEvent() to be accessible, without providing
+                       // SinchCommonCredentials, the design regarding just a static method for this is still in discussion.
+                    conversationBaseAddress,
+                    templatesBaseAddress,
+                    _loggerFactory,
+                    _httpSnakeCase);
             }, isThreadSafe: true);
 
 
@@ -222,7 +229,8 @@ namespace Sinch
                     auth = new BasicAuth(config.AppKey, config.AppSecret);
 
 
-                var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
+                var http = new Http(new Lazy<ISinchAuth>(auth), _httpClient, _loggerFactory?.Create<IHttp>(),
+                    JsonNamingPolicy.CamelCase);
                 return new SinchVerificationClient(config.ResolveUrl(),
                     _loggerFactory, http);
             }, isThreadSafe: true);
@@ -237,7 +245,8 @@ namespace Sinch
 
                 ISinchAuth auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
 
-                var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
+                var http = new Http(new Lazy<ISinchAuth>(auth), _httpClient, _loggerFactory?.Create<IHttp>(),
+                    JsonNamingPolicy.CamelCase);
                 return new SinchVoiceClient(
                     config.ResolveUrl(),
                     _loggerFactory, http, (auth as ApplicationSignedAuth)!,
@@ -288,7 +297,8 @@ namespace Sinch
                 _logger?.LogInformation("Initializing SMS client with {service_plan_id} in {region}",
                     servicePlanIdConfig.ServicePlanId,
                     servicePlanIdConfig.ServicePlanIdRegion.Value);
-                var bearerSnakeHttp = new Http(new BearerAuth(servicePlanIdConfig.ApiToken), _httpClient,
+                var bearerSnakeHttp = new Http(new Lazy<ISinchAuth>(new BearerAuth(servicePlanIdConfig.ApiToken)),
+                    _httpClient,
                     _loggerFactory?.Create<IHttp>(),
                     SnakeCaseNamingPolicy.Instance);
                 return new SmsClient(new ServicePlanId(servicePlanIdConfig.ServicePlanId),

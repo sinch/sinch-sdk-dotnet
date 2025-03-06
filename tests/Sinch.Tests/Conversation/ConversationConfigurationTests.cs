@@ -30,7 +30,7 @@ namespace Sinch.Tests.Conversation
                 return TestName;
             }
         }
-        
+
         [Theory]
         [MemberData(nameof(ConversationUrlResolveTests.TestCasesData), MemberType = typeof(ConversationUrlResolveTests))]
         public void ResolveVoiceUrl(ConversationUrlResolveTests testCase)
@@ -40,7 +40,7 @@ namespace Sinch.Tests.Conversation
                 ConversationRegion = testCase.Region,
                 ConversationUrlOverride = testCase.UrlOverride,
             };
-            
+
             voiceConfig.ResolveConversationUrl().ToString().Should().Be(testCase.Expected);
         }
     }

@@ -43,7 +43,7 @@ namespace Sinch.Tests.Sms
             smsServicePlanIdConfig.ServicePlanIdConfiguration!.ResolveUrl().ToString().Should()
                 .BeEquivalentTo(testCase.ExpectedUrl);
         }
-        
+
         public record SmsUrlTestCase(
             string TestName,
             SmsRegion Region,

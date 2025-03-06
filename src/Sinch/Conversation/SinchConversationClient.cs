@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Sinch.Conversation.Apps;
 using Sinch.Conversation.Capability;
 using Sinch.Conversation.Contacts;
@@ -62,10 +63,17 @@ namespace Sinch.Conversation
     /// <inheritdoc />
     internal sealed class SinchConversationClient : ISinchConversation
     {
+        internal static readonly JsonSerializerOptions JsonSerializerOptionsInner =
+            new JsonSerializerOptions(JsonSerializerDefaults.Web)
+            {
+                PropertyNamingPolicy = SnakeCaseNamingPolicy.Instance,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            };
+
         internal SinchConversationClient(string projectId, Uri conversationBaseAddress, Uri templatesBaseAddress
-            , LoggerFactory? loggerFactory, IHttp http)
+            , LoggerFactory? loggerFactory, Lazy<IHttp> http)
         {
-            JsonSerializerOptions = http.JsonSerializerOptions;
+            JsonSerializerOptions = JsonSerializerOptionsInner;
             Messages = new Messages.Messages(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationMessages>(),
                 http);
