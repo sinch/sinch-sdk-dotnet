@@ -94,23 +94,6 @@ namespace Sinch.Tests.e2e
                     ApplicationManagementUrlOverride = GetTestUrl("MOCK_VOICE_PORT")
                 },
             });
-            // SinchClientMockServer = new SinchClient(ProjectId, "key_id", "key_secret", options =>
-            // {
-            //     options.ApiUrlOverrides = new ApiUrlOverrides()
-            //     {
-            //         AuthUrl = GetTestUrl("MOCK_AUTH_PORT"),
-            //         SmsUrl = GetTestUrl("MOCK_SMS_PORT"),
-            //         ConversationUrl = conversationUrl,
-            //         NumbersUrl = GetTestUrl("MOCK_NUMBERS_PORT"),
-            //         VoiceUrl = GetTestUrl("MOCK_VOICE_PORT"),
-            //         // Voice Application Management treated the same as voice in doppelganger
-            //         VoiceApplicationManagementUrl = GetTestUrl("MOCK_VOICE_PORT"),
-            //         VerificationUrl = GetTestUrl("MOCK_VERIFICATION_PORT"),
-            //         // templates treated as conversation api in doppelganger 
-            //         FaxUrl = GetTestUrl("MOCK_FAX_PORT"),
-            //         TemplatesUrl = conversationUrl,
-            //     };
-            // });
             WebhooksEventsBaseAddress = conversationUrl + "/webhooks/conversation/";
         }
 
