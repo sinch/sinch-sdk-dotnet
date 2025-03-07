@@ -8,7 +8,7 @@ namespace Examples.Fax
         {
             var sinchClient = new SinchClient(new SinchClientConfiguration()
             {
-                SinchCommonCredentials = new SinchCommonCredentials()
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
                 {
                     ProjectId = "PROJECT_ID",
                     KeyId = "KEY_ID",

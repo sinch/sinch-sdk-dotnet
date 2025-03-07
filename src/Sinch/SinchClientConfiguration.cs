@@ -13,7 +13,7 @@ namespace Sinch
 {
     public sealed class SinchClientConfiguration
     {
-        public SinchCommonCredentials? SinchCommonCredentials { get; init; }
+        public SinchUnifiedCredentials? SinchUnifiedCredentials { get; init; }
 
         /// <summary>
         ///     Optional. See: <see cref="SinchOptions" />
@@ -35,7 +35,7 @@ namespace Sinch
         public SinchVoiceConfiguration? VoiceConfiguration { get; init; }
     }
 
-    public sealed class SinchCommonCredentials
+    public sealed class SinchUnifiedCredentials
     {
         /// <summary>
         ///     Your Sinch Account key id.

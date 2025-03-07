@@ -13,7 +13,7 @@ namespace Sinch.Tests.Voice
         {
             var client = new SinchClient(new SinchClientConfiguration()
             {
-                SinchCommonCredentials = new SinchCommonCredentials()
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
                 {
                     ProjectId = "PROJECT_ID",
                     KeyId = "KEY_ID",
@@ -34,7 +34,7 @@ namespace Sinch.Tests.Voice
         {
             var client = new SinchClient(new SinchClientConfiguration()
             {
-                SinchCommonCredentials = new SinchCommonCredentials()
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
                 {
                     ProjectId = "PROJECT_ID",
                     KeyId = "KEY_ID",

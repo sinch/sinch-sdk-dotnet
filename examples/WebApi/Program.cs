@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ISinchClient>(_ => new SinchClient(
     new SinchClientConfiguration()
     {
-        SinchCommonCredentials = new SinchCommonCredentials()
+        SinchUnifiedCredentials = new SinchUnifiedCredentials()
         {
             KeySecret = builder.Configuration["Sinch:KeySecret"]!,
             KeyId = builder.Configuration["Sinch:KeyId"]!,

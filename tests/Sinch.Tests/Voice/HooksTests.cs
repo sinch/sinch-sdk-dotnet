@@ -12,7 +12,7 @@ namespace Sinch.Tests.Voice
     {
         private readonly ISinchVoiceClient _voiceClient = new SinchClient(new SinchClientConfiguration()
         {
-            SinchCommonCredentials = new SinchCommonCredentials()
+            SinchUnifiedCredentials = new SinchUnifiedCredentials()
             {
                 ProjectId = "PROJECT_ID",
                 KeyId = "KEY_ID",

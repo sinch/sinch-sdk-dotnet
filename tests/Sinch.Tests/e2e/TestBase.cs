@@ -29,7 +29,7 @@ namespace Sinch.Tests.e2e
             Env.Load();
             SinchClientMockStudio = new SinchClient(new SinchClientConfiguration()
             {
-                SinchCommonCredentials = new SinchCommonCredentials()
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
                 {
                     ProjectId = ProjectId,
                     KeyId = "key_id",
@@ -52,7 +52,7 @@ namespace Sinch.Tests.e2e
 
             SinchClientMockServer = new SinchClient(new SinchClientConfiguration()
             {
-                SinchCommonCredentials = new SinchCommonCredentials()
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
                 {
                     ProjectId = ProjectId,
                     KeyId = "key_id",

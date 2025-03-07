@@ -1265,7 +1265,7 @@ namespace Sinch.Tests.Conversation
         }
 
         [Fact]
-        public async Task DeserializeWebhookWithoutProvidingSinchCommonCredentials()
+        public async Task DeserializeWebhookWithoutProvidingSinchUnifiedCredentials()
         {
             var sinchClient = new SinchClient(new SinchClientConfiguration());
 
@@ -1302,7 +1302,7 @@ namespace Sinch.Tests.Conversation
             var op = () => sinchClient.Conversation.Messages.Get("1");
             await op.Should()
                 .ThrowExactlyAsync<ArgumentNullException>(
-                    "Value cannot be null. (Parameter 'SinchCommonCredentials is null.')");
+                    "Value cannot be null. (Parameter 'SinchUnifiedCredentials is null.')");
         }
     }
 }

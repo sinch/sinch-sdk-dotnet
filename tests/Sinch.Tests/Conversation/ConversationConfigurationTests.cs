@@ -16,10 +16,10 @@ namespace Sinch.Tests.Conversation
         {
             private static readonly ConversationUrlResolveTests[] TestCases =
             {
-                new ("Brazil region", ConversationRegion.Br, null, $"https://br.conversation.api.sinch.com/"),
-                new ("Europe region", ConversationRegion.Eu, null, $"https://eu.conversation.api.sinch.com/"),
-                new ("Us region", ConversationRegion.Us, null, $"https://us.conversation.api.sinch.com/"),
-                new ("Url override", ConversationRegion.Us, "https://hello.world", "https://hello.world/"),
+                new("Brazil region", ConversationRegion.Br, null, $"https://br.conversation.api.sinch.com/"),
+                new("Europe region", ConversationRegion.Eu, null, $"https://eu.conversation.api.sinch.com/"),
+                new("Us region", ConversationRegion.Us, null, $"https://us.conversation.api.sinch.com/"),
+                new("Url override", ConversationRegion.Us, "https://hello.world", "https://hello.world/"),
             };
 
             public static IEnumerable<object[]> TestCasesData =>
@@ -32,16 +32,17 @@ namespace Sinch.Tests.Conversation
         }
 
         [Theory]
-        [MemberData(nameof(ConversationUrlResolveTests.TestCasesData), MemberType = typeof(ConversationUrlResolveTests))]
-        public void ResolveVoiceUrl(ConversationUrlResolveTests testCase)
+        [MemberData(nameof(ConversationUrlResolveTests.TestCasesData),
+            MemberType = typeof(ConversationUrlResolveTests))]
+        public void ResolveUrl(ConversationUrlResolveTests testCase)
         {
-            var voiceConfig = new SinchConversationConfiguration()
+            var config = new SinchConversationConfiguration()
             {
                 ConversationRegion = testCase.Region,
                 ConversationUrlOverride = testCase.UrlOverride,
             };
 
-            voiceConfig.ResolveConversationUrl().ToString().Should().Be(testCase.Expected);
+            config.ResolveConversationUrl().ToString().Should().Be(testCase.Expected);
         }
     }
 }

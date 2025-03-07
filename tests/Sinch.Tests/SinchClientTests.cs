@@ -20,7 +20,7 @@ namespace Sinch.Tests
         {
             var sinch = new SinchClient(new SinchClientConfiguration()
             {
-                SinchCommonCredentials = new SinchCommonCredentials()
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
                 {
                     ProjectId = projectId,
                     KeyId = keyId,
@@ -42,12 +42,12 @@ namespace Sinch.Tests
         [InlineData("projectId", "keySecret", null, "Credentials are missing (KeySecret should have a value)")]
         [InlineData("projectId", null, "keySecret", "Credentials are missing (KeyId should have a value)")]
         [InlineData(null, "keySecret", "keySecret", "Credentials are missing (ProjectId should have a value)")]
-        public async Task ThrowAggregateExceptionWhenAccessingCommonCredentialsProducts(string projectId, string keyId,
+        public async Task ThrowAggregateExceptionWhenAccessingUnifiedCredentialsProducts(string projectId, string keyId,
             string keySecret, string message)
         {
             var sinch = new SinchClient(new SinchClientConfiguration()
             {
-                SinchCommonCredentials = new SinchCommonCredentials()
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
                 {
                     ProjectId = projectId,
                     KeyId = keyId,
@@ -76,7 +76,7 @@ namespace Sinch.Tests
         {
             var sinch = new SinchClient(new SinchClientConfiguration()
             {
-                SinchCommonCredentials = new SinchCommonCredentials()
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
                 {
                     ProjectId = "projectid",
                     KeyId = "keyid",
@@ -94,7 +94,7 @@ namespace Sinch.Tests
         {
             var sinch = new SinchClient(new SinchClientConfiguration()
             {
-                SinchCommonCredentials = new SinchCommonCredentials()
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
                 {
                     ProjectId = "projectid",
                     KeyId = "keyid",

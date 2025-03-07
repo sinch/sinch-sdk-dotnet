@@ -10,7 +10,7 @@ public class ListActiveNumbers
     {
         var sinch = new SinchClient(new SinchClientConfiguration()
         {
-            SinchCommonCredentials = new SinchCommonCredentials()
+            SinchUnifiedCredentials = new SinchUnifiedCredentials()
             {
                 ProjectId = Environment.GetEnvironmentVariable("SINCH_PROJECT_ID")!,
                 KeyId = Environment.GetEnvironmentVariable("SINCH_KEY_ID")!,

@@ -138,29 +138,29 @@ namespace Sinch
             _logger = _loggerFactory?.Create<ISinchClient>();
             _logger?.LogInformation("Initializing SinchClient...");
 
-            if (_sinchClientConfiguration.SinchCommonCredentials == null)
+            if (_sinchClientConfiguration.SinchUnifiedCredentials == null)
             {
-                _logger?.LogWarning($"{nameof(_sinchClientConfiguration.SinchCommonCredentials)} is not set!");
+                _logger?.LogWarning($"{nameof(_sinchClientConfiguration.SinchUnifiedCredentials)} is not set!");
             }
 
-            if (string.IsNullOrEmpty(_sinchClientConfiguration.SinchCommonCredentials?.ProjectId))
+            if (string.IsNullOrEmpty(_sinchClientConfiguration.SinchUnifiedCredentials?.ProjectId))
                 _logger?.LogWarning(
-                    $"{nameof(_sinchClientConfiguration.SinchCommonCredentials.ProjectId)} is not set!");
+                    $"{nameof(_sinchClientConfiguration.SinchUnifiedCredentials.ProjectId)} is not set!");
 
-            if (string.IsNullOrEmpty(_sinchClientConfiguration.SinchCommonCredentials?.ProjectId))
+            if (string.IsNullOrEmpty(_sinchClientConfiguration.SinchUnifiedCredentials?.ProjectId))
                 _logger?.LogWarning(
-                    $"{nameof(_sinchClientConfiguration.SinchCommonCredentials.ProjectId)} is not set!");
+                    $"{nameof(_sinchClientConfiguration.SinchUnifiedCredentials.ProjectId)} is not set!");
 
-            if (string.IsNullOrEmpty(_sinchClientConfiguration.SinchCommonCredentials?.ProjectId))
+            if (string.IsNullOrEmpty(_sinchClientConfiguration.SinchUnifiedCredentials?.ProjectId))
                 _logger?.LogWarning(
-                    $"{nameof(_sinchClientConfiguration.SinchCommonCredentials.ProjectId)} is not set!");
+                    $"{nameof(_sinchClientConfiguration.SinchUnifiedCredentials.ProjectId)} is not set!");
 
             _httpClient = _sinchClientConfiguration.SinchOptions?.HttpClient ?? new HttpClient();
 
             _sinchOauth = new Lazy<ISinchAuth>(() =>
                 {
-                    var commonCredentials = ValidateCommonCredentials();
-                    var auth = new OAuth(commonCredentials.KeyId, commonCredentials.KeySecret, _httpClient,
+                    var unifiedCredentials = ValidateUnifiedCredentials();
+                    var auth = new OAuth(unifiedCredentials.KeyId, unifiedCredentials.KeySecret, _httpClient,
                         _loggerFactory?.Create<OAuth>(),
                         _sinchClientConfiguration.SinchOAuthConfiguration.ResolveUrl()
                     );
@@ -177,9 +177,9 @@ namespace Sinch
 
             _numbers = new Lazy<ISinchNumbers>(() =>
             {
-                var commonCredentials = ValidateCommonCredentials();
+                var unifiedCredentials = ValidateUnifiedCredentials();
 
-                return new Numbers.Numbers(commonCredentials.ProjectId,
+                return new Numbers.Numbers(unifiedCredentials.ProjectId,
                     _sinchClientConfiguration.NumbersConfiguration.ResolveUrl(),
                     _loggerFactory, httpCamelCase.Value);
             }, isThreadSafe: true);
@@ -196,11 +196,11 @@ namespace Sinch
                 var templatesBaseAddress = conversationConfig.ResolveTemplateUrl();
 
                 return new SinchConversationClient(
-                    _sinchClientConfiguration.SinchCommonCredentials
+                    _sinchClientConfiguration.SinchUnifiedCredentials
                         ?.ProjectId
-                    !, // common credentials, alongside projectId, will be validated as part of lazy call to http
+                    !, // unified credentials, alongside projectId, will be validated as part of lazy call to http
                        // this is needed for working of Conversation.Webhooks.ParseEvent() to be accessible, without providing
-                       // SinchCommonCredentials, the design regarding just a static method for this is still in discussion.
+                       // SinchUnifiedCredentials, the design regarding just a static method for this is still in discussion.
                     conversationBaseAddress,
                     templatesBaseAddress,
                     _loggerFactory,
@@ -210,9 +210,9 @@ namespace Sinch
 
             _fax = new Lazy<ISinchFax>(() =>
             {
-                var validateCommonCredentials = ValidateCommonCredentials();
+                var validateUnifiedCredentials = ValidateUnifiedCredentials();
                 var faxUrl = _sinchClientConfiguration.FaxConfiguration.ResolveUrl();
-                return new FaxClient(validateCommonCredentials.ProjectId, faxUrl, _loggerFactory, httpCamelCase.Value);
+                return new FaxClient(validateUnifiedCredentials.ProjectId, faxUrl, _loggerFactory, httpCamelCase.Value);
             }, isThreadSafe: true);
             _verification = new Lazy<ISinchVerificationClient>(() =>
             {
@@ -278,15 +278,15 @@ namespace Sinch
         /// <inheritdoc />
         public ISinchVoiceClient Voice => _voice.Value;
 
-        private SinchCommonCredentials ValidateCommonCredentials()
+        private SinchUnifiedCredentials ValidateUnifiedCredentials()
         {
-            if (_sinchClientConfiguration.SinchCommonCredentials == null)
+            if (_sinchClientConfiguration.SinchUnifiedCredentials == null)
             {
-                throw new ArgumentNullException($"{nameof(SinchClientConfiguration.SinchCommonCredentials)} is null.");
+                throw new ArgumentNullException($"{nameof(SinchClientConfiguration.SinchUnifiedCredentials)} is null.");
             }
 
-            _sinchClientConfiguration.SinchCommonCredentials.Validate();
-            return _sinchClientConfiguration.SinchCommonCredentials;
+            _sinchClientConfiguration.SinchUnifiedCredentials.Validate();
+            return _sinchClientConfiguration.SinchUnifiedCredentials;
         }
 
         private SmsClient InitSms(SinchSmsConfiguration sinchSmsConfiguration)
@@ -306,14 +306,14 @@ namespace Sinch
                     _loggerFactory, bearerSnakeHttp);
             }
 
-            var commonCredentials = ValidateCommonCredentials();
+            var unifiedCredentials = ValidateUnifiedCredentials();
             _logger?.LogInformation("Initializing SMS client with {project_id} in {region}",
-                commonCredentials.ProjectId,
+                unifiedCredentials.ProjectId,
                 sinchSmsConfiguration.Region);
 
             return new SmsClient(
                 new ProjectId(
-                    commonCredentials
+                    unifiedCredentials
                         .ProjectId), // exception is throw when trying to get SMS client property if _projectId is null
                 sinchSmsConfiguration.ResolveUrl(),
                 _loggerFactory,
