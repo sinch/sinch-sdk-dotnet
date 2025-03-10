@@ -38,15 +38,12 @@ namespace Sinch.SMS
 
         internal Uri ResolveUrl()
         {
-            // ReSharper disable once ConvertIfStatementToReturnStatement
-            if (!string.IsNullOrEmpty(UrlOverride)) return new Uri(UrlOverride);
-
             // General SMS rest api uses service_plan_id to performs calls
             // But SDK is based on single-account model which uses project_id
             // Thus, baseAddress for sms api is using a special endpoint where service_plan_id is replaced with projectId
             // for each provided endpoint
             const string smsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
-            return new Uri(string.Format(smsApiUrlTemplate, Region.Value));
+            return new Uri(UrlOverride ?? string.Format(smsApiUrlTemplate, Region.Value));
         }
     }
 
@@ -62,10 +59,8 @@ namespace Sinch.SMS
 
         internal Uri ResolveUrl()
         {
-            if (!string.IsNullOrEmpty(UrlOverride)) return new Uri(UrlOverride);
-
             const string smsApiServicePlanIdUrlTemplate = "https://{0}.sms.api.sinch.com";
-            return new Uri(string.Format(smsApiServicePlanIdUrlTemplate,
+            return new Uri(UrlOverride ?? string.Format(smsApiServicePlanIdUrlTemplate,
                 ServicePlanIdRegion.Value.ToLowerInvariant()));
         }
     }

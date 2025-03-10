@@ -9,12 +9,7 @@ namespace Sinch.Numbers
         internal Uri ResolveUrl()
         {
             const string numbersApiUrl = "https://numbers.api.sinch.com/";
-            if (!string.IsNullOrEmpty(UrlOverride))
-            {
-                return new Uri(UrlOverride);
-            }
-
-            return new Uri(numbersApiUrl);
+            return new Uri(UrlOverride ?? numbersApiUrl);
         }
     }
 }

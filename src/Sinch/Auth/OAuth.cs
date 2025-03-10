@@ -17,8 +17,7 @@ namespace Sinch.Auth
 
         internal Uri ResolveUrl()
         {
-            if (!string.IsNullOrEmpty(UrlOverride)) return new Uri(UrlOverride);
-            return new Uri("https://auth.sinch.com");
+            return new Uri(UrlOverride ?? "https://auth.sinch.com");
         }
     }
 

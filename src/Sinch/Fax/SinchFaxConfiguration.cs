@@ -12,7 +12,7 @@ namespace Sinch.Fax
         {
             const string faxApiUrl = "https://fax.api.sinch.com/";
             const string faxApiUrlTemplate = "https://{0}.fax.api.sinch.com/";
-            if (!string.IsNullOrEmpty(UrlOverride))
+            if (UrlOverride != null)
             {
                 return new Uri(UrlOverride);
             }
