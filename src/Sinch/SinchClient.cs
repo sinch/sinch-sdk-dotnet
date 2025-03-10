@@ -221,10 +221,13 @@ namespace Sinch
             _voice = new Lazy<ISinchVoiceClient>(() =>
             {
                 var config = _sinchClientConfiguration.VoiceConfiguration;
+
                 if (config == null)
                 {
                     throw new InvalidOperationException($"{nameof(SinchVoiceConfiguration)} is not set.");
                 }
+
+                config.Validate();
 
                 ISinchAuth auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
 
