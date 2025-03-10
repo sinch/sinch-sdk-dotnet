@@ -20,6 +20,7 @@ namespace Sinch.Tests.Conversation
                 new("Europe region", ConversationRegion.Eu, null, $"https://eu.conversation.api.sinch.com/"),
                 new("Us region", ConversationRegion.Us, null, $"https://us.conversation.api.sinch.com/"),
                 new("Url override", ConversationRegion.Us, "https://hello.world", "https://hello.world/"),
+                new("Custom Region", new ConversationRegion("CA"), null, $"https://ca.conversation.api.sinch.com/"),
             };
 
             public static IEnumerable<object[]> TestCasesData =>
