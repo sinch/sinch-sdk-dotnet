@@ -138,23 +138,6 @@ namespace Sinch
             _logger = _loggerFactory?.Create<ISinchClient>();
             _logger?.LogInformation("Initializing SinchClient...");
 
-            if (_sinchClientConfiguration.SinchUnifiedCredentials == null)
-            {
-                _logger?.LogWarning($"{nameof(_sinchClientConfiguration.SinchUnifiedCredentials)} is not set!");
-            }
-
-            if (string.IsNullOrEmpty(_sinchClientConfiguration.SinchUnifiedCredentials?.ProjectId))
-                _logger?.LogWarning(
-                    $"{nameof(_sinchClientConfiguration.SinchUnifiedCredentials.ProjectId)} is not set!");
-
-            if (string.IsNullOrEmpty(_sinchClientConfiguration.SinchUnifiedCredentials?.ProjectId))
-                _logger?.LogWarning(
-                    $"{nameof(_sinchClientConfiguration.SinchUnifiedCredentials.ProjectId)} is not set!");
-
-            if (string.IsNullOrEmpty(_sinchClientConfiguration.SinchUnifiedCredentials?.ProjectId))
-                _logger?.LogWarning(
-                    $"{nameof(_sinchClientConfiguration.SinchUnifiedCredentials.ProjectId)} is not set!");
-
             _httpClient = _sinchClientConfiguration.SinchOptions?.HttpClient ?? new HttpClient();
 
             _sinchOauth = new Lazy<ISinchAuth>(() =>
