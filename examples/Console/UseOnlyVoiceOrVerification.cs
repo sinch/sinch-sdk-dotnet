@@ -10,7 +10,7 @@ namespace Examples
     {
         /// <summary>
         ///     If you want to use only voice and/or verification api, you can init sinch client without providing
-        ///     common credentials. But be aware that when you try to use other services which depends on the common credentials you will get an exception.
+        ///     unified credentials. But be aware that when you try to use other services which depends on the common credentials you will get an exception.
         /// </summary>
         public async Task Example()
         {

@@ -22,9 +22,14 @@ namespace Sinch.Voice
 
         internal Uri ResolveApplicationManagementUrl()
         {
+            if (!string.IsNullOrEmpty(ApplicationManagementUrlOverride))
+            {
+                return new Uri(ApplicationManagementUrlOverride);
+            }
+
             // apparently, management api for applications have a different set url
             const string voiceApiApplicationManagementUrl = "https://callingapi.sinch.com/";
-            return new Uri(ApplicationManagementUrlOverride ?? voiceApiApplicationManagementUrl);
+            return new Uri(voiceApiApplicationManagementUrl);
         }
 
         internal SinchVoiceConfiguration Validate()
