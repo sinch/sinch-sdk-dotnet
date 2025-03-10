@@ -29,8 +29,13 @@ namespace Sinch.Verification
 
         public Uri ResolveUrl()
         {
+            if (!string.IsNullOrEmpty(UrlOverride))
+            {
+                return new Uri(UrlOverride);
+            }
+
             const string verificationApiUrl = "https://verification.api.sinch.com/";
-            return new Uri(UrlOverride ?? verificationApiUrl);
+            return new Uri(verificationApiUrl);
         }
     }
 }

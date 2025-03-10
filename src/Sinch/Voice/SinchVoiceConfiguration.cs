@@ -16,8 +16,13 @@ namespace Sinch.Voice
 
         internal Uri ResolveUrl()
         {
+            if (!string.IsNullOrEmpty(VoiceUrlOverride))
+            {
+                return new Uri(VoiceUrlOverride);
+            }
+
             const string voiceApiUrlTemplate = "https://{0}.api.sinch.com/";
-            return new Uri(VoiceUrlOverride ?? string.Format(voiceApiUrlTemplate, Region.Value));
+            return new Uri(string.Format(voiceApiUrlTemplate, Region.Value));
         }
 
         internal Uri ResolveApplicationManagementUrl()
