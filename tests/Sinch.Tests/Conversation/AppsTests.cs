@@ -177,12 +177,12 @@ namespace Sinch.Tests.Conversation
         private CreateAppRequest _createRequest = new CreateAppRequest
         {
             DisplayName = "display_name",
-            ChannelCredentials = new List<ConversationChannelCredential>()
+            ChannelCredentials = new List<ConversationChannelCredentials>()
             {
-                new ConversationChannelCredential()
+                new ConversationChannelCredentials()
                 {
                     Channel = ConversationChannel.Instagram,
-                    StaticToken = new StaticTokenCredential
+                    StaticToken = new StaticTokenCredentials
                     {
                         Token = "token"
                     },
@@ -223,7 +223,7 @@ namespace Sinch.Tests.Conversation
                             Username = "456",
                         }
                     },
-                    StaticBearer = new StaticBearerCredential()
+                    StaticBearer = new StaticBearerCredentials()
                     {
                         Token = "a",
                         ClaimedIdentity = "b"
@@ -283,7 +283,7 @@ namespace Sinch.Tests.Conversation
             response.ConversationMetadataReportView.Should().Be(ConversationMetadataReportView.None);
             response.ProcessingMode.Should().Be(ProcessingMode.Conversation);
             response.SmartConversation.Enabled.Should().BeFalse();
-            response.ChannelCredentials[0].Should().BeEquivalentTo(new ConversationChannelCredential()
+            response.ChannelCredentials[0].Should().BeEquivalentTo(new ConversationChannelCredentials()
             {
                 CallbackSecret = "my_callback_secret",
                 Channel = ConversationChannel.WhatsApp,
@@ -307,12 +307,12 @@ namespace Sinch.Tests.Conversation
                     Secret = "my_line_secret",
                     Token = "my_line_token"
                 },
-                StaticBearer = new StaticBearerCredential()
+                StaticBearer = new StaticBearerCredentials()
                 {
                     Token = "my_static_bearer_token",
                     ClaimedIdentity = "my_claimed_identity",
                 },
-                StaticToken = new StaticTokenCredential()
+                StaticToken = new StaticTokenCredentials()
                 {
                     Token = "my_static_token"
                 },

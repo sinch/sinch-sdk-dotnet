@@ -18,9 +18,9 @@ namespace Sinch.Conversation.Apps.Create
         ///     An array of channel credentials. The order of the credentials defines the app channel priority.
         /// </summary>
 #if NET7_0_OR_GREATER
-        public required List<ConversationChannelCredential> ChannelCredentials { get; set; }
+        public required List<ConversationChannelCredentials> ChannelCredentials { get; set; }
 #else
-        public List<ConversationChannelCredential> ChannelCredentials { get; set; } = null!;
+        public List<ConversationChannelCredentials> ChannelCredentials { get; set; } = null!;
 #endif
 
 

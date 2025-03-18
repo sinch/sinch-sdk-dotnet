@@ -30,7 +30,7 @@ namespace Sinch.Conversation.Apps.Update
         /// <summary>
         ///     An array of channel credentials. The order of the credentials defines the app channel priority.
         /// </summary>
-        public List<ConversationChannelCredential>? ChannelCredentials { get; set; }
+        public List<ConversationChannelCredentials>? ChannelCredentials { get; set; }
 
 
         /// <summary>
