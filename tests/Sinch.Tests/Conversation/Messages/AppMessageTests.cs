@@ -27,7 +27,7 @@ namespace Sinch.Tests.Conversation.Messages
                     {
                         Title = "title value",
                         Description = "description value",
-                        MediaMessage = new CardMessageMediaMessage()
+                        MediaMessage = new MediaProperties()
                         {
                             Url = "url value"
                         },
@@ -916,7 +916,7 @@ namespace Sinch.Tests.Conversation.Messages
             {
                 Title = "title value",
                 Description = "description value",
-                MediaMessage = new CardMessageMediaMessage()
+                MediaMessage = new MediaProperties()
                 {
                     Url = "url value",
                 },
