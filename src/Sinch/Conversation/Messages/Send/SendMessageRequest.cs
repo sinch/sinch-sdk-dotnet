@@ -7,6 +7,7 @@ using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.Message;
+using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Send
 {
@@ -141,28 +142,66 @@ namespace Sinch.Conversation.Messages.Send
 
 
         /// <summary>
+        ///     Gets or Sets MessageContentType
+        /// </summary>
+        [JsonPropertyName("message_content_type")]
+        public MessageContentType? MessageContentType { get; set; }
+
+        /// <summary>
+        ///     Gets or Sets ConversationMetadataUpdateStrategy
+        /// </summary>
+        [JsonPropertyName("conversation_metadata_update_strategy")]
+        public MetadataUpdateStrategy? ConversationMetadataUpdateStrategy { get; set; }
+
+        /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("class SendMessageRequest {\n");
-            sb.Append("  AppId: ").Append(AppId).Append("\n");
-            sb.Append("  CallbackUrl: ").Append(CallbackUrl).Append("\n");
-            sb.Append("  ChannelPriorityOrder: ").Append(ChannelPriorityOrder).Append("\n");
-            sb.Append("  ChannelProperties: ").Append(ChannelProperties).Append("\n");
-            sb.Append("  Message: ").Append(Message).Append("\n");
-            sb.Append("  MessageMetadata: ").Append(MessageMetadata).Append("\n");
-            sb.Append("  ConversationMetadata: ").Append(ConversationMetadata).Append("\n");
-            sb.Append("  Queue: ").Append(Queue).Append("\n");
-            sb.Append("  Recipient: ").Append(Recipient).Append("\n");
-            sb.Append("  Ttl: ").Append(TtlSeconds).Append("\n");
-            sb.Append("  ProcessingStrategy: ").Append(ProcessingStrategy).Append("\n");
-            sb.Append("  CorrelationId: ").Append(CorrelationId).Append("\n");
+            var sb = new StringBuilder();
+            sb.Append($"class {nameof(SendMessageRequest)} {{\n");
+            sb.Append($"  {nameof(AppId)}: ").Append(AppId).Append('\n');
+            sb.Append($"  {nameof(CallbackUrl)}: ").Append(CallbackUrl).Append('\n');
+            sb.Append($"  {nameof(ChannelPriorityOrder)}: ").Append(ChannelPriorityOrder).Append('\n');
+            sb.Append($"  {nameof(ChannelProperties)}: ").Append(ChannelProperties).Append('\n');
+            sb.Append($"  {nameof(Message)}: ").Append(Message).Append('\n');
+            sb.Append($"  {nameof(MessageMetadata)}: ").Append(MessageMetadata).Append('\n');
+            sb.Append($"  {nameof(ConversationMetadata)}: ").Append(ConversationMetadata).Append('\n');
+            sb.Append($"  {nameof(Queue)}: ").Append(Queue).Append('\n');
+            sb.Append($"  {nameof(Recipient)}: ").Append(Recipient).Append('\n');
+            sb.Append($"  {nameof(TtlSeconds)}: ").Append(TtlSeconds).Append('\n');
+            sb.Append($"  {nameof(ProcessingStrategy)}: ").Append(ProcessingStrategy).Append('\n');
+            sb.Append($"  {nameof(CorrelationId)}: ").Append(CorrelationId).Append('\n');
+            sb.Append($"  {nameof(ConversationMetadataUpdateStrategy)}: ").Append(ConversationMetadataUpdateStrategy)
+                .Append('\n');
+            sb.Append($"  {nameof(MessageContentType)}: ").Append(MessageContentType).Append('\n');
             sb.Append("}\n");
             return sb.ToString();
         }
+    }
+
+    /// <summary>
+    ///     This field classifies the message content for use with Sinch&#39;s [consent management functionality](https://developers.sinch.com/docs/conversation/consent-management/). Note that this field is currently only used with Sinch&#39;s consent management functionality, and is not referenced elsewhere by the Conversation API.
+    /// </summary>
+    /// <value>This field classifies the message content for use with Sinch&#39;s [consent management functionality](https://developers.sinch.com/docs/conversation/consent-management/). Note that this field is currently only used with Sinch&#39;s consent management functionality, and is not referenced elsewhere by the Conversation API.</value>
+    [JsonConverter(typeof(EnumRecordJsonConverter<MessageContentType>))]
+    public sealed record MessageContentType(string Value) : EnumRecord(Value)
+    {
+        public static readonly MessageContentType ContentUnknown = new("CONTENT_UNKNOWN");
+        public static readonly MessageContentType ContentMarketing = new("CONTENT_MARKETING");
+        public static readonly MessageContentType ContentNotification = new("CONTENT_NOTIFICATION");
+    }
+
+    /// <summary>
+    ///     Update strategy for the &#x60;conversation_metadata&#x60; field. Only supported in &#x60;CONVERSATION&#x60; processing mode.
+    /// </summary>
+    /// <value>Update strategy for the &#x60;conversation_metadata&#x60; field. Only supported in &#x60;CONVERSATION&#x60; processing mode.</value>
+    [JsonConverter(typeof(EnumRecordJsonConverter<MetadataUpdateStrategy>))]
+    public sealed record MetadataUpdateStrategy(string Value) : EnumRecord(Value)
+    {
+        public static readonly MetadataUpdateStrategy Replace = new("REPLACE");
+        public static readonly MetadataUpdateStrategy MergePatch = new("MERGE_PATCH");
     }
 
     public sealed class TimeToLiveConverter : JsonConverter<int?>
