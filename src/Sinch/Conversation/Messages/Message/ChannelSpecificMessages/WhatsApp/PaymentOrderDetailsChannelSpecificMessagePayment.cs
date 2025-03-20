@@ -30,7 +30,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         public TypeEnum Type { get; set; } = null!;
 #endif
 
-       
+
 
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
             return sb.ToString();
         }
     }
-    
+
     /// <summary>
     /// The type of good associated with this order.
     /// </summary>

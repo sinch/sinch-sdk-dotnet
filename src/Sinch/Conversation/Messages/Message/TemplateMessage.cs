@@ -64,14 +64,22 @@ namespace Sinch.Conversation.Messages.Message
 
 
         /// <summary>
-        ///     Used to specify what version of a template to use. Required when using &#x60;omni_channel_override&#x60; and &#x60;omni_template&#x60; fields. This will be used in conjunction with &#x60;language_code&#x60;. Note that, when referencing omni-channel templates using the [Sinch Customer Dashboard](https://dashboard.sinch.com/), the latest version of a given omni-template can be identified by populating this field with &#x60;latest&#x60;.
+        ///     Used to specify what version of a template to use. Required when using &#x60;omni_channel_override&#x60;
+        ///     and &#x60;omni_template&#x60; fields. This will be used in conjunction with &#x60;language_code&#x60;.
+        ///     Note that, when referencing omni-channel templates using the [Sinch Customer Dashboard](https://dashboard.sinch.com/),
+        ///     the latest version of a given omni-template can be identified by populating this field with &#x60;latest&#x60;.
         /// </summary>
         [JsonPropertyName("version")]
         public string? Version { get; set; }
 
         /// <summary>
-        ///     The BCP-47 language code, such as &#x60;en-US&#x60; or &#x60;sr-Latn&#x60;. For more information,
-        ///     see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. English is the default language_code.
+        ///     The BCP-47 language code, such as &#x60;en_US&#x60; or &#x60;sr_Latn&#x60;.
+        ///     For more information, see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+        ///     English is the default &#x60;language_code&#x60;.
+        ///     Note that, while many API calls involving templates accept either the dashed format (&#x60;en-US&#x60;)
+        ///     or the underscored format (&#x60;en_US&#x60;), some channel specific templates
+        ///     (for example, WhatsApp channel-specific templates) only accept the underscored format.
+        ///     Note that this field is required for WhatsApp channel-specific templates.
         /// </summary>
         [JsonPropertyName("language_code")]
         public string? LanguageCode { get; set; }

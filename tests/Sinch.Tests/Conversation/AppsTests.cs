@@ -98,6 +98,19 @@ namespace Sinch.Tests.Conversation
             {
                 outbound_size = 10,
                 outbound_limit = 20
+            },
+            message_retry_settings = new
+            {
+                retry_duration = 360,
+            },
+            callback_settings = new
+            {
+                secret_for_overridden_callback_urls = "secret",
+            },
+            delivery_report_based_fallback = new
+            {
+                enabled = true,
+                delivery_report_waiting_time = 220,
             }
         };
 
@@ -174,7 +187,20 @@ namespace Sinch.Tests.Conversation
                 retention_type = "MESSAGE_EXPIRE_POLICY",
                 ttl_days = 20
             },
-            conversation_metadata_report_view = "FULL"
+            conversation_metadata_report_view = "FULL",
+            message_retry_settings = new
+            {
+                retry_duration = 360,
+            },
+            callback_settings = new
+            {
+                secret_for_overridden_callback_urls = "secret",
+            },
+            delivery_report_based_fallback = new
+            {
+                enabled = true,
+                delivery_report_waiting_time = 220,
+            }
         };
 
         private CreateAppRequest _createRequest = new CreateAppRequest
@@ -246,6 +272,19 @@ namespace Sinch.Tests.Conversation
                 TtlDays = 20,
             },
             ConversationMetadataReportView = ConversationMetadataReportView.Full,
+            MessageRetrySettings = new MessageRetrySettings()
+            {
+                RetryDuration = 360,
+            },
+            CallbackSettings = new CallbackSettings()
+            {
+                SecretForOverriddenCallbackUrls = "secret",
+            },
+            DeliveryReportBasedFallback = new DeliveryReportBasedFallback()
+            {
+                Enabled = true,
+                DeliveryReportWaitingTime = 220
+            }
         };
 
         [Fact]
@@ -285,8 +324,8 @@ namespace Sinch.Tests.Conversation
             });
             response.ConversationMetadataReportView.Should().Be(ConversationMetadataReportView.None);
             response.ProcessingMode.Should().Be(ProcessingMode.Conversation);
-            response.SmartConversation.Enabled.Should().BeFalse();
-            response.ChannelCredentials[0].Should().BeEquivalentTo(new ConversationChannelCredentials()
+            response.SmartConversation!.Enabled.Should().BeFalse();
+            response.ChannelCredentials![0].Should().BeEquivalentTo(new ConversationChannelCredentials()
             {
                 CallbackSecret = "my_callback_secret",
                 Channel = ConversationChannel.WhatsApp,
@@ -362,7 +401,97 @@ namespace Sinch.Tests.Conversation
 
             var response = await Conversation.Apps.Get("123");
 
-            response.DisplayName.Should().Be("Sinch Conversation API Demo App 001");
+            response.Should().BeEquivalentTo(new App
+            {
+                ChannelCredentials = new List<ConversationChannelCredentials>
+                {
+                    new ConversationChannelCredentials
+                    {
+                        CallbackSecret = "my_callback_secret",
+                        CredentialOrdinalNumber = 0,
+                        Channel = ConversationChannel.WhatsApp,
+                        MmsCredentials = new MmsCredentials
+                        {
+                            AccountId = "my_account_id",
+                            ApiKey = "my_api_key",
+                            BasicAuth = new BasicAuthCredential
+                            {
+                                Password = "my_password",
+                                Username = "my_username"
+                            }
+                        },
+                        KakaoTalkCredentials = new KakaoTalkCredentials
+                        {
+                            KakaoTalkPlusFriendId = "my_kakaotalk_id",
+                            KakaoTalkSenderKey = "my_kakaotalk_key"
+                        },
+                        StaticBearer = new StaticBearerCredentials()
+                        {
+                            ClaimedIdentity = "my_claimed_identity",
+                            Token = "my_static_bearer_token"
+                        },
+                        StaticToken = new StaticTokenCredentials()
+                        {
+                            Token = "my_static_token"
+                        },
+                        TelegramCredentials = new TelegramCredentials
+                        {
+                            Token = "my_telegram_bot_token"
+                        },
+                        LineCredentials = new LineCredentials
+                        {
+                            Token = "my_line_token",
+                            Secret = "my_line_secret"
+                        },
+                        WechatCredentials = new WeChatCredentials
+                        {
+                            AppId = "my_wechat_app_id",
+                            AppSecret = "my_wechat_app_secret",
+                            Token = "my_wechat_token",
+                            AesKey = "my_wechat_aes_key"
+                        }
+                    }
+                },
+                ConversationMetadataReportView = ConversationMetadataReportView.None,
+                DisplayName = "Sinch Conversation API Demo App 001",
+                Id = "{APP_ID}",
+                RateLimits = new RateLimits
+                {
+                    Inbound = 100,
+                    Outbound = 200,
+                    Webhooks = 50
+                },
+                RetentionPolicy = new RetentionPolicy
+                {
+                    RetentionType = RetentionType.MessageExpirePolicy,
+                    TtlDays = 180
+                },
+                DispatchRetentionPolicy = new DispatchRetentionPolicy
+                {
+                    RetentionType = DispatchRetentionPolicyType.MessageExpirePolicy,
+                    TtlDays = 0
+                },
+                ProcessingMode = ProcessingMode.Conversation,
+                SmartConversation = new SmartConversation(false),
+                QueueStats = new QueueStats
+                {
+                    OutboundSize = 10,
+                    OutboundLimit = 20
+                },
+                MessageRetrySettings = new MessageRetrySettings
+                {
+                    RetryDuration = 360
+                },
+                CallbackSettings = new CallbackSettings
+                {
+                    SecretForOverriddenCallbackUrls = "secret"
+                },
+                DeliveryReportBasedFallback = new DeliveryReportBasedFallback
+                {
+                    Enabled = true,
+                    DeliveryReportWaitingTime = 220
+                }
+            });
         }
 
         [Fact]
