@@ -25,7 +25,7 @@ namespace Sinch.Conversation.Apps
 #else
         public string Secret { get; set; } = null!;
 #endif
-        
+
 
         /// <summary>
         ///     Returns the string presentation of the object
