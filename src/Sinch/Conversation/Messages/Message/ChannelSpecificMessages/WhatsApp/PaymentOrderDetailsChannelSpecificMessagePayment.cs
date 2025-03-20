@@ -30,16 +30,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         public TypeEnum Type { get; set; } = null!;
 #endif
 
-        /// <summary>
-        /// The type of good associated with this order.
-        /// </summary>
-        /// <value>The type of good associated with this order.</value>
-        [JsonConverter(typeof(EnumRecordJsonConverter<TypeOfGoodsEnum>))]
-        public record TypeOfGoodsEnum(string Value) : EnumRecord(Value)
-        {
-            public static readonly TypeOfGoodsEnum DigitalGoods = new("digital-goods");
-            public static readonly TypeOfGoodsEnum PhysicalGoods = new("physical-goods");
-        }
+       
 
 
         /// <summary>
@@ -47,9 +38,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         /// </summary>
         [JsonPropertyName("type_of_goods")]
 #if NET7_0_OR_GREATER
-        public required TypeOfGoodsEnum TypeOfGoods { get; set; }
+        public required TypeOfGoods TypeOfGoods { get; set; }
 #else
-        public TypeOfGoodsEnum TypeOfGoods { get; set; } = null!;
+        public TypeOfGoods TypeOfGoods { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -88,7 +79,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
 #if NET7_0_OR_GREATER
         public required PaymentOrderDetailsChannelSpecificMessagePaymentOrder Order { get; set; }
 #else
-        public PaymentOrderDetailsChannelSpecificMessagePaymentOrder Order { get; set; }
+        public PaymentOrderDetailsChannelSpecificMessagePaymentOrder Order { get; set; } = null!;
 #endif
 
 
@@ -109,5 +100,16 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
             sb.Append("}\n");
             return sb.ToString();
         }
+    }
+    
+    /// <summary>
+    /// The type of good associated with this order.
+    /// </summary>
+    /// <value>The type of good associated with this order.</value>
+    [JsonConverter(typeof(EnumRecordJsonConverter<TypeOfGoods>))]
+    public record TypeOfGoods(string Value) : EnumRecord(Value)
+    {
+        public static readonly TypeOfGoods DigitalGoods = new("digital-goods");
+        public static readonly TypeOfGoods PhysicalGoods = new("physical-goods");
     }
 }

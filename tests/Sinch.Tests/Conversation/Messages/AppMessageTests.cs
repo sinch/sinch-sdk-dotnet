@@ -1197,5 +1197,200 @@ namespace Sinch.Tests.Conversation.Messages
                 }
             }));
         }
+
+
+        [Fact]
+        public void DeserializeOrderDetailsChannelSpecificMessage()
+        {
+            var json = Helpers.LoadResources(
+                "Conversation/Messages/ChannelSpecific/OrderDetailsChannelSpecificMessage.json");
+
+            var result = DeserializeAsConversationClient<IChannelSpecificMessage>(json);
+
+            result.As<PaymentOrderDetailsMessage>().Should().BeEquivalentTo(
+                new PaymentOrderDetailsMessage()
+                {
+                    Message = new PaymentOrderDetailsChannelSpecificMessage
+                    {
+                        Header = new WhatsAppInteractiveDocumentHeader()
+                        {
+                            Document = new WhatsAppInteractiveHeaderMedia()
+                            {
+                                Link = "a document URL link"
+                            }
+                        },
+                        Body = new WhatsAppInteractiveBody
+                        {
+                            Text = "Flow message body"
+                        },
+                        Footer = new WhatsAppInteractiveFooter
+                        {
+                            Text = "Flow message footer"
+                        },
+                        Payment = new PaymentOrderDetailsChannelSpecificMessagePayment
+                        {
+                            Type = PaymentOrderDetailsChannelSpecificMessagePayment.TypeEnum.Br,
+                            ReferenceId = "a reference ID",
+                            TypeOfGoods = TypeOfGoods.DigitalGoods,
+                            PaymentSettings = new PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettings()
+                            {
+                                DynamicPix =
+                                    new PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix()
+                                    {
+                                        Code = "code value",
+                                        MerchantName = "merchant name",
+                                        Key = "key value",
+                                        KeyType =
+                                            PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix
+                                                .KeyTypeEnum.Cnpj
+                                    }
+                            },
+                            TotalAmountValue = 1200,
+                            Order = new PaymentOrderDetailsChannelSpecificMessagePaymentOrder()
+                            {
+                                CatalogId = "catalog id",
+                                ExpirationTime = "1741934627",
+                                ExpirationDescription = "expiration description",
+                                SubtotalValue = 6000,
+                                TaxValue = 7000,
+                                TaxDescription = "tex description",
+                                ShippingValue = 5000,
+                                ShippingDescription = "shipping description",
+                                DiscountValue = 1000,
+                                DiscountDescription = "discount description",
+                                DiscountProgramName = "discount program name",
+                                Items = new List<PaymentOrderDetailsChannelSpecificMessagePaymentOrderItems>
+                                {
+                                    new()
+                                    {
+                                        RetailerId = "item retailer id",
+                                        Name = "item name",
+                                        AmountValue = 2000,
+                                        Quantity = 3000,
+                                        SaleAmountValue = 4000
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void DeserializeOrderStatusChannelSpecificMessage()
+        {
+            var json = Helpers.LoadResources(
+                "Conversation/Messages/ChannelSpecific/OrderStatusChannelSpecificMessage.json");
+
+            var result = DeserializeAsConversationClient<IChannelSpecificMessage>(json);
+
+            result.As<PaymentOrderStatusMessage>().Should().BeEquivalentTo(
+                new PaymentOrderStatusMessage()
+                {
+                    Message = new PaymentOrderStatusChannelSpecificMessage
+                    {
+                        Header = new WhatsAppInteractiveDocumentHeader
+                        {
+                            Document = new WhatsAppInteractiveHeaderMedia
+                            {
+                                Link = "a document URL link"
+                            }
+                        },
+                        Body = new WhatsAppInteractiveBody
+                        {
+                            Text = "Flow message body"
+                        },
+                        Footer = new WhatsAppInteractiveFooter
+                        {
+                            Text = "Flow message footer"
+                        },
+                        Payment = new PaymentOrderStatusChannelSpecificMessagePayment
+                        {
+                            ReferenceId = "order status reference id",
+                            Order = new PaymentOrderStatusChannelSpecificMessagePaymentOrder
+                            {
+                                Status = PaymentOrderStatusChannelSpecificMessagePaymentOrder.StatusEnum.Canceled,
+                                Description = "Order cancelled"
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void DeserializeOrderDetailsChannelSpecificMessagePlain()
+        {
+            var json = Helpers.LoadResources(
+                "Conversation/Messages/ChannelSpecific/OrderDetails.json");
+
+            var result = DeserializeAsConversationClient<PaymentOrderDetailsChannelSpecificMessage>(json);
+
+            result.Should().BeEquivalentTo(new PaymentOrderDetailsChannelSpecificMessage
+                {
+                    Header = new WhatsAppInteractiveDocumentHeader
+                    {
+                        Document = new WhatsAppInteractiveHeaderMedia
+                        {
+                            Link = "a document URL link"
+                        }
+                    },
+                    Body = new WhatsAppInteractiveBody
+                    {
+                        Text = "Flow message body"
+                    },
+                    Footer = new WhatsAppInteractiveFooter
+                    {
+                        Text = "Flow message footer"
+                    },
+                    Payment = new PaymentOrderDetailsChannelSpecificMessagePayment
+                    {
+                        Type = PaymentOrderDetailsChannelSpecificMessagePayment.TypeEnum.Br,
+                        ReferenceId = "a reference ID",
+                        TypeOfGoods = TypeOfGoods.DigitalGoods,
+                        PaymentSettings = new PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettings
+                        {
+                            DynamicPix =
+                                new PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix
+                                {
+                                    Code = "code value",
+                                    MerchantName = "merchant name",
+                                    Key = "key value",
+                                    KeyType =
+                                        PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix
+                                            .KeyTypeEnum.Cnpj
+                                }
+                        },
+                        TotalAmountValue = 1200,
+                        Order = new PaymentOrderDetailsChannelSpecificMessagePaymentOrder
+                        {
+                            CatalogId = "catalog id",
+                            ExpirationTime = "1741934627",
+                            ExpirationDescription = "expiration description",
+                            SubtotalValue = 6000,
+                            TaxValue = 7000,
+                            TaxDescription = "tex description",
+                            ShippingValue = 5000,
+                            ShippingDescription = "shipping description",
+                            DiscountValue = 1000,
+                            DiscountDescription = "discount description",
+                            DiscountProgramName = "discount program name",
+                            Items = new List<PaymentOrderDetailsChannelSpecificMessagePaymentOrderItems>
+                            {
+                                new PaymentOrderDetailsChannelSpecificMessagePaymentOrderItems
+                                {
+                                    RetailerId = "item retailer id",
+                                    Name = "item name",
+                                    AmountValue = 2000,
+                                    Quantity = 3000,
+                                    SaleAmountValue = 4000
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+        }
     }
 }
