@@ -26,6 +26,7 @@ namespace Sinch.Tests.Conversation
                 new
                 {
                     callback_secret = "my_callback_secret",
+                    credential_ordinal_number = 0,
                     channel = "WHATSAPP",
                     mms_credentials = new
                     {
@@ -108,6 +109,7 @@ namespace Sinch.Tests.Conversation
                 new
                 {
                     channel = "INSTAGRAM",
+                    credential_ordinal_number = 0,
                     static_token = new
                     {
                         token = "token"
@@ -126,7 +128,8 @@ namespace Sinch.Tests.Conversation
                     line_credentials = new
                     {
                         secret = "sec",
-                        token = "torc"
+                        token = "torc",
+                        is_default = false,
                     },
                     callback_secret = "sec",
                     kakaotalk_credentials = new

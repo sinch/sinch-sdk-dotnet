@@ -1,0 +1,47 @@
+using System.Text;
+using System.Text.Json.Serialization;
+
+namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
+{
+    /// <summary>
+    ///     The payment order status message content
+    /// </summary>
+    public sealed class PaymentOrderStatusChannelSpecificMessagePayment
+    {
+        /// <summary>
+        ///     Unique ID used to query the current payment status.
+        /// </summary>
+        [JsonPropertyName("reference_id")]
+#if NET7_0_OR_GREATER
+        public required string ReferenceId { get; set; }
+#else
+        public string ReferenceId { get; set; } = null!;
+#endif
+
+
+        /// <summary>
+        ///     Gets or Sets Order
+        /// </summary>
+        [JsonPropertyName("order")]
+#if NET7_0_OR_GREATER
+        public required PaymentOrderStatusChannelSpecificMessagePaymentOrder Order { get; set; }
+#else
+        public PaymentOrderStatusChannelSpecificMessagePaymentOrder Order { get; set; } = null!;
+#endif
+
+
+        /// <summary>
+        ///     Returns the string presentation of the object
+        /// </summary>
+        /// <returns>String presentation of the object</returns>
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append($"class {nameof(PaymentOrderStatusChannelSpecificMessagePayment)} {{\n");
+            sb.Append($"  {nameof(ReferenceId)}: ").Append(ReferenceId).Append('\n');
+            sb.Append($"  {nameof(Order)}: ").Append(Order).Append('\n');
+            sb.Append("}\n");
+            return sb.ToString();
+        }
+    }
+}

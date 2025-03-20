@@ -40,7 +40,7 @@ namespace Sinch.Conversation.Apps
         ///     Gets or Sets KakaotalkCredentials
         /// </summary>
         [JsonPropertyName("kakaotalk_credentials")]
-        public KakaoTalkCredentials? KakaotalkCredentials { get; set; }
+        public KakaoTalkCredentials? KakaoTalkCredentials { get; set; }
 
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Sinch.Conversation.Apps
         ///     Gets or Sets KakaotalkchatCredentials
         /// </summary>
         [JsonPropertyName("kakaotalkchat_credentials")]
-        public KakaoTalkChatCredentials? KakaotalkchatCredentials { get; set; }
+        public KakaoTalkChatCredentials? KakaoTalkChatCredentials { get; set; }
 
 
         /// <summary>
@@ -131,14 +131,14 @@ namespace Sinch.Conversation.Apps
             sb.Append($"  {nameof(StaticBearer)}: ").Append(StaticBearer).Append('\n');
             sb.Append($"  {nameof(StaticToken)}: ").Append(StaticToken).Append('\n');
             sb.Append($"  {nameof(MmsCredentials)}: ").Append(MmsCredentials).Append('\n');
-            sb.Append($"  {nameof(KakaotalkCredentials)}: ").Append(KakaotalkCredentials).Append('\n');
+            sb.Append($"  {nameof(KakaoTalkCredentials)}: ").Append(KakaoTalkCredentials).Append('\n');
             sb.Append($"  {nameof(TelegramCredentials)}: ").Append(TelegramCredentials).Append('\n');
             sb.Append($"  {nameof(LineCredentials)}: ").Append(LineCredentials).Append('\n');
             sb.Append($"  {nameof(LineEnterpriseCredentials)}: ").Append(LineEnterpriseCredentials).Append('\n');
             sb.Append($"  {nameof(WechatCredentials)}: ").Append(WechatCredentials).Append('\n');
             sb.Append($"  {nameof(InstagramCredentials)}: ").Append(InstagramCredentials).Append('\n');
             sb.Append($"  {nameof(ApplebcCredentials)}: ").Append(ApplebcCredentials).Append('\n');
-            sb.Append($"  {nameof(KakaotalkchatCredentials)}: ").Append(KakaotalkchatCredentials).Append('\n');
+            sb.Append($"  {nameof(KakaoTalkChatCredentials)}: ").Append(KakaoTalkChatCredentials).Append('\n');
             sb.Append($"  {nameof(CallbackSecret)}: ").Append(CallbackSecret).Append('\n');
             sb.Append($"  {nameof(Channel)}: ").Append(Channel).Append('\n');
             sb.Append($"  {nameof(State)}: ").Append(State).Append('\n');

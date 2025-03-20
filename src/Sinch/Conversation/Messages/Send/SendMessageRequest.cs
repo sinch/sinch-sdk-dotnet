@@ -136,7 +136,12 @@ namespace Sinch.Conversation.Messages.Send
 
 
         /// <summary>
-        ///     An arbitrary identifier that will be propagated to callbacks related to this message, including MO replies. Only applicable to messages sent with the &#x60;CONVERSATION&#x60; processing mode. Up to 128 characters long.
+        ///     An arbitrary identifier that will be propagated to callbacks related to this message,
+        ///     including MO messages from the recipient. The `correlation_id` is associated with the conversation
+        ///     in `CONVERSATION` mode and with the specified recipient identities in `DISPATCH` mode.
+        ///     The MO callbacks will always include the last `correlation_id` available,
+        ///     (which is similar to how the `conversation_metadata` property functions).
+        ///     Up to 128 characters long.
         /// </summary>
         public string? CorrelationId { get; set; }
 
