@@ -534,5 +534,59 @@ namespace Sinch.Tests.Conversation
 
             response.Should().NotBeNull();
         }
+
+        [Fact]
+        public void DeserializeConversationChannelCredentialsLineThailandEnterprise()
+        {
+            var json = Helpers.LoadResources(
+                "Conversation/Apps/LineThailandEnterpriseCredentials.json");
+
+            var result = DeserializeAsConversationClient<ConversationChannelCredentials>(json);
+
+            result.Should().BeEquivalentTo(new ConversationChannelCredentials
+            {
+                Channel = ConversationChannel.Line,
+                CallbackSecret = "callback secret",
+                CredentialOrdinalNumber = 1,
+                LineEnterpriseCredentials = new LineEnterpriseCredentials(new LineThailand()
+                {
+                    Token = "line enterprise credentials thailand token value",
+                    Secret = "line enterprise credentials thailand secret value"
+                })
+                {
+                    IsDefault = true
+                }
+            });
+        }
+        
+        [Fact]
+        public void DeserializeConversationChannelCredentialsLineJapanEnterprise()
+        {
+            var json = Helpers.LoadResources(
+                "Conversation/Apps/LineJapanEnterpriseCredentials.json");
+
+            var result = DeserializeAsConversationClient<ConversationChannelCredentials>(json);
+
+            result.Should().BeEquivalentTo(new ConversationChannelCredentials
+            {
+                Channel = ConversationChannel.Line,
+                CallbackSecret = "callback secret",
+                CredentialOrdinalNumber = 1,
+                ChannelKnownId = "channel id",
+                State = new ChannelIntegrationState
+                {
+                    Status = ChannelIntegrationStatus.Pending,
+                    Description = "description value"
+                },
+                LineEnterpriseCredentials = new LineEnterpriseCredentials(new LineJapan
+                {
+                    Token = "line enterprise credentials japan token value",
+                    Secret = "line enterprise credentials japan secret value"
+                })
+                {
+                    IsDefault = true
+                }
+            });
+        }
     }
 }
