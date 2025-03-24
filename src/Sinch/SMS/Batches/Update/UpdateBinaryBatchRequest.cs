@@ -17,20 +17,20 @@ namespace Sinch.SMS.Batches.Update
         ///       The UDH header of a binary message HEX encoded. Max 140 bytes including the <c>body</c>.  
         /// </summary>
         public string? Udh { get; set; }
-        
+
         /// <summary>
         ///     The type of number for the sender number. Use to override the automatic detection.
         /// </summary>
         [JsonPropertyName("from_ton")]
         public int? FromTon { get; set; }
-        
+
 
         /// <summary>
         ///     Number Plan Indicator for the sender number. Use to override the automatic detection.
         /// </summary>
         [JsonPropertyName("from_npi")]
         public int? FromNpi { get; set; }
-        
+
         /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>
