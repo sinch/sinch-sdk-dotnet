@@ -558,7 +558,7 @@ namespace Sinch.Tests.Conversation
                 }
             });
         }
-        
+
         [Fact]
         public void DeserializeConversationChannelCredentialsLineJapanEnterprise()
         {
