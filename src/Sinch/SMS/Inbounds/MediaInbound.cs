@@ -83,7 +83,7 @@ namespace Sinch.SMS.Inbounds
 #if NET7_0_OR_GREATER
         public required MmsMoBody Body { get; set; }
 #else
-        public MmsMoBody Body { get; set; }
+        public MmsMoBody Body { get; set; } = null!;
 #endif
 
 

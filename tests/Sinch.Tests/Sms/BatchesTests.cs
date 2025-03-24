@@ -296,35 +296,93 @@ namespace Sinch.Tests.Sms
         }
 
         [Fact]
-        public async Task Update()
+        public async Task UpdateText()
         {
             var uri = $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/batches/01FC66621XXXXX119Z8PMV1QPQ";
             HttpMessageHandlerMock.When(HttpMethod.Post, uri)
                 .WithHeaders("Authorization", $"Bearer {Token}")
-                .WithPartialContent("31231323")
-                .Respond(HttpStatusCode.OK, JsonContent.Create(Batch));
+                .WithJson(Helpers.LoadResources("Sms/Batch/UpdateTextBatch.json"))
+                .Respond("application/json", Helpers.LoadResources("Sms/Batch/TextResponse.json"));
 
             var response = await Sms.Batches.Update("01FC66621XXXXX119Z8PMV1QPQ",
-                new UpdateTextBatchRequest()
+                new UpdateTextBatchRequest
                 {
-                    Body = null,
-                    From = "31231323",
-                    CallbackUrl = new Uri("http://localhost:3452"),
-                    DeliveryReport = DeliveryReport.Summary,
-                    ExpireAt = DateTime.UtcNow.AddDays(3),
-                    SendAt = DateTime.Now.AddDays(5),
                     ToAdd = new List<string>
                     {
-                        "123",
-                        "456"
+                        "+15551231234",
+                        "+15551256344"
                     },
                     ToRemove = new List<string>
                     {
-                        "987"
-                    }
+                        "+15550001111",
+                        "+15550002222"
+                    },
+                    From = "+15551231234",
+                    Body = "Hi ${name} ({an identifier}) ! How are you?",
+                    DeliveryReport = DeliveryReport.None,
+                    SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
+                    ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
+                    CallbackUrl = new Uri("https://calback.yes"),
+                    ClientReference = "mock-client-ref-123",
+                    FeedbackEnabled = true,
+                    Parameters = new Dictionary<string, Dictionary<string, string>>
+                    {
+                        ["name"] = new Dictionary<string, string>
+                        {
+                            ["15551231234"] = "name value for 15551231234",
+                            ["15551256344"] = "name value for 15551256344",
+                            ["default"] = "default value"
+                        },
+                        ["an identifier"] = new Dictionary<string, string>
+                        {
+                            ["15551231234"] = "an identifier value for 15551231234",
+                            ["15551256344"] = "an identifier value for 15551256344"
+                        }
+                    },
+                    MaxNumberOfMessageParts = 5,
+                    FromTon = 1,
+                    FromNpi = 2,
+                    TruncateConcat = true,
+                    FlashMessage = true
                 });
 
-            response.Should().BeOfType<BinaryBatch>().Which.Udh.Should().Be("udh_");
+            response.Should().BeOfType<TextBatch>().Which.Should().BeEquivalentTo(new TextBatch
+            {
+                Id = "01FC66621XXXXX119Z8PMV1QPQ",
+                To = new List<string>
+                {
+                    "+15551231234",
+                    "+15551256344"
+                },
+                From = "+15551231234",
+                Canceled = false,
+                Parameters = new Dictionary<string, Dictionary<string, string>>
+                {
+                    ["name"] = new Dictionary<string, string>
+                    {
+                        ["15551231234"] = "name value for 15551231234",
+                        ["15551256344"] = "name value for 15551256344",
+                        ["default"] = "default value"
+                    },
+                    ["an identifier"] = new Dictionary<string, string>
+                    {
+                        ["15551231234"] = "an identifier value for 15551231234",
+                        ["15551256344"] = "an identifier value for 15551256344"
+                    }
+                },
+                Body = "Hi ${name} ({an identifier}) ! How are you?",
+                DeliveryReport = DeliveryReport.None,
+                SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
+                ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
+                CallbackUrl = new Uri("https://callback.yes"),
+                ClientReference = "myReference",
+                FeedbackEnabled = false,
+                FlashMessage = true,
+                TruncateConcat = true,
+                MaxNumberOfMessageParts = 1,
+                FromTon = 6,
+                FromNpi = 18
+            });
         }
 
         [Fact]
