@@ -99,9 +99,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         /// </summary>
         [JsonPropertyName("items")]
 #if NET7_0_OR_GREATER
-        public required List<PaymentOrderDetailsChannelSpecificMessagePaymentOrderItems> Items { get; set; }
+        public required List<PaymentOrderDetailsPaymentOrderItems> Items { get; set; }
 #else
-        public List<PaymentOrderDetailsChannelSpecificMessagePaymentOrderItems> Items { get; set; } = null!;
+        public List<PaymentOrderDetailsPaymentOrderItems> Items { get; set; } = null!;
 #endif
 
 

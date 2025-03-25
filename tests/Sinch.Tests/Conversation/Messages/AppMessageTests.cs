@@ -1216,7 +1216,7 @@ namespace Sinch.Tests.Conversation.Messages
             result.As<PaymentOrderDetailsMessage>().Should().BeEquivalentTo(
                 new PaymentOrderDetailsMessage()
                 {
-                    Message = new PaymentOrderDetailsChannelSpecificMessage
+                    Message = new PaymentOrderDetails
                     {
                         Header = new WhatsAppInteractiveDocumentHeader()
                         {
@@ -1238,7 +1238,7 @@ namespace Sinch.Tests.Conversation.Messages
                             Type = PaymentOrderDetailsChannelSpecificMessagePayment.TypeEnum.Br,
                             ReferenceId = "a reference ID",
                             TypeOfGoods = TypeOfGoods.DigitalGoods,
-                            PaymentSettings = new PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettings()
+                            PaymentSettings = new PaymentOrderDetailsPaymentSettings()
                             {
                                 DynamicPix =
                                     new PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix()
@@ -1265,7 +1265,7 @@ namespace Sinch.Tests.Conversation.Messages
                                 DiscountValue = 1000,
                                 DiscountDescription = "discount description",
                                 DiscountProgramName = "discount program name",
-                                Items = new List<PaymentOrderDetailsChannelSpecificMessagePaymentOrderItems>
+                                Items = new List<PaymentOrderDetailsPaymentOrderItems>
                                 {
                                     new()
                                     {
@@ -1311,12 +1311,12 @@ namespace Sinch.Tests.Conversation.Messages
                         {
                             Text = "Flow message footer"
                         },
-                        Payment = new PaymentOrderStatusChannelSpecificMessagePayment
+                        Payment = new PaymentOrderStatusPayment
                         {
                             ReferenceId = "order status reference id",
-                            Order = new PaymentOrderStatusChannelSpecificMessagePaymentOrder
+                            Order = new PaymentOrderStatusPaymentOrder
                             {
-                                Status = PaymentOrderStatusChannelSpecificMessagePaymentOrder.StatusEnum.Canceled,
+                                Status = PaymentOrderStatusPaymentOrder.StatusEnum.Canceled,
                                 Description = "Order cancelled"
                             }
                         }
@@ -1331,9 +1331,9 @@ namespace Sinch.Tests.Conversation.Messages
             var json = Helpers.LoadResources(
                 "Conversation/Messages/ChannelSpecific/OrderDetails.json");
 
-            var result = DeserializeAsConversationClient<PaymentOrderDetailsChannelSpecificMessage>(json);
+            var result = DeserializeAsConversationClient<PaymentOrderDetails>(json);
 
-            result.Should().BeEquivalentTo(new PaymentOrderDetailsChannelSpecificMessage
+            result.Should().BeEquivalentTo(new PaymentOrderDetails
             {
                 Header = new WhatsAppInteractiveDocumentHeader
                 {
@@ -1355,7 +1355,7 @@ namespace Sinch.Tests.Conversation.Messages
                     Type = PaymentOrderDetailsChannelSpecificMessagePayment.TypeEnum.Br,
                     ReferenceId = "a reference ID",
                     TypeOfGoods = TypeOfGoods.DigitalGoods,
-                    PaymentSettings = new PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettings
+                    PaymentSettings = new PaymentOrderDetailsPaymentSettings
                     {
                         DynamicPix =
                                 new PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix
@@ -1382,9 +1382,9 @@ namespace Sinch.Tests.Conversation.Messages
                         DiscountValue = 1000,
                         DiscountDescription = "discount description",
                         DiscountProgramName = "discount program name",
-                        Items = new List<PaymentOrderDetailsChannelSpecificMessagePaymentOrderItems>
+                        Items = new List<PaymentOrderDetailsPaymentOrderItems>
                             {
-                                new PaymentOrderDetailsChannelSpecificMessagePaymentOrderItems
+                                new PaymentOrderDetailsPaymentOrderItems
                                 {
                                     RetailerId = "item retailer id",
                                     Name = "item name",

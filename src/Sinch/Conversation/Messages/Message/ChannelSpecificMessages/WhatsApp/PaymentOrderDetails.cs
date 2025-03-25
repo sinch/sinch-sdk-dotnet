@@ -6,16 +6,17 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     /// <summary>
     ///     A message type for sending WhatsApp Payment Requests.
     /// </summary>
-    public sealed class PaymentOrderDetailsChannelSpecificMessage : ChannelSpecificCommonProps
+    // ref name: PaymentOrderDetailsChannelSpecificMessage
+    public sealed class PaymentOrderDetails : ChannelSpecificCommonProps
     {
         /// <summary>
         ///     Gets or Sets Payment
         /// </summary>
         [JsonPropertyName("payment")]
 #if NET7_0_OR_GREATER
-        public required PaymentOrderDetailsChannelSpecificMessagePayment Payment { get; set; }
+        public required PaymentOrderDetailsPayment Payment { get; set; }
 #else
-        public PaymentOrderDetailsChannelSpecificMessagePayment Payment { get; set; } = null!;
+        public PaymentOrderDetailsPayment Payment { get; set; } = null!;
 #endif
 
 
@@ -26,7 +27,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(PaymentOrderDetailsChannelSpecificMessage)} {{\n");
+            sb.Append($"class {nameof(PaymentOrderDetails)} {{\n");
             sb.Append($"  {nameof(Payment)}: ").Append(Payment).Append('\n');
             sb.Append($"  {nameof(Header)}: ").Append(Header).Append('\n');
             sb.Append($"  {nameof(Body)}: ").Append(Body).Append('\n');

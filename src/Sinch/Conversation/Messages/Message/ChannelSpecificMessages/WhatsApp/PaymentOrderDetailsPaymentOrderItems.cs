@@ -6,7 +6,8 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     /// <summary>
     ///     PaymentOrderDetailsChannelSpecificMessagePaymentOrderItems
     /// </summary>
-    public sealed class PaymentOrderDetailsChannelSpecificMessagePaymentOrderItems
+    // ref name: PaymentOrderDetailsChannelSpecificMessagePaymentOrderItems
+    public sealed class PaymentOrderDetailsPaymentOrderItems
     {
         /// <summary>
         ///     Unique ID of the retailer.
@@ -66,7 +67,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(PaymentOrderDetailsChannelSpecificMessagePaymentOrderItems)} {{\n");
+            sb.Append($"class {nameof(PaymentOrderDetailsPaymentOrderItems)} {{\n");
             sb.Append($"  {nameof(RetailerId)}: ").Append(RetailerId).Append('\n');
             sb.Append($"  {nameof(Name)}: ").Append(Name).Append('\n');
             sb.Append($"  {nameof(AmountValue)}: ").Append(AmountValue).Append('\n');

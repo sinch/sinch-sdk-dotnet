@@ -6,7 +6,8 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     /// <summary>
     ///     The payment order status message content
     /// </summary>
-    public sealed class PaymentOrderStatusChannelSpecificMessagePayment
+    // ref name: PaymentOrderStatusChannelSpecificMessagePayment
+    public sealed class PaymentOrderStatusPayment
     {
         /// <summary>
         ///     Unique ID used to query the current payment status.
@@ -24,9 +25,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         /// </summary>
         [JsonPropertyName("order")]
 #if NET7_0_OR_GREATER
-        public required PaymentOrderStatusChannelSpecificMessagePaymentOrder Order { get; set; }
+        public required PaymentOrderStatusPaymentOrder Order { get; set; }
 #else
-        public PaymentOrderStatusChannelSpecificMessagePaymentOrder Order { get; set; } = null!;
+        public PaymentOrderStatusPaymentOrder Order { get; set; } = null!;
 #endif
 
 
@@ -37,7 +38,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(PaymentOrderStatusChannelSpecificMessagePayment)} {{\n");
+            sb.Append($"class {nameof(PaymentOrderStatusPayment)} {{\n");
             sb.Append($"  {nameof(ReferenceId)}: ").Append(ReferenceId).Append('\n');
             sb.Append($"  {nameof(Order)}: ").Append(Order).Append('\n');
             sb.Append("}\n");

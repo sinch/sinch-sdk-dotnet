@@ -13,9 +13,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         /// </summary>
         [JsonPropertyName("payment")]
 #if NET7_0_OR_GREATER
-        public required PaymentOrderStatusChannelSpecificMessagePayment Payment { get; set; }
+        public required PaymentOrderStatusPayment Payment { get; set; }
 #else
-        public PaymentOrderStatusChannelSpecificMessagePayment Payment { get; set; } = null!;
+        public PaymentOrderStatusPayment Payment { get; set; } = null!;
 #endif
 
 

@@ -213,7 +213,7 @@ namespace Sinch.Conversation.Messages.Message
         public MessageType MessageType { get; private set; } = MessageType.OrderDetails;
 
         [JsonPropertyName("message")]
-        public PaymentOrderDetailsChannelSpecificMessage? Message { get; set; }
+        public PaymentOrderDetails? Message { get; set; }
     }
 
     public sealed class PaymentOrderStatusMessage : IChannelSpecificMessage

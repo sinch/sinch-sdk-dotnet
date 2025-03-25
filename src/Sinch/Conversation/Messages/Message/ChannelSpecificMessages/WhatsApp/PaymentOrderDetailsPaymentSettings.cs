@@ -7,7 +7,8 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     /// <summary>
     ///     The payment settings.
     /// </summary>
-    public sealed class PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettings
+    // ref name: PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettings
+    public sealed class PaymentOrderDetailsPaymentSettings
     {
         /// <summary>
         ///     Gets or Sets DynamicPix
@@ -28,7 +29,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettings)} {{\n");
+            sb.Append($"class {nameof(PaymentOrderDetailsPaymentSettings)} {{\n");
             sb.Append($"  {nameof(DynamicPix)}: ").Append(DynamicPix).Append('\n');
             sb.Append("}\n");
             return sb.ToString();

@@ -7,7 +7,8 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     /// <summary>
     ///     The payment order details content.
     /// </summary>
-    public sealed class PaymentOrderDetailsChannelSpecificMessagePayment
+    // ref name: PaymentOrderDetailsChannelSpecificMessagePayment
+    public sealed class PaymentOrderDetailsPayment
     {
         /// <summary>
         /// The country/currency associated with the payment message.
@@ -58,7 +59,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     Gets or Sets PaymentSettings
         /// </summary>
         [JsonPropertyName("payment_settings")]
-        public PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettings? PaymentSettings { get; set; }
+        public PaymentOrderDetailsPaymentSettings? PaymentSettings { get; set; }
 
 
         /// <summary>
@@ -90,7 +91,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(PaymentOrderDetailsChannelSpecificMessagePayment)} {{\n");
+            sb.Append($"class {nameof(PaymentOrderDetailsPayment)} {{\n");
             sb.Append($"  {nameof(Type)}: ").Append(Type).Append('\n');
             sb.Append($"  {nameof(ReferenceId)}: ").Append(ReferenceId).Append('\n');
             sb.Append($"  {nameof(TypeOfGoods)}: ").Append(TypeOfGoods).Append('\n');
