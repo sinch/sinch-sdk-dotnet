@@ -45,8 +45,8 @@ namespace Sinch.Conversation.Apps.Credentials
         {
             var sb = new StringBuilder();
             sb.Append($"class {nameof(LineCredentials)} {{\n");
-            sb.Append($"  {nameof(Token)}: ").Append(Token).Append('\n');
-            sb.Append($"  {nameof(Secret)}: ").Append(Secret).Append('\n');
+            sb.Append($"  {nameof(Token)}: ").Append(Consts.HiddenString).Append('\n');
+            sb.Append($"  {nameof(Secret)}: ").Append(Consts.HiddenString).Append('\n');
             sb.Append($"  {nameof(IsDefault)}: ").Append(IsDefault).Append('\n');
             sb.Append("}\n");
             return sb.ToString();

@@ -90,7 +90,7 @@ namespace Sinch.Conversation.Apps
         {
             var sb = new StringBuilder();
             sb.Append($"class {nameof(LineEnterpriseCredentials)} {{\n");
-            sb.Append($"  {nameof(Token)}: ").Append(Token).Append('\n');
+            sb.Append($"  {nameof(Token)}: ").Append(Consts.HiddenString).Append('\n');
             sb.Append("}\n");
             return sb.ToString();
         }

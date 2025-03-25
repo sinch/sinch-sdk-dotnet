@@ -22,7 +22,7 @@ namespace Sinch.Conversation.Messages.Message
 #if NET7_0_OR_GREATER
         public required string Url { get; set; }
 #else
-        public string Url { get; set; }
+        public string Url { get; set; } = null!;
 #endif
 
 

@@ -23,10 +23,9 @@ namespace Sinch.Conversation.Apps.Create
         {
             var sb = new StringBuilder();
             sb.Append($"class {nameof(CallbackSettings)} {{\n");
-            sb.Append($"  {nameof(SecretForOverriddenCallbackUrls)}: ").Append(SecretForOverriddenCallbackUrls).Append('\n');
+            sb.Append($"  {nameof(SecretForOverriddenCallbackUrls)}: ").Append(Consts.HiddenString).Append('\n');
             sb.Append("}\n");
             return sb.ToString();
         }
-
     }
 }

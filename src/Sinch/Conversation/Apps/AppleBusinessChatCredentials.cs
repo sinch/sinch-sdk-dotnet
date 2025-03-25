@@ -51,7 +51,7 @@ namespace Sinch.Conversation.Apps
             sb.Append($"  {nameof(BusinessChatAccountId)}: ").Append(BusinessChatAccountId).Append('\n');
             sb.Append($"  {nameof(MerchantId)}: ").Append(MerchantId).Append('\n');
             sb.Append($"  {nameof(ApplePayCertificateReference)}: ").Append(ApplePayCertificateReference).Append('\n');
-            sb.Append($"  {nameof(ApplePayCertificatePassword)}: ").Append(ApplePayCertificatePassword).Append('\n');
+            sb.Append($"  {nameof(ApplePayCertificatePassword)}: ").Append(Consts.HiddenString).Append('\n');
             sb.Append("}\n");
             return sb.ToString();
         }

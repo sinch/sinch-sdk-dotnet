@@ -139,7 +139,7 @@ namespace Sinch.Conversation.Apps
             sb.Append($"  {nameof(InstagramCredentials)}: ").Append(InstagramCredentials).Append('\n');
             sb.Append($"  {nameof(ApplebcCredentials)}: ").Append(ApplebcCredentials).Append('\n');
             sb.Append($"  {nameof(KakaoTalkChatCredentials)}: ").Append(KakaoTalkChatCredentials).Append('\n');
-            sb.Append($"  {nameof(CallbackSecret)}: ").Append(CallbackSecret).Append('\n');
+            sb.Append($"  {nameof(CallbackSecret)}: ").Append(Consts.HiddenString).Append('\n');
             sb.Append($"  {nameof(Channel)}: ").Append(Channel).Append('\n');
             sb.Append($"  {nameof(State)}: ").Append(State).Append('\n');
             sb.Append($"  {nameof(ChannelKnownId)}: ").Append(ChannelKnownId).Append('\n');
