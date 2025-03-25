@@ -1233,9 +1233,9 @@ namespace Sinch.Tests.Conversation.Messages
                         {
                             Text = "Flow message footer"
                         },
-                        Payment = new PaymentOrderDetailsChannelSpecificMessagePayment
+                        Payment = new PaymentOrderDetailsPayment()
                         {
-                            Type = PaymentOrderDetailsChannelSpecificMessagePayment.TypeEnum.Br,
+                            Type = PaymentOrderDetailsPayment.TypeEnum.Br,
                             ReferenceId = "a reference ID",
                             TypeOfGoods = TypeOfGoods.DigitalGoods,
                             PaymentSettings = new PaymentOrderDetailsPaymentSettings()
@@ -1350,9 +1350,9 @@ namespace Sinch.Tests.Conversation.Messages
                 {
                     Text = "Flow message footer"
                 },
-                Payment = new PaymentOrderDetailsChannelSpecificMessagePayment
+                Payment = new PaymentOrderDetailsPayment()
                 {
-                    Type = PaymentOrderDetailsChannelSpecificMessagePayment.TypeEnum.Br,
+                    Type = PaymentOrderDetailsPayment.TypeEnum.Br,
                     ReferenceId = "a reference ID",
                     TypeOfGoods = TypeOfGoods.DigitalGoods,
                     PaymentSettings = new PaymentOrderDetailsPaymentSettings

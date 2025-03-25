@@ -563,7 +563,7 @@ namespace Sinch.Tests.Conversation
         public void DeserializeConversationChannelCredentialsLineJapanEnterprise()
         {
             var json = Helpers.LoadResources(
-                "Conversation/Apps/LineJapanEnterpriseCredentials.json");
+                "Conversation/Apps/ConversationChannelCredentialsLineJapanEnterpriseCredentials.json");
 
             var result = DeserializeAsConversationClient<ConversationChannelCredentials>(json);
 
