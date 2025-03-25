@@ -386,6 +386,12 @@ namespace Sinch.Tests.Conversation.Messages
                 {
                     CatalogId = "catalog ID value",
                     Menu = "menu value"
+                },
+                Media = new MediaProperties
+                {
+                    ThumbnailUrl = "another url",
+                    Url = "an url value",
+                    FilenameOverride = "filename override value"
                 }
             })
             {
@@ -1328,30 +1334,30 @@ namespace Sinch.Tests.Conversation.Messages
             var result = DeserializeAsConversationClient<PaymentOrderDetailsChannelSpecificMessage>(json);
 
             result.Should().BeEquivalentTo(new PaymentOrderDetailsChannelSpecificMessage
-            {
-                Header = new WhatsAppInteractiveDocumentHeader
                 {
-                    Document = new WhatsAppInteractiveHeaderMedia
+                    Header = new WhatsAppInteractiveDocumentHeader
                     {
-                        Link = "a document URL link"
-                    }
-                },
-                Body = new WhatsAppInteractiveBody
-                {
-                    Text = "Flow message body"
-                },
-                Footer = new WhatsAppInteractiveFooter
-                {
-                    Text = "Flow message footer"
-                },
-                Payment = new PaymentOrderDetailsChannelSpecificMessagePayment
-                {
-                    Type = PaymentOrderDetailsChannelSpecificMessagePayment.TypeEnum.Br,
-                    ReferenceId = "a reference ID",
-                    TypeOfGoods = TypeOfGoods.DigitalGoods,
-                    PaymentSettings = new PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettings
+                        Document = new WhatsAppInteractiveHeaderMedia
+                        {
+                            Link = "a document URL link"
+                        }
+                    },
+                    Body = new WhatsAppInteractiveBody
                     {
-                        DynamicPix =
+                        Text = "Flow message body"
+                    },
+                    Footer = new WhatsAppInteractiveFooter
+                    {
+                        Text = "Flow message footer"
+                    },
+                    Payment = new PaymentOrderDetailsChannelSpecificMessagePayment
+                    {
+                        Type = PaymentOrderDetailsChannelSpecificMessagePayment.TypeEnum.Br,
+                        ReferenceId = "a reference ID",
+                        TypeOfGoods = TypeOfGoods.DigitalGoods,
+                        PaymentSettings = new PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettings
+                        {
+                            DynamicPix =
                                 new PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix
                                 {
                                     Code = "code value",
@@ -1361,22 +1367,22 @@ namespace Sinch.Tests.Conversation.Messages
                                         PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix
                                             .KeyTypeEnum.Cnpj
                                 }
-                    },
-                    TotalAmountValue = 1200,
-                    Order = new PaymentOrderDetailsChannelSpecificMessagePaymentOrder
-                    {
-                        CatalogId = "catalog id",
-                        ExpirationTime = "1741934627",
-                        ExpirationDescription = "expiration description",
-                        SubtotalValue = 6000,
-                        TaxValue = 7000,
-                        TaxDescription = "tex description",
-                        ShippingValue = 5000,
-                        ShippingDescription = "shipping description",
-                        DiscountValue = 1000,
-                        DiscountDescription = "discount description",
-                        DiscountProgramName = "discount program name",
-                        Items = new List<PaymentOrderDetailsChannelSpecificMessagePaymentOrderItems>
+                        },
+                        TotalAmountValue = 1200,
+                        Order = new PaymentOrderDetailsChannelSpecificMessagePaymentOrder
+                        {
+                            CatalogId = "catalog id",
+                            ExpirationTime = "1741934627",
+                            ExpirationDescription = "expiration description",
+                            SubtotalValue = 6000,
+                            TaxValue = 7000,
+                            TaxDescription = "tex description",
+                            ShippingValue = 5000,
+                            ShippingDescription = "shipping description",
+                            DiscountValue = 1000,
+                            DiscountDescription = "discount description",
+                            DiscountProgramName = "discount program name",
+                            Items = new List<PaymentOrderDetailsChannelSpecificMessagePaymentOrderItems>
                             {
                                 new PaymentOrderDetailsChannelSpecificMessagePaymentOrderItems
                                 {
@@ -1387,9 +1393,9 @@ namespace Sinch.Tests.Conversation.Messages
                                     SaleAmountValue = 4000
                                 }
                             }
+                        }
                     }
                 }
-            }
             );
         }
     }

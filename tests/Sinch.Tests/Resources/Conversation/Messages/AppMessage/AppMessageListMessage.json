@@ -24,6 +24,11 @@
     "message_properties": {
       "catalog_id": "catalog ID value",
       "menu": "menu value"
+    },
+    "media": {
+      "url": "an url value",
+      "thumbnail_url": "another url",
+      "filename_override": "filename override value"
     }
   },
   "explicit_channel_message": {
