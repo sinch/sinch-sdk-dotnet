@@ -67,6 +67,21 @@ namespace Sinch.Tests.Verification
             public override string ToString() => TestName;
         }
 
+        [Fact]
+        public void InitVerificationSuccess()
+        {
+            var client = new SinchClient(new SinchClientConfiguration()
+            {
+                VerificationConfiguration = new SinchVerificationConfiguration()
+                {
+                    AppKey = "key",
+                    AppSecret = "secret",
+                }
+            });
+            var op = () => client.Verification;
+            op.Should().NotThrow();
+        }
+
         [Theory]
         [MemberData(nameof(VerificationCredentialsMissingTestCaseData.TestCasesData),
             MemberType = typeof(VerificationCredentialsMissingTestCaseData))]
