@@ -17,7 +17,7 @@
       "reference_id": "order status reference id",
       "order": {
         "status": "canceled",
-        "description": "Order cancelled"
+        "description": "Order canceled"
       }
     }
   }

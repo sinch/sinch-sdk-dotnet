@@ -30,7 +30,7 @@
       "expiration_description": "expiration description",
       "subtotal_value": 6000,
       "tax_value": 7000,
-      "tax_description": "tex description",
+      "tax_description": "tax description",
       "shipping_value": 5000,
       "shipping_description": "shipping description",
       "discount_value": 1000,

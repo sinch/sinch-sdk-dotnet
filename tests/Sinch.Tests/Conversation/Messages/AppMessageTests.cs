@@ -1259,7 +1259,7 @@ namespace Sinch.Tests.Conversation.Messages
                                 ExpirationDescription = "expiration description",
                                 SubtotalValue = 6000,
                                 TaxValue = 7000,
-                                TaxDescription = "tex description",
+                                TaxDescription = "tax description",
                                 ShippingValue = 5000,
                                 ShippingDescription = "shipping description",
                                 DiscountValue = 1000,
@@ -1317,7 +1317,7 @@ namespace Sinch.Tests.Conversation.Messages
                             Order = new PaymentOrderStatusPaymentOrder
                             {
                                 Status = PaymentOrderStatusPaymentOrder.StatusEnum.Canceled,
-                                Description = "Order cancelled"
+                                Description = "Order canceled"
                             }
                         }
                     }
@@ -1376,7 +1376,7 @@ namespace Sinch.Tests.Conversation.Messages
                         ExpirationDescription = "expiration description",
                         SubtotalValue = 6000,
                         TaxValue = 7000,
-                        TaxDescription = "tex description",
+                        TaxDescription = "tax description",
                         ShippingValue = 5000,
                         ShippingDescription = "shipping description",
                         DiscountValue = 1000,
