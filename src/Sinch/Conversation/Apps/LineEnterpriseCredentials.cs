@@ -12,29 +12,42 @@ namespace Sinch.Conversation.Apps
         {
         }
 
-        public LineEnterpriseCredentials(LineJapan lineJapan)
+        public LineEnterpriseCredentials(LineJapanEnterpriseCredentials lineJapanEnterpriseCredentials)
         {
-            LineJapan = lineJapan;
+            LineJapan = new LineJapan
+            {
+                Token = lineJapanEnterpriseCredentials.Token,
+                Secret = lineJapanEnterpriseCredentials.Secret
+            };
+            IsDefault = lineJapanEnterpriseCredentials.IsDefault;
         }
 
-        public LineEnterpriseCredentials(LineThailand lineThailand)
+        public LineEnterpriseCredentials(LineThailandEnterpriseCredentials lineThailandEnterpriseCredentials)
         {
-            LineThailand = lineThailand;
+            LineThailand = new LineThailand()
+            {
+                Token = lineThailandEnterpriseCredentials.Token,
+                Secret = lineThailandEnterpriseCredentials.Secret
+            };
+            IsDefault = lineThailandEnterpriseCredentials.IsDefault;
         }
 
         [JsonPropertyName("line_japan")]
         [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public LineJapan? LineJapan { get; private set; }
 
         [JsonPropertyName("line_thailand")]
         [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public LineThailand? LineThailand { get; private set; }
 
         /// <summary>
         ///     When an app contains multiple LINE or LINE Enterprise credentials, one of the credentials needs to be defined as the default. Setting this property to &#x60;true&#x60; marks the corresponding credentials as the default credentials.
         /// </summary>
         [JsonPropertyName("is_default")]
-        public bool IsDefault { get; set; }
+        [JsonInclude]
+        public bool IsDefault { get; private set; }
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -56,6 +69,14 @@ namespace Sinch.Conversation.Apps
     }
 
     public sealed class LineThailand : LineCredentialPair
+    {
+    }
+
+    public sealed class LineJapanEnterpriseCredentials : LineCredentials
+    {
+    }
+
+    public sealed class LineThailandEnterpriseCredentials : LineCredentials
     {
     }
 
@@ -91,6 +112,7 @@ namespace Sinch.Conversation.Apps
             var sb = new StringBuilder();
             sb.Append($"class {nameof(LineEnterpriseCredentials)} {{\n");
             sb.Append($"  {nameof(Token)}: ").Append(Consts.HiddenString).Append('\n');
+            sb.Append($"  {nameof(Secret)}: ").Append(Consts.HiddenString).Append('\n');
             sb.Append("}\n");
             return sb.ToString();
         }

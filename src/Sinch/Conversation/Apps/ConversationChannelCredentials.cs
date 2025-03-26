@@ -109,9 +109,14 @@ namespace Sinch.Conversation.Apps
             LineCredentials = lineCredentials;
         }
 
-        public ConversationChannelCredentials(LineEnterpriseCredentials lineEnterpriseCredentials)
+        public ConversationChannelCredentials(LineJapanEnterpriseCredentials lineJapanEnterpriseCredentials)
         {
-            LineEnterpriseCredentials = lineEnterpriseCredentials;
+            LineEnterpriseCredentials = new LineEnterpriseCredentials(lineJapanEnterpriseCredentials);
+        }
+
+        public ConversationChannelCredentials(LineThailandEnterpriseCredentials lineThailandEnterpriseCredentials)
+        {
+            LineEnterpriseCredentials = new LineEnterpriseCredentials(lineThailandEnterpriseCredentials);
         }
 
         public ConversationChannelCredentials(WeChatCredentials wechatCredentials)

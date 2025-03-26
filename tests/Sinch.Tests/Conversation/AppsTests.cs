@@ -723,16 +723,14 @@ namespace Sinch.Tests.Conversation
 
             var result = DeserializeAsConversationClient<ConversationChannelCredentials>(json);
 
-            result.Should().BeEquivalentTo(new ConversationChannelCredentials(new LineEnterpriseCredentials(
-                new LineThailand()
+            result.Should().BeEquivalentTo(new ConversationChannelCredentials(
+                new LineThailandEnterpriseCredentials()
                 {
                     Token = "line enterprise credentials thailand token value",
-                    Secret = "line enterprise credentials thailand secret value"
+                    Secret = "line enterprise credentials thailand secret value",
+                    IsDefault = true
                 }
             )
-            {
-                IsDefault = true
-            })
             {
                 Channel = ConversationChannel.Line,
                 CallbackSecret = "callback secret",
@@ -748,15 +746,13 @@ namespace Sinch.Tests.Conversation
 
             var result = DeserializeAsConversationClient<ConversationChannelCredentials>(json);
 
-            result.Should().BeEquivalentTo(new ConversationChannelCredentials(new LineEnterpriseCredentials(
-                new LineJapan
+            result.Should().BeEquivalentTo(new ConversationChannelCredentials(
+                new LineJapanEnterpriseCredentials
                 {
                     Token = "line enterprise credentials japan token value",
-                    Secret = "line enterprise credentials japan secret value"
+                    Secret = "line enterprise credentials japan secret value",
+                    IsDefault = true
                 })
-            {
-                IsDefault = true
-            })
             {
                 Channel = ConversationChannel.Line,
                 CallbackSecret = "callback secret",

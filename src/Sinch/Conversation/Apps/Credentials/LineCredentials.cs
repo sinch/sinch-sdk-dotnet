@@ -6,7 +6,7 @@ namespace Sinch.Conversation.Apps.Credentials
     /// <summary>
     ///     If the &#x60;channel&#x60; property is set to &#x60;LINE&#x60; for this entry of the &#x60;channel_credentials&#x60; array, you must include either the &#x60;line_credentials&#x60; object or the &#x60;line_enterprise_credentials&#x60; object in the entry as well.
     /// </summary>
-    public sealed class LineCredentials
+    public class LineCredentials
     {
         /// <summary>
         ///     The token for the LINE channel to which you are connecting.
