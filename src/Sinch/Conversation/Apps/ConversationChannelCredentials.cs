@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Apps.Credentials;
@@ -15,81 +16,125 @@ namespace Sinch.Conversation.Apps
         [JsonPropertyName("channel")]
         public ConversationChannel? Channel { get; set; }
 
-        /// <summary>
-        ///     Gets or Sets StaticBearer
-        /// </summary>
+        [JsonConstructor]
+        [Obsolete("Needed for System.Text.Json", true)]
+        public ConversationChannelCredentials()
+        {
+        }
+
+        #region Oneof credential props and constructors
+
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("static_bearer")]
-        public StaticBearerCredentials? StaticBearer { get; set; }
+        public StaticBearerCredentials? StaticBearer { get; private set; }
 
-
-        /// <summary>
-        ///     Gets or Sets StaticToken
-        /// </summary>
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("static_token")]
-        public StaticTokenCredentials? StaticToken { get; set; }
+        public StaticTokenCredentials? StaticToken { get; private set; }
 
-
-        /// <summary>
-        ///     Gets or Sets MmsCredentials
-        /// </summary>
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("mms_credentials")]
-        public MmsCredentials? MmsCredentials { get; set; }
+        public MmsCredentials? MmsCredentials { get; private set; }
 
-
-        /// <summary>
-        ///     Gets or Sets KakaotalkCredentials
-        /// </summary>
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("kakaotalk_credentials")]
-        public KakaoTalkCredentials? KakaoTalkCredentials { get; set; }
+        public KakaoTalkCredentials? KakaoTalkCredentials { get; private set; }
 
-
-        /// <summary>
-        ///     Gets or Sets TelegramCredentials
-        /// </summary>
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("telegram_credentials")]
-        public TelegramCredentials? TelegramCredentials { get; set; }
+        public TelegramCredentials? TelegramCredentials { get; private set; }
 
-
-        /// <summary>
-        ///     Gets or Sets LineCredentials
-        /// </summary>
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("line_credentials")]
-        public LineCredentials? LineCredentials { get; set; }
+        public LineCredentials? LineCredentials { get; private set; }
 
-
-        /// <summary>
-        ///     Gets or Sets LineEnterpriseCredentials
-        /// </summary>
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("line_enterprise_credentials")]
-        public LineEnterpriseCredentials? LineEnterpriseCredentials { get; set; }
+        public LineEnterpriseCredentials? LineEnterpriseCredentials { get; private set; }
 
-
-        /// <summary>
-        ///     Gets or Sets WechatCredentials
-        /// </summary>
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("wechat_credentials")]
-        public WeChatCredentials? WechatCredentials { get; set; }
+        public WeChatCredentials? WechatCredentials { get; private set; }
 
-
-        /// <summary>
-        ///     Gets or Sets InstagramCredentials
-        /// </summary>
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("instagram_credentials")]
-        public InstagramCredentials? InstagramCredentials { get; set; }
+        public InstagramCredentials? InstagramCredentials { get; private set; }
 
-
-        /// <summary>
-        ///     Gets or Sets ApplebcCredentials
-        /// </summary>
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("applebc_credentials")]
-        public AppleBusinessChatCredentials? ApplebcCredentials { get; set; }
+        public AppleBusinessChatCredentials? ApplebcCredentials { get; private set; }
 
-
-        /// <summary>
-        ///     Gets or Sets KakaotalkchatCredentials
-        /// </summary>
+        [JsonInclude]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("kakaotalkchat_credentials")]
-        public KakaoTalkChatCredentials? KakaoTalkChatCredentials { get; set; }
+        public KakaoTalkChatCredentials? KakaoTalkChatCredentials { get; private set; }
+
+        public ConversationChannelCredentials(StaticBearerCredentials staticBearer)
+        {
+            StaticBearer = staticBearer;
+        }
+
+        public ConversationChannelCredentials(StaticTokenCredentials staticToken)
+        {
+            StaticToken = staticToken;
+        }
+
+        public ConversationChannelCredentials(MmsCredentials mmsCredentials)
+        {
+            MmsCredentials = mmsCredentials;
+        }
+
+        public ConversationChannelCredentials(KakaoTalkCredentials kakaoTalkCredentials)
+        {
+            KakaoTalkCredentials = kakaoTalkCredentials;
+        }
+
+        public ConversationChannelCredentials(TelegramCredentials telegramCredentials)
+        {
+            TelegramCredentials = telegramCredentials;
+        }
+
+        public ConversationChannelCredentials(LineCredentials lineCredentials)
+        {
+            LineCredentials = lineCredentials;
+        }
+
+        public ConversationChannelCredentials(LineEnterpriseCredentials lineEnterpriseCredentials)
+        {
+            LineEnterpriseCredentials = lineEnterpriseCredentials;
+        }
+
+        public ConversationChannelCredentials(WeChatCredentials wechatCredentials)
+        {
+            WechatCredentials = wechatCredentials;
+        }
+
+        public ConversationChannelCredentials(InstagramCredentials instagramCredentials)
+        {
+            InstagramCredentials = instagramCredentials;
+        }
+
+        public ConversationChannelCredentials(AppleBusinessChatCredentials applebcCredentials)
+        {
+            ApplebcCredentials = applebcCredentials;
+        }
+
+        public ConversationChannelCredentials(KakaoTalkChatCredentials kakaoTalkChatCredentials)
+        {
+            KakaoTalkChatCredentials = kakaoTalkChatCredentials;
+        }
+
+        #endregion
 
 
         /// <summary>

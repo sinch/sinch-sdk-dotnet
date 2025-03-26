@@ -10,7 +10,7 @@ namespace Sinch.Conversation.Apps
         {
             Enabled = enabled;
         }
-        
+
         /// <summary>
         ///     Set to true to allow messages processed by this app to be analyzed by Smart Conversations.
         /// </summary>

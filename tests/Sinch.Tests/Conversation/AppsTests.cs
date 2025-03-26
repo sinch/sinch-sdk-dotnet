@@ -21,13 +21,13 @@ namespace Sinch.Tests.Conversation
     {
         private object _app = new
         {
-            channel_credentials = new[]
+            channel_credentials = new dynamic[]
             {
                 new
                 {
                     callback_secret = "my_callback_secret",
                     credential_ordinal_number = 0,
-                    channel = "WHATSAPP",
+                    channel = "MMS",
                     mms_credentials = new
                     {
                         account_id = "my_account_id",
@@ -37,30 +37,66 @@ namespace Sinch.Tests.Conversation
                             password = "my_password",
                             username = "my_username"
                         }
-                    },
+                    }
+                },
+                new
+                {
+                    callback_secret = "my_callback_secret",
+                    credential_ordinal_number = 0,
+                    channel = "KAKAOTALK",
                     kakaotalk_credentials = new
                     {
                         kakaotalk_plus_friend_id = "my_kakaotalk_id",
                         kakaotalk_sender_key = "my_kakaotalk_key"
-                    },
+                    }
+                },
+                new
+                {
+                    callback_secret = "my_callback_secret",
+                    credential_ordinal_number = 0,
+                    channel = "WHATSAPP",
                     static_bearer = new
                     {
                         claimed_identity = "my_claimed_identity",
                         token = "my_static_bearer_token"
-                    },
+                    }
+                },
+                new
+                {
+                    callback_secret = "my_callback_secret",
+                    credential_ordinal_number = 0,
+                    channel = "MESSENGER",
                     static_token = new
                     {
                         token = "my_static_token"
-                    },
+                    }
+                },
+                new
+                {
+                    callback_secret = "my_callback_secret",
+                    credential_ordinal_number = 0,
+                    channel = "TELEGRAM",
                     telegram_credentials = new
                     {
                         token = "my_telegram_bot_token"
-                    },
+                    }
+                },
+                new
+                {
+                    callback_secret = "my_callback_secret",
+                    credential_ordinal_number = 0,
+                    channel = "LINE",
                     line_credentials = new
                     {
                         token = "my_line_token",
                         secret = "my_line_secret"
-                    },
+                    }
+                },
+                new
+                {
+                    callback_secret = "my_callback_secret",
+                    credential_ordinal_number = 0,
+                    channel = "WECHAT",
                     wechat_credentials = new
                     {
                         app_id = "my_wechat_app_id",
@@ -117,7 +153,7 @@ namespace Sinch.Tests.Conversation
         private object _createApp = new
         {
             display_name = "display_name",
-            channel_credentials = new[]
+            channel_credentials = new dynamic[]
             {
                 new
                 {
@@ -127,10 +163,22 @@ namespace Sinch.Tests.Conversation
                     {
                         token = "token"
                     },
+                    callback_secret = "sec"
+                },
+                new
+                {
+                    channel = "TELEGRAM",
+                    credential_ordinal_number = 0,
                     telegram_credentials = new
                     {
                         token = "tok"
                     },
+                    callback_secret = "sec"
+                },
+                new
+                {
+                    channel = "WECHAT",
+                    credential_ordinal_number = 0,
                     wechat_credentials = new
                     {
                         token = "troc",
@@ -138,23 +186,46 @@ namespace Sinch.Tests.Conversation
                         app_id = "block",
                         app_secret = "mrok"
                     },
+                    callback_secret = "sec"
+                },
+                new
+                {
+                    channel = "LINE",
+                    credential_ordinal_number = 0,
                     line_credentials = new
                     {
                         secret = "sec",
                         token = "torc",
-                        is_default = false,
+                        is_default = false
                     },
-                    callback_secret = "sec",
+                    callback_secret = "sec"
+                },
+                new
+                {
+                    channel = "KAKAOTALK",
+                    credential_ordinal_number = 0,
                     kakaotalk_credentials = new
                     {
                         kakaotalk_sender_key = "ole",
                         kakaotalk_plus_friend_id = "boke"
                     },
+                    callback_secret = "sec"
+                },
+                new
+                {
+                    channel = "KAKAOTALKCHAT",
+                    credential_ordinal_number = 0,
                     kakaotalkchat_credentials = new
                     {
                         api_key = "api_key",
                         kakaotalk_plus_friend_id = "friend_id"
                     },
+                    callback_secret = "sec"
+                },
+                new
+                {
+                    channel = "MMS",
+                    credential_ordinal_number = 0,
                     mms_credentials = new
                     {
                         account_id = "acc_id",
@@ -165,11 +236,18 @@ namespace Sinch.Tests.Conversation
                             username = "456"
                         }
                     },
+                    callback_secret = "sec"
+                },
+                new
+                {
+                    channel = "WHATSAPP",
+                    credential_ordinal_number = 0,
                     static_bearer = new
                     {
                         token = "a",
                         claimed_identity = "b"
-                    }
+                    },
+                    callback_secret = "sec"
                 }
             },
             processing_mode = "CONVERSATION",
@@ -206,57 +284,91 @@ namespace Sinch.Tests.Conversation
         private CreateAppRequest _createRequest = new CreateAppRequest
         {
             DisplayName = "display_name",
-            ChannelCredentials = new List<ConversationChannelCredentials>()
+            ChannelCredentials = new List<ConversationChannelCredentials>
             {
-                new ConversationChannelCredentials()
+                new ConversationChannelCredentials(new StaticTokenCredentials
+                {
+                    Token = "token"
+                })
                 {
                     Channel = ConversationChannel.Instagram,
-                    StaticToken = new StaticTokenCredentials
+                    CallbackSecret = "sec"
+                },
+
+                new ConversationChannelCredentials(new TelegramCredentials
+                {
+                    Token = "tok"
+                })
+                {
+                    Channel = ConversationChannel.Telegram,
+                    CallbackSecret = "sec"
+                },
+
+                new ConversationChannelCredentials(new WeChatCredentials
+                {
+                    Token = "troc",
+                    AesKey = "krok",
+                    AppId = "block",
+                    AppSecret = "mrok"
+                })
+                {
+                    Channel = ConversationChannel.WeChat,
+                    CallbackSecret = "sec"
+                },
+
+                new ConversationChannelCredentials(new LineCredentials
+                {
+                    Secret = "sec",
+                    Token = "torc"
+                })
+                {
+                    Channel = ConversationChannel.Line,
+                    CallbackSecret = "sec"
+                },
+
+                new ConversationChannelCredentials(new KakaoTalkCredentials
+                {
+                    KakaoTalkSenderKey = "ole",
+                    KakaoTalkPlusFriendId = "boke"
+                })
+                {
+                    Channel = ConversationChannel.KakaoTalk,
+                    CallbackSecret = "sec"
+                },
+
+                new ConversationChannelCredentials(new KakaoTalkChatCredentials
+                {
+                    ApiKey = "api_key",
+                    KakaoTalkPlusFriendId = "friend_id"
+                })
+                {
+                    Channel = ConversationChannel.KakaoTalkChat,
+                    CallbackSecret = "sec"
+                },
+
+                new ConversationChannelCredentials(new MmsCredentials
+                {
+                    AccountId = "acc_id",
+                    ApiKey = "akey",
+                    BasicAuth = new BasicAuthCredential
                     {
-                        Token = "token"
-                    },
-                    TelegramCredentials = new TelegramCredentials()
-                    {
-                        Token = "tok"
-                    },
-                    WechatCredentials = new WeChatCredentials()
-                    {
-                        Token = "troc",
-                        AesKey = "krok",
-                        AppId = "block",
-                        AppSecret = "mrok"
-                    },
-                    LineCredentials = new LineCredentials()
-                    {
-                        Secret = "sec",
-                        Token = "torc"
-                    },
-                    CallbackSecret = "sec",
-                    KakaoTalkCredentials = new KakaoTalkCredentials()
-                    {
-                        KakaoTalkSenderKey = "ole",
-                        KakaoTalkPlusFriendId = "boke",
-                    },
-                    KakaoTalkChatCredentials = new KakaoTalkChatCredentials()
-                    {
-                        ApiKey = "api_key",
-                        KakaoTalkPlusFriendId = "friend_id",
-                    },
-                    MmsCredentials = new MmsCredentials()
-                    {
-                        AccountId = "acc_id",
-                        ApiKey = "akey",
-                        BasicAuth = new BasicAuthCredential()
-                        {
-                            Password = "123",
-                            Username = "456",
-                        }
-                    },
-                    StaticBearer = new StaticBearerCredentials()
-                    {
-                        Token = "a",
-                        ClaimedIdentity = "b"
+                        Username = "456",
+                        Password = "123"
                     }
+                })
+                {
+                    Channel = ConversationChannel.Mms,
+                    CallbackSecret = "sec"
+                },
+
+                new ConversationChannelCredentials(new StaticBearerCredentials
+                {
+                    Token = "a",
+                    ClaimedIdentity = "b"
+                })
+                {
+                    Channel = ConversationChannel.WhatsApp,
+                    CallbackSecret = "sec"
                 }
             },
             ProcessingMode = ProcessingMode.Conversation,
@@ -325,49 +437,81 @@ namespace Sinch.Tests.Conversation
             response.ConversationMetadataReportView.Should().Be(ConversationMetadataReportView.None);
             response.ProcessingMode.Should().Be(ProcessingMode.Conversation);
             response.SmartConversation!.Enabled.Should().BeFalse();
-            response.ChannelCredentials![0].Should().BeEquivalentTo(new ConversationChannelCredentials()
+            response.ChannelCredentials.Should().BeEquivalentTo(new List<ConversationChannelCredentials>
             {
-                CallbackSecret = "my_callback_secret",
-                Channel = ConversationChannel.WhatsApp,
-                MmsCredentials = new MmsCredentials()
+                new ConversationChannelCredentials(new MmsCredentials
                 {
                     AccountId = "my_account_id",
                     ApiKey = "my_api_key",
-                    BasicAuth = new BasicAuthCredential()
+                    BasicAuth = new BasicAuthCredential
                     {
-                        Password = "my_password",
                         Username = "my_username",
-                    },
-                },
-                KakaoTalkCredentials = new KakaoTalkCredentials()
+                        Password = "my_password"
+                    }
+                })
                 {
-                    KakaoTalkSenderKey = "my_kakaotalk_key",
-                    KakaoTalkPlusFriendId = "my_kakaotalk_id"
+                    Channel = ConversationChannel.Mms,
+                    CallbackSecret = "my_callback_secret"
                 },
-                LineCredentials = new LineCredentials()
+
+                new ConversationChannelCredentials(new KakaoTalkCredentials
                 {
-                    Secret = "my_line_secret",
-                    Token = "my_line_token"
+                    KakaoTalkPlusFriendId = "my_kakaotalk_id",
+                    KakaoTalkSenderKey = "my_kakaotalk_key"
+                })
+                {
+                    Channel = ConversationChannel.KakaoTalk,
+                    CallbackSecret = "my_callback_secret"
                 },
-                StaticBearer = new StaticBearerCredentials()
+
+                new ConversationChannelCredentials(new LineCredentials
                 {
-                    Token = "my_static_bearer_token",
+                    Token = "my_line_token",
+                    Secret = "my_line_secret"
+                })
+                {
+                    Channel = ConversationChannel.Line,
+                    CallbackSecret = "my_callback_secret"
+                },
+
+                new ConversationChannelCredentials(new StaticBearerCredentials
+                {
                     ClaimedIdentity = "my_claimed_identity",
+                    Token = "my_static_bearer_token"
+                })
+                {
+                    Channel = ConversationChannel.WhatsApp,
+                    CallbackSecret = "my_callback_secret"
                 },
-                StaticToken = new StaticTokenCredentials()
+
+                new ConversationChannelCredentials(new StaticTokenCredentials
                 {
                     Token = "my_static_token"
+                })
+                {
+                    Channel = ConversationChannel.Messenger,
+                    CallbackSecret = "my_callback_secret"
                 },
-                TelegramCredentials = new TelegramCredentials()
+
+                new ConversationChannelCredentials(new TelegramCredentials
                 {
                     Token = "my_telegram_bot_token"
+                })
+                {
+                    Channel = ConversationChannel.Telegram,
+                    CallbackSecret = "my_callback_secret"
                 },
-                WechatCredentials = new WeChatCredentials()
+
+                new ConversationChannelCredentials(new WeChatCredentials
                 {
                     AppId = "my_wechat_app_id",
-                    Token = "my_wechat_token",
                     AppSecret = "my_wechat_app_secret",
+                    Token = "my_wechat_token",
                     AesKey = "my_wechat_aes_key"
+                })
+                {
+                    Channel = ConversationChannel.WeChat,
+                    CallbackSecret = "my_callback_secret"
                 }
             });
         }
@@ -405,53 +549,89 @@ namespace Sinch.Tests.Conversation
             {
                 ChannelCredentials = new List<ConversationChannelCredentials>
                 {
-                    new ConversationChannelCredentials
+                    new ConversationChannelCredentials(new MmsCredentials
                     {
-                        CallbackSecret = "my_callback_secret",
-                        CredentialOrdinalNumber = 0,
-                        Channel = ConversationChannel.WhatsApp,
-                        MmsCredentials = new MmsCredentials
+                        AccountId = "my_account_id",
+                        ApiKey = "my_api_key",
+                        BasicAuth = new BasicAuthCredential
                         {
-                            AccountId = "my_account_id",
-                            ApiKey = "my_api_key",
-                            BasicAuth = new BasicAuthCredential
-                            {
-                                Password = "my_password",
-                                Username = "my_username"
-                            }
-                        },
-                        KakaoTalkCredentials = new KakaoTalkCredentials
-                        {
-                            KakaoTalkPlusFriendId = "my_kakaotalk_id",
-                            KakaoTalkSenderKey = "my_kakaotalk_key"
-                        },
-                        StaticBearer = new StaticBearerCredentials()
-                        {
-                            ClaimedIdentity = "my_claimed_identity",
-                            Token = "my_static_bearer_token"
-                        },
-                        StaticToken = new StaticTokenCredentials()
-                        {
-                            Token = "my_static_token"
-                        },
-                        TelegramCredentials = new TelegramCredentials
-                        {
-                            Token = "my_telegram_bot_token"
-                        },
-                        LineCredentials = new LineCredentials
-                        {
-                            Token = "my_line_token",
-                            Secret = "my_line_secret"
-                        },
-                        WechatCredentials = new WeChatCredentials
-                        {
-                            AppId = "my_wechat_app_id",
-                            AppSecret = "my_wechat_app_secret",
-                            Token = "my_wechat_token",
-                            AesKey = "my_wechat_aes_key"
+                            Username = "my_username",
+                            Password = "my_password"
                         }
+                    })
+                    {
+                        Channel = ConversationChannel.Mms,
+                        CallbackSecret = "my_callback_secret",
+                        CredentialOrdinalNumber = 0
+                    },
+
+                    new ConversationChannelCredentials(new KakaoTalkCredentials
+                    {
+                        KakaoTalkPlusFriendId = "my_kakaotalk_id",
+                        KakaoTalkSenderKey = "my_kakaotalk_key"
+                    })
+                    {
+                        Channel = ConversationChannel.KakaoTalk,
+                        CallbackSecret = "my_callback_secret",
+                        CredentialOrdinalNumber = 0
+                    },
+
+                    new ConversationChannelCredentials(new StaticBearerCredentials
+                    {
+                        ClaimedIdentity = "my_claimed_identity",
+                        Token = "my_static_bearer_token"
+                    })
+                    {
+                        Channel = ConversationChannel.WhatsApp,
+                        CallbackSecret = "my_callback_secret",
+                        CredentialOrdinalNumber = 0
+                    },
+
+                    new ConversationChannelCredentials(new StaticTokenCredentials
+                    {
+                        Token = "my_static_token"
+                    })
+                    {
+                        Channel = ConversationChannel.Messenger,
+                        CallbackSecret = "my_callback_secret",
+                        CredentialOrdinalNumber = 0
+                    },
+
+                    new ConversationChannelCredentials(new TelegramCredentials
+                    {
+                        Token = "my_telegram_bot_token"
+                    })
+                    {
+                        Channel = ConversationChannel.Telegram,
+                        CallbackSecret = "my_callback_secret",
+                        CredentialOrdinalNumber = 0
+                    },
+
+                    new ConversationChannelCredentials(new LineCredentials
+                    {
+                        Token = "my_line_token",
+                        Secret = "my_line_secret"
+                    })
+                    {
+                        Channel = ConversationChannel.Line,
+                        CallbackSecret = "my_callback_secret",
+                        CredentialOrdinalNumber = 0
+                    },
+
+                    new ConversationChannelCredentials(new WeChatCredentials
+                    {
+                        AppId = "my_wechat_app_id",
+                        AppSecret = "my_wechat_app_secret",
+                        Token = "my_wechat_token",
+                        AesKey = "my_wechat_aes_key"
+                    })
+                    {
+                        Channel = ConversationChannel.WeChat,
+                        CallbackSecret = "my_callback_secret",
+                        CredentialOrdinalNumber = 0
                     }
                 },
+
                 ConversationMetadataReportView = ConversationMetadataReportView.None,
                 DisplayName = "Sinch Conversation API Demo App 001",
                 Id = "{APP_ID}",
@@ -543,19 +723,20 @@ namespace Sinch.Tests.Conversation
 
             var result = DeserializeAsConversationClient<ConversationChannelCredentials>(json);
 
-            result.Should().BeEquivalentTo(new ConversationChannelCredentials
+            result.Should().BeEquivalentTo(new ConversationChannelCredentials(new LineEnterpriseCredentials(
+                new LineThailand()
+                {
+                    Token = "line enterprise credentials thailand token value",
+                    Secret = "line enterprise credentials thailand secret value"
+                }
+            )
+            {
+                IsDefault = true
+            })
             {
                 Channel = ConversationChannel.Line,
                 CallbackSecret = "callback secret",
                 CredentialOrdinalNumber = 1,
-                LineEnterpriseCredentials = new LineEnterpriseCredentials(new LineThailand()
-                {
-                    Token = "line enterprise credentials thailand token value",
-                    Secret = "line enterprise credentials thailand secret value"
-                })
-                {
-                    IsDefault = true
-                }
             });
         }
 
@@ -567,7 +748,15 @@ namespace Sinch.Tests.Conversation
 
             var result = DeserializeAsConversationClient<ConversationChannelCredentials>(json);
 
-            result.Should().BeEquivalentTo(new ConversationChannelCredentials
+            result.Should().BeEquivalentTo(new ConversationChannelCredentials(new LineEnterpriseCredentials(
+                new LineJapan
+                {
+                    Token = "line enterprise credentials japan token value",
+                    Secret = "line enterprise credentials japan secret value"
+                })
+            {
+                IsDefault = true
+            })
             {
                 Channel = ConversationChannel.Line,
                 CallbackSecret = "callback secret",
@@ -577,14 +766,6 @@ namespace Sinch.Tests.Conversation
                 {
                     Status = ChannelIntegrationStatus.Pending,
                     Description = "description value"
-                },
-                LineEnterpriseCredentials = new LineEnterpriseCredentials(new LineJapan
-                {
-                    Token = "line enterprise credentials japan token value",
-                    Secret = "line enterprise credentials japan secret value"
-                })
-                {
-                    IsDefault = true
                 }
             });
         }
