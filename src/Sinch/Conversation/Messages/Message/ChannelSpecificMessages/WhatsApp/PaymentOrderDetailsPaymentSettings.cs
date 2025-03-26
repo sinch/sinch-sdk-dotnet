@@ -15,9 +15,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         /// </summary>
         [JsonPropertyName("dynamic_pix")]
 #if NET7_0_OR_GREATER
-        public required PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix DynamicPix { get; set; }
+        public required PaymentOrderDetailsSettingsDynamicPix DynamicPix { get; set; }
 #else
-        public PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix DynamicPix { get; set; } =
+        public PaymentOrderDetailsSettingsDynamicPix DynamicPix { get; set; } =
             null!;
 #endif
 
@@ -39,7 +39,8 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     /// <summary>
     ///     The dynamic Pix payment settings.
     /// </summary>
-    public sealed class PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix
+    // name ref: PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix
+    public sealed class PaymentOrderDetailsSettingsDynamicPix
     {
         /// <summary>
         /// Pix key type.
@@ -107,7 +108,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         {
             var sb = new StringBuilder();
             sb.Append(
-                $"class {nameof(PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix)} {{\n");
+                $"class {nameof(PaymentOrderDetailsSettingsDynamicPix)} {{\n");
             sb.Append($"  {nameof(Code)}: ").Append(Code).Append('\n');
             sb.Append($"  {nameof(MerchantName)}: ").Append(MerchantName).Append('\n');
             sb.Append($"  {nameof(Key)}: ").Append(Key).Append('\n');

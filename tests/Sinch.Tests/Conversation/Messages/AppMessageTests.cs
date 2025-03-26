@@ -1241,13 +1241,13 @@ namespace Sinch.Tests.Conversation.Messages
                             PaymentSettings = new PaymentOrderDetailsPaymentSettings()
                             {
                                 DynamicPix =
-                                    new PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix()
+                                    new PaymentOrderDetailsSettingsDynamicPix()
                                     {
                                         Code = "code value",
                                         MerchantName = "merchant name",
                                         Key = "key value",
                                         KeyType =
-                                            PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix
+                                            PaymentOrderDetailsSettingsDynamicPix
                                                 .KeyTypeEnum.Cnpj
                                     }
                             },
@@ -1358,13 +1358,13 @@ namespace Sinch.Tests.Conversation.Messages
                     PaymentSettings = new PaymentOrderDetailsPaymentSettings
                     {
                         DynamicPix =
-                                new PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix
+                                new PaymentOrderDetailsSettingsDynamicPix
                                 {
                                     Code = "code value",
                                     MerchantName = "merchant name",
                                     Key = "key value",
                                     KeyType =
-                                        PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix
+                                        PaymentOrderDetailsSettingsDynamicPix
                                             .KeyTypeEnum.Cnpj
                                 }
                     },
