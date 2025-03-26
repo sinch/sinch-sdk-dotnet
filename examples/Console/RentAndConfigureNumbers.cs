@@ -9,7 +9,15 @@ namespace Examples
     {
         public static async Task Example()
         {
-            var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET");
+            var sinchClient = new SinchClient(new SinchClientConfiguration()
+            {
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
+                {
+                    ProjectId = "PROJECT_ID",
+                    KeyId = "KEY_ID",
+                    KeySecret = "KEY_SECRET"
+                }
+            });
             var response = await sinchClient.Numbers.Rent("+4811111111", new RentActiveNumberRequest()
             {
                 SmsConfiguration = new SmsConfiguration

@@ -11,6 +11,16 @@ using Sinch.Logger;
 
 namespace Sinch.Auth
 {
+    public sealed class SinchOAuthConfiguration
+    {
+        public string? UrlOverride { get; init; }
+
+        internal Uri ResolveUrl()
+        {
+            return new Uri(UrlOverride ?? "https://auth.sinch.com");
+        }
+    }
+
     internal sealed class OAuth : ISinchAuth
     {
         private readonly HttpClient _httpClient;
@@ -83,7 +93,6 @@ namespace Sinch.Auth
             [JsonPropertyName("access_token")]
 
             public required string AccessToken { get; set; }
-
 
 
             /// <summary>

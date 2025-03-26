@@ -60,11 +60,11 @@ namespace Sinch.Conversation.Events
     internal sealed class Events : ISinchConversationEvents
     {
         private readonly Uri _baseAddress;
-        private readonly IHttp _http;
+        private readonly Lazy<IHttp> _http;
         private readonly ILoggerAdapter<ISinchConversationEvents>? _logger;
         private readonly string _projectId;
 
-        public Events(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationEvents>? logger, IHttp http)
+        public Events(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationEvents>? logger, Lazy<IHttp> http)
         {
             _projectId = projectId;
             _baseAddress = baseAddress;
@@ -77,7 +77,7 @@ namespace Sinch.Conversation.Events
         {
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/events:send");
             _logger?.LogDebug("Sending an event...");
-            return _http.Send<SendEventRequest, SendEventResponse>(uri, HttpMethod.Post, request,
+            return _http.Value.Send<SendEventRequest, SendEventResponse>(uri, HttpMethod.Post, request,
                 cancellationToken);
         }
 
@@ -91,7 +91,7 @@ namespace Sinch.Conversation.Events
 
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/events/{eventId}");
             _logger?.LogDebug("Getting an event with {id}", eventId);
-            return _http.Send<ConversationEvent>(uri, HttpMethod.Get,
+            return _http.Value.Send<ConversationEvent>(uri, HttpMethod.Get,
                 cancellationToken);
         }
 
@@ -105,7 +105,7 @@ namespace Sinch.Conversation.Events
 
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/events/{eventId}");
             _logger?.LogDebug("Deleting an event with {id}", eventId);
-            return _http.Send<EmptyResponse>(uri, HttpMethod.Delete,
+            return _http.Value.Send<EmptyResponse>(uri, HttpMethod.Delete,
                 cancellationToken);
         }
 
@@ -114,7 +114,7 @@ namespace Sinch.Conversation.Events
             var uri = new Uri(_baseAddress,
                 $"v1/projects/{_projectId}/events?{Utils.ToSnakeCaseQueryString(request)}");
             _logger?.LogDebug("Listing events for {project}", _projectId);
-            return _http.Send<ListEventsResponse>(uri, HttpMethod.Get,
+            return _http.Value.Send<ListEventsResponse>(uri, HttpMethod.Get,
                 cancellationToken);
         }
 
@@ -127,7 +127,7 @@ namespace Sinch.Conversation.Events
                 var query = Utils.ToSnakeCaseQueryString(request);
                 var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/events?{query}");
                 var response =
-                    await _http.Send<ListEventsResponse>(uri, HttpMethod.Get, cancellationToken);
+                    await _http.Value.Send<ListEventsResponse>(uri, HttpMethod.Get, cancellationToken);
                 request.PageToken = response.NextPageToken;
                 if (response.Events == null) continue;
                 foreach (var conversationEvent in response.Events)

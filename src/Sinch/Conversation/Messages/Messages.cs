@@ -77,12 +77,12 @@ namespace Sinch.Conversation.Messages
     internal sealed class Messages : ISinchConversationMessages
     {
         private readonly Uri _baseAddress;
-        private readonly IHttp _http;
+        private readonly Lazy<IHttp> _http;
         private readonly ILoggerAdapter<ISinchConversationMessages>? _logger;
         private readonly string _projectId;
 
         public Messages(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationMessages>? logger,
-            IHttp http)
+            Lazy<IHttp> http)
         {
             _projectId = projectId;
             _baseAddress = baseAddress;
@@ -95,7 +95,7 @@ namespace Sinch.Conversation.Messages
         {
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/messages:send");
             _logger?.LogDebug("Sending a message...");
-            return _http.Send<SendMessageRequest, SendMessageResponse>(uri, HttpMethod.Post, request,
+            return _http.Value.Send<SendMessageRequest, SendMessageResponse>(uri, HttpMethod.Post, request,
                 cancellationToken: cancellationToken);
         }
 
@@ -109,7 +109,7 @@ namespace Sinch.Conversation.Messages
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/messages/{messageId}{param}");
 
             _logger?.LogDebug("Getting a message with {messageId}...", messageId);
-            return _http.Send<ConversationMessage>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
+            return _http.Value.Send<ConversationMessage>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc/>  
@@ -119,7 +119,7 @@ namespace Sinch.Conversation.Messages
             _logger?.LogDebug("Fetching list of messages {request}", request);
             var uri = new Uri(_baseAddress,
                 $"v1/projects/{_projectId}/messages?{Utils.ToSnakeCaseQueryString(request)}");
-            return _http.Send<ListMessagesResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
+            return _http.Value.Send<ListMessagesResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc/>  
@@ -130,7 +130,7 @@ namespace Sinch.Conversation.Messages
             _logger?.LogDebug("Deleting a message {messageId}", messageId);
             var uri = new Uri(_baseAddress,
                 $"v1/projects/{_projectId}/messages/{messageId}{param}");
-            return _http.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
+            return _http.Value.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
         }
 
         private static string GetMessageSourceQueryParam(MessageSource? messagesSource)

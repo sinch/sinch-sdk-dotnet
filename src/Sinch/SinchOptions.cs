@@ -21,49 +21,12 @@ namespace Sinch
         public HttpClient? HttpClient { get; set; }
 
         /// <summary>
-        ///     Set's the region for the SMS service.
-        ///     <br/><br/>
-        ///     The difference between this option and
-        ///     <see href="https://developers.sinch.com/docs/sms/api-reference/#base-url">SMS base URL</see>
-        ///     is that your account is NOT region locked because SDK utilizes `project_id` API set instead of `service_plan_id`,
-        ///     and utilizes region to store the data.
-        ///     <br /><br />
-        ///     Defaults to "us"
-        /// </summary>
-        public SmsRegion SmsRegion { get; set; } = SmsRegion.Us;
-
-        /// <summary>
-        ///     Set's the regions for the Conversation api.
-        ///     Defaults to "us"
-        /// </summary>
-        public ConversationRegion ConversationRegion { get; set; } = ConversationRegion.Us;
-
-        /// <summary>
         ///     Set's the regions for the Fax api.
         /// </summary>
         public FaxRegion? FaxRegion { get; set; }
 
         /// <inheritdoc cref="ApiUrlOverrides"/>
         public ApiUrlOverrides? ApiUrlOverrides { get; set; }
-
-
-        internal ServicePlanIdOptions? ServicePlanIdOptions { get; private set; }
-
-        /// <summary>
-        ///     Use SMS API with `service plan id` and compatible region.
-        ///     `service_plan_id` will be used in place of `project_id`
-        /// </summary>
-        /// <param name="servicePlanId">Your service plan id</param>
-        /// <param name="apiToken"></param>
-        /// <param name="servicePlanIdRegion">Region to use. Defaults to <see cref="SmsServicePlanIdRegion.Us" /></param>
-        /// <exception cref="ArgumentNullException">throws if service plan id or region is null or an empty string</exception>
-        public void UseServicePlanIdWithSms(string servicePlanId,
-            string apiToken, SmsServicePlanIdRegion? servicePlanIdRegion = default)
-        {
-            servicePlanIdRegion ??= SmsServicePlanIdRegion.Us;
-
-            ServicePlanIdOptions = new ServicePlanIdOptions(servicePlanId, servicePlanIdRegion, apiToken);
-        }
     }
 
     internal sealed class ServicePlanIdOptions

@@ -83,11 +83,11 @@ namespace Sinch.Conversation.Apps
     internal sealed class Apps : ISinchConversationApps
     {
         private readonly Uri _baseAddress;
-        private readonly IHttp _http;
+        private readonly Lazy<IHttp> _http;
         private readonly ILoggerAdapter<Apps>? _logger;
         private readonly string _projectId;
 
-        public Apps(string projectId, Uri baseAddress, ILoggerAdapter<Apps>? logger, IHttp http)
+        public Apps(string projectId, Uri baseAddress, ILoggerAdapter<Apps>? logger, Lazy<IHttp> http)
         {
             _projectId = projectId;
             _baseAddress = baseAddress;
@@ -100,7 +100,7 @@ namespace Sinch.Conversation.Apps
         {
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/apps");
             _logger?.LogDebug("Creating an app...");
-            return _http.Send<CreateAppRequest, App>(uri, HttpMethod.Post, request,
+            return _http.Value.Send<CreateAppRequest, App>(uri, HttpMethod.Post, request,
                 cancellationToken: cancellationToken);
         }
 
@@ -110,7 +110,7 @@ namespace Sinch.Conversation.Apps
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/apps");
             _logger?.LogDebug("Listing apps for a {projectId}", _projectId);
             // flatten the response 
-            var response = await _http.Send<ListResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
+            var response = await _http.Value.Send<ListResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
             return response.Apps ?? new List<App>();
         }
 
@@ -126,7 +126,7 @@ namespace Sinch.Conversation.Apps
 
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/apps/{appId}");
             _logger?.LogDebug("Getting an app for a {projectId} with {appId}", _projectId, appId);
-            return _http.Send<App>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
+            return _http.Value.Send<App>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
@@ -141,7 +141,7 @@ namespace Sinch.Conversation.Apps
 
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/apps/{appId}");
             _logger?.LogDebug("Deleting an app for a {projectId} with {appId}", _projectId, appId);
-            return _http.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
+            return _http.Value.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
@@ -161,7 +161,7 @@ namespace Sinch.Conversation.Apps
 
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/apps/{appId}{query}");
             _logger?.LogDebug("Updating an app for a {projectId} with {appId}", _projectId, appId);
-            return _http.Send<UpdateAppRequest, App>(uri, HttpMethod.Patch, request,
+            return _http.Value.Send<UpdateAppRequest, App>(uri, HttpMethod.Patch, request,
                 cancellationToken: cancellationToken);
         }
 

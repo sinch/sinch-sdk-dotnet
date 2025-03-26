@@ -11,10 +11,15 @@ namespace Examples
         {
             // for the sake of example, no real logger is created.
             var logger = LoggerFactory.Create(_ => { }).CreateLogger("example");
-            var sinch = new SinchClient(Environment.GetEnvironmentVariable("SINCH_PROJECT_ID")!,
-                Environment.GetEnvironmentVariable("SINCH_KEY_ID")!,
-                Environment.GetEnvironmentVariable("SINCH_KEY_SECRET")!
-            );
+            var sinch = new SinchClient(new SinchClientConfiguration()
+            {
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
+                {
+                    ProjectId = Environment.GetEnvironmentVariable("SINCH_PROJECT_ID")!,
+                    KeyId = Environment.GetEnvironmentVariable("SINCH_KEY_ID")!,
+                    KeySecret = Environment.GetEnvironmentVariable("SINCH_KEY_SECRET")!
+                }
+            });
 
             try
             {

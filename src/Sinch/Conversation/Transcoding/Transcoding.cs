@@ -24,12 +24,12 @@ namespace Sinch.Conversation.Transcoding
     internal sealed class Transcoding : ISinchConversationTranscoding
     {
         private readonly Uri _baseAddress;
-        private readonly IHttp _http;
+        private readonly Lazy<IHttp> _http;
         private readonly ILoggerAdapter<ISinchConversationTranscoding>? _logger;
         private readonly string _projectId;
 
         public Transcoding(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationTranscoding>? logger,
-            IHttp http)
+            Lazy<IHttp> http)
         {
             _projectId = projectId;
             _baseAddress = baseAddress;
@@ -42,7 +42,7 @@ namespace Sinch.Conversation.Transcoding
         {
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/messages:transcode");
             _logger?.LogDebug("Transcoding a message...");
-            return _http.Send<TranscodeRequest, TranscodeResponse>(uri, HttpMethod.Post, request,
+            return _http.Value.Send<TranscodeRequest, TranscodeResponse>(uri, HttpMethod.Post, request,
                 cancellationToken);
         }
     }
