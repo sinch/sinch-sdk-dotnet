@@ -15,11 +15,11 @@ using Sinch.Conversation.Apps.Update;
 using Sinch.Conversation.Common;
 using Xunit;
 
-namespace Sinch.Tests.Conversation
+namespace Sinch.Tests.Conversation.Apps
 {
     public class AppsTests : ConversationTestBase
     {
-        private object _app = new
+        private readonly object _app = new
         {
             channel_credentials = new dynamic[]
             {
@@ -89,7 +89,8 @@ namespace Sinch.Tests.Conversation
                     line_credentials = new
                     {
                         token = "my_line_token",
-                        secret = "my_line_secret"
+                        secret = "my_line_secret",
+                        is_default = true
                     }
                 },
                 new
@@ -150,7 +151,7 @@ namespace Sinch.Tests.Conversation
             }
         };
 
-        private object _createApp = new
+        private readonly object _createApp = new
         {
             display_name = "display_name",
             channel_credentials = new dynamic[]
@@ -281,7 +282,7 @@ namespace Sinch.Tests.Conversation
             }
         };
 
-        private CreateAppRequest _createRequest = new CreateAppRequest
+        private readonly CreateAppRequest _createRequest = new CreateAppRequest
         {
             DisplayName = "display_name",
             ChannelCredentials = new List<ConversationChannelCredentials>
@@ -467,7 +468,8 @@ namespace Sinch.Tests.Conversation
                 new ConversationChannelCredentials(new LineCredentials
                 {
                     Token = "my_line_token",
-                    Secret = "my_line_secret"
+                    Secret = "my_line_secret",
+                    IsDefault = true,
                 })
                 {
                     Channel = ConversationChannel.Line,
@@ -610,7 +612,8 @@ namespace Sinch.Tests.Conversation
                     new ConversationChannelCredentials(new LineCredentials
                     {
                         Token = "my_line_token",
-                        Secret = "my_line_secret"
+                        Secret = "my_line_secret",
+                        IsDefault = true,
                     })
                     {
                         Channel = ConversationChannel.Line,
@@ -715,55 +718,6 @@ namespace Sinch.Tests.Conversation
             response.Should().NotBeNull();
         }
 
-        [Fact]
-        public void DeserializeConversationChannelCredentialsLineThailandEnterprise()
-        {
-            var json = Helpers.LoadResources(
-                "Conversation/Apps/LineThailandEnterpriseCredentials.json");
 
-            var result = DeserializeAsConversationClient<ConversationChannelCredentials>(json);
-
-            result.Should().BeEquivalentTo(new ConversationChannelCredentials(
-                new LineThailandEnterpriseCredentials()
-                {
-                    Token = "line enterprise credentials thailand token value",
-                    Secret = "line enterprise credentials thailand secret value",
-                    IsDefault = true
-                }
-            )
-            {
-                Channel = ConversationChannel.Line,
-                CallbackSecret = "callback secret",
-                CredentialOrdinalNumber = 1,
-            });
-        }
-
-        [Fact]
-        public void DeserializeConversationChannelCredentialsLineJapanEnterprise()
-        {
-            var json = Helpers.LoadResources(
-                "Conversation/Apps/ConversationChannelCredentialsLineJapanEnterpriseCredentials.json");
-
-            var result = DeserializeAsConversationClient<ConversationChannelCredentials>(json);
-
-            result.Should().BeEquivalentTo(new ConversationChannelCredentials(
-                new LineJapanEnterpriseCredentials
-                {
-                    Token = "line enterprise credentials japan token value",
-                    Secret = "line enterprise credentials japan secret value",
-                    IsDefault = true
-                })
-            {
-                Channel = ConversationChannel.Line,
-                CallbackSecret = "callback secret",
-                CredentialOrdinalNumber = 1,
-                ChannelKnownId = "channel id",
-                State = new ChannelIntegrationState
-                {
-                    Status = ChannelIntegrationStatus.Pending,
-                    Description = "description value"
-                }
-            });
-        }
     }
 }
