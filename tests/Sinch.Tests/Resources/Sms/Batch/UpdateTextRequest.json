@@ -8,7 +8,7 @@
     "+15550002222"
   ],
   "from": "+15551231234",
-  "body": "Hi ${name} (${an identifier}) ! How are you?",
+  "body": "Hi ${name} (${an_identifier}) ! How are you?",
   "type": "mt_text",
   "delivery_report": "none",
   "send_at": "2019-08-24T14:19:22Z",
@@ -22,7 +22,7 @@
       "15551256344": "name value for 15551256344",
       "default": "default value"
     },
-    "an identifier": {
+    "an_identifier": {
       "15551231234": "an identifier value for 15551231234",
       "15551256344": "an identifier value for 15551256344"
     }

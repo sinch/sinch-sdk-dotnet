@@ -9,7 +9,7 @@
   ],
   "from": "+15551231234",
   "body": {
-    "message": "Hi ${name} (${an identifier}) ! How are you?",
+    "message": "Hi ${name} (${an_identifier}) ! How are you?",
     "url": "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png"
   },
   "parameters": {
@@ -18,7 +18,7 @@
       "15551256344": "name value for 15551256344",
       "default": "default value"
     },
-    "an identifier": {
+    "an_identifier": {
       "15551231234": "an identifier value for 15551231234",
       "15551256344": "an identifier value for 15551256344"
     }

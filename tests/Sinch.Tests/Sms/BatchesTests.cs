@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using RichardSzalay.MockHttp;
@@ -19,6 +20,31 @@ namespace Sinch.Tests.Sms
 {
     public class BatchesTests : SmsTestBase
     {
+        private BinaryBatch _binaryBatchResponse = new BinaryBatch
+        {
+            Id = "01FC66621XXXXX119Z8PMV1QPQ",
+            To = new List<string>
+            {
+                "+15551231234",
+                "+15551256344"
+            },
+            From = "+15551231234",
+            Canceled = false,
+            Body = "Hi ${name} (${an_identifier}) ! How are you?",
+            DeliveryReport = DeliveryReport.None,
+            SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
+            ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
+            CallbackUrl = "https://nickelback.com",
+            ClientReference = "myReference",
+            FeedbackEnabled = false,
+            FlashMessage = true,
+            TruncateConcat = true,
+            MaxNumberOfMessageParts = 1,
+            FromTon = 6,
+            FromNpi = 18,
+            Udh = "foo udh"
+        };
+
         private static readonly object Batch = new
         {
             id = "01FC66621XXXXX119Z8PMV1QPQ",
@@ -60,11 +86,11 @@ namespace Sinch.Tests.Sms
                     "+15551256344"
                 },
                 From = "+15551231234",
-                Body = "Hi ${name} (${an identifier}) ! How are you?",
+                Body = "Hi ${name} (${an_identifier}) ! How are you?",
                 DeliveryReport = DeliveryReport.None,
                 SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                 ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
-                CallbackUrl = "callback url",
+                CallbackUrl = "https://my.callback.com",
                 ClientReference = "myReference",
                 FeedbackEnabled = false,
                 FlashMessage = true,
@@ -80,7 +106,7 @@ namespace Sinch.Tests.Sms
                         ["15551256344"] = "name value for 15551256344",
                         ["default"] = "default value"
                     },
-                    ["an identifier"] = new Dictionary<string, string>
+                    ["an_identifier"] = new Dictionary<string, string>
                     {
                         ["15551231234"] = "an identifier value for 15551231234",
                         ["15551256344"] = "an identifier value for 15551256344"
@@ -106,13 +132,13 @@ namespace Sinch.Tests.Sms
                         ["15551256344"] = "name value for 15551256344",
                         ["default"] = "default value"
                     },
-                    ["an identifier"] = new Dictionary<string, string>
+                    ["an_identifier"] = new Dictionary<string, string>
                     {
                         ["15551231234"] = "an identifier value for 15551231234",
                         ["15551256344"] = "an identifier value for 15551256344"
                     }
                 },
-                Body = "Hi ${name} (${an identifier}) ! How are you?",
+                Body = "Hi ${name} (${an_identifier}) ! How are you?",
                 DeliveryReport = DeliveryReport.None,
                 SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                 ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
@@ -146,7 +172,7 @@ namespace Sinch.Tests.Sms
                 From = "+15551231234",
                 Body = new MediaBody
                 {
-                    Message = "Hi ${name} (${an identifier}) ! How are you?",
+                    Message = "Hi ${name} (${an_identifier}) ! How are you?",
                     Url = "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png"
                 },
                 Parameters = new Dictionary<string, Dictionary<string, string>>
@@ -157,7 +183,7 @@ namespace Sinch.Tests.Sms
                         ["15551256344"] = "name value for 15551256344",
                         ["default"] = "default value"
                     },
-                    ["an identifier"] = new Dictionary<string, string>
+                    ["an_identifier"] = new Dictionary<string, string>
                     {
                         ["15551231234"] = "an identifier value for 15551231234",
                         ["15551256344"] = "an identifier value for 15551256344"
@@ -166,7 +192,7 @@ namespace Sinch.Tests.Sms
                 DeliveryReport = DeliveryReport.Summary,
                 SendAt = Helpers.ParseUtc("2019-08-24T14:16:22Z"),
                 ExpireAt = Helpers.ParseUtc("2019-08-24T14:17:22Z"),
-                CallbackUrl = "callback url",
+                CallbackUrl = "https://my.callback.com",
                 ClientReference = "client reference",
                 FeedbackEnabled = false,
                 StrictValidation = true
@@ -184,7 +210,7 @@ namespace Sinch.Tests.Sms
                 Canceled = false,
                 Body = new MediaBody
                 {
-                    Message = "Hi ${name} (${an identifier}) ! How are you?",
+                    Message = "Hi ${name} (${an_identifier}) ! How are you?",
                     Url = "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png",
                     Subject = "subject field"
                 },
@@ -196,7 +222,7 @@ namespace Sinch.Tests.Sms
                         ["15551256344"] = "name value for 15551256344",
                         ["default"] = "default value"
                     },
-                    ["an identifier"] = new Dictionary<string, string>
+                    ["an_identifier"] = new Dictionary<string, string>
                     {
                         ["15551231234"] = "an identifier value for 15551231234",
                         ["15551256344"] = "an identifier value for 15551256344"
@@ -229,11 +255,11 @@ namespace Sinch.Tests.Sms
                     "+15551256344"
                 },
                 From = "+15551231234",
-                Body = "Hi ${name} (${an identifier}) ! How are you?",
+                Body = Convert.ToBase64String(Encoding.UTF8.GetBytes("Hi ${name} (${an_identifier}) ! How are you?")),
                 DeliveryReport = DeliveryReport.None,
                 SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                 ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
-                CallbackUrl = "callback url",
+                CallbackUrl = "https://my.callback.com",
                 ClientReference = "myReference",
                 FeedbackEnabled = false,
                 FlashMessage = true,
@@ -241,33 +267,10 @@ namespace Sinch.Tests.Sms
                 MaxNumberOfMessageParts = 1,
                 FromTon = 6,
                 FromNpi = 18,
-                Udh = "foo udh"
+                Udh = Convert.ToHexString(Encoding.UTF8.GetBytes("foo udh"))
             });
 
-            response.Should().BeOfType<BinaryBatch>().Which.Should().BeEquivalentTo(new BinaryBatch
-            {
-                Id = "01FC66621XXXXX119Z8PMV1QPQ",
-                To = new List<string>
-                {
-                    "+15551231234",
-                    "+15551256344"
-                },
-                From = "+15551231234",
-                Canceled = false,
-                Body = "Hi ${name} (${an identifier}) ! How are you?",
-                DeliveryReport = DeliveryReport.None,
-                SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
-                ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
-                CallbackUrl = "https://nickelback.com",
-                ClientReference = "myReference",
-                FeedbackEnabled = false,
-                FlashMessage = true,
-                TruncateConcat = true,
-                MaxNumberOfMessageParts = 1,
-                FromTon = 6,
-                FromNpi = 18,
-                Udh = "foo udh"
-            });
+            response.Should().BeOfType<BinaryBatch>().Which.Should().BeEquivalentTo(_binaryBatchResponse);
         }
 
         [Fact]
@@ -402,7 +405,7 @@ namespace Sinch.Tests.Sms
                         "+15550002222"
                     },
                     From = "+15551231234",
-                    Body = "Hi ${name} (${an identifier}) ! How are you?",
+                    Body = "Hi ${name} (${an_identifier}) ! How are you?",
                     DeliveryReport = DeliveryReport.None,
                     SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                     ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
@@ -417,7 +420,7 @@ namespace Sinch.Tests.Sms
                             ["15551256344"] = "name value for 15551256344",
                             ["default"] = "default value"
                         },
-                        ["an identifier"] = new Dictionary<string, string>
+                        ["an_identifier"] = new Dictionary<string, string>
                         {
                             ["15551231234"] = "an identifier value for 15551231234",
                             ["15551256344"] = "an identifier value for 15551256344"
@@ -448,13 +451,13 @@ namespace Sinch.Tests.Sms
                         ["15551256344"] = "name value for 15551256344",
                         ["default"] = "default value"
                     },
-                    ["an identifier"] = new Dictionary<string, string>
+                    ["an_identifier"] = new Dictionary<string, string>
                     {
                         ["15551231234"] = "an identifier value for 15551231234",
                         ["15551256344"] = "an identifier value for 15551256344"
                     }
                 },
-                Body = "Hi ${name} (${an identifier}) ! How are you?",
+                Body = "Hi ${name} (${an_identifier}) ! How are you?",
                 DeliveryReport = DeliveryReport.None,
                 SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                 ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
@@ -498,36 +501,13 @@ namespace Sinch.Tests.Sms
                     CallbackUrl = "https://callback.yes",
                     ClientReference = "a client reference",
                     FeedbackEnabled = true,
-                    Body = "Hi ${name} (${an identifier}) ! How are you?",
+                    Body = "Hi ${name} (${an_identifier}) ! How are you?",
                     Udh = "foo udh",
                     FromTon = 3,
                     FromNpi = 10
                 });
 
-            response.Should().BeOfType<BinaryBatch>().Which.Should().BeEquivalentTo(new BinaryBatch
-            {
-                Id = "01FC66621XXXXX119Z8PMV1QPQ",
-                To = new List<string>
-                {
-                    "+15551231234",
-                    "+15551256344"
-                },
-                From = "+15551231234",
-                Canceled = false,
-                Body = "Hi ${name} (${an identifier}) ! How are you?",
-                DeliveryReport = DeliveryReport.None,
-                SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
-                ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
-                CallbackUrl = "https://nickelback.com",
-                ClientReference = "myReference",
-                FeedbackEnabled = false,
-                FlashMessage = true,
-                TruncateConcat = true,
-                MaxNumberOfMessageParts = 1,
-                FromTon = 6,
-                FromNpi = 18,
-                Udh = "foo udh"
-            });
+            response.Should().BeOfType<BinaryBatch>().Which.Should().BeEquivalentTo(_binaryBatchResponse);
         }
 
         [Fact]
@@ -555,7 +535,7 @@ namespace Sinch.Tests.Sms
                     From = "+15551231234",
                     Body = new MediaBody
                     {
-                        Message = "Hi ${name} (${an identifier}) ! How are you?",
+                        Message = "Hi ${name} (${an_identifier}) ! How are you?",
                         Url = "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png"
                     },
                     Parameters = new Dictionary<string, Dictionary<string, string>>
@@ -566,7 +546,7 @@ namespace Sinch.Tests.Sms
                             ["15551256344"] = "name value for 15551256344",
                             ["default"] = "default value"
                         },
-                        ["an identifier"] = new Dictionary<string, string>
+                        ["an_identifier"] = new Dictionary<string, string>
                         {
                             ["15551231234"] = "an identifier value for 15551231234",
                             ["15551256344"] = "an identifier value for 15551256344"
@@ -594,7 +574,7 @@ namespace Sinch.Tests.Sms
                     Canceled = false,
                     Body = new MediaBody
                     {
-                        Message = "Hi ${name} (${an identifier}) ! How are you?",
+                        Message = "Hi ${name} (${an_identifier}) ! How are you?",
                         Url = "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png",
                         Subject = "subject field"
                     },
@@ -606,7 +586,7 @@ namespace Sinch.Tests.Sms
                             ["15551256344"] = "name value for 15551256344",
                             ["default"] = "default value"
                         },
-                        ["an identifier"] = new Dictionary<string, string>
+                        ["an_identifier"] = new Dictionary<string, string>
                         {
                             ["15551231234"] = "an identifier value for 15551231234",
                             ["15551256344"] = "an identifier value for 15551256344"

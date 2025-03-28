@@ -4,12 +4,12 @@
     "+15551256344"
   ],
   "from": "+15551231234",
-  "body": "Hi ${name} (${an identifier}) ! How are you?",
+  "body": "SGkgJHtuYW1lfSAoJHthbl9pZGVudGlmaWVyfSkgISBIb3cgYXJlIHlvdT8=",
   "type": "mt_binary",
   "delivery_report": "none",
   "send_at": "2019-08-24T14:19:22Z",
   "expire_at": "2019-08-24T14:21:22Z",
-  "callback_url": "callback url",
+  "callback_url": "https://my.callback.com",
   "client_reference": "myReference",
   "feedback_enabled": false,
   "flash_message": true,
@@ -17,5 +17,5 @@
   "max_number_of_message_parts": 1,
   "from_ton": 6,
   "from_npi": 18,
-  "udh": "foo udh"
+  "udh": "666F6F20756468"
 }

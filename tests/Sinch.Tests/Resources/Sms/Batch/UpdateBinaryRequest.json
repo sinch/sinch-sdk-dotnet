@@ -15,7 +15,7 @@
   "callback_url": "https://callback.yes",
   "client_reference": "a client reference",
   "feedback_enabled": true,
-  "body": "Hi ${name} (${an identifier}) ! How are you?",
+  "body": "Hi ${name} (${an_identifier}) ! How are you?",
   "udh": "foo udh",
   "from_ton": 3,
   "from_npi": 10
