@@ -60,7 +60,7 @@ namespace Sinch.Tests.Sms
                     "+15551256344"
                 },
                 From = "+15551231234",
-                Body = "Hi ${name} ({an identifier}) ! How are you?",
+                Body = "Hi ${name} (${an identifier}) ! How are you?",
                 DeliveryReport = DeliveryReport.None,
                 SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                 ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
@@ -112,7 +112,7 @@ namespace Sinch.Tests.Sms
                         ["15551256344"] = "an identifier value for 15551256344"
                     }
                 },
-                Body = "Hi ${name} ({an identifier}) ! How are you?",
+                Body = "Hi ${name} (${an identifier}) ! How are you?",
                 DeliveryReport = DeliveryReport.None,
                 SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                 ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
@@ -146,7 +146,7 @@ namespace Sinch.Tests.Sms
                 From = "+15551231234",
                 Body = new MediaBody
                 {
-                    Message = "Hi ${name} ({an identifier}) ! How are you?",
+                    Message = "Hi ${name} (${an identifier}) ! How are you?",
                     Url = "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png"
                 },
                 Parameters = new Dictionary<string, Dictionary<string, string>>
@@ -184,7 +184,7 @@ namespace Sinch.Tests.Sms
                 Canceled = false,
                 Body = new MediaBody
                 {
-                    Message = "Hi ${name} ({an identifier}) ! How are you?",
+                    Message = "Hi ${name} (${an identifier}) ! How are you?",
                     Url = "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png",
                     Subject = "subject field"
                 },
@@ -229,7 +229,7 @@ namespace Sinch.Tests.Sms
                     "+15551256344"
                 },
                 From = "+15551231234",
-                Body = "Hi ${name} ({an identifier}) ! How are you?",
+                Body = "Hi ${name} (${an identifier}) ! How are you?",
                 DeliveryReport = DeliveryReport.None,
                 SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                 ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
@@ -254,7 +254,7 @@ namespace Sinch.Tests.Sms
                 },
                 From = "+15551231234",
                 Canceled = false,
-                Body = "Hi ${name} ({an identifier}) ! How are you?",
+                Body = "Hi ${name} (${an identifier}) ! How are you?",
                 DeliveryReport = DeliveryReport.None,
                 SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                 ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
@@ -402,11 +402,11 @@ namespace Sinch.Tests.Sms
                         "+15550002222"
                     },
                     From = "+15551231234",
-                    Body = "Hi ${name} ({an identifier}) ! How are you?",
+                    Body = "Hi ${name} (${an identifier}) ! How are you?",
                     DeliveryReport = DeliveryReport.None,
                     SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                     ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
-                    CallbackUrl = new Uri("https://calback.yes"),
+                    CallbackUrl = "https://calback.yes",
                     ClientReference = "mock-client-ref-123",
                     FeedbackEnabled = true,
                     Parameters = new Dictionary<string, Dictionary<string, string>>
@@ -454,7 +454,7 @@ namespace Sinch.Tests.Sms
                         ["15551256344"] = "an identifier value for 15551256344"
                     }
                 },
-                Body = "Hi ${name} ({an identifier}) ! How are you?",
+                Body = "Hi ${name} (${an identifier}) ! How are you?",
                 DeliveryReport = DeliveryReport.None,
                 SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                 ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
@@ -495,10 +495,10 @@ namespace Sinch.Tests.Sms
                     DeliveryReport = DeliveryReport.Full,
                     SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                     ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
-                    CallbackUrl = new Uri("https://callback.yes"),
+                    CallbackUrl = "https://callback.yes",
                     ClientReference = "a client reference",
                     FeedbackEnabled = true,
-                    Body = "Hi ${name} ({an identifier}) ! How are you?",
+                    Body = "Hi ${name} (${an identifier}) ! How are you?",
                     Udh = "foo udh",
                     FromTon = 3,
                     FromNpi = 10
@@ -514,7 +514,7 @@ namespace Sinch.Tests.Sms
                 },
                 From = "+15551231234",
                 Canceled = false,
-                Body = "Hi ${name} ({an identifier}) ! How are you?",
+                Body = "Hi ${name} (${an identifier}) ! How are you?",
                 DeliveryReport = DeliveryReport.None,
                 SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                 ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
@@ -555,7 +555,7 @@ namespace Sinch.Tests.Sms
                     From = "+15551231234",
                     Body = new MediaBody
                     {
-                        Message = "Hi ${name} ({an identifier}) ! How are you?",
+                        Message = "Hi ${name} (${an identifier}) ! How are you?",
                         Url = "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png"
                     },
                     Parameters = new Dictionary<string, Dictionary<string, string>>
@@ -575,7 +575,7 @@ namespace Sinch.Tests.Sms
                     DeliveryReport = DeliveryReport.Summary,
                     SendAt = Helpers.ParseUtc("2019-08-24T14:16:22Z"),
                     ExpireAt = Helpers.ParseUtc("2019-08-24T14:17:22Z"),
-                    CallbackUrl = new Uri("https://calback.my"),
+                    CallbackUrl = "https://calback.my",
                     ClientReference = "a client reference",
                     FeedbackEnabled = true,
                     StrictValidation = true
@@ -594,7 +594,7 @@ namespace Sinch.Tests.Sms
                     Canceled = false,
                     Body = new MediaBody
                     {
-                        Message = "Hi ${name} ({an identifier}) ! How are you?",
+                        Message = "Hi ${name} (${an identifier}) ! How are you?",
                         Url = "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png",
                         Subject = "subject field"
                     },

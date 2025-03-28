@@ -7,7 +7,7 @@
   "from": "+15551231234",
   "canceled": false,
   "body": {
-    "message": "Hi ${name} ({an identifier}) ! How are you?",
+    "message": "Hi ${name} (${an identifier}) ! How are you?",
     "url": "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png",
     "subject": "subject field"
   },

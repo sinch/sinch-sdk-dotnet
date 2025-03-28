@@ -34,8 +34,7 @@ namespace Sinch.SMS.Batches.Update
         /// </summary>
         [JsonPropertyName("from_ton")]
         public int? FromTon { get; set; }
-
-
+        
         /// <summary>
         ///     Number Plan Indicator for the sender number. Use to override the automatic detection.
         /// </summary>
@@ -47,8 +46,7 @@ namespace Sinch.SMS.Batches.Update
         /// </summary>
         [JsonPropertyName("truncate_concat")]
         public bool? TruncateConcat { get; set; }
-
-
+        
         /// <summary>
         ///     Shows message on screen without user interaction while not saving the message to the inbox.
         /// </summary>

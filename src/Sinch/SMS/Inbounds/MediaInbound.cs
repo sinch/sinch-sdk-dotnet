@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Sinch.SMS.Inbounds
 {
     /// <summary>
-    ///     MOMedia
+    ///     MediaInbound
     /// </summary>
     public sealed class MediaInbound : IInbound
     {

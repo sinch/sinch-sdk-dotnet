@@ -21,7 +21,7 @@ namespace Sinch.SMS.Inbounds
 
 
         /// <summary>
-        ///     Represents a MMS SMS type.
+        ///     Represents an MMS type.
         /// </summary>
         public static readonly SmsType Media = new("mo_media");
 

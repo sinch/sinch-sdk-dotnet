@@ -110,7 +110,7 @@ namespace Sinch.SMS.Batches.Update
         ///     <see href="https://community.sinch.com/t5/SMS/How-do-I-assign-a-callback-URL-to-an-SMS-service-plan/ta-p/8414">here</see>
         ///     .
         /// </summary>
-        public Uri? CallbackUrl { get; set; }
+        public string? CallbackUrl { get; set; }
 
 
         /// <summary>
