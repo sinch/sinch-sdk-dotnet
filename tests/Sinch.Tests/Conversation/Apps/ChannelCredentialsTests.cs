@@ -84,5 +84,79 @@ namespace Sinch.Tests.Conversation.Apps
             Helpers.AssertJsonEqual(Helpers.LoadResources(
                 "Conversation/Apps/ConversationChannelCredentials/Line.json"), actual);
         }
+
+        [Fact]
+        public void DeserializeLineThailandEnterprise()
+        {
+            var json = Helpers.LoadResources(
+                "Conversation/Apps/ConversationChannelCredentials/LineThailandEnterprise.json");
+
+            var result = DeserializeAsConversationClient<ConversationChannelCredentials>(json);
+
+            result.Should().BeEquivalentTo(new ConversationChannelCredentials(
+                new LineThailandEnterpriseCredentials()
+                {
+                    Token = "line enterprise credentials thailand token value",
+                    Secret = "line enterprise credentials thailand secret value",
+                    IsDefault = true
+                }
+            )
+            {
+                Channel = ConversationChannel.Line,
+                CallbackSecret = "callback secret",
+                CredentialOrdinalNumber = 1,
+            });
+        }
+
+        [Fact]
+        public void DeserializeLineJapanEnterprise()
+        {
+            var json = Helpers.LoadResources(
+                "Conversation/Apps/ConversationChannelCredentials/LineJapanEnterprise.json");
+
+            var result = DeserializeAsConversationClient<ConversationChannelCredentials>(json);
+
+            result.Should().BeEquivalentTo(new ConversationChannelCredentials(
+                new LineJapanEnterpriseCredentials
+                {
+                    Token = "line enterprise credentials japan token value",
+                    Secret = "line enterprise credentials japan secret value",
+                    IsDefault = true
+                })
+            {
+                Channel = ConversationChannel.Line,
+                CallbackSecret = "callback secret",
+                CredentialOrdinalNumber = 1,
+                ChannelKnownId = "channel id",
+                State = new ChannelIntegrationState
+                {
+                    Status = ChannelIntegrationStatus.Pending,
+                    Description = "description value"
+                }
+            });
+        }
+
+        [Fact]
+        public void DeserializeLine()
+        {
+            var json = Helpers.LoadResources(
+                "Conversation/Apps/ConversationChannelCredentials/Line.json");
+
+            var result = DeserializeAsConversationClient<ConversationChannelCredentials>(json);
+
+            result.Should().BeEquivalentTo(new ConversationChannelCredentials(
+                new LineCredentials()
+                {
+                    Token = "lineChannel a token value",
+                    Secret = "lineChannel a secret value",
+                    IsDefault = true
+                }
+            )
+            {
+                Channel = ConversationChannel.Line,
+                CallbackSecret = "callback secret",
+                CredentialOrdinalNumber = 1,
+            });
+        }
     }
 }
