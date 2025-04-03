@@ -34,7 +34,7 @@ namespace Sinch.Tests.Sms
             DeliveryReport = DeliveryReport.None,
             SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
             ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
-            CallbackUrl = "https://nickelback.com",
+            CallbackUrl = new Uri("https://nickelback.com"),
             ClientReference = "myReference",
             FeedbackEnabled = false,
             FlashMessage = true,
@@ -90,7 +90,7 @@ namespace Sinch.Tests.Sms
                 DeliveryReport = DeliveryReport.None,
                 SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                 ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
-                CallbackUrl = "https://my.callback.com",
+                CallbackUrl = new Uri("https://my.callback.com"),
                 ClientReference = "myReference",
                 FeedbackEnabled = false,
                 FlashMessage = true,
@@ -142,7 +142,7 @@ namespace Sinch.Tests.Sms
                 DeliveryReport = DeliveryReport.None,
                 SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                 ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
-                CallbackUrl = "https://callback.yes",
+                CallbackUrl = new Uri("https://callback.yes"),
                 ClientReference = "myReference",
                 FeedbackEnabled = false,
                 FlashMessage = true,
@@ -173,7 +173,7 @@ namespace Sinch.Tests.Sms
                 Body = new MediaBody
                 {
                     Message = "Hi ${name} (${an_identifier}) ! How are you?",
-                    Url = "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png"
+                    Url = new Uri("https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png")
                 },
                 Parameters = new Dictionary<string, Dictionary<string, string>>
                 {
@@ -192,7 +192,7 @@ namespace Sinch.Tests.Sms
                 DeliveryReport = DeliveryReport.Summary,
                 SendAt = Helpers.ParseUtc("2019-08-24T14:16:22Z"),
                 ExpireAt = Helpers.ParseUtc("2019-08-24T14:17:22Z"),
-                CallbackUrl = "https://my.callback.com",
+                CallbackUrl = new Uri("https://my.callback.com"),
                 ClientReference = "client reference",
                 FeedbackEnabled = false,
                 StrictValidation = true
@@ -211,7 +211,7 @@ namespace Sinch.Tests.Sms
                 Body = new MediaBody
                 {
                     Message = "Hi ${name} (${an_identifier}) ! How are you?",
-                    Url = "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png",
+                    Url = new Uri("https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png"),
                     Subject = "subject field"
                 },
                 Parameters = new Dictionary<string, Dictionary<string, string>>
@@ -231,7 +231,7 @@ namespace Sinch.Tests.Sms
                 DeliveryReport = DeliveryReport.Summary,
                 SendAt = Helpers.ParseUtc("2019-08-24T14:16:22Z"),
                 ExpireAt = Helpers.ParseUtc("2019-08-24T14:17:22Z"),
-                CallbackUrl = "https://callback.my",
+                CallbackUrl = new Uri("https://callback.my"),
                 ClientReference = "client reference",
                 FeedbackEnabled = false,
                 StrictValidation = true
@@ -259,7 +259,7 @@ namespace Sinch.Tests.Sms
                 DeliveryReport = DeliveryReport.None,
                 SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                 ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
-                CallbackUrl = "https://my.callback.com",
+                CallbackUrl = new Uri("https://my.callback.com"),
                 ClientReference = "myReference",
                 FeedbackEnabled = false,
                 FlashMessage = true,
@@ -347,7 +347,7 @@ namespace Sinch.Tests.Sms
                     DeliveryReport = DeliveryReport.PerRecipient,
                     SendAt = DateTime.UtcNow.AddDays(1),
                     ExpireAt = DateTime.UtcNow.AddDays(2),
-                    CallbackUrl = "https://localhost:2534",
+                    CallbackUrl = new Uri("https://localhost:2534"),
                     FlashMessage = false,
                     ClientReference = "admin",
                     MaxNumberOfMessageParts = 3
@@ -409,7 +409,7 @@ namespace Sinch.Tests.Sms
                     DeliveryReport = DeliveryReport.None,
                     SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                     ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
-                    CallbackUrl = "https://calback.yes",
+                    CallbackUrl = new Uri("https://calback.yes"),
                     ClientReference = "mock-client-ref-123",
                     FeedbackEnabled = true,
                     Parameters = new Dictionary<string, Dictionary<string, string>>
@@ -461,7 +461,7 @@ namespace Sinch.Tests.Sms
                 DeliveryReport = DeliveryReport.None,
                 SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                 ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
-                CallbackUrl = "https://callback.yes",
+                CallbackUrl = new Uri("https://callback.yes"),
                 ClientReference = "myReference",
                 FeedbackEnabled = false,
                 FlashMessage = true,
@@ -498,7 +498,7 @@ namespace Sinch.Tests.Sms
                     DeliveryReport = DeliveryReport.Full,
                     SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
                     ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
-                    CallbackUrl = "https://callback.yes",
+                    CallbackUrl = new Uri("https://callback.yes"),
                     ClientReference = "a client reference",
                     FeedbackEnabled = true,
                     Body = "Hi ${name} (${an_identifier}) ! How are you?",
@@ -536,7 +536,7 @@ namespace Sinch.Tests.Sms
                     Body = new MediaBody
                     {
                         Message = "Hi ${name} (${an_identifier}) ! How are you?",
-                        Url = "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png"
+                        Url = new Uri("https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png")
                     },
                     Parameters = new Dictionary<string, Dictionary<string, string>>
                     {
@@ -555,7 +555,7 @@ namespace Sinch.Tests.Sms
                     DeliveryReport = DeliveryReport.Summary,
                     SendAt = Helpers.ParseUtc("2019-08-24T14:16:22Z"),
                     ExpireAt = Helpers.ParseUtc("2019-08-24T14:17:22Z"),
-                    CallbackUrl = "https://calback.my",
+                    CallbackUrl = new Uri("https://calback.my"),
                     ClientReference = "a client reference",
                     FeedbackEnabled = true,
                     StrictValidation = true
@@ -575,7 +575,7 @@ namespace Sinch.Tests.Sms
                     Body = new MediaBody
                     {
                         Message = "Hi ${name} (${an_identifier}) ! How are you?",
-                        Url = "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png",
+                        Url = new Uri("https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png"),
                         Subject = "subject field"
                     },
                     Parameters = new Dictionary<string, Dictionary<string, string>>
@@ -595,7 +595,7 @@ namespace Sinch.Tests.Sms
                     DeliveryReport = DeliveryReport.Summary,
                     SendAt = Helpers.ParseUtc("2019-08-24T14:16:22Z"),
                     ExpireAt = Helpers.ParseUtc("2019-08-24T14:17:22Z"),
-                    CallbackUrl = "https://callback.my",
+                    CallbackUrl = new Uri("https://callback.my"),
                     ClientReference = "client reference",
                     FeedbackEnabled = false,
                     StrictValidation = true

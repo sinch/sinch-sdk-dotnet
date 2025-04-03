@@ -66,9 +66,9 @@ namespace Sinch.SMS.Batches.Send
         /// </summary>
         [JsonPropertyName("url")]
 #if NET7_0_OR_GREATER
-        public required string Url { get; set; }
+        public required Uri Url { get; set; }
 #else
-        public string Url { get; set; } = null!;
+        public Uri Url { get; set; } = null!;
 #endif
 
 
