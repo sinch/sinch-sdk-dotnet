@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Sinch.SMS.Batches.Send;
@@ -110,5 +111,19 @@ namespace Sinch.SMS.Batches.Update
         ///     .
         /// </summary>
         public Uri? CallbackUrl { get; set; }
+
+
+        /// <summary>
+        ///     The client identifier of a batch message. If set, the identifier will be added in the delivery report/callback of this batch
+        /// </summary>
+        [JsonPropertyName("client_reference")]
+        public string? ClientReference { get; set; }
+
+        /// <summary>
+        ///     If set to &#x60;true&#x60;, then [feedback](/docs/sms/api-reference/sms/tag/Batches/#tag/Batches/operation/deliveryFeedback) is expected after successful delivery.
+        /// </summary>
+        [JsonPropertyName("feedback_enabled")]
+        public bool? FeedbackEnabled { get; set; }
+
     }
 }
