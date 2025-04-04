@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using RichardSzalay.MockHttp;
@@ -19,6 +20,31 @@ namespace Sinch.Tests.Sms
 {
     public class BatchesTests : SmsTestBase
     {
+        private BinaryBatch _binaryBatchResponse = new BinaryBatch
+        {
+            Id = "01FC66621XXXXX119Z8PMV1QPQ",
+            To = new List<string>
+            {
+                "+15551231234",
+                "+15551256344"
+            },
+            From = "+15551231234",
+            Canceled = false,
+            Body = "Hi ${name} (${an_identifier}) ! How are you?",
+            DeliveryReport = DeliveryReport.None,
+            SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
+            ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
+            CallbackUrl = new Uri("https://nickelback.com"),
+            ClientReference = "myReference",
+            FeedbackEnabled = false,
+            FlashMessage = true,
+            TruncateConcat = true,
+            MaxNumberOfMessageParts = 1,
+            FromTon = 6,
+            FromNpi = 18,
+            Udh = "foo udh"
+        };
+
         private static readonly object Batch = new
         {
             id = "01FC66621XXXXX119Z8PMV1QPQ",
@@ -49,43 +75,82 @@ namespace Sinch.Tests.Sms
             HttpMessageHandlerMock
                 .When(HttpMethod.Post, $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/batches")
                 .WithHeaders("Authorization", $"Bearer {Token}")
-                .WithPartialContent("irythil")
-                .Respond(HttpStatusCode.OK, JsonContent.Create(Batch));
+                .WithJson(Helpers.LoadResources("Sms/Batch/SendTextBatchRequest.json"))
+                .Respond("application/json", Helpers.LoadResources("Sms/Batch/TextResponse.json"));
 
-            var request = new SendTextBatchRequest()
+            var response = await Sms.Batches.Send(new SendTextBatchRequest
             {
-                Body = "Hi ${name}! How are you?",
-                DeliveryReport = DeliveryReport.Full,
-                To = new List<string> { "15551231234", "15551256344" },
-                From = "15551231234",
+                To = new List<string>
+                {
+                    "+15551231234",
+                    "+15551256344"
+                },
+                From = "+15551231234",
+                Body = "Hi ${name} (${an_identifier}) ! How are you?",
+                DeliveryReport = DeliveryReport.None,
+                SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
+                ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
+                CallbackUrl = new Uri("https://my.callback.com"),
+                ClientReference = "myReference",
+                FeedbackEnabled = false,
+                FlashMessage = true,
+                TruncateConcat = true,
+                MaxNumberOfMessageParts = 1,
+                FromTon = 6,
+                FromNpi = 18,
                 Parameters = new Dictionary<string, Dictionary<string, string>>
                 {
+                    ["name"] = new Dictionary<string, string>
                     {
-                        "name", new Dictionary<string, string>
-                        {
-                            { "msisdn", "123" },
-                            { "default_value", "irythil" }
-                        }
+                        ["15551231234"] = "name value for 15551231234",
+                        ["15551256344"] = "name value for 15551256344",
+                        ["default"] = "default value"
+                    },
+                    ["an_identifier"] = new Dictionary<string, string>
+                    {
+                        ["15551231234"] = "an identifier value for 15551231234",
+                        ["15551256344"] = "an identifier value for 15551256344"
+                    }
+                }
+            });
+
+            response.Should().BeOfType<TextBatch>().Which.Should().BeEquivalentTo(new TextBatch
+            {
+                Id = "01FC66621XXXXX119Z8PMV1QPQ",
+                To = new List<string>
+                {
+                    "+15551231234",
+                    "+15551256344"
+                },
+                From = "+15551231234",
+                Canceled = false,
+                Parameters = new Dictionary<string, Dictionary<string, string>>
+                {
+                    ["name"] = new Dictionary<string, string>
+                    {
+                        ["15551231234"] = "name value for 15551231234",
+                        ["15551256344"] = "name value for 15551256344",
+                        ["default"] = "default value"
+                    },
+                    ["an_identifier"] = new Dictionary<string, string>
+                    {
+                        ["15551231234"] = "an identifier value for 15551231234",
+                        ["15551256344"] = "an identifier value for 15551256344"
                     }
                 },
-                SendAt = DateTime.Parse("2019-08-24T14:15:22Z"),
-                ExpireAt = DateTime.Parse("2019-08-24T14:15:22Z"),
-                CallbackUrl = new Uri("http://localhost:1202"),
-                ClientReference = "string",
+                Body = "Hi ${name} (${an_identifier}) ! How are you?",
+                DeliveryReport = DeliveryReport.None,
+                SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
+                ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
+                CallbackUrl = new Uri("https://callback.yes"),
+                ClientReference = "myReference",
                 FeedbackEnabled = false,
-                FlashMessage = false,
+                FlashMessage = true,
                 TruncateConcat = true,
                 MaxNumberOfMessageParts = 1,
                 FromTon = 6,
                 FromNpi = 18
-            };
-
-            var response = await Sms.Batches.Send(request);
-
-            var textBatch = response.Should().BeOfType<BinaryBatch>().Which;
-
-            textBatch.DeliveryReport.Should().Be(DeliveryReport.Full);
-            textBatch.Type.Should().Be(SmsType.MtBinary);
+            });
         }
 
         [Fact]
@@ -94,52 +159,83 @@ namespace Sinch.Tests.Sms
             HttpMessageHandlerMock
                 .When(HttpMethod.Post, $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/batches")
                 .WithHeaders("Authorization", $"Bearer {Token}")
-                .WithJson(new
-                {
-                    body = new
-                    {
-                        url = "http://hello.world",
-                        message = "HI"
-                    },
-                    to = new[] { "123", "456" },
-                    strict_validation = true,
-                    type = "mt_media",
-                    feedback_enabled = false,
-                })
-                .Respond(HttpStatusCode.OK, JsonContent.Create(new
-                {
-                    id = "1",
-                    strict_validation = true,
-                    type = "mt_media",
-                    body = new
-                    {
-                        url = "http://hello.world",
-                        message = "HI"
-                    },
-                    to = new[] { "123", "456" },
-                }));
+                .WithJson(Helpers.LoadResources("Sms/Batch/SendMediaBatchRequest.json"))
+                .Respond("application/json", Helpers.LoadResources("Sms/Batch/MediaResponse.json"));
 
-            var request = new SendMediaBatchRequest()
+            var response = await Sms.Batches.Send(new SendMediaBatchRequest
             {
-                Body = new MediaBody()
+                To = new List<string>
                 {
-                    Message = "HI",
-                    Url = new Uri("http://hello.world")
+                    "+15551231234",
+                    "+15551256344"
                 },
-                To = new List<string>()
+                From = "+15551231234",
+                Body = new MediaBody
                 {
-                    "123", "456",
+                    Message = "Hi ${name} (${an_identifier}) ! How are you?",
+                    Url = new Uri("https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png")
                 },
-                StrictValidation = true,
+                Parameters = new Dictionary<string, Dictionary<string, string>>
+                {
+                    ["name"] = new Dictionary<string, string>
+                    {
+                        ["15551231234"] = "name value for 15551231234",
+                        ["15551256344"] = "name value for 15551256344",
+                        ["default"] = "default value"
+                    },
+                    ["an_identifier"] = new Dictionary<string, string>
+                    {
+                        ["15551231234"] = "an identifier value for 15551231234",
+                        ["15551256344"] = "an identifier value for 15551256344"
+                    }
+                },
+                DeliveryReport = DeliveryReport.Summary,
+                SendAt = Helpers.ParseUtc("2019-08-24T14:16:22Z"),
+                ExpireAt = Helpers.ParseUtc("2019-08-24T14:17:22Z"),
+                CallbackUrl = new Uri("https://my.callback.com"),
+                ClientReference = "client reference",
                 FeedbackEnabled = false,
-            };
+                StrictValidation = true
+            });
 
-            var response = await Sms.Batches.Send(request);
-
-            var mediaBatch = response.Should().BeOfType<MediaBatch>().Which;
-
-            mediaBatch.Id.Should().Be("1");
-            mediaBatch.StrictValidation.Should().BeTrue();
+            response.Should().BeOfType<MediaBatch>().Which.Should().BeEquivalentTo(new MediaBatch()
+            {
+                Id = "01FC66621XXXXX119Z8PMV1QPQ",
+                To = new List<string>
+                {
+                    "+15551231234",
+                    "+15551256344"
+                },
+                From = "+15551231234",
+                Canceled = false,
+                Body = new MediaBody
+                {
+                    Message = "Hi ${name} (${an_identifier}) ! How are you?",
+                    Url = new Uri("https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png"),
+                    Subject = "subject field"
+                },
+                Parameters = new Dictionary<string, Dictionary<string, string>>
+                {
+                    ["name"] = new Dictionary<string, string>
+                    {
+                        ["15551231234"] = "name value for 15551231234",
+                        ["15551256344"] = "name value for 15551256344",
+                        ["default"] = "default value"
+                    },
+                    ["an_identifier"] = new Dictionary<string, string>
+                    {
+                        ["15551231234"] = "an identifier value for 15551231234",
+                        ["15551256344"] = "an identifier value for 15551256344"
+                    }
+                },
+                DeliveryReport = DeliveryReport.Summary,
+                SendAt = Helpers.ParseUtc("2019-08-24T14:16:22Z"),
+                ExpireAt = Helpers.ParseUtc("2019-08-24T14:17:22Z"),
+                CallbackUrl = new Uri("https://callback.my"),
+                ClientReference = "client reference",
+                FeedbackEnabled = false,
+                StrictValidation = true
+            });
         }
 
         [Fact]
@@ -148,42 +244,33 @@ namespace Sinch.Tests.Sms
             HttpMessageHandlerMock
                 .When(HttpMethod.Post, $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/batches")
                 .WithHeaders("Authorization", $"Bearer {Token}")
-                .WithJson(new
-                {
-                    body = "Holla!",
-                    to = new[] { "123", "456" },
-                    type = "mt_binary",
-                    feedback_enabled = false,
-                    flash_message = true,
-                    truncate_concat = false,
-                })
-                .Respond(HttpStatusCode.OK, JsonContent.Create(new
-                {
-                    id = "1",
-                    type = "mt_binary",
-                    flash_message = true,
-                    body = "Holla!",
-                    to = new[] { "123", "456" }
-                }));
+                .WithJson(Helpers.LoadResources("Sms/Batch/SendBinaryBatchRequest.json"))
+                .Respond("application/json", Helpers.LoadResources("Sms/Batch/BinaryResponse.json"));
 
-            var request = new SendBinaryBatchRequest()
+            var response = await Sms.Batches.Send(new SendBinaryBatchRequest
             {
-                Body = "Holla!",
-                To = new List<string>()
+                To = new List<string>
                 {
-                    "123", "456",
+                    "+15551231234",
+                    "+15551256344"
                 },
-                FlashMessage = true,
-                TruncateConcat = false,
+                From = "+15551231234",
+                Body = Convert.ToBase64String(Encoding.UTF8.GetBytes("Hi ${name} (${an_identifier}) ! How are you?")),
+                DeliveryReport = DeliveryReport.None,
+                SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
+                ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
+                CallbackUrl = new Uri("https://my.callback.com"),
+                ClientReference = "myReference",
                 FeedbackEnabled = false,
-            };
+                FlashMessage = true,
+                TruncateConcat = true,
+                MaxNumberOfMessageParts = 1,
+                FromTon = 6,
+                FromNpi = 18,
+                Udh = Convert.ToHexString(Encoding.UTF8.GetBytes("foo udh"))
+            });
 
-            var response = await Sms.Batches.Send(request);
-
-            var mediaBatch = response.Should().BeOfType<BinaryBatch>().Which;
-
-            mediaBatch.Id.Should().Be("1");
-            mediaBatch.FlashMessage.Should().BeTrue();
+            response.Should().BeOfType<BinaryBatch>().Which.Should().BeEquivalentTo(_binaryBatchResponse);
         }
 
         [Fact]
@@ -296,35 +383,223 @@ namespace Sinch.Tests.Sms
         }
 
         [Fact]
-        public async Task Update()
+        public async Task UpdateText()
         {
             var uri = $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/batches/01FC66621XXXXX119Z8PMV1QPQ";
             HttpMessageHandlerMock.When(HttpMethod.Post, uri)
                 .WithHeaders("Authorization", $"Bearer {Token}")
-                .WithPartialContent("31231323")
-                .Respond(HttpStatusCode.OK, JsonContent.Create(Batch));
+                .WithJson(Helpers.LoadResources("Sms/Batch/UpdateTextRequest.json"))
+                .Respond("application/json", Helpers.LoadResources("Sms/Batch/TextResponse.json"));
 
             var response = await Sms.Batches.Update("01FC66621XXXXX119Z8PMV1QPQ",
-                new UpdateTextBatchRequest()
+                new UpdateTextBatchRequest
                 {
-                    Body = null,
-                    From = "31231323",
-                    CallbackUrl = new Uri("http://localhost:3452"),
-                    DeliveryReport = DeliveryReport.Summary,
-                    ExpireAt = DateTime.UtcNow.AddDays(3),
-                    SendAt = DateTime.Now.AddDays(5),
                     ToAdd = new List<string>
                     {
-                        "123",
-                        "456"
+                        "+15551231234",
+                        "+15551256344"
                     },
                     ToRemove = new List<string>
                     {
-                        "987"
-                    }
+                        "+15550001111",
+                        "+15550002222"
+                    },
+                    From = "+15551231234",
+                    Body = "Hi ${name} (${an_identifier}) ! How are you?",
+                    DeliveryReport = DeliveryReport.None,
+                    SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
+                    ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
+                    CallbackUrl = new Uri("https://calback.yes"),
+                    ClientReference = "mock-client-ref-123",
+                    FeedbackEnabled = true,
+                    Parameters = new Dictionary<string, Dictionary<string, string>>
+                    {
+                        ["name"] = new Dictionary<string, string>
+                        {
+                            ["15551231234"] = "name value for 15551231234",
+                            ["15551256344"] = "name value for 15551256344",
+                            ["default"] = "default value"
+                        },
+                        ["an_identifier"] = new Dictionary<string, string>
+                        {
+                            ["15551231234"] = "an identifier value for 15551231234",
+                            ["15551256344"] = "an identifier value for 15551256344"
+                        }
+                    },
+                    MaxNumberOfMessageParts = 5,
+                    FromTon = 1,
+                    FromNpi = 2,
+                    TruncateConcat = true,
+                    FlashMessage = true
                 });
 
-            response.Should().BeOfType<BinaryBatch>().Which.Udh.Should().Be("udh_");
+            response.Should().BeOfType<TextBatch>().Which.Should().BeEquivalentTo(new TextBatch
+            {
+                Id = "01FC66621XXXXX119Z8PMV1QPQ",
+                To = new List<string>
+                {
+                    "+15551231234",
+                    "+15551256344"
+                },
+                From = "+15551231234",
+                Canceled = false,
+                Parameters = new Dictionary<string, Dictionary<string, string>>
+                {
+                    ["name"] = new Dictionary<string, string>
+                    {
+                        ["15551231234"] = "name value for 15551231234",
+                        ["15551256344"] = "name value for 15551256344",
+                        ["default"] = "default value"
+                    },
+                    ["an_identifier"] = new Dictionary<string, string>
+                    {
+                        ["15551231234"] = "an identifier value for 15551231234",
+                        ["15551256344"] = "an identifier value for 15551256344"
+                    }
+                },
+                Body = "Hi ${name} (${an_identifier}) ! How are you?",
+                DeliveryReport = DeliveryReport.None,
+                SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
+                ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
+                CallbackUrl = new Uri("https://callback.yes"),
+                ClientReference = "myReference",
+                FeedbackEnabled = false,
+                FlashMessage = true,
+                TruncateConcat = true,
+                MaxNumberOfMessageParts = 1,
+                FromTon = 6,
+                FromNpi = 18
+            });
+        }
+
+        [Fact]
+        public async Task UpdateBinary()
+        {
+            var uri = $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/batches/01FC66621XXXXX119Z8PMV1QPQ";
+            HttpMessageHandlerMock.When(HttpMethod.Post, uri)
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(Helpers.LoadResources("Sms/Batch/UpdateBinaryRequest.json"))
+                .Respond("application/json", Helpers.LoadResources("Sms/Batch/BinaryResponse.json"));
+
+            var response = await Sms.Batches.Update("01FC66621XXXXX119Z8PMV1QPQ",
+                new UpdateBinaryBatchRequest
+                {
+                    ToAdd = new List<string>
+                    {
+                        "+15551231234",
+                        "+15987365412"
+                    },
+                    ToRemove = new List<string>
+                    {
+                        "+0123456789",
+                        "+9876543210"
+                    },
+                    From = "+15551231234",
+                    DeliveryReport = DeliveryReport.Full,
+                    SendAt = Helpers.ParseUtc("2019-08-24T14:19:22Z"),
+                    ExpireAt = Helpers.ParseUtc("2019-08-24T14:21:22Z"),
+                    CallbackUrl = new Uri("https://callback.yes"),
+                    ClientReference = "a client reference",
+                    FeedbackEnabled = true,
+                    Body = "Hi ${name} (${an_identifier}) ! How are you?",
+                    Udh = "foo udh",
+                    FromTon = 3,
+                    FromNpi = 10
+                });
+
+            response.Should().BeOfType<BinaryBatch>().Which.Should().BeEquivalentTo(_binaryBatchResponse);
+        }
+
+        [Fact]
+        public async Task UpdateMedia()
+        {
+            var uri = $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/batches/01FC66621XXXXX119Z8PMV1QPQ";
+            HttpMessageHandlerMock.When(HttpMethod.Post, uri)
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(Helpers.LoadResources("Sms/Batch/UpdateMediaRequest.json"))
+                .Respond("application/json", Helpers.LoadResources("Sms/Batch/MediaResponse.json"));
+
+            var response = await Sms.Batches.Update("01FC66621XXXXX119Z8PMV1QPQ",
+                new UpdateMediaBatchRequest()
+                {
+                    ToAdd = new List<string>
+                    {
+                        "+15551231234",
+                        "+15987365412"
+                    },
+                    ToRemove = new List<string>
+                    {
+                        "+0123456789",
+                        "+9876543210"
+                    },
+                    From = "+15551231234",
+                    Body = new MediaBody
+                    {
+                        Message = "Hi ${name} (${an_identifier}) ! How are you?",
+                        Url = new Uri("https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png")
+                    },
+                    Parameters = new Dictionary<string, Dictionary<string, string>>
+                    {
+                        ["name"] = new Dictionary<string, string>
+                        {
+                            ["15551231234"] = "name value for 15551231234",
+                            ["15551256344"] = "name value for 15551256344",
+                            ["default"] = "default value"
+                        },
+                        ["an_identifier"] = new Dictionary<string, string>
+                        {
+                            ["15551231234"] = "an identifier value for 15551231234",
+                            ["15551256344"] = "an identifier value for 15551256344"
+                        }
+                    },
+                    DeliveryReport = DeliveryReport.Summary,
+                    SendAt = Helpers.ParseUtc("2019-08-24T14:16:22Z"),
+                    ExpireAt = Helpers.ParseUtc("2019-08-24T14:17:22Z"),
+                    CallbackUrl = new Uri("https://calback.my"),
+                    ClientReference = "a client reference",
+                    FeedbackEnabled = true,
+                    StrictValidation = true
+                });
+
+            response.Should().BeOfType<MediaBatch>().Which.Should().BeEquivalentTo(
+                new MediaBatch
+                {
+                    Id = "01FC66621XXXXX119Z8PMV1QPQ",
+                    To = new List<string>
+                    {
+                        "+15551231234",
+                        "+15551256344"
+                    },
+                    From = "+15551231234",
+                    Canceled = false,
+                    Body = new MediaBody
+                    {
+                        Message = "Hi ${name} (${an_identifier}) ! How are you?",
+                        Url = new Uri("https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png"),
+                        Subject = "subject field"
+                    },
+                    Parameters = new Dictionary<string, Dictionary<string, string>>
+                    {
+                        ["name"] = new Dictionary<string, string>
+                        {
+                            ["15551231234"] = "name value for 15551231234",
+                            ["15551256344"] = "name value for 15551256344",
+                            ["default"] = "default value"
+                        },
+                        ["an_identifier"] = new Dictionary<string, string>
+                        {
+                            ["15551231234"] = "an identifier value for 15551231234",
+                            ["15551256344"] = "an identifier value for 15551256344"
+                        }
+                    },
+                    DeliveryReport = DeliveryReport.Summary,
+                    SendAt = Helpers.ParseUtc("2019-08-24T14:16:22Z"),
+                    ExpireAt = Helpers.ParseUtc("2019-08-24T14:17:22Z"),
+                    CallbackUrl = new Uri("https://callback.my"),
+                    ClientReference = "client reference",
+                    FeedbackEnabled = false,
+                    StrictValidation = true
+                });
         }
 
         [Fact]

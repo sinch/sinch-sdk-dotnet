@@ -1,0 +1,22 @@
+{
+  "to_add": [
+    "+15551231234",
+    "+15987365412"
+  ],
+  "to_remove": [
+    "+0123456789",
+    "+9876543210"
+  ],
+  "from": "+15551231234",
+  "type": "mt_binary",
+  "delivery_report": "full",
+  "send_at": "2019-08-24T14:19:22Z",
+  "expire_at": "2019-08-24T14:21:22Z",
+  "callback_url": "https://callback.yes",
+  "client_reference": "a client reference",
+  "feedback_enabled": true,
+  "body": "Hi ${name} (${an_identifier}) ! How are you?",
+  "udh": "foo udh",
+  "from_ton": 3,
+  "from_npi": 10
+}

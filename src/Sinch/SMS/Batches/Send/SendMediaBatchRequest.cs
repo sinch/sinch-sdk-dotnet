@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.SMS.Batches.Send
 {
@@ -40,16 +42,50 @@ namespace Sinch.SMS.Batches.Send
         public Dictionary<string, Dictionary<string, string>>? Parameters { get; set; }
     }
 
+    /// <summary>
+    ///     The message content, including a URL to the media file
+    /// </summary>
     public sealed class MediaBody
     {
         /// <summary>
-        ///     URL to the media file
+        ///     The subject text
         /// </summary>
-        public Uri? Url { get; set; }
+        [JsonPropertyName("subject")]
+        public string? Subject { get; set; }
+
 
         /// <summary>
-        ///   The message text. Text only media messages will be rejected, please use SMS instead.  
+        ///     The message text. Text only media messages will be rejected, please use SMS instead.
         /// </summary>
+        [JsonPropertyName("message")]
         public string? Message { get; set; }
+
+
+        /// <summary>
+        ///     URL to the media file
+        /// </summary>
+        [JsonPropertyName("url")]
+#if NET7_0_OR_GREATER
+        public required Uri Url { get; set; }
+#else
+        public Uri Url { get; set; } = null!;
+#endif
+
+
+        /// <summary>
+        ///     Returns the string presentation of the object
+        /// </summary>
+        /// <returns>String presentation of the object</returns>
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append($"class {nameof(MediaBody)} {{\n");
+            sb.Append($"  {nameof(Subject)}: ").Append(Subject).Append('\n');
+            sb.Append($"  {nameof(Message)}: ").Append(Message).Append('\n');
+            sb.Append($"  {nameof(Url)}: ").Append(Url).Append('\n');
+            sb.Append("}\n");
+            return sb.ToString();
+        }
+
     }
 }
