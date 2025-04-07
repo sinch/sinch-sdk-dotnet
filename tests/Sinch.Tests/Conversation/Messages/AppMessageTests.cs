@@ -27,7 +27,7 @@ namespace Sinch.Tests.Conversation.Messages
                     {
                         Title = "title value",
                         Description = "description value",
-                        MediaMessage = new CardMessageMediaMessage()
+                        MediaMessage = new MediaProperties()
                         {
                             Url = "url value"
                         },
@@ -386,6 +386,12 @@ namespace Sinch.Tests.Conversation.Messages
                 {
                     CatalogId = "catalog ID value",
                     Menu = "menu value"
+                },
+                Media = new MediaProperties
+                {
+                    ThumbnailUrl = "another url",
+                    Url = "an url value",
+                    FilenameOverride = "filename override value"
                 }
             })
             {
@@ -916,7 +922,7 @@ namespace Sinch.Tests.Conversation.Messages
             {
                 Title = "title value",
                 Description = "description value",
-                MediaMessage = new CardMessageMediaMessage()
+                MediaMessage = new MediaProperties()
                 {
                     Url = "url value",
                 },
@@ -1196,6 +1202,201 @@ namespace Sinch.Tests.Conversation.Messages
                     Menu = "menu value"
                 }
             }));
+        }
+
+
+        [Fact]
+        public void DeserializeOrderDetailsChannelSpecificMessage()
+        {
+            var json = Helpers.LoadResources(
+                "Conversation/Messages/ChannelSpecific/OrderDetailsChannelSpecificMessage.json");
+
+            var result = DeserializeAsConversationClient<IChannelSpecificMessage>(json);
+
+            result.As<OrderDetailsPaymentMessage>().Should().BeEquivalentTo(
+                new OrderDetailsPaymentMessage()
+                {
+                    Message = new OrderDetails
+                    {
+                        Header = new WhatsAppInteractiveDocumentHeader()
+                        {
+                            Document = new WhatsAppInteractiveHeaderMedia()
+                            {
+                                Link = "a document URL link"
+                            }
+                        },
+                        Body = new WhatsAppInteractiveBody
+                        {
+                            Text = "Flow message body"
+                        },
+                        Footer = new WhatsAppInteractiveFooter
+                        {
+                            Text = "Flow message footer"
+                        },
+                        Payment = new OrderDetailsPayment()
+                        {
+                            Type = OrderDetailsPayment.TypeEnum.Br,
+                            ReferenceId = "a reference ID",
+                            TypeOfGoods = TypeOfGoods.DigitalGoods,
+                            PaymentSettings = new OrderDetailsPaymentSettings()
+                            {
+                                DynamicPix =
+                                    new OrderDetailsPaymentSettingsDynamicPix()
+                                    {
+                                        Code = "code value",
+                                        MerchantName = "merchant name",
+                                        Key = "key value",
+                                        KeyType =
+                                            OrderDetailsPaymentSettingsDynamicPix
+                                                .KeyTypeEnum.Cnpj
+                                    }
+                            },
+                            TotalAmountValue = 1200,
+                            Order = new OrderDetailsPaymentOrder()
+                            {
+                                CatalogId = "catalog id",
+                                ExpirationTime = "1741934627",
+                                ExpirationDescription = "expiration description",
+                                SubtotalValue = 6000,
+                                TaxValue = 7000,
+                                TaxDescription = "tax description",
+                                ShippingValue = 5000,
+                                ShippingDescription = "shipping description",
+                                DiscountValue = 1000,
+                                DiscountDescription = "discount description",
+                                DiscountProgramName = "discount program name",
+                                Items = new List<OrderDetailsPaymentOrderItems>
+                                {
+                                    new()
+                                    {
+                                        RetailerId = "item retailer id",
+                                        Name = "item name",
+                                        AmountValue = 2000,
+                                        Quantity = 3000,
+                                        SaleAmountValue = 4000
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void DeserializeOrderStatusChannelSpecificMessage()
+        {
+            var json = Helpers.LoadResources(
+                "Conversation/Messages/ChannelSpecific/OrderStatusChannelSpecificMessage.json");
+
+            var result = DeserializeAsConversationClient<IChannelSpecificMessage>(json);
+
+            result.As<OrderStatusPaymentMessage>().Should().BeEquivalentTo(
+                new OrderStatusPaymentMessage()
+                {
+                    Message = new OrderStatus
+                    {
+                        Header = new WhatsAppInteractiveDocumentHeader
+                        {
+                            Document = new WhatsAppInteractiveHeaderMedia
+                            {
+                                Link = "a document URL link"
+                            }
+                        },
+                        Body = new WhatsAppInteractiveBody
+                        {
+                            Text = "Flow message body"
+                        },
+                        Footer = new WhatsAppInteractiveFooter
+                        {
+                            Text = "Flow message footer"
+                        },
+                        Payment = new OrderStatusPayment
+                        {
+                            ReferenceId = "order status reference id",
+                            Order = new OrderStatusPaymentDetails
+                            {
+                                Status = OrderStatusPaymentDetails.StatusEnum.Canceled,
+                                Description = "Order canceled"
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void DeserializeOrderDetailsChannelSpecificMessagePlain()
+        {
+            var json = Helpers.LoadResources(
+                "Conversation/Messages/ChannelSpecific/OrderDetails.json");
+
+            var result = DeserializeAsConversationClient<OrderDetails>(json);
+
+            result.Should().BeEquivalentTo(new OrderDetails
+            {
+                Header = new WhatsAppInteractiveDocumentHeader
+                {
+                    Document = new WhatsAppInteractiveHeaderMedia
+                    {
+                        Link = "a document URL link"
+                    }
+                },
+                Body = new WhatsAppInteractiveBody
+                {
+                    Text = "Flow message body"
+                },
+                Footer = new WhatsAppInteractiveFooter
+                {
+                    Text = "Flow message footer"
+                },
+                Payment = new OrderDetailsPayment()
+                {
+                    Type = OrderDetailsPayment.TypeEnum.Br,
+                    ReferenceId = "a reference ID",
+                    TypeOfGoods = TypeOfGoods.DigitalGoods,
+                    PaymentSettings = new OrderDetailsPaymentSettings
+                    {
+                        DynamicPix =
+                                new OrderDetailsPaymentSettingsDynamicPix
+                                {
+                                    Code = "code value",
+                                    MerchantName = "merchant name",
+                                    Key = "key value",
+                                    KeyType =
+                                        OrderDetailsPaymentSettingsDynamicPix
+                                            .KeyTypeEnum.Cnpj
+                                }
+                    },
+                    TotalAmountValue = 1200,
+                    Order = new OrderDetailsPaymentOrder
+                    {
+                        CatalogId = "catalog id",
+                        ExpirationTime = "1741934627",
+                        ExpirationDescription = "expiration description",
+                        SubtotalValue = 6000,
+                        TaxValue = 7000,
+                        TaxDescription = "tax description",
+                        ShippingValue = 5000,
+                        ShippingDescription = "shipping description",
+                        DiscountValue = 1000,
+                        DiscountDescription = "discount description",
+                        DiscountProgramName = "discount program name",
+                        Items = new List<OrderDetailsPaymentOrderItems>
+                            {
+                                new OrderDetailsPaymentOrderItems
+                                {
+                                    RetailerId = "item retailer id",
+                                    Name = "item name",
+                                    AmountValue = 2000,
+                                    Quantity = 3000,
+                                    SaleAmountValue = 4000
+                                }
+                            }
+                    }
+                }
+            }
+            );
         }
     }
 }

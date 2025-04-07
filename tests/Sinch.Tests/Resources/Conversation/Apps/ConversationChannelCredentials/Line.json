@@ -1,0 +1,10 @@
+{
+  "channel": "LINE",
+  "line_credentials": {
+    "token": "lineChannel a token value",
+    "secret": "lineChannel a secret value",
+    "is_default": true
+  },
+  "callback_secret": "callback secret",
+  "credential_ordinal_number": 1
+}

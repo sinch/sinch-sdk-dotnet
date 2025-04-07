@@ -114,8 +114,7 @@ namespace Sinch.Conversation.Messages.Message
         #endregion
 
         /// <summary>
-        ///     Optional. Channel specific messages, overriding any transcoding.
-        ///     The key in the map must point to a valid conversation channel as defined by the enum ConversationChannel.
+        ///     Allows you to specify a channel and define a corresponding channel specific message payload that will override the standard Conversation API message types. The key in the map must point to a valid conversation channel as defined in the enum &#x60;ConversationChannel&#x60;. The message content must be provided in string format. You may use the [transcoding endpoint](https://developers.sinch.com/docs/conversation/api-reference/conversation/tag/Transcoding/) to help create your message. For more information about how to construct an explicit channel message for a particular channel, see that [channel&#39;s corresponding documentation](https://developers.sinch.com/docs/conversation/channel-support/) (for example, using explicit channel messages with [the WhatsApp channel](https://developers.sinch.com/docs/conversation/channel-support/whatsapp/message-support/#explicit-channel-messages)).
         /// </summary>
         [JsonPropertyName("explicit_channel_message")]
         public Dictionary<ConversationChannel, string>? ExplicitChannelMessage { get; set; }
@@ -129,6 +128,9 @@ namespace Sinch.Conversation.Messages.Message
         [JsonPropertyName("channel_specific_message")]
         public Dictionary<ConversationChannel, IChannelSpecificMessage>? ChannelSpecificMessage { get; set; }
 
+        /// <summary>
+        ///     Override the message&#39;s content for specified channels. The key in the map must point to a valid conversation channel as defined in the enum &#x60;ConversationChannel&#x60;. The content defined under the specified channel will be sent on that channel.
+        /// </summary>
         [JsonPropertyName("explicit_channel_omni_message")]
         public Dictionary<ChannelSpecificTemplate, IOmniMessageOverride>? ExplicitChannelOmniMessage { get; set; }
 
@@ -142,6 +144,8 @@ namespace Sinch.Conversation.Messages.Message
     ///     A message containing a channel specific message (not supported by OMNI types).
     /// </summary>
     [JsonDerivedType(typeof(FlowMessage))]
+    [JsonDerivedType(typeof(OrderDetailsPaymentMessage))]
+    [JsonDerivedType(typeof(OrderStatusPaymentMessage))]
     [JsonConverter(typeof(ChannelSpecificMessageJsonInterfaceConverter))]
     public interface IChannelSpecificMessage
     {
@@ -150,7 +154,6 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         public MessageType MessageType { get; }
     }
-
 
 
     [JsonConverter(typeof(EnumRecordJsonConverter<ChannelSpecificTemplate>))]
@@ -174,6 +177,14 @@ namespace Sinch.Conversation.Messages.Message
             if (MessageType.Flows.Value == method)
                 return elem.Deserialize<FlowMessage>(options) ??
                        throw new InvalidOperationException($"{nameof(FlowMessage)} deserialization result is null.");
+            if (MessageType.OrderDetails.Value == method)
+                return elem.Deserialize<OrderDetailsPaymentMessage>(options) ??
+                       throw new InvalidOperationException(
+                           $"{nameof(OrderDetailsPaymentMessage)} deserialization result is null.");
+            if (MessageType.OrderStatus.Value == method)
+                return elem.Deserialize<OrderStatusPaymentMessage>(options) ??
+                       throw new InvalidOperationException(
+                           $"{nameof(OrderStatusPaymentMessage)} deserialization result is null.");
 
             throw new JsonException(
                 $"Failed to match {nameof(IChannelSpecificMessage)}, got prop `{descriptor.Name}` with value `{method}`");
@@ -195,6 +206,26 @@ namespace Sinch.Conversation.Messages.Message
         public FlowChannelSpecificMessage? Message { get; set; }
     }
 
+    public sealed class OrderDetailsPaymentMessage : IChannelSpecificMessage
+    {
+        [JsonPropertyName("message_type")]
+        [JsonInclude]
+        public MessageType MessageType { get; private set; } = MessageType.OrderDetails;
+
+        [JsonPropertyName("message")]
+        public OrderDetails? Message { get; set; }
+    }
+
+    public sealed class OrderStatusPaymentMessage : IChannelSpecificMessage
+    {
+        [JsonPropertyName("message_type")]
+        [JsonInclude]
+        public MessageType MessageType { get; private set; } = MessageType.OrderStatus;
+
+        [JsonPropertyName("message")]
+        public OrderStatus? Message { get; set; }
+    }
+
     /// <summary>
     ///     Defines MessageType
     /// </summary>
@@ -202,5 +233,7 @@ namespace Sinch.Conversation.Messages.Message
     public record MessageType(string Value) : EnumRecord(Value)
     {
         public static readonly MessageType Flows = new("FLOWS");
+        public static readonly MessageType OrderDetails = new("ORDER_DETAILS");
+        public static readonly MessageType OrderStatus = new("ORDER_STATUS");
     }
 }

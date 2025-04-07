@@ -9,6 +9,7 @@ using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Json;
+using Newtonsoft.Json.Linq;
 using RichardSzalay.MockHttp;
 using Sinch.Conversation;
 using Sinch.Conversation.Common;
@@ -311,7 +312,10 @@ namespace Sinch.Tests.Conversation
         public void SerializeFlowChannelSpecificMessage()
         {
             var val = JsonSerializer.Serialize(_flowMessage);
-            val.Should().BeValidJson().And.BeEquivalentTo(FlowsRawJson);
+            var expectedJson = JObject.Parse(FlowsRawJson);
+            var actualJson = JObject.Parse(val);
+
+            actualJson.Should().BeEquivalentTo(expectedJson);
         }
 
         [Fact]

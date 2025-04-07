@@ -34,7 +34,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     Gets or Sets MediaMessage
         /// </summary>
         [JsonPropertyName("media_message")]
-        public CardMessageMediaMessage? MediaMessage { get; set; }
+        public MediaProperties? MediaMessage { get; set; }
 
 
         /// <summary>
