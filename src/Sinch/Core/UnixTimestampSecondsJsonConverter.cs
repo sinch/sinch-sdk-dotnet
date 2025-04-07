@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Core
 {
-    public sealed class UnixTimestampJsonConverter : JsonConverter<DateTime?>
+    public sealed class UnixTimestampSecondsJsonConverter : JsonConverter<DateTime?>
     {
         public override DateTime? Read(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)
@@ -13,10 +13,10 @@ namespace Sinch.Core
                 return null;
             var value = reader.GetString();
             if (value == null)
-                throw new JsonException("Expected Unix timestamp as a string.");
+                throw new JsonException("Expected Unix timestamp in seconds as a string representing a number, got null.");
             if (!long.TryParse(value, out var timestamp))
             {
-                throw new JsonException("Expected Unix timestamp as a number.");
+                throw new JsonException("Failed to parse Unix timestamp as a string to Long.");
             }
 
             return DateTimeOffset.FromUnixTimeSeconds(timestamp).UtcDateTime;
