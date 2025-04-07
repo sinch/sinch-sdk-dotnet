@@ -144,8 +144,8 @@ namespace Sinch.Conversation.Messages.Message
     ///     A message containing a channel specific message (not supported by OMNI types).
     /// </summary>
     [JsonDerivedType(typeof(FlowMessage))]
-    [JsonDerivedType(typeof(PaymentOrderDetailsMessage))]
-    [JsonDerivedType(typeof(PaymentOrderStatusMessage))]
+    [JsonDerivedType(typeof(OrderDetailsPaymentMessage))]
+    [JsonDerivedType(typeof(OrderStatusPaymentMessage))]
     [JsonConverter(typeof(ChannelSpecificMessageJsonInterfaceConverter))]
     public interface IChannelSpecificMessage
     {
@@ -178,13 +178,13 @@ namespace Sinch.Conversation.Messages.Message
                 return elem.Deserialize<FlowMessage>(options) ??
                        throw new InvalidOperationException($"{nameof(FlowMessage)} deserialization result is null.");
             if (MessageType.OrderDetails.Value == method)
-                return elem.Deserialize<PaymentOrderDetailsMessage>(options) ??
+                return elem.Deserialize<OrderDetailsPaymentMessage>(options) ??
                        throw new InvalidOperationException(
-                           $"{nameof(PaymentOrderDetailsMessage)} deserialization result is null.");
+                           $"{nameof(OrderDetailsPaymentMessage)} deserialization result is null.");
             if (MessageType.OrderStatus.Value == method)
-                return elem.Deserialize<PaymentOrderStatusMessage>(options) ??
+                return elem.Deserialize<OrderStatusPaymentMessage>(options) ??
                        throw new InvalidOperationException(
-                           $"{nameof(PaymentOrderStatusMessage)} deserialization result is null.");
+                           $"{nameof(OrderStatusPaymentMessage)} deserialization result is null.");
 
             throw new JsonException(
                 $"Failed to match {nameof(IChannelSpecificMessage)}, got prop `{descriptor.Name}` with value `{method}`");
@@ -206,7 +206,7 @@ namespace Sinch.Conversation.Messages.Message
         public FlowChannelSpecificMessage? Message { get; set; }
     }
 
-    public sealed class PaymentOrderDetailsMessage : IChannelSpecificMessage
+    public sealed class OrderDetailsPaymentMessage : IChannelSpecificMessage
     {
         [JsonPropertyName("message_type")]
         [JsonInclude]
@@ -216,14 +216,14 @@ namespace Sinch.Conversation.Messages.Message
         public PaymentOrderDetails? Message { get; set; }
     }
 
-    public sealed class PaymentOrderStatusMessage : IChannelSpecificMessage
+    public sealed class OrderStatusPaymentMessage : IChannelSpecificMessage
     {
         [JsonPropertyName("message_type")]
         [JsonInclude]
         public MessageType MessageType { get; private set; } = MessageType.OrderStatus;
 
         [JsonPropertyName("message")]
-        public PaymentOrderStatusChannelSpecificMessage? Message { get; set; }
+        public OrderStatus? Message { get; set; }
     }
 
     /// <summary>

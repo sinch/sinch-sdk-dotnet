@@ -8,16 +8,16 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     ///     The payment settings.
     /// </summary>
     // ref name: PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettings
-    public sealed class PaymentOrderDetailsPaymentSettings
+    public sealed class OrderDetailsPaymentSettings
     {
         /// <summary>
         ///     Gets or Sets DynamicPix
         /// </summary>
         [JsonPropertyName("dynamic_pix")]
 #if NET7_0_OR_GREATER
-        public required PaymentOrderDetailsSettingsDynamicPix DynamicPix { get; set; }
+        public required OrderDetailsPaymentSettingsDynamicPix DynamicPix { get; set; }
 #else
-        public PaymentOrderDetailsSettingsDynamicPix DynamicPix { get; set; } =
+        public OrderDetailsPaymentSettingsDynamicPix DynamicPix { get; set; } =
             null!;
 #endif
 
@@ -29,7 +29,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(PaymentOrderDetailsPaymentSettings)} {{\n");
+            sb.Append($"class {nameof(OrderDetailsPaymentSettings)} {{\n");
             sb.Append($"  {nameof(DynamicPix)}: ").Append(DynamicPix).Append('\n');
             sb.Append("}\n");
             return sb.ToString();
@@ -40,7 +40,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     ///     The dynamic Pix payment settings.
     /// </summary>
     // name ref: PaymentOrderDetailsChannelSpecificMessagePaymentPaymentSettingsDynamicPix
-    public sealed class PaymentOrderDetailsSettingsDynamicPix
+    public sealed class OrderDetailsPaymentSettingsDynamicPix
     {
         /// <summary>
         /// Pix key type.
@@ -108,7 +108,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         {
             var sb = new StringBuilder();
             sb.Append(
-                $"class {nameof(PaymentOrderDetailsSettingsDynamicPix)} {{\n");
+                $"class {nameof(OrderDetailsPaymentSettingsDynamicPix)} {{\n");
             sb.Append($"  {nameof(Code)}: ").Append(Code).Append('\n');
             sb.Append($"  {nameof(MerchantName)}: ").Append(MerchantName).Append('\n');
             sb.Append($"  {nameof(Key)}: ").Append(Key).Append('\n');

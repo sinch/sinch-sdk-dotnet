@@ -7,7 +7,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     ///     The payment order status message content
     /// </summary>
     // ref name: PaymentOrderStatusChannelSpecificMessagePayment
-    public sealed class PaymentOrderStatusPayment
+    public sealed class OrderStatusPayment
     {
         /// <summary>
         ///     Unique ID used to query the current payment status.
@@ -38,7 +38,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(PaymentOrderStatusPayment)} {{\n");
+            sb.Append($"class {nameof(OrderStatusPayment)} {{\n");
             sb.Append($"  {nameof(ReferenceId)}: ").Append(ReferenceId).Append('\n');
             sb.Append($"  {nameof(Order)}: ").Append(Order).Append('\n');
             sb.Append("}\n");

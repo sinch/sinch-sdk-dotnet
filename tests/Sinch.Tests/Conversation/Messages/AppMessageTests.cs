@@ -1213,8 +1213,8 @@ namespace Sinch.Tests.Conversation.Messages
 
             var result = DeserializeAsConversationClient<IChannelSpecificMessage>(json);
 
-            result.As<PaymentOrderDetailsMessage>().Should().BeEquivalentTo(
-                new PaymentOrderDetailsMessage()
+            result.As<OrderDetailsPaymentMessage>().Should().BeEquivalentTo(
+                new OrderDetailsPaymentMessage()
                 {
                     Message = new PaymentOrderDetails
                     {
@@ -1238,16 +1238,16 @@ namespace Sinch.Tests.Conversation.Messages
                             Type = PaymentOrderDetailsPayment.TypeEnum.Br,
                             ReferenceId = "a reference ID",
                             TypeOfGoods = TypeOfGoods.DigitalGoods,
-                            PaymentSettings = new PaymentOrderDetailsPaymentSettings()
+                            PaymentSettings = new OrderDetailsPaymentSettings()
                             {
                                 DynamicPix =
-                                    new PaymentOrderDetailsSettingsDynamicPix()
+                                    new OrderDetailsPaymentSettingsDynamicPix()
                                     {
                                         Code = "code value",
                                         MerchantName = "merchant name",
                                         Key = "key value",
                                         KeyType =
-                                            PaymentOrderDetailsSettingsDynamicPix
+                                            OrderDetailsPaymentSettingsDynamicPix
                                                 .KeyTypeEnum.Cnpj
                                     }
                             },
@@ -1291,10 +1291,10 @@ namespace Sinch.Tests.Conversation.Messages
 
             var result = DeserializeAsConversationClient<IChannelSpecificMessage>(json);
 
-            result.As<PaymentOrderStatusMessage>().Should().BeEquivalentTo(
-                new PaymentOrderStatusMessage()
+            result.As<OrderStatusPaymentMessage>().Should().BeEquivalentTo(
+                new OrderStatusPaymentMessage()
                 {
-                    Message = new PaymentOrderStatusChannelSpecificMessage
+                    Message = new OrderStatus
                     {
                         Header = new WhatsAppInteractiveDocumentHeader
                         {
@@ -1311,7 +1311,7 @@ namespace Sinch.Tests.Conversation.Messages
                         {
                             Text = "Flow message footer"
                         },
-                        Payment = new PaymentOrderStatusPayment
+                        Payment = new OrderStatusPayment
                         {
                             ReferenceId = "order status reference id",
                             Order = new PaymentOrderStatusPaymentOrder
@@ -1355,16 +1355,16 @@ namespace Sinch.Tests.Conversation.Messages
                     Type = PaymentOrderDetailsPayment.TypeEnum.Br,
                     ReferenceId = "a reference ID",
                     TypeOfGoods = TypeOfGoods.DigitalGoods,
-                    PaymentSettings = new PaymentOrderDetailsPaymentSettings
+                    PaymentSettings = new OrderDetailsPaymentSettings
                     {
                         DynamicPix =
-                                new PaymentOrderDetailsSettingsDynamicPix
+                                new OrderDetailsPaymentSettingsDynamicPix
                                 {
                                     Code = "code value",
                                     MerchantName = "merchant name",
                                     Key = "key value",
                                     KeyType =
-                                        PaymentOrderDetailsSettingsDynamicPix
+                                        OrderDetailsPaymentSettingsDynamicPix
                                             .KeyTypeEnum.Cnpj
                                 }
                     },

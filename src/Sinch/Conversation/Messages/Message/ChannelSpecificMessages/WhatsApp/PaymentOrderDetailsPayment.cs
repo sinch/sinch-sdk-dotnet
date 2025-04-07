@@ -59,7 +59,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     Gets or Sets PaymentSettings
         /// </summary>
         [JsonPropertyName("payment_settings")]
-        public PaymentOrderDetailsPaymentSettings? PaymentSettings { get; set; }
+        public OrderDetailsPaymentSettings? PaymentSettings { get; set; }
 
 
         /// <summary>
