@@ -25,9 +25,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         /// </summary>
         [JsonPropertyName("order")]
 #if NET7_0_OR_GREATER
-        public required PaymentOrderStatusPaymentOrder Order { get; set; }
+        public required OrderStatusPaymentDetails Order { get; set; }
 #else
-        public PaymentOrderStatusPaymentOrder Order { get; set; } = null!;
+        public OrderStatusPaymentDetails Order { get; set; } = null!;
 #endif
 
 

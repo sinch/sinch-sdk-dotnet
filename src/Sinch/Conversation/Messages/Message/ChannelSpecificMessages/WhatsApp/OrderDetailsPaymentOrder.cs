@@ -7,7 +7,8 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     /// <summary>
     ///     The payment order.
     /// </summary>
-    public sealed class PaymentOrderDetailsChannelSpecificMessagePaymentOrder
+    // name ref: PaymentOrderDetailsChannelSpecificMessagePaymentOrder
+    public sealed class OrderDetailsPaymentOrder
     {
         /// <summary>
         ///     Unique ID of the Facebook catalog being used by the business.
@@ -99,9 +100,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         /// </summary>
         [JsonPropertyName("items")]
 #if NET7_0_OR_GREATER
-        public required List<PaymentOrderDetailsPaymentOrderItems> Items { get; set; }
+        public required List<OrderDetailsPaymentOrderItems> Items { get; set; }
 #else
-        public List<PaymentOrderDetailsPaymentOrderItems> Items { get; set; } = null!;
+        public List<OrderDetailsPaymentOrderItems> Items { get; set; } = null!;
 #endif
 
 
@@ -112,7 +113,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(PaymentOrderDetailsChannelSpecificMessagePaymentOrder)} {{\n");
+            sb.Append($"class {nameof(OrderDetailsPaymentOrder)} {{\n");
             sb.Append($"  {nameof(CatalogId)}: ").Append(CatalogId).Append('\n');
             sb.Append($"  {nameof(ExpirationTime)}: ").Append(ExpirationTime).Append('\n');
             sb.Append($"  {nameof(ExpirationDescription)}: ").Append(ExpirationDescription).Append('\n');

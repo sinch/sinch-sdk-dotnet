@@ -1216,7 +1216,7 @@ namespace Sinch.Tests.Conversation.Messages
             result.As<OrderDetailsPaymentMessage>().Should().BeEquivalentTo(
                 new OrderDetailsPaymentMessage()
                 {
-                    Message = new PaymentOrderDetails
+                    Message = new OrderDetails
                     {
                         Header = new WhatsAppInteractiveDocumentHeader()
                         {
@@ -1233,9 +1233,9 @@ namespace Sinch.Tests.Conversation.Messages
                         {
                             Text = "Flow message footer"
                         },
-                        Payment = new PaymentOrderDetailsPayment()
+                        Payment = new OrderDetailsPayment()
                         {
-                            Type = PaymentOrderDetailsPayment.TypeEnum.Br,
+                            Type = OrderDetailsPayment.TypeEnum.Br,
                             ReferenceId = "a reference ID",
                             TypeOfGoods = TypeOfGoods.DigitalGoods,
                             PaymentSettings = new OrderDetailsPaymentSettings()
@@ -1252,7 +1252,7 @@ namespace Sinch.Tests.Conversation.Messages
                                     }
                             },
                             TotalAmountValue = 1200,
-                            Order = new PaymentOrderDetailsChannelSpecificMessagePaymentOrder()
+                            Order = new OrderDetailsPaymentOrder()
                             {
                                 CatalogId = "catalog id",
                                 ExpirationTime = "1741934627",
@@ -1265,7 +1265,7 @@ namespace Sinch.Tests.Conversation.Messages
                                 DiscountValue = 1000,
                                 DiscountDescription = "discount description",
                                 DiscountProgramName = "discount program name",
-                                Items = new List<PaymentOrderDetailsPaymentOrderItems>
+                                Items = new List<OrderDetailsPaymentOrderItems>
                                 {
                                     new()
                                     {
@@ -1314,9 +1314,9 @@ namespace Sinch.Tests.Conversation.Messages
                         Payment = new OrderStatusPayment
                         {
                             ReferenceId = "order status reference id",
-                            Order = new PaymentOrderStatusPaymentOrder
+                            Order = new OrderStatusPaymentDetails
                             {
-                                Status = PaymentOrderStatusPaymentOrder.StatusEnum.Canceled,
+                                Status = OrderStatusPaymentDetails.StatusEnum.Canceled,
                                 Description = "Order canceled"
                             }
                         }
@@ -1331,9 +1331,9 @@ namespace Sinch.Tests.Conversation.Messages
             var json = Helpers.LoadResources(
                 "Conversation/Messages/ChannelSpecific/OrderDetails.json");
 
-            var result = DeserializeAsConversationClient<PaymentOrderDetails>(json);
+            var result = DeserializeAsConversationClient<OrderDetails>(json);
 
-            result.Should().BeEquivalentTo(new PaymentOrderDetails
+            result.Should().BeEquivalentTo(new OrderDetails
             {
                 Header = new WhatsAppInteractiveDocumentHeader
                 {
@@ -1350,9 +1350,9 @@ namespace Sinch.Tests.Conversation.Messages
                 {
                     Text = "Flow message footer"
                 },
-                Payment = new PaymentOrderDetailsPayment()
+                Payment = new OrderDetailsPayment()
                 {
-                    Type = PaymentOrderDetailsPayment.TypeEnum.Br,
+                    Type = OrderDetailsPayment.TypeEnum.Br,
                     ReferenceId = "a reference ID",
                     TypeOfGoods = TypeOfGoods.DigitalGoods,
                     PaymentSettings = new OrderDetailsPaymentSettings
@@ -1369,7 +1369,7 @@ namespace Sinch.Tests.Conversation.Messages
                                 }
                     },
                     TotalAmountValue = 1200,
-                    Order = new PaymentOrderDetailsChannelSpecificMessagePaymentOrder
+                    Order = new OrderDetailsPaymentOrder
                     {
                         CatalogId = "catalog id",
                         ExpirationTime = "1741934627",
@@ -1382,9 +1382,9 @@ namespace Sinch.Tests.Conversation.Messages
                         DiscountValue = 1000,
                         DiscountDescription = "discount description",
                         DiscountProgramName = "discount program name",
-                        Items = new List<PaymentOrderDetailsPaymentOrderItems>
+                        Items = new List<OrderDetailsPaymentOrderItems>
                             {
-                                new PaymentOrderDetailsPaymentOrderItems
+                                new OrderDetailsPaymentOrderItems
                                 {
                                     RetailerId = "item retailer id",
                                     Name = "item name",

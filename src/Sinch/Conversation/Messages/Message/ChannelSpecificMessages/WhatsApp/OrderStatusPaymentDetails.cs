@@ -8,7 +8,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     ///     The payment order.
     /// </summary>
     // ref name: PaymentOrderStatusChannelSpecificMessagePaymentOrder
-    public sealed class PaymentOrderStatusPaymentOrder
+    public sealed class OrderStatusPaymentDetails
     {
         /// <summary>
         /// The new payment message status.
@@ -50,7 +50,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(PaymentOrderStatusPaymentOrder)} {{\n");
+            sb.Append($"class {nameof(OrderStatusPaymentDetails)} {{\n");
             sb.Append($"  {nameof(Status)}: ").Append(Status).Append('\n');
             sb.Append($"  {nameof(Description)}: ").Append(Description).Append('\n');
             sb.Append("}\n");

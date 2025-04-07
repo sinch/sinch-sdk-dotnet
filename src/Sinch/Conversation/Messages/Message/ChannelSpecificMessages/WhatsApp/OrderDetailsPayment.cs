@@ -8,7 +8,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     ///     The payment order details content.
     /// </summary>
     // ref name: PaymentOrderDetailsChannelSpecificMessagePayment
-    public sealed class PaymentOrderDetailsPayment
+    public sealed class OrderDetailsPayment
     {
         /// <summary>
         /// The country/currency associated with the payment message.
@@ -31,9 +31,6 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         public TypeEnum Type { get; set; } = null!;
 #endif
 
-
-
-
         /// <summary>
         /// The type of good associated with this order.
         /// </summary>
@@ -54,13 +51,11 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         public string ReferenceId { get; set; } = null!;
 #endif
 
-
         /// <summary>
         ///     Gets or Sets PaymentSettings
         /// </summary>
         [JsonPropertyName("payment_settings")]
         public OrderDetailsPaymentSettings? PaymentSettings { get; set; }
-
 
         /// <summary>
         ///     Integer representing the total amount of the transaction.
@@ -72,15 +67,14 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         public int TotalAmountValue { get; set; }
 #endif
 
-
         /// <summary>
         ///     Gets or Sets Order
         /// </summary>
         [JsonPropertyName("order")]
 #if NET7_0_OR_GREATER
-        public required PaymentOrderDetailsChannelSpecificMessagePaymentOrder Order { get; set; }
+        public required OrderDetailsPaymentOrder Order { get; set; }
 #else
-        public PaymentOrderDetailsChannelSpecificMessagePaymentOrder Order { get; set; } = null!;
+        public OrderDetailsPaymentOrder Order { get; set; } = null!;
 #endif
 
 
@@ -91,7 +85,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(PaymentOrderDetailsPayment)} {{\n");
+            sb.Append($"class {nameof(OrderDetailsPayment)} {{\n");
             sb.Append($"  {nameof(Type)}: ").Append(Type).Append('\n');
             sb.Append($"  {nameof(ReferenceId)}: ").Append(ReferenceId).Append('\n');
             sb.Append($"  {nameof(TypeOfGoods)}: ").Append(TypeOfGoods).Append('\n');
