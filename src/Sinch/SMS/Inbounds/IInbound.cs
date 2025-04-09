@@ -28,6 +28,9 @@ namespace Sinch.SMS.Inbounds
             if (SmsType.Binary.Value == method)
                 return elem.Deserialize<BinaryInbound>(options);
 
+            if (SmsType.Media.Value == method)
+                return elem.Deserialize<MediaInbound>(options);
+
             throw new JsonException(
                 $"Failed to match verification method object, got prop `{descriptor.Name}` with value `{method}`");
         }

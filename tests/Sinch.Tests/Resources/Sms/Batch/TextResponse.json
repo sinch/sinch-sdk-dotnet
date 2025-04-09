@@ -1,0 +1,35 @@
+{
+  "id": "01FC66621XXXXX119Z8PMV1QPQ",
+  "to": [
+    "+15551231234",
+    "+15551256344"
+  ],
+  "from": "+15551231234",
+  "canceled": false,
+  "parameters": {
+    "name": {
+      "15551231234": "name value for 15551231234",
+      "15551256344": "name value for 15551256344",
+      "default": "default value"
+    },
+    "an_identifier": {
+      "15551231234": "an identifier value for 15551231234",
+      "15551256344": "an identifier value for 15551256344"
+    }
+  },
+  "body": "Hi ${name} (${an_identifier}) ! How are you?",
+  "type": "mt_text",
+  "created_at": "2019-08-24T14:15:22Z",
+  "modified_at": "2019-08-24T14:17:22Z",
+  "delivery_report": "none",
+  "send_at": "2019-08-24T14:19:22Z",
+  "expire_at": "2019-08-24T14:21:22Z",
+  "callback_url": "https://callback.yes",
+  "client_reference": "myReference",
+  "feedback_enabled": false,
+  "flash_message": true,
+  "truncate_concat": true,
+  "max_number_of_message_parts": 1,
+  "from_ton": 6,
+  "from_npi": 18
+}

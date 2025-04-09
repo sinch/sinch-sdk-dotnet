@@ -39,6 +39,11 @@ namespace Sinch.Conversation.Messages.Message
         [JsonPropertyName("message_properties")]
         public ListMessageMessageProperties? MessageProperties { get; set; }
 
+        /// <summary>
+        ///     Gets or Sets Media
+        /// </summary>
+        [JsonPropertyName("media")]
+        public MediaProperties? Media { get; set; }
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -52,6 +57,7 @@ namespace Sinch.Conversation.Messages.Message
             sb.Append("  Description: ").Append(Description).Append("\n");
             sb.Append("  Sections: ").Append(Sections).Append("\n");
             sb.Append("  MessageProperties: ").Append(MessageProperties).Append("\n");
+            sb.Append("  Media: ").Append(Media).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

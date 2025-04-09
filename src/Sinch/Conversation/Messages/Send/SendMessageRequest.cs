@@ -7,6 +7,7 @@ using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.Message;
+using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Send
 {
@@ -29,7 +30,11 @@ namespace Sinch.Conversation.Messages.Send
 
 
         /// <summary>
-        ///     Overwrites the default callback url for delivery receipts for this message The REST URL should be of the form: &#x60;http://host[:port]/path&#x60;
+        ///     Overwrites the default callback url for delivery receipts for this message.
+        ///     Note that you may
+        ///     [define a `secret_for_overridden_callback_urls` at the app level](https://developers.sinch.com/docs/conversation/api-reference/conversation/tag/App/operation/App_UpdateApp!path=callback_settings/secret_for_overridden_callback_urls&amp;t=request)
+        ///     this secret will be used to sign the contents of delivery receipts when the default
+        ///     callback URL is overridden by this property. The REST URL should be of the form: `http://host[:port]/path`
         /// </summary>
         public Uri? CallbackUrl { get; set; }
 
@@ -83,21 +88,15 @@ namespace Sinch.Conversation.Messages.Send
 
 
         /// <summary>
-        ///     Metadata that should be associated with the conversation.
-        ///     This metadata will be propagated on MO callbacks associated with this conversation.
-        ///     Up to 1024 characters long.
-        ///     Note that the MO callback will always use the last metadata available in the conversation.
-        ///     Important notes:   <br/><br/>
-        ///     - If you send a message with the &#x60;conversation_metadata&#x60; field populated,
-        ///     and then send another message without populating the &#x60;conversation_metadata&#x60; field,
-        ///     the original metadata will continue be propagated on the related MO callbacks.  <br/><br/>
-        ///     - If you send a message with the &#x60;conversation_metadata&#x60; field populated, and then
-        ///     send another message with a different value for &#x60;conversation_metadata&#x60;
-        ///     in the same conversation, the latest metadata value overwrites the existing one.
-        ///     So, future MO callbacks will include the new metadata.  <br/><br/>
-        ///     - The &#x60;conversation_metadata&#x60; only accepts json objects.
-        ///     Currently only returned in the &#x60;message_metadata&#x60;
-        ///     field of an [Inbound Message](/docs/conversation/callbacks/#inbound-message) callback.
+        ///  Metadata that will be associated with the conversation in `CONVERSATION` mode and with the specified recipient identities in `DISPATCH` mode.
+        ///  This metadata will be propagated on MO callbacks associated
+        ///  with the respective conversation or user identity. Up to 2048 characters long.
+        ///  Note that the MO callback will always use the last metadata available.<br /><br />
+        ///  Important notes:<br />
+        ///     - If you send a message with the `conversation_metadata` field populated, and then send another message without populating the `conversation_metadata` field, the original metadata will continue be propagated on the related MO callbacks.<br />
+        ///     - If you send a message with the `conversation_metadata` field populated, and then send another message with a different value for `conversation_metadata` in the same conversation, the latest metadata value overwrites the existing one. So, future MO callbacks will include the new metadata.<br />
+        ///     - The `conversation_metadata` only accepts json objects.<br />
+        ///   Currently only returned in the `message_metadata` field of an [Inbound Message](https://developers.sinch.com/docs/conversation/callbacks/#inbound-message) callback.
         /// </summary>
         public JsonObject? ConversationMetadata { get; set; }
 
@@ -129,10 +128,22 @@ namespace Sinch.Conversation.Messages.Send
 
 
         /// <summary>
-        ///     An arbitrary identifier that will be propagated to callbacks related to this message, including MO replies. Only applicable to messages sent with the &#x60;CONVERSATION&#x60; processing mode. Up to 128 characters long.
+        ///     An arbitrary identifier that will be propagated to callbacks related to this message, including MO messages from the recipient. The &#x60;correlation_id&#x60; is associated with the conversation in &#x60;CONVERSATION&#x60; mode and with the specified recipient identities in &#x60;DISPATCH&#x60; mode. The MO callbacks will always include the last &#x60;correlation_id&#x60; available, (which is similar to how the &#x60;conversation_metadata&#x60; property functions). Up to 128 characters long.
         /// </summary>
         public string? CorrelationId { get; set; }
 
+
+        /// <summary>
+        ///     Gets or Sets MessageContentType
+        /// </summary>
+        [JsonPropertyName("message_content_type")]
+        public MessageContentType? MessageContentType { get; set; }
+
+        /// <summary>
+        ///     Gets or Sets ConversationMetadataUpdateStrategy
+        /// </summary>
+        [JsonPropertyName("conversation_metadata_update_strategy")]
+        public MetadataUpdateStrategy? ConversationMetadataUpdateStrategy { get; set; }
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -140,23 +151,60 @@ namespace Sinch.Conversation.Messages.Send
         /// <returns>String presentation of the object</returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("class SendMessageRequest {\n");
-            sb.Append("  AppId: ").Append(AppId).Append("\n");
-            sb.Append("  CallbackUrl: ").Append(CallbackUrl).Append("\n");
-            sb.Append("  ChannelPriorityOrder: ").Append(ChannelPriorityOrder).Append("\n");
-            sb.Append("  ChannelProperties: ").Append(ChannelProperties).Append("\n");
-            sb.Append("  Message: ").Append(Message).Append("\n");
-            sb.Append("  MessageMetadata: ").Append(MessageMetadata).Append("\n");
-            sb.Append("  ConversationMetadata: ").Append(ConversationMetadata).Append("\n");
-            sb.Append("  Queue: ").Append(Queue).Append("\n");
-            sb.Append("  Recipient: ").Append(Recipient).Append("\n");
-            sb.Append("  Ttl: ").Append(TtlSeconds).Append("\n");
-            sb.Append("  ProcessingStrategy: ").Append(ProcessingStrategy).Append("\n");
-            sb.Append("  CorrelationId: ").Append(CorrelationId).Append("\n");
+            var sb = new StringBuilder();
+            sb.Append($"class {nameof(SendMessageRequest)} {{\n");
+            sb.Append($"  {nameof(AppId)}: ").Append(AppId).Append('\n');
+            sb.Append($"  {nameof(CallbackUrl)}: ").Append(CallbackUrl).Append('\n');
+            sb.Append($"  {nameof(ChannelPriorityOrder)}: ").Append(ChannelPriorityOrder).Append('\n');
+            sb.Append($"  {nameof(ChannelProperties)}: ").Append(ChannelProperties).Append('\n');
+            sb.Append($"  {nameof(Message)}: ").Append(Message).Append('\n');
+            sb.Append($"  {nameof(MessageMetadata)}: ").Append(MessageMetadata).Append('\n');
+            sb.Append($"  {nameof(ConversationMetadata)}: ").Append(ConversationMetadata).Append('\n');
+            sb.Append($"  {nameof(Queue)}: ").Append(Queue).Append('\n');
+            sb.Append($"  {nameof(Recipient)}: ").Append(Recipient).Append('\n');
+            sb.Append($"  {nameof(TtlSeconds)}: ").Append(TtlSeconds).Append('\n');
+            sb.Append($"  {nameof(ProcessingStrategy)}: ").Append(ProcessingStrategy).Append('\n');
+            sb.Append($"  {nameof(CorrelationId)}: ").Append(CorrelationId).Append('\n');
+            sb.Append($"  {nameof(ConversationMetadataUpdateStrategy)}: ").Append(ConversationMetadataUpdateStrategy)
+                .Append('\n');
+            sb.Append($"  {nameof(MessageContentType)}: ").Append(MessageContentType).Append('\n');
             sb.Append("}\n");
             return sb.ToString();
         }
+    }
+
+    /// <summary>
+    ///     This field classifies the message content for use with Sinch&#39;s [consent management functionality](https://developers.sinch.com/docs/conversation/consent-management/). Note that this field is currently only used with Sinch&#39;s consent management functionality, and is not referenced elsewhere by the Conversation API.
+    /// </summary>
+    /// <value>This field classifies the message content for use with Sinch&#39;s [consent management functionality](https://developers.sinch.com/docs/conversation/consent-management/). Note that this field is currently only used with Sinch&#39;s consent management functionality, and is not referenced elsewhere by the Conversation API.</value>
+    [JsonConverter(typeof(EnumRecordJsonConverter<MessageContentType>))]
+    public sealed record MessageContentType(string Value) : EnumRecord(Value)
+    {
+        /// <summary>
+        ///     The default content type, when the content is not clearly defined, can be any type of content.
+        /// </summary>
+        public static readonly MessageContentType ContentUnknown = new("CONTENT_UNKNOWN");
+
+        /// <summary>
+        ///     Type that indicates that the content is related to Marketing, like marketing campaign messages.
+        /// </summary>
+        public static readonly MessageContentType ContentMarketing = new("CONTENT_MARKETING");
+
+        /// <summary>
+        ///      Type that indicates that the content is related to Notifications, like charges and alerts.
+        /// </summary>
+        public static readonly MessageContentType ContentNotification = new("CONTENT_NOTIFICATION");
+    }
+
+    /// <summary>
+    ///     Update strategy for the &#x60;conversation_metadata&#x60; field. Only supported in &#x60;CONVERSATION&#x60; processing mode.
+    /// </summary>
+    /// <value>Update strategy for the &#x60;conversation_metadata&#x60; field. Only supported in &#x60;CONVERSATION&#x60; processing mode.</value>
+    [JsonConverter(typeof(EnumRecordJsonConverter<MetadataUpdateStrategy>))]
+    public sealed record MetadataUpdateStrategy(string Value) : EnumRecord(Value)
+    {
+        public static readonly MetadataUpdateStrategy Replace = new("REPLACE");
+        public static readonly MetadataUpdateStrategy MergePatch = new("MERGE_PATCH");
     }
 
     public sealed class TimeToLiveConverter : JsonConverter<int?>

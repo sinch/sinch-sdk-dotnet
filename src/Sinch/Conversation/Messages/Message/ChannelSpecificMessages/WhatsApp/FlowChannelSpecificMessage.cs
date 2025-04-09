@@ -7,7 +7,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     /// <summary>
     ///     A message type for sending WhatsApp Flows.
     /// </summary>
-    public sealed class FlowChannelSpecificMessage
+    public sealed class FlowChannelSpecificMessage : ChannelSpecificCommonProps
     {
         /// <summary>
         /// The mode in which the flow is.
@@ -44,25 +44,12 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         [JsonPropertyName("flow_action")]
         public FlowActionType? FlowAction { get; set; }
 
-        /// <summary>
-        ///     Gets or Sets Header
-        /// </summary>
-        [JsonPropertyName("header")]
-        public IFlowChannelSpecificMessageHeader? Header { get; set; }
 
 
-        /// <summary>
-        ///     Gets or Sets Body
-        /// </summary>
-        [JsonPropertyName("body")]
-        public WhatsAppInteractiveBody? Body { get; set; }
 
 
-        /// <summary>
-        ///     Gets or Sets Footer
-        /// </summary>
-        [JsonPropertyName("footer")]
-        public WhatsAppInteractiveFooter? Footer { get; set; }
+
+
 
 
         /// <summary>

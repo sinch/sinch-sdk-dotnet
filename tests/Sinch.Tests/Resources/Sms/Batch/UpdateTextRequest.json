@@ -1,0 +1,35 @@
+{
+  "to_add": [
+    "+15551231234",
+    "+15551256344"
+  ],
+  "to_remove": [
+    "+15550001111",
+    "+15550002222"
+  ],
+  "from": "+15551231234",
+  "body": "Hi ${name} (${an_identifier}) ! How are you?",
+  "type": "mt_text",
+  "delivery_report": "none",
+  "send_at": "2019-08-24T14:19:22Z",
+  "expire_at": "2019-08-24T14:21:22Z",
+  "callback_url": "https://calback.yes",
+  "client_reference": "mock-client-ref-123",
+  "feedback_enabled": true,
+  "parameters": {
+    "name": {
+      "15551231234": "name value for 15551231234",
+      "15551256344": "name value for 15551256344",
+      "default": "default value"
+    },
+    "an_identifier": {
+      "15551231234": "an identifier value for 15551231234",
+      "15551256344": "an identifier value for 15551256344"
+    }
+  },
+  "max_number_of_message_parts": 5,
+  "from_ton": 1,
+  "from_npi": 2,
+  "truncate_concat": true,
+  "flash_message": true
+}

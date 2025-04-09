@@ -90,6 +90,46 @@ namespace Sinch.Tests.Sms
         }
 
         [Fact]
+        public async Task GetMediaInbound()
+        {
+            var json = Helpers.LoadResources("Sms/Inbounds/InboundMedia.json");
+            const string inboundId = "media-inbound";
+            HttpMessageHandlerMock
+                .When(HttpMethod.Get, $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/inbounds/{inboundId}")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .Respond("application/json", json);
+
+            var response = await Sms.Inbounds.Get(inboundId);
+
+            response.Should().NotBeNull();
+            response.Should().BeOfType<MediaInbound>().Which.Should().BeEquivalentTo(new MediaInbound
+            {
+                ClientReference = "a client reference",
+                From = "+11203494390",
+                Id = "01FC66621XXXXX119Z8PMV1QPA",
+                OperatorId = "35000",
+                ReceivedAt = Helpers.ParseUtc("2019-08-24T14:17:22Z"),
+                SentAt = Helpers.ParseUtc("2019-08-24T14:15:22Z"),
+                To = "11203453453",
+                Body = new MmsMoBody
+                {
+                    Subject = "mmy subject",
+                    Message = "my message",
+                    Media = new List<MmsMedia>
+                    {
+                        new MmsMedia
+                        {
+                            Url = "https://foo.url",
+                            ContentType = "content/type",
+                            Status = new MmsMedia.StatusEnum("a status"),
+                            Code = 1234
+                        }
+                    }
+                }
+            });
+        }
+
+        [Fact]
         public async Task List()
         {
             var url = $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/inbounds";
