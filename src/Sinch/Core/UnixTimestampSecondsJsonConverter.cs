@@ -11,9 +11,12 @@ namespace Sinch.Core
         {
             if (reader.TokenType == JsonTokenType.Null)
                 return null;
+            if (reader.TokenType != JsonTokenType.String)
+                throw new JsonException("Expected String token type. Got " + reader.TokenType);
             var value = reader.GetString();
-            if (value == null)
-                throw new JsonException("Expected Unix timestamp in seconds as a string representing a number, got null.");
+            if (string.IsNullOrEmpty(value))
+                throw new JsonException(
+                    "Expected Unix timestamp in seconds as a string representing a number, got an empty string.");
             if (!long.TryParse(value, out var timestamp))
             {
                 throw new JsonException("Failed to parse Unix timestamp as a string to Long.");

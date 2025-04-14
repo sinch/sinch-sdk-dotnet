@@ -36,5 +36,37 @@ namespace Sinch.Tests.Core
 
             deserialized.Should().BeEquivalentTo(_withDateTime);
         }
+
+        [Fact]
+        public void ShouldThrowJsonExceptionIfValueNotString()
+        {
+            var str = "{ \"Utc\": 1743472984 }";
+
+            var deserializedOp = () => JsonSerializer.Deserialize<Container>(str);
+
+            deserializedOp.Should().Throw<JsonException>().Which.Message.Should()
+                .StartWith("Expected String token type. Got ");
+        }
+
+        [Fact]
+        public void ShouldBeNull()
+        {
+            var str = "{ \"Utc\": null }";
+
+            var deserialize = JsonSerializer.Deserialize<Container>(str);
+
+            deserialize.Utc.Should().BeNull();
+        }
+
+        [Fact]
+        public void ShouldThrowIfEmptyString()
+        {
+            var str = "{ \"Utc\": \"\" }";
+
+            var deserializedOp = () => JsonSerializer.Deserialize<Container>(str);
+
+            deserializedOp.Should().Throw<JsonException>().Which.Message.Should().Be(
+                "Expected Unix timestamp in seconds as a string representing a number, got an empty string.");
+        }
     }
 }
