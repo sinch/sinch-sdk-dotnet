@@ -1255,7 +1255,7 @@ namespace Sinch.Tests.Conversation.Messages
                             Order = new OrderDetailsPaymentOrder()
                             {
                                 CatalogId = "catalog id",
-                                ExpirationTime = "1741934627",
+                                ExpirationTime = DateTimeOffset.FromUnixTimeSeconds(1741934627).UtcDateTime,
                                 ExpirationDescription = "expiration description",
                                 SubtotalValue = 6000,
                                 TaxValue = 7000,
@@ -1372,7 +1372,7 @@ namespace Sinch.Tests.Conversation.Messages
                     Order = new OrderDetailsPaymentOrder
                     {
                         CatalogId = "catalog id",
-                        ExpirationTime = "1741934627",
+                        ExpirationTime = DateTimeOffset.FromUnixTimeSeconds(1741934627).UtcDateTime,
                         ExpirationDescription = "expiration description",
                         SubtotalValue = 6000,
                         TaxValue = 7000,
