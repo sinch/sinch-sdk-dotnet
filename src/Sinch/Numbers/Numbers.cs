@@ -11,6 +11,7 @@ using Sinch.Numbers.Available;
 using Sinch.Numbers.Available.List;
 using Sinch.Numbers.Available.Rent;
 using Sinch.Numbers.Available.RentAny;
+using Sinch.Numbers.Callbacks;
 
 namespace Sinch.Numbers
 {
@@ -37,6 +38,9 @@ namespace Sinch.Numbers
         /// </summary>
         [Obsolete($"This property is obsolete, use methods of this ({nameof(ISinchNumbers)}) interface instead.")]
         public ISinchNumbersActive Active { get; }
+
+        /// <inheritdoc cref="ISinchNumbersCallbacks"/>
+        public ISinchNumbersCallbacks Callbacks { get; }
 
         /// <inheritdoc cref="ISinchNumbersAvailable.RentAny" />
         Task<ActiveNumber> RentAny(RentAnyNumberRequest request,
@@ -86,6 +90,8 @@ namespace Sinch.Numbers
                 loggerFactory?.Create<ActiveNumbers>(), http);
             Available = new AvailableNumbers(projectId, baseAddress,
                 loggerFactory?.Create<AvailableNumbers>(), http);
+            Callbacks = new SinchNumbersCallbacks(projectId, baseAddress,
+                loggerFactory?.Create<ISinchNumbersCallbacks>(), http);
         }
 
         public ISinchNumbersRegions Regions { get; }
@@ -93,6 +99,8 @@ namespace Sinch.Numbers
         public ISinchNumbersActive Active { get; }
 
         public ISinchNumbersAvailable Available { get; }
+
+        public ISinchNumbersCallbacks Callbacks { get; }
 
         // disabling obsolete usage as in next major version, active and available interfaces will remain,
         // but visibility changed to internal, and public interface will be available only through this methods
