@@ -99,6 +99,11 @@ namespace Sinch.Numbers.Callbacks
 
         public Task<CallbackConfiguration> Update(string hmacSecret, CancellationToken cancellationToken = default)
         {
+            if (string.IsNullOrEmpty(hmacSecret))
+            {
+                throw new ArgumentNullException(nameof(hmacSecret));
+            }
+
             _logger?.LogDebug("Updating callback configuration for {projectId}", _projectId);
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/callbackConfiguration");
             return _http.Send<object, CallbackConfiguration>(uri, HttpMethod.Patch, new

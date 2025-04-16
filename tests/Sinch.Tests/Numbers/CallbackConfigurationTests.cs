@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -46,6 +47,25 @@ namespace Sinch.Tests.Numbers
                 ProjectId = "Project ID value",
                 HmacSecret = "HMAC value"
             });
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public async Task UpdateThrowIfHmacIsEmpty(string hmacSecret)
+        {
+            HttpMessageHandlerMock
+                .When(HttpMethod.Patch, $"https://numbers.api.sinch.com/v1/projects/{ProjectId}/callbackConfiguration")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(JsonConvert.SerializeObject(new
+                {
+                    hmacSecret = "HMAC value"
+                }))
+                .Respond("application/json", Helpers.LoadResources("Numbers/CallbackConfigurationResponse.json"));
+
+            var responseOp = () => Numbers.Callbacks.Update(hmacSecret);
+
+            await responseOp.Should().ThrowAsync<ArgumentNullException>();
         }
     }
 }
