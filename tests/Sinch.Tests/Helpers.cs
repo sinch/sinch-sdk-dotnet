@@ -2,8 +2,8 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
-using FluentAssertions;
 using Newtonsoft.Json.Linq;
+using FluentAssertions.Json; // If using plain FluentAssertion, json comparison below can give false positives.
 
 namespace Sinch.Tests
 {

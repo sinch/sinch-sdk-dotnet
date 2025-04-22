@@ -1,0 +1,6 @@
+{
+  "voiceConfiguration": {
+    "serviceId": "service id value",
+    "type": "FAX"
+  }
+}

@@ -10,6 +10,7 @@ using RichardSzalay.MockHttp;
 using Sinch.Numbers;
 using Sinch.Numbers.Available;
 using Sinch.Numbers.Available.Rent;
+using Sinch.Numbers.VoiceConfigurations;
 using Xunit;
 
 namespace Sinch.Tests.Numbers
@@ -33,7 +34,7 @@ namespace Sinch.Tests.Numbers
                     ServicePlanId = "service_plan",
                     CampaignId = "campaign"
                 },
-                VoiceConfiguration = new VoiceConfiguration
+                VoiceConfiguration = new VoiceRtcConfiguration()
                 {
                     AppId = "app_id"
                 }
@@ -44,7 +45,13 @@ namespace Sinch.Tests.Numbers
             response.PhoneNumber.Should().Be("+12025550134");
             response.SmsConfiguration!.ScheduledProvisioning!.CampaignId.Should()
                 .BeEquivalentTo("string");
-            response.VoiceConfiguration!.ScheduledVoiceProvisioning!.AppId.Should().BeEquivalentTo("string");
+            response.VoiceConfiguration!.As<VoiceRtcConfiguration>().ScheduledVoiceProvisioning.Should()
+                .BeEquivalentTo(new ScheduledVoiceRtcProvisioning()
+                {
+                    AppId = "app id value",
+                    LastUpdatedTime = Helpers.ParseUtc("2019-08-24T14:15:22Z"),
+                    Status = ProvisioningStatus.Waiting
+                });
         }
 
         [Fact]

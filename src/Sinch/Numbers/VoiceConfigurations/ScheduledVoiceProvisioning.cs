@@ -1,14 +1,18 @@
 using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
-namespace Sinch.Numbers
+namespace Sinch.Numbers.VoiceConfigurations
 {
-    public sealed class ScheduledVoiceProvisioning
+    public abstract class ScheduledVoiceProvisioning
     {
         /// <summary>
-        ///     <see href="https://community.sinch.com/t5/Glossary/RTC/ta-p/7699">RTC</see>
-        ///     application ID of the scheduled provisioning task.
+        /// Gets or Sets Type
         /// </summary>
-        public string? AppId { get; set; }
+        [JsonPropertyName("type")]
+        [JsonInclude]
+        // Expected to be set by the API response, or by Subclasses
+        public abstract VoiceApplicationType Type { get; protected set; }
 
         /// <summary>
         ///     The provisioning status. It will be either WAITING, IN_PROGRESS or FAILED.
