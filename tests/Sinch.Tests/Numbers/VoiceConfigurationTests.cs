@@ -16,6 +16,33 @@ namespace Sinch.Tests.Numbers
         }
 
         [Fact]
+        // TODO: remove this possibility in 2.0
+        public void ShouldSerializeVoiceConfigPlainForBackwardCompatibility()
+        {
+            var voiceConfig = new VoiceConfiguration()
+            {
+                AppId = "app id value"
+            };
+            var jsonString = SerializeAsNumbersClient(new Container()
+            {
+                VoiceConfiguration = voiceConfig
+            });
+            Helpers.AssertJsonEqual(Helpers.LoadResources("Numbers/RtcVoiceSerializationExpected.json"), jsonString);
+        }
+
+        [Fact]
+        // TODO: remove this possibility in 2.0
+        public void ShouldDeserializeVoiceConfigPlainForBackwardCompatibility()
+        {
+            var obj =
+                DeserializeAsNumbersClient<Container>(
+                    Helpers.LoadResources("Numbers/RtcVoiceResponse.json"));
+
+            obj.VoiceConfiguration.Type.Should().BeEquivalentTo(VoiceApplicationType.Rtc);
+            obj.VoiceConfiguration.AppId.Should().BeEquivalentTo("app id value");
+        }
+
+        [Fact]
         public void ShouldSerializeVoiceRtcConfiguration()
         {
             var config = new VoiceRtcConfiguration()
@@ -112,20 +139,31 @@ namespace Sinch.Tests.Numbers
             var obj =
                 DeserializeAsNumbersClient<Container>(
                     Helpers.LoadResources("Numbers/RtcVoiceResponse.json"));
-
-            obj.Should().BeEquivalentTo(new Container()
+            var expected = new VoiceRtcConfiguration()
             {
-                VoiceConfiguration = new VoiceRtcConfiguration()
+                AppId = "app id value",
+                LastUpdatedTime = Helpers.ParseUtc("2024-06-30T07:08:09.100Z"),
+                ScheduledVoiceProvisioning = new ScheduledVoiceRtcProvisioning()
                 {
                     AppId = "app id value",
-                    LastUpdatedTime = Helpers.ParseUtc("2024-06-30T07:08:09.100Z"),
-                    ScheduledVoiceProvisioning = new ScheduledVoiceRtcProvisioning()
-                    {
-                        AppId = "app id value",
-                        Status = ProvisioningStatus.Waiting,
-                        LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
-                    }
+                    Status = ProvisioningStatus.Waiting,
+                    LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
                 }
+            };
+#pragma warning disable CS0618 // Type or member is obsolete
+            // backward compatibility for old plain ScheduledVoiceProvisioning and VoiceConfiguration
+            (expected as VoiceConfiguration).AppId = "app id value";
+            (expected as VoiceConfiguration).ScheduledVoiceProvisioning = new ScheduledVoiceProvisioning()
+            {
+                AppId = "app id value",
+                Type = VoiceApplicationType.Rtc,
+                Status = ProvisioningStatus.Waiting,
+                LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
+            };
+#pragma warning restore CS0618 // Type or member is obsolete
+            obj.Should().BeEquivalentTo(new Container()
+            {
+                VoiceConfiguration = expected
             });
         }
     }

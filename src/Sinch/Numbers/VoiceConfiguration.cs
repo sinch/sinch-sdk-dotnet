@@ -6,7 +6,7 @@ using Sinch.Conversation.Messages.Message;
 
 namespace Sinch.Numbers.VoiceConfigurations
 {
-    public abstract class VoiceConfiguration
+    public class VoiceConfiguration
     {
         /// <summary>
         /// Gets or Sets Type
@@ -14,7 +14,7 @@ namespace Sinch.Numbers.VoiceConfigurations
         [JsonPropertyName("type")]
         [JsonInclude]
         // Expected to be set by the API response, or by Subclasses
-        public abstract VoiceApplicationType Type { get; protected set; }
+        public virtual VoiceApplicationType? Type { get; protected set; } = VoiceApplicationType.Rtc;
 
         /// <summary>
         ///     Timestamp when the status was last updated.
@@ -22,6 +22,15 @@ namespace Sinch.Numbers.VoiceConfigurations
         [JsonInclude]
         [JsonPropertyName("lastUpdatedTime")]
         public DateTime? LastUpdatedTime { get; internal set; }
+
+        [JsonPropertyName("appId")]
+        [Obsolete(
+            $"Plain {nameof(VoiceConfiguration)} will become abstract in future versions. Use concrete type of {nameof(VoiceRtcConfiguration)} instead.")]
+        public string? AppId { get; set; }
+
+        [JsonPropertyName("scheduledVoiceProvisioning")]
+        [JsonInclude]
+        public ScheduledVoiceProvisioning? ScheduledVoiceProvisioning { get; internal set; }
     }
 
 
@@ -41,7 +50,16 @@ namespace Sinch.Numbers.VoiceConfigurations
 
                 if (typeStr == VoiceApplicationType.Rtc.Value)
                 {
-                    return elem.Deserialize<VoiceRtcConfiguration>(options);
+                    // TODO: remove it in 2.0
+                    // keeping it for backward compatility of VoiceConfiguraiton
+                    var result = elem.Deserialize<VoiceRtcConfiguration>(options);
+#pragma warning disable CS0618 // Type or member is obsolete
+                    var voiceConfiguration = (result as VoiceConfiguration)!;
+                    voiceConfiguration!.AppId = result!.AppId;
+                    voiceConfiguration.ScheduledVoiceProvisioning = result.ScheduledVoiceProvisioning;
+                    voiceConfiguration.ScheduledVoiceProvisioning!.AppId = result.AppId;
+#pragma warning restore CS0618 // Type or member is obsolete
+                    return result;
                 }
 
                 if (typeStr == VoiceApplicationType.Est.Value)
@@ -68,7 +86,20 @@ namespace Sinch.Numbers.VoiceConfigurations
             }
             else if (value.Type == VoiceApplicationType.Rtc)
             {
-                JsonSerializer.Serialize(writer, value, typeof(VoiceRtcConfiguration), options);
+                // TODO: remove in 2.0
+                // if base VoiceConfiguration is passed, serialize it as RTC configuration for backward compatiblity
+                if (value.GetType() == typeof(VoiceConfiguration))
+                {
+                    var voiceRtcConfiguration = new VoiceRtcConfiguration()
+                    {
+                        AppId = value.AppId
+                    };
+                    JsonSerializer.Serialize(writer, voiceRtcConfiguration, typeof(VoiceRtcConfiguration), options);
+                }
+                else
+                {
+                    JsonSerializer.Serialize(writer, value, typeof(VoiceRtcConfiguration), options);
+                }
             }
             else
             {

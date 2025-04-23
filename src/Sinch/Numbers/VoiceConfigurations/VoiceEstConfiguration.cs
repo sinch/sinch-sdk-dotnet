@@ -16,10 +16,10 @@ namespace Sinch.Numbers.VoiceConfigurations
         /// </summary>
         [JsonInclude]
         [JsonPropertyName("scheduledVoiceProvisioning")]
-        public ScheduledVoiceEstProvisioning? ScheduledVoiceProvisioning { get; internal set; }
+        public new ScheduledVoiceEstProvisioning? ScheduledVoiceProvisioning { get; internal set; }
 
         [JsonPropertyName("type")]
         [JsonInclude]
-        public override VoiceApplicationType Type { get; protected set; } = VoiceApplicationType.Est;
+        public override VoiceApplicationType? Type { get; protected set; } = VoiceApplicationType.Est;
     }
 }
