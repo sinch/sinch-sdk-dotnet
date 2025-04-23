@@ -39,7 +39,10 @@ namespace Sinch.Tests.Numbers
                     Helpers.LoadResources("Numbers/RtcVoiceResponse.json"));
 
             obj.VoiceConfiguration.Type.Should().BeEquivalentTo(VoiceApplicationType.Rtc);
+#pragma warning disable CS0618 // Type or member is obsolete
             obj.VoiceConfiguration.AppId.Should().BeEquivalentTo("app id value");
+            obj.VoiceConfiguration.ScheduledVoiceProvisioning!.AppId.Should().BeEquivalentTo("app id value");
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         [Fact]
