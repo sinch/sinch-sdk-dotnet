@@ -1,8 +1,8 @@
 using System;
-using System.Text.Json;
 using System.Text.Json.Serialization;
+using Sinch.Numbers.VoiceConfigurations;
 
-namespace Sinch.Numbers.VoiceConfigurations
+namespace Sinch.Numbers
 {
     public class ScheduledVoiceProvisioning
     {

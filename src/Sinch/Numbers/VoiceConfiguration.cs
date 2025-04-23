@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Messages.Message;
+using Sinch.Numbers.VoiceConfigurations;
 
-namespace Sinch.Numbers.VoiceConfigurations
+namespace Sinch.Numbers
 {
     public class VoiceConfiguration
     {
@@ -95,7 +96,9 @@ namespace Sinch.Numbers.VoiceConfigurations
                 {
                     var voiceRtcConfiguration = new VoiceRtcConfiguration()
                     {
+#pragma warning disable CS0618 // Type or member is obsolete
                         AppId = value.AppId
+#pragma warning restore CS0618 // Type or member is obsolete
                     };
                     JsonSerializer.Serialize(writer, voiceRtcConfiguration, typeof(VoiceRtcConfiguration), options);
                 }
