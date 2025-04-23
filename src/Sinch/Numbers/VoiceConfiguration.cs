@@ -30,6 +30,9 @@ namespace Sinch.Numbers.VoiceConfigurations
 
         [JsonPropertyName("scheduledVoiceProvisioning")]
         [JsonInclude]
+        [Obsolete($"Will be removed in future versions." +
+                  $" See specific {nameof(ScheduledVoiceRtcProvisioning)}, {nameof(ScheduledVoiceEstProvisioning)}, or {nameof(ScheduledVoiceFaxProvisioning)}" +
+                  $" in corresponding classes: {nameof(VoiceRtcConfiguration)}, {nameof(VoiceEstConfiguration)}, or {nameof(VoiceFaxConfiguration)}.")]
         public ScheduledVoiceProvisioning? ScheduledVoiceProvisioning { get; internal set; }
     }
 
