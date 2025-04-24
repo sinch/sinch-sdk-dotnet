@@ -1,0 +1,13 @@
+{
+  "voiceConfiguration": {
+    "trunkId": "trunk id value",
+    "type": "EST",
+    "lastUpdatedTime": "2024-07-01T11:58:35.610198Z",
+    "scheduledVoiceProvisioning": {
+      "trunkId": "trunk id value",
+      "status": "WAITING",
+      "lastUpdatedTime": "2024-07-01T11:58:35.610198Z",
+      "type": "EST"
+    }
+  }
+}

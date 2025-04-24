@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using Sinch.Numbers.VoiceConfigurations;
 
 namespace Sinch.Numbers.Active
 {
@@ -102,6 +104,7 @@ namespace Sinch.Numbers.Active
         ///     The status of scheduled provisioning will show under a scheduledProvisioning object if it's still running. Once
         ///     processed successfully, the appId sent will appear directly under the voiceConfiguration object.
         /// </summary>
+        [JsonConverter(typeof(VoiceConfigurationConverter))]
         public VoiceConfiguration? VoiceConfiguration { get; set; }
     }
 }

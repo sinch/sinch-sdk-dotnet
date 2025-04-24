@@ -1,0 +1,13 @@
+{
+  "voiceConfiguration": {
+    "serviceId": "service id value",
+    "type": "FAX",
+    "lastUpdatedTime": "2024-07-01T11:58:35.610198Z",
+    "scheduledVoiceProvisioning": {
+      "serviceId": "service id value",
+      "status": "WAITING",
+      "lastUpdatedTime": "2024-07-01T11:58:35.610198Z",
+      "type": "FAX"
+    }
+  }
+}

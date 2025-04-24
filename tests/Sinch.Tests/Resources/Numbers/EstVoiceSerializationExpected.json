@@ -1,0 +1,6 @@
+{
+  "voiceConfiguration": {
+    "trunkId": "trunk id value",
+    "type": "EST"
+  }
+}

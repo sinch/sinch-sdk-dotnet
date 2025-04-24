@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Core;
@@ -77,6 +78,11 @@ namespace Sinch.Numbers
         /// <inheritdoc cref="ISinchNumbersActive.ListAuto" />
         IAsyncEnumerable<ActiveNumber> ListAuto(ListActiveNumbersRequest request,
             CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     For internal use, JsonSerializerOption to be utilized for serialization and deserialization of all Numbers models
+        /// </summary>
+        internal JsonSerializerOptions JsonSerializerOptions { get; }
     }
 
     public sealed class Numbers : ISinchNumbers
@@ -92,6 +98,7 @@ namespace Sinch.Numbers
                 loggerFactory?.Create<AvailableNumbers>(), http);
             Callbacks = new SinchNumbersCallbacks(projectId, baseAddress,
                 loggerFactory?.Create<ISinchNumbersCallbacks>(), http);
+            JsonSerializerOptions = http.JsonSerializerOptions;
         }
 
         public ISinchNumbersRegions Regions { get; }
@@ -164,6 +171,10 @@ namespace Sinch.Numbers
         {
             return Active.ListAuto(request, cancellationToken);
         }
+
+
 #pragma warning restore CS0618 // Type or member is obsolete
+
+        public JsonSerializerOptions JsonSerializerOptions { get; }
     }
 }
