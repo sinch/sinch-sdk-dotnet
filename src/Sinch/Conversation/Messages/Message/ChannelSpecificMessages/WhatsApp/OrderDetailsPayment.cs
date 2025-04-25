@@ -17,7 +17,14 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         [JsonConverter(typeof(EnumRecordJsonConverter<TypeEnum>))]
         public record TypeEnum(string Value) : EnumRecord(Value)
         {
+            /// <summary>
+            ///     Brazil
+            /// </summary>
             public static readonly TypeEnum Br = new("br");
+            /// <summary>
+            ///     Singapore
+            /// </summary>
+            public static readonly TypeEnum Sg = new("sg");
         }
 
 
