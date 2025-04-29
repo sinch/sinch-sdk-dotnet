@@ -38,5 +38,10 @@ namespace Sinch.Voice.Hooks
         /// </summary>
         [JsonPropertyName("custom")]
         public string? Custom { get; set; }
+        
+        
+        /// <inheritdoc cref="AmdObject"/>
+        [JsonPropertyName("amd")]
+        public AmdObject? Amd { get; set; }
     }
 }
