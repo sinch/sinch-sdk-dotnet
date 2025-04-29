@@ -9,7 +9,7 @@ namespace Sinch.Voice.Hooks
     /// <summary>
     ///     Marker interface for event types of voice.
     /// </summary>
-    [JsonConverter(typeof(InterfaceConverter<IVoiceEvent>))]
+    [JsonConverter(typeof(VoiceEventConverter))]
     public interface IVoiceEvent
     {
         [JsonPropertyName("event")]
