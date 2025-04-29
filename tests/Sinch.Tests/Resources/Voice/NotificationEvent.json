@@ -1,0 +1,14 @@
+{
+  "event": "notify",
+  "callId": "a call id",
+  "custom": "my custom value",
+  "version": 1,
+  "type": "recording_finished",
+  "conferenceId": "conferenceId value",
+  "destination": "destination value",
+  "amd": {
+    "status": "human",
+    "reason": "longgreeting",
+    "duration": 15
+  }
+}

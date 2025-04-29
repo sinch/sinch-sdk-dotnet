@@ -13,13 +13,13 @@ namespace Sinch.Voice.Hooks
         /// The determination by the system of who answered the call.
         /// </summary>
         /// <value>The determination by the system of who answered the call.</value>
-        [JsonConverter(typeof(EnumRecordJsonConverter<StatusEnum>))]
-        public record StatusEnum(string Value) : EnumRecord(Value)
+        [JsonConverter(typeof(EnumRecordJsonConverter<AmdStatus>))]
+        public record AmdStatus(string Value) : EnumRecord(Value)
         {
-            public static readonly StatusEnum Machine = new("machine");
-            public static readonly StatusEnum Human = new("human");
-            public static readonly StatusEnum NotSure = new("notsure");
-            public static readonly StatusEnum Hangup = new("hangup");
+            public static readonly AmdStatus Machine = new("machine");
+            public static readonly AmdStatus Human = new("human");
+            public static readonly AmdStatus NotSure = new("notsure");
+            public static readonly AmdStatus Hangup = new("hangup");
         }
 
 
@@ -27,17 +27,17 @@ namespace Sinch.Voice.Hooks
         /// The determination by the system of who answered the call.
         /// </summary>
         [JsonPropertyName("status")]
-        public StatusEnum? Status { get; set; }
+        public AmdStatus? Status { get; set; }
 
         /// <summary>
         /// The reason that the system used to determine who answered the call.
         /// </summary>
         /// <value>The reason that the system used to determine who answered the call.</value>
-        [JsonConverter(typeof(EnumRecordJsonConverter<ReasonEnum>))]
-        public record ReasonEnum(string Value) : EnumRecord(Value)
+        [JsonConverter(typeof(EnumRecordJsonConverter<AmdReason>))]
+        public record AmdReason(string Value) : EnumRecord(Value)
         {
-            public static readonly ReasonEnum LongGreeting = new("longgreeting");
-            public static readonly ReasonEnum InitialSilence = new("initialsilence");
+            public static readonly AmdReason LongGreeting = new("longgreeting");
+            public static readonly AmdReason InitialSilence = new("initialsilence");
         }
 
 
@@ -45,7 +45,7 @@ namespace Sinch.Voice.Hooks
         /// The reason that the system used to determine who answered the call.
         /// </summary>
         [JsonPropertyName("reason")]
-        public ReasonEnum? Reason { get; set; }
+        public AmdReason? Reason { get; set; }
 
         /// <summary>
         ///     The length of the call.

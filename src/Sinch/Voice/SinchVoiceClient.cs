@@ -48,6 +48,8 @@ namespace Sinch.Voice
         /// <returns>True, if produced signature match with that of a header.</returns>
         bool ValidateAuthenticationHeader(HttpMethod method, string path, Dictionary<string, StringValues> headers,
             JsonObject body);
+        
+        
     }
 
     /// <inheritdoc />
