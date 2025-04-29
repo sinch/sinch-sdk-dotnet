@@ -62,6 +62,6 @@ namespace Sinch.Voice.Hooks
         ///     this object contains information about whether the call was answered by a machine.
         /// </summary>
         [JsonPropertyName("amd")]
-        public Amd? Amd { get; set; }
+        public AmdObject? Amd { get; set; }
     }
 }
