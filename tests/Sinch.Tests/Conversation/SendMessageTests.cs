@@ -293,7 +293,7 @@ namespace Sinch.Tests.Conversation
             };
             _baseRequest.Message = new AppMessage(new TemplateMessage()
             {
-                OmniTemplate = new TemplateReference
+                OmniTemplate = new OmniTemplateReference()
                 {
                     LanguageCode = "es",
                     Parameters = new Dictionary<string, string>()

@@ -728,7 +728,7 @@ namespace Sinch.Tests.Conversation.Messages
                         }
                     }
                 },
-                OmniTemplate = new TemplateReference()
+                OmniTemplate = new OmniTemplateReference()
                 {
                     TemplateId = "another template ID",
                     Version = "another version",
