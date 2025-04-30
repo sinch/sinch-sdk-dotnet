@@ -82,7 +82,7 @@ namespace Sinch.Conversation.Messages.Message
     ///     The referenced template can be an omnichannel template stored in Conversation API Template Store
     ///     as AppMessage or it can reference external channel-specific template such as WhatsApp Business Template.
     /// </summary>
-    public sealed class TemplateReference : TemplateReferenceBase, IOmniMessageOverride
+    public sealed class TemplateReference : TemplateReferenceBase
     {
         /// <summary>
         ///     Used to specify what version of a template to use. This will be used in conjunction with &#x60;language_code&#x60;.
