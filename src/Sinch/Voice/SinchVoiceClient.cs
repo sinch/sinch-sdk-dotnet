@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Primitives;
 using Sinch.Auth;
 using Sinch.Core;
@@ -12,6 +15,7 @@ using Sinch.Voice.Applications;
 using Sinch.Voice.Callouts;
 using Sinch.Voice.Calls;
 using Sinch.Voice.Conferences;
+using Sinch.Voice.Hooks;
 
 namespace Sinch.Voice
 {
@@ -48,8 +52,28 @@ namespace Sinch.Voice
         /// <returns>True, if produced signature match with that of a header.</returns>
         bool ValidateAuthenticationHeader(HttpMethod method, string path, Dictionary<string, StringValues> headers,
             JsonObject body);
-        
-        
+
+        /// <summary>
+        ///     Parses a Voice callback
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        IVoiceEvent ParseEvent(string json);
+
+        /// <summary>
+        ///     Parses a Voice callback
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        IVoiceEvent ParseEvent(JsonNode json);
+
+        /// <summary>
+        ///     Parses a Voice callback
+        /// </summary>
+        /// <param name="json"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<IVoiceEvent> ParseEventAsync(Stream json, CancellationToken cancellationToken = default);
     }
 
     /// <inheritdoc />
@@ -57,10 +81,12 @@ namespace Sinch.Voice
     {
         private readonly ApplicationSignedAuth _applicationSignedAuth;
         private readonly ILoggerAdapter<ISinchVoiceClient>? _logger;
+        private readonly JsonSerializerOptions _jsonSerializerOptions;
 
         public SinchVoiceClient(Uri baseAddress, LoggerFactory? loggerFactory,
             IHttp http, ApplicationSignedAuth applicationSignedAuth, Uri applicationManagementBaseAddress)
         {
+            _jsonSerializerOptions = http.JsonSerializerOptions;
             _applicationSignedAuth = applicationSignedAuth;
             _logger = loggerFactory?.Create<ISinchVoiceClient>();
             Callouts = new SinchCallout(loggerFactory?.Create<ISinchVoiceCallout>(), baseAddress, http);
@@ -137,6 +163,42 @@ namespace Sinch.Voice
             var isValidSignature = string.Equals(signature, calculatedSignature, StringComparison.Ordinal);
             _logger?.LogInformation("The signature was validated with {success}", isValidSignature);
             return isValidSignature;
+        }
+
+        public IVoiceEvent ParseEvent(string json)
+        {
+            var jsonResult = JsonSerializer.Deserialize<IVoiceEvent>(json, _jsonSerializerOptions);
+            if (jsonResult == null)
+            {
+                throw new InvalidOperationException("Deserialization of Voice event failed");
+            }
+
+            return jsonResult;
+        }
+
+        public IVoiceEvent ParseEvent(JsonNode json)
+        {
+            var jsonResult = json.Deserialize<IVoiceEvent>(_jsonSerializerOptions);
+            if (jsonResult == null)
+            {
+                throw new InvalidOperationException("Deserialization of Voice event failed");
+            }
+
+            return jsonResult;
+        }
+
+        public async Task<IVoiceEvent> ParseEventAsync(Stream jsonStream,
+            CancellationToken cancellationToken = default)
+        {
+            var jsonResult =
+                await JsonSerializer.DeserializeAsync<IVoiceEvent>(jsonStream, _jsonSerializerOptions,
+                    cancellationToken);
+            if (jsonResult == null)
+            {
+                throw new InvalidOperationException("Deserialization of Voice event failed");
+            }
+
+            return jsonResult;
         }
     }
 }

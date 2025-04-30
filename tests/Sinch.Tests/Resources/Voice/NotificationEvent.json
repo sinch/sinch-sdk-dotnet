@@ -1,6 +1,6 @@
 {
   "event": "notify",
-  "callId": "a call id",
+  "callid": "a call id",
   "custom": "my custom value",
   "version": 1,
   "type": "recording_finished",
