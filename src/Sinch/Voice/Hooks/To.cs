@@ -12,7 +12,7 @@ namespace Sinch.Voice.Hooks
         ///     The type of the destination.
         /// </summary>
         [JsonPropertyName("type")]
-        public Destination? Type { get; set; }
+        public DestinationType? Type { get; set; }
 
         /// <summary>
         ///     The phone number, user name, or other identifier of the destination.

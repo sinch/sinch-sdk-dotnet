@@ -1,6 +1,6 @@
 {
   "event": "ace",
-  "callId": "a call id",
+  "callid": "a call id",
   "timestamp": "2024-01-19T12:49:53Z",
   "version": 1,
   "custom": "my custom value",

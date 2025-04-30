@@ -19,9 +19,9 @@ namespace Sinch.Voice.Hooks
         /// <summary>
         ///     The unique ID assigned to this call.
         /// </summary>
-        [JsonPropertyName("callId")]
+        [JsonPropertyName("callid")]
         public string? CallId { get; set; }
-        
+
         /// <summary>
         ///     Used in some types of events, it presents the unique Conference ID assigned to this call.
         /// </summary>
@@ -45,18 +45,18 @@ namespace Sinch.Voice.Hooks
         /// </summary>
         [JsonPropertyName("custom")]
         public string? Custom { get; set; }
-        
-        
-        /// <inheritdoc cref="AmdObject"/>
+
+
+        /// <inheritdoc cref="AnsweringMachineDetection"/>
         [JsonPropertyName("amd")]
-        public AmdObject? Amd { get; set; }
-        
+        public AnsweringMachineDetection? Amd { get; set; }
+
         /// <summary>
         ///     Used in some types of events, it presents the destination of the generated recording or transcription files.
         /// </summary>
         [JsonPropertyName("destination")]
         public string? Destination { get; set; }
-        
+
         /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>

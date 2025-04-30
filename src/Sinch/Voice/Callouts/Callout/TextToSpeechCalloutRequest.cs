@@ -113,5 +113,7 @@ namespace Sinch.Voice.Callouts.Callout
     {
         public static readonly Domain Pstn = new("pstn");
         public static readonly Domain Mxp = new("mxp");
+        public static readonly Domain MXP = new("MXP");
+        public static readonly Domain PSTN = new("PSTN");
     }
 }

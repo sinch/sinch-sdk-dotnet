@@ -26,7 +26,7 @@ namespace Sinch.Voice.Hooks
         /// <summary>
         ///     The unique ID assigned to this call.
         /// </summary>
-        [JsonPropertyName("callId")]
+        [JsonPropertyName("callid")]
         public string? CallId { get; set; }
 
 
@@ -62,6 +62,6 @@ namespace Sinch.Voice.Hooks
         ///     this object contains information about whether the call was answered by a machine.
         /// </summary>
         [JsonPropertyName("amd")]
-        public AmdObject? Amd { get; set; }
+        public AnsweringMachineDetection? Amd { get; set; }
     }
 }
