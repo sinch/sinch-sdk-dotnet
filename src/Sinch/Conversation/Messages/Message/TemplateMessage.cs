@@ -87,6 +87,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Used to specify what version of a template to use. This will be used in conjunction with &#x60;language_code&#x60;.
         /// </summary>
+        [JsonPropertyName("version")]
         public string? Version { get; set; }
 
         /// <summary>
@@ -137,21 +138,5 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonPropertyName("parameters")]
         public Dictionary<string, string>? Parameters { get; set; }
-
-
-        /// <summary>
-        ///     Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("class TemplateReference {\n");
-            sb.Append("  LanguageCode: ").Append(LanguageCode).Append("\n");
-            sb.Append("  Parameters: ").Append(Parameters).Append("\n");
-            sb.Append("  TemplateId: ").Append(TemplateId).Append("\n");
-            sb.Append("}\n");
-            return sb.ToString();
-        }
     }
 }
