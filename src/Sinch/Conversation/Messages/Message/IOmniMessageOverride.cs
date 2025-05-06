@@ -24,7 +24,7 @@ namespace Sinch.Conversation.Messages.Message
             { "location_message", typeof(LocationMessage) },
             { "contact_info_message", typeof(ContactInfoMessage) },
             { "list_message", typeof(ListMessage) },
-            { "template_reference", typeof(TemplateReference) },
+            { "template_reference", typeof(OmniTemplateReference) },
         };
 
         public override IOmniMessageOverride? Read(ref Utf8JsonReader reader, Type typeToConvert,

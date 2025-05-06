@@ -293,7 +293,7 @@ namespace Sinch.Tests.Conversation
             };
             _baseRequest.Message = new AppMessage(new TemplateMessage()
             {
-                OmniTemplate = new TemplateReference
+                OmniTemplate = new OmniTemplateReference()
                 {
                     LanguageCode = "es",
                     Parameters = new Dictionary<string, string>()
@@ -521,6 +521,21 @@ namespace Sinch.Tests.Conversation
             var json = JsonConvert.SerializeObject(_baseMessageExpected as object);
             var result = DeserializeAsConversationClient<SendMessageRequest>(json);
             result.TtlSeconds.Should().Be(expected);
+        }
+
+        [Fact]
+        public void DeAndSerializeOptionalVersionInTemplateReference()
+        {
+            var templateReference = new TemplateReference()
+            {
+                TemplateId = "1"
+            };
+
+            var jsonString = SerializeAsConversationClient(templateReference);
+            jsonString.Should().Be("{\"template_id\":\"1\"}");
+
+            var templateReferenceBack = DeserializeAsConversationClient<TemplateReference>(jsonString);
+            templateReference.Should().BeEquivalentTo(templateReference);
         }
     }
 }
