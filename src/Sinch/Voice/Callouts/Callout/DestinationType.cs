@@ -7,7 +7,7 @@ namespace Sinch.Voice.Callouts.Callout
     ///     Can be of type number for PSTN endpoints or of type username for data endpoints.
     /// </summary>
     /// <param name="Value">Custom value, if needed.</param>
-    [JsonConverter(typeof(EnumRecordJsonConverter<DestinationType>))]
+    [JsonConverter(typeof(EnumRecordCaseInsensitiveJsonConverter<DestinationType>))]
     public record DestinationType(string Value) : EnumRecord(Value)
     {
         public static readonly DestinationType Number = new("number");

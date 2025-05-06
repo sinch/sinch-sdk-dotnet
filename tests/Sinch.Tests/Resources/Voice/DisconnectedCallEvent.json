@@ -16,7 +16,7 @@
     "amount": 0.345
   },
   "to": {
-    "type": "number",
+    "type": "Number",
     "endpoint": "123456789"
   },
   "applicationKey": "an app key",

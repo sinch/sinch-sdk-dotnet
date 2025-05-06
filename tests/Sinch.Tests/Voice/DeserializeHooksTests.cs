@@ -187,7 +187,7 @@ namespace Sinch.Tests.Voice
                     },
                     Domain = Domain.Mxp,
                     ApplicationKey = "an app key",
-                    OriginationType = Domain.MXP,
+                    OriginationType = Domain.Mxp,
                     Rdnis = "rdnis value",
                     CallHeaders = new List<CallHeader>
                     {
@@ -199,6 +199,28 @@ namespace Sinch.Tests.Voice
                     }
                 });
             }
+        }
+
+        [Theory]
+        [InlineData("\"mxp\"")]
+        [InlineData("\"MXP\"")]
+        public void DeserializeDomainCaseInsensitive(string domainStr)
+        {
+            
+            var enumValue = JsonSerializer.Deserialize<Domain>(domainStr);
+            
+            enumValue.Should().BeEquivalentTo(Domain.Mxp);
+        }
+        
+        [Theory]
+        [InlineData("\"Number\"")]
+        [InlineData("\"number\"")]
+        public void DeserializeDestinationTypeCaseInsensitive(string domainStr)
+        {
+            
+            var enumValue = JsonSerializer.Deserialize<DestinationType>(domainStr);
+            
+            enumValue.Should().BeEquivalentTo(DestinationType.Number);
         }
     }
 }

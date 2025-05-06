@@ -51,7 +51,7 @@ namespace Sinch.Voice.Common
     /// Can be of type &#x60;number&#x60; for PSTN endpoints or of type &#x60;username&#x60; for data endpoints.
     /// </summary>
     /// <value>Can be of type &#x60;number&#x60; for PSTN endpoints or of type &#x60;username&#x60; for data endpoints.</value>
-    [JsonConverter(typeof(EnumRecordJsonConverter<DestinationType>))]
+    [JsonConverter(typeof(EnumRecordCaseInsensitiveJsonConverter<DestinationType>))]
     public record DestinationType(string Value) : EnumRecord(Value)
     {
         /// <summary>
