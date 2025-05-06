@@ -522,5 +522,20 @@ namespace Sinch.Tests.Conversation
             var result = DeserializeAsConversationClient<SendMessageRequest>(json);
             result.TtlSeconds.Should().Be(expected);
         }
+
+        [Fact]
+        public void DeAndSerializeOptionalVersionInTemplateReference()
+        {
+            var templateReference = new TemplateReference()
+            {
+                TemplateId = "1"
+            };
+
+            var jsonString = SerializeAsConversationClient(templateReference);
+            jsonString.Should().Be("{\"template_id\":\"1\"}");
+
+            var templateReferenceBack = DeserializeAsConversationClient<TemplateReference>(jsonString);
+            templateReference.Should().BeEquivalentTo(templateReference);
+        }
     }
 }
