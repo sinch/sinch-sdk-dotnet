@@ -206,20 +206,20 @@ namespace Sinch.Tests.Voice
         [InlineData("\"MXP\"")]
         public void DeserializeDomainCaseInsensitive(string domainStr)
         {
-            
+
             var enumValue = JsonSerializer.Deserialize<Domain>(domainStr);
-            
+
             enumValue.Should().BeEquivalentTo(Domain.Mxp);
         }
-        
+
         [Theory]
         [InlineData("\"Number\"")]
         [InlineData("\"number\"")]
         public void DeserializeDestinationTypeCaseInsensitive(string domainStr)
         {
-            
+
             var enumValue = JsonSerializer.Deserialize<DestinationType>(domainStr);
-            
+
             enumValue.Should().BeEquivalentTo(DestinationType.Number);
         }
     }
