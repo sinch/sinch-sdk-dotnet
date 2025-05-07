@@ -13,10 +13,10 @@ namespace Sinch.Tests.Core
         // for real case, all values in EnumRecordCaseInsensitiveJsonConverter enums should be lowercase
         public static readonly EnumRecordExample VariantB = new EnumRecordExample("VariantB");
     }
-    
+
     public class EnumRecordTests
     {
-      
+
         [Theory]
         [InlineData("\"variantA\"")]
         [InlineData("\"VariantA\"")]
@@ -28,16 +28,16 @@ namespace Sinch.Tests.Core
 
             result.Should().BeEquivalentTo(EnumRecordExample.VariantA);
         }
-        
+
         [Fact]
         public void SerializePreservingValue()
         {
             var variant = EnumRecordExample.VariantB;
             var result = JsonSerializer.Serialize(variant);
-            
+
             result.Should().BeEquivalentTo("\"VariantB\"");
         }
     }
-    
-    
+
+
 }

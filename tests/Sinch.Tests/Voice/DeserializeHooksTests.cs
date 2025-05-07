@@ -6,6 +6,7 @@ using Sinch.Voice;
 using Sinch.Voice.Callouts.Callout;
 using Sinch.Voice.Calls;
 using Sinch.Voice.Calls.Actions;
+using Sinch.Voice.Common;
 using Sinch.Voice.Hooks;
 using Xunit;
 using DestinationType = Sinch.Voice.Common.DestinationType;
@@ -143,7 +144,7 @@ namespace Sinch.Tests.Voice
                     },
                     To = new To
                     {
-                        Type = DestinationType.Number,
+                        Type = DestinationTypeExtended.Number,
                         Endpoint = "123456789"
                     },
                     ApplicationKey = "an app key",
@@ -182,7 +183,7 @@ namespace Sinch.Tests.Voice
                     Cli = "cli number",
                     To = new To
                     {
-                        Type = DestinationType.Number,
+                        Type = DestinationTypeExtended.Number,
                         Endpoint = "+123456879"
                     },
                     Domain = Domain.Mxp,
