@@ -24,12 +24,12 @@ namespace Sinch.Tests.e2e.Voice
                 From = new Destination()
                 {
                     Endpoint = "+123456",
-                    Type = DestinationType.Number
+                    Type = ParticipantType.Number
                 },
                 To = new Destination()
                 {
                     Endpoint = "+987654",
-                    Type = DestinationType.Number
+                    Type = ParticipantType.Number
                 },
                 Domain = CallDomain.Pstn,
                 CallId = "123",

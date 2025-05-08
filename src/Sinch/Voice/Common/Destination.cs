@@ -1,6 +1,5 @@
 using System.Text;
 using System.Text.Json.Serialization;
-using Sinch.Core;
 
 namespace Sinch.Voice.Common
 {
@@ -14,17 +13,13 @@ namespace Sinch.Voice.Common
         /// Gets or Sets Type
         /// </summary>
         [JsonPropertyName("type")]
-
-        public required DestinationType Type { get; set; }
-
+        public required ParticipantType Type { get; set; }
 
         /// <summary>
         ///     If the type is &#x60;number&#x60; the value of the endpoint is a phone number. If the type is &#x60;username&#x60; the value is the username for a data endpoint.
         /// </summary>
         [JsonPropertyName("endpoint")]
-
         public required string Endpoint { get; set; }
-
 
 
         /// <summary>
@@ -41,24 +36,5 @@ namespace Sinch.Voice.Common
             return sb.ToString();
         }
 
-    }
-
-    /// <summary>
-    /// Can be of type &#x60;number&#x60; for PSTN endpoints or of type &#x60;username&#x60; for data endpoints.
-    /// </summary>
-    /// <value>Can be of type &#x60;number&#x60; for PSTN endpoints or of type &#x60;username&#x60; for data endpoints.</value>
-    [JsonConverter(typeof(EnumRecordJsonConverter<DestinationType>))]
-    public record DestinationType(string Value) : EnumRecord(Value)
-    {
-        /// <summary>
-        ///     Destination ptsn
-        /// </summary>
-        public static readonly DestinationType Number = new("number");
-        /// <summary>
-        ///     Destination mxp
-        /// </summary>
-        public static readonly DestinationType Username = new("username");
-        public static readonly DestinationType Sip = new("sip");
-        public static readonly DestinationType Did = new("did");
     }
 }

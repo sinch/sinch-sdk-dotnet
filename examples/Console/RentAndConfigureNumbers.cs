@@ -2,6 +2,7 @@ using System.Text.Json;
 using Sinch;
 using Sinch.Numbers;
 using Sinch.Numbers.Available.Rent;
+using Sinch.Numbers.VoiceConfigurations;
 
 namespace Examples
 {
@@ -24,7 +25,7 @@ namespace Examples
                 {
                     ServicePlanId = "your_service_plan_id",
                 },
-                VoiceConfiguration = new VoiceConfiguration
+                VoiceConfiguration = new VoiceRtcConfiguration()
                 {
                     AppId = "your app id"
                 }

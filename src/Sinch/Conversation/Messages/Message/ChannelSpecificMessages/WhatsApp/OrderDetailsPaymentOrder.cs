@@ -1,6 +1,9 @@
+using System;
+using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Collections.Generic;
+using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
 {
@@ -21,7 +24,8 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     UTC timestamp indicating when the order should expire.  The timestamp must be given in seconds.  The minimum threshold for the timestamp is 300 seconds.
         /// </summary>
         [JsonPropertyName("expiration_time")]
-        public string? ExpirationTime { get; set; }
+        [JsonConverter(typeof(UnixTimestampSecondsJsonConverter))]
+        public DateTime? ExpirationTime { get; set; }
 
 
         /// <summary>

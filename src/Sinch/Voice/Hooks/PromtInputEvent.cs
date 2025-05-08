@@ -24,7 +24,7 @@ namespace Sinch.Voice.Hooks
         /// <summary>
         ///     The unique ID assigned to this call.
         /// </summary>
-        [JsonPropertyName("callId")]
+        [JsonPropertyName("callid")]
         public string? CallId { get; set; }
 
         /// <summary>
@@ -85,32 +85,32 @@ namespace Sinch.Voice.Hooks
         /// <summary>
         ///     Returned if there's an error with the input.
         /// </summary>
-        public static readonly MenuType Error = new("Error");
+        public static readonly MenuType Error = new("error");
 
         /// <summary>
         ///     Returned when the event has been triggered from a return command.
         /// </summary>
-        public static readonly MenuType Return = new("Return");
+        public static readonly MenuType Return = new("return");
 
         /// <summary>
         ///     Returned when the event has been triggered from collecting DTMF digits.
         /// </summary>
-        public static readonly MenuType Sequence = new("Sequence");
+        public static readonly MenuType Sequence = new("sequence");
 
         /// <summary>
         ///     Returned when the timeout period has elapsed.
         /// </summary>
-        public static readonly MenuType Timeout = new("Timeout");
+        public static readonly MenuType Timeout = new("timeout");
 
         /// <summary>
         ///     Returned when the call is hung up.
         /// </summary>
-        public static readonly MenuType Hangup = new("Hangup");
+        public static readonly MenuType Hangup = new("hangup");
 
         /// <summary>
         ///     Returned when the value of the input is invalid.
         /// </summary>
-        public static readonly MenuType InvalidInput = new("InvalidInput");
+        public static readonly MenuType InvalidInput = new("invalidinput");
     }
 
     [JsonConverter(typeof(EnumRecordJsonConverter<InputMethod>))]

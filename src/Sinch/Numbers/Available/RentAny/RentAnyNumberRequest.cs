@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Sinch.Numbers.VoiceConfigurations;
 
 namespace Sinch.Numbers.Available.RentAny
 {
