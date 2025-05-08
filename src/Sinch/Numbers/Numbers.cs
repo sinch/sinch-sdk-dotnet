@@ -154,9 +154,6 @@ namespace Sinch.Numbers
             return _activeNumbers.ListAuto(request, cancellationToken);
         }
 
-
-#pragma warning restore CS0618 // Type or member is obsolete
-
         public JsonSerializerOptions JsonSerializerOptions { get; }
     }
 }
