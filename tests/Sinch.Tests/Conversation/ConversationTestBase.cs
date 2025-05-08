@@ -37,9 +37,9 @@ namespace Sinch.Tests.Conversation
             return JsonSerializer.Deserialize<T>(json, Conversation.JsonSerializerOptions);
         }
 
-        protected string SerializeAsConversationClient<T>(T obj)
+        protected string SerializeAsConversationClient<T>(T message)
         {
-            return JsonSerializer.Serialize(obj, Conversation.JsonSerializerOptions);
+            return JsonSerializer.Serialize(message, Conversation.JsonSerializerOptions);
         }
     }
 }

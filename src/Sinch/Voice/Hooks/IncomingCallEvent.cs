@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Core;
+using Sinch.Voice.Callouts.Callout;
 using Sinch.Voice.Calls;
 using Sinch.Voice.Calls.Actions;
 
@@ -27,7 +28,7 @@ namespace Sinch.Voice.Hooks
         /// <summary>
         ///     The unique ID assigned to this call.
         /// </summary>
-        [JsonPropertyName("callId")]
+        [JsonPropertyName("callid")]
         public string? CallId { get; set; }
 
 
@@ -86,7 +87,7 @@ namespace Sinch.Voice.Hooks
         ///     The domain destination of the incoming call.
         /// </summary>
         [JsonPropertyName("domain")]
-        public CallDomain? Domain { get; set; }
+        public Domain? Domain { get; set; }
 
 
         /// <summary>
@@ -100,7 +101,7 @@ namespace Sinch.Voice.Hooks
         ///     The origination domain of the incoming call.
         /// </summary>
         [JsonPropertyName("originationType")]
-        public OriginationType? OriginationType { get; set; }
+        public Domain? OriginationType { get; set; }
 
 
         /// <summary>

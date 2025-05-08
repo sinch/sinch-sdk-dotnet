@@ -26,7 +26,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     such as WhatsApp Business Template.
         /// </summary>
         [JsonPropertyName("omni_template")]
-        public TemplateReference? OmniTemplate { get; set; }
+        public OmniTemplateReference? OmniTemplate { get; set; }
 
 
         /// <summary>
@@ -48,12 +48,73 @@ namespace Sinch.Conversation.Messages.Message
     ///     The referenced template can be an omnichannel template stored in Conversation API Template Store
     ///     as AppMessage or it can reference external channel-specific template such as WhatsApp Business Template.
     /// </summary>
-    public sealed class TemplateReference : IOmniMessageOverride
+    public sealed class OmniTemplateReference : TemplateReferenceBase, IOmniMessageOverride
+    {
+        /// <summary>
+        ///     Used to specify what version of a template to use. This will be used in conjunction with &#x60;language_code&#x60;.
+        /// </summary>
+        [JsonPropertyName("version")]
+#if NET7_0_OR_GREATER
+        public required string Version { get; set; }
+#else
+        public string Version { get; set; } = null!;
+#endif
+
+
+        /// <summary>
+        ///     Returns the string presentation of the object
+        /// </summary>
+        /// <returns>String presentation of the object</returns>
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"class {nameof(OmniTemplateReference)} {{\n");
+            sb.Append("  LanguageCode: ").Append(LanguageCode).Append("\n");
+            sb.Append("  Parameters: ").Append(Parameters).Append("\n");
+            sb.Append("  TemplateId: ").Append(TemplateId).Append("\n");
+            sb.Append("  Version: ").Append(Version).Append("\n");
+            sb.Append("}\n");
+            return sb.ToString();
+        }
+    }
+
+    /// <summary>
+    ///     The referenced template can be an omnichannel template stored in Conversation API Template Store
+    ///     as AppMessage or it can reference external channel-specific template such as WhatsApp Business Template.
+    /// </summary>
+    public sealed class TemplateReference : TemplateReferenceBase
+    {
+        /// <summary>
+        ///     Used to specify what version of a template to use. This will be used in conjunction with &#x60;language_code&#x60;.
+        /// </summary>
+        [JsonPropertyName("version")]
+        public string? Version { get; set; }
+
+        /// <summary>
+        ///     Returns the string presentation of the object
+        /// </summary>
+        /// <returns>String presentation of the object</returns>
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"class {nameof(TemplateReference)} {{\n");
+            sb.Append("  LanguageCode: ").Append(LanguageCode).Append("\n");
+            sb.Append("  Parameters: ").Append(Parameters).Append("\n");
+            sb.Append("  TemplateId: ").Append(TemplateId).Append("\n");
+            sb.Append("  Version: ").Append(Version).Append("\n");
+            sb.Append("}\n");
+            return sb.ToString();
+        }
+    }
+
+    /// <summary>
+    ///     The referenced template can be an omnichannel template stored in Conversation API Template Store
+    ///     as AppMessage or it can reference external channel-specific template such as WhatsApp Business Template.
+    /// </summary>
+    public abstract class TemplateReferenceBase
     {
         /// <summary>
         ///     The ID of the template.
-        ///     Note that, in the case of WhatsApp channel-specific templates,
-        ///     this field must be populated by the name of the template.
         /// </summary>
         [JsonPropertyName("template_id")]
 #if NET7_0_OR_GREATER
@@ -62,24 +123,9 @@ namespace Sinch.Conversation.Messages.Message
         public string TemplateId { get; set; } = null!;
 #endif
 
-
         /// <summary>
-        ///     Used to specify what version of a template to use. Required when using &#x60;omni_channel_override&#x60;
-        ///     and &#x60;omni_template&#x60; fields. This will be used in conjunction with &#x60;language_code&#x60;.
-        ///     Note that, when referencing omni-channel templates using the [Sinch Customer Dashboard](https://dashboard.sinch.com/),
-        ///     the latest version of a given omni-template can be identified by populating this field with &#x60;latest&#x60;.
-        /// </summary>
-        [JsonPropertyName("version")]
-        public string? Version { get; set; }
-
-        /// <summary>
-        ///     The BCP-47 language code, such as &#x60;en_US&#x60; or &#x60;sr_Latn&#x60;.
-        ///     For more information, see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
-        ///     English is the default &#x60;language_code&#x60;.
-        ///     Note that, while many API calls involving templates accept either the dashed format (&#x60;en-US&#x60;)
-        ///     or the underscored format (&#x60;en_US&#x60;), some channel specific templates
-        ///     (for example, WhatsApp channel-specific templates) only accept the underscored format.
-        ///     Note that this field is required for WhatsApp channel-specific templates.
+        ///     The BCP-47 language code, such as &#x60;en-US&#x60; or &#x60;sr-Latn&#x60;. For more information,
+        ///     see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. English is the default language_code.
         /// </summary>
         [JsonPropertyName("language_code")]
         public string? LanguageCode { get; set; }
@@ -92,22 +138,5 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonPropertyName("parameters")]
         public Dictionary<string, string>? Parameters { get; set; }
-
-
-        /// <summary>
-        ///     Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("class TemplateReference {\n");
-            sb.Append("  LanguageCode: ").Append(LanguageCode).Append("\n");
-            sb.Append("  Parameters: ").Append(Parameters).Append("\n");
-            sb.Append("  TemplateId: ").Append(TemplateId).Append("\n");
-            sb.Append("  Version: ").Append(Version).Append("\n");
-            sb.Append("}\n");
-            return sb.ToString();
-        }
     }
 }

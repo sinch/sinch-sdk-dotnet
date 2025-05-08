@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Voice.Hooks
@@ -18,8 +19,14 @@ namespace Sinch.Voice.Hooks
         /// <summary>
         ///     The unique ID assigned to this call.
         /// </summary>
-        [JsonPropertyName("callId")]
+        [JsonPropertyName("callid")]
         public string? CallId { get; set; }
+
+        /// <summary>
+        ///     Used in some types of events, it presents the unique Conference ID assigned to this call.
+        /// </summary>
+        [JsonPropertyName("conferenceId")]
+        public string? ConferenceId { get; set; }
 
         /// <summary>
         ///     The current API version.
@@ -38,5 +45,33 @@ namespace Sinch.Voice.Hooks
         /// </summary>
         [JsonPropertyName("custom")]
         public string? Custom { get; set; }
+
+
+        /// <inheritdoc cref="AnsweringMachineDetection"/>
+        [JsonPropertyName("amd")]
+        public AnsweringMachineDetection? Amd { get; set; }
+
+        /// <summary>
+        ///     Used in some types of events, it presents the destination of the generated recording or transcription files.
+        /// </summary>
+        [JsonPropertyName("destination")]
+        public string? Destination { get; set; }
+
+        /// <summary>
+        ///     Returns the string presentation of the object
+        /// </summary>
+        /// <returns>String presentation of the object</returns>
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append($"class {nameof(NotificationEvent)} {{\n");
+            sb.Append($"  {nameof(Event)}: ").Append(Event).Append('\n');
+            sb.Append($"  {nameof(Type)}: ").Append(Type).Append('\n');
+            sb.Append($"  {nameof(Destination)}: ").Append(Destination).Append('\n');
+            sb.Append($"  {nameof(Amd)}: ").Append(Amd).Append('\n');
+            sb.Append($"  {nameof(Custom)}: ").Append(Custom).Append('\n');
+            sb.Append("}\n");
+            return sb.ToString();
+        }
     }
 }

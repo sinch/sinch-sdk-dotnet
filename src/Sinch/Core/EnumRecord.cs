@@ -38,4 +38,37 @@ namespace Sinch.Core
             writer.WritePropertyName(value.Value);
         }
     }
+
+    /// <summary>
+    ///     Exists for Enums which can have both UPPERCASE and lowercase values.
+    ///     Like Voice.Callouts.Callout.Domain.Ptsn or Sinch.Voice.Callouts.Callout.DestinationType.Username
+    ///     Intended for deserialization only. 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class EnumRecordCaseInsensitiveJsonConverter<T> : JsonConverter<T> where T : EnumRecord
+    {
+        public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            return Activator.CreateInstance(typeToConvert, reader.GetString()?.ToLowerInvariant()) as T ??
+                   throw new InvalidOperationException("Created instance is null");
+        }
+
+        public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.Value);
+        }
+
+        // Added to properly deserialize the enum records as dictionary key
+        public override T ReadAsPropertyName(ref Utf8JsonReader reader, Type typeToConvert,
+            JsonSerializerOptions options)
+        {
+            return Activator.CreateInstance(typeToConvert, reader.GetString()?.ToLowerInvariant()) as T ??
+                   throw new InvalidOperationException("Created instance is null");
+        }
+
+        public override void WriteAsPropertyName(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+        {
+            writer.WritePropertyName(value.Value);
+        }
+    }
 }

@@ -24,7 +24,7 @@ namespace Sinch.Voice.Hooks
         /// <summary>
         ///     The unique ID assigned to this call.
         /// </summary>
-        [JsonPropertyName("callId")]
+        [JsonPropertyName("callid")]
         public string? CallId { get; set; }
 
 
