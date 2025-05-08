@@ -9,7 +9,7 @@ namespace Sinch.Verification.Hooks
     ///     is triggered when a new verification request is made from the SDK client or the Verification Request API.
     ///     This callback event is only triggered when a verification callback URL is specified in your dashboard.
     /// </summary>
-    public class VerificationRequestEvent
+    public sealed class VerificationRequestEvent
     {
         /// <summary>
         ///     The ID of the verification request.

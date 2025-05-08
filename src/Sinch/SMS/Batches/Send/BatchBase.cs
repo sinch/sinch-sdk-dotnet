@@ -14,7 +14,7 @@ namespace Sinch.SMS.Batches.Send
     {
     }
 
-    public class SendBatchRequestConverter : JsonConverter<ISendBatchRequest>
+    public sealed class SendBatchRequestConverter : JsonConverter<ISendBatchRequest>
     {
         public override ISendBatchRequest Read(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)

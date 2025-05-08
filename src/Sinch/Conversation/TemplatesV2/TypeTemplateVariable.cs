@@ -2,7 +2,7 @@ using System.Text;
 
 namespace Sinch.Conversation.TemplatesV2
 {
-    public class TypeTemplateVariable
+    public sealed class TypeTemplateVariable
     {
         /// <summary>
         ///     Gets or Sets Key

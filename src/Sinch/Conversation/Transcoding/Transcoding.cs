@@ -21,7 +21,7 @@ namespace Sinch.Conversation.Transcoding
         Task<TranscodeResponse> Transcode(TranscodeRequest request, CancellationToken cancellationToken = default);
     }
 
-    internal class Transcoding : ISinchConversationTranscoding
+    internal sealed class Transcoding : ISinchConversationTranscoding
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

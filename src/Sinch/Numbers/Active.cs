@@ -85,7 +85,7 @@ namespace Sinch.Numbers
             CancellationToken cancellationToken = default);
     }
 
-    internal class ActiveNumbers : ISinchNumbersActive
+    internal sealed class ActiveNumbers : ISinchNumbersActive
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

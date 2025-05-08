@@ -37,7 +37,7 @@ namespace Sinch.Verification.Start.Request
         public TimeOnly? Expiry { get; set; }
     }
 
-    public class TimeOnlyJsonConverter : JsonConverter<TimeOnly?>
+    public sealed class TimeOnlyJsonConverter : JsonConverter<TimeOnly?>
     {
         public override TimeOnly? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

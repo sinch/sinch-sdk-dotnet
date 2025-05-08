@@ -12,7 +12,7 @@ namespace Sinch.Core
         }
     }
 
-    public class EnumRecordJsonConverter<T> : JsonConverter<T> where T : EnumRecord
+    public sealed class EnumRecordJsonConverter<T> : JsonConverter<T> where T : EnumRecord
     {
         public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

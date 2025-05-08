@@ -6,7 +6,7 @@ namespace Sinch.Numbers.Hooks
     /// <summary>
     ///     A notification of an event sent to your configured callback URL.
     /// </summary>
-    public class Event
+    public sealed class Event
     {
         /// <summary>
         ///     The ID of the event.

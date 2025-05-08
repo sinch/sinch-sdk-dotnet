@@ -2,7 +2,7 @@ using System.Text;
 
 namespace Sinch.Conversation.Apps
 {
-    public class QueueStats
+    public sealed class QueueStats
     {
         /// <summary>
         ///     The current size of the App&#39;s MT queue.

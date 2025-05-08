@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Sinch.Fax.Faxes
 {
-    internal class FileExtensionContentTypeProvider
+    internal sealed class FileExtensionContentTypeProvider
     {
         private IDictionary<string, string> Mappings { get; set; }
 

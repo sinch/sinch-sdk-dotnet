@@ -8,7 +8,7 @@ namespace Sinch.Voice.Hooks
     ///     <br /><br />
     ///     If there is no response to the callback within the timeout period, the notification is discarded.
     /// </summary>
-    public class NotificationEvent : IVoiceEvent
+    public sealed class NotificationEvent : IVoiceEvent
     {
         /// <summary>
         ///     Must have the value notify.

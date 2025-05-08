@@ -16,7 +16,7 @@ namespace Sinch.Voice.Hooks
         public EventType? Event { get; }
     }
 
-    public class VoiceEventConverter : JsonConverter<IVoiceEvent>
+    public sealed class VoiceEventConverter : JsonConverter<IVoiceEvent>
     {
         public override IVoiceEvent? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

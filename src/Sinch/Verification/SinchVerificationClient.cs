@@ -20,7 +20,7 @@ namespace Sinch.Verification
         ISinchVerificationStatus VerificationStatus { get; }
     }
 
-    internal class SinchVerificationClient : ISinchVerificationClient
+    internal sealed class SinchVerificationClient : ISinchVerificationClient
     {
         internal SinchVerificationClient(Uri baseAddress, LoggerFactory? loggerFactory,
             IHttp http)

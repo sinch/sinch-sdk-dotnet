@@ -6,7 +6,7 @@ using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Message
 {
-    public class ChannelSpecificContactMessage
+    public sealed class ChannelSpecificContactMessage
     {
         /// <summary>
         /// The message type.
@@ -44,7 +44,7 @@ namespace Sinch.Conversation.Messages.Message
         }
     }
 
-    public class ChannelSpecificMessageContent
+    public sealed class ChannelSpecificMessageContent
     {
         [JsonPropertyName("type")]
 #if NET7_0_OR_GREATER

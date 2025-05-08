@@ -2,7 +2,7 @@ using Sinch.Conversation.Common;
 
 namespace Sinch.Conversation.Capability
 {
-    public class LookupCapabilityResponse
+    public sealed class LookupCapabilityResponse
     {
         /// <summary>
         ///     The ID of the app to use for capability lookup.

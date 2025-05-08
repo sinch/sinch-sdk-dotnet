@@ -1,0 +1,6 @@
+{
+  "voiceConfiguration": {
+    "appId": "app id value",
+    "type": "RTC"
+  }
+}

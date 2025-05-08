@@ -2,7 +2,7 @@ using System.Text;
 
 namespace Sinch.Voice.Applications
 {
-    public class Callbacks
+    public sealed class Callbacks
     {
         public CallbackUrls? Url { get; set; }
     }
@@ -10,7 +10,7 @@ namespace Sinch.Voice.Applications
     /// <summary>
     ///     Gets primary and if configured fallback callback URLs
     /// </summary>
-    public class CallbackUrls
+    public sealed class CallbackUrls
     {
         /// <summary>
         ///     Your primary callback URL

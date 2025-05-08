@@ -1,6 +1,6 @@
 namespace Sinch.Conversation.Events.AppEvents
 {
-    public class CommentReplyEvent
+    public sealed class CommentReplyEvent
     {
         /// <summary>
         ///     The text of the comment reply.

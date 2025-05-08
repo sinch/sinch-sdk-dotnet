@@ -3,7 +3,7 @@ using System.Text.Json.Nodes;
 
 namespace Sinch.Conversation.Conversations.Create
 {
-    public class CreateConversationRequest
+    public sealed class CreateConversationRequest
     {
         /// <summary>
         ///     Gets or Sets ActiveChannel

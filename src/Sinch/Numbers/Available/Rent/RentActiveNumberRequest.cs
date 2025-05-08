@@ -1,6 +1,9 @@
+using System.Text.Json.Serialization;
+using Sinch.Numbers.VoiceConfigurations;
+
 namespace Sinch.Numbers.Available.Rent
 {
-    public class RentActiveNumberRequest
+    public sealed class RentActiveNumberRequest
     {
         /// <summary>
         ///     The current SMS configuration for this number. <br /><br />
@@ -8,6 +11,7 @@ namespace Sinch.Numbers.Available.Rent
         ///     The status of scheduled provisioning will show under a scheduledProvisioning object if it's still running. Once
         ///     processed successfully, the servicePlanId sent will appear directly under the smsConfiguration object.
         /// </summary>
+        [JsonPropertyName("smsConfiguration")]
         public SmsConfiguration? SmsConfiguration { get; set; }
 
         /// <summary>
@@ -17,6 +21,8 @@ namespace Sinch.Numbers.Available.Rent
         ///     if it's still running. Once processed successfully,
         ///     the appId sent will appear directly under the voiceConfiguration object.
         /// </summary>
+        [JsonConverter(typeof(VoiceConfigurationConverter))]
+        [JsonPropertyName("voiceConfiguration")]
         public VoiceConfiguration? VoiceConfiguration { get; set; }
     }
 }

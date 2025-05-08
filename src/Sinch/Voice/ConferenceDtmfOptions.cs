@@ -7,7 +7,7 @@ namespace Sinch.Voice
     ///     For information on how to use this feature, read more
     ///     <see href="https://developers.sinch.com/docs/voice/api-reference/conference-dtmf">here.</see>
     /// </summary>
-    public class ConferenceDtmfOptions
+    public sealed class ConferenceDtmfOptions
     {
         /// <summary>
         ///     Determines what DTMF mode the participant will use in the call.

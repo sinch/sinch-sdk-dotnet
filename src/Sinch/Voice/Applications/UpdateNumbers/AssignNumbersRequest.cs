@@ -5,7 +5,7 @@ using Sinch.Voice.Applications.GetNumbers;
 
 namespace Sinch.Voice.Applications.UpdateNumbers
 {
-    public class AssignNumbersRequest
+    public sealed class AssignNumbersRequest
     {
         /// <summary>
         ///     Indicates the DID capability that needs to be assigned to the chosen application. Valid values are &#39;voice&#39;

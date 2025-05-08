@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.SMS.Groups.Update
 {
-    public class UpdateGroupRequest : IGroupUpdateRequest
+    public sealed class UpdateGroupRequest : IGroupUpdateRequest
     {
         /// <summary>
         ///     ID of a group that you are interested in getting.
@@ -96,7 +96,7 @@ namespace Sinch.SMS.Groups.Update
     /// <summary>
     ///     Workaround to omit name property
     /// </summary>
-    internal class RequestWithoutName
+    internal sealed class RequestWithoutName
     {
         /// <summary>
         ///     Add a list of phone numbers (MSISDNs) to this group.

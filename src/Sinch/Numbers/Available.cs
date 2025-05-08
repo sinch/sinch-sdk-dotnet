@@ -72,7 +72,7 @@ namespace Sinch.Numbers
             CancellationToken cancellationToken = default);
     }
 
-    internal class AvailableNumbers : ISinchNumbersAvailable
+    internal sealed class AvailableNumbers : ISinchNumbersAvailable
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

@@ -50,7 +50,7 @@ namespace Sinch.Verification.Report.Response
     {
     }
 
-    public class VerificationReportResponseConverter : JsonConverter<IVerificationReportResponse?>
+    public sealed class VerificationReportResponseConverter : JsonConverter<IVerificationReportResponse?>
     {
         public override IVerificationReportResponse? Read(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)

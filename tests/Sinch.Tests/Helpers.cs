@@ -2,6 +2,8 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using Newtonsoft.Json.Linq;
+using FluentAssertions.Json; // If using plain FluentAssertion, json comparison below can give false positives.
 
 namespace Sinch.Tests
 {
@@ -27,6 +29,13 @@ namespace Sinch.Tests
         {
             var filePath = Path.Combine(AppContext.BaseDirectory, "Resources", path);
             return File.ReadAllText(filePath);
+        }
+
+        public static void AssertJsonEqual(string expected, string actual)
+        {
+            var actualJObject = JObject.Parse(actual);
+            var expectedJObject = JObject.Parse(expected);
+            expectedJObject.Should().BeEquivalentTo(actualJObject);
         }
     }
 }

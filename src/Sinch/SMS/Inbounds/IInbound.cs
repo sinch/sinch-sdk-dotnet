@@ -14,7 +14,7 @@ namespace Sinch.SMS.Inbounds
     {
     }
 
-    public class InboundJsonConverter : JsonConverter<IInbound>
+    public sealed class InboundJsonConverter : JsonConverter<IInbound>
     {
         public override IInbound? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
@@ -27,6 +27,9 @@ namespace Sinch.SMS.Inbounds
 
             if (SmsType.Binary.Value == method)
                 return elem.Deserialize<BinaryInbound>(options);
+
+            if (SmsType.Media.Value == method)
+                return elem.Deserialize<MediaInbound>(options);
 
             throw new JsonException(
                 $"Failed to match verification method object, got prop `{descriptor.Name}` with value `{method}`");

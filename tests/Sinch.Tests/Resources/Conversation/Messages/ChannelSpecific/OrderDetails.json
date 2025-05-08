@@ -1,0 +1,50 @@
+{
+  "header": {
+    "type": "document",
+    "document": {
+      "link": "a document URL link"
+    }
+  },
+  "body": {
+    "text": "Flow message body"
+  },
+  "footer": {
+    "text": "Flow message footer"
+  },
+  "payment": {
+    "type": "br",
+    "reference_id": "a reference ID",
+    "type_of_goods": "digital-goods",
+    "payment_settings": {
+      "dynamic_pix": {
+        "code": "code value",
+        "merchant_name": "merchant name",
+        "key": "key value",
+        "key_type": "CNPJ"
+      }
+    },
+    "total_amount_value": 1200,
+    "order": {
+      "catalog_id": "catalog id",
+      "expiration_time": "1741934627",
+      "expiration_description": "expiration description",
+      "subtotal_value": 6000,
+      "tax_value": 7000,
+      "tax_description": "tax description",
+      "shipping_value": 5000,
+      "shipping_description": "shipping description",
+      "discount_value": 1000,
+      "discount_description": "discount description",
+      "discount_program_name": "discount program name",
+      "items": [
+        {
+          "retailer_id": "item retailer id",
+          "name": "item name",
+          "amount_value": 2000,
+          "quantity": 3000,
+          "sale_amount_value": 4000
+        }
+      ]
+    }
+  }
+}

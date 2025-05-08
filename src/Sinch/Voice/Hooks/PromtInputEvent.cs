@@ -13,7 +13,7 @@ namespace Sinch.Voice.Hooks
     ///     [SVAML](https://developers.sinch.com/docs/voice/api-reference/svaml/) logic.<br /><br />
     ///     Note: PIE callbacks are not issued for DATA Calls, only PSTN and SIP calls.
     /// </summary>
-    public class PromptInputEvent : IVoiceEvent
+    public sealed class PromptInputEvent : IVoiceEvent
     {
         /// <summary>
         ///     Must have the value pie.
@@ -52,7 +52,7 @@ namespace Sinch.Voice.Hooks
         public string? ApplicationKey { get; set; }
     }
 
-    public class MenuResult
+    public sealed class MenuResult
     {
         /// <summary>
         ///     The ID of the menu that triggered the prompt input event.

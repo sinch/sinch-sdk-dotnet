@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Messages.Message
 {
-    public class Choice
+    public sealed class Choice
     {
         /// <summary>
         ///     Message for triggering a call.

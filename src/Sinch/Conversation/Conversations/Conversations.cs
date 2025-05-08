@@ -95,7 +95,7 @@ namespace Sinch.Conversation.Conversations
         Task InjectMessage(InjectMessageRequest injectMessageRequest, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     This operation injects a conversation event into a specific conversation.
+        ///     Inject an event. This operation injects a conversation event in to a specific conversation. It only supports injecting App events in &#x60;CONVERSATION&#x60; mode.
         /// </summary>
         /// <param name="injectEventRequest"></param>
         /// <param name="cancellationToken"></param>
@@ -104,7 +104,7 @@ namespace Sinch.Conversation.Conversations
             CancellationToken cancellationToken = default);
     }
 
-    internal class ConversationsClient : ISinchConversationConversations
+    internal sealed class ConversationsClient : ISinchConversationConversations
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

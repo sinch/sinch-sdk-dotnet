@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.SMS.Batches.Send
 {
     /// <summary>
     ///    Only available in the US. Contact support if you wish to send MMS.
     /// </summary>
-    public class SendMediaBatchRequest : BatchBase, ISendBatchRequest
+    public sealed class SendMediaBatchRequest : BatchBase, ISendBatchRequest
     {
         /// <summary>
         ///     The message content, including a URL to the media file
@@ -40,16 +42,50 @@ namespace Sinch.SMS.Batches.Send
         public Dictionary<string, Dictionary<string, string>>? Parameters { get; set; }
     }
 
-    public class MediaBody
+    /// <summary>
+    ///     The message content, including a URL to the media file
+    /// </summary>
+    public sealed class MediaBody
     {
+        /// <summary>
+        ///     The subject text
+        /// </summary>
+        [JsonPropertyName("subject")]
+        public string? Subject { get; set; }
+
+
+        /// <summary>
+        ///     The message text. Text only media messages will be rejected, please use SMS instead.
+        /// </summary>
+        [JsonPropertyName("message")]
+        public string? Message { get; set; }
+
+
         /// <summary>
         ///     URL to the media file
         /// </summary>
-        public Uri? Url { get; set; }
+        [JsonPropertyName("url")]
+#if NET7_0_OR_GREATER
+        public required Uri Url { get; set; }
+#else
+        public Uri Url { get; set; } = null!;
+#endif
+
 
         /// <summary>
-        ///   The message text. Text only media messages will be rejected, please use SMS instead.  
+        ///     Returns the string presentation of the object
         /// </summary>
-        public string? Message { get; set; }
+        /// <returns>String presentation of the object</returns>
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append($"class {nameof(MediaBody)} {{\n");
+            sb.Append($"  {nameof(Subject)}: ").Append(Subject).Append('\n');
+            sb.Append($"  {nameof(Message)}: ").Append(Message).Append('\n');
+            sb.Append($"  {nameof(Url)}: ").Append(Url).Append('\n');
+            sb.Append("}\n");
+            return sb.ToString();
+        }
+
     }
 }

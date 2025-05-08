@@ -1,6 +1,6 @@
 namespace Sinch.SMS.Groups
 {
-    public class AutoUpdateEdit
+    public sealed class AutoUpdateEdit
     {
         /// <summary>
         ///     Short code or long number addressed in
@@ -19,7 +19,7 @@ namespace Sinch.SMS.Groups
         public AutoUpdateRemove? Remove { get; set; }
     }
 
-    public class AutoUpdateAdd
+    public sealed class AutoUpdateAdd
     {
         /// <summary>
         ///     Keyword to be sent in
@@ -39,7 +39,7 @@ namespace Sinch.SMS.Groups
         public string? SecondWord { get; set; }
     }
 
-    public class AutoUpdateRemove
+    public sealed class AutoUpdateRemove
     {
         /// <summary>
         ///     Opt-out keyword like "LEAVE" If auto_update.to

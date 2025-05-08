@@ -34,10 +34,12 @@ namespace Sinch.Tests
                 },
                 voiceConfiguration = new
                 {
+                    type = "RTC",
                     appId = "string",
                     scheduledVoiceProvisioning = new
                     {
-                        appId = "string",
+                        type = "RTC",
+                        appId = "app id value",
                         status = "WAITING",
                         lastUpdatedTime = "2019-08-24T14:15:22Z"
                     },

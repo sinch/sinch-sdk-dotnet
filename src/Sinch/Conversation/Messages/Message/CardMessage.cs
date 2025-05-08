@@ -34,7 +34,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     Gets or Sets MediaMessage
         /// </summary>
         [JsonPropertyName("media_message")]
-        public CardMessageMediaMessage? MediaMessage { get; set; }
+        public MediaProperties? MediaMessage { get; set; }
 
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     A message containing an image media component.
     /// </summary>
-    public class CardMessageMediaMessage
+    public sealed class CardMessageMediaMessage
     {
         /// <summary>
         ///     Url to the media file.

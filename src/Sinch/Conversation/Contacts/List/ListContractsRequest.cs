@@ -1,6 +1,6 @@
 namespace Sinch.Conversation.Contacts.List
 {
-    public class ListContactsRequest
+    public sealed class ListContactsRequest
     {
         /// <summary>
         ///     Optional. The maximum number of contacts to fetch. The default is 10 and the maximum is 20.

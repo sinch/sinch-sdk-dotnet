@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Sinch.Conversation.Contacts.List
 {
-    public class ListContactsResponse
+    public sealed class ListContactsResponse
     {
         /// <summary>
         ///     Token that should be included in the next list contacts request to fetch the next page.

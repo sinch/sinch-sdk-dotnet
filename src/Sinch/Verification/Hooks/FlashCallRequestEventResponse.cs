@@ -2,13 +2,13 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Verification.Hooks
 {
-    public class FlashCallRequestEventResponse : RequestEventResponseBase
+    public sealed class FlashCallRequestEventResponse : RequestEventResponseBase
     {
         [JsonPropertyName("flashCall")]
         public FlashCall? FlashCall { get; set; }
     }
 
-    public class FlashCall
+    public sealed class FlashCall
     {
         /// <summary>
         ///     The phone number that will be displayed to the user when the flashcall is received on the user's phone.

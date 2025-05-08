@@ -1,0 +1,17 @@
+{
+  "channel": "LINE",
+  "line_enterprise_credentials": {
+    "line_japan": {
+      "token": "line enterprise credentials japan token value",
+      "secret": "line enterprise credentials japan secret value"
+    },
+    "is_default": true
+  },
+  "callback_secret": "callback secret",
+  "state": {
+    "status": "PENDING",
+    "description": "description value"
+  },
+  "channel_known_id": "channel id",
+  "credential_ordinal_number": 1
+}

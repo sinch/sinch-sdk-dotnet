@@ -3,7 +3,7 @@ namespace Sinch.Conversation.Apps.Credentials
     /// <summary>
     ///     This object is required for channels which use a bearer-type of credential for authentication.
     /// </summary>
-    public sealed class StaticBearerCredential
+    public sealed class StaticBearerCredentials
     {
         /// <summary>
         ///     The claimed identity for the channel.

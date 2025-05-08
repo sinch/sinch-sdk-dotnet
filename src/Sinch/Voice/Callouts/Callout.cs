@@ -45,7 +45,7 @@ namespace Sinch.Voice.Callouts
         Task<CalloutResponse> Custom(CustomCalloutRequest request, CancellationToken cancellationToken = default);
     }
 
-    internal class SinchCallout : ISinchVoiceCallout
+    internal sealed class SinchCallout : ISinchVoiceCallout
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;

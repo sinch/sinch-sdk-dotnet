@@ -1,0 +1,30 @@
+{
+  "to": [
+    "+15551231234",
+    "+15551256344"
+  ],
+  "from": "+15551231234",
+  "body": {
+    "message": "Hi ${name} (${an_identifier}) ! How are you?",
+    "url": "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png"
+  },
+  "parameters": {
+    "name": {
+      "15551231234": "name value for 15551231234",
+      "15551256344": "name value for 15551256344",
+      "default": "default value"
+    },
+    "an_identifier": {
+      "15551231234": "an identifier value for 15551231234",
+      "15551256344": "an identifier value for 15551256344"
+    }
+  },
+  "type": "mt_media",
+  "delivery_report": "summary",
+  "send_at": "2019-08-24T14:16:22Z",
+  "expire_at": "2019-08-24T14:17:22Z",
+  "callback_url": "https://my.callback.com",
+  "client_reference": "client reference",
+  "feedback_enabled": false,
+  "strict_validation": true
+}

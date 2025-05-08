@@ -5,7 +5,7 @@ using Sinch.Core;
 
 namespace Sinch.Conversation.Events
 {
-    public class ContactMessageEvent
+    public sealed class ContactMessageEvent
     {
         // Thank you System.Text.Json -_-
         [JsonConstructor]

@@ -1,0 +1,24 @@
+{
+  "message_type": "ORDER_STATUS",
+  "message": {
+    "header": {
+      "type": "document",
+      "document": {
+        "link": "a document URL link"
+      }
+    },
+    "body": {
+      "text": "Flow message body"
+    },
+    "footer": {
+      "text": "Flow message footer"
+    },
+    "payment": {
+      "reference_id": "order status reference id",
+      "order": {
+        "status": "canceled",
+        "description": "Order canceled"
+      }
+    }
+  }
+}

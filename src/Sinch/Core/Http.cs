@@ -60,12 +60,12 @@ namespace Sinch.Core
     /// <summary>
     ///     Represents an empty response for cases where no json is expected.
     /// </summary>
-    public class EmptyResponse
+    public sealed class EmptyResponse
     {
     }
 
     /// <inheritdoc /> 
-    internal class Http : IHttp
+    internal sealed class Http : IHttp
     {
         private readonly HttpClient _httpClient;
         private readonly JsonSerializerOptions _jsonSerializerOptions;

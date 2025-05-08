@@ -1,6 +1,6 @@
 namespace Sinch.Voice.Callouts.Callout
 {
-    public class CalloutResponse
+    public sealed class CalloutResponse
     {
         /// <summary>
         ///     The returned call identifier.

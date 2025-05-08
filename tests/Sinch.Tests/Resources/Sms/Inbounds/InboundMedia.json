@@ -1,0 +1,22 @@
+{
+  "body": {
+    "subject": "mmy subject",
+    "message": "my message",
+    "media": [
+      {
+        "url": "https://foo.url",
+        "content_type": "content/type",
+        "status": "a status",
+        "code": 1234
+      }
+    ]
+  },
+  "client_reference": "a client reference",
+  "from": "+11203494390",
+  "id": "01FC66621XXXXX119Z8PMV1QPA",
+  "operator_id": "35000",
+  "received_at": "2019-08-24T14:17:22Z",
+  "sent_at": "2019-08-24T14:15:22Z",
+  "to": "11203453453",
+  "type": "mo_media"
+}
