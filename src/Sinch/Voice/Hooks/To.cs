@@ -13,9 +13,9 @@ namespace Sinch.Voice.Hooks
         /// </summary>
         [JsonPropertyName("type")]
 #if NET7_0_OR_GREATER
-        public required DestinationTypeExtended Type { get; set; }
+        public required DestinationType Type { get; set; }
 #else
-        public DestinationTypeExtended Type { get; set; } = null!;
+        public DestinationType Type { get; set; } = null!;
 #endif
 
         /// <summary>
