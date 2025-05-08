@@ -108,7 +108,7 @@ namespace Sinch.Voice.Callouts.Callout
     ///     Can be either pstn for PSTN endpoint or mxp for data (app or web) clients.
     /// </summary>
     /// <param name="Value"></param>
-    [JsonConverter(typeof(EnumRecordJsonConverter<Domain>))]
+    [JsonConverter(typeof(EnumRecordCaseInsensitiveJsonConverter<Domain>))]
     public record Domain(string Value) : EnumRecord(Value)
     {
         public static readonly Domain Pstn = new("pstn");

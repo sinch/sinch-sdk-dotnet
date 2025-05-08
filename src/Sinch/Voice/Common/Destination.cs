@@ -1,6 +1,5 @@
 using System.Text;
 using System.Text.Json.Serialization;
-using Sinch.Core;
 
 namespace Sinch.Voice.Common
 {
@@ -15,9 +14,9 @@ namespace Sinch.Voice.Common
         /// </summary>
         [JsonPropertyName("type")]
 #if NET7_0_OR_GREATER
-        public required DestinationType Type { get; set; }
+        public required ParticipantType Type { get; set; }
 #else 
-        public DestinationType Type { get; set; } = null!;
+        public ParticipantType Type { get; set; } = null!;
 #endif
 
         /// <summary>
@@ -45,24 +44,5 @@ namespace Sinch.Voice.Common
             return sb.ToString();
         }
 
-    }
-
-    /// <summary>
-    /// Can be of type &#x60;number&#x60; for PSTN endpoints or of type &#x60;username&#x60; for data endpoints.
-    /// </summary>
-    /// <value>Can be of type &#x60;number&#x60; for PSTN endpoints or of type &#x60;username&#x60; for data endpoints.</value>
-    [JsonConverter(typeof(EnumRecordJsonConverter<DestinationType>))]
-    public record DestinationType(string Value) : EnumRecord(Value)
-    {
-        /// <summary>
-        ///     Destination ptsn
-        /// </summary>
-        public static readonly DestinationType Number = new("number");
-        /// <summary>
-        ///     Destination mxp
-        /// </summary>
-        public static readonly DestinationType Username = new("username");
-        public static readonly DestinationType Sip = new("sip");
-        public static readonly DestinationType Did = new("did");
     }
 }
