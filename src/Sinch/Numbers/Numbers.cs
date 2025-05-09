@@ -91,7 +91,7 @@ namespace Sinch.Numbers
         }
 
         public ISinchNumbersRegions Regions { get; }
-        
+
         public ISinchNumbersCallbacks Callbacks { get; }
 
         /// <inheritdoc />
