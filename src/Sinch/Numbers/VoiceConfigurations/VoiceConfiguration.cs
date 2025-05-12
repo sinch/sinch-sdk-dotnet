@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Sinch.Conversation.Messages.Message;
-using Sinch.Numbers.VoiceConfigurations;
 
-namespace Sinch.Numbers
+namespace Sinch.Numbers.VoiceConfigurations
 {
     public abstract class VoiceConfiguration
     {
