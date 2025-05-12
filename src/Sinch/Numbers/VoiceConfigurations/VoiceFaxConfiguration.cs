@@ -20,6 +20,6 @@ namespace Sinch.Numbers.VoiceConfigurations
 
         [JsonPropertyName("type")]
         [JsonInclude]
-        public override VoiceApplicationType? Type { get; protected set; } = VoiceApplicationType.Fax;
+        public override VoiceApplicationType Type { get; protected set; } = VoiceApplicationType.Fax;
     }
 }
