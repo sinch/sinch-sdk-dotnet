@@ -20,7 +20,8 @@ namespace Sinch.Voice.Hooks
         ///     Must have the value ace.
         /// </summary>
         [JsonPropertyName("event")]
-        public EventType? Event { get; set; }
+        [JsonInclude]
+        internal override EventType Event { get; set; } = EventType.AnsweredCallEvent;
 
 
         /// <summary>
@@ -63,5 +64,11 @@ namespace Sinch.Voice.Hooks
         /// </summary>
         [JsonPropertyName("amd")]
         public AnsweringMachineDetection? Amd { get; set; }
+        
+        /// <summary>
+        ///     The unique application key. You can find it in the Sinch [dashboard](https://dashboard.sinch.com/voice/apps).
+        /// </summary>
+        [JsonPropertyName("applicationKey")]
+        public string? ApplicationKey { get; set; }
     }
 }

@@ -19,7 +19,8 @@ namespace Sinch.Voice.Hooks
         ///     Must have the value pie.
         /// </summary>
         [JsonPropertyName("event")]
-        public EventType? Event { get; set; }
+        [JsonInclude]
+        internal override EventType Event { get; set; } = EventType.PromptInputEvent;
 
         /// <summary>
         ///     The unique ID assigned to this call.
@@ -50,6 +51,12 @@ namespace Sinch.Voice.Hooks
         /// </summary>
         [JsonPropertyName("applicationKey")]
         public string? ApplicationKey { get; set; }
+        
+        /// <summary>
+        ///     A string that can be used to pass custom information related to the call.
+        /// </summary>
+        [JsonPropertyName("custom")]
+        public string? Custom { get; set; }
     }
 
     public sealed class MenuResult

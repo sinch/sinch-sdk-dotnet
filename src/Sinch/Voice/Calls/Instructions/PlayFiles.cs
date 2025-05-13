@@ -16,11 +16,9 @@ namespace Sinch.Voice.Calls.Instructions
         ///     <example>[ ["Welcome","https://path/to/file"], ["#ssml[Thank you for calling Sinch!]"] ]</example>
         /// </summary>
         [JsonPropertyName("ids")]
-#if NET7_0_OR_GREATER
-        public required List<List<string>> Ids { get; set; }
-#else
-        public List<List<string>> Ids { get; set; } = null!;
-#endif
+
+        public required List<string> Ids { get; set; }
+
 
 
         /// <summary>

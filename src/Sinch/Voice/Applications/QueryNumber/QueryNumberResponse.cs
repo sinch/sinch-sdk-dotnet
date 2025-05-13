@@ -11,9 +11,9 @@ namespace Sinch.Voice.Applications.QueryNumber
 
 
         /// <summary>
-        ///     Gets or Sets NumberItem
+        ///     Gets or Sets Number
         /// </summary>
-        public NumberItem? NumberItem { get; set; }
+        public NumberItem? Number { get; set; }
 
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace Sinch.Voice.Applications.QueryNumber
             var sb = new StringBuilder();
             sb.Append("class QueryNumberResponse {\n");
             sb.Append("  Method: ").Append(Method).Append("\n");
-            sb.Append("  NumberItem: ").Append(NumberItem).Append("\n");
+            sb.Append("  Number: ").Append(Number).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
