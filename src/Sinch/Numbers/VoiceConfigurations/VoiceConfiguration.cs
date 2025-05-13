@@ -12,7 +12,7 @@ namespace Sinch.Numbers.VoiceConfigurations
         [JsonPropertyName("type")]
         [JsonInclude]
         // Expected to be set by the API response, or by Subclasses
-        public virtual VoiceApplicationType Type { get; protected set; } = VoiceApplicationType.Rtc;
+        internal virtual VoiceApplicationType Type { get; set; } = VoiceApplicationType.Rtc;
 
         /// <summary>
         ///     Timestamp when the status was last updated.
