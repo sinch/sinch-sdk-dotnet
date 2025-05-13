@@ -263,12 +263,6 @@ namespace Sinch.Core
                     };
                 }
 
-                if (result.IsJson())
-                    return await result.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken,
-                               options: _jsonSerializerOptions)
-                           ?? throw new InvalidOperationException(
-                               $"{typeof(TResponse).Name} is null");
-
                 // if empty response is expected, any non-related response is dropped
                 if (typeof(TResponse) == typeof(EmptyResponse))
                 {
@@ -283,6 +277,12 @@ namespace Sinch.Core
 
                     return (TResponse)(object)new EmptyResponse();
                 }
+                
+                if (result.IsJson())
+                    return await result.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken,
+                               options: _jsonSerializerOptions)
+                           ?? throw new InvalidOperationException(
+                               $"{typeof(TResponse).Name} is null");
 
                 // unexpected content, log warning and throw exception
                 _logger?.LogWarning("Response is not json, but {content}",
