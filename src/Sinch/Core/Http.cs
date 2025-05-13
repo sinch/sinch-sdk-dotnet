@@ -245,6 +245,22 @@ namespace Sinch.Core
                     Debug.WriteLine($"Failed to parse json {e.Message}");
                 }
 #endif
+                
+                // if empty response is expected, any non-related response is dropped
+                if (typeof(TResponse) == typeof(EmptyResponse))
+                {
+                    // if not empty content, check what is there for debug purposes.
+                    // C# EmptyContent class is internal, so checking it by the name
+                    // for more details, see: https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http/src/System/Net/Http/EmptyContent.cs
+                    if (result.Content.GetType().Name != "EmptyContent")
+                    {
+                        _logger?.LogDebug("Expected empty content, but got {content}",
+                            await result.Content.ReadAsStringAsync(cancellationToken));
+                    }
+
+                    return (TResponse)(object)new EmptyResponse();
+                }
+                
                 // NOTE: there wil probably be other files supported in the future
                 if (result.IsPdf())
                 {
@@ -263,20 +279,7 @@ namespace Sinch.Core
                     };
                 }
 
-                // if empty response is expected, any non-related response is dropped
-                if (typeof(TResponse) == typeof(EmptyResponse))
-                {
-                    // if not empty content, check what is there for debug purposes.
-                    // C# EmptyContent class is internal, so checking it by the name
-                    // for more details, see: https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http/src/System/Net/Http/EmptyContent.cs
-                    if (result.Content.GetType().Name != "EmptyContent")
-                    {
-                        _logger?.LogDebug("Expected empty content, but got {content}",
-                            await result.Content.ReadAsStringAsync(cancellationToken));
-                    }
-
-                    return (TResponse)(object)new EmptyResponse();
-                }
+               
                 
                 if (result.IsJson())
                     return await result.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken,
