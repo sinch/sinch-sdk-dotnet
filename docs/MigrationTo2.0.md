@@ -1,11 +1,18 @@
-# Code samples for migration to version 2.0
+# Migration to 2.0
 
-# ADD CONTENT LIST
+## Content list:
+- [Initialize with unified credentials](#initialize-sinchclient-with-unified-credentials)
+- [Voice and Verification initialization](#initialize-voice-and-verification-clients)
+- [Logger and HttpClient](#provide-logger-and-your-own-httpclient)
+- [Set API Regions](#set-api-regionswhere-applicable)
+- [Override API Urls](#override-api-urls)
+- [Use Sms with Service Plan Id](#use-sms-api-with-serviceplanid)
+
 ## Initialize `SinchClient` with unified credentials:
 
 Version 1.*:
 ```csharp
-var sinchClient = new SinchClient("YOUR_project_id", "YOUR_key", "YOUR_secret");
+var sinchClient = new SinchClient("YOUR_project_id", "YOUR_key_id", "YOUR_key_secret");
 ```
 
 Version 2.*:
