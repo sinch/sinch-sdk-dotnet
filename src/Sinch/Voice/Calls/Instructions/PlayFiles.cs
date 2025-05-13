@@ -17,7 +17,7 @@ namespace Sinch.Voice.Calls.Instructions
         /// </summary>
         [JsonPropertyName("ids")]
 
-        public required List<List<string>> Ids { get; set; }
+        public required List<string> Ids { get; set; }
 
 
 
