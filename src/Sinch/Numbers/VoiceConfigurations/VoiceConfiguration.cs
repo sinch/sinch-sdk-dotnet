@@ -20,6 +20,10 @@ namespace Sinch.Numbers.VoiceConfigurations
         [JsonInclude]
         [JsonPropertyName("lastUpdatedTime")]
         public DateTime? LastUpdatedTime { get; internal set; }
+
+        [JsonInclude]
+        [JsonPropertyName("scheduledVoiceProvisioning")]
+        public ScheduledVoiceProvisioning? ScheduledVoiceProvisioning { get; internal set; }
     }
 
 
@@ -34,17 +38,36 @@ namespace Sinch.Numbers.VoiceConfigurations
                 var typeStr = type.GetString();
                 if (typeStr == VoiceApplicationType.Fax.Value)
                 {
-                    return elem.Deserialize<VoiceFaxConfiguration>(options);
+                    var faxConfig = elem.Deserialize<VoiceFaxConfiguration>(options);
+                    if (faxConfig != null)
+                    {
+                        (faxConfig as VoiceConfiguration).ScheduledVoiceProvisioning = faxConfig.ScheduledVoiceProvisioning;
+                    }
+
+                    return faxConfig;
                 }
 
                 if (typeStr == VoiceApplicationType.Rtc.Value)
                 {
-                    return elem.Deserialize<VoiceRtcConfiguration>(options);
+                
+                    var voiceConfig = elem.Deserialize<VoiceRtcConfiguration>(options);
+                    if (voiceConfig != null)
+                    {
+                        (voiceConfig as VoiceConfiguration).ScheduledVoiceProvisioning = voiceConfig.ScheduledVoiceProvisioning;
+                    }
+
+                    return voiceConfig;
                 }
 
                 if (typeStr == VoiceApplicationType.Est.Value)
                 {
-                    return elem.Deserialize<VoiceEstConfiguration>(options);
+                    var estConfig = elem.Deserialize<VoiceEstConfiguration>(options);
+                    if (estConfig != null)
+                    {
+                        (estConfig as VoiceConfiguration).ScheduledVoiceProvisioning = estConfig.ScheduledVoiceProvisioning;
+                    }
+
+                    return estConfig;
                 }
 
                 throw new JsonException(

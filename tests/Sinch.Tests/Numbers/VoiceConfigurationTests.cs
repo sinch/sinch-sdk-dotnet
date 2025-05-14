@@ -66,20 +66,21 @@ namespace Sinch.Tests.Numbers
             var obj =
                 DeserializeAsNumbersClient<Container>(
                     Helpers.LoadResources("Numbers/EstVoiceResponse.json"));
-
+            var config = new VoiceEstConfiguration()
+            {
+                LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
+                TrunkId = "trunk id value",
+                ScheduledVoiceProvisioning = new ScheduledVoiceEstProvisioning()
+                {
+                    TrunkId = "trunk id value",
+                    Status = ProvisioningStatus.Waiting,
+                    LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
+                },
+            };
+            ((VoiceConfiguration)config).ScheduledVoiceProvisioning = config.ScheduledVoiceProvisioning;
             obj.Should().BeEquivalentTo(new Container()
             {
-                VoiceConfiguration = new VoiceEstConfiguration()
-                {
-                    LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
-                    TrunkId = "trunk id value",
-                    ScheduledVoiceProvisioning = new ScheduledVoiceEstProvisioning()
-                    {
-                        TrunkId = "trunk id value",
-                        Status = ProvisioningStatus.Waiting,
-                        LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
-                    },
-                }
+                VoiceConfiguration = config
             });
         }
 
@@ -89,10 +90,7 @@ namespace Sinch.Tests.Numbers
             var obj =
                 DeserializeAsNumbersClient<Container>(
                     Helpers.LoadResources("Numbers/FaxVoiceResponse.json"));
-
-            obj.Should().BeEquivalentTo(new Container()
-            {
-                VoiceConfiguration = new VoiceFaxConfiguration()
+            var config = new VoiceFaxConfiguration()
                 {
                     ServiceId = "service id value",
                     LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
@@ -102,7 +100,11 @@ namespace Sinch.Tests.Numbers
                         Status = ProvisioningStatus.Waiting,
                         LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
                     }
-                }
+                };
+            ((VoiceConfiguration)config).ScheduledVoiceProvisioning = config.ScheduledVoiceProvisioning;
+            obj.Should().BeEquivalentTo(new Container()
+            {
+                VoiceConfiguration = config
             });
         }
 
@@ -112,7 +114,7 @@ namespace Sinch.Tests.Numbers
             var obj =
                 DeserializeAsNumbersClient<Container>(
                     Helpers.LoadResources("Numbers/RtcVoiceResponse.json"));
-            var expected = new VoiceRtcConfiguration()
+            var config = new VoiceRtcConfiguration()
             {
                 AppId = "app id value",
                 LastUpdatedTime = Helpers.ParseUtc("2024-06-30T07:08:09.100Z"),
@@ -123,9 +125,10 @@ namespace Sinch.Tests.Numbers
                     LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
                 }
             };
+            ((VoiceConfiguration)config).ScheduledVoiceProvisioning = config.ScheduledVoiceProvisioning;
             obj.Should().BeEquivalentTo(new Container()
             {
-                VoiceConfiguration = expected
+                VoiceConfiguration = config
             });
         }
     }

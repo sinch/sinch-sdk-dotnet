@@ -10,7 +10,7 @@ namespace Sinch.Numbers.VoiceConfigurations
         /// </summary>
         [JsonInclude]
         [JsonPropertyName("scheduledVoiceProvisioning")]
-        public ScheduledVoiceFaxProvisioning? ScheduledVoiceProvisioning { get; internal set; }
+        public new ScheduledVoiceFaxProvisioning? ScheduledVoiceProvisioning { get; internal set; }
 
         /// <summary>
         ///     The service ID if the type is FAX. The &#x60;serviceId&#x60; can be found in your [Sinch Customer Dashboard](https://dashboard.sinch.com/fax/services).
