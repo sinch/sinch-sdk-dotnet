@@ -15,7 +15,7 @@ public sealed class CalculatorStepDefinitions
         // To use the multiline text or the table argument of the scenario,
         // additional string/DataTable parameters can be defined on the step definition
         // method. 
-    
+
         throw new PendingStepException();
     }
 

@@ -66,6 +66,18 @@ jobs:
         run: |
           cd sinch-sdk-internal-specs/fixtures/python/ && java -jar wiremock-studio-2.32.0-17.jar &
 
+      - name: Checkout mockserver e2e
+        uses: actions/checkout@v4
+        with:
+          repository: sinch/sinch-sdk-mockserver
+          token: ${{ secrets.GH_PAT_FINE }}
+          ref: main
+          path: tests/Sinch.Tests.Features/sinch-sdk-mockserver
+
+      - name: Run mockserver docker-compose
+        run: docker compose up -d
+        working-directory: tests/Sinch.Tests.Features/sinch-sdk-mockserver
+        
       - name: Install dependencies
         run: dotnet restore
 

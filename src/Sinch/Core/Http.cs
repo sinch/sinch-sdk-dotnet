@@ -245,7 +245,7 @@ namespace Sinch.Core
                     Debug.WriteLine($"Failed to parse json {e.Message}");
                 }
 #endif
-                
+
                 // if empty response is expected, any non-related response is dropped
                 if (typeof(TResponse) == typeof(EmptyResponse))
                 {
@@ -260,7 +260,7 @@ namespace Sinch.Core
 
                     return (TResponse)(object)new EmptyResponse();
                 }
-                
+
                 // NOTE: there wil probably be other files supported in the future
                 if (result.IsPdf())
                 {
@@ -279,8 +279,8 @@ namespace Sinch.Core
                     };
                 }
 
-               
-                
+
+
                 if (result.IsJson())
                     return await result.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken,
                                options: _jsonSerializerOptions)
