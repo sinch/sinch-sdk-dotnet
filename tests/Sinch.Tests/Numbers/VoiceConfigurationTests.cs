@@ -77,7 +77,6 @@ namespace Sinch.Tests.Numbers
                     LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
                 },
             };
-            ((VoiceConfiguration)config).ScheduledVoiceProvisioning = config.ScheduledVoiceProvisioning;
             obj.Should().BeEquivalentTo(new Container()
             {
                 VoiceConfiguration = config
@@ -101,7 +100,6 @@ namespace Sinch.Tests.Numbers
                     LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
                 }
             };
-            ((VoiceConfiguration)config).ScheduledVoiceProvisioning = config.ScheduledVoiceProvisioning;
             obj.Should().BeEquivalentTo(new Container()
             {
                 VoiceConfiguration = config
@@ -125,7 +123,6 @@ namespace Sinch.Tests.Numbers
                     LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
                 }
             };
-            ((VoiceConfiguration)config).ScheduledVoiceProvisioning = config.ScheduledVoiceProvisioning;
             obj.Should().BeEquivalentTo(new Container()
             {
                 VoiceConfiguration = config
