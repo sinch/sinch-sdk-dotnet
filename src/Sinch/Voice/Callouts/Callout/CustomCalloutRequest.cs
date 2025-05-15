@@ -65,7 +65,6 @@ namespace Sinch.Voice.Callouts.Callout
         ///     This could result in further SVAML or some other application logic function.
         ///     <example>"https://your-application-server-host/application"</example>
         /// </summary>
-        [JsonConverter(typeof(JsonNodeAsStringJsonConverter))]
-        public JsonNode? Pie { get; set; }
+        public string? Pie { get; set; }
     }
 }

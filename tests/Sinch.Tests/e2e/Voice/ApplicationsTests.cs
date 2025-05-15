@@ -96,7 +96,7 @@ namespace Sinch.Tests.e2e.Voice
             response.Should().BeEquivalentTo(new QueryNumberResponse
             {
                 Method = "numberItem",
-                NumberItem = new Sinch.Voice.Applications.QueryNumber.NumberItem
+                Number = new Sinch.Voice.Applications.QueryNumber.NumberItem
                 {
                     CountryId = "SE",
                     NumberType = NumberType.Mobile,

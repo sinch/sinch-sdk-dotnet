@@ -17,31 +17,23 @@ namespace Sinch.Tests.Features.Voice
     [Binding]
     public class Calls
     {
-        private ISinchVoiceClient _sinchVoiceClient;
+        private ISinchVoiceCalls _sinchVoiceCalls;
         private Call _callInformation;
         private Func<Task> _updateRequest;
         private Func<Task> _updateNonExistentOp;
         private Func<Task> _manageWithCallLeg;
 
 
-        [Given(@"the Voice service ""(.*)"" is available")]
-        public void GivenTheVoiceServiceIsAvailable(string calls)
+        [Given(@"the Voice service ""Calls"" is available")]
+        public void GivenTheVoiceServiceIsAvailable()
         {
-            _sinchVoiceClient = new SinchClient(new SinchClientConfiguration()
-            {
-                VoiceConfiguration = new SinchVoiceConfiguration()
-                {
-                    AppKey = "appKey",
-                    AppSecret = "BeIukql3pTKJ8RGL5zo0DA==",
-                    VoiceUrlOverride = "http://localhost:3019",
-                }
-            }).Voice;
+            _sinchVoiceCalls = Utils.TestSinchClient.Voice.Calls;
         }
 
         [When(@"I send a request to get a call's information")]
         public async Task WhenISendARequestToGetACallsInformation()
         {
-            _callInformation = await _sinchVoiceClient.Calls.Get("1ce0ffee-ca11-ca11-ca11-abcdef000003");
+            _callInformation = await _sinchVoiceCalls.Get("1ce0ffee-ca11-ca11-ca11-abcdef000003");
         }
 
         [Then(@"the response contains the information about the call")]
@@ -78,7 +70,7 @@ namespace Sinch.Tests.Features.Voice
         [When(@"I send a request to update a call")]
         public void WhenISendARequestToUpdateACall()
         {
-            _updateRequest = () => _sinchVoiceClient.Calls.Update(new UpdateCallRequest()
+            _updateRequest = () => _sinchVoiceCalls.Update(new UpdateCallRequest()
             {
                 CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000022",
                 Action = new Hangup(),
@@ -102,7 +94,7 @@ namespace Sinch.Tests.Features.Voice
         [When(@"I send a request to update a call that doesn't exist")]
         public void WhenISendARequestToUpdateACallThatDoesntExist()
         {
-            _updateNonExistentOp = () => _sinchVoiceClient.Calls.Update(new UpdateCallRequest()
+            _updateNonExistentOp = () => _sinchVoiceCalls.Update(new UpdateCallRequest()
             {
                 CallId = "not-existing-callId",
                 Action = new Hangup(),
@@ -128,7 +120,7 @@ namespace Sinch.Tests.Features.Voice
         [When(@"I send a request to manage a call with callLeg")]
         public void WhenISendARequestToManageACallWithCallLeg()
         {
-            _manageWithCallLeg = () => _sinchVoiceClient.Calls.ManageWithCallLeg("1ce0ffee-ca11-ca11-ca11-abcdef000032",
+            _manageWithCallLeg = () => _sinchVoiceCalls.ManageWithCallLeg("1ce0ffee-ca11-ca11-ca11-abcdef000032",
                 new CallLeg("callee"), new ManageWithCallLegRequest()
                 {
                     Action = new Continue(),
