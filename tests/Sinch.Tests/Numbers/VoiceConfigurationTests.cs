@@ -91,16 +91,16 @@ namespace Sinch.Tests.Numbers
                 DeserializeAsNumbersClient<Container>(
                     Helpers.LoadResources("Numbers/FaxVoiceResponse.json"));
             var config = new VoiceFaxConfiguration()
+            {
+                ServiceId = "service id value",
+                LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
+                ScheduledVoiceProvisioning = new ScheduledVoiceFaxProvisioning()
                 {
                     ServiceId = "service id value",
-                    LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
-                    ScheduledVoiceProvisioning = new ScheduledVoiceFaxProvisioning()
-                    {
-                        ServiceId = "service id value",
-                        Status = ProvisioningStatus.Waiting,
-                        LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
-                    }
-                };
+                    Status = ProvisioningStatus.Waiting,
+                    LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
+                }
+            };
             ((VoiceConfiguration)config).ScheduledVoiceProvisioning = config.ScheduledVoiceProvisioning;
             obj.Should().BeEquivalentTo(new Container()
             {
