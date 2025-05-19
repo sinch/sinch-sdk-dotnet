@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
@@ -51,7 +53,20 @@ namespace Sinch.Voice
         /// <param name="method"></param>
         /// <returns>True, if produced signature match with that of a header.</returns>
         bool ValidateAuthenticationHeader(HttpMethod method, string path, Dictionary<string, StringValues> headers,
-            JsonObject body);
+            JsonObject body, string? rawBody = null);
+
+        /// <summary>
+        ///     Validates callback request.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="headers"></param>
+        /// <param name="contentHeaders"></param>
+        /// <param name="body"></param>
+        /// <param name="method"></param>
+        /// <returns>True, if produced signature match with that of a header.</returns>
+        bool ValidateAuthenticationHeader(HttpMethod method, string path, HttpResponseHeaders headers,
+            HttpContentHeaders contentHeaders,
+            string body);
 
         /// <summary>
         ///     Parses a Voice callback
@@ -109,7 +124,7 @@ namespace Sinch.Voice
         public ISinchVoiceApplications Applications { get; }
 
         public bool ValidateAuthenticationHeader(HttpMethod method, string path,
-            Dictionary<string, StringValues> headers, JsonObject body)
+            Dictionary<string, StringValues> headers, JsonObject body, string? rawBody = null)
         {
             var headersCaseInsensitive =
                 new Dictionary<string, StringValues>(headers, StringComparer.InvariantCultureIgnoreCase);
@@ -134,7 +149,11 @@ namespace Sinch.Voice
             }
 
             const string timestampHeader = "x-timestamp";
-            var bytesBody = JsonSerializer.SerializeToUtf8Bytes(body);
+            var bytesBody =
+                rawBody != null
+                ? Encoding.UTF8.GetBytes(rawBody)
+                : 
+                JsonSerializer.SerializeToUtf8Bytes(body);
             var contentType = headersCaseInsensitive.GetValueOrDefault("content-type");
             var timestamp = headersCaseInsensitive.GetValueOrDefault(timestampHeader, string.Empty);
             var calculatedSignature =
@@ -163,6 +182,24 @@ namespace Sinch.Voice
             var isValidSignature = string.Equals(signature, calculatedSignature, StringComparison.Ordinal);
             _logger?.LogInformation("The signature was validated with {success}", isValidSignature);
             return isValidSignature;
+        }
+
+        public bool ValidateAuthenticationHeader(HttpMethod method, string path, HttpResponseHeaders headers,
+            HttpContentHeaders contentHeaders,
+            string body)
+        {
+            // apparently, `HttpResponseHeaders` does not contains `Content-Type`, which sits in HttpContentHeaders
+            var headersReformat = headers.ToDictionary(x => x.Key, y => new StringValues(y.Value.ToArray()));
+            var contentHeadersReformat =
+                contentHeaders.ToDictionary(x => x.Key, y => new StringValues(y.Value.ToArray()));
+            var allHeaders = headersReformat.Concat(contentHeadersReformat).ToDictionary();
+            var json = JsonNode.Parse(body);
+            if (json == null)
+            {
+                throw new InvalidOperationException("The resulted parsed json raw body is null.");
+            }
+
+            return ValidateAuthenticationHeader(method, path, allHeaders, json.AsObject(), body);
         }
 
         public IVoiceEvent ParseEvent(string json)
