@@ -19,7 +19,7 @@ namespace Sinch.Tests.Features.Voice
         [Given(@"the Voice service ""Callouts"" is available")]
         public void GivenTheVoiceServiceIsAvailable()
         {
-            _sinchVoiceCallouts = Utils.TestSinchClient.Voice.Callouts;
+            _sinchVoiceCallouts = Utils.TestSinchVoiceClient.Callouts;
         }
 
         [When(@"I send a request to make a TTS call")]
@@ -77,6 +77,7 @@ namespace Sinch.Tests.Features.Voice
         [When(@"I send a request to make a Custom call")]
         public async Task WhenISendARequestToMakeACustomCall()
         {
+            // TODO: implement SVAML typed classes in https://tickets.sinch.com/browse/DEVEXP-281
             _customCalloutResponse = await _sinchVoiceCallouts.Custom(new CustomCalloutRequest()
             {
                 Cli = "+12015555555",

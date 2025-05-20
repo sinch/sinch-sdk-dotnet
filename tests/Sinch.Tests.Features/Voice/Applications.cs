@@ -67,7 +67,7 @@ namespace Sinch.Tests.Features.Voice
         [Given(@"the Voice service ""Applications"" is available")]
         public void GivenTheVoiceServiceIsAvailable()
         {
-            _sinchVoiceApplications = Utils.TestSinchClient.Voice.Applications;
+            _sinchVoiceApplications = Utils.TestSinchVoiceClient.Applications;
         }
 
         [When(@"I send a request to assign some numbers to a Voice Application")]

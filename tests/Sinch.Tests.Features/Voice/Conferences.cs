@@ -24,14 +24,14 @@ namespace Sinch.Tests.Features.Voice
         [Given(@"the Voice service ""Conferences"" is available")]
         public void GivenTheVoiceServiceIsAvailable()
         {
-            _sinchVoiceConferences = Utils.TestSinchClient.Voice.Conferences;
+            _sinchVoiceConferences = Utils.TestSinchVoiceClient.Conferences;
         }
 
         [When(@"I send a request to make a Conference call with the ""Conferences"" service")]
         public async Task WhenISendARequestToMakeAConferenceCallWithTheService()
         {
             // TODO: forward from Conferences tag
-            _conferencesResponse = await Utils.TestSinchClient.Voice.Callouts.Conference(new ConferenceCalloutRequest()
+            _conferencesResponse = await Utils.TestSinchVoiceClient.Callouts.Conference(new ConferenceCalloutRequest()
             {
                 Cli = "+12015555555",
                 Destination = new Destination()

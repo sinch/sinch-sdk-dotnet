@@ -4,15 +4,14 @@ namespace Sinch.Tests.Features.Voice
 {
     public class Utils
     {
-        public static SinchClient TestSinchClient => new SinchClient(new SinchClientConfiguration()
-        {
-            VoiceConfiguration = new SinchVoiceConfiguration()
+        public static ISinchVoiceClient TestSinchVoiceClient =>
+            new SinchClient(null, null, null, options =>
             {
-                AppKey = "appKey",
-                AppSecret = "BeIukql3pTKJ8RGL5zo0DA==",
-                VoiceUrlOverride = "http://localhost:3019",
-                ApplicationManagementUrlOverride = "http://localhost:3020",
-            }
-        });
+                options.ApiUrlOverrides = new ApiUrlOverrides()
+                {
+                    VoiceUrl = "http://localhost:3019",
+                    VoiceApplicationManagementUrl = "http://localhost:3020"
+                };
+            }).Voice("appKey", "BeIukql3pTKJ8RGL5zo0DA==");
     }
 }

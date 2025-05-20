@@ -151,9 +151,8 @@ namespace Sinch.Voice
             const string timestampHeader = "x-timestamp";
             var bytesBody =
                 rawBody != null
-                ? Encoding.UTF8.GetBytes(rawBody)
-                : 
-                JsonSerializer.SerializeToUtf8Bytes(body);
+                    ? Encoding.UTF8.GetBytes(rawBody)
+                    : JsonSerializer.SerializeToUtf8Bytes(body);
             var contentType = headersCaseInsensitive.GetValueOrDefault("content-type");
             var timestamp = headersCaseInsensitive.GetValueOrDefault(timestampHeader, string.Empty);
             var calculatedSignature =
@@ -192,7 +191,7 @@ namespace Sinch.Voice
             var headersReformat = headers.ToDictionary(x => x.Key, y => new StringValues(y.Value.ToArray()));
             var contentHeadersReformat =
                 contentHeaders.ToDictionary(x => x.Key, y => new StringValues(y.Value.ToArray()));
-            var allHeaders = headersReformat.Concat(contentHeadersReformat).ToDictionary();
+            var allHeaders = headersReformat.Concat(contentHeadersReformat).ToDictionary(x => x.Key, y => y.Value);
             var json = JsonNode.Parse(body);
             if (json == null)
             {

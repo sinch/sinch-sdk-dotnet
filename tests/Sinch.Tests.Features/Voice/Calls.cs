@@ -27,7 +27,7 @@ namespace Sinch.Tests.Features.Voice
         [Given(@"the Voice service ""Calls"" is available")]
         public void GivenTheVoiceServiceIsAvailable()
         {
-            _sinchVoiceCalls = Utils.TestSinchClient.Voice.Calls;
+            _sinchVoiceCalls = Utils.TestSinchVoiceClient.Calls;
         }
 
         [When(@"I send a request to get a call's information")]

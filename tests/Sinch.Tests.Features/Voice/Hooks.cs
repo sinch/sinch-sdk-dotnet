@@ -34,14 +34,7 @@ namespace Sinch.Tests.Features.Voice
         [Given(@"the Voice Webhooks handler is available")]
         public void GivenTheVoiceWebhooksHandlerIsAvailable()
         {
-            _voiceClient = new SinchClient(new SinchClientConfiguration()
-            {
-                VoiceConfiguration = new SinchVoiceConfiguration()
-                {
-                    AppKey = "appKey",
-                    AppSecret = "YXBwU2VjcmV0",
-                }
-            }).Voice;
+            _voiceClient = new SinchClient(null, null, null).Voice("appKey", "YXBwU2VjcmV0");
         }
 
         [When(@"I send a request to trigger a ""PIE"" event with a ""return"" type")]
@@ -53,7 +46,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the header of the ""PIE"" event with a ""return"" type contains a valid authorization")]
         public async Task ThenTheHeaderOfTheEventWithATypeContainsAValidAuthorization()
         {
-           _rawPieSequenceContent = await _pieReturnResponse.Content.ReadAsStringAsync();
+            _rawPieSequenceContent = await _pieReturnResponse.Content.ReadAsStringAsync();
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice", _pieReturnResponse.Headers,
                 _pieReturnResponse.Content.Headers,
                 _rawPieSequenceContent).Should().BeTrue();
@@ -62,21 +55,22 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""PIE"" event with a ""return"" type")]
         public void ThenTheVoiceEventDescribesAEventWithAType()
         {
-            _voiceClient.ParseEvent(_rawPieSequenceContent).As<PromptInputEvent>().Should().BeEquivalentTo(new PromptInputEvent
-            {
-                CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000013",
-                Timestamp = Helpers.ParseUtc("2024-06-06T17:35:01Z"),
-                MenuResult = new MenuResult()
+            _voiceClient.ParseEvent(_rawPieSequenceContent).As<PromptInputEvent>().Should().BeEquivalentTo(
+                new PromptInputEvent
                 {
-                    InputMethod = InputMethod.Dtmf,
-                    Value = "cancel",
-                    MenuId = "main",
-                    Type = MenuType.Return,
-                },
-                Version = 1,
-                ApplicationKey = "f00dcafe-abba-c0de-1dea-dabb1ed4caf3",
-                Custom = "Custom text"
-            });
+                    CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000013",
+                    Timestamp = Helpers.ParseUtc("2024-06-06T17:35:01Z"),
+                    MenuResult = new MenuResult()
+                    {
+                        InputMethod = InputMethod.Dtmf,
+                        Value = "cancel",
+                        MenuId = "main",
+                        Type = MenuType.Return,
+                    },
+                    Version = 1,
+                    ApplicationKey = "f00dcafe-abba-c0de-1dea-dabb1ed4caf3",
+                    Custom = "Custom text"
+                });
         }
 
         [When(@"I send a request to trigger a ""PIE"" event with a ""sequence"" type")]
@@ -214,7 +208,8 @@ namespace Sinch.Tests.Features.Voice
                 new IncomingCallEvent()
                 {
                     CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000053",
-                    CallResourceUrl = "https://calling-use1.api.sinch.com/calling/v1/calls/id/1ce0ffee-ca11-ca11-ca11-abcdef000053",
+                    CallResourceUrl =
+                        "https://calling-use1.api.sinch.com/calling/v1/calls/id/1ce0ffee-ca11-ca11-ca11-abcdef000053",
                     Timestamp = Helpers.ParseUtc("2024-06-06T17:20:14Z"),
                     Version = 1,
                     UserRate = new Rate()
@@ -238,14 +233,16 @@ namespace Sinch.Tests.Features.Voice
         [When(@"I send a request to trigger a ""recording_finished"" event")]
         public async Task WhenISendARequestToTriggerARecordFinishedEvent()
         {
-            _eventRecordingFinishedResponse = await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/notify/recording_finished");
+            _eventRecordingFinishedResponse =
+                await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/notify/recording_finished");
         }
 
         [Then(@"the header of the ""recording_finished"" event contains a valid authorization")]
         public async Task ThenTheHeaderOfTheRecordingFinishedEventContainsAValidAuthorization()
         {
             _rawEventRecordAvailableContent = await _eventRecordingFinishedResponse.Content.ReadAsStringAsync();
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice", _eventRecordingFinishedResponse.Headers,
+            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+                _eventRecordingFinishedResponse.Headers,
                 _eventRecordingFinishedResponse.Content.Headers,
                 _rawEventRecordAvailableContent).Should().BeTrue();
         }
@@ -266,14 +263,16 @@ namespace Sinch.Tests.Features.Voice
         [When(@"I send a request to trigger a ""recording_available"" event")]
         public async Task WhenISendARequestToTriggerARecordingAvailableEvent()
         {
-            _eventRecordingAvailableResponse = await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/notify/recording_available");
+            _eventRecordingAvailableResponse =
+                await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/notify/recording_available");
         }
 
         [Then(@"the header of the ""recording_available"" event contains a valid authorization")]
         public async Task ThenTheHeaderOfTheRecordingAvailableEventContainsAValidAuthorization()
         {
             _rawEventRecordAvailableContent = await _eventRecordingAvailableResponse.Content.ReadAsStringAsync();
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice", _eventRecordingAvailableResponse.Headers,
+            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+                _eventRecordingAvailableResponse.Headers,
                 _eventRecordingAvailableResponse.Content.Headers,
                 _rawEventRecordAvailableContent).Should().BeTrue();
         }
@@ -294,14 +293,16 @@ namespace Sinch.Tests.Features.Voice
         [When(@"I send a request to trigger a ""transcription_available"" event")]
         public async Task WhenISendARequestToTriggerATranscriptionAvailableEvent()
         {
-            _eventTranscriptionAvailableResponse = await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/notify/transcription_available");
+            _eventTranscriptionAvailableResponse =
+                await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/notify/transcription_available");
         }
 
         [Then(@"the header of the ""transcription_available"" event contains a valid authorization")]
         public async Task ThenTheHeaderOfTheTranscriptionAvailableEventContainsAValidAuthorization()
         {
             _rawEventTransactionContent = await _eventTranscriptionAvailableResponse.Content.ReadAsStringAsync();
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice", _eventTranscriptionAvailableResponse.Headers,
+            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+                _eventTranscriptionAvailableResponse.Headers,
                 _eventTranscriptionAvailableResponse.Content.Headers,
                 _rawEventTransactionContent).Should().BeTrue();
         }
