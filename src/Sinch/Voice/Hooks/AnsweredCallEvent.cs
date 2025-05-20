@@ -64,7 +64,7 @@ namespace Sinch.Voice.Hooks
         /// </summary>
         [JsonPropertyName("amd")]
         public AnsweringMachineDetection? Amd { get; set; }
-        
+
         /// <summary>
         ///     The unique application key. You can find it in the Sinch [dashboard](https://dashboard.sinch.com/voice/apps).
         /// </summary>

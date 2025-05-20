@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Sinch.Tests.Features
 {
-    internal static  class Helpers
+    internal static class Helpers
     {
         public static DateTime ParseUtc(string time)
         {

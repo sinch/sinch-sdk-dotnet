@@ -73,7 +73,7 @@ namespace Sinch.Tests.Features.Voice
         [When(@"I send a request to assign some numbers to a Voice Application")]
         public void WhenISendARequestToAssignSomeNumbersToAVoiceApplication()
         {
-            _assignNumberOp = () =>_sinchVoiceApplications.AssignNumbers(new AssignNumbersRequest()
+            _assignNumberOp = () => _sinchVoiceApplications.AssignNumbers(new AssignNumbersRequest()
             {
                 ApplicationKey = "f00dcafe-abba-c0de-1dea-dabb1ed4caf3",
                 Numbers = new List<string>()

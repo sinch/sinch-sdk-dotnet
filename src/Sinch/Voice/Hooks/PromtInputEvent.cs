@@ -51,7 +51,7 @@ namespace Sinch.Voice.Hooks
         /// </summary>
         [JsonPropertyName("applicationKey")]
         public string? ApplicationKey { get; set; }
-        
+
         /// <summary>
         ///     A string that can be used to pass custom information related to the call.
         /// </summary>
