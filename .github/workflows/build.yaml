@@ -88,8 +88,11 @@ jobs:
       - name: Build
         run: dotnet build -p:Version=${{ steps.gitversion.outputs.semVer }} --configuration Release --no-restore
 
-      - name: Test
-        run: dotnet test --no-restore --verbosity normal
+      - name: Test 
+        run: dotnet test tests/Sinch.Tests --no-restore --verbosity normal
+        
+      - name: Test e2e 
+        run: dotnet test tests/Sinch.Tests.Features --filter FeatureTitle~[Voice] --no-restore --verbosity normal        
       
       # --include-symbols?
       - name: Pack
