@@ -22,13 +22,5 @@
     <ItemGroup>
       <ProjectReference Include="..\..\src\Sinch\Sinch.csproj" />
     </ItemGroup>
-    
-    <ItemGroup>
-      <UpToDateCheckInput Remove="Features\Calculator.feature" />
-    </ItemGroup>
-    
-    <ItemGroup>
-      <UpToDateCheckBuild Remove="Features\Calculator.feature.cs" />
-    </ItemGroup>
 
 </Project>
