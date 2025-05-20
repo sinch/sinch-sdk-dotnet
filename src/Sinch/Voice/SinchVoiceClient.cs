@@ -51,7 +51,9 @@ namespace Sinch.Voice
         /// <param name="headers"></param>
         /// <param name="body"></param>
         /// <param name="method"></param>
+        /// <param name="rawBody"></param>
         /// <returns>True, if produced signature match with that of a header.</returns>
+        [Obsolete("Will be removed in a future version. Use only `string body` version of the methods.")]
         bool ValidateAuthenticationHeader(HttpMethod method, string path, Dictionary<string, StringValues> headers,
             JsonObject body, string? rawBody = null);
 
@@ -66,6 +68,18 @@ namespace Sinch.Voice
         /// <returns>True, if produced signature match with that of a header.</returns>
         bool ValidateAuthenticationHeader(HttpMethod method, string path, HttpResponseHeaders headers,
             HttpContentHeaders contentHeaders,
+            string body);
+
+        /// <summary>
+        ///     Validates callback request.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="headers"></param>
+        /// <param name="body"></param>
+        /// <param name="method"></param>
+        /// <returns>True, if produced signature match with that of a header.</returns>
+        bool ValidateAuthenticationHeader(HttpMethod method, string path,
+            Dictionary<string, IEnumerable<string>> headers,
             string body);
 
         /// <summary>
@@ -195,10 +209,24 @@ namespace Sinch.Voice
             var json = JsonNode.Parse(body);
             if (json == null)
             {
-                throw new InvalidOperationException("The resulted parsed json raw body is null.");
+                throw new InvalidOperationException($"Parameter {nameof(body)} is not a valid json.");
             }
 
             return ValidateAuthenticationHeader(method, path, allHeaders, json.AsObject(), body);
+        }
+
+        public bool ValidateAuthenticationHeader(HttpMethod method, string path,
+            Dictionary<string, IEnumerable<string>> headers, string body)
+        {
+            var json = JsonNode.Parse(body);
+            if (json == null)
+            {
+                throw new InvalidOperationException($"Parameter {nameof(body)} is not a valid json.");
+            }
+
+            var reHeaders = headers.ToDictionary(x => x.Key, y => new StringValues(y.Value.ToArray()));
+            return ValidateAuthenticationHeader(method, path, reHeaders
+                , json.AsObject(), body);
         }
 
         public IVoiceEvent ParseEvent(string json)

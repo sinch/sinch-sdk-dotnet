@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json.Nodes;
 using FluentAssertions;
@@ -22,21 +23,24 @@ namespace Sinch.Tests.Voice
         {
             // https://developers.sinch.com/docs/voice/api-reference/authentication/callback-signed-request/
             // full path: "https://callbacks.yourdomain.com/sinch/callback/ace"
-
+            var message = new HttpResponseMessage();
+            message.Headers.Add("x-timestamp", "2014-09-24T10:59:41Z");
+            message.Headers.Add("authorization",
+                "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=");
+            message.Content.Headers.Add("content-type", "application/json");
+            var headers = message.Headers.Concat(message.Content.Headers)
+                .ToDictionary(x => x.Key, y => new StringValues(y.Value.ToArray()));
+            // TODO: remove in 2.0
+            _voiceClient
+                .ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace", headers,
+                    JsonNode.Parse(_body)!.AsObject()).Should().BeTrue();
+            // test overrides of a method too
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                new Dictionary<string, StringValues>()
-                {
-                    { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
-                    { "content-type", new[] { "application/json" } },
-                    {
-                        "authorization",
-                        new[]
-                        {
-                            "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4="
-                        }
-                    }
-                }
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeTrue();
+                    headers.ToDictionary(x => x.Key, y => y.Value.AsEnumerable()), _body)
+                .Should().BeTrue();
+
+            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace", message.Headers,
+                message.Content.Headers, _body);
         }
 
         [Fact]

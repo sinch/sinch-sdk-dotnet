@@ -112,7 +112,6 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the update call response contains a ""(.*)"" error")]
         public async Task ThenTheUpdateCallResponseContainsAError(string p0)
         {
-            // TODO: add VoiceApiException with additional fields like errorCode and reference
             await _updateNonExistentOp.Should().ThrowExactlyAsync<SinchApiException>()
                 .Where(x => x.StatusCode == HttpStatusCode.NotFound && x.Message == "Not Found:Call not found");
         }

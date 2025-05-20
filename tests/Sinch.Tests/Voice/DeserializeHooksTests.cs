@@ -37,6 +37,7 @@ namespace Sinch.Tests.Voice
                     Timestamp = Helpers.ParseUtc("2024-01-19T12:49:53Z"),
                     Version = 1,
                     Custom = "my custom value",
+                    ApplicationKey = "my application key",
                     Amd = new AnsweringMachineDetection
                     {
                         Status = AnsweringMachineDetection.AnsweringMachineDetectionStatus.Human,
@@ -105,7 +106,8 @@ namespace Sinch.Tests.Voice
                         Type = MenuType.Sequence,
                         Value = "1452",
                         InputMethod = InputMethod.Dtmf
-                    }
+                    },
+                    Custom = "my custom value",
                 });
             }
         }
