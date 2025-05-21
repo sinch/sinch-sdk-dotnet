@@ -88,11 +88,9 @@ namespace Sinch.Tests.Features.Voice
                 },
                 Custom = "Custom text",
                 Ice = JsonNode.Parse(
-                        "{\"action\":{\"name\":\"connectPstn\",\"number\":\"+12017777777\",\"cli\":\"+12015555555\"},\"instructions\":[{\"name\":\"say\",\"text\":\"Welcome to Sinch.\",\"locale\":\"en-US/male\"},{\"name\":\"startRecording\",\"options\":{\"destinationUrl\":\"To specify\",\"credentials\":\"To specify\"}}]}")
-                    !.AsObject()!,
+                        "{\"action\":{\"name\":\"connectPstn\",\"number\":\"+12017777777\",\"cli\":\"+12015555555\"},\"instructions\":[{\"name\":\"say\",\"text\":\"Welcome to Sinch.\",\"locale\":\"en-US/male\"},{\"name\":\"startRecording\",\"options\":{\"destinationUrl\":\"To specify\",\"credentials\":\"To specify\"}}]}"),
                 Ace = JsonNode.Parse(
-                        "{\"action\":{\"name\":\"runMenu\",\"locale\":\"Kimberly\",\"enableVoice\":true,\"barge\":true,\"menus\":[{\"id\":\"main\",\"mainPrompt\":\"#tts[Welcome to the main menu. Press 1 to confirm order or 2 to cancel]\",\"repeatPrompt\":\"#tts[We didn't get your input, please try again]\",\"timeoutMills\":5000,\"options\":[{\"dtmf\":\"1\",\"action\":\"menu(confirm)\"},{\"dtmf\":\"2\",\"action\":\"return(cancel)\"}]},{\"id\":\"confirm\",\"mainPrompt\":\"#tts[Thank you for confirming your order. Enter your 4-digit PIN.]\",\"maxDigits\":4}]}}")
-                    !.AsObject()!,
+                        "{\"action\":{\"name\":\"runMenu\",\"locale\":\"Kimberly\",\"enableVoice\":true,\"barge\":true,\"menus\":[{\"id\":\"main\",\"mainPrompt\":\"#tts[Welcome to the main menu. Press 1 to confirm order or 2 to cancel]\",\"repeatPrompt\":\"#tts[We didn't get your input, please try again]\",\"timeoutMills\":5000,\"options\":[{\"dtmf\":\"1\",\"action\":\"menu(confirm)\"},{\"dtmf\":\"2\",\"action\":\"return(cancel)\"}]},{\"id\":\"confirm\",\"mainPrompt\":\"#tts[Thank you for confirming your order. Enter your 4-digit PIN.]\",\"maxDigits\":4}]}}"),
                 Pie = "https://callback-server.com/voice"
             });
         }

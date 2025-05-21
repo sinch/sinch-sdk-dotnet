@@ -93,10 +93,10 @@ namespace Sinch.Tests.Voice
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
                 headersStringValues
                 , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
-            
+
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
                 headers, _body).Should().BeFalse();
-            
+
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
                 message.Headers, message.Content.Headers, _body).Should().BeFalse();
         }
@@ -112,10 +112,10 @@ namespace Sinch.Tests.Voice
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, path,
                 headersStringValues
                 , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
-            
+
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, path,
                 headers, _body).Should().BeFalse();
-            
+
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, path,
                 message.Headers, message.Content.Headers, _body).Should().BeFalse();
         }
@@ -126,14 +126,14 @@ namespace Sinch.Tests.Voice
             var (message, headers, headersStringValues) = SetupTestHeaders("2014-09-24T10:59:41Z",
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "application/json");
-            
+
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
                 headersStringValues
                 , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
-            
+
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
                 headers, _body).Should().BeFalse();
-            
+
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
                 message.Headers, message.Content.Headers, _body).Should().BeFalse();
         }
