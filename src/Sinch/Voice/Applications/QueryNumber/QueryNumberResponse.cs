@@ -15,6 +15,7 @@ namespace Sinch.Voice.Applications.QueryNumber
         ///     Gets or Sets Number
         /// </summary>
         [JsonPropertyName("number")]
+        // TODO: rename to Number in 2.0
         public NumberItem? NumberItem { get; set; }
 
 

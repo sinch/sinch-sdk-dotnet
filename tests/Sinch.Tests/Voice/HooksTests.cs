@@ -6,6 +6,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Primitives;
 using Sinch.Voice;
 using Xunit;
+#pragma warning disable CS0618 // Type or member is obsolete
 
 namespace Sinch.Tests.Voice
 {
@@ -141,78 +142,76 @@ namespace Sinch.Tests.Voice
         [Fact]
         public void FailNotThatTimestamp()
         {
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                new Dictionary<string, StringValues>()
-                {
-                    { "x-timestamp", new[] { "2019-11-03T10:59:41Z" } },
-                    { "content-type", new[] { "application/json" } },
-                    {
-                        "authorization",
-                        new[]
-                        {
-                            "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4="
-                        }
-                    }
-                }
+            var (message, headers, headersStringValues) = SetupTestHeaders("2019-11-03T10:59:41Z",
+                "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
+                "application/json");
+
+            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
+                headersStringValues
                 , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
+
+            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
+                headers, _body).Should().BeFalse();
+
+            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
+                message.Headers, message.Content.Headers, _body).Should().BeFalse();
         }
 
         [Fact]
         public void FailNotThatContentType()
         {
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                new Dictionary<string, StringValues>()
-                {
-                    { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
-                    { "content-type", new[] { "text" } },
-                    {
-                        "authorization",
-                        new[]
-                        {
-                            "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4="
-                        }
-                    }
-                }
+
+            var (message, headers, headersStringValues) = SetupTestHeaders("2019-11-03T10:59:41Z",
+                "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
+                "text/html");
+
+            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
+                headersStringValues
                 , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
+
+            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
+                headers, _body).Should().BeFalse();
+
+            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
+                message.Headers, message.Content.Headers, _body).Should().BeFalse();
         }
 
         [Fact]
         public void FailNotThatBody()
         {
-            _body = JsonNode.Parse("{\"hello\": \"world\"}")!.ToJsonString();
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                new Dictionary<string, StringValues>()
-                {
-                    { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
-                    { "content-type", new[] { "application/json" } },
-                    {
-                        "authorization",
-                        new[]
-                        {
-                            "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4="
-                        }
-                    }
-                }
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
+            var newBody = JsonNode.Parse("{\"hello\": \"world\"}")!.ToJsonString();
+            var (message, headers, headersStringValues) = SetupTestHeaders("2014-09-24T10:59:41Z",
+                "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
+                "application/json");
+
+            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
+                headersStringValues
+                , JsonNode.Parse(newBody)!.AsObject()).Should().BeFalse();
+
+            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
+                headers, newBody).Should().BeFalse();
+
+            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
+                message.Headers, message.Content.Headers, newBody).Should().BeFalse();
         }
 
         [Fact]
         public void FailNotApplicationHeader()
         {
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                new Dictionary<string, StringValues>()
-                {
-                    { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
-                    { "content-type", new[] { "application/json" } },
-                    {
-                        "authorization",
-                        new[]
-                        {
-                            "authorization 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4="
-                        }
-                    }
-                }
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
+            var newBody = JsonNode.Parse("{\"hello\": \"world\"}")!.ToJsonString();
+            var (message, headers, headersStringValues) = SetupTestHeaders("2014-09-24T10:59:41Z",
+                "authorization 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=", // diff is here with `authorization`
+                "application/json");
+
+            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
+                headersStringValues
+                , JsonNode.Parse(newBody)!.AsObject()).Should().BeFalse();
+
+            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
+                headers, newBody).Should().BeFalse();
+
+            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
+                message.Headers, message.Content.Headers, newBody).Should().BeFalse();
         }
     }
 }
