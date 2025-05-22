@@ -26,9 +26,9 @@ namespace Sinch.Voice.Applications.QueryNumber
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class QueryNumberResponse {\n");
-            sb.Append("  Method: ").Append(Method).Append("\n");
-            sb.Append("  Number: ").Append(NumberItem).Append("\n");
+            sb.Append($"class {nameof(QueryNumberResponse)} {{\n");
+            sb.Append($"  {nameof(Method)}: ").Append(Method).Append("\n");
+            sb.Append($"  {nameof(NumberItem)}: ").Append(NumberItem).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
