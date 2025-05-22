@@ -1,11 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using FluentAssertions;
 using Microsoft.Extensions.Primitives;
+using Sinch.Core;
 using Sinch.Voice;
 using Xunit;
+
 #pragma warning disable CS0618 // Type or member is obsolete
 
 namespace Sinch.Tests.Voice
@@ -160,7 +164,6 @@ namespace Sinch.Tests.Voice
         [Fact]
         public void FailNotThatContentType()
         {
-
             var (message, headers, headersStringValues) = SetupTestHeaders("2019-11-03T10:59:41Z",
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "text/html");
@@ -213,5 +216,7 @@ namespace Sinch.Tests.Voice
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
                 message.Headers, message.Content.Headers, newBody).Should().BeFalse();
         }
+
+
     }
 }
