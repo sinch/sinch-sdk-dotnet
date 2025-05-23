@@ -125,6 +125,11 @@ namespace Sinch.Voice.Hooks
         [JsonPropertyName("callHeaders")]
         public List<CallHeader>? CallHeaders { get; set; }
 
+        /// <summary>
+        ///     Used in some types of events, it presents the unique Conference ID assigned to this call.
+        /// </summary>
+        [JsonPropertyName("conferenceId")]
+        public string? ConferenceId { get; set; }
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -148,6 +153,7 @@ namespace Sinch.Voice.Hooks
             sb.Append("  Duration: ").Append(Duration).Append("\n");
             sb.Append("  Rdnis: ").Append(Rdnis).Append("\n");
             sb.Append("  CallHeaders: ").Append(CallHeaders).Append("\n");
+            sb.Append("  ConferenceId: ").Append(ConferenceId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

@@ -57,6 +57,13 @@ namespace Sinch.Voice.Hooks
         /// </summary>
         [JsonPropertyName("custom")]
         public string? Custom { get; set; }
+
+
+        /// <summary>
+        ///     Used in some types of events, it presents the unique Conference ID assigned to this call.
+        /// </summary>
+        [JsonPropertyName("conferenceId")]
+        public string? ConferenceId { get; set; }
     }
 
     public sealed class MenuResult
