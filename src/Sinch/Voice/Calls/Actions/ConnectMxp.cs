@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Text;
 using System.Text.Json.Serialization;
-using Sinch.Core;
 using Sinch.Voice.Common;
 
 namespace Sinch.Voice.Calls.Actions

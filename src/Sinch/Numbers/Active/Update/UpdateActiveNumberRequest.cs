@@ -1,5 +1,3 @@
-using Sinch.Numbers.VoiceConfigurations;
-
 namespace Sinch.Numbers.Active.Update
 {
     public sealed class UpdateActiveNumberRequest

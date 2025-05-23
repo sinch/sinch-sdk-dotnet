@@ -4,7 +4,6 @@ using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
-using Sinch.Voice;
 using Sinch.Voice.Calls;
 using Sinch.Voice.Calls.Actions;
 using Sinch.Voice.Calls.Instructions;

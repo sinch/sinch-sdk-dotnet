@@ -4,7 +4,6 @@ using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
@@ -14,9 +13,7 @@ using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Messages.Send;
-using Sinch.Core;
 using Xunit;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Sinch.Tests.Conversation
 {
