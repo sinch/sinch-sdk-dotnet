@@ -16,7 +16,7 @@ namespace Sinch.Tests.Voice
     {
         private readonly ISinchVoiceClient _voiceClient = new SinchClient(null, null, null).Voice("k", "v");
         /// <summary>
-        ///     A safeguard for test to identify cases when property is present in json, but not mapped to modle
+        ///     A safeguard for test to identify cases when property is present in json, but not mapped to model
         /// </summary>
         private readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions()
         {
