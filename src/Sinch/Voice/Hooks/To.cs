@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using Sinch.Voice.Common;
 
 namespace Sinch.Voice.Hooks
 {

@@ -18,7 +18,7 @@ namespace Sinch.Voice.Hooks
         ///     Must have the value &#x60;dice&#x60;.
         /// </summary>
         [JsonPropertyName("event")]
-        public EventType? Event { get; set; }
+        internal override EventType Event { get; set; } = EventType.DisconnectedCallEvent;
 
 
         /// <summary>
@@ -112,6 +112,11 @@ namespace Sinch.Voice.Hooks
         [JsonPropertyName("applicationKey")]
         public string? ApplicationKey { get; set; }
 
+        /// <summary>
+        ///     Used in some types of events, it presents the unique Conference ID assigned to this call.
+        /// </summary>
+        [JsonPropertyName("conferenceId")]
+        public string? ConferenceId { get; set; }
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -134,6 +139,7 @@ namespace Sinch.Voice.Hooks
             sb.Append("  Duration: ").Append(Duration).Append("\n");
             sb.Append("  From: ").Append(From).Append("\n");
             sb.Append("  CallHeaders: ").Append(CallHeaders).Append("\n");
+            sb.Append("  ConferenceId: ").Append(ConferenceId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

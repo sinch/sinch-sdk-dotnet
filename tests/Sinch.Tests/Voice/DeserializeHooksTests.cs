@@ -1,12 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using FluentAssertions;
 using Sinch.Voice;
 using Sinch.Voice.Callouts.Callout;
 using Sinch.Voice.Calls;
 using Sinch.Voice.Calls.Actions;
-using Sinch.Voice.Common;
 using Sinch.Voice.Hooks;
 using Xunit;
 using DestinationType = Sinch.Voice.Hooks.DestinationType;
@@ -16,13 +15,19 @@ namespace Sinch.Tests.Voice
     public class DeserializeHooksTests
     {
         private readonly ISinchVoiceClient _voiceClient = new SinchClient(null, null, null).Voice("k", "v");
-
+        /// <summary>
+        ///     A safeguard for test to identify cases when property is present in json, but not mapped to model
+        /// </summary>
+        private readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions()
+        {
+            UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow
+        };
         [Fact]
         public void DeserializeAce()
         {
             var json = Helpers.LoadResources("Voice/AnsweredCallEvent.json");
 
-            var @event = JsonSerializer.Deserialize<IVoiceEvent>(json);
+            var @event = JsonSerializer.Deserialize<IVoiceEvent>(json, _jsonSerializerOptions);
             var eventWithClient = _voiceClient.ParseEvent(json);
 
             AssertEvent(@event);
@@ -37,6 +42,7 @@ namespace Sinch.Tests.Voice
                     Timestamp = Helpers.ParseUtc("2024-01-19T12:49:53Z"),
                     Version = 1,
                     Custom = "my custom value",
+                    ApplicationKey = "my application key",
                     Amd = new AnsweringMachineDetection
                     {
                         Status = AnsweringMachineDetection.AnsweringMachineDetectionStatus.Human,
@@ -52,7 +58,7 @@ namespace Sinch.Tests.Voice
         {
             var json = Helpers.LoadResources("Voice/NotificationEvent.json");
 
-            var @event = JsonSerializer.Deserialize<IVoiceEvent>(json);
+            var @event = JsonSerializer.Deserialize<IVoiceEvent>(json, _jsonSerializerOptions);
             var eventWithClient = _voiceClient.ParseEvent(json);
 
             AssertEvent(@event);
@@ -83,8 +89,7 @@ namespace Sinch.Tests.Voice
         public void DeserializePromtInputEvent()
         {
             var json = Helpers.LoadResources("Voice/PromtInputEvent.json");
-
-            var @event = JsonSerializer.Deserialize<IVoiceEvent>(json);
+            var @event = JsonSerializer.Deserialize<IVoiceEvent>(json, _jsonSerializerOptions);
             var eventWithClient = _voiceClient.ParseEvent(json);
 
             AssertEvent(@event);
@@ -105,7 +110,9 @@ namespace Sinch.Tests.Voice
                         Type = MenuType.Sequence,
                         Value = "1452",
                         InputMethod = InputMethod.Dtmf
-                    }
+                    },
+                    Custom = "my custom value",
+                    ConferenceId = "a conference id",
                 });
             }
         }
@@ -115,7 +122,7 @@ namespace Sinch.Tests.Voice
         {
             var json = Helpers.LoadResources("Voice/DisconnectedCallEvent.json");
 
-            var @event = JsonSerializer.Deserialize<IVoiceEvent>(json);
+            var @event = JsonSerializer.Deserialize<IVoiceEvent>(json, _jsonSerializerOptions);
             var eventWithClient = _voiceClient.ParseEvent(json);
 
             AssertEvent(@event);
@@ -150,6 +157,7 @@ namespace Sinch.Tests.Voice
                     ApplicationKey = "an app key",
                     Duration = 1,
                     From = "private",
+                    ConferenceId = "a conference id",
                 });
             }
         }
@@ -159,7 +167,7 @@ namespace Sinch.Tests.Voice
         {
             var json = Helpers.LoadResources("Voice/IncomingCallEvent.json");
 
-            var @event = JsonSerializer.Deserialize<IVoiceEvent>(json);
+            var @event = JsonSerializer.Deserialize<IVoiceEvent>(json, _jsonSerializerOptions);
             var eventWithClient = _voiceClient.ParseEvent(json);
 
             AssertEvent(@event);
@@ -197,7 +205,8 @@ namespace Sinch.Tests.Voice
                             Key = "the key",
                             Value = "the value"
                         }
-                    }
+                    },
+                    ConferenceId = "a conference id",
                 });
             }
         }
