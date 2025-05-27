@@ -29,9 +29,6 @@ namespace Sinch.Numbers
 
         [JsonPropertyName("scheduledVoiceProvisioning")]
         [JsonInclude]
-        [Obsolete($"Will be removed in future versions." +
-                  $" See specific {nameof(ScheduledVoiceRtcProvisioning)}, {nameof(ScheduledVoiceEstProvisioning)}, or {nameof(ScheduledVoiceFaxProvisioning)}" +
-                  $" in corresponding classes: {nameof(VoiceRtcConfiguration)}, {nameof(VoiceEstConfiguration)}, or {nameof(VoiceFaxConfiguration)}.")]
         public ScheduledVoiceProvisioning? ScheduledVoiceProvisioning { get; internal set; }
     }
 
@@ -57,9 +54,6 @@ namespace Sinch.Numbers
                     var result = elem.Deserialize<VoiceRtcConfiguration>(options);
 #pragma warning disable CS0618 // Type or member is obsolete
                     var voiceConfiguration = (result as VoiceConfiguration)!;
-                    voiceConfiguration!.AppId = result!.AppId;
-                    voiceConfiguration.ScheduledVoiceProvisioning = result.ScheduledVoiceProvisioning;
-                    voiceConfiguration.ScheduledVoiceProvisioning!.AppId = result.AppId;
 #pragma warning restore CS0618 // Type or member is obsolete
                     return result;
                 }

@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http.Headers;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -83,6 +87,12 @@ namespace Sinch.Numbers
         ///     For internal use, JsonSerializerOption to be utilized for serialization and deserialization of all Numbers models
         /// </summary>
         internal JsonSerializerOptions JsonSerializerOptions { get; }
+
+        bool ValidateAuthHeader(string secret, string rawJson, string signatureHeaderValue);
+
+        bool ValidateAuthHeader(string secret, string rawJson, HttpHeaders headers);
+        
+        
     }
 
     public sealed class Numbers : ISinchNumbers
@@ -176,5 +186,41 @@ namespace Sinch.Numbers
 #pragma warning restore CS0618 // Type or member is obsolete
 
         public JsonSerializerOptions JsonSerializerOptions { get; }
+
+        public bool ValidateAuthHeader(string secret, string rawJson, string signatureHeaderValue)
+        {
+            if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(signatureHeaderValue) ||
+                string.IsNullOrEmpty(rawJson))
+            {
+                return false;
+            }
+
+            var result = ComputeHmacSha1(secret, rawJson);
+            return string.Equals(signatureHeaderValue, result);
+        }
+
+        public bool ValidateAuthHeader(string secret, string rawJson, HttpHeaders headers)
+        {
+            var headersNormalized = headers.ToDictionary(x => x.Key, x => x.Value, StringComparer.OrdinalIgnoreCase);
+            if (!headersNormalized.TryGetValue("x-sinch-signature", out var signature))
+            {
+                return false;
+            }
+
+            var signatureValue = signature.FirstOrDefault();
+            if (string.IsNullOrEmpty(signatureValue))
+            {
+                return false;
+            }
+
+            return ValidateAuthHeader(secret, rawJson, signatureValue);
+        }
+
+        private static string ComputeHmacSha1(string secret, string body)
+        {
+            using var hmac = new HMACSHA1(Encoding.UTF8.GetBytes(secret));
+            var hashBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(body));
+            return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
+        }
     }
 }
