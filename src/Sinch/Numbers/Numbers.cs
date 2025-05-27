@@ -91,8 +91,8 @@ namespace Sinch.Numbers
         bool ValidateAuthHeader(string secret, string rawJson, string signatureHeaderValue);
 
         bool ValidateAuthHeader(string secret, string rawJson, HttpHeaders headers);
-        
-        
+
+
     }
 
     public sealed class Numbers : ISinchNumbers
