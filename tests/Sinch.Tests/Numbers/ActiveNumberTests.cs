@@ -143,8 +143,10 @@ namespace Sinch.Tests.Numbers
             response.PhoneNumber.Should().Be("+12025550134");
         }
 
-        [Fact]
-        public async Task ListAuto()
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public async Task ListAuto(string emptyTokenVariation)
         {
             var baseUri =
                 $"https://numbers.api.sinch.com/v1/projects/{ProjectId}/activeNumbers?regionCode=US&type=MOBILE";
@@ -179,7 +181,7 @@ namespace Sinch.Tests.Numbers
                     {
                         TestData.ActiveNumber
                     },
-                    nextPageToken = (string)null!,
+                    nextPageToken = emptyTokenVariation,
                     totalSize = 3
                 }));
 

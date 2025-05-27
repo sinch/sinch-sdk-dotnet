@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Numbers.Available.RentAny
 {
@@ -49,6 +50,7 @@ namespace Sinch.Numbers.Available.RentAny
         ///     The status of scheduled provisioning will show under a scheduledVoiceProvisioning object if it's still running.
         ///     Once processed successfully, the appId sent will appear directly under the voiceConfiguration object.
         /// </summary>
+        [JsonConverter(typeof(VoiceConfigurationConverter))]
         public VoiceConfiguration? VoiceConfiguration { get; set; }
     }
 }
