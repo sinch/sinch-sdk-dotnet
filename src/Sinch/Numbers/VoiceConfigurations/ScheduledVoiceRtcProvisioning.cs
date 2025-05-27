@@ -12,7 +12,7 @@ namespace Sinch.Numbers.VoiceConfigurations
 #pragma warning restore CS0618 // Type or member is obsolete
         }
 
-        private string _appId;
+        private string? _appId;
 
         /// <summary>
         ///     Your app ID for the Voice API. The &#x60;appId&#x60; can be found in your [Sinch Customer Dashboard](https://dashboard.sinch.com/voice/apps).
@@ -24,7 +24,10 @@ namespace Sinch.Numbers.VoiceConfigurations
             set
             {
                 _appId = value;
+                // TODO: remove in 2.0, keeping for backward compatibility
+#pragma warning disable CS0618 // Type or member is obsolete
                 base.AppId = value;
+#pragma warning restore CS0618 // Type or member is obsolete
             }
         }
 

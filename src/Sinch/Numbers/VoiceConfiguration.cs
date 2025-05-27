@@ -49,12 +49,7 @@ namespace Sinch.Numbers
 
                 if (typeStr == VoiceApplicationType.Rtc.Value)
                 {
-                    // TODO: remove it in 2.0
-                    // keeping it for backward compatility of VoiceConfiguraiton
                     var result = elem.Deserialize<VoiceRtcConfiguration>(options);
-#pragma warning disable CS0618 // Type or member is obsolete
-                    var voiceConfiguration = (result as VoiceConfiguration)!;
-#pragma warning restore CS0618 // Type or member is obsolete
                     return result;
                 }
 
