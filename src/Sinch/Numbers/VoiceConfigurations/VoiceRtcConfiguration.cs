@@ -16,7 +16,7 @@ namespace Sinch.Numbers.VoiceConfigurations
             set
             {
                 _appId = value;
-                // TODO: remove in 2.0, keeping for backward compatiblity
+                // TODO: remove in 2.0, keeping for backward compatibility
 #pragma warning disable CS0618 // Type or member is obsolete
                 base.AppId = value;
 #pragma warning restore CS0618 // Type or member is obsolete

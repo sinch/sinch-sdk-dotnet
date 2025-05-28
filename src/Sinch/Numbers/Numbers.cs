@@ -88,9 +88,23 @@ namespace Sinch.Numbers
         /// </summary>
         internal JsonSerializerOptions JsonSerializerOptions { get; }
 
-        bool ValidateAuthHeader(string secret, string rawJson, string signatureHeaderValue);
+        /// <summary>
+        ///     Validates json of a Webhook event with your HMAC secret 
+        /// </summary>
+        /// <param name="hmacSecret">Your HMAC secret</param>
+        /// <param name="json">Json body to validate</param>
+        /// <param name="signatureHeaderValue">A value of X-Sinch-Signature header</param>
+        /// <returns>True if a validation is successful</returns>
+        bool ValidateAuthHeader(string hmacSecret, string json, string signatureHeaderValue);
 
-        bool ValidateAuthHeader(string secret, string rawJson, HttpHeaders headers);
+        /// <summary>
+        ///     Validates json of a Webhook event with your HMAC secret 
+        /// </summary>
+        /// <param name="hmacSecret">Your HMAC secret</param>
+        /// <param name="json">Json body to validate</param>
+        /// <param name="headers">Headers of a Webhook message, where method will look up for X-Sinch-Signature header</param>
+        /// <returns></returns>
+        bool ValidateAuthHeader(string hmacSecret, string json, HttpHeaders headers);
 
 
     }
@@ -187,19 +201,19 @@ namespace Sinch.Numbers
 
         public JsonSerializerOptions JsonSerializerOptions { get; }
 
-        public bool ValidateAuthHeader(string secret, string rawJson, string signatureHeaderValue)
+        public bool ValidateAuthHeader(string hmacSecret, string json, string signatureHeaderValue)
         {
-            if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(signatureHeaderValue) ||
-                string.IsNullOrEmpty(rawJson))
+            if (string.IsNullOrEmpty(hmacSecret) || string.IsNullOrEmpty(signatureHeaderValue) ||
+                string.IsNullOrEmpty(json))
             {
                 return false;
             }
 
-            var result = ComputeHmacSha1(secret, rawJson);
+            var result = ComputeHmacSha1(hmacSecret, json);
             return string.Equals(signatureHeaderValue, result);
         }
 
-        public bool ValidateAuthHeader(string secret, string rawJson, HttpHeaders headers)
+        public bool ValidateAuthHeader(string hmacSecret, string json, HttpHeaders headers)
         {
             var headersNormalized = headers.ToDictionary(x => x.Key, x => x.Value, StringComparer.OrdinalIgnoreCase);
             if (!headersNormalized.TryGetValue("x-sinch-signature", out var signature))
@@ -213,7 +227,7 @@ namespace Sinch.Numbers
                 return false;
             }
 
-            return ValidateAuthHeader(secret, rawJson, signatureValue);
+            return ValidateAuthHeader(hmacSecret, json, signatureValue);
         }
 
         private static string ComputeHmacSha1(string secret, string body)
