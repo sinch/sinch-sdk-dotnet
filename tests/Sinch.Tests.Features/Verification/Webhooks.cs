@@ -1,6 +1,5 @@
 using System.Net.Http;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
@@ -37,12 +36,9 @@ namespace Sinch.Tests.Features.Verification
         [Then(@"the Verification event describes a ""Verification Request"" event type")]
         public async Task ThenTheVerificationEventDescribesAEventType()
         {
-            // TODO: fix schema
+            // TODO: schema of oas and api response diverge: https://tickets.sinch.com/browse/DEVEXP-946
             var raw = await _verificationRequestResponseMessage.Content.ReadAsStringAsync();
-            var verificationEvent = JsonSerializer.Deserialize<VerificationRequestEvent>(raw, new JsonSerializerOptions()
-            {
-                UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow
-            });
+            var verificationEvent = JsonSerializer.Deserialize<VerificationRequestEvent>(raw);
             verificationEvent.As<VerificationRequestEvent>().Should().BeEquivalentTo(new VerificationRequestEvent
             {
                 Id = "1ce0ffee-c0de-5eed-d00d-f00dfeed1337",
@@ -51,12 +47,9 @@ namespace Sinch.Tests.Features.Verification
                 Identity = Identity.Number("+33612345678"),
                 Price = new PriceDetail()
                 {
-                    Amount = 0.453d,
+                    Amount = 0.0453d,
                     CurrencyId = "EUR"
-                },
-                Reference = null,
-                Custom = null,
-                AcceptLanguage = null
+                }
             });
         }
 
@@ -67,8 +60,8 @@ namespace Sinch.Tests.Features.Verification
                 await _httpClient.GetAsync("http://localhost:3018/webhooks/verification/verification-result-event");
         }
 
-        [Then(@"the header of the Verification event ""(.*)"" contains a valid authorization")]
-        public void ThenTheHeaderOfTheVerificationEventContainsAValidAuthorization(string p0)
+        [Then(@"the header of the Verification event ""Verification Result"" contains a valid authorization")]
+        public void ThenTheHeaderOfTheVerificationResultEventContainsAValidAuthorization()
         {
             // TODO: implement hooks validation https://tickets.sinch.com/browse/DEVEXP-944
         }
@@ -77,21 +70,15 @@ namespace Sinch.Tests.Features.Verification
         public async Task ThenTheVerificationEventDescribesAResultEventType()
         {
             var raw = await _verificationResultResponse.Content.ReadAsStringAsync();
-            var resultEvent = JsonSerializer.Deserialize<VerificationResultEvent>(raw, new JsonSerializerOptions()
+            var resultEvent = JsonSerializer.Deserialize<VerificationResultEvent>(raw);
+            // TODO: schema of oas and api response diverge: https://tickets.sinch.com/browse/DEVEXP-946
+            resultEvent.Should().BeEquivalentTo(new VerificationResultEvent()
             {
-                UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow
-            });
-            // TODO: update schema with Verified in identity?
-            resultEvent.Should().BeEquivalentTo(new VerificationRequestEvent
-            {
-                Id = null,
-                Event = null,
-                Method = null,
-                Identity = null,
-                Price = null,
-                Reference = null,
-                Custom = null,
-                AcceptLanguage = null
+                Id = "1ce0ffee-c0de-5eed-d00d-f00dfeed1337",
+                Event = "VerificationResultEvent",
+                Method = VerificationMethodEx.Sms,
+                Identity = Identity.Number("+33612345678"),
+                Status = VerificationStatus.Successful
             });
         }
     }
