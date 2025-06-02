@@ -17,9 +17,9 @@ namespace Sinch.Voice.Calls.Instructions
         /// </summary>
         [JsonPropertyName("ids")]
 #if NET7_0_OR_GREATER
-        public required List<List<string>> Ids { get; set; }
+        public required List<string>  Ids { get; set; }
 #else
-        public List<List<string>> Ids { get; set; } = null!;
+        public List<string> Ids { get; set; } = null!;
 #endif
 
 
