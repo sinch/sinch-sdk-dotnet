@@ -31,7 +31,7 @@ namespace Sinch.Tests.Features.Verification
         [Then(@"the header of the Verification event ""Verification Request"" contains a valid authorization")]
         public void ThenTheHeaderOfTheVerificationEventContainsAValidAuthorization()
         {
-            // TODO(): implement header verification
+            // TODO: implement header verification https://tickets.sinch.com/browse/DEVEXP-944
         }
 
         [Then(@"the Verification event describes a ""Verification Request"" event type")]
@@ -70,7 +70,7 @@ namespace Sinch.Tests.Features.Verification
         [Then(@"the header of the Verification event ""(.*)"" contains a valid authorization")]
         public void ThenTheHeaderOfTheVerificationEventContainsAValidAuthorization(string p0)
         {
-            // TODO: implement hooks validation
+            // TODO: implement hooks validation https://tickets.sinch.com/browse/DEVEXP-944
         }
 
         [Then(@"the Verification event describes a ""Verification Result"" event type")]
