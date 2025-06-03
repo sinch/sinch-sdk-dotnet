@@ -1,4 +1,3 @@
-using Sinch.Auth;
 using Sinch.Verification;
 
 namespace Sinch.Tests.Features.Verification
@@ -10,8 +9,9 @@ namespace Sinch.Tests.Features.Verification
             {
                 options.ApiUrlOverrides = new ApiUrlOverrides()
                 {
-                    VerificationUrl = "http://localhost:3018"
+                    VerificationUrl = "http://localhost:3018",
+                    AuthUrl = "http://localhost:3011",
                 };
-            }).Verification("appKey", "appSecret", AuthStrategy.Basic);
+            }).Verification("appKey", "YXBwU2VjcmV0");
     }
 }

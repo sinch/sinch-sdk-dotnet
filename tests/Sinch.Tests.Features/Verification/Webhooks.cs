@@ -18,6 +18,7 @@ namespace Sinch.Tests.Features.Verification
         [Given(@"the Verification Webhooks handler is available")]
         public void GivenTheVerificationWebhooksHandlerIsAvailable()
         {
+            // TODO: init client for header verification
         }
 
         [When(@"I send a request to trigger a ""Verification Request"" event")]
