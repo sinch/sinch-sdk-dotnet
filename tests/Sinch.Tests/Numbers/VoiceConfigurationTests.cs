@@ -20,7 +20,10 @@ namespace Sinch.Tests.Numbers
         {
             var voiceConfig = new VoiceConfiguration()
             {
+#pragma warning disable CS0618 // Type or member is obsolete
+                // TODO: remove in 2.0
                 AppId = "app id value"
+#pragma warning restore CS0618 // Type or member is obsolete
             };
             var jsonString = SerializeAsNumbersClient(new Container()
             {

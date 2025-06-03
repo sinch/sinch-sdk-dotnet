@@ -133,7 +133,7 @@ namespace Sinch.Tests.Numbers
 
 
             var response = await Numbers.Update("+12025550134",
-                new Sinch.Numbers.Active.Update.UpdateActiveNumberRequest
+                new UpdateActiveNumberRequest
                 {
                     DisplayName = "Name",
                     SmsConfiguration = new SmsConfiguration
@@ -239,7 +239,10 @@ namespace Sinch.Tests.Numbers
             },
             VoiceConfiguration = new VoiceConfiguration
             {
+#pragma warning disable CS0618 // Type or member is obsolete
+                // TODO: remove in 2.0
                 AppId = "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEE",
+#pragma warning restore CS0618 // Type or member is obsolete
                 LastUpdatedTime = Helpers.ParseUtc("2024-06-30T07:08:09.100Z"),
                 ScheduledVoiceProvisioning = new ScheduledVoiceRtcProvisioning()
                 {
