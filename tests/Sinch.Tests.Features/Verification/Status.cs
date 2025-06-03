@@ -68,7 +68,6 @@ namespace Sinch.Tests.Features.Verification
                 CallComplete = true,
                 Price = new Price()
                 {
-                    BillableDuration = 0,
                     TerminationPrice = new PriceDetail()
                     {
                         Amount = 0,
@@ -103,7 +102,6 @@ namespace Sinch.Tests.Features.Verification
                 Identity = Identity.Number("+33612345678"),
                 Price = new Price()
                 {
-                    BillableDuration = 0,
                     TerminationPrice = new PriceDetail()
                     {
                         Amount = 0,
