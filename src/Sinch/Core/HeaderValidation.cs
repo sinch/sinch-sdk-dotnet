@@ -8,16 +8,16 @@ namespace Sinch.Core
 {
     internal static class HeaderValidation
     {
-        public static bool ValidateAuthHeader(string hmacSecret, string json, string signatureHeaderValue)
+        public static bool ValidateAuthHeader(string hmacSecret, string json, string xSinchSignatureHeaderValue)
         {
-            if (string.IsNullOrEmpty(hmacSecret) || string.IsNullOrEmpty(signatureHeaderValue) ||
+            if (string.IsNullOrEmpty(hmacSecret) || string.IsNullOrEmpty(xSinchSignatureHeaderValue) ||
                 string.IsNullOrEmpty(json))
             {
                 return false;
             }
 
             var result = ComputeHmacSha1(hmacSecret, json);
-            return string.Equals(signatureHeaderValue, result);
+            return string.Equals(xSinchSignatureHeaderValue, result);
         }
 
         public static bool ValidateAuthHeader(string hmacSecret, string json, HttpHeaders headers)
