@@ -254,6 +254,7 @@ namespace Sinch
         }
 
         /// <inheritdoc/>
+        // TODO: 2.0 remove option for auth selection
         public ISinchVerificationClient Verification(string appKey, string appSecret,
             AuthStrategy authStrategy = AuthStrategy.ApplicationSign)
         {
@@ -271,7 +272,7 @@ namespace Sinch
 
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
             return new SinchVerificationClient(_urlResolver.ResolveVerificationUrl(),
-                _loggerFactory, http);
+                _loggerFactory, http, auth);
         }
 
         /// <inheritdoc />

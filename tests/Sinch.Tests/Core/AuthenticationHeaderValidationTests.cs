@@ -4,18 +4,27 @@ using System.Net.Http;
 using System.Text.Json.Nodes;
 using FluentAssertions;
 using Microsoft.Extensions.Primitives;
+using Sinch.Verification;
 using Sinch.Voice;
 using Xunit;
 
 #pragma warning disable CS0618 // Type or member is obsolete
 
-namespace Sinch.Tests.Voice
+namespace Sinch.Tests.Core
 {
-    public class HooksTests
+    /// <summary>
+    ///     Tests Voice and Verification clients which are using Application signed auth for hooks validation
+    /// </summary>
+    public class AuthenticationHeaderValidationTests
     {
         private readonly ISinchVoiceClient _voiceClient = new SinchClient(default, default, default).Voice(
             "669E367E-6BBA-48AB-AF15-266871C28135",
             "BeIukql3pTKJ8RGL5zo0DA==");
+
+        private readonly ISinchVerificationClient _verificationClient =
+            new SinchClient(default, default, default).Verification(
+                "669E367E-6BBA-48AB-AF15-266871C28135",
+                "BeIukql3pTKJ8RGL5zo0DA==");
 
         private string _body =
             "{\"event\":\"ace\",\"callid\":\"822aa4b7-05b4-4d83-87c7-1f835ee0b6f6_257\",\"timestamp\":\"2014-09-24T10:59:41Z\",\"version\":1}";
@@ -75,14 +84,28 @@ namespace Sinch.Tests.Voice
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:bdJO/XUVvIsb5SlZAKmvfw==",
                 "application/json");
 
+            AssertHeaderValidation(headers, headersStringValues, message, expected: false);
+        }
 
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                headers, _body).Should().BeFalse();
+        private void AssertHeaderValidation(Dictionary<string, IEnumerable<string>> headers,
+            Dictionary<string, StringValues> headersStringValues, HttpResponseMessage message,
+            bool expected)
+        {
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
                 headersStringValues
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
+                , JsonNode.Parse(_body)!.AsObject()).Should().Be(expected);
+            
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                message.Headers, message.Content.Headers, _body).Should().BeFalse();
+                headers, _body).Should().Be(expected);
+          
+            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
+                message.Headers, message.Content.Headers, _body).Should().Be(expected);
+            
+            _verificationClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
+                headers, _body).Should().Be(expected);
+          
+            _verificationClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
+                message.Headers, message.Content.Headers, _body).Should().Be(expected);
         }
 
         [Fact]
@@ -213,7 +236,5 @@ namespace Sinch.Tests.Voice
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
                 message.Headers, message.Content.Headers, newBody).Should().BeFalse();
         }
-
-
     }
 }
