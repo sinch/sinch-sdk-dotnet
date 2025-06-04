@@ -89,7 +89,7 @@ namespace Sinch.Numbers
         ///     Validates json of a Webhook event with your HMAC secret 
         /// </summary>
         /// <param name="hmacSecret">Your HMAC secret</param>
-        /// <param name="json">Json body to validate</param>
+        /// <param name="json">The JSON payload as a raw string to be validated.</param>
         /// <param name="signatureHeaderValue">A value of X-Sinch-Signature header</param>
         /// <returns>True if a validation is successful</returns>
         bool ValidateAuthenticationHeader(string hmacSecret, string json, string signatureHeaderValue);
@@ -98,7 +98,7 @@ namespace Sinch.Numbers
         ///     Validates json of a Webhook event with your HMAC secret 
         /// </summary>
         /// <param name="hmacSecret">Your HMAC secret</param>
-        /// <param name="json">Json body to validate</param>
+        /// <param name="json">The JSON payload as a raw string to be validated.</param>
         /// <param name="headers">Headers of a Webhook message, where method will look up for X-Sinch-Signature header</param>
         /// <returns></returns>
         bool ValidateAuthenticationHeader(string hmacSecret, string json, HttpHeaders headers);
