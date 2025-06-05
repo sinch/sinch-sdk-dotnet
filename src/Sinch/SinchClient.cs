@@ -264,15 +264,18 @@ namespace Sinch
             if (string.IsNullOrEmpty(appSecret))
                 throw new ArgumentNullException(nameof(appSecret), "The value should be present");
 
+            // Application signed Auth is needed anyway for Hooks Header Verification
+            var appSignedAuth = new ApplicationSignedAuth(appKey, appSecret);
             ISinchAuth auth;
             if (authStrategy == AuthStrategy.ApplicationSign)
-                auth = new ApplicationSignedAuth(appKey, appSecret);
+                auth = appSignedAuth;
             else
+                // TODO: remove basic in 2.0 
                 auth = new BasicAuth(appKey, appSecret);
 
             var http = new Http(auth, _httpClient, _loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
             return new SinchVerificationClient(_urlResolver.ResolveVerificationUrl(),
-                _loggerFactory, http, auth);
+                _loggerFactory, http, appSignedAuth);
         }
 
         /// <inheritdoc />

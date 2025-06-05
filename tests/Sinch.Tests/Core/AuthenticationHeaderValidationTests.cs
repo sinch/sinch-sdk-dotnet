@@ -54,6 +54,31 @@ namespace Sinch.Tests.Core
             return (message, headers, headersAsStringValues);
         }
 
+
+        private void AssertHeaderValidation(Dictionary<string, IEnumerable<string>> headers,
+            Dictionary<string, StringValues> headersStringValues, HttpResponseMessage message, string path,
+            HttpMethod httpMethod,
+            string body,
+            bool expected)
+        {
+            // TODO: remove in 2.0
+            _voiceClient.ValidateAuthenticationHeader(httpMethod, path,
+                headersStringValues
+                , JsonNode.Parse(body)!.AsObject()).Should().Be(expected);
+
+            _voiceClient.ValidateAuthenticationHeader(httpMethod, path,
+                headers, body).Should().Be(expected);
+
+            _voiceClient.ValidateAuthenticationHeader(httpMethod, path,
+                message.Headers, message.Content.Headers, body).Should().Be(expected);
+
+            _verificationClient.ValidateAuthenticationHeader(httpMethod, path,
+                headers, body).Should().Be(expected);
+
+            _verificationClient.ValidateAuthenticationHeader(httpMethod, path,
+                message.Headers, message.Content.Headers, body).Should().Be(expected);
+        }
+
         [Fact]
         public void ValidateRequest()
         {
@@ -63,18 +88,8 @@ namespace Sinch.Tests.Core
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "application/json");
 
-            // TODO: remove in 2.0
-            _voiceClient
-                .ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace", headersStringValues
-                    ,
-                    JsonNode.Parse(_body)!.AsObject()).Should().BeTrue();
-            // test overrides of a method too
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                    headers, _body)
-                .Should().BeTrue();
-
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace", message.Headers,
-                message.Content.Headers, _body).Should().BeTrue();
+            AssertHeaderValidation(headers, headersStringValues, message, "/sinch/callback/ace", HttpMethod.Post, _body,
+                expected: true);
         }
 
         [Fact]
@@ -84,29 +99,10 @@ namespace Sinch.Tests.Core
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:bdJO/XUVvIsb5SlZAKmvfw==",
                 "application/json");
 
-            AssertHeaderValidation(headers, headersStringValues, message, expected: false);
+            AssertHeaderValidation(headers, headersStringValues, message, "/sinch/callback/ace", HttpMethod.Post, _body,
+                expected: false);
         }
 
-        private void AssertHeaderValidation(Dictionary<string, IEnumerable<string>> headers,
-            Dictionary<string, StringValues> headersStringValues, HttpResponseMessage message,
-            bool expected)
-        {
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                headersStringValues
-                , JsonNode.Parse(_body)!.AsObject()).Should().Be(expected);
-            
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                headers, _body).Should().Be(expected);
-          
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                message.Headers, message.Content.Headers, _body).Should().Be(expected);
-            
-            _verificationClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                headers, _body).Should().Be(expected);
-          
-            _verificationClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                message.Headers, message.Content.Headers, _body).Should().Be(expected);
-        }
 
         [Fact]
         public void FailIfAuthHeaderMissing()
@@ -115,15 +111,8 @@ namespace Sinch.Tests.Core
                 null,
                 "application/json");
 
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                headersStringValues
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
-
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                headers, _body).Should().BeFalse();
-
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                message.Headers, message.Content.Headers, _body).Should().BeFalse();
+            AssertHeaderValidation(headers, headersStringValues, message, "/sinch/callback/ace", HttpMethod.Post, _body,
+                expected: false);
         }
 
         [Fact]
@@ -133,16 +122,8 @@ namespace Sinch.Tests.Core
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "application/json");
 
-            var path = "/not/that/path";
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, path,
-                headersStringValues
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
-
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, path,
-                headers, _body).Should().BeFalse();
-
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, path,
-                message.Headers, message.Content.Headers, _body).Should().BeFalse();
+            AssertHeaderValidation(headers, headersStringValues, message, "/not/that/path", HttpMethod.Post, _body,
+                expected: false);
         }
 
         [Fact]
@@ -152,15 +133,8 @@ namespace Sinch.Tests.Core
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "application/json");
 
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
-                headersStringValues
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
-
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
-                headers, _body).Should().BeFalse();
-
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
-                message.Headers, message.Content.Headers, _body).Should().BeFalse();
+            AssertHeaderValidation(headers, headersStringValues, message, "/sinch/callback/ace", HttpMethod.Get, _body,
+                expected: false);
         }
 
         [Fact]
@@ -170,15 +144,8 @@ namespace Sinch.Tests.Core
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "application/json");
 
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
-                headersStringValues
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
-
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
-                headers, _body).Should().BeFalse();
-
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
-                message.Headers, message.Content.Headers, _body).Should().BeFalse();
+            AssertHeaderValidation(headers, headersStringValues, message, "/sinch/callback/ace", HttpMethod.Post, _body,
+                expected: false);
         }
 
         [Fact]
@@ -188,15 +155,8 @@ namespace Sinch.Tests.Core
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "text/html");
 
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
-                headersStringValues
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
-
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
-                headers, _body).Should().BeFalse();
-
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
-                message.Headers, message.Content.Headers, _body).Should().BeFalse();
+            AssertHeaderValidation(headers, headersStringValues, message, "/sinch/callback/ace", HttpMethod.Post, _body,
+                expected: false);
         }
 
         [Fact]
@@ -207,34 +167,20 @@ namespace Sinch.Tests.Core
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "application/json");
 
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
-                headersStringValues
-                , JsonNode.Parse(newBody)!.AsObject()).Should().BeFalse();
-
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
-                headers, newBody).Should().BeFalse();
-
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
-                message.Headers, message.Content.Headers, newBody).Should().BeFalse();
+            AssertHeaderValidation(headers, headersStringValues, message, "/sinch/callback/ace", HttpMethod.Post,
+                newBody,
+                expected: false);
         }
 
         [Fact]
         public void FailNotApplicationHeader()
         {
-            var newBody = JsonNode.Parse("{\"hello\": \"world\"}")!.ToJsonString();
             var (message, headers, headersStringValues) = SetupTestHeaders("2014-09-24T10:59:41Z",
                 "authorization 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=", // diff is here with `authorization`
                 "application/json");
 
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
-                headersStringValues
-                , JsonNode.Parse(newBody)!.AsObject()).Should().BeFalse();
-
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
-                headers, newBody).Should().BeFalse();
-
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
-                message.Headers, message.Content.Headers, newBody).Should().BeFalse();
+            AssertHeaderValidation(headers, headersStringValues, message, "/sinch/callback/ace", HttpMethod.Post,
+                _body, expected: false);
         }
     }
 }

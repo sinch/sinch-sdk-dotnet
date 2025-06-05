@@ -52,11 +52,12 @@ namespace Sinch.Verification
     internal sealed class SinchVerificationClient : ISinchVerificationClient
     {
         private readonly ILoggerAdapter<ISinchVerificationClient>? _logger;
+
         // TODO: 2.0 make it ApplicationSignedAuth
-        private readonly ISinchAuth _applicationSignedAuth;
+        private readonly ApplicationSignedAuth _applicationSignedAuth;
 
         internal SinchVerificationClient(Uri baseAddress, LoggerFactory? loggerFactory,
-            IHttp http, ISinchAuth applicationSignedAuth)
+            IHttp http, ApplicationSignedAuth applicationSignedAuth)
         {
             _logger = loggerFactory?.Create<ISinchVerificationClient>();
             _applicationSignedAuth = applicationSignedAuth;
@@ -75,27 +76,14 @@ namespace Sinch.Verification
             HttpContentHeaders contentHeaders,
             string body)
         {
-            // TODO: 2.0 remove when only application signed is allowed
-            if (_applicationSignedAuth is not ApplicationSignedAuth auth)
-            {
-                throw new InvalidOperationException(
-                    $"You can validate auth header only if {nameof(AuthStrategy.ApplicationSign)} is selected when creating {nameof(ISinchVerificationClient)}");
-            }
-
             return AuthorizationHeaderValidation.Validate(method, path, headers, contentHeaders, body,
-                auth, _logger);
+                _applicationSignedAuth, _logger);
         }
 
         public bool ValidateAuthenticationHeader(HttpMethod method, string path,
             Dictionary<string, IEnumerable<string>> headers, string body)
         {
-            // TODO: 2.0 remove when only application signed is allowed
-            if (_applicationSignedAuth is not ApplicationSignedAuth auth)
-            {
-                throw new InvalidOperationException(
-                    $"You can validate auth header only if {nameof(AuthStrategy.ApplicationSign)} is selected when creating {nameof(ISinchVerificationClient)}");
-            }
-            return AuthorizationHeaderValidation.Validate(method, path, headers, body, auth,
+            return AuthorizationHeaderValidation.Validate(method, path, headers, body, _applicationSignedAuth,
                 _logger);
         }
     }

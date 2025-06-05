@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Sinch.Tests.Verification
 {
-    public class VerificationTests 
+    public class VerificationTests
     {
         private JsonSerializerOptions _jsonSerializerOptions;
 
