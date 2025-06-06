@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
+using Sinch.Verification;
 using Sinch.Verification.Common;
 using Sinch.Verification.Hooks;
 
@@ -14,11 +15,13 @@ namespace Sinch.Tests.Features.Verification
         private readonly HttpClient _httpClient = new HttpClient();
         private HttpResponseMessage _verificationRequestResponseMessage;
         private HttpResponseMessage _verificationResultResponse;
+        private ISinchVerificationClient _sinchVerificationClient;
+        private string _rawBody;
 
         [Given(@"the Verification Webhooks handler is available")]
         public void GivenTheVerificationWebhooksHandlerIsAvailable()
         {
-            // TODO: init client for header verification
+            _sinchVerificationClient = Utils.SinchVerificationClient;
         }
 
         [When(@"I send a request to trigger a ""Verification Request"" event")]
@@ -29,17 +32,19 @@ namespace Sinch.Tests.Features.Verification
         }
 
         [Then(@"the header of the Verification event ""Verification Request"" contains a valid authorization")]
-        public void ThenTheHeaderOfTheVerificationEventContainsAValidAuthorization()
+        public async Task ThenTheHeaderOfTheVerificationEventContainsAValidAuthorization()
         {
-            // TODO: implement header verification https://tickets.sinch.com/browse/DEVEXP-944
+            _rawBody = await _verificationRequestResponseMessage.Content.ReadAsStringAsync();
+            _sinchVerificationClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/verification",
+                _verificationRequestResponseMessage.Headers, _verificationRequestResponseMessage.Content.Headers,
+                _rawBody).Should().BeTrue();
         }
 
         [Then(@"the Verification event describes a ""Verification Request"" event type")]
-        public async Task ThenTheVerificationEventDescribesAEventType()
+        public void ThenTheVerificationEventDescribesAEventType()
         {
             // TODO: schema of oas and api response diverge: https://tickets.sinch.com/browse/DEVEXP-946
-            var raw = await _verificationRequestResponseMessage.Content.ReadAsStringAsync();
-            var verificationEvent = JsonSerializer.Deserialize<VerificationRequestEvent>(raw);
+            var verificationEvent = JsonSerializer.Deserialize<VerificationRequestEvent>(_rawBody);
             verificationEvent.As<VerificationRequestEvent>().Should().BeEquivalentTo(new VerificationRequestEvent
             {
                 Id = "1ce0ffee-c0de-5eed-d00d-f00dfeed1337",
@@ -62,16 +67,19 @@ namespace Sinch.Tests.Features.Verification
         }
 
         [Then(@"the header of the Verification event ""Verification Result"" contains a valid authorization")]
-        public void ThenTheHeaderOfTheVerificationResultEventContainsAValidAuthorization()
+        public async Task ThenTheHeaderOfTheVerificationResultEventContainsAValidAuthorization()
         {
-            // TODO: implement hooks validation https://tickets.sinch.com/browse/DEVEXP-944
+            _rawBody = await _verificationResultResponse.Content.ReadAsStringAsync();
+            _sinchVerificationClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/verification",
+                _verificationResultResponse.Headers, _verificationResultResponse.Content.Headers,
+                _rawBody).Should().BeTrue();
         }
 
         [Then(@"the Verification event describes a ""Verification Result"" event type")]
-        public async Task ThenTheVerificationEventDescribesAResultEventType()
+        public void ThenTheVerificationEventDescribesAResultEventType()
         {
-            var raw = await _verificationResultResponse.Content.ReadAsStringAsync();
-            var resultEvent = JsonSerializer.Deserialize<VerificationResultEvent>(raw);
+
+            var resultEvent = JsonSerializer.Deserialize<VerificationResultEvent>(_rawBody);
             // TODO: schema of oas and api response diverge: https://tickets.sinch.com/browse/DEVEXP-946
             resultEvent.Should().BeEquivalentTo(new VerificationResultEvent()
             {
