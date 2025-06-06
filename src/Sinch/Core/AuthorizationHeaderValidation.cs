@@ -62,7 +62,7 @@ namespace Sinch.Core
             if (splitAuthHeader.FirstOrDefault() != "application")
             {
                 logger?.LogDebug(
-                    "Failed to validate auth header. Authorization header not starting from 'application'.");
+                    "Failed to validate auth header. Authorization header not starting with 'application'.");
                 return false;
             }
 
