@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
-using Reqnroll.UnitTestProvider;
 using Sinch.SMS;
 using Sinch.SMS.Batches;
 using Sinch.SMS.Batches.DryRun;
@@ -17,12 +15,6 @@ namespace Sinch.Tests.Features.Sms
     [Binding]
     public class Batches
     {
-        private readonly IUnitTestRuntimeProvider _unitTestRuntimeProvider;
-
-        public Batches(IUnitTestRuntimeProvider unitTestRuntimeProvider)
-        {
-            _unitTestRuntimeProvider = unitTestRuntimeProvider;
-        }
 
         private ISinchSmsBatches _sinchSmsBatches;
         private IBatch _sendBatchResponse;
@@ -31,6 +23,7 @@ namespace Sinch.Tests.Features.Sms
         private List<IBatch> _batchList;
         private IBatch _batch;
         private int _totalPages;
+        private Func<Task> _deliveryFeedbackOp;
 
         [Given(@"the SMS service ""(.*)"" is available")]
         public void GivenTheSmsServiceIsAvailable(string batches)
@@ -67,7 +60,7 @@ namespace Sinch.Tests.Features.Sms
                 Canceled = false,
                 Body = "SMS body message",
                 FlashMessage = false,
-                //TODO: add created_at, modified_at fields
+                //TODO: DEVEXP-982 add created_at, modified_at fields 
             });
         }
 
@@ -122,7 +115,7 @@ namespace Sinch.Tests.Features.Sms
                     }
                 },
                 FlashMessage = false,
-                //TODO: add created_at, modified_at fields
+                //TODO: DEVEXP-982 add created_at, modified_at fields 
             });
         }
 
@@ -204,23 +197,22 @@ namespace Sinch.Tests.Features.Sms
         }
 
         [When(@"I send a request to list all the SMS batches")]
-        public void WhenISendARequestToListAllTheSmsBatches()
+        public async Task WhenISendARequestToListAllTheSmsBatches()
         {
-            // TODO: fix page_page size for autopaging
-            // _batchList = new List<IBatch>();
-            // await foreach (var batch in _sinchSmsBatches.ListAuto(new ListBatchesRequest()
-            //                {
-            //                    PageSize = 2
-            //                }))
-            // {
-            //     _batchList.Add(batch);
-            // }
+            _batchList = new List<IBatch>();
+            await foreach (var batch in _sinchSmsBatches.ListAuto(new ListBatchesRequest()
+            {
+                PageSize = 2
+            }))
+            {
+                _batchList.Add(batch);
+            }
         }
 
         [Then(@"the SMS batches list contains ""(.*)"" SMS batches")]
         public void ThenTheSmsBatchesListContainsSmsBatches(int count)
         {
-            // TODO: fix page_size in auto iter
+            _batchList.Should().HaveCount(count);
         }
 
         [When(@"I iterate manually over the SMS batches pages")]
@@ -265,7 +257,7 @@ namespace Sinch.Tests.Features.Sms
                 FlashMessage = false,
                 To = new List<string> { "12017777777" },
                 From = "12015555555",
-                // TODO: add created_at and modified_at
+                // TODO: DEVEXP-982 add created_at and modified_at
                 DeliveryReport = DeliveryReport.Full,
                 SendAt = Helpers.ParseUtc("2024-06-06T09:25:00Z"),
                 ExpireAt = Helpers.ParseUtc("2024-06-09T09:25:00Z"),
@@ -296,13 +288,71 @@ namespace Sinch.Tests.Features.Sms
                     FlashMessage = false,
                     To = new List<string> { "12017777777", "01W4FFL35P4NC4K35SMSGROUP1" },
                     From = "12016666666",
-                    // TODO: created_at and modified_at
+                    // TODO: DEVEXP-982 add created_at and modified_at
                     DeliveryReport = DeliveryReport.Summary,
                     SendAt = Helpers.ParseUtc("2024-06-06T09:25:00Z"),
                     ExpireAt = Helpers.ParseUtc("2024-06-09T09:25:00Z"),
                     FeedbackEnabled = true
                 }
             );
+        }
+
+        [When(@"I send a request to replace an SMS batch")]
+        public async Task WhenISendARequestToReplaceAnSmsBatch()
+        {
+            _batch = await _sinchSmsBatches.Replace("01W4FFL35P4NC4K35SMSBATCH1", new SendTextBatchRequest()
+            {
+                From = "+12016666666",
+                To = ["+12018888888"],
+                Body = "This is the replacement batch",
+                SendAt = Helpers.ParseUtc("2024-06-06T09:35:00Z")
+            });
+        }
+
+        [Then(@"the response contains the new SMS batch details with the provided data for replacement")]
+        public void ThenTheResponseContainsTheNewSmsBatchDetailsWithTheProvidedDataForReplacement()
+        {
+            _batch.As<TextBatch>().Should().BeEquivalentTo(new TextBatch
+            {
+                Id = "01W4FFL35P4NC4K35SMSBATCH1",
+                Canceled = false,
+                Body = "This is the replacement batch",
+                FlashMessage = false,
+                To = ["12018888888"],
+                From = "12016666666",
+                // TODO: DEVEXP-982 add created_at and modified_at
+                DeliveryReport = DeliveryReport.None,
+                SendAt = Helpers.ParseUtc("2024-06-06T09:35:00Z"),
+                ExpireAt = Helpers.ParseUtc("2024-06-09T09:35:00Z"),
+                FeedbackEnabled = null
+            });
+        }
+
+        [When(@"I send a request to cancel an SMS batch")]
+        public async Task WhenISendARequestToCancelAnSmsBatch()
+        {
+            _batch = await _sinchSmsBatches.Cancel("01W4FFL35P4NC4K35SMSBATCH1");
+        }
+
+        [Then(@"the response contains the SMS batch details with a cancelled status")]
+        public void ThenTheResponseContainsTheSmsBatchDetailsWithACancelledStatus()
+        {
+            var batch = _batch.As<TextBatch>();
+            batch.Id.Should().Be("01W4FFL35P4NC4K35SMSBATCH1");
+            batch.Canceled.Should().BeTrue();
+        }
+
+        [When(@"I send a request to send delivery feedbacks")]
+        public void WhenISendARequestToSendDeliveryFeedbacks()
+        {
+            _deliveryFeedbackOp = () => _sinchSmsBatches.SendDeliveryFeedback("01W4FFL35P4NC4K35SMSBATCH1",
+                ["+12017777777"]);
+        }
+
+        [Then(@"the delivery feedback response contains no data")]
+        public async Task ThenTheDeliveryFeedbackResponseContainsNoData()
+        {
+            await _deliveryFeedbackOp.Should().NotThrowAsync();
         }
     }
 }

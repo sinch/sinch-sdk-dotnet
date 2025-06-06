@@ -1,5 +1,3 @@
-using Sinch.SMS;
-
 namespace Sinch.Tests.Features.Sms
 {
     public class Utils
