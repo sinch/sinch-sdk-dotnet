@@ -114,9 +114,9 @@ namespace Sinch.Tests.Features.Numbers
         }
 
         [Then(@"the response contains ""(.*)"" available phone numbers")]
-        public void ThenTheResponseContainsAvailablePhoneNumbers(int p0)
+        public void ThenTheResponseContainsAvailablePhoneNumbers(int count)
         {
-            _searchAvailableResponse.AvailableNumbers.Should().HaveCount(20);
+            _searchAvailableResponse.AvailableNumbers.Should().HaveCount(count);
         }
 
         [Then(@"a phone number contains all the expected properties")]
@@ -176,7 +176,7 @@ namespace Sinch.Tests.Features.Numbers
         [Then(@"the response contains an error about the number ""(.*)"" not being available")]
         public async Task ThenTheResponseContainsAnErrorAboutTheNumberNotBeingAvailable(string p0)
         {
-            ExceptionAssertions<SinchApiException>? ex = null;
+            ExceptionAssertions<SinchApiException> ex = null;
             if (_checkAvailabilityResponseOp != null)
             {
                 ex = await _checkAvailabilityResponseOp.Should().ThrowAsync<SinchApiException>();
