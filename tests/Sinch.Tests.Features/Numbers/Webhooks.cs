@@ -34,7 +34,8 @@ namespace Sinch.Tests.Features.Numbers
         public async Task ThenTheHeaderOfTheForEventContainsAValidSignature(string success, string p1)
         {
             _rawData = await _eventResponse.Content.ReadAsStringAsync();
-            _sinchNumbers.ValidateAuthHeader(SinchNumbersCallbackSecret, _rawData, _eventResponse.Headers).Should()
+            _sinchNumbers.ValidateAuthenticationHeader(SinchNumbersCallbackSecret, _rawData, _eventResponse.Headers)
+                .Should()
                 .BeTrue();
         }
 
@@ -60,8 +61,7 @@ namespace Sinch.Tests.Features.Numbers
             var parsedEvent = JsonSerializer.Deserialize<Event>(_rawData);
             parsedEvent.EventType.Should().Be(EventType.ProvisioningToVoicePlatform);
             parsedEvent.Status.Should().Be(EventStatus.Failed);
-            // TODO: check if this value is possible
-            parsedEvent.FailureCode.Should().Be(new FailureCode("PROVISIONING_TO_VOICE_PLATFORM_FAILED"));
+            parsedEvent.FailureCode.Should().Be(FailureCode.ProvisioningToVoicePlatformFailed);
         }
     }
 }

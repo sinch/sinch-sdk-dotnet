@@ -1,19 +1,19 @@
 using System.Net.Http;
 using FluentAssertions;
+using Sinch.Core;
 using Xunit;
 
-namespace Sinch.Tests.Voice
+namespace Sinch.Tests.Core
 {
-    public class AuthHeaderValidation
+    public class AuthHeaderValidationTests
     {
         private void AssertAuthHeader(string secret, string json, string headerValue, bool isValid)
         {
-            var sinch = new SinchClient("project", "key", "secret");
-            sinch.Numbers.ValidateAuthHeader(secret, json, headerValue).Should().Be(isValid);
+            HeaderValidation.ValidateAuthHeader(secret, json, headerValue).Should().Be(isValid);
 
             var headers = new HttpRequestMessage().Headers;
             headers.Add("x-sinch-signature", headerValue);
-            sinch.Numbers.ValidateAuthHeader(secret, json, headers).Should().Be(isValid);
+            HeaderValidation.ValidateAuthHeader(secret, json, headers).Should().Be(isValid);
         }
 
         private const string JsonBody =

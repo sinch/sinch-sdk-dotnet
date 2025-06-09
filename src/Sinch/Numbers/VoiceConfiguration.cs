@@ -29,6 +29,7 @@ namespace Sinch.Numbers
 
         [JsonPropertyName("scheduledVoiceProvisioning")]
         [JsonInclude]
+        [JsonConverter(typeof(ScheduledVoiceProvisioningConverter))]
         public ScheduledVoiceProvisioning? ScheduledVoiceProvisioning { get; internal set; }
     }
 

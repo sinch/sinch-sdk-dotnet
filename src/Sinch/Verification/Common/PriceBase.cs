@@ -20,6 +20,6 @@ namespace Sinch.Verification.Common
         ///     Depending on the type of rounding used, the value is the actual call time rounded
         ///     to the nearest second, minute or other value
         /// </summary>
-        public int BillableDuration { get; set; }
+        public int? BillableDuration { get; set; }
     }
 }
