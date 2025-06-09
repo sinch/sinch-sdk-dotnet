@@ -32,6 +32,6 @@ namespace Sinch.Numbers
         ///     Once it has successfully processed, only the ID of the SMS configuration will display.
         /// </summary>
         [JsonInclude]
-        public ScheduledProvisioning? ScheduledProvisioning { get; private set; }
+        public ScheduledProvisioning? ScheduledProvisioning { get; internal set; }
     }
 }

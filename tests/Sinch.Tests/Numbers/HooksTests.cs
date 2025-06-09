@@ -17,13 +17,13 @@ namespace Sinch.Tests.Numbers
                 ""projectId"": ""abcd12ef-ab12-ab12-bc34-abcdef123456"",
                 ""resourceId"": ""+12345612345"",
                 ""resourceType"": ""NUMBER"",
-                ""eventType"": ""LINK_TO_10DLC_CAMPAIGN"",
+                ""eventType"": ""PROVISIONING_TO_SMS_PLATFORM"",
                 ""status"": ""FAILED"",
                 ""failureCode"": ""CAMPAIGN_NOT_AVAILABLE""
             }";
             var @enum = JsonSerializer.Deserialize<Event>(jsonInput)!;
             @enum.Status.Should().Be(EventStatus.Failed);
-            @enum.EventType.Should().Be(EventType.LinkTo10DlcCampaign);
+            @enum.EventType.Should().Be(EventType.ProvisioningToSmsPlatform);
             @enum.FailureCode.Should().Be(FailureCode.CampaignNotAvailable);
         }
 
