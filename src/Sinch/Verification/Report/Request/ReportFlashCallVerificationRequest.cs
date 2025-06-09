@@ -11,7 +11,7 @@ namespace Sinch.Verification.Report.Request
         /// <summary>
         ///     A configuration object containing settings specific to FlashCall verifications.
         /// </summary>
-        [JsonPropertyName("flashcall")]
+        [JsonPropertyName("flashCall")]
 #if NET7_0_OR_GREATER
         public required FlashCall FlashCall { get; set; }
 #else
