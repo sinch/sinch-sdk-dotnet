@@ -217,8 +217,8 @@ namespace Sinch.Tests.Features.Sms
 
         [When(@"I iterate manually over the SMS batches pages")]
         public async Task WhenIIterateManuallyOverTheSmsBatchesPages()
-        {// TODO(DEVEXP-992): implemented iterator 
-            
+        {
+            // TODO(DEVEXP-992): implemented iterator 
             _batchList = new List<IBatch>();
             _totalPages = 0;
             ListBatchesResponse listBatchesResponse = null;
