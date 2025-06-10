@@ -142,9 +142,9 @@ namespace Sinch.Tests.Features.Sms
         {
             _deliveryReportsListAll = new List<DeliveryReport>();
             await foreach (var report in _deliveryReports.ListAuto(new ListDeliveryReportsRequest()
-                           {
-                               PageSize = 2
-                           }))
+            {
+                PageSize = 2
+            }))
             {
                 _deliveryReportsListAll.Add(report);
             }
