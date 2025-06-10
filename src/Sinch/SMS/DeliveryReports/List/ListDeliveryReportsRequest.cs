@@ -7,7 +7,7 @@ namespace Sinch.SMS.DeliveryReports.List
 {
     public sealed class ListDeliveryReportsRequest
     {
-        public int Page { get; set; }
+        public int? Page { get; set; }
 
         public int? PageSize { get; set; }
 

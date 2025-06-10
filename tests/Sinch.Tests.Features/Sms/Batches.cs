@@ -25,7 +25,7 @@ namespace Sinch.Tests.Features.Sms
         private int _totalPages;
         private Func<Task> _deliveryFeedbackOp;
 
-        [Given(@"the SMS service ""(.*)"" is available")]
+        [Given(@"the SMS service ""Batches"" is available")]
         public void GivenTheSmsServiceIsAvailable(string batches)
         {
             _sinchSmsBatches = Utils.SinchClient.Sms.Batches;
