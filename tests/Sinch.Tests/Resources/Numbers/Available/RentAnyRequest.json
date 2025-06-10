@@ -1,0 +1,20 @@
+{
+  "regionCode": "US",
+  "numberPattern": {
+    "pattern": "+1208",
+    "searchPattern": "START"
+  },
+  "type": "TOLL_FREE",
+  "capabilities": [
+    "SMS"
+  ],
+  "smsConfiguration": {
+    "servicePlanId": "plan_id",
+    "campaignId": "campaign_id"
+  },
+  "voiceConfiguration": {
+    "appId": "app_id",
+    "type": "RTC"
+  },
+  "callbackUrl": "callback_url"
+}

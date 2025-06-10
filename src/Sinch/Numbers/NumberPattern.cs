@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using Sinch.Core;
 
 namespace Sinch.Numbers
 {
@@ -18,6 +20,7 @@ namespace Sinch.Numbers
         /// <summary>
         ///     Search pattern to apply. The options are, START, CONTAIN, and END.
         /// </summary>
+        [JsonConverter(typeof(EnumRecordJsonConverter<SearchPattern>))]
         public SearchPattern? SearchPattern { get; set; }
 
         internal IEnumerable<KeyValuePair<string, string>> GetQueryParamPairs()
@@ -41,7 +44,7 @@ namespace Sinch.Numbers
     /// <summary>
     /// Represents the search pattern options for phone numbers.
     /// </summary>
-    public record SearchPattern(string Value)
+    public record SearchPattern(string Value) : EnumRecord(Value)
     {
         /// <summary>
         /// Numbers that begin with the number pattern entered. Often used to search for a specific area code. 
