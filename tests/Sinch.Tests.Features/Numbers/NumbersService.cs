@@ -31,6 +31,7 @@ namespace Sinch.Tests.Features.Numbers
         private IAsyncEnumerable<ActiveNumber> _listAllNumbers;
         private Func<Task<ActiveNumber>> _activeNumberOp;
         private ActiveNumber _releaseResponse;
+        private int _totalNumbers;
 
         [Given(@"the Numbers service is available")]
         public void GivenTheNumbersServiceIsAvailable()
@@ -322,25 +323,24 @@ namespace Sinch.Tests.Features.Numbers
         }
 
         [When(@"I send a request to list all the phone numbers")]
-        public void WhenISendARequestToListAllThePhoneNumbers()
+        public async Task WhenISendARequestToListAllThePhoneNumbers()
         {
-            _listAllNumbers = _sinchNumbers.ListAuto(new ListActiveNumbersRequest()
+            var listAllNumbers = _sinchNumbers.ListAuto(new ListActiveNumbersRequest()
             {
                 RegionCode = "US",
                 Type = Types.Local
             });
+            _totalNumbers = 0;
+            await foreach (var _ in listAllNumbers)
+            {
+                _totalNumbers++;
+            }
         }
 
         [Then(@"the phone numbers list contains ""(.*)"" phone numbers")]
-        public async Task ThenThePhoneNumbersListContainsPhoneNumbers(int count)
+        public void ThenThePhoneNumbersListContainsPhoneNumbers(int count)
         {
-            var counter = 0;
-            await foreach (var _ in _listAllNumbers)
-            {
-                counter++;
-            }
-
-            counter.Should().Be(count);
+            _totalNumbers.Should().Be(count);
         }
 
         [When(@"I send a request to retrieve the phone number ""(.*)""")]
