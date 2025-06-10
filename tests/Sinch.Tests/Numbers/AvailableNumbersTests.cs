@@ -61,7 +61,7 @@ namespace Sinch.Tests.Numbers
                 .When(HttpMethod.Post,
                     $"https://numbers.api.sinch.com/v1/projects/{ProjectId}/availableNumbers:rentAny")
                 .WithHeaders("Authorization", $"Bearer {Token}")
-                .WithPartialContent("1208")
+                .WithJson(Helpers.LoadResources("Numbers/Available/RentAnyRequest.json"))
                 .Respond(HttpStatusCode.OK, JsonContent.Create(TestData.ActiveNumber));
 
             var request = new Sinch.Numbers.Available.RentAny.RentAnyNumberRequest
@@ -78,7 +78,12 @@ namespace Sinch.Tests.Numbers
                 {
                     ServicePlanId = "plan_id",
                     CampaignId = "campaign_id"
-                }
+                },
+                VoiceConfiguration = new VoiceRtcConfiguration()
+                {
+                    AppId = "app_id",
+                },
+                CallbackUrl = "callback_url"
             };
             var response = await Numbers.RentAny(request);
 

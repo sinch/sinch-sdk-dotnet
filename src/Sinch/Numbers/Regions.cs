@@ -21,7 +21,7 @@ namespace Sinch.Numbers
         /// </param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IEnumerable<Region>> List(IEnumerable<Types> types,
+        Task<IEnumerable<Region>> List(IEnumerable<Types>? types = null,
             CancellationToken cancellationToken = default);
     }
 
@@ -42,19 +42,20 @@ namespace Sinch.Numbers
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<Region>> List(IEnumerable<Types> types,
+        public async Task<IEnumerable<Region>> List(IEnumerable<Types>? types = null,
             CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Fetching available regions");
             var typesStr = string.Empty;
-            var typesQuery = string.Join("&", types.Select(x => "types=" + x.Value));
-            if (!string.IsNullOrEmpty(typesQuery))
+            if (types != null)
             {
-                typesStr = typesQuery;
-                _logger?.LogDebug("For {types}", typesStr);
+                var typesQuery = string.Join("&", types.Select(x => "types=" + x.Value));
+                if (!string.IsNullOrEmpty(typesQuery))
+                {
+                    typesStr = typesQuery;
+                    _logger?.LogDebug("For {types}", typesStr);
+                }
             }
-
-
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/availableRegions?{typesStr}");
             var response = await _http.Send<ListRegionsResponse>(uri, HttpMethod.Get, cancellationToken);
 

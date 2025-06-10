@@ -83,5 +83,7 @@ namespace Sinch.Numbers.Hooks
         ///     Invalid NNID (Numbering Plan ID).
         /// </summary>
         public static readonly FailureCode InvalidNnid = new("INVALID_NNID");
+
+        public static readonly FailureCode ProvisioningToVoicePlatformFailed = new("PROVISIONING_TO_VOICE_PLATFORM_FAILED");
     }
 }
