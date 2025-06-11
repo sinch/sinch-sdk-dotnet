@@ -51,14 +51,12 @@ namespace Sinch.Tests.Features.Sms
                     {
                         Code = 15,
                         Count = 1,
-                        Recipients = null,
                         Status = DeliveryReportStatus.Failed
                     },
                     new DeliveryReportStatusVerbose
                     {
                         Code = 0,
                         Count = 1,
-                        Recipients = null,
                         Status = DeliveryReportStatus.Delivered
                     }
                 }

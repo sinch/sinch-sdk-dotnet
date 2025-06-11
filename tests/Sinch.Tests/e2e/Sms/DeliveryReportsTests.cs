@@ -40,7 +40,7 @@ namespace Sinch.Tests.e2e.Sms
 
                 Page = 0,
             });
-            response.DeliveryReports.Count().Should().Be(5);
+            response.DeliveryReports!.Count().Should().Be(5);
         }
 
         [Fact]
