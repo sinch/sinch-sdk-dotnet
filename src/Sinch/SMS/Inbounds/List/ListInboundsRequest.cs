@@ -50,7 +50,7 @@ namespace Sinch.SMS.Inbounds.List
             {
                 kvp.Add(new KeyValuePair<string, string>("page", Page.Value.ToString()));
             }
-            
+
             if (PageSize.HasValue)
             {
                 kvp.Add(new KeyValuePair<string, string>("page_size", PageSize.Value.ToString()));
