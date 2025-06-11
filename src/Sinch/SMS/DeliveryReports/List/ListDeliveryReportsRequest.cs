@@ -24,8 +24,11 @@ namespace Sinch.SMS.DeliveryReports.List
         internal string GetQueryString()
         {
             var kvp = new List<KeyValuePair<string, string>>();
-            kvp.Add(new KeyValuePair<string, string>("page", Page.ToString()));
-
+            if (Page.HasValue)
+            {
+                kvp.Add(new KeyValuePair<string, string>("page", Page.Value.ToString()));
+            }
+            
             if (PageSize.HasValue)
             {
                 kvp.Add(new KeyValuePair<string, string>("page_size", PageSize.Value.ToString()));
