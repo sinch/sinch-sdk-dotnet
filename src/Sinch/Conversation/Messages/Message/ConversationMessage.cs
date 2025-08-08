@@ -67,6 +67,15 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         public bool? Injected { get; set; }
 
+        /// <summary>
+        ///     For Contact Messages (MO messages), the sender ID represents the recipient to which the message was sent. This may be a phone number (in the case of SMS and MMS) or a unique ID (in the case of WhatsApp). This is field is not supported on all channels, nor is it supported for MT messages.
+        /// </summary>
+        public string? SenderId { get; set; }
+
+        /// <summary>
+        ///     Whether or not Conversation API should store contacts and conversations for the app.
+        /// </summary>
+        public ProcessingMode? ProcessingMode { get; set; }
 
         /// <summary>
         ///     Returns the string presentation of the object
