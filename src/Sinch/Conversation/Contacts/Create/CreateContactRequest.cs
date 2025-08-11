@@ -9,20 +9,16 @@ namespace Sinch.Conversation.Contacts.Create
         /// <summary>
         ///     List of channel identities. Array must contain at least one item.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required List<ChannelIdentity> ChannelIdentities { get; set; }
-#else
-        public List<ChannelIdentity> ChannelIdentities { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     Gets or Sets Language
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string Language { get; set; }
-#else
-        public string Language { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     List of channels defining the channel priority. The channel at the top of the list is tried first.

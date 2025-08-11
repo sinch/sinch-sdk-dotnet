@@ -97,12 +97,12 @@ namespace Sinch.Conversation.Webhooks
     internal sealed class Webhooks : ISinchConversationWebhooks
     {
         private readonly Uri _baseAddress;
-        private readonly IHttp _http;
+        private readonly Lazy<IHttp> _http;
         private readonly ILoggerAdapter<ISinchConversationWebhooks>? _logger;
         private readonly string _projectId;
 
         public Webhooks(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationWebhooks>? logger,
-            IHttp http)
+            Lazy<IHttp> http)
         {
             _projectId = projectId;
             _baseAddress = baseAddress;
@@ -115,7 +115,7 @@ namespace Sinch.Conversation.Webhooks
         {
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks");
             _logger?.LogDebug("Creating a webhook...");
-            return _http.Send<CreateWebhookRequest, Webhook>(uri, HttpMethod.Post, request,
+            return _http.Value.Send<CreateWebhookRequest, Webhook>(uri, HttpMethod.Post, request,
                 cancellationToken);
         }
 
@@ -124,7 +124,7 @@ namespace Sinch.Conversation.Webhooks
         {
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{webhookId}");
             _logger?.LogDebug("Getting a webhook with {id}...", webhookId);
-            return _http.Send<Webhook>(uri, HttpMethod.Get,
+            return _http.Value.Send<Webhook>(uri, HttpMethod.Get,
                 cancellationToken);
         }
 
@@ -138,7 +138,7 @@ namespace Sinch.Conversation.Webhooks
 
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/apps/{appId}/webhooks");
             _logger?.LogDebug("Listing webhooks for an {appId}...", appId);
-            var response = await _http.Send<ListWebhooksResponse>(uri, HttpMethod.Get,
+            var response = await _http.Value.Send<ListWebhooksResponse>(uri, HttpMethod.Get,
                 cancellationToken);
             return response.Webhooks ?? new List<Webhook>();
         }
@@ -166,7 +166,7 @@ namespace Sinch.Conversation.Webhooks
             builder.Query = queryString.ToString()!;
 
             _logger?.LogDebug("Updating a webhook with {id}...", webhookId);
-            return _http.Send<UpdateWebhookRequest, Webhook>(builder.Uri, HttpMethod.Patch, request,
+            return _http.Value.Send<UpdateWebhookRequest, Webhook>(builder.Uri, HttpMethod.Patch, request,
                 cancellationToken);
         }
 
@@ -181,7 +181,7 @@ namespace Sinch.Conversation.Webhooks
 
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{webhookId}");
             _logger?.LogDebug("Deleting a webhook with {id}...", webhookId);
-            return _http.Send<object>(uri, HttpMethod.Delete,
+            return _http.Value.Send<object>(uri, HttpMethod.Delete,
                 cancellationToken);
         }
 
@@ -234,7 +234,7 @@ namespace Sinch.Conversation.Webhooks
 
         public ICallbackEvent ParseEvent(string json)
         {
-            var jsonResult = JsonSerializer.Deserialize<ICallbackEvent>(json, _http.JsonSerializerOptions);
+            var jsonResult = JsonSerializer.Deserialize<ICallbackEvent>(json, _http.Value.JsonSerializerOptions);
             if (jsonResult == null)
             {
                 throw new InvalidOperationException("Deserialization of callback event failed");
@@ -245,7 +245,7 @@ namespace Sinch.Conversation.Webhooks
 
         public ICallbackEvent ParseEvent(JsonNode json)
         {
-            var jsonResult = json.Deserialize<ICallbackEvent>(_http.JsonSerializerOptions);
+            var jsonResult = json.Deserialize<ICallbackEvent>(SinchConversationClient.JsonSerializerOptionsInner);
             if (jsonResult == null)
             {
                 throw new InvalidOperationException("Deserialization of callback event failed");
@@ -258,7 +258,8 @@ namespace Sinch.Conversation.Webhooks
             CancellationToken cancellationToken = default)
         {
             var jsonResult =
-                await JsonSerializer.DeserializeAsync<ICallbackEvent>(jsonStream, _http.JsonSerializerOptions,
+                await JsonSerializer.DeserializeAsync<ICallbackEvent>(jsonStream,
+                    SinchConversationClient.JsonSerializerOptionsInner,
                     cancellationToken);
             if (jsonResult == null)
             {

@@ -8,11 +8,9 @@ namespace Sinch.Conversation.Events.ContactEvents
         /// <summary>
         ///     Required. The text of the comment.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string Text { get; set; }
-#else
-        public string Text { get; set; } = null!;
-#endif
+
         /// <summary>
         ///     Optional. An identifier for the comment.
         /// </summary>

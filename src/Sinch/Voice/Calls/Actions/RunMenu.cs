@@ -93,11 +93,9 @@ namespace Sinch.Voice.Calls.Actions
         ///     The identifier of a menu. One menu must have the ID value of &#x60;main&#x60;.
         /// </summary>
         [JsonPropertyName("id")]
-#if NET7_0_OR_GREATER
+
         public required string Id { get; set; }
-#else
-        public string Id { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -202,22 +200,18 @@ namespace Sinch.Voice.Calls.Actions
         ///     A DTMF digit the user can press to trigger the configured action.
         /// </summary>
         [JsonPropertyName("dtmf")]
-#if NET7_0_OR_GREATER
+
         public required string Dtmf { get; set; }
-#else
-        public string Dtmf { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
         ///     Determines which action is taken when the DTMF digit is pressed.
         /// </summary>
         [JsonPropertyName("action")]
-#if NET7_0_OR_GREATER
+
         public required DtmfAction Action { get; set; }
-#else
-        public DtmfAction Action { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

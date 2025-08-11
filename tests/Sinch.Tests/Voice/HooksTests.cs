@@ -10,9 +10,20 @@ namespace Sinch.Tests.Voice
 {
     public class HooksTests
     {
-        private readonly ISinchVoiceClient _voiceClient = new SinchClient(default, default, default).Voice(
-            "669E367E-6BBA-48AB-AF15-266871C28135",
-            "BeIukql3pTKJ8RGL5zo0DA==");
+        private readonly ISinchVoiceClient _voiceClient = new SinchClient(new SinchClientConfiguration()
+        {
+            SinchUnifiedCredentials = new SinchUnifiedCredentials()
+            {
+                ProjectId = "PROJECT_ID",
+                KeyId = "KEY_ID",
+                KeySecret = "KEY_SECRET",
+            },
+            VoiceConfiguration = new SinchVoiceConfiguration()
+            {
+                AppKey = "669E367E-6BBA-48AB-AF15-266871C28135",
+                AppSecret = "BeIukql3pTKJ8RGL5zo0DA=="
+            }
+        }).Voice;
 
         private string _body =
             "{\"event\":\"ace\",\"callid\":\"822aa4b7-05b4-4d83-87c7-1f835ee0b6f6_257\",\"timestamp\":\"2014-09-24T10:59:41Z\",\"version\":1}";

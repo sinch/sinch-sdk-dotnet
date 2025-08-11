@@ -12,11 +12,9 @@ namespace Sinch.Numbers
         ///     <see href="https://dashboard.sinch.com/sms/api/rest">Sinch Customer Dashboard</see>. The service plan ID is what
         ///     ties this to the configured SMS service.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string ServicePlanId { get; set; }
-#else
-        public string ServicePlanId { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

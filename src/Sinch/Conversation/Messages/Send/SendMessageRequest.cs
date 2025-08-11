@@ -19,11 +19,9 @@ namespace Sinch.Conversation.Messages.Send
         /// <summary>
         ///     The ID of the app sending the message.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string AppId { get; set; }
-#else
-        public string AppId { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     Select the priority type for the message
@@ -76,11 +74,9 @@ namespace Sinch.Conversation.Messages.Send
         public Dictionary<string, string>? ChannelProperties { get; set; }
 
 
-#if NET7_0_OR_GREATER
+
         public required AppMessage Message { get; set; }
-#else
-        public AppMessage Message { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -109,11 +105,9 @@ namespace Sinch.Conversation.Messages.Send
         ///     Identifies the recipient of the message. Requires either `contact_id` or `identified_by`.
         ///     If Dispatch Mode is used, only `identified_by` is allowed.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required IRecipient Recipient { get; set; }
-#else
-        public IRecipient Recipient { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

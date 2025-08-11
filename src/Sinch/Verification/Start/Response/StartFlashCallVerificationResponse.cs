@@ -13,20 +13,16 @@ namespace Sinch.Verification.Start.Response
         /// <summary>
         ///     Filter that should be applied for incoming calls to intercept the Flashcall.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string CliFilter { get; set; }
-#else
-        public string CliFilter { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     Amount of seconds client should wait for the Flashcall.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required int InterceptionTimeout { get; set; }
-#else
-        public int InterceptionTimeout { get; set; }
-#endif
+
 
         /// <summary>
         ///     The time in seconds allowed for reporting the code after which the verification will expire.

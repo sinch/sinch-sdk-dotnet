@@ -19,11 +19,9 @@ namespace Sinch.SMS.Batches.DryRun
         /// <summary>
         ///     The request to calculate based on.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required ISendBatchRequest BatchRequest { get; set; }
-#else
-        public ISendBatchRequest BatchRequest { get; set; } = null!;
-#endif
+
 
 
         internal string GetQueryString()

@@ -90,11 +90,9 @@ namespace Sinch.Conversation.TemplatesV2
         /// <summary>
         ///     The BCP-47 language code, such as &#x60;en-US&#x60; or &#x60;sr-Latn&#x60;. For more information, see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string LanguageCode { get; set; }
-#else
-        public string LanguageCode { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     The version of the translation.

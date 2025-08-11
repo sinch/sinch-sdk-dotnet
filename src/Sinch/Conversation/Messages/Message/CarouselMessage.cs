@@ -10,11 +10,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     A list of up to 10 cards.
         /// </summary>
         [JsonPropertyName("cards")]
-#if NET7_0_OR_GREATER
         public required List<CardMessage> Cards { get; set; }
-#else
-        public List<CardMessage> Cards { get; set; } = null!;
-#endif
 
 
         /// <summary>

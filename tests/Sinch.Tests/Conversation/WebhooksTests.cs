@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Nodes;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.Primitives;
 using Sinch.Conversation;
@@ -1260,6 +1262,47 @@ namespace Sinch.Tests.Conversation
                 Type = "OPEN_THREAD",
                 ExistingThread = null
             });
+        }
+
+        [Fact]
+        public async Task DeserializeWebhookWithoutProvidingSinchUnifiedCredentials()
+        {
+            var sinchClient = new SinchClient(new SinchClientConfiguration());
+
+            string json =
+                Helpers.LoadResources("Conversation/Hooks/CapabilityEvent.json");
+            var actual = sinchClient.Conversation.Webhooks.ParseEvent(json).As<CapabilityEvent>();
+
+            actual.Should().BeEquivalentTo(new CapabilityEvent()
+            {
+                AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),
+                ProjectId = "project id value",
+                AppId = "app id value",
+                EventTime = Helpers.ParseUtc("2020-11-17T16:05:45Z"),
+                MessageMetadata = "metadata value",
+                CorrelationId = "correlation id value",
+                CapabilityNotification = new CapabilityNotification()
+                {
+                    ContactId = "contact id value",
+                    Identity = "12345678910",
+                    Channel = ConversationChannel.WhatsApp,
+                    CapabilityStatus = CapabilityStatus.CapabilityPartial,
+                    RequestId = "request id value",
+                    ChannelCapabilities = new List<string>() { "capability value" },
+                    Reason = new Reason()
+                    {
+                        Code = ReasonCode.RecipientNotOptedIn,
+                        Description = "reason description",
+                        SubCode = ReasonSubCode.UnspecifiedSubCode
+                    }
+                }
+            });
+
+            // other conversation endpoints should throw an error
+            var op = () => sinchClient.Conversation.Messages.Get("1");
+            await op.Should()
+                .ThrowExactlyAsync<ArgumentNullException>(
+                    "Value cannot be null. (Parameter 'SinchUnifiedCredentials is null.')");
         }
     }
 }

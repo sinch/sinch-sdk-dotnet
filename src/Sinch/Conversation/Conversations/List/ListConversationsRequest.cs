@@ -5,11 +5,9 @@ namespace Sinch.Conversation.Conversations.List
         /// <summary>
         ///     Required. True if only active conversations should be listed.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required bool OnlyActive { get; set; }
-#else
-        public bool OnlyActive { get; set; }
-#endif
+
 
         /// <summary>
         ///     At least one of app_id or contact_id must be present.

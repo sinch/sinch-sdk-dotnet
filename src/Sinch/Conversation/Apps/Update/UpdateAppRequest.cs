@@ -36,11 +36,9 @@ namespace Sinch.Conversation.Apps.Update
         /// <summary>
         ///     The display name for the app.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string DisplayName { get; set; }
-#else
-        public string DisplayName { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

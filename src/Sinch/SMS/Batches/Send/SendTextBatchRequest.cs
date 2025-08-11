@@ -7,12 +7,10 @@ namespace Sinch.SMS.Batches.Send
         /// <summary>
         ///     The message content
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string Body { get; set; }
 
-#else
-        public string Body { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     Contains the parameters that will be used for customizing the message for each recipient.<br /><br />

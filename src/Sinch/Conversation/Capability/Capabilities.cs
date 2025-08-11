@@ -33,12 +33,12 @@ namespace Sinch.Conversation.Capability
     internal sealed class Capabilities : ISinchConversationCapabilities
     {
         private readonly Uri _baseAddress;
-        private readonly IHttp _http;
+        private readonly Lazy<IHttp> _http;
         private readonly ILoggerAdapter<ISinchConversationCapabilities>? _logger;
         private readonly string _projectId;
 
         public Capabilities(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationCapabilities>? logger,
-            IHttp http)
+            Lazy<IHttp> http)
         {
             _projectId = projectId;
             _baseAddress = baseAddress;
@@ -51,7 +51,7 @@ namespace Sinch.Conversation.Capability
         {
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/capability:query");
             _logger?.LogDebug("Looking up for a capability...");
-            return _http.Send<LookupCapabilityRequest, LookupCapabilityResponse>(uri, HttpMethod.Post, request,
+            return _http.Value.Send<LookupCapabilityRequest, LookupCapabilityResponse>(uri, HttpMethod.Post, request,
                 cancellationToken);
         }
     }

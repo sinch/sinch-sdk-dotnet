@@ -9,7 +9,7 @@ namespace WebApiExamples.Controllers
     [Route("fax")]
     public class HandleFaxEventController : ControllerBase
     {
-        private List<string> _incomingFaxIds = new(); // track fax ids which was sent
+        private readonly List<string> _incomingFaxIds = new(); // track fax ids which was sent
 
         [HttpPost]
         [Route("event-json")]
@@ -19,15 +19,22 @@ namespace WebApiExamples.Controllers
             {
                 case IncomingFaxEvent incomingFaxEvent:
                     // just track fax ids for future
-                    _incomingFaxIds.Add(incomingFaxEvent.Fax.Id);
+                    if (incomingFaxEvent?.Fax?.Id is not null)
+                    {
+                        _incomingFaxIds.Add(incomingFaxEvent.Fax.Id);
+                    }
                     break;
                 case CompletedFaxEvent completedFaxEvent:
                     // download if fax completed 
                     foreach (var file in completedFaxEvent.Files)
                     {
+                        if (file.File is null || completedFaxEvent.Fax is null)
+                        {
+                            continue;
+                        }
                         var bytes = Convert.FromBase64String(file.File);
                         var contents = new MemoryStream(bytes);
-                        var fileName = completedFaxEvent.Fax.Id + "." + file.FileType.Value.ToLower();
+                        var fileName = completedFaxEvent.Fax.Id + "." + file.FileType?.Value.ToLower();
                         await SaveFile(fileName, contents);
                     }
                     break;

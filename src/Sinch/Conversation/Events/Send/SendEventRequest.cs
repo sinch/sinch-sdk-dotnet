@@ -18,11 +18,9 @@ namespace Sinch.Conversation.Events.Send
         /// <summary>
         ///     The ID of the app sending the event.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string AppId { get; set; }
-#else
-        public string AppId { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -40,11 +38,9 @@ namespace Sinch.Conversation.Events.Send
         /// <summary>
         ///     Gets or Sets VarEvent
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required AppEvent Event { get; set; }
-#else
-        public AppEvent Event { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -56,11 +52,9 @@ namespace Sinch.Conversation.Events.Send
         /// <summary>
         ///     Gets or Sets Recipient
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required IRecipient Recipient { get; set; }
-#else
-        public IRecipient Recipient { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

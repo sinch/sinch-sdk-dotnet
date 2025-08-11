@@ -6,7 +6,15 @@ namespace Examples.Fax
     {
         public static async Task Example()
         {
-            var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET");
+            var sinchClient = new SinchClient(new SinchClientConfiguration()
+            {
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
+                {
+                    ProjectId = "PROJECT_ID",
+                    KeyId = "KEY_ID",
+                    KeySecret = "KEY_SECRET"
+                }
+            });
             const string faxId = "FAX_ID";
 
             await using var contentResult = await sinchClient.Fax.Faxes.DownloadContent("faxId");

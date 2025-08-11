@@ -15,7 +15,14 @@ namespace Sinch.Tests.Voice
 {
     public class DeserializeHooksTests
     {
-        private readonly ISinchVoiceClient _voiceClient = new SinchClient(null, null, null).Voice("k", "v");
+        private readonly ISinchVoiceClient _voiceClient = new SinchClient(new SinchClientConfiguration()
+        {
+            VoiceConfiguration = new SinchVoiceConfiguration()
+            {
+                AppKey = "appkey",
+                AppSecret = "appsecret",
+            }
+        }).Voice;
 
         [Fact]
         public void DeserializeAce()

@@ -9,12 +9,9 @@ namespace Sinch.Fax.Services
         ///     ID of the fax service used.
         /// </summary>
         [JsonPropertyName("id")]
-#if NET7_0_OR_GREATER
-        public required string Id { get; set; } = null!;
-#else
 
-        public string Id { get; set; } = null!;
-#endif
+        public required string Id { get; set; } = null!;
+
 
 
         /// <summary>

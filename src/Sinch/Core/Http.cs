@@ -70,11 +70,11 @@ namespace Sinch.Core
         private readonly HttpClient _httpClient;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
         private readonly ILoggerAdapter<IHttp>? _logger;
-        private readonly ISinchAuth _auth;
+        private readonly Lazy<ISinchAuth> _auth;
         private readonly string _userAgentHeaderValue;
 
 
-        public Http(ISinchAuth auth, HttpClient httpClient, ILoggerAdapter<IHttp>? logger,
+        public Http(Lazy<ISinchAuth> auth, HttpClient httpClient, ILoggerAdapter<IHttp>? logger,
             JsonNamingPolicy jsonNamingPolicy)
         {
             _logger = logger;
@@ -199,7 +199,7 @@ namespace Sinch.Core
 
                 (var token, retry) = await Authenticate(msg, retry, cancellationToken);
 
-                msg.Headers.Authorization = new AuthenticationHeaderValue(_auth.Scheme, token);
+                msg.Headers.Authorization = new AuthenticationHeaderValue(_auth.Value.Scheme, token);
 
                 msg.Headers.Add("User-Agent", _userAgentHeaderValue);
 
@@ -215,7 +215,7 @@ namespace Sinch.Core
                 {
                     // will not retry when no "expired" header for a token.
                     const string wwwAuthenticateHeader = "www-authenticate";
-                    if (_auth.Scheme == AuthSchemes.Bearer && (!result.Headers.Contains(wwwAuthenticateHeader) ||
+                    if (_auth.Value.Scheme == AuthSchemes.Bearer && (!result.Headers.Contains(wwwAuthenticateHeader) ||
                         !result.Headers.GetValues(wwwAuthenticateHeader).Any(x => x.Contains("expired"))))
                     {
                         _logger?.LogDebug("OAuth Unauthorized");
@@ -316,7 +316,7 @@ namespace Sinch.Core
             // Due to all the additional params appSignAuth is requiring,
             // it's makes sense to still keep it in Http to manage all the details.
             // TODO: get insight how to refactor this ?!?!?!
-            if (_auth is ApplicationSignedAuth appSignAuth)
+            if (_auth.Value is ApplicationSignedAuth appSignAuth)
             {
                 var now = DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture);
                 const string headerName = "x-timestamp";
@@ -342,7 +342,7 @@ namespace Sinch.Core
             else
             {
                 // try force get new token if retrying
-                token = await _auth.GetAuthToken(force: !retry);
+                token = await _auth.Value.GetAuthToken(force: !retry);
             }
 
             return (token, retry);

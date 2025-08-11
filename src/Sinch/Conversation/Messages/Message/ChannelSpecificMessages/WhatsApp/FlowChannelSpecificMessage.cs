@@ -56,11 +56,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     ID of the Flow.
         /// </summary>
         [JsonPropertyName("flow_id")]
-#if NET7_0_OR_GREATER
+
         public required string FlowId { get; set; }
-#else
-        public string FlowId { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -74,11 +72,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     Text which is displayed on the Call To Action button (20 characters maximum, emoji not supported).
         /// </summary>
         [JsonPropertyName("flow_cta")]
-#if NET7_0_OR_GREATER
+
         public required string FlowCta { get; set; }
-#else
-        public string FlowCta { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -127,11 +123,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     Text for the header. Formatting allows emojis, but not Markdown.
         /// </summary>
         [JsonPropertyName("text")]
-#if NET7_0_OR_GREATER
+
         public required string Text { get; set; }
-#else
-        public string Text { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -163,11 +157,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     Gets or Sets Image
         /// </summary>
         [JsonPropertyName("image")]
-#if NET7_0_OR_GREATER
+
         public required WhatsAppInteractiveHeaderMedia Image { get; set; }
-#else
-        public WhatsAppInteractiveHeaderMedia Image { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -194,11 +186,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     URL for the media.
         /// </summary>
         [JsonPropertyName("link")]
-#if NET7_0_OR_GREATER
+
         public required string Link { get; set; }
-#else
-        public string Link { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -232,11 +222,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     Gets or Sets Document
         /// </summary>
         [JsonPropertyName("document")]
-#if NET7_0_OR_GREATER
+
         public required WhatsAppInteractiveHeaderMedia Document { get; set; }
-#else
-        public WhatsAppInteractiveHeaderMedia Document { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -271,11 +259,9 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     Gets or Sets Video
         /// </summary>
         [JsonPropertyName("video")]
-#if NET7_0_OR_GREATER
+
         public required WhatsAppInteractiveHeaderMedia Video { get; set; }
-#else
-        public WhatsAppInteractiveHeaderMedia Video { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

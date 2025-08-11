@@ -8,11 +8,9 @@ namespace Sinch.Voice.Conferences.ManageParticipants
         /// <summary>
         ///     Action to apply on conference participant.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required Command Command { get; set; }
-#else
-        public Command Command { get; set; } = null!;
-#endif
+
         /// <inheritdoc cref="MohClass" />
         public MohClass? Moh { get; set; }
     }

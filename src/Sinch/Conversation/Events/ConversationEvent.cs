@@ -25,11 +25,9 @@ namespace Sinch.Conversation.Events
         /// <summary>
         ///     The ID of the event.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string Id { get; set; }
-#else
-        public string Id { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -47,11 +45,9 @@ namespace Sinch.Conversation.Events
         /// <summary>
         ///     Gets or Sets ChannelIdentity
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required ChannelIdentity ChannelIdentity { get; set; }
-#else
-        public ChannelIdentity ChannelIdentity { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     Gets or Sets AcceptTime
@@ -62,11 +58,9 @@ namespace Sinch.Conversation.Events
         /// <summary>
         ///     Whether or not Conversation API should store contacts and conversations for the app. For more information, see [Processing Modes](../../../../../conversation/processing-modes/).
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required ProcessingMode ProcessingMode { get; set; }
-#else
-        public ProcessingMode ProcessingMode { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

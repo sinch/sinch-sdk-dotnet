@@ -8,11 +8,9 @@ namespace Sinch.Numbers
         /// <summary>
         ///     Service plan of the scheduled provisioning task.
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string ServicePlanId { get; set; }
-#else
-        public string ServicePlanId { get; set; } = null!;
-#endif
+
 
         /// <summary>
         ///     The provisioning status. It will be either WAITING, IN_PROGRESS or FAILED.

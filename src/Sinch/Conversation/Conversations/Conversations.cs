@@ -107,12 +107,12 @@ namespace Sinch.Conversation.Conversations
     internal sealed class ConversationsClient : ISinchConversationConversations
     {
         private readonly Uri _baseAddress;
-        private readonly IHttp _http;
+        private readonly Lazy<IHttp> _http;
         private readonly ILoggerAdapter<ISinchConversationConversations>? _logger;
         private readonly string _projectId;
 
         public ConversationsClient(string projectId, Uri baseAddress,
-            ILoggerAdapter<ISinchConversationConversations>? logger, IHttp http)
+            ILoggerAdapter<ISinchConversationConversations>? logger, Lazy<IHttp> http)
         {
             _projectId = projectId;
             _baseAddress = baseAddress;
@@ -126,7 +126,7 @@ namespace Sinch.Conversation.Conversations
         {
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/conversations");
             _logger?.LogDebug("Creating a conversation for {project}", _projectId);
-            return _http.Send<CreateConversationRequest, Conversation>(uri, HttpMethod.Post, request,
+            return _http.Value.Send<CreateConversationRequest, Conversation>(uri, HttpMethod.Post, request,
                 cancellationToken);
         }
 
@@ -137,7 +137,7 @@ namespace Sinch.Conversation.Conversations
             var uri = new Uri(_baseAddress,
                 $"v1/projects/{_projectId}/conversations?{Utils.ToSnakeCaseQueryString(request)}");
             _logger?.LogDebug("Listing a conversations for {project}", _projectId);
-            return _http.Send<ListConversationsResponse>(uri, HttpMethod.Get,
+            return _http.Value.Send<ListConversationsResponse>(uri, HttpMethod.Get,
                 cancellationToken);
         }
 
@@ -151,7 +151,7 @@ namespace Sinch.Conversation.Conversations
                 var query = Utils.ToSnakeCaseQueryString(request);
                 var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/conversations?{query}");
                 var response =
-                    await _http.Send<ListConversationsResponse>(uri, HttpMethod.Get, cancellationToken);
+                    await _http.Value.Send<ListConversationsResponse>(uri, HttpMethod.Get, cancellationToken);
                 request.PageToken = response.NextPageToken;
                 if (response.Conversations == null) continue;
                 foreach (var conversation in response.Conversations)
@@ -168,7 +168,7 @@ namespace Sinch.Conversation.Conversations
             var uri = new Uri(_baseAddress,
                 $"v1/projects/{_projectId}/conversations/{conversationId}");
             _logger?.LogDebug("Getting a {conversationId} of {project}", conversationId, _projectId);
-            return _http.Send<Conversation>(uri, HttpMethod.Get,
+            return _http.Value.Send<Conversation>(uri, HttpMethod.Get,
                 cancellationToken);
         }
 
@@ -181,7 +181,7 @@ namespace Sinch.Conversation.Conversations
             var uri = new Uri(_baseAddress,
                 $"v1/projects/{_projectId}/conversations/{conversationId}");
             _logger?.LogDebug("Deleting a {conversationId} of {project}", conversationId, _projectId);
-            return _http.Send<Conversation>(uri, HttpMethod.Delete,
+            return _http.Value.Send<Conversation>(uri, HttpMethod.Delete,
                 cancellationToken);
         }
 
@@ -194,7 +194,7 @@ namespace Sinch.Conversation.Conversations
             var uri = new Uri(_baseAddress,
                 $"v1/projects/{_projectId}/conversations/{conversationId}:stop");
             _logger?.LogDebug("Stopping a {conversationId} of {project}", conversationId, _projectId);
-            return _http.Send<Conversation>(uri, HttpMethod.Post,
+            return _http.Value.Send<Conversation>(uri, HttpMethod.Post,
                 cancellationToken);
         }
 
@@ -222,7 +222,7 @@ namespace Sinch.Conversation.Conversations
             builder.Query = queryString.ToString()!; // it's okay to pass null.
 
             _logger?.LogDebug("Updating a {conversationId} of {project}", conversation.Id, _projectId);
-            return _http.Send<Conversation, Conversation>(builder.Uri, HttpMethod.Patch, conversation,
+            return _http.Value.Send<Conversation, Conversation>(builder.Uri, HttpMethod.Patch, conversation,
                 cancellationToken);
         }
 
@@ -241,7 +241,7 @@ namespace Sinch.Conversation.Conversations
                 $"v1/projects/{_projectId}/conversations/{injectMessageRequest.ConversationId}:inject-message");
             _logger?.LogDebug("Injecting a message into {conversationId} of {project}",
                 injectMessageRequest.ConversationId, _projectId);
-            return _http.Send<InjectMessageRequest, object>(uri, HttpMethod.Post, injectMessageRequest,
+            return _http.Value.Send<InjectMessageRequest, object>(uri, HttpMethod.Post, injectMessageRequest,
                 cancellationToken);
         }
 
@@ -260,7 +260,7 @@ namespace Sinch.Conversation.Conversations
                 $"v1/projects/{_projectId}/conversations/{injectEventRequest.ConversationId}:inject-event");
             _logger?.LogDebug("Injecting a message into {conversationId} of {project}",
                 injectEventRequest.ConversationId, _projectId);
-            return _http.Send<InjectEventRequest, InjectEventResponse>(uri, HttpMethod.Post, injectEventRequest,
+            return _http.Value.Send<InjectEventRequest, InjectEventResponse>(uri, HttpMethod.Post, injectEventRequest,
                 cancellationToken);
         }
     }

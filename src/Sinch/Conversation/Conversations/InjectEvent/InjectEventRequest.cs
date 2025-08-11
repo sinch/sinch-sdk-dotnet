@@ -60,11 +60,9 @@ namespace Sinch.Conversation.Conversations.InjectEvent
         ///     The processed time of the message in UTC timezone. Must be less than current_time and greater than (current_time -
         ///     30 days).
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required DateTime AcceptTime { get; set; }
-#else
-        public DateTime AcceptTime { get; set; }
-#endif
+
 
         /// <summary>
         ///     Optional. The ID of the contact. Will not be present for apps in Dispatch Mode.

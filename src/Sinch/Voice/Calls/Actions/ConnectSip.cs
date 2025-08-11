@@ -14,11 +14,9 @@ namespace Sinch.Voice.Calls.Actions
         ///     Gets or Sets Destination
         /// </summary>
         [JsonPropertyName("destination")]
-#if NET7_0_OR_GREATER
+
         public required ConnectSipDestination Destination { get; set; }
-#else
-        public ConnectSipDestination Destination { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
@@ -122,11 +120,9 @@ namespace Sinch.Voice.Calls.Actions
         ///     The SIP address.
         /// </summary>
         [JsonPropertyName("endpoint")]
-#if NET7_0_OR_GREATER
+
         public required string Endpoint { get; set; }
-#else
-        public string Endpoint { get; set; } = null!;
-#endif
+
 
 
         /// <summary>

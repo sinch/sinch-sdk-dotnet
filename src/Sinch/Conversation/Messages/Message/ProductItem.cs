@@ -12,23 +12,14 @@ namespace Sinch.Conversation.Messages.Message
         ///     Required parameter. The ID for the product.
         /// </summary>
         [JsonPropertyName("id")]
-#if NET7_0_OR_GREATER
         public required string Id { get; set; }
-#else
-        public string Id { get; set; } = null!;
-#endif
 
 
         /// <summary>
         ///     Required parameter. The marketplace to which the product belongs.
         /// </summary>
         [JsonPropertyName("marketplace")]
-#if NET7_0_OR_GREATER
         public required string Marketplace { get; set; }
-#else
-        public string Marketplace { get; set; } = null!;
-#endif
-
 
         /// <summary>
         ///     Output only. The quantity of the chosen product.

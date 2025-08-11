@@ -10,11 +10,9 @@ namespace Sinch.SMS.DeliveryReports.Get
         ///     The batch ID you received from sending a message.
         ///     <example>01FC66621XXXXX119Z8PMV1QPQ</example>
         /// </summary>
-#if NET7_0_OR_GREATER
+
         public required string BatchId { get; set; }
-#else
-        public string BatchId { get; set; } = null!;
-#endif
+
 
         public DeliveryReportVerbosityType? DeliveryReportType { get; set; }
 

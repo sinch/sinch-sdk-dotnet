@@ -12,23 +12,15 @@ namespace Sinch.Conversation.Apps.Credentials
         ///     The token for the LINE channel to which you are connecting.
         /// </summary>
         [JsonPropertyName("token")]
-#if NET7_0_OR_GREATER
         public required string Token { get; set; }
-#else
-        public string Token { get; set; } = null!;
-#endif
+
 
 
         /// <summary>
         ///     The secret for the LINE channel to which you are connecting.
         /// </summary>
         [JsonPropertyName("secret")]
-#if NET7_0_OR_GREATER
         public required string Secret { get; set; }
-#else
-        public string Secret { get; set; } = null!;
-#endif
-
 
         /// <summary>
         ///     When an app contains multiple LINE or LINE Enterprise credentials, one of the credentials needs to be defined as the default. Setting this property to &#x60;true&#x60; marks the corresponding credentials as the default credentials.
