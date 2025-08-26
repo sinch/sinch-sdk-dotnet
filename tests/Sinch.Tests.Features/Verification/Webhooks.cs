@@ -90,5 +90,25 @@ namespace Sinch.Tests.Features.Verification
                 Status = VerificationStatus.Successful
             });
         }
+
+        [When(@"I send a request to trigger a ""Verification SMS Delivered Event"" event")]
+        public async Task WhenISendARequestToTriggerAVerificationSMSDelivered()
+        {
+            // TODO
+        }
+
+        [Then(@"the header of the Verification event ""Verification SMS Delivered Event"" contains a valid authorization")]
+        public async Task ThenTheHeaderOfTheVerificationSMSDeliveredContainsAValidAuthorization()
+        {
+            // TODO
+
+        }
+
+        [Then(@"the Verification event describes a ""Verification SMS Delivered Event"" event type")]
+        public void ThenTheVerificationEventDescribesAVerificationSMSDeliveredType()
+        {
+            // TODO
+        }
+
     }
 }
