@@ -54,7 +54,18 @@ namespace Sinch.Conversation.Messages.List
         ///     Specifies the message source for which the request will be processed.
         ///     Used for operations on messages in Dispatch Mode. For more information, see Processing Modes.
         /// </summary>
-        public MessageSource? MessageSource { get; set; }
+        [Obsolete($"This property is obsolete, use \"MessagesSource\" instead.")]
+        public MessageSource? MessageSource
+        {
+            get { return null; }
+            set { MessagesSource = value; }
+        }
+
+        /// <summary>
+        ///     Specifies the message source for which the request will be processed.
+        ///     Used for operations on messages in Dispatch Mode. For more information, see Processing Modes.
+        /// </summary>
+        public MessageSource? MessagesSource { get; set; }
 
         /// <summary>
         ///     If true, fetch only recipient originated messages.

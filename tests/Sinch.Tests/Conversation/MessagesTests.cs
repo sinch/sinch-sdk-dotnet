@@ -82,8 +82,9 @@ namespace Sinch.Tests.Conversation
             });
         }
 
+
         [Fact]
-        public async Task ListMessages()
+        public async Task ListMessagesObsolete()
         {
             const string conversationId = "conversationId";
             const string nextPageToken = "hola!";
@@ -104,7 +105,7 @@ namespace Sinch.Tests.Conversation
                 .WithQueryString("page_size", "2")
                 .WithQueryString("page_token", "3")
                 .WithQueryString("view", "WITH_METADATA")
-                .WithQueryString("message_source", "DISPATCH_SOURCE")
+                .WithQueryString("messages_source", "DISPATCH_SOURCE")
                 .WithQueryString("only_recipient_originated", "true")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(new
                 {
@@ -129,6 +130,61 @@ namespace Sinch.Tests.Conversation
                 PageToken = "3",
                 View = View.WithMetadata,
                 MessageSource = MessageSource.DispatchSource,
+                OnlyRecipientOriginated = true
+            });
+
+            response.Should().NotBeNull();
+            response.NextPageToken.Should().Be(nextPageToken);
+            response.Messages.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public async Task ListMessages()
+        {
+            const string conversationId = "conversationId";
+            const string nextPageToken = "hola!";
+            const string contactId = "contact_d";
+            const string appId = "appId";
+            const string channelId = "channel_id";
+            const string time = "2022-07-12T00:00:00.0000000";
+
+            HttpMessageHandlerMock
+                .When(HttpMethod.Get,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/messages")
+                .WithQueryString("conversation_id", conversationId)
+                .WithQueryString("contact_id", contactId)
+                .WithQueryString("app_id", appId)
+                .WithQueryString("channel_identity", channelId)
+                .WithQueryString("start_time", time)
+                .WithQueryString("end_time", time)
+                .WithQueryString("page_size", "2")
+                .WithQueryString("page_token", "3")
+                .WithQueryString("view", "WITH_METADATA")
+                .WithQueryString("messages_source", "DISPATCH_SOURCE")
+                .WithQueryString("only_recipient_originated", "true")
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    next_page_token = nextPageToken,
+                    messages = new[]
+                    {
+                        Message(),
+                        Message()
+                    }
+                }));
+
+            var dateTime = new DateTime(2022, 7, 12);
+            var response = await Conversation.Messages.List(new ListMessagesRequest
+            {
+                ConversationId = conversationId,
+                ContactId = contactId,
+                AppId = appId,
+                ChannelIdentity = channelId,
+                StartTime = dateTime,
+                EndTime = dateTime,
+                PageSize = 2,
+                PageToken = "3",
+                View = View.WithMetadata,
+                MessagesSource = MessageSource.DispatchSource,
                 OnlyRecipientOriginated = true
             });
 
