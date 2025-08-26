@@ -34,8 +34,8 @@ namespace Sinch.Tests.Conversation
         public void ValidateMultiLinePayloadRequest()
         {
             string json = Helpers.LoadResources("Conversation/Hooks/WebhooksAuthValidation.json");
-            
-             var isValid = Conversation.Webhooks.ValidateAuthenticationHeader(new Dictionary<string, StringValues>()
+
+            var isValid = Conversation.Webhooks.ValidateAuthenticationHeader(new Dictionary<string, StringValues>()
             {
                 { "x-sinch-webhook-signature-nonce", new[] { "01FJA8B4A7BM43YGWSG9GBV067" } },
                 { "x-sinch-webhook-signature-timestamp", new[] { "1634579353" } },
@@ -48,8 +48,8 @@ namespace Sinch.Tests.Conversation
         public void InValidateMultiLinePayloadRequest()
         {
             string json = Helpers.LoadResources("Conversation/Hooks/WebhooksAuthValidation.json");
-            
-             var isValid = Conversation.Webhooks.ValidateAuthenticationHeader(new Dictionary<string, StringValues>()
+
+            var isValid = Conversation.Webhooks.ValidateAuthenticationHeader(new Dictionary<string, StringValues>()
             {
                 { "x-sinch-webhook-signature-nonce", new[] { "01FJA8B4A7BM43YGWSG9GBV067" } },
                 { "x-sinch-webhook-signature-timestamp", new[] { "1634579353" } },
