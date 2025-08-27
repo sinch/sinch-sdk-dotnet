@@ -1,0 +1,20 @@
+{
+  "id": "the id",
+  "method": "whatsapp",
+  "status": "FAIL",
+  "reason": "Fraud",
+  "reference": "my reference",
+  "identity": {
+    "type": "number",
+    "endpoint": "+33123456789"
+  },
+  "countryId": "es-ES",
+  "verificationTimestamp": "2024-05-22T09:38:59.5590437",
+  "source": "intercepted",
+  "price": {
+    "verificationPrice": {
+      "currencyId": "verificationPrice currency id",
+      "amount": 3.141516
+    }
+  }
+}

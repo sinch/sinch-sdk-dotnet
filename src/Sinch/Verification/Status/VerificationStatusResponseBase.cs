@@ -83,6 +83,13 @@ namespace Sinch.Verification.Status
                     typeof(FlashCallVerificationStatusResponse), options);
             }
 
+
+            if (method == VerificationMethod.WhatsApp.Value)
+            {
+                return (WhatsAppVerificationStatusResponse?)elem.Deserialize(
+                    typeof(WhatsAppVerificationStatusResponse), options);
+            }
+
             throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
         }
 
@@ -102,6 +109,10 @@ namespace Sinch.Verification.Status
                 case SmsVerificationStatusResponse smsVerificationReportResponse:
                     JsonSerializer.Serialize(
                         writer, smsVerificationReportResponse, options);
+                    break;
+                case WhatsAppVerificationStatusResponse whatsAppVerificationReportResponse:
+                    JsonSerializer.Serialize(
+                        writer, whatsAppVerificationReportResponse, options);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value),
