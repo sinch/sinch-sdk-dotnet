@@ -92,7 +92,7 @@ jobs:
         run: dotnet test tests/Sinch.Tests --no-restore --verbosity normal
         
       - name: Test e2e
-        run: dotnet test tests/Sinch.Tests.Features --filter "(FeatureTitle~[Voice]|FeatureTitle~[Numbers]FeatureTitle~[Verification]|FeatureTitle~[SMS][Batches]|FeatureTitle~[SMS][Delivery Reports])&(FeatureTitle!~[Numbers][Emergency Address])" --no-restore --verbosity normal
+        run: dotnet test tests/Sinch.Tests.Features --filter "(FeatureTitle~[Voice]|FeatureTitle~[Numbers]|FeatureTitle~[Verification]|FeatureTitle~[SMS][Groups]|FeatureTitle~[SMS][Batches]|FeatureTitle~[SMS][Delivery Reports])&(FeatureTitle!~[Numbers][Emergency Address])" --no-restore --verbosity normal
       
       # --include-symbols?
       - name: Pack

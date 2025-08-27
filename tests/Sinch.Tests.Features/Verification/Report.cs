@@ -23,8 +23,8 @@ namespace Sinch.Tests.Features.Verification
         }
 
 
-        [When(@"I send a request to report an SMS verification with the verification ID")]
-        public async Task WhenISendARequestToReportAnSmsVerificationWithTheVerificationId()
+        [When("I send a request to report an SMS verification by {string} with the verification ID {string}")]
+        public async Task WhenISendARequestToReportAnSmsVerificationWithTheVerificationId(string byType, string id)
         {
             _smsReport = await _sinchVerifications.ReportSmsById("1ce0ffee-c0de-5eed-d00d-f00dfeed1337",
                 new ReportSmsVerificationRequest()
@@ -36,8 +36,8 @@ namespace Sinch.Tests.Features.Verification
                 });
         }
 
-        [Then(@"the response contains the details of an SMS verification report")]
-        public void ThenTheResponseContainsTheDetailsOfAnSmsVerificationReport()
+        [Then("the response by {string} contains the details of an SMS verification report")]
+        public void ThenTheResponseContainsTheDetailsOfAnSmsVerificationReport(string byType)
         {
             _smsReport.Should().BeEquivalentTo(new ReportSmsVerificationResponse()
             {
@@ -46,10 +46,10 @@ namespace Sinch.Tests.Features.Verification
             });
         }
 
-        [When(@"I send a request to report an SMS verification with the phone number")]
-        public async Task WhenISendARequestToReportAnSmsVerificationWithThePhoneNumber()
+        [When("I send a request to report an SMS verification by {string} with the phone number {string}")]
+        public async Task WhenISendARequestToReportAnSmsVerificationWithThePhoneNumber(string byType, string phoneNumber)
         {
-            _smsReport = await _sinchVerifications.ReportSmsByIdentity("+46123456789",
+            _smsReport = await _sinchVerifications.ReportSmsByIdentity(phoneNumber,
                 new ReportSmsVerificationRequest()
                 {
                     Sms = new SmsVerify()
@@ -59,10 +59,10 @@ namespace Sinch.Tests.Features.Verification
                 });
         }
 
-        [When(@"I send a request to report a Phone Call verification with the verification ID")]
-        public async Task WhenISendARequestToReportAPhoneCallVerificationWithTheVerificationId()
+        [When("I send a request to report a Phone Call verification by {string} with the verification ID {string}")]
+        public async Task WhenISendARequestToReportAPhoneCallVerificationWithTheVerificationId(string byType, string id)
         {
-            _phoneCallReport = await _sinchVerifications.ReportCalloutById("1ce0ffee-c0de-5eed-d11d-f00dfeed1337",
+            _phoneCallReport = await _sinchVerifications.ReportCalloutById(id,
                 new ReportCalloutVerificationRequest()
                 {
                     Callout = new Callout()
@@ -72,8 +72,8 @@ namespace Sinch.Tests.Features.Verification
                 });
         }
 
-        [Then(@"the response contains the details of a Phone Call verification report")]
-        public void ThenTheResponseContainsTheDetailsOfAPhoneCallVerificationReport()
+        [Then("the response by {string} contains the details of a Phone Call verification report")]
+        public void ThenTheResponseContainsTheDetailsOfAPhoneCallVerificationReport(string byType)
         {
             _phoneCallReport.Should().BeEquivalentTo(new ReportCalloutVerificationResponse()
             {
@@ -83,10 +83,10 @@ namespace Sinch.Tests.Features.Verification
             });
         }
 
-        [When(@"I send a request to report a Phone Call verification with the phone number")]
-        public async Task WhenISendARequestToReportAPhoneCallVerificationWithThePhoneNumber()
+        [When("I send a request to report a Phone Call verification by {string} with the phone number {string}")]
+        public async Task WhenISendARequestToReportAPhoneCallVerificationWithThePhoneNumber(string byType, string phoneNumber)
         {
-            _phoneCallReport = await _sinchVerifications.ReportCalloutByIdentity("+33612345678",
+            _phoneCallReport = await _sinchVerifications.ReportCalloutByIdentity(phoneNumber,
                 new ReportCalloutVerificationRequest()
                 {
                     Callout = new Callout()
@@ -96,10 +96,10 @@ namespace Sinch.Tests.Features.Verification
                 });
         }
 
-        [When(@"I send a request to report a Flash Call verification with the verification ID")]
-        public async Task WhenISendARequestToReportAFlashCallVerificationWithTheVerificationId()
+        [When("I send a request to report a Flash Call verification by {string} with the verification ID {string}")]
+        public async Task WhenISendARequestToReportAFlashCallVerificationWithTheVerificationId(string byType, string id)
         {
-            _flashCallReport = await _sinchVerifications.ReportFlashCallById("1ce0ffee-c0de-5eed-d11d-f00dfeed1337",
+            _flashCallReport = await _sinchVerifications.ReportFlashCallById(id,
                 new ReportFlashCallVerificationRequest()
                 {
                     FlashCall = new FlashCall()
@@ -109,8 +109,8 @@ namespace Sinch.Tests.Features.Verification
                 });
         }
 
-        [Then(@"the response contains the details of a Flash Call verification report")]
-        public void ThenTheResponseContainsTheDetailsOfAFlashCallVerificationReport()
+        [Then("the response by {string} contains the details of a Flash Call verification report")]
+        public void ThenTheResponseContainsTheDetailsOfAFlashCallVerificationReport(string byType)
         {
             _flashCallReport.Should().BeEquivalentTo(new ReportFlashCallVerificationResponse()
             {
@@ -121,10 +121,10 @@ namespace Sinch.Tests.Features.Verification
             });
         }
 
-        [When(@"I send a request to report a Flash Call verification with the phone number")]
-        public async Task WhenISendARequestToReportAFlashCallVerificationWithThePhoneNumber()
+        [When("I send a request to report a Flash Call verification by {string} with the phone number {string}")]
+        public async Task WhenISendARequestToReportAFlashCallVerificationWithThePhoneNumber(string identity, string phoneNumber)
         {
-            _flashCallReport = await _sinchVerifications.ReportFlashCallByIdentity("+33612345678",
+            _flashCallReport = await _sinchVerifications.ReportFlashCallByIdentity(phoneNumber,
                 new ReportFlashCallVerificationRequest()
                 {
                     FlashCall = new FlashCall()
@@ -134,7 +134,7 @@ namespace Sinch.Tests.Features.Verification
                 });
         }
 
-        [Then(@"the response contains the details of a failed Flash Call verification report")]
+        [Then(@"the response by ""identity"" contains the details of a failed Flash Call verification report")]
         public void ThenTheResponseContainsTheDetailsOfAFailedFlashCallVerificationReport()
         {
             _flashCallReport.Should().BeEquivalentTo(new ReportFlashCallVerificationResponse()

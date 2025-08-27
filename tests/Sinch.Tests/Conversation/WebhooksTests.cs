@@ -31,6 +31,34 @@ namespace Sinch.Tests.Conversation
         }
 
         [Fact]
+        public void ValidateMultiLinePayloadRequest()
+        {
+            string json = Helpers.LoadResources("Conversation/Hooks/WebhooksAuthValidation.json");
+
+            var isValid = Conversation.Webhooks.ValidateAuthenticationHeader(new Dictionary<string, StringValues>()
+            {
+                { "x-sinch-webhook-signature-nonce", new[] { "01FJA8B4A7BM43YGWSG9GBV067" } },
+                { "x-sinch-webhook-signature-timestamp", new[] { "1634579353" } },
+                { "x-sinch-webhook-signature", new[] { "wKmZBGo4Cf+y9cZoPHhiVw6ziKeubLGqN4OdG8jlaPo=" } },
+            }, json, "foo_secret1234");
+            isValid.Should().BeTrue();
+        }
+
+        [Fact]
+        public void InValidateMultiLinePayloadRequest()
+        {
+            string json = Helpers.LoadResources("Conversation/Hooks/WebhooksAuthValidation.json");
+
+            var isValid = Conversation.Webhooks.ValidateAuthenticationHeader(new Dictionary<string, StringValues>()
+            {
+                { "x-sinch-webhook-signature-nonce", new[] { "01FJA8B4A7BM43YGWSG9GBV067" } },
+                { "x-sinch-webhook-signature-timestamp", new[] { "1634579353" } },
+                { "x-sinch-webhook-signature", new[] { "wKmZBGo4Cf+y9cZoPHhiVw6ziKeubLGqN4OdG8jlaPo=" } },
+            }, json, "wrong_secret");
+            isValid.Should().BeFalse();
+        }
+
+        [Fact]
         public void DeserializeCapabilityEvent()
         {
             string json =
