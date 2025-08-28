@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
@@ -19,6 +20,7 @@ namespace Sinch.Tests.Features.Verification
         private StartCalloutVerificationResponse _startPhoneCallResponse;
         private StartFlashCallVerificationResponse _startFlashCall;
         private Func<Task<StartDataVerificationResponse>> _dataResponseOp;
+        private StartWhatsAppVerificationResponse _startWhatsApp;
 
         [Given(@"the Verification service ""Start"" is available")]
         public void GivenTheVerificationServiceIsAvailable()
@@ -171,6 +173,53 @@ namespace Sinch.Tests.Features.Verification
             ex.Which.Message.Should()
                 .BeEquivalentTo("Forbidden:Seamless verification not available for given destination.");
             ex.Which.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+        }
+
+        [When(@"I send a request to start a verification with WhatsApp")]
+        public async Task WhenISendARequestToStartAVerificationWithWhatsApp()
+        {
+            _startWhatsApp = await _sinchVerification.StartWhatsApp(new StartWhatsAppVerificationRequest()
+            {
+                Identity = Identity.Number("+33123456789"),
+                WhatsAppInfo = new Sinch.Verification.Start.Request.WhatsAppInfo()
+                {
+                    CodeType = WhatsAppCodeType.Numeric,
+                    AdditionalProperties = new Dictionary<string, JsonElement>()
+                        {
+                            { "fooKey", JsonDocument.Parse("\"foo value\"").RootElement }
+                        }
+                }
+            });
+        }
+
+        [Then(@"the response contains the details of a verification started with WhatsApp")]
+        public void ThenTheResponseContainsTheDetailsOfAVerificationStartedWithWhatsApp()
+        {
+            _startWhatsApp.Should().BeEquivalentTo(new StartWhatsAppVerificationResponse()
+            {
+                Id = "1ce0ffee-c0de-5eed-d33d-f00dfeed1337",
+                WhatsApp = new Sinch.Verification.Start.Response.WhatsAppInfo()
+                {
+
+                },
+                Links = new List<Links>()
+                {
+                    new Links()
+                    {
+                        Rel = "status",
+                        Href =
+                            "http://localhost:3018/verification/v1/verifications/id/1ce0ffee-c0de-5eed-d33d-f00dfeed1337",
+                        Method = "GET"
+                    },
+                    new Links()
+                    {
+                        Rel = "report",
+                        Href =
+                            "http://localhost:3018/verification/v1/verifications/id/1ce0ffee-c0de-5eed-d33d-f00dfeed1337",
+                        Method = "PUT"
+                    }
+                }
+            });
         }
     }
 }
