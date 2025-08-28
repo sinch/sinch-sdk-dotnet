@@ -24,8 +24,10 @@ namespace Sinch.Verification
         Task<CalloutVerificationStatusResponse> GetCalloutById(string id, CancellationToken cancellationToken = default);
 
         /// <inheritdoc cref="GetSmsById" />
-        Task<FlashCallVerificationStatusResponse> GetFlashCallById(string id,
-            CancellationToken cancellationToken = default);
+        Task<FlashCallVerificationStatusResponse> GetFlashCallById(string id, CancellationToken cancellationToken = default);
+
+        /// <inheritdoc cref="GetSmsById" />
+        Task<WhatsAppVerificationStatusResponse> GetWhatsAppById(string id, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Queries the verification result by sending the verification
@@ -35,15 +37,16 @@ namespace Sinch.Verification
         /// <param name="endpoint">For type number use a E.164-compatible phone number.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<SmsVerificationStatusResponse> GetSmsByIdentity(string endpoint,
-            CancellationToken cancellationToken = default);
+        Task<SmsVerificationStatusResponse> GetSmsByIdentity(string endpoint, CancellationToken cancellationToken = default);
 
         /// <inheritdoc cref="GetSmsByIdentity" />
-        Task<CalloutVerificationStatusResponse> GetCalloutByIdentity(string endpoint,
-            CancellationToken cancellationToken = default);
+        Task<CalloutVerificationStatusResponse> GetCalloutByIdentity(string endpoint, CancellationToken cancellationToken = default);
 
-        Task<FlashCallVerificationStatusResponse> GetFlashcallByIdentity(string endpoint,
-            CancellationToken cancellationToken = default);
+        /// <inheritdoc cref="GetSmsByIdentity" />
+        Task<FlashCallVerificationStatusResponse> GetFlashcallByIdentity(string endpoint, CancellationToken cancellationToken = default);
+
+        /// <inheritdoc cref="GetSmsByIdentity" />
+        Task<WhatsAppVerificationStatusResponse> GetWhatsAppByIdentity(string endpoint, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Queries the verification result by sending the verification Reference.
@@ -61,6 +64,10 @@ namespace Sinch.Verification
 
         /// <inheritdoc cref="GetSmsByReference" />
         Task<CalloutVerificationStatusResponse> GetCalloutByReference(string reference,
+            CancellationToken cancellationToken = default);
+
+        /// <inheritdoc cref="GetSmsByReference" />
+        Task<WhatsAppVerificationStatusResponse> GetWhatsAppByReference(string reference,
             CancellationToken cancellationToken = default);
     }
 
@@ -125,6 +132,14 @@ namespace Sinch.Verification
             return (result as FlashCallVerificationStatusResponse)!;
         }
 
+        public async Task<WhatsAppVerificationStatusResponse> GetWhatsAppById(string id,
+            CancellationToken cancellationToken = default)
+        {
+            var result = await GetById(id, cancellationToken);
+            return (result as WhatsAppVerificationStatusResponse)!;
+        }
+
+
         public async Task<SmsVerificationStatusResponse> GetSmsByIdentity(string endpoint,
             CancellationToken cancellationToken = default)
         {
@@ -146,6 +161,13 @@ namespace Sinch.Verification
             return (result as FlashCallVerificationStatusResponse)!;
         }
 
+        public async Task<WhatsAppVerificationStatusResponse> GetWhatsAppByIdentity(string endpoint,
+            CancellationToken cancellationToken = default)
+        {
+            var result = await GetByIdentity(endpoint, VerificationMethod.WhatsApp, cancellationToken);
+            return (result as WhatsAppVerificationStatusResponse)!;
+        }
+
         public async Task<SmsVerificationStatusResponse> GetSmsByReference(string reference,
             CancellationToken cancellationToken = default)
         {
@@ -165,6 +187,13 @@ namespace Sinch.Verification
         {
             var result = await GetByReference(reference, cancellationToken);
             return (result as CalloutVerificationStatusResponse)!;
+        }
+
+        public async Task<WhatsAppVerificationStatusResponse> GetWhatsAppByReference(string reference,
+            CancellationToken cancellationToken = default)
+        {
+            var result = await GetByReference(reference, cancellationToken);
+            return (result as WhatsAppVerificationStatusResponse)!;
         }
     }
 }

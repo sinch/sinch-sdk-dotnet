@@ -6,10 +6,12 @@ namespace Sinch.Tests.Verification
     public class VerificationTestBase : TestBase
     {
         internal readonly ISinchVerification Verification;
+        internal readonly ISinchVerificationStatus VerificationStatus;
 
         protected VerificationTestBase()
         {
             Verification = new SinchVerification(default, new Uri("https://verification.api.sinch.com"), HttpCamelCase);
+            VerificationStatus = new SinchVerificationStatus(default, new Uri("https://verification.api.sinch.com"), HttpCamelCase);
         }
     }
 }
