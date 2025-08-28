@@ -64,6 +64,16 @@ namespace Sinch.Verification
         Task<StartDataVerificationResponse> StartSeamless(StartDataVerificationRequest request,
             CancellationToken cancellationToken = default);
 
+
+        /// <summary>
+        ///     Starts an WhatsApp Verification. Verification by WhatsApp message with a PIN code.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<StartWhatsAppVerificationResponse> StartWhatsApp(StartWhatsAppVerificationRequest request,
+            CancellationToken cancellationToken = default);
+
         /// <summary>
         ///     Report the received verification code to verify it,
         ///     using the identity of the user (in most cases, the phone number).
@@ -246,6 +256,34 @@ namespace Sinch.Verification
                    throw new InvalidOperationException($"{nameof(StartDataVerificationResponse)} result is null.");
         }
 
+        /// <inheritdoc />
+        public async Task<StartWhatsAppVerificationResponse> StartWhatsApp(StartWhatsAppVerificationRequest request,
+                          CancellationToken cancellationToken = default)
+        {
+            var result = await Start(new StartVerificationRequest
+            {
+                Custom = request.Custom,
+                Identity = request.Identity,
+                Method = request.Method,
+                Reference = request.Reference,
+                WhatsAppInfo = request.WhatsAppInfo
+            }, cancellationToken);
+            return result as StartWhatsAppVerificationResponse ??
+                   throw new InvalidOperationException($"{nameof(StartWhatsAppVerificationResponse)} result is null.");
+        }
+
+        /// <inheritdoc />
+        public async Task<StartWhatsAppVerificationResponse> StartWhatsApp(string phoneNumber,
+            CancellationToken cancellationToken = default)
+        {
+            var result = await Start(new StartVerificationRequest
+            {
+                Identity = Identity.Number(phoneNumber),
+                Method = VerificationMethodEx.WhatsApp
+            }, cancellationToken);
+            return result as StartWhatsAppVerificationResponse ??
+                   throw new InvalidOperationException($"{nameof(StartWhatsAppVerificationResponse)} result is null.");
+        }
 
         private Task<IVerificationReportResponse> ReportIdentity(string endpoint, VerifyReportRequest request,
             CancellationToken cancellationToken = default)

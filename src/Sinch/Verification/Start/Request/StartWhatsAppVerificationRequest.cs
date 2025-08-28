@@ -1,23 +1,4 @@
-
-/* Unmerged change from project 'Sinch(net7.0)'
-Before:
-using System;
 using System.Collections.Generic;
-After:
-using System.Collections.Generic;
-*/
-using System
-/* Unmerged change from project 'Sinch(net7.0)'
-Before:
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
-using Sinch.Core;
-using Sinch.Verification.Common;
-After:
-using System.Text.Json.Serialization;
-using Sinch.Verification.Common;
-*/
-.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Sinch.Verification.Common;

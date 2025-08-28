@@ -1,11 +1,3 @@
-
-/* Unmerged change from project 'Sinch(net7.0)'
-Before:
-using System;
-using System.Collections.Generic;
-After:
-using System.Collections.Generic;
-*/
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
