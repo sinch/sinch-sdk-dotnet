@@ -181,7 +181,7 @@ namespace Sinch.Tests.Features.Verification
             _startWhatsApp = await _sinchVerification.StartWhatsApp(new StartWhatsAppVerificationRequest()
             {
                 Identity = Identity.Number("+33123456789"),
-                WhatsAppInfo = new Sinch.Verification.Start.Request.WhatsAppInfo()
+                WhatsAppOptions = new WhatsAppOptions()
                 {
                     CodeType = WhatsAppCodeType.Numeric,
                     AdditionalProperties = new Dictionary<string, JsonElement>()
