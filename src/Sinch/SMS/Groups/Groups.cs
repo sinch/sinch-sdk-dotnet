@@ -130,17 +130,20 @@ namespace Sinch.SMS.Groups
         {
             _logger?.LogDebug("Auto listing groups...");
             bool isLastPage;
+            int total = 0;
             do
             {
                 var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/groups?{request.GetQueryString()}");
                 _logger?.LogDebug("Listing group {page}", request.Page);
                 var response = await _http.Send<ListGroupsResponse>(uri, HttpMethod.Get, cancellationToken);
+                total += response.PageSize;
                 foreach (var group in response.Groups)
                 {
                     yield return group;
                 }
 
-                isLastPage = Utils.IsLastPage(response.Page, response.PageSize, response.Count);
+                isLastPage = total >= response.Count;
+                request.Page ??= response.Page;
                 request.Page++;
             } while (!isLastPage);
         }

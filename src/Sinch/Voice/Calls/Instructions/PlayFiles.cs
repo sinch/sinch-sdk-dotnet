@@ -16,10 +16,7 @@ namespace Sinch.Voice.Calls.Instructions
         ///     <example>[ ["Welcome","https://path/to/file"], ["#ssml[Thank you for calling Sinch!]"] ]</example>
         /// </summary>
         [JsonPropertyName("ids")]
-
-        public required List<List<string>> Ids { get; set; }
-
-
+        public required List<string> Ids { get; set; }
 
         /// <summary>
         ///     If using SSML or TTS, this is a required field. The voice and language you want to use for the text-to-speech

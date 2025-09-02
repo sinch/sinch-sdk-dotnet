@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Sinch.Verification.Common
 {
     public class PriceBase
@@ -7,11 +9,13 @@ namespace Sinch.Verification.Common
         ///     This property will appear in the body of the response with a delay.
         ///     It will become visible only when the verification status is other than PENDING
         /// </summary>
+        [JsonPropertyName("verificationPrice")]
         public PriceDetail? VerificationPrice { get; set; }
     }
 
     public sealed class Price : PriceBase
     {
+        [JsonPropertyName("terminationPrice")]
         public PriceDetail? TerminationPrice { get; set; }
 
         /// <summary>
@@ -20,6 +24,7 @@ namespace Sinch.Verification.Common
         ///     Depending on the type of rounding used, the value is the actual call time rounded
         ///     to the nearest second, minute or other value
         /// </summary>
-        public int BillableDuration { get; set; }
+        [JsonPropertyName("billableDuration")]
+        public int? BillableDuration { get; set; }
     }
 }

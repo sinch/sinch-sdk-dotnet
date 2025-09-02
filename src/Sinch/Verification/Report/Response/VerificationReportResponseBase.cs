@@ -11,37 +11,44 @@ namespace Sinch.Verification.Report.Response
         /// <summary>
         ///     The unique ID of the verification request.
         /// </summary>
+        [JsonPropertyName("id")]
         public string? Id { get; set; }
 
         /// <summary>
         ///     The method of the verification request.
         /// </summary>
         [JsonInclude]
+        [JsonPropertyName("method")]
         public abstract VerificationMethod Method { get; protected set; }
 
         /// <summary>
         ///     The status of the verification request.
         /// </summary>
+        [JsonPropertyName("status")]
         public VerificationStatus? Status { get; set; }
 
         /// <summary>
         ///     Displays the reason why a verification has FAILED, was DENIED, or was ABORTED.
         /// </summary>
+        [JsonPropertyName("reason")]
         public Reason? Reason { get; set; }
 
         /// <summary>
         ///     The reference ID that was optionally passed together with the verification request.
         /// </summary>
+        [JsonPropertyName("reference")]
         public string? Reference { get; set; }
 
         /// <summary>
         ///     Free text that the client is sending, used to show if the call/SMS was intercepted or not.
         /// </summary>
+        [JsonPropertyName("source")]
         public Source? Source { get; set; }
 
         /// <summary>
         ///     Specifies the type of endpoint that will be verified and the particular endpoint. number is currently the only supported endpoint type.
         /// </summary>
+        [JsonPropertyName("identity")]
         public Identity? Identity { get; set; }
     }
 
@@ -78,6 +85,12 @@ namespace Sinch.Verification.Report.Response
                     typeof(ReportFlashCallVerificationResponse), options);
             }
 
+            if (method == VerificationMethod.WhatsApp.Value)
+            {
+                return (ReportWhatsAppVerificationResponse?)elem.Deserialize(
+                    typeof(ReportWhatsAppVerificationResponse), options);
+            }
+
             throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
         }
 
@@ -97,6 +110,10 @@ namespace Sinch.Verification.Report.Response
                 case ReportSmsVerificationResponse smsVerificationReportResponse:
                     JsonSerializer.Serialize(
                         writer, smsVerificationReportResponse, options);
+                    break;
+                case ReportWhatsAppVerificationResponse whatsappVerificationReportResponse:
+                    JsonSerializer.Serialize(
+                        writer, whatsappVerificationReportResponse, options);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value),

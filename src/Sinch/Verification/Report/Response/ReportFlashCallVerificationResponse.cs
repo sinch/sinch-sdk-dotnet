@@ -11,6 +11,7 @@ namespace Sinch.Verification.Report.Response
         /// <summary>
         ///     Shows whether the call is complete or not.
         /// </summary>
+        [JsonPropertyName("callComplete")]
         public bool? CallComplete { get; set; }
     }
 }

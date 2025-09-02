@@ -156,6 +156,7 @@ namespace Sinch.SMS.Batches
         {
             _logger?.LogDebug("Auto Listing batches...");
             bool lastPage;
+            int total = 0;
             do
             {
                 var query = request.GetQueryString();
@@ -167,14 +168,14 @@ namespace Sinch.SMS.Batches
 
                 var uri = new Uri(_baseAddress, relative);
                 var response = await _http.Send<ListBatchesResponse>(uri, HttpMethod.Get, cancellationToken);
-
+                total += response.PageSize;
                 if (response.Batches != null)
                     foreach (var batch in response.Batches)
                     {
                         yield return batch;
                     }
 
-                lastPage = Utils.IsLastPage(response.Page, response.PageSize, response.Count);
+                lastPage = total >= response.Count;
                 request.Page ??= response.Page;
                 request.Page++;
             } while (!lastPage);

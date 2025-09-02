@@ -7,7 +7,7 @@ namespace Sinch.SMS.DeliveryReports.List
 {
     public sealed class ListDeliveryReportsRequest
     {
-        public int Page { get; set; }
+        public int? Page { get; set; }
 
         public int? PageSize { get; set; }
 
@@ -24,7 +24,10 @@ namespace Sinch.SMS.DeliveryReports.List
         internal string GetQueryString()
         {
             var kvp = new List<KeyValuePair<string, string>>();
-            kvp.Add(new KeyValuePair<string, string>("page", Page.ToString()));
+            if (Page.HasValue)
+            {
+                kvp.Add(new KeyValuePair<string, string>("page", Page.Value.ToString()));
+            }
 
             if (PageSize.HasValue)
             {

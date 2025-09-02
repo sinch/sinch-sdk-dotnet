@@ -1,0 +1,6 @@
+{
+  "id": "the id",
+  "method": "whatsapp",
+  "status": "FAIL",
+  "reason": "Expired"
+}
