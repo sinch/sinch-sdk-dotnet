@@ -15,6 +15,7 @@ namespace Sinch.Tests.Features.Verification
         private ReportSmsVerificationResponse _smsReport;
         private ReportCalloutVerificationResponse _phoneCallReport;
         private ReportFlashCallVerificationResponse _flashCallReport;
+        private ReportWhatsAppVerificationResponse _whatsAppReport;
 
         [Given(@"the Verification service ""Report"" is available")]
         public void GivenTheVerificationServiceIsAvailable()
@@ -146,5 +147,42 @@ namespace Sinch.Tests.Features.Verification
                 Reference = "verification-tests-e2e"
             });
         }
+
+        [When("I send a request to report a WhatsApp verification by {string} with the verification ID {string}")]
+        public async Task WhenISendARequestToReportAWhatsAppVerificationWithTheVerificationId(string byType, string id)
+        {
+            _whatsAppReport = await _sinchVerifications.ReportWhatsAppById(id,
+                new ReportWhatsAppVerificationRequest()
+                {
+                    WhatsApp = new WhatsApp()
+                    {
+                        Code = "1234"
+                    }
+                });
+        }
+
+        [Then("the response by {string} contains the details of a WhatsApp verification report")]
+        public void ThenTheResponseContainsTheDetailsOfAWhatsAppVerificationReport(string byType)
+        {
+            _whatsAppReport.Should().BeEquivalentTo(new ReportWhatsAppVerificationResponse()
+            {
+                Id = "1ce0ffee-c0de-5eed-d33d-f00dfeed1337",
+                Status = VerificationStatus.Successful,
+            });
+        }
+
+        [When(@"I send a request to report a WhatsApp verification by ""(.*)"" with the phone number ""(.*)""")]
+        public async Task WhenISendARequestToReportAWhatsAppVerificationWithThePhoneNumber(string byType, string phoneNumber)
+        {
+            _whatsAppReport = await _sinchVerifications.ReportWhatsAppByIdentity(phoneNumber,
+                new ReportWhatsAppVerificationRequest()
+                {
+                    WhatsApp = new WhatsApp()
+                    {
+                        Code = "5678"
+                    }
+                });
+        }
+
     }
 }
