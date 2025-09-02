@@ -11,6 +11,36 @@ namespace Sinch.Verification
 {
     public interface ISinchVerificationStatus
     {
+
+        /// <summary>
+        ///     Queries the verification result by sending the verification ID.
+        ///     With this query you can get the result of a verification.
+        /// </summary>
+        /// <param name="id">The ID of the verification.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<IVerificationStatusResponse> GetById(string id, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Queries the verification result by sending the verification
+        ///     Identity (usually a phone number) and its method.
+        ///     With this query you can get the result of a verification.
+        /// </summary>
+        /// <param name="endpoint">For type number use a E.164-compatible phone number.</param>
+        /// <param name="method">Verification method used onto Start</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<IVerificationStatusResponse> GetByIdentity(string endpoint, VerificationMethod method, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Queries the verification result by sending the verification Reference.
+        ///     With this query you can get the result of a verification.
+        /// </summary>
+        /// <param name="reference">The custom reference of the verification.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<IVerificationStatusResponse> GetByReference(string reference, CancellationToken cancellationToken = default);
+
         /// <summary>
         ///     Queries the verification result by sending the verification ID.
         ///     With this query you can get the result of a verification.
@@ -84,30 +114,30 @@ namespace Sinch.Verification
             _logger = logger;
         }
 
-        private Task<IVerificationStatusResponse> GetById(string id, CancellationToken cancellationToken = default)
+        public async Task<IVerificationStatusResponse> GetById(string id, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"verification/v1/verifications/id/{id}");
             _logger?.LogDebug("Getting status of the verification by {id}", id);
-            return _http.Send<IVerificationStatusResponse>(uri, HttpMethod.Get,
+            return await _http.Send<IVerificationStatusResponse>(uri, HttpMethod.Get,
                 cancellationToken: cancellationToken);
         }
 
-        private Task<IVerificationStatusResponse> GetByIdentity(string endpoint, VerificationMethod method,
+        public async Task<IVerificationStatusResponse> GetByIdentity(string endpoint, VerificationMethod method,
             CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"verification/v1/verifications/{method.Value}/number/{endpoint}");
             _logger?.LogDebug("Getting status of the verification by identity {endpoint} and {method}", endpoint,
                 method);
-            return _http.Send<IVerificationStatusResponse>(uri, HttpMethod.Get,
+            return await _http.Send<IVerificationStatusResponse>(uri, HttpMethod.Get,
                 cancellationToken: cancellationToken);
         }
 
-        private Task<IVerificationStatusResponse> GetByReference(string reference,
+        public async Task<IVerificationStatusResponse> GetByReference(string reference,
             CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"verification/v1/verifications/reference/{reference}");
             _logger?.LogDebug("Getting status of the verification by {reference}", reference);
-            return _http.Send<IVerificationStatusResponse>(uri, HttpMethod.Get,
+            return await _http.Send<IVerificationStatusResponse>(uri, HttpMethod.Get,
                 cancellationToken: cancellationToken);
         }
 
