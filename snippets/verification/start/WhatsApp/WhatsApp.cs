@@ -12,7 +12,7 @@ var destinationPhoneNumber = "PHONE_NUMBER";
 
 var verificationService = new SinchClient(null, null, null).Verification(applicationKey, applicationSecret).Verification;
 
-var request = new StartWhatsAppVerificationRequest
+var request = new StartWhatsAppVerificationRequest()
 {
     Identity = Identity.Number(destinationPhoneNumber)
 };
