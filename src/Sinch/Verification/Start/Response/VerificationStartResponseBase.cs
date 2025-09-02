@@ -12,6 +12,7 @@ namespace Sinch.Verification.Start.Response
         /// <summary>
         ///     Verification identifier used to query for status.
         /// </summary>
+        [JsonPropertyName("id")]
         public string? Id { get; set; }
 
         /// <summary>
@@ -23,6 +24,7 @@ namespace Sinch.Verification.Start.Response
         /// <summary>
         ///     The value of the method used for the Verification.
         /// </summary>
+        [JsonPropertyName("method")]
         public VerificationMethodEx Method { get; set; } = null!;
     }
 

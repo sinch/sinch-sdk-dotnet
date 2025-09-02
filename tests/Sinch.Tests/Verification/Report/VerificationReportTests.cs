@@ -11,7 +11,7 @@ namespace Sinch.Tests.Verification
     {
         public static ReportWhatsAppVerificationRequest reportWhatsAppVerificationRequest = new ReportWhatsAppVerificationRequest()
         {
-            WhatsApp = new Sinch.Verification.Report.Request.WhatsApp()
+            WhatsApp = new WhatsApp()
             {
                 Code = "foo code",
             },
@@ -23,12 +23,6 @@ namespace Sinch.Tests.Verification
             Status = VerificationStatus.Fail,
             Reason = Reason.Expired
         };
-
-        private JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web)
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        };
-
 
         [Fact]
         public void SerializeVerificationReportWhatsAppRequest()
@@ -43,7 +37,7 @@ namespace Sinch.Tests.Verification
         public void DeSerializeVerificationReportWhatsAppResponse()
         {
             var data = Helpers.LoadResources("Verification/Report/VerificationReportResponseWhatsAppDto.json");
-            var response = JsonSerializer.Deserialize<IVerificationReportResponse>(data, _jsonSerializerOptions);
+            var response = JsonSerializer.Deserialize<IVerificationReportResponse>(data);
 
             var actual = response.Should().BeOfType<ReportWhatsAppVerificationResponse>().Subject;
             Helpers.BeEquivalentToWithJsonElement(actual, reportWhatsAppVerificationResponse);

@@ -8,14 +8,17 @@ namespace Sinch.Verification.Status
         /// <summary>
         ///     Free text that the client is sending, used to show if the call/WhatsApp was intercepted or not.
         /// </summary>
+        [JsonPropertyName("source")]
         public Source? Source { get; set; }
 
         [JsonInclude]
+        [JsonPropertyName("method")]
         public override VerificationMethod? Method { get; protected set; } = VerificationMethod.WhatsApp;
 
         /// <summary>
         ///     Prices associated with this verification
         /// </summary>
+        [JsonPropertyName("price")]
         public PriceBase? Price { get; set; }
     }
 }

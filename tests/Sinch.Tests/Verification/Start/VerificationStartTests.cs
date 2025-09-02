@@ -17,7 +17,7 @@ namespace Sinch.Tests.Verification
             Identity = Identity.Number("+33123456789"),
             Reference = "a reference",
             Custom = "a custom",
-            WhatsAppInfo = new Sinch.Verification.Start.Request.WhatsAppInfo()
+            WhatsAppOptions = new WhatsAppOptions()
             {
                 CodeType = WhatsAppCodeType.Alphanumeric,
                 AdditionalProperties = new Dictionary<string, JsonElement>()
@@ -30,7 +30,7 @@ namespace Sinch.Tests.Verification
         static public StartWhatsAppVerificationResponse startWhatsAppVerificationResponse = new StartWhatsAppVerificationResponse()
         {
             Id = "the id",
-            WhatsApp = new Sinch.Verification.Start.Response.WhatsAppInfo
+            WhatsApp = new WhatsAppInfo
             {
                 CodeType = WhatsAppCodeType.Numeric,
                 AdditionalProperties = new Dictionary<string, JsonElement>()
@@ -52,11 +52,6 @@ namespace Sinch.Tests.Verification
                         Method = "PUT"
                     }
                 }
-        };
-
-        private JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web)
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         };
 
         [Fact]
@@ -83,7 +78,7 @@ namespace Sinch.Tests.Verification
             };
 
             var jData = JToken.FromObject(data).ToString();
-            var smsResponse = JsonSerializer.Deserialize<IStartVerificationResponse>(jData, _jsonSerializerOptions);
+            var smsResponse = JsonSerializer.Deserialize<IStartVerificationResponse>(jData);
 
             smsResponse.Should().BeOfType<StartSmsVerificationResponse>().Which.Should().BeEquivalentTo(
                 new StartSmsVerificationResponse()
@@ -121,7 +116,7 @@ namespace Sinch.Tests.Verification
         public void DeSerializeVerificationStartWhatsAppResponse()
         {
             var data = Helpers.LoadResources("Verification/Start/VerificationStartResponseWhatsAppDto.json");
-            var response = JsonSerializer.Deserialize<IStartVerificationResponse>(data, _jsonSerializerOptions);
+            var response = JsonSerializer.Deserialize<IStartVerificationResponse>(data);
 
             var actual = response.Should().BeOfType<StartWhatsAppVerificationResponse>().Subject;
             Helpers.BeEquivalentToWithJsonElement(actual, startWhatsAppVerificationResponse);

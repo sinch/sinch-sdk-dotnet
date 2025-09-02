@@ -6,7 +6,10 @@ using Sinch.Verification.Report.Response;
 var applicationKey = Environment.GetEnvironmentVariable("MY_APPLICATION_KEY");
 var applicationSecret = Environment.GetEnvironmentVariable("MY_APPLICATION_SECRET");
 
-var destinationPhoneNumber = "PHONE_NUMBER_TO_SEND_TO";
+// the recipient's phone number of the verification
+var destinationPhoneNumber = "PHONE_NUMBER";
+// the received verification code
+var code = "CODE";
 
 var verificationService = new SinchClient(null, null, null).Verification(applicationKey, applicationSecret).Verification;
 
@@ -14,7 +17,7 @@ var request = new ReportWhatsAppVerificationRequest()
 {
     WhatsApp = new WhatsApp()
     {
-        Code = "A CODE"
+        Code = code
     }
 };
 ReportWhatsAppVerificationResponse response = await verificationService.ReportWhatsAppByIdentity(destinationPhoneNumber, request);

@@ -8,7 +8,7 @@
     "type": "number",
     "endpoint": "+33123456789"
   },
-  "countryId": "es-ES",
+  "countryId": "ES",
   "verificationTimestamp": "2024-05-22T09:38:59.5590437",
   "source": "intercepted",
   "price": {

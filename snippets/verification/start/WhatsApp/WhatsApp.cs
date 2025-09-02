@@ -8,7 +8,8 @@ using Sinch.Verification.Start.Response;
 var applicationKey = Environment.GetEnvironmentVariable("MY_APPLICATION_KEY");
 var applicationSecret = Environment.GetEnvironmentVariable("MY_APPLICATION_SECRET");
 
-var destinationPhoneNumber = "PHONE_NUMBER_TO_SEND_TO";
+// the recipient's phone number of the verification
+var destinationPhoneNumber = "PHONE_NUMBER";
 
 var verificationService = new SinchClient(null, null, null).Verification(applicationKey, applicationSecret).Verification;
 

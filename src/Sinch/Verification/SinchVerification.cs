@@ -287,7 +287,7 @@ namespace Sinch.Verification
                 Identity = request.Identity,
                 Method = request.Method,
                 Reference = request.Reference,
-                WhatsAppInfo = request.WhatsAppInfo
+                WhatsAppOptions = request.WhatsAppOptions
             }, cancellationToken);
             return result as StartWhatsAppVerificationResponse ??
                    throw new InvalidOperationException($"{nameof(StartWhatsAppVerificationResponse)} result is null.");

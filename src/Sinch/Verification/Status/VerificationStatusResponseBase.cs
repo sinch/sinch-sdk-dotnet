@@ -11,42 +11,50 @@ namespace Sinch.Verification.Status
         /// <summary>
         ///     The unique ID of the verification request.
         /// </summary>
+        [JsonPropertyName("id")]
         public string? Id { get; set; }
 
         /// <summary>
         ///     The method of the verification request.
         /// </summary>
         [JsonInclude]
+        [JsonPropertyName("method")]
         public virtual VerificationMethod? Method { get; protected set; }
 
         /// <summary>
         ///     The status of the verification request.
         /// </summary>
+        [JsonPropertyName("status")]
         public VerificationStatus? Status { get; set; }
 
         /// <summary>
         ///     Displays the reason why a verification has FAILED, was DENIED, or was ABORTED.
         /// </summary>
+        [JsonPropertyName("reason")]
         public Reason? Reason { get; set; }
 
         /// <summary>
         ///     The reference ID that was optionally passed together with the verification request.
         /// </summary>
+        [JsonPropertyName("reference")]
         public string? Reference { get; set; }
 
         /// <summary>
         ///     The ID of the country to which the verification was sent.
         /// </summary>
+        [JsonPropertyName("countryId")]
         public string? CountryId { get; set; }
 
         /// <summary>
         ///     The timestamp in UTC format. 
         /// </summary>
+        [JsonPropertyName("verificationTimestamp")]
         public DateTime? VerificationTimestamp { get; set; }
 
         /// <summary>
         ///     Specifies the type of endpoint that will be verified and the particular endpoint. number is currently the only supported endpoint type.
         /// </summary>
+        [JsonPropertyName("identity")]
         public Identity? Identity { get; set; }
     }
 
@@ -98,21 +106,21 @@ namespace Sinch.Verification.Status
         {
             switch (value)
             {
-                case FlashCallVerificationStatusResponse flashCallVerificationReportResponse:
+                case FlashCallVerificationStatusResponse flashCallVerificationStatusResponse:
                     JsonSerializer.Serialize(
-                        writer, flashCallVerificationReportResponse, options);
+                        writer, flashCallVerificationStatusResponse, options);
                     break;
-                case CalloutVerificationStatusResponse reportCalloutVerificationResponse:
+                case CalloutVerificationStatusResponse calloutVerificationStatusResponse:
                     JsonSerializer.Serialize(
-                        writer, reportCalloutVerificationResponse, options);
+                        writer, calloutVerificationStatusResponse, options);
                     break;
-                case SmsVerificationStatusResponse smsVerificationReportResponse:
+                case SmsVerificationStatusResponse smsVerificationStatusResponse:
                     JsonSerializer.Serialize(
-                        writer, smsVerificationReportResponse, options);
+                        writer, smsVerificationStatusResponse, options);
                     break;
-                case WhatsAppVerificationStatusResponse whatsAppVerificationReportResponse:
+                case WhatsAppVerificationStatusResponse whatsAppVerificationStatusResponse:
                     JsonSerializer.Serialize(
-                        writer, whatsAppVerificationReportResponse, options);
+                        writer, whatsAppVerificationStatusResponse, options);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value),

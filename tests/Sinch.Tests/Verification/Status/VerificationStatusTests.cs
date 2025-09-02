@@ -18,7 +18,7 @@ namespace Sinch.Tests.Verification
             Reason = Reason.Fraud,
             Reference = "my reference",
             Identity = Identity.Number("+33123456789"),
-            CountryId = "es-ES",
+            CountryId = "ES",
             VerificationTimestamp = new DateTime(2024, 5, 22, 9, 38, 59, 559, DateTimeKind.Utc).AddNanoseconds(43700),
             Source = Source.Intercepted,
             Price = new Price
@@ -31,17 +31,11 @@ namespace Sinch.Tests.Verification
             }
         };
 
-        private JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web)
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        };
-
-
         [Fact]
         public void DeSerializeVerificationStatusWhatsAppResponse()
         {
             var data = Helpers.LoadResources("Verification/Status/VerificationStatusResponseWhatsAppDto.json");
-            var response = JsonSerializer.Deserialize<IVerificationStatusResponse>(data, _jsonSerializerOptions);
+            var response = JsonSerializer.Deserialize<IVerificationStatusResponse>(data);
 
             var actual = response.Should().BeOfType<WhatsAppVerificationStatusResponse>().Subject;
             Helpers.BeEquivalentToWithJsonElement(actual, whatsAppVerificationStatusResponse);

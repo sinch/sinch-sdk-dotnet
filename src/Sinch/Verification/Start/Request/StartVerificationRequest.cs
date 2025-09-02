@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
 
@@ -49,10 +51,10 @@ namespace Sinch.Verification.Start.Request
 
 
         /// <summary>
-        ///     An optional object for Phone Call Verification, with default values assumed for all contained values if not provided.
+        ///     An optional object for WhatsApp Verification, with default values assumed for all contained values if not provided.
         /// </summary>
         [JsonPropertyName("whatsappOptions")]
-        public WhatsAppInfo? WhatsAppInfo { get; set; }
+        public WhatsAppOptions? WhatsAppOptions { get; set; }
     }
 
     internal sealed class CalloutOptions
@@ -99,4 +101,19 @@ namespace Sinch.Verification.Start.Request
         public int DialTimeout { get; set; }
     }
 
+    public sealed class WhatsAppOptions
+    {
+        /// <summary>
+        ///     Accepted values for the type of code to be generated are Numeric, Alpha, and Alphanumeric.
+        /// </summary>
+        [JsonPropertyName("codeType")]
+        public WhatsAppCodeType? CodeType { get; set; }
+
+        /// <summary>
+        /// Gets or Sets additional properties
+        /// </summary>
+        [JsonExtensionData]
+        public Dictionary<string, JsonElement> AdditionalProperties { get; set; } = new Dictionary<string, JsonElement>();
+
+    }
 }
