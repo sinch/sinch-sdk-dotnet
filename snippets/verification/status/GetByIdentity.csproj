@@ -12,6 +12,6 @@
   </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)'=='Debug'">
-        <ProjectReference Include="..\..\..\..\src\Sinch\Sinch.csproj" />
+        <ProjectReference Include="..\..\..\src\Sinch\Sinch.csproj" />
     </ItemGroup>
 </Project>
