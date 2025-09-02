@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using FluentAssertions;
 using Sinch.Voice;
 using Sinch.Voice.Callouts.Callout;

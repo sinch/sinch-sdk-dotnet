@@ -5,13 +5,23 @@ namespace Sinch.Tests.Features.Verification
     public class Utils
     {
         public static ISinchVerificationClient SinchVerificationClient =>
-            new SinchClient(null, null, null, options =>
-            {
-                options.ApiUrlOverrides = new ApiUrlOverrides()
+        new SinchClient(
+                new SinchClientConfiguration()
                 {
-                    VerificationUrl = "http://localhost:3018",
-                    AuthUrl = "http://localhost:3011",
-                };
-            }).Verification("appKey", "YXBwU2VjcmV0");
+                    VerificationConfiguration = new SinchVerificationConfiguration()
+                    {
+                        AppKey = "appKey",
+                        AppSecret = "YXBwU2VjcmV0"
+                    },
+                    SinchOptions = new SinchOptions
+                    {
+                        ApiUrlOverrides = new ApiUrlOverrides()
+                        {
+                            AuthUrl = "http://localhost:3011",
+                            VerificationUrl = "http://localhost:3011"
+                        }
+                    }
+                }
+            ).Verification;
     }
 }

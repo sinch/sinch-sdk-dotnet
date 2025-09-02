@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
-using Sinch.Core;
 using Sinch.SMS;
 using Xunit;
 

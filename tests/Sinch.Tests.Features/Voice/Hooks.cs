@@ -33,7 +33,24 @@ namespace Sinch.Tests.Features.Voice
         [Given(@"the Voice Webhooks handler is available")]
         public void GivenTheVoiceWebhooksHandlerIsAvailable()
         {
-            _voiceClient = new SinchClient(null, null, null).Voice("appKey", "YXBwU2VjcmV0");
+            _voiceClient = new SinchClient(
+                new SinchClientConfiguration
+                {
+                    SinchOptions = new SinchOptions
+                    {
+                        ApiUrlOverrides = new ApiUrlOverrides()
+                        {
+                            VoiceUrl = "http://localhost:3019",
+                            VoiceApplicationManagementUrl = "http://localhost:3020"
+                        }
+                    },
+                    VoiceConfiguration = new SinchVoiceConfiguration()
+                    {
+                        AppKey = "appKey",
+                        AppSecret = "YXBwU2VjcmV0"
+                    }
+                }
+            ).Voice;
         }
 
         [When(@"I send a request to trigger a ""PIE"" event with a ""return"" type")]
