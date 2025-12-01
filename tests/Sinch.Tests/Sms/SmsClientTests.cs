@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
+using NSubstitute;
 using RichardSzalay.MockHttp;
 using Sinch.SMS;
 using Xunit;
@@ -19,13 +20,16 @@ namespace Sinch.Tests.Sms
             const string apiToken = "api_token_x";
             MockHttpMessageHandler httpMessageHandlerMock = new();
             var httpClient = new HttpClient(httpMessageHandlerMock);
+            var httpClientFactory = Substitute.For<IHttpClientFactory>();
+            httpClientFactory.CreateClient(Arg.Any<string>()).Returns(httpClient);
+            
             var sinchClient = new SinchClient(new SinchClientConfiguration()
             {
                 SmsConfiguration =
                     SinchSmsConfiguration.WithServicePlanId(servicePlanId, apiToken, SmsServicePlanIdRegion.Au),
                 SinchOptions = new SinchOptions()
                 {
-                    HttpClient = httpClient
+                    HttpClientFactory = httpClientFactory
                 }
             });
 

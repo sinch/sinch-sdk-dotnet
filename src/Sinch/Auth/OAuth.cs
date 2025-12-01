@@ -23,7 +23,7 @@ namespace Sinch.Auth
 
     internal sealed class OAuth : ISinchAuth
     {
-        private readonly HttpClient _httpClient;
+        private readonly Func<HttpClient> _httpClientAccessor;
         private readonly string _keyId;
         private readonly string _keySecret;
         private readonly ILoggerAdapter<OAuth>? _logger;
@@ -32,12 +32,12 @@ namespace Sinch.Auth
 
         public string Scheme { get; } = AuthSchemes.Bearer;
 
-        public OAuth(string keyId, string keySecret, HttpClient httpClient, ILoggerAdapter<OAuth>? logger,
+        public OAuth(string keyId, string keySecret, Func<HttpClient> httpClientAccessor, ILoggerAdapter<OAuth>? logger,
             Uri baseAddress)
         {
             _keyId = keyId;
             _keySecret = keySecret;
-            _httpClient = httpClient;
+            _httpClientAccessor = httpClientAccessor;
             _logger = logger;
             _baseAddress = baseAddress;
         }
@@ -65,7 +65,9 @@ namespace Sinch.Auth
                 Method = HttpMethod.Post,
                 Headers = { Authorization = new AuthenticationHeaderValue("Basic", @base) }
             };
-            var result = await _httpClient.SendAsync(request);
+            
+            var httpClient = _httpClientAccessor();
+            var result = await httpClient.SendAsync(request);
 
             if (!result.IsSuccessStatusCode)
             {
