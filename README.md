@@ -13,10 +13,13 @@ For more information on the Sinch APIs on which this SDK is based, refer to the 
 
 - [Installation](#installation)
 - [Getting started](#getting-started)
+- [Migrating to 2.0](#)
 - [Client initialization](#client-initialization)
 - [Supported Sinch products](#supported-sinch-products)
 - [Logging, HttpClient and additional options](#logging-httpclient-and-additional-options)
 - [Handling Exceptions](#handling-exceptions)
+
+## [Migrating to 2.0](docs/MigrationTo2.0.md)
 
 ## Installation
 
@@ -64,7 +67,9 @@ var sinch = new SinchClient(
         options.ConversationRegion = Sinch.Conversation.ConversationRegion.Eu;
     });
 ```
+## [Migrating to 2.0](docs/MigrationTo2.0.md)
 
+If you are coming from version 1.*, you can see how to use 
 ## Supported Sinch Products
 
 Sinch client provides access to the following Sinch products:
