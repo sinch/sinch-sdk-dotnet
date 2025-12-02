@@ -9,6 +9,8 @@ namespace Sinch.Core
     /// </summary>
     internal sealed class DefaultHttpClientFactory : IHttpClientFactory
     {
+        private readonly HttpClient _httpClient;
+
         /// <summary>
         /// Default connection lifetime before recreation (DNS refresh interval).
         /// </summary>
@@ -24,11 +26,8 @@ namespace Sinch.Core
         /// </summary>
         public const int DefaultMaxConnectionsPerServer = 10;
 
-        private readonly HttpClient _httpClient;
-
         public DefaultHttpClientFactory(HttpClientHandlerConfiguration? configuration = null)
         {
-            // Use provided configuration or defaults
             var config = configuration ?? HttpClientHandlerConfiguration.Default;
             
             var handler = new SocketsHttpHandler

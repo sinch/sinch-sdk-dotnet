@@ -139,7 +139,8 @@ namespace Sinch
             _logger?.LogInformation("Initializing SinchClient...");
 
             // Setup HttpClient accessor using IHttpClientFactory
-            var httpClientFactory = _sinchClientConfiguration.SinchOptions?.HttpClientFactory ?? new DefaultHttpClientFactory();
+            var httpClientFactory = _sinchClientConfiguration.SinchOptions?.HttpClientFactory 
+                ?? new DefaultHttpClientFactory(_sinchClientConfiguration.SinchOptions?.HttpClientHandlerConfiguration);
             _httpClientAccessor = () => httpClientFactory.CreateClient("SinchClient");
 
             _sinchOauth = new Lazy<ISinchAuth>(() =>
