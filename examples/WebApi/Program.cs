@@ -12,22 +12,27 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-builder.Services.AddSingleton<ISinchClient>(_ => new SinchClient(
-    new SinchClientConfiguration()
+// Sinch SDK with IHttpClientFactory
+// This demonstrates the recommended configuration for ASP.NET Core applications
+builder.Services.AddSinchClient(() => new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials
     {
-        SinchUnifiedCredentials = new SinchUnifiedCredentials()
-        {
-            KeySecret = builder.Configuration["Sinch:KeySecret"]!,
-            KeyId = builder.Configuration["Sinch:KeyId"]!,
-            ProjectId = builder.Configuration["Sinch:ProjectId"]!,
-        },
-        SinchOptions = new SinchOptions()
-        {
-            LoggerFactory = LoggerFactory.Create(config => { config.AddConsole(); }),
-            HttpClient = new HttpClient()
-        }
-    }));
+        ProjectId = builder.Configuration["Sinch:ProjectId"]!,
+        KeyId = builder.Configuration["Sinch:KeyId"]!,
+        KeySecret = builder.Configuration["Sinch:KeySecret"]!
+    }
+    // Optional: Add more configurations as needed
+    // VerificationConfiguration = new SinchVerificationConfiguration { ... },
+    // VoiceConfiguration = new SinchVoiceConfiguration { ... }
+})
+.SetHandlerLifetime(TimeSpan.FromMinutes(5))  // DNS refresh every 5 minutes
+.ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
+{
+    PooledConnectionLifetime = TimeSpan.FromMinutes(5),   // DNS refresh interval
+    PooledConnectionIdleTimeout = TimeSpan.FromMinutes(2), // Close idle connections after 2 minutes
+    MaxConnectionsPerServer = 10  // HTTP/1.1 best practice (6-10 connections)
+});
 
 var app = builder.Build();
 
