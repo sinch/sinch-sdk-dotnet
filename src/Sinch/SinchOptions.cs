@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using Microsoft.Extensions.Logging;
+using Sinch.Conversation;
 using Sinch.Fax;
 using Sinch.SMS;
 
@@ -20,6 +21,13 @@ namespace Sinch
         ///     See: https://learn.microsoft.com/en-us/dotnet/core/extensions/httpclient-factory
         /// </summary>
         public IHttpClientFactory? HttpClientFactory { get; set; }
+
+        /// <summary>
+        ///     Configuration for HTTP client handler (connection pooling, DNS refresh, etc.).
+        ///     Only applies when using the default HttpClientFactory (non-DI scenarios like console apps).
+        ///     For ASP.NET Core apps, use ConfigurePrimaryHttpMessageHandler() on IHttpClientBuilder instead.
+        /// </summary>
+        public HttpClientHandlerConfiguration? HttpClientHandlerConfiguration { get; set; }
 
         /// <summary>
         ///     Set's the regions for the Fax api.

@@ -5,19 +5,37 @@ namespace Sinch.Core
 {
     /// <summary>
     ///     Default implementation of IHttpClientFactory for scenarios where DI is not available.
-    ///     Creates and manages a single HttpClient instance per client name.
+    ///     Creates and manages a single HttpClient instance with configured SocketsHttpHandler.
     /// </summary>
     internal sealed class DefaultHttpClientFactory : IHttpClientFactory
     {
+        /// <summary>
+        /// Default connection lifetime before recreation (DNS refresh interval).
+        /// </summary>
+        public static readonly TimeSpan DefaultPooledConnectionLifetime = TimeSpan.FromMinutes(5);
+        
+        /// <summary>
+        /// Default idle timeout before closing unused connections.
+        /// </summary>
+        public static readonly TimeSpan DefaultPooledConnectionIdleTimeout = TimeSpan.FromMinutes(2);
+        
+        /// <summary>
+        /// Default maximum number of concurrent connections per server endpoint.
+        /// </summary>
+        public const int DefaultMaxConnectionsPerServer = 10;
+
         private readonly HttpClient _httpClient;
 
-        public DefaultHttpClientFactory()
+        public DefaultHttpClientFactory(HttpClientHandlerConfiguration? configuration = null)
         {
+            // Use provided configuration or defaults
+            var config = configuration ?? HttpClientHandlerConfiguration.Default;
+            
             var handler = new SocketsHttpHandler
             {
-                PooledConnectionLifetime = TimeSpan.FromMinutes(5), // DNS refresh every 5 min
-                PooledConnectionIdleTimeout = TimeSpan.FromMinutes(2),
-                MaxConnectionsPerServer = 10
+                PooledConnectionLifetime = config.PooledConnectionLifetime ?? DefaultPooledConnectionLifetime,
+                PooledConnectionIdleTimeout = config.PooledConnectionIdleTimeout ?? DefaultPooledConnectionIdleTimeout,
+                MaxConnectionsPerServer = config.MaxConnectionsPerServer ?? DefaultMaxConnectionsPerServer
             };
 
             _httpClient = new HttpClient(handler);
