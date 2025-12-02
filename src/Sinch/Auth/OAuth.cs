@@ -65,7 +65,7 @@ namespace Sinch.Auth
                 Method = HttpMethod.Post,
                 Headers = { Authorization = new AuthenticationHeaderValue("Basic", @base) }
             };
-            
+
             var httpClient = _httpClientAccessor();
             var result = await httpClient.SendAsync(request);
 

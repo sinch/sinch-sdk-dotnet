@@ -23,7 +23,7 @@ namespace Sinch.Tests
             HttpClient = new HttpClient(HttpMessageHandlerMock);
             _tokenManager.GetAuthToken().Returns(Token);
             _tokenManager.Scheme.Returns("Bearer");
-            
+
             // Use accessor pattern for tests
             Func<HttpClient> httpClientAccessor = () => HttpClient;
             HttpCamelCase = new Http(new Lazy<ISinchAuth>(_tokenManager), httpClientAccessor, null, JsonNamingPolicy.CamelCase);

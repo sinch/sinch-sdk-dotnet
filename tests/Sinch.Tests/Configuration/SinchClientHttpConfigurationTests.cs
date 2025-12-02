@@ -72,11 +72,11 @@ namespace Sinch.Tests.Configuration
 
             // Assert
             sinch.Should().NotBeNull();
-            
+
             // Access the HTTP client accessor to trigger the factory call
             var accessor = Helpers.GetPrivateField<Func<HttpClient>, SinchClient>(sinch, "_httpClientAccessor");
             var httpClient = accessor();
-            
+
             // Verify the custom factory was used
             httpClientFactory.Received(1).CreateClient(Arg.Any<string>());
             httpClient.Should().NotBeNull();
@@ -111,7 +111,7 @@ namespace Sinch.Tests.Configuration
             sinch.Should().NotBeNull();
             var accessor = Helpers.GetPrivateField<Func<HttpClient>, SinchClient>(sinch, "_httpClientAccessor");
             accessor.Should().NotBeNull();
-            
+
             var httpClient = accessor();
             httpClient.Should().NotBeNull();
         }

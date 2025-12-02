@@ -30,7 +30,7 @@ namespace Sinch.Tests.Core
         };
 
         private Lazy<ISinchAuth> GetMock => new Lazy<ISinchAuth>(_tokenManagerMock);
-        
+
         public HttpTests()
         {
             _tokenManagerMock = Substitute.For<ISinchAuth>();

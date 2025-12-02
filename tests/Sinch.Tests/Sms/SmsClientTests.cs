@@ -22,7 +22,7 @@ namespace Sinch.Tests.Sms
             var httpClient = new HttpClient(httpMessageHandlerMock);
             var httpClientFactory = Substitute.For<IHttpClientFactory>();
             httpClientFactory.CreateClient(Arg.Any<string>()).Returns(httpClient);
-            
+
             var sinchClient = new SinchClient(new SinchClientConfiguration()
             {
                 SmsConfiguration =

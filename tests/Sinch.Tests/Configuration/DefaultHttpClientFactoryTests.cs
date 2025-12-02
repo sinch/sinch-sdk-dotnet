@@ -30,7 +30,7 @@ namespace Sinch.Tests.Configuration
             // Assert
             httpClient.Should().NotBeNull();
             httpClient.Should().BeOfType<HttpClient>();
-            
+
             // Verify we can create multiple clients successfully (proves defaults work)
             var client2 = factory.CreateClient("test2");
             client2.Should().BeSameAs(httpClient);
