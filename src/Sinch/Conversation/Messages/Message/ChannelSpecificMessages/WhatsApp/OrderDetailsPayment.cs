@@ -32,31 +32,19 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         /// The country/currency associated with the payment message.
         /// </summary>
         [JsonPropertyName("type")]
-#if NET7_0_OR_GREATER
         public required TypeEnum Type { get; set; }
-#else
-        public TypeEnum Type { get; set; } = null!;
-#endif
 
         /// <summary>
         /// The type of good associated with this order.
         /// </summary>
         [JsonPropertyName("type_of_goods")]
-#if NET7_0_OR_GREATER
         public required TypeOfGoods TypeOfGoods { get; set; }
-#else
-        public TypeOfGoods TypeOfGoods { get; set; } = null!;
-#endif
 
         /// <summary>
         ///     Unique reference ID.
         /// </summary>
         [JsonPropertyName("reference_id")]
-#if NET7_0_OR_GREATER
         public required string ReferenceId { get; set; }
-#else
-        public string ReferenceId { get; set; } = null!;
-#endif
 
         /// <summary>
         ///     Gets or Sets PaymentSettings
@@ -68,21 +56,13 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     Integer representing the total amount of the transaction.
         /// </summary>
         [JsonPropertyName("total_amount_value")]
-#if NET7_0_OR_GREATER
         public required int TotalAmountValue { get; set; }
-#else
-        public int TotalAmountValue { get; set; }
-#endif
 
         /// <summary>
         ///     Gets or Sets Order
         /// </summary>
         [JsonPropertyName("order")]
-#if NET7_0_OR_GREATER
         public required OrderDetailsPaymentOrder Order { get; set; }
-#else
-        public OrderDetailsPaymentOrder Order { get; set; } = null!;
-#endif
 
 
         /// <summary>

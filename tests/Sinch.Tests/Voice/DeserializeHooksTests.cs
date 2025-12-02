@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using FluentAssertions;
@@ -6,7 +5,6 @@ using Sinch.Voice;
 using Sinch.Voice.Callouts.Callout;
 using Sinch.Voice.Calls;
 using Sinch.Voice.Calls.Actions;
-using Sinch.Voice.Common;
 using Sinch.Voice.Hooks;
 using Xunit;
 using DestinationType = Sinch.Voice.Hooks.DestinationType;

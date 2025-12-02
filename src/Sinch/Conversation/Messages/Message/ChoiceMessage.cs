@@ -47,16 +47,6 @@ namespace Sinch.Conversation.Messages.Message
         {
         }
 
-        [Obsolete(
-            message:
-            "This method is obsolete and will be removed in a future version. Consider initializing properties directly",
-            error: false)]
-        public UrlMessage(string title, Uri url)
-        {
-            Title = title;
-            Url = url.ToString();
-        }
-
         [JsonPropertyName("title")]
         public required string Title { get; set; }
 
@@ -72,21 +62,6 @@ namespace Sinch.Conversation.Messages.Message
         [JsonConstructor]
         public CallMessage()
         {
-        }
-
-        /// <summary>
-        ///     Create an instance of CallMessage
-        /// </summary>
-        /// <param name="phoneNumber">Phone number in E.164 with leading +.</param>
-        /// <param name="title">Title shown close to the phone number. The title is clickable in some cases.</param>
-        [Obsolete(
-            message:
-            "This method is obsolete and will be removed in a future version. Consider initializing properties directly",
-            error: false)]
-        public CallMessage(string phoneNumber, string title)
-        {
-            PhoneNumber = phoneNumber;
-            Title = title;
         }
 
         /// <summary>

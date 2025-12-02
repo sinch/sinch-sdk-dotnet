@@ -38,22 +38,14 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     Value representing the subtotal amount of this order.
         /// </summary>
         [JsonPropertyName("subtotal_value")]
-#if NET7_0_OR_GREATER
         public required int SubtotalValue { get; set; }
-#else
-        public int SubtotalValue { get; set; }
-#endif
 
 
         /// <summary>
         ///     Value representing the tax amount for this order.
         /// </summary>
         [JsonPropertyName("tax_value")]
-#if NET7_0_OR_GREATER
         public required int TaxValue { get; set; }
-#else
-        public int TaxValue { get; set; }
-#endif
 
 
         /// <summary>
@@ -102,11 +94,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     The items list for this order.
         /// </summary>
         [JsonPropertyName("items")]
-#if NET7_0_OR_GREATER
         public required List<OrderDetailsPaymentOrderItems> Items { get; set; }
-#else
-        public List<OrderDetailsPaymentOrderItems> Items { get; set; } = null!;
-#endif
 
 
         /// <summary>
