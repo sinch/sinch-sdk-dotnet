@@ -128,5 +128,62 @@ namespace Sinch.Tests.Numbers
                 VoiceConfiguration = expected
             });
         }
+
+        [Fact]
+        public void ScheduledVoiceProvisioning_ShouldBeAbstract()
+        {
+            typeof(ScheduledVoiceProvisioning).IsAbstract.Should().BeTrue();
+        }
+
+        [Fact]
+        public void ScheduledVoiceRtcProvisioning_AppId_PresentAfterDeserialization()
+        {
+            var obj = DeserializeAsNumbersClient<Container>(
+                Helpers.LoadResources("Numbers/RtcVoiceResponse.json"));
+
+            var voiceRtc = obj.VoiceConfiguration as VoiceRtcConfiguration;
+            voiceRtc.Should().NotBeNull();
+
+            voiceRtc.ScheduledVoiceProvisioning.Should().BeOfType<ScheduledVoiceRtcProvisioning>();
+            var scheduledRtc = (ScheduledVoiceRtcProvisioning)voiceRtc.ScheduledVoiceProvisioning;
+            scheduledRtc.AppId.Should().Be("app id value");
+        }
+
+        [Fact]
+        public void VoiceRtcConfiguration_ShouldDeserializeToConcreteType()
+        {
+            var obj = DeserializeAsNumbersClient<Container>(
+                Helpers.LoadResources("Numbers/RtcVoiceResponse.json"));
+
+            obj.VoiceConfiguration.Should().BeOfType<VoiceRtcConfiguration>();
+        }
+
+        [Fact]
+        public void VoiceEstConfiguration_ShouldDeserializeToConcreteType()
+        {
+            var obj = DeserializeAsNumbersClient<Container>(
+                Helpers.LoadResources("Numbers/EstVoiceResponse.json"));
+
+            obj.VoiceConfiguration.Should().BeOfType<VoiceEstConfiguration>();
+        }
+
+        [Fact]
+        public void VoiceFaxConfiguration_ShouldDeserializeToConcreteType()
+        {
+            var obj = DeserializeAsNumbersClient<Container>(
+                Helpers.LoadResources("Numbers/FaxVoiceResponse.json"));
+
+            obj.VoiceConfiguration.Should().BeOfType<VoiceFaxConfiguration>();
+        }
+
+        [Fact]
+        public void VoiceConfigurationConverter_ShouldThrowOnUnknownType()
+        {
+            var unknownJson = """{"voiceConfiguration": {"type": "UNKNOWN"}}""";
+            
+            var act = () => DeserializeAsNumbersClient<Container>(unknownJson);
+            
+            act.Should().Throw<JsonException>();
+        }
     }
 }
