@@ -180,9 +180,9 @@ namespace Sinch.Tests.Numbers
         public void VoiceConfigurationConverter_ShouldThrowOnUnknownType()
         {
             var unknownJson = """{"voiceConfiguration": {"type": "UNKNOWN"}}""";
-            
+
             var act = () => DeserializeAsNumbersClient<Container>(unknownJson);
-            
+
             act.Should().Throw<JsonException>();
         }
     }
