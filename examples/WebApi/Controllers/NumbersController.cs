@@ -7,17 +7,18 @@ namespace WebApiExamples.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class Numbers : ControllerBase
+public class NumbersController : ControllerBase
 {
     private readonly ISinchClient _sinch;
 
-    public Numbers(ISinchClient sinch)
+    public NumbersController(ISinchClient sinch)
     {
         _sinch = sinch;
     }
 
-    [HttpGet(Name = "AvailableRegions")]
-    public async Task<IEnumerable<Region>> Get()
+    [HttpGet]
+    [Route("regions")]
+    public async Task<IEnumerable<Region>> GetRegions()
     {
         var regions = await _sinch.Numbers.Regions.List(new List<Types>());
         return regions;
