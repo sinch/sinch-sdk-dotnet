@@ -16,36 +16,6 @@ namespace Sinch.Tests.Numbers
         }
 
         [Fact]
-        // TODO: remove this possibility in 2.0
-        public void ShouldSerializeVoiceConfigPlainForBackwardCompatibility()
-        {
-            var voiceConfig = new VoiceConfiguration()
-            {
-                AppId = "app id value"
-            };
-            var jsonString = SerializeAsNumbersClient(new Container()
-            {
-                VoiceConfiguration = voiceConfig
-            });
-            Helpers.AssertJsonEqual(Helpers.LoadResources("Numbers/RtcVoiceSerializationExpected.json"), jsonString);
-        }
-
-        [Fact]
-        // TODO: remove this possibility in 2.0
-        public void ShouldDeserializeVoiceConfigPlainForBackwardCompatibility()
-        {
-            var obj =
-                DeserializeAsNumbersClient<Container>(
-                    Helpers.LoadResources("Numbers/RtcVoiceResponse.json"));
-
-            obj.VoiceConfiguration.Type.Should().BeEquivalentTo(VoiceApplicationType.Rtc);
-#pragma warning disable CS0618 // Type or member is obsolete
-            obj.VoiceConfiguration.AppId.Should().BeEquivalentTo("app id value");
-            obj.VoiceConfiguration.ScheduledVoiceProvisioning!.AppId.Should().BeEquivalentTo("app id value");
-#pragma warning restore CS0618 // Type or member is obsolete
-        }
-
-        [Fact]
         public void ShouldSerializeVoiceRtcConfiguration()
         {
             var config = new VoiceRtcConfiguration()
@@ -153,21 +123,67 @@ namespace Sinch.Tests.Numbers
                     LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
                 }
             };
-#pragma warning disable CS0618 // Type or member is obsolete
-            // backward compatibility for old plain ScheduledVoiceProvisioning and VoiceConfiguration
-            (expected as VoiceConfiguration).AppId = "app id value";
-            (expected as VoiceConfiguration).ScheduledVoiceProvisioning = new ScheduledVoiceProvisioning()
-            {
-                AppId = "app id value",
-                Type = VoiceApplicationType.Rtc,
-                Status = ProvisioningStatus.Waiting,
-                LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
-            };
-#pragma warning restore CS0618 // Type or member is obsolete
             obj.Should().BeEquivalentTo(new Container()
             {
                 VoiceConfiguration = expected
             });
+        }
+
+        [Fact]
+        public void ScheduledVoiceProvisioning_ShouldBeAbstract()
+        {
+            typeof(ScheduledVoiceProvisioning).IsAbstract.Should().BeTrue();
+        }
+
+        [Fact]
+        public void ScheduledVoiceRtcProvisioning_AppId_PresentAfterDeserialization()
+        {
+            var obj = DeserializeAsNumbersClient<Container>(
+                Helpers.LoadResources("Numbers/RtcVoiceResponse.json"));
+
+            var voiceRtc = obj.VoiceConfiguration as VoiceRtcConfiguration;
+            voiceRtc.Should().NotBeNull();
+
+            voiceRtc.ScheduledVoiceProvisioning.Should().BeOfType<ScheduledVoiceRtcProvisioning>();
+            var scheduledRtc = (ScheduledVoiceRtcProvisioning)voiceRtc.ScheduledVoiceProvisioning;
+            scheduledRtc.AppId.Should().Be("app id value");
+        }
+
+        [Fact]
+        public void VoiceRtcConfiguration_ShouldDeserializeToConcreteType()
+        {
+            var obj = DeserializeAsNumbersClient<Container>(
+                Helpers.LoadResources("Numbers/RtcVoiceResponse.json"));
+
+            obj.VoiceConfiguration.Should().BeOfType<VoiceRtcConfiguration>();
+        }
+
+        [Fact]
+        public void VoiceEstConfiguration_ShouldDeserializeToConcreteType()
+        {
+            var obj = DeserializeAsNumbersClient<Container>(
+                Helpers.LoadResources("Numbers/EstVoiceResponse.json"));
+
+            obj.VoiceConfiguration.Should().BeOfType<VoiceEstConfiguration>();
+        }
+
+        [Fact]
+        public void VoiceFaxConfiguration_ShouldDeserializeToConcreteType()
+        {
+            var obj = DeserializeAsNumbersClient<Container>(
+                Helpers.LoadResources("Numbers/FaxVoiceResponse.json"));
+
+            obj.VoiceConfiguration.Should().BeOfType<VoiceFaxConfiguration>();
+        }
+
+        [Fact]
+        public void VoiceConfigurationConverter_ShouldThrowOnUnknownType()
+        {
+            var unknownJson = """{"voiceConfiguration": {"type": "UNKNOWN"}}""";
+
+            var act = () => DeserializeAsNumbersClient<Container>(unknownJson);
+
+            act.Should().Throw<JsonException>();
         }
     }
 }

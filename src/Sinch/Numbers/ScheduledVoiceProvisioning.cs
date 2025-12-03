@@ -4,7 +4,7 @@ using Sinch.Numbers.VoiceConfigurations;
 
 namespace Sinch.Numbers
 {
-    public class ScheduledVoiceProvisioning
+    public abstract class ScheduledVoiceProvisioning
     {
         /// <summary>
         /// Gets or Sets Type
@@ -12,7 +12,7 @@ namespace Sinch.Numbers
         [JsonPropertyName("type")]
         [JsonInclude]
         // Expected to be set by the API response, or by Subclasses
-        public virtual VoiceApplicationType? Type { get; internal set; }
+        public abstract VoiceApplicationType? Type { get; internal set; }
 
         /// <summary>
         ///     The provisioning status. It will be either WAITING, IN_PROGRESS or FAILED.
@@ -28,12 +28,5 @@ namespace Sinch.Numbers
         ///     Timestamp when the status was last updated.
         /// </summary>
         public DateTime? LastUpdatedTime { get; set; }
-
-        /// <summary>
-        ///     Your app ID for the Voice API. The &#x60;appId&#x60; can be found in your [Sinch Customer Dashboard](https://dashboard.sinch.com/voice/apps).
-        /// </summary>
-        [JsonPropertyName("appId")]
-        [Obsolete($"Plain {nameof(ScheduledVoiceProvisioning)} will become abstract in future versions. Use concrete type of {nameof(ScheduledVoiceRtcProvisioning)}.")]
-        public string? AppId { get; set; }
     }
 }
