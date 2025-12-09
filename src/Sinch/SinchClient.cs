@@ -314,7 +314,7 @@ namespace Sinch
         /// <inheritdoc />
         public void Dispose()
         {
-            if (_disposed) 
+            if (_disposed)
                 return;
 
             if (_httpClientFactory is DefaultHttpClientFactory defaultFactory)

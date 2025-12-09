@@ -10,7 +10,7 @@ namespace Sinch.Core
     internal sealed class DefaultHttpClientFactory : IHttpClientFactory, IDisposable
     {
         private bool _disposed;
-        private readonly HttpClient _httpClient; 
+        private readonly HttpClient _httpClient;
 
         /// <summary>
         /// Default connection lifetime before recreation (DNS refresh interval).
@@ -50,7 +50,7 @@ namespace Sinch.Core
         {
             if (_disposed)
                 return;
-            
+
             _httpClient.Dispose();
             _disposed = true;
         }
