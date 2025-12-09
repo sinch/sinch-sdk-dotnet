@@ -69,7 +69,8 @@ var sinch = new SinchClient(
 ```
 ## [Migrating to 2.0](docs/MigrationTo2.0.md)
 
-If you are coming from version 1.*, you can see how to use 
+If you are upgrading from version 1.*, please refer to the [migration guide](docs/MigrationTo2.0.md) for detailed instructions. Version 2.0 introduces a new configuration-based initialization pattern using `SinchClientConfiguration`, changes to Voice and Verification client setup, and updates to how regions and options are configured.
+
 ## Supported Sinch Products
 
 Sinch client provides access to the following Sinch products:
