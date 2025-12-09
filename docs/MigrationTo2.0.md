@@ -1,12 +1,12 @@
 # Migration to 2.0
 
 ## Content list:
-- [Initialize with unified credentials](#initialize-sinchclient-with-unified-credentials)
-- [Voice and Verification initialization](#initialize-voice-and-verification-clients)
-- [Logger and HttpClient](#provide-logger-and-your-own-httpclient)
-- [Set API Regions](#set-api-regionswhere-applicable)
-- [Override API Urls](#override-api-urls)
-- [Use Sms with Service Plan Id](#use-sms-api-with-serviceplanid)
+- [Initialize SinchClient with unified credentials](#initialize-sinchclient-with-unified-credentials)
+- [Initialize Voice and Verification clients](#initialize-voice-and-verification-clients)
+- [Provide Logger, and your own HttpClient](#provide-logger-and-your-own-httpclient)
+- [Set API Regions (where applicable)](#set-api-regionswhere-applicable)
+- [Override API urls](#override-api-urls)
+- [Use SMS API with ServicePlanId](#use-sms-api-with-serviceplanid)
 
 ## Initialize `SinchClient` with unified credentials:
 
