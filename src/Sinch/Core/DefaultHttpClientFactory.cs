@@ -7,9 +7,10 @@ namespace Sinch.Core
     ///     Default implementation of IHttpClientFactory for scenarios where DI is not available.
     ///     Creates and manages a single HttpClient instance with configured SocketsHttpHandler.
     /// </summary>
-    internal sealed class DefaultHttpClientFactory : IHttpClientFactory
+    internal sealed class DefaultHttpClientFactory : IHttpClientFactory, IDisposable
     {
-        private readonly HttpClient _httpClient;
+        private bool _disposed;
+        private readonly HttpClient _httpClient; 
 
         /// <summary>
         /// Default connection lifetime before recreation (DNS refresh interval).
@@ -43,6 +44,15 @@ namespace Sinch.Core
         public HttpClient CreateClient(string name)
         {
             return _httpClient;
+        }
+
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+            
+            _httpClient.Dispose();
+            _disposed = true;
         }
     }
 }
