@@ -13,7 +13,7 @@ using Sinch.Voice;
 
 namespace Sinch
 {
-    public interface ISinchClient
+    public interface ISinchClient : IDisposable
     {
         /// <summary>
         ///     An OAuth2.0 functionality for an SDK in case you want to fetch tokens.
@@ -110,8 +110,10 @@ namespace Sinch
 
     public sealed class SinchClient : ISinchClient
     {
+        private bool _disposed;
         private readonly Lazy<ISinchConversation> _conversation;
         private readonly Func<HttpClient> _httpClientAccessor;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         private readonly SinchClientConfiguration _sinchClientConfiguration;
 
@@ -139,9 +141,9 @@ namespace Sinch
             _logger?.LogInformation("Initializing SinchClient...");
 
             // Setup HttpClient accessor using IHttpClientFactory
-            var httpClientFactory = _sinchClientConfiguration.SinchOptions?.HttpClientFactory
+            _httpClientFactory = _sinchClientConfiguration.SinchOptions?.HttpClientFactory
                 ?? new DefaultHttpClientFactory(_sinchClientConfiguration.SinchOptions?.HttpClientHandlerConfiguration);
-            _httpClientAccessor = () => httpClientFactory.CreateClient("SinchClient");
+            _httpClientAccessor = () => _httpClientFactory.CreateClient("SinchClient");
 
             _sinchOauth = new Lazy<ISinchAuth>(() =>
                 {
@@ -307,6 +309,20 @@ namespace Sinch
                 sinchSmsConfiguration.ResolveUrl(),
                 _loggerFactory,
                 _httpSnakeCase.Value);
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            if (_disposed) 
+                return;
+
+            if (_httpClientFactory is DefaultHttpClientFactory defaultFactory)
+            {
+                defaultFactory.Dispose();
+            }
+
+            _disposed = true;
         }
     }
 }

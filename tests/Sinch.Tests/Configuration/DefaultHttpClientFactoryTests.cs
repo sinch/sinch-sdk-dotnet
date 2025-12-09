@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Core;
 using Xunit;
@@ -147,6 +148,44 @@ namespace Sinch.Tests.Configuration
 
             // Assert
             httpClient.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task Dispose_ShouldDisposeHttpClient()
+        {
+            // Arrange
+            var factory = new DefaultHttpClientFactory();
+            var httpClient = factory.CreateClient("test");
+
+            // Act
+            factory.Dispose();
+
+            // Assert - HttpClient should be disposed (attempting to use it should throw)
+            Func<Task> act = async () => await httpClient.GetAsync("http://localhost");
+            await act.Should().ThrowAsync<ObjectDisposedException>();
+        }
+
+        [Fact]
+        public void Dispose_CalledMultipleTimes_ShouldNotThrow()
+        {
+            // Arrange
+            var factory = new DefaultHttpClientFactory();
+
+            // Act & Assert - multiple dispose calls should not throw
+            Action act = () =>
+            {
+                factory.Dispose();
+                factory.Dispose();
+                factory.Dispose();
+            };
+            act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void Dispose_ShouldImplementIDisposable()
+        {
+            // Assert
+            typeof(DefaultHttpClientFactory).Should().Implement<IDisposable>();
         }
     }
 }
