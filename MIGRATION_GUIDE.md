@@ -7,6 +7,7 @@
 - [Set API Regions (where applicable)](#set-api-regionswhere-applicable)
 - [Override API urls](#override-api-urls)
 - [Use SMS API with ServicePlanId](#use-sms-api-with-serviceplanid)
+- [VoiceConfiguration is now abstract](#voiceconfiguration-is-now-abstract)
 - [ScheduledVoiceProvisioning is now abstract](#scheduledvoiceprovisioning-is-now-abstract)
 
 ## Initialize `SinchClient` with unified credentials:
@@ -162,6 +163,48 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
         "YOUR_api_token", SmsServicePlanIdRegion.Eu)
 });
 ```
+
+## VoiceConfiguration is now abstract
+
+The `VoiceConfiguration` class in the Numbers API is now abstract. You must use one of the concrete implementations based on your voice application type:
+
+| Voice Application Type | Use This Class |
+|------------------------|----------------|
+| RTC (Voice apps) | `VoiceRtcConfiguration` |
+| EST (Elastic SIP Trunking) | `VoiceEstConfiguration` |
+| FAX (Fax services) | `VoiceFaxConfiguration` |
+
+Version 1.*:
+```csharp
+var voiceConfig = new VoiceConfiguration()
+{
+    Type = VoiceApplicationType.Rtc,
+    LastUpdatedTime = DateTime.UtcNow
+};
+```
+
+Version 2.*:
+```csharp
+// For RTC (Voice) applications
+var voiceConfig = new VoiceRtcConfiguration()
+{
+    AppId = "YOUR_app_id"
+};
+
+// For EST (Elastic SIP Trunking)
+var voiceConfig = new VoiceEstConfiguration()
+{
+    TrunkId = "YOUR_trunk_id"
+};
+
+// For FAX services
+var voiceConfig = new VoiceFaxConfiguration()
+{
+    ServiceId = "YOUR_service_id"
+};
+```
+
+**Note:** When reading responses from the Numbers API, the SDK will automatically deserialize to the correct concrete type based on the `type` field in the response.
 
 ## ScheduledVoiceProvisioning is now abstract
 
