@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="voiceConfigurations/scheduledVoiceProvisioning/ScheduledVoiceProvisioning.csproj" />
+  <Project Path="voiceConfigurations/voiceconfiguration/VoiceConfiguration.csproj" />
+</Solution>
