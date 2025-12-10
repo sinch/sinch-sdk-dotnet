@@ -56,12 +56,7 @@ var sinch = new SinchClient(new SinchClientConfiguration
     SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ },
     SinchOptions = new SinchOptions
     {
-        HttpClientHandlerConfiguration = new HttpClientHandlerConfiguration
-        {
-            PooledConnectionLifetime = TimeSpan.FromMinutes(5),
-            PooledConnectionIdleTimeout = TimeSpan.FromMinutes(2),
-            MaxConnectionsPerServer = 20 // More concurrent connections
-        }
+        HttpClientHandlerConfiguration = new HttpClientHandlerConfiguration()
     }
 });
 ```
@@ -74,12 +69,7 @@ var sinch = new SinchClient(new SinchClientConfiguration
     SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ },
     SinchOptions = new SinchOptions
     {
-        HttpClientHandlerConfiguration = new HttpClientHandlerConfiguration
-        {
-            PooledConnectionLifetime = TimeSpan.FromMinutes(10), // Less frequent rotation
-            PooledConnectionIdleTimeout = TimeSpan.FromMinutes(5),
-            MaxConnectionsPerServer = 3 // Fewer connections to avoid rate limits
-        }
+        HttpClientHandlerConfiguration = new HttpClientHandlerConfiguration()
     }
 });
 ```
