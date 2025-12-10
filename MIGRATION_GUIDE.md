@@ -7,6 +7,7 @@
 - [Set API Regions (where applicable)](#set-api-regionswhere-applicable)
 - [Override API urls](#override-api-urls)
 - [Use SMS API with ServicePlanId](#use-sms-api-with-serviceplanid)
+- [ScheduledVoiceProvisioning is now abstract](#scheduledvoiceprovisioning-is-now-abstract)
 
 ## Initialize `SinchClient` with unified credentials:
 
@@ -162,3 +163,50 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 });
 ```
 
+## ScheduledVoiceProvisioning is now abstract
+
+The `ScheduledVoiceProvisioning` class is now abstract. You must use one of the concrete implementations based on your voice application type:
+
+| Voice Application Type | Use This Class |
+|------------------------|----------------|
+| RTC (Voice apps) | `ScheduledVoiceRtcProvisioning` |
+| EST (Elastic SIP Trunking) | `ScheduledVoiceEstProvisioning` |
+| FAX (Fax services) | `ScheduledVoiceFaxProvisioning` |
+
+Version 1.*:
+```csharp
+var scheduledProvisioning = new ScheduledVoiceProvisioning()
+{
+    Status = ProvisioningStatus.Waiting,
+    LastUpdatedTime = DateTime.UtcNow
+};
+```
+
+Version 2.*:
+```csharp
+// For RTC (Voice) applications
+var scheduledProvisioning = new ScheduledVoiceRtcProvisioning()
+{
+    AppId = "YOUR_app_id",
+    Status = ProvisioningStatus.Waiting,
+    LastUpdatedTime = DateTime.UtcNow
+};
+
+// For EST (Elastic SIP Trunking)
+var scheduledProvisioning = new ScheduledVoiceEstProvisioning()
+{
+    TrunkId = "YOUR_trunk_id",
+    Status = ProvisioningStatus.Waiting,
+    LastUpdatedTime = DateTime.UtcNow
+};
+
+// For FAX services
+var scheduledProvisioning = new ScheduledVoiceFaxProvisioning()
+{
+    ServiceId = "YOUR_service_id",
+    Status = ProvisioningStatus.Waiting,
+    LastUpdatedTime = DateTime.UtcNow
+};
+```
+
+**Note:** When reading responses from the Numbers API, the SDK will automatically deserialize to the correct concrete type based on the `type` field in the response.
