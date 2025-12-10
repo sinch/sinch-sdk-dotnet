@@ -109,9 +109,8 @@ namespace Sinch.Tests.Numbers
         [Fact]
         public void ShouldDeserializeVoiceRtcConfiguration()
         {
-            var obj =
-                DeserializeAsNumbersClient<Container>(
-                    Helpers.LoadResources("Numbers/RtcVoiceResponse.json"));
+            var container = DeserializeAsNumbersClient<Container>(Helpers.LoadResources("Numbers/RtcVoiceResponse.json"));
+            
             var expected = new VoiceRtcConfiguration()
             {
                 AppId = "app id value",
@@ -123,7 +122,7 @@ namespace Sinch.Tests.Numbers
                     LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
                 }
             };
-            obj.Should().BeEquivalentTo(new Container()
+            container.Should().BeEquivalentTo(new Container()
             {
                 VoiceConfiguration = expected
             });
@@ -136,17 +135,24 @@ namespace Sinch.Tests.Numbers
         }
 
         [Fact]
-        public void ScheduledVoiceRtcProvisioning_AppId_PresentAfterDeserialization()
+        public void ScheduledVoiceRtcProvisioning_ShouldDeserializeToConcreteType()
         {
             var obj = DeserializeAsNumbersClient<Container>(
                 Helpers.LoadResources("Numbers/RtcVoiceResponse.json"));
 
-            var voiceRtc = obj.VoiceConfiguration as VoiceRtcConfiguration;
-            voiceRtc.Should().NotBeNull();
+            var voiceRtc = (VoiceRtcConfiguration)obj.VoiceConfiguration;
 
+            // Unique value: Explicitly tests the polymorphic deserialization
             voiceRtc.ScheduledVoiceProvisioning.Should().BeOfType<ScheduledVoiceRtcProvisioning>();
-            var scheduledRtc = (ScheduledVoiceRtcProvisioning)voiceRtc.ScheduledVoiceProvisioning;
-            scheduledRtc.AppId.Should().Be("app id value");
+
+            // Use BeEquivalentTo for completeness
+            var scheduledRtc = voiceRtc.ScheduledVoiceProvisioning;
+            scheduledRtc.Should().BeEquivalentTo(new ScheduledVoiceRtcProvisioning()
+            {
+                AppId = "app id value",
+                Status = ProvisioningStatus.Waiting,
+                LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
+            });
         }
 
         [Fact]
