@@ -71,9 +71,8 @@ This example uses **User Secrets** to securely store your Sinch API credentials 
    ```
 
 3. The API will be available at:
-   - HTTPS: `https://localhost:5001`
    - HTTP: `http://localhost:5000`
-   - Swagger UI: `https://localhost:5001/swagger`
+   - Swagger UI: `https://localhost:5000/swagger`
 
 ## API Configuration
 
