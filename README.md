@@ -14,9 +14,12 @@ For more information on the Sinch APIs on which this SDK is based, refer to the 
 - [Installation](#installation)
 - [Getting started](#getting-started)
 - [Client initialization](#client-initialization)
-- [Supported Sinch products](#supported-sinch-products)
-- [Logging, HttpClient and additional options](#logging-httpclient-and-additional-options)
-- [Handling Exceptions](#handling-exceptions)
+- [Migrating to 2.0](#migrating-to-20)
+- [Supported Sinch Products](#supported-sinch-products)
+- [Logging, HttpClient, and additional options](#logging-httpclient-and-additional-options)
+- [Handling exceptions](#handling-exceptions)
+- [Sample apps](#sample-apps)
+- [License](#license)
 
 ## Installation
 
@@ -64,6 +67,9 @@ var sinch = new SinchClient(
         options.ConversationRegion = Sinch.Conversation.ConversationRegion.Eu;
     });
 ```
+## Migrating to 2.0
+
+If you are upgrading from version 1, please refer to the [migration guide](MIGRATION_GUIDE.md) for detailed instructions. Version 2.0 introduces a new configuration-based initialization pattern using `SinchClientConfiguration`, changes to Voice and Verification client setup, and updates to how regions and options are configured.
 
 ## Supported Sinch Products
 
