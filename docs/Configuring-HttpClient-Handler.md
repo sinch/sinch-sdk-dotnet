@@ -10,25 +10,8 @@
 |----------|-------------------------------------|----------------|
 | **Console App** | ✅ Yes | Via `SinchOptions.HttpClientHandlerConfiguration` |
 | **Desktop App** | ✅ Yes | Via `SinchOptions.HttpClientHandlerConfiguration` |
-| **Unity** | ✅ Yes | Via `SinchOptions.HttpClientHandlerConfiguration` |
 | **ASP.NET Core** | ❌ No | Via `IHttpClientBuilder.ConfigurePrimaryHttpMessageHandler()` |
 | **Worker Service with DI** | ❌ No | Via `IHttpClientBuilder.ConfigurePrimaryHttpMessageHandler()` |
-
-### Properties
-
-| Property | Default | Purpose |
-|----------|---------|---------|
-| `PooledConnectionLifetime` | 5 minutes | DNS refresh interval - connections recreated after this time |
-| `PooledConnectionIdleTimeout` | 2 minutes | Close idle connections to free resources |
-| `MaxConnectionsPerServer` | 10 | Limit concurrent connections per endpoint |
-
-### Default Constants
-
-```csharp
-DefaultHttpClientFactory.DefaultPooledConnectionLifetime      // 5 minutes
-DefaultHttpClientFactory.DefaultPooledConnectionIdleTimeout   // 2 minutes
-DefaultHttpClientFactory.DefaultMaxConnectionsPerServer       // 10
-```
 
 ---
 
