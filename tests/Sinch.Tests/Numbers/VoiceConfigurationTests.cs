@@ -162,6 +162,26 @@ namespace Sinch.Tests.Numbers
         }
 
         [Fact]
+        public void ScheduledVoiceFaxProvisioning_ShouldDeserializeToConcreteType()
+        {
+            var container = DeserializeAsNumbersClient<Container>(
+                Helpers.LoadResources("Numbers/FaxVoiceResponse.json"));
+
+            var voiceFax = (VoiceFaxConfiguration)container.VoiceConfiguration;
+            voiceFax.ScheduledVoiceProvisioning.Should().BeOfType<ScheduledVoiceFaxProvisioning>();
+        }
+
+        [Fact]
+        public void ScheduledVoiceEstProvisioning_ShouldDeserializeToConcreteType()
+        {
+            var container = DeserializeAsNumbersClient<Container>(
+                Helpers.LoadResources("Numbers/EstVoiceResponse.json"));
+
+            var voiceEst = (VoiceEstConfiguration)container.VoiceConfiguration;
+            voiceEst.ScheduledVoiceProvisioning.Should().BeOfType<ScheduledVoiceEstProvisioning>();
+        }
+
+        [Fact]
         public void VoiceRtcConfiguration_ShouldDeserializeToConcreteType()
         {
             var obj = DeserializeAsNumbersClient<Container>(
@@ -223,7 +243,6 @@ namespace Sinch.Tests.Numbers
 
             deserialized.VoiceConfiguration.Should().BeOfType<VoiceRtcConfiguration>();
             var rtcConfig = (VoiceRtcConfiguration)deserialized.VoiceConfiguration;
-
             rtcConfig.AppId.Should().Be("test-app-id");
             rtcConfig.Type.Should().Be(VoiceApplicationType.Rtc);
         }
@@ -241,7 +260,6 @@ namespace Sinch.Tests.Numbers
 
             deserialized.VoiceConfiguration.Should().BeOfType<VoiceFaxConfiguration>();
             var faxConfig = (VoiceFaxConfiguration)deserialized.VoiceConfiguration;
-
             faxConfig.ServiceId.Should().Be("test-service-id");
             faxConfig.Type.Should().Be(VoiceApplicationType.Fax);
         }
@@ -259,7 +277,6 @@ namespace Sinch.Tests.Numbers
 
             deserialized.VoiceConfiguration.Should().BeOfType<VoiceEstConfiguration>();
             var estConfig = (VoiceEstConfiguration)deserialized.VoiceConfiguration;
-
             estConfig.TrunkId.Should().Be("test-trunk-id");
             estConfig.Type.Should().Be(VoiceApplicationType.Est);
         }
@@ -274,6 +291,19 @@ namespace Sinch.Tests.Numbers
             fax.Type.Should().Be(VoiceApplicationType.Fax);
 
             var est = new VoiceEstConfiguration();
+            est.Type.Should().Be(VoiceApplicationType.Est);
+        }
+
+        [Fact]
+        public void ScheduledVoiceProvisioning_Type_ShouldBeSetCorrectlyForEachImplementation()
+        {
+            var rtc = new ScheduledVoiceRtcProvisioning();
+            rtc.Type.Should().Be(VoiceApplicationType.Rtc);
+
+            var fax = new ScheduledVoiceFaxProvisioning();
+            fax.Type.Should().Be(VoiceApplicationType.Fax);
+
+            var est = new ScheduledVoiceEstProvisioning();
             est.Type.Should().Be(VoiceApplicationType.Est);
         }
     }
