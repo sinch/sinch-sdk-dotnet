@@ -2,7 +2,7 @@
 
 ## Quick Reference
 
-`HttpClientHandlerConfiguration` allows **console apps and other non-DI scenarios** to customize HTTP client behavior (DNS refresh, connection pooling, connection limits).
+[`HttpClientHandlerConfiguration`](https://github.com/sinch/sinch-sdk-dotnet/blob/main/src/Sinch/HttpClientHandlerConfiguration.cs) allows **console apps and other non-DI scenarios** to customize HTTP client behavior (DNS refresh, connection pooling, connection limits).
 
 ### When to Use
 
