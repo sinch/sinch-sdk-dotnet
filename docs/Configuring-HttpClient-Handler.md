@@ -38,12 +38,7 @@ var sinch = new SinchClient(new SinchClientConfiguration
     },
     SinchOptions = new SinchOptions
     {
-        HttpClientHandlerConfiguration = new HttpClientHandlerConfiguration
-        {
-            PooledConnectionLifetime = TimeSpan.FromMinutes(2), // Faster DNS refresh
-            PooledConnectionIdleTimeout = TimeSpan.FromMinutes(1),
-            MaxConnectionsPerServer = 10
-        }
+        HttpClientHandlerConfiguration = new HttpClientHandlerConfiguration()
     }
 });
 ```
