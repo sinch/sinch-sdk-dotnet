@@ -16,6 +16,12 @@ namespace Sinch.Tests.Numbers
         }
 
         [Fact]
+        public void VoiceConfiguration_ShouldBeAbstract()
+        {
+            typeof(VoiceConfiguration).IsAbstract.Should().BeTrue();
+        }
+
+        [Fact]
         public void ShouldSerializeVoiceRtcConfiguration()
         {
             var config = new VoiceRtcConfiguration()
@@ -189,7 +195,86 @@ namespace Sinch.Tests.Numbers
 
             var act = () => DeserializeAsNumbersClient<Container>(unknownJson);
 
-            act.Should().Throw<JsonException>();
+            act.Should().Throw<JsonException>()
+                .WithMessage("*Type tag is invalid*");
+        }
+
+        [Fact]
+        public void VoiceConfigurationConverter_ShouldThrowOnMissingType()
+        {
+            var noTypeJson = """{"voiceConfiguration": {"lastUpdatedTime": "2024-07-01T11:58:35.610198Z"}}""";
+
+            var act = () => DeserializeAsNumbersClient<Container>(noTypeJson);
+
+            act.Should().Throw<JsonException>()
+                .WithMessage("*Failed to deserialize VoiceConfiguration*");
+        }
+
+        [Fact]
+        public void VoiceRtcConfiguration_RoundTrip_ShouldPreserveAllProperties()
+        {
+            var original = new VoiceRtcConfiguration()
+            {
+                AppId = "test-app-id"
+            };
+
+            var json = SerializeAsNumbersClient(new Container { VoiceConfiguration = original });
+            var deserialized = DeserializeAsNumbersClient<Container>(json);
+
+            deserialized.VoiceConfiguration.Should().BeOfType<VoiceRtcConfiguration>();
+            var rtcConfig = (VoiceRtcConfiguration)deserialized.VoiceConfiguration;
+
+            rtcConfig.AppId.Should().Be("test-app-id");
+            rtcConfig.Type.Should().Be(VoiceApplicationType.Rtc);
+        }
+
+        [Fact]
+        public void VoiceFaxConfiguration_RoundTrip_ShouldPreserveAllProperties()
+        {
+            var original = new VoiceFaxConfiguration()
+            {
+                ServiceId = "test-service-id"
+            };
+
+            var json = SerializeAsNumbersClient(new Container { VoiceConfiguration = original });
+            var deserialized = DeserializeAsNumbersClient<Container>(json);
+
+            deserialized.VoiceConfiguration.Should().BeOfType<VoiceFaxConfiguration>();
+            var faxConfig = (VoiceFaxConfiguration)deserialized.VoiceConfiguration;
+
+            faxConfig.ServiceId.Should().Be("test-service-id");
+            faxConfig.Type.Should().Be(VoiceApplicationType.Fax);
+        }
+
+        [Fact]
+        public void VoiceEstConfiguration_RoundTrip_ShouldPreserveAllProperties()
+        {
+            var original = new VoiceEstConfiguration()
+            {
+                TrunkId = "test-trunk-id"
+            };
+
+            var json = SerializeAsNumbersClient(new Container { VoiceConfiguration = original });
+            var deserialized = DeserializeAsNumbersClient<Container>(json);
+
+            deserialized.VoiceConfiguration.Should().BeOfType<VoiceEstConfiguration>();
+            var estConfig = (VoiceEstConfiguration)deserialized.VoiceConfiguration;
+
+            estConfig.TrunkId.Should().Be("test-trunk-id");
+            estConfig.Type.Should().Be(VoiceApplicationType.Est);
+        }
+
+        [Fact]
+        public void VoiceConfiguration_Type_ShouldBeSetCorrectlyForEachImplementation()
+        {
+            var rtc = new VoiceRtcConfiguration();
+            rtc.Type.Should().Be(VoiceApplicationType.Rtc);
+
+            var fax = new VoiceFaxConfiguration();
+            fax.Type.Should().Be(VoiceApplicationType.Fax);
+
+            var est = new VoiceEstConfiguration();
+            est.Type.Should().Be(VoiceApplicationType.Est);
         }
     }
 }

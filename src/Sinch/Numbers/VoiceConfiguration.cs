@@ -5,7 +5,7 @@ using Sinch.Numbers.VoiceConfigurations;
 
 namespace Sinch.Numbers
 {
-    public class VoiceConfiguration
+    public abstract class VoiceConfiguration
     {
         /// <summary>
         /// Gets or Sets Type
