@@ -23,23 +23,6 @@ For **console apps** and other **non-DI scenarios**, you can now customize the `
 
 ---
 
-## Default Configuration
-
-If you don't specify any configuration, the SDK uses these sensible defaults:
-
-```csharp
-var sinch = new SinchClient(new SinchClientConfiguration
-{
-    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ }
-    // Uses default configuration automatically:
-    // - PooledConnectionLifetime: 5 minutes (DNS refresh)
-    // - PooledConnectionIdleTimeout: 2 minutes
-    // - MaxConnectionsPerServer: 10
-});
-```
-
----
-
 ## Custom Configuration
 
 ### Example: Faster DNS Updates
