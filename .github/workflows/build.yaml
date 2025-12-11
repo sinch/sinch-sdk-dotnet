@@ -1,33 +1,10 @@
 ﻿name: build
 on: [ push ]
 
-env:
-  MOCK_AUTH_PORT: 6039
-  MOCK_SMS_PORT: 6041
-  MOCK_NUMBERS_PORT: 6040
-  MOCK_CONVERSATION_PORT: 6042
-  MOCK_VERIFICATION_PORT: 6043
-  MOCK_VOICE_PORT: 6044
-  MOCK_FAX_PORT: 6046
-
 jobs:
   build:
     runs-on: ubuntu-latest
-        
-    services:
-      doppleganger:
-        image: dovchik/pastel:latest
-        credentials:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_DOVCHIK_PRIVATE }}
-        ports:
-          - 6039:6039
-          - 6040:6040
-          - 6041:6041
-          - 6042:6042
-          - 6043:6043
-          - 6044:6044
-          - 6046:6046
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -53,18 +30,6 @@ jobs:
           dotnet-version: |
             8.0.x
             9.0.x
-
-      - name: Checkout Wiremock fixtures repo
-        uses: actions/checkout@v3
-        with:
-          repository: sinch/sinch-sdk-internal-specs
-          token: ${{ secrets.GH_PAT_FINE }}
-          ref: numbers_fixtures
-          path: sinch-sdk-internal-specs
-
-      - name: Run WireMock with fixtures
-        run: |
-          cd sinch-sdk-internal-specs/fixtures/python/ && java -jar wiremock-studio-2.32.0-17.jar &
 
       - name: Install dependencies
         run: dotnet restore
