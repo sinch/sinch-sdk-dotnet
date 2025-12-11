@@ -52,6 +52,17 @@ namespace Sinch.Core
         }
 
         /// <inheritdoc />
+        /// <summary>
+        ///     Creates or returns the shared HttpClient instance.
+        /// </summary>
+        /// <param name="name">
+        ///     The logical name of the client. This parameter is ignored because
+        ///     this factory manages a single shared HttpClient instance for all Sinch API calls.
+        ///     Unlike ASP.NET Core's IHttpClientFactory which supports multiple named configurations,
+        ///     this simplified implementation is designed for non-DI scenarios (e.g., console apps)
+        ///     where a single HttpClient is sufficient.
+        /// </param>
+        /// <returns>The shared HttpClient instance.</returns>
         public HttpClient CreateClient(string name)
         {
             return _httpClient;
