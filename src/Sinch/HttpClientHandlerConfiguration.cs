@@ -43,6 +43,7 @@ public sealed class HttpClientHandlerConfiguration
 
     /// <summary>
     ///     Creates default configuration with recommended values.
+    ///     See <see cref="Core.DefaultHttpClientFactory"/> for the actual default values used.
     /// </summary>
     public static HttpClientHandlerConfiguration Default => new()
     {
