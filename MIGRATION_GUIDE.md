@@ -168,88 +168,43 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 
 The `VoiceConfiguration` class in the Numbers API is now abstract. You must use one of the concrete implementations based on your voice application type:
 
-| Voice Application Type | Use This Class |
-|------------------------|----------------|
-| RTC (Voice apps) | `VoiceRtcConfiguration` |
-| EST (Elastic SIP Trunking) | `VoiceEstConfiguration` |
-| FAX (Fax services) | `VoiceFaxConfiguration` |
-
 Version 1.*:
 ```csharp
 var voiceConfig = new VoiceConfiguration()
 {
-    Type = VoiceApplicationType.Rtc,
-    LastUpdatedTime = DateTime.UtcNow
+    Type = VoiceApplicationType.Rtc
 };
 ```
 
 Version 2.*:
 ```csharp
 // For RTC (Voice) applications
-var voiceConfig = new VoiceRtcConfiguration()
-{
-    AppId = "YOUR_app_id"
-};
+var voiceConfig = new VoiceRtcConfiguration();
 
 // For EST (Elastic SIP Trunking)
-var voiceConfig = new VoiceEstConfiguration()
-{
-    TrunkId = "YOUR_trunk_id"
-};
+var voiceConfig = new VoiceEstConfiguration();
 
 // For FAX services
-var voiceConfig = new VoiceFaxConfiguration()
-{
-    ServiceId = "YOUR_service_id"
-};
+var voiceConfig = new VoiceFaxConfiguration();
 ```
-
-**Note:** When reading responses from the Numbers API, the SDK will automatically deserialize to the correct concrete type based on the `type` field in the response.
 
 ## ScheduledVoiceProvisioning is now abstract
 
 The `ScheduledVoiceProvisioning` class is now abstract. You must use one of the concrete implementations based on your voice application type:
 
-| Voice Application Type | Use This Class |
-|------------------------|----------------|
-| RTC (Voice apps) | `ScheduledVoiceRtcProvisioning` |
-| EST (Elastic SIP Trunking) | `ScheduledVoiceEstProvisioning` |
-| FAX (Fax services) | `ScheduledVoiceFaxProvisioning` |
-
 Version 1.*:
 ```csharp
-var scheduledProvisioning = new ScheduledVoiceProvisioning()
-{
-    Status = ProvisioningStatus.Waiting,
-    LastUpdatedTime = DateTime.UtcNow
-};
+var scheduledProvisioning = new ScheduledVoiceProvisioning();
 ```
 
 Version 2.*:
 ```csharp
 // For RTC (Voice) applications
-var scheduledProvisioning = new ScheduledVoiceRtcProvisioning()
-{
-    AppId = "YOUR_app_id",
-    Status = ProvisioningStatus.Waiting,
-    LastUpdatedTime = DateTime.UtcNow
-};
+var scheduledProvisioning = new ScheduledVoiceRtcProvisioning();
 
 // For EST (Elastic SIP Trunking)
-var scheduledProvisioning = new ScheduledVoiceEstProvisioning()
-{
-    TrunkId = "YOUR_trunk_id",
-    Status = ProvisioningStatus.Waiting,
-    LastUpdatedTime = DateTime.UtcNow
-};
+var scheduledProvisioning = new ScheduledVoiceEstProvisioning();
 
 // For FAX services
-var scheduledProvisioning = new ScheduledVoiceFaxProvisioning()
-{
-    ServiceId = "YOUR_service_id",
-    Status = ProvisioningStatus.Waiting,
-    LastUpdatedTime = DateTime.UtcNow
-};
+var scheduledProvisioning = new ScheduledVoiceFaxProvisioning();
 ```
-
-**Note:** When reading responses from the Numbers API, the SDK will automatically deserialize to the correct concrete type based on the `type` field in the response.
