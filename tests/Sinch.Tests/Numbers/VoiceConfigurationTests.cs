@@ -116,7 +116,7 @@ namespace Sinch.Tests.Numbers
         public void ShouldDeserializeVoiceRtcConfiguration()
         {
             var container = DeserializeAsNumbersClient<Container>(Helpers.LoadResources("Numbers/RtcVoiceResponse.json"));
-            
+
             var expected = new VoiceRtcConfiguration()
             {
                 AppId = "app id value",
