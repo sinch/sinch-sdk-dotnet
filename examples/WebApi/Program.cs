@@ -29,16 +29,6 @@ builder.Services.AddSinchClient(() => new SinchClientConfiguration
         KeyId = builder.Configuration["Sinch:KeyId"]!,
         KeySecret = builder.Configuration["Sinch:KeySecret"]!
     }
-    // Optional: Add more configurations as needed
-    // VerificationConfiguration = new SinchVerificationConfiguration { ... },
-    // VoiceConfiguration = new SinchVoiceConfiguration { ... }
-})
-.SetHandlerLifetime(TimeSpan.FromMinutes(5))  // DNS refresh every 5 minutes
-.ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
-{
-    PooledConnectionLifetime = TimeSpan.FromMinutes(5),   // DNS refresh interval
-    PooledConnectionIdleTimeout = TimeSpan.FromMinutes(2), // Close idle connections after 2 minutes
-    MaxConnectionsPerServer = 10  // HTTP/1.1 best practice (6-10 connections)
 });
 
 var app = builder.Build();
