@@ -11,7 +11,6 @@ public sealed class HttpClientHandlerConfiguration
     /// <summary>
     ///     Gets or sets the lifetime of pooled connections.
     ///     After this time, connections are recreated to pick up DNS changes.
-    ///     Default: 5 minutes.
     /// </summary>
     /// <remarks>
     ///     Lower values provide faster DNS updates but more connection overhead.
@@ -23,7 +22,6 @@ public sealed class HttpClientHandlerConfiguration
     /// <summary>
     ///     Gets or sets the idle timeout for pooled connections.
     ///     Connections idle longer than this are closed.
-    ///     Default: 2 minutes.
     /// </summary>
     /// <remarks>
     ///     Should match or be slightly less than server keep-alive timeout.
@@ -33,7 +31,6 @@ public sealed class HttpClientHandlerConfiguration
 
     /// <summary>
     ///     Gets or sets the maximum number of concurrent connections per server.
-    ///     Default: 10.
     /// </summary>
     /// <remarks>
     ///     HTTP/1.1 best practice is 6-10 connections.
