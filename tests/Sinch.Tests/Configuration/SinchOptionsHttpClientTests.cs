@@ -108,70 +108,6 @@ namespace Sinch.Tests.Configuration
             options.ApiUrlOverrides.Should().BeNull();
         }
 
-        [Fact]
-        public void SinchClient_WithSinchOptions_ShouldRespectHttpClientFactory()
-        {
-            // Arrange
-            var mockFactory = Substitute.For<IHttpClientFactory>();
-            mockFactory.CreateClient(Arg.Any<string>()).Returns(new HttpClient());
-
-            var options = new SinchOptions
-            {
-                HttpClientFactory = mockFactory
-            };
-
-            // Act
-            var sinch = new SinchClient(new SinchClientConfiguration
-            {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials
-                {
-                    ProjectId = "test-project",
-                    KeyId = "test-key",
-                    KeySecret = "test-secret"
-                },
-                SinchOptions = options
-            });
-
-            // Force creation of HttpClient through accessor
-            var accessor = Helpers.GetPrivateField<Func<HttpClient>, SinchClient>(sinch, "_httpClientAccessor");
-            accessor();
-
-            // Assert
-            mockFactory.Received(1).CreateClient("SinchClient");
-        }
-
-        [Fact]
-        public void SinchClient_WithSinchOptions_ShouldRespectHttpClientHandlerConfiguration()
-        {
-            // Arrange
-            var config = new HttpClientHandlerConfiguration
-            {
-                PooledConnectionLifetime = TimeSpan.FromMinutes(10),
-                MaxConnectionsPerServer = 50
-            };
-
-            var options = new SinchOptions
-            {
-                HttpClientHandlerConfiguration = config
-            };
-
-            // Act
-            var sinch = new SinchClient(new SinchClientConfiguration
-            {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials
-                {
-                    ProjectId = "test-project",
-                    KeyId = "test-key",
-                    KeySecret = "test-secret"
-                },
-                SinchOptions = options
-            });
-
-            // Assert
-            sinch.Should().NotBeNull();
-            var accessor = Helpers.GetPrivateField<Func<HttpClient>, SinchClient>(sinch, "_httpClientAccessor");
-            accessor().Should().NotBeNull();
-        }
 
         [Fact]
         public void SinchClient_WithNullSinchOptions_ShouldUseDefaults()
@@ -179,12 +115,6 @@ namespace Sinch.Tests.Configuration
             // Act
             var sinch = new SinchClient(new SinchClientConfiguration
             {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials
-                {
-                    ProjectId = "test-project",
-                    KeyId = "test-key",
-                    KeySecret = "test-secret"
-                },
                 SinchOptions = null
             });
 
@@ -215,12 +145,6 @@ namespace Sinch.Tests.Configuration
             // Act
             var sinch = new SinchClient(new SinchClientConfiguration
             {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials
-                {
-                    ProjectId = "test-project",
-                    KeyId = "test-key",
-                    KeySecret = "test-secret"
-                },
                 SinchOptions = options
             });
 

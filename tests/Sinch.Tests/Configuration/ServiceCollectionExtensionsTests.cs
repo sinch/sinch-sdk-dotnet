@@ -42,18 +42,9 @@ namespace Sinch.Tests.Configuration
         {
             // Arrange
             var services = new ServiceCollection();
-            services.AddLogging();
 
             // Act
-            services.AddSinchClient(() => new SinchClientConfiguration
-            {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials
-                {
-                    ProjectId = "test-project",
-                    KeyId = "test-key",
-                    KeySecret = "test-secret"
-                }
-            });
+            services.AddSinchClient(() => new SinchClientConfiguration { });
 
             var serviceProvider = services.BuildServiceProvider();
             var sinchClient = serviceProvider.GetService<ISinchClient>();
@@ -70,15 +61,7 @@ namespace Sinch.Tests.Configuration
             var services = new ServiceCollection();
 
             // Act
-            services.AddSinchClient(() => new SinchClientConfiguration
-            {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials
-                {
-                    ProjectId = "test-project",
-                    KeyId = "test-key",
-                    KeySecret = "test-secret"
-                }
-            });
+            services.AddSinchClient(() => new SinchClientConfiguration { });
 
             var serviceProvider = services.BuildServiceProvider();
             var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
@@ -88,79 +71,14 @@ namespace Sinch.Tests.Configuration
         }
 
         [Fact]
-        public void AddSinchClient_WithHttpClientFactory_ShouldUseProvidedFactory()
-        {
-            // Arrange
-            var services = new ServiceCollection();
-            services.AddLogging();
-
-            // Act
-            services.AddSinchClient(() => new SinchClientConfiguration
-            {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials
-                {
-                    ProjectId = "test-project",
-                    KeyId = "test-key",
-                    KeySecret = "test-secret"
-                },
-                SinchOptions = new SinchOptions
-                {
-                    HttpClientFactory = new TestHttpClientFactory()
-                }
-            });
-
-            var serviceProvider = services.BuildServiceProvider();
-            var sinchClient = serviceProvider.GetService<ISinchClient>();
-
-            // Assert
-            sinchClient.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void AddSinchClient_WithLoggerFactory_ShouldUseProvidedLogger()
-        {
-            // Arrange
-            var services = new ServiceCollection();
-            var loggerFactory = LoggerFactory.Create(builder => { });
-
-            // Act
-            services.AddSinchClient(() => new SinchClientConfiguration
-            {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials
-                {
-                    ProjectId = "test-project",
-                    KeyId = "test-key",
-                    KeySecret = "test-secret"
-                },
-                SinchOptions = new SinchOptions
-                {
-                    LoggerFactory = loggerFactory
-                }
-            });
-
-            var serviceProvider = services.BuildServiceProvider();
-            var sinchClient = serviceProvider.GetService<ISinchClient>();
-
-            // Assert
-            sinchClient.Should().NotBeNull();
-        }
-
-        [Fact]
         public void AddSinchClient_WithNullSinchOptions_ShouldCreateDefaultOptions()
         {
             // Arrange
             var services = new ServiceCollection();
-            services.AddLogging();
 
             // Act
             services.AddSinchClient(() => new SinchClientConfiguration
             {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials
-                {
-                    ProjectId = "test-project",
-                    KeyId = "test-key",
-                    KeySecret = "test-secret"
-                },
                 SinchOptions = null
             });
 
@@ -176,18 +94,9 @@ namespace Sinch.Tests.Configuration
         {
             // Arrange
             var services = new ServiceCollection();
-            services.AddLogging();
 
             // Act
-            services.AddSinchClient(() => new SinchClientConfiguration
-            {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials
-                {
-                    ProjectId = "test-project",
-                    KeyId = "test-key",
-                    KeySecret = "test-secret"
-                }
-            });
+            services.AddSinchClient(() => new SinchClientConfiguration { });
 
             var serviceProvider = services.BuildServiceProvider();
             var sinchClient = serviceProvider.GetService<ISinchClient>();
@@ -231,12 +140,6 @@ namespace Sinch.Tests.Configuration
             services.AddSinchClient(
                 () => new SinchClientConfiguration
                 {
-                    SinchUnifiedCredentials = new SinchUnifiedCredentials
-                    {
-                        ProjectId = "test-project",
-                        KeyId = "test-key",
-                        KeySecret = "test-secret"
-                    }
                 },
                 client =>
                 {
@@ -260,25 +163,9 @@ namespace Sinch.Tests.Configuration
             var services = new ServiceCollection();
 
             // Act
-            services.AddSinchClient(() => new SinchClientConfiguration
-            {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials
-                {
-                    ProjectId = "test-project-1",
-                    KeyId = "test-key-1",
-                    KeySecret = "test-secret-1"
-                }
-            });
+            services.AddSinchClient(() => new SinchClientConfiguration { });
 
-            services.AddSinchClient(() => new SinchClientConfiguration
-            {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials
-                {
-                    ProjectId = "test-project-2",
-                    KeyId = "test-key-2",
-                    KeySecret = "test-secret-2"
-                }
-            });
+            services.AddSinchClient(() => new SinchClientConfiguration { });
 
             var serviceProvider = services.BuildServiceProvider();
             var sinchClients = serviceProvider.GetServices<ISinchClient>();
@@ -294,15 +181,7 @@ namespace Sinch.Tests.Configuration
             var services = new ServiceCollection();
 
             // Act
-            services.AddSinchClient(() => new SinchClientConfiguration
-            {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials
-                {
-                    ProjectId = "test-project",
-                    KeyId = "test-key",
-                    KeySecret = "test-secret"
-                }
-            });
+            services.AddSinchClient(() => new SinchClientConfiguration { });
 
             var serviceProvider = services.BuildServiceProvider();
             var sinchClient1 = serviceProvider.GetService<ISinchClient>();

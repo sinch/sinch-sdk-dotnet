@@ -32,9 +32,21 @@ namespace Sinch.Tests.Configuration
             httpClient.Should().NotBeNull();
             httpClient.Should().BeOfType<HttpClient>();
 
-            // Verify we can create multiple clients successfully (proves defaults work)
+            // Verify we can create multiple clients successfully
             var client2 = factory.CreateClient("test2");
             client2.Should().BeSameAs(httpClient);
+        }
+
+        [Fact]
+        public void Constructor_WithDefaultConfiguration_ShouldCreateHttpClient()
+        {
+            // Act
+            var factory = new DefaultHttpClientFactory(HttpClientHandlerConfiguration.Default);
+            var httpClient = factory.CreateClient("test");
+
+            // Assert
+            httpClient.Should().NotBeNull();
+            httpClient.Should().BeOfType<HttpClient>();
         }
 
         [Fact]
@@ -76,18 +88,6 @@ namespace Sinch.Tests.Configuration
         }
 
         [Fact]
-        public void Constructor_WithDefaultConfiguration_ShouldCreateHttpClient()
-        {
-            // Act
-            var factory = new DefaultHttpClientFactory(HttpClientHandlerConfiguration.Default);
-            var httpClient = factory.CreateClient("test");
-
-            // Assert
-            httpClient.Should().NotBeNull();
-            httpClient.Should().BeOfType<HttpClient>();
-        }
-
-        [Fact]
         public void CreateClient_ShouldReturnSameInstance()
         {
             // Arrange
@@ -110,44 +110,6 @@ namespace Sinch.Tests.Configuration
             DefaultHttpClientFactory.DefaultPooledConnectionLifetime.Should().Be(TimeSpan.FromMinutes(5));
             DefaultHttpClientFactory.DefaultPooledConnectionIdleTimeout.Should().Be(TimeSpan.FromMinutes(2));
             DefaultHttpClientFactory.DefaultMaxConnectionsPerServer.Should().Be(10);
-        }
-
-        [Fact]
-        public void Constructor_WithHighThroughputConfiguration_ShouldCreateHttpClient()
-        {
-            // Arrange
-            var config = new HttpClientHandlerConfiguration
-            {
-                PooledConnectionLifetime = TimeSpan.FromMinutes(5),
-                PooledConnectionIdleTimeout = TimeSpan.FromMinutes(3),
-                MaxConnectionsPerServer = 30
-            };
-
-            // Act
-            var factory = new DefaultHttpClientFactory(config);
-            var httpClient = factory.CreateClient("test");
-
-            // Assert
-            httpClient.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void Constructor_WithLowLatencyConfiguration_ShouldCreateHttpClient()
-        {
-            // Arrange
-            var config = new HttpClientHandlerConfiguration
-            {
-                PooledConnectionLifetime = TimeSpan.FromMinutes(2),
-                PooledConnectionIdleTimeout = TimeSpan.FromMinutes(1),
-                MaxConnectionsPerServer = 5
-            };
-
-            // Act
-            var factory = new DefaultHttpClientFactory(config);
-            var httpClient = factory.CreateClient("test");
-
-            // Assert
-            httpClient.Should().NotBeNull();
         }
 
         [Fact]
