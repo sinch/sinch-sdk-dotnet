@@ -11,14 +11,23 @@ namespace Sinch
     {
         /// <summary>
         ///     A logger factory used to create ILogger inside the SDK to enable logging
-        /// </summary>
+        /// </summary>  
         public ILoggerFactory? LoggerFactory { get; set; }
 
         /// <summary>
-        ///     A HttpClient to use. If not provided, HttpClient will be created and managed by <see cref="SinchClient"></see>
-        ///     itself
+        ///     An IHttpClientFactory to use for creating HttpClient instances.
+        ///     If not provided, a default factory will be created and managed by <see cref="SinchClient"/>.
+        ///     This is the recommended approach for proper DNS handling and connection pooling.
+        ///     See: https://learn.microsoft.com/en-us/dotnet/core/extensions/httpclient-factory
         /// </summary>
-        public HttpClient? HttpClient { get; set; }
+        public IHttpClientFactory? HttpClientFactory { get; set; }
+
+        /// <summary>
+        ///     Configuration for HTTP client handler (connection pooling, DNS refresh, etc.).
+        ///     Only applies when using the default HttpClientFactory (non-DI scenarios like console apps).
+        ///     For ASP.NET Core apps, use ConfigurePrimaryHttpMessageHandler() on IHttpClientBuilder instead.
+        /// </summary>
+        public HttpClientHandlerConfiguration? HttpClientHandlerConfiguration { get; set; }
 
         /// <summary>
         ///     Set's the regions for the Fax api.

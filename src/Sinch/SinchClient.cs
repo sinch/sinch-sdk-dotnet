@@ -13,7 +13,7 @@ using Sinch.Voice;
 
 namespace Sinch
 {
-    public interface ISinchClient
+    public interface ISinchClient : IDisposable
     {
         /// <summary>
         ///     An OAuth2.0 functionality for an SDK in case you want to fetch tokens.
@@ -110,8 +110,10 @@ namespace Sinch
 
     public sealed class SinchClient : ISinchClient
     {
+        private bool _disposed;
         private readonly Lazy<ISinchConversation> _conversation;
-        private readonly HttpClient _httpClient;
+        private readonly Func<HttpClient> _httpClientAccessor;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         private readonly SinchClientConfiguration _sinchClientConfiguration;
 
@@ -138,23 +140,26 @@ namespace Sinch
             _logger = _loggerFactory?.Create<ISinchClient>();
             _logger?.LogInformation("Initializing SinchClient...");
 
-            _httpClient = _sinchClientConfiguration.SinchOptions?.HttpClient ?? new HttpClient();
+            // Setup HttpClient accessor using IHttpClientFactory
+            _httpClientFactory = _sinchClientConfiguration.SinchOptions?.HttpClientFactory
+                ?? new DefaultHttpClientFactory(_sinchClientConfiguration.SinchOptions?.HttpClientHandlerConfiguration);
+            _httpClientAccessor = () => _httpClientFactory.CreateClient("SinchClient");
 
             _sinchOauth = new Lazy<ISinchAuth>(() =>
                 {
                     var unifiedCredentials = ValidateUnifiedCredentials();
-                    var auth = new OAuth(unifiedCredentials.KeyId, unifiedCredentials.KeySecret, _httpClient,
+                    var auth = new OAuth(unifiedCredentials.KeyId, unifiedCredentials.KeySecret, _httpClientAccessor,
                         _loggerFactory?.Create<OAuth>(),
                         _sinchClientConfiguration.SinchOAuthConfiguration.ResolveUrl()
                     );
                     return auth;
                 }, isThreadSafe: true
             );
-            var httpCamelCase = new Lazy<Http>(() => new Http(_sinchOauth, _httpClient,
+            var httpCamelCase = new Lazy<Http>(() => new Http(_sinchOauth, _httpClientAccessor,
                 _loggerFactory?.Create<IHttp>(),
                 JsonNamingPolicy.CamelCase), isThreadSafe: true);
 
-            _httpSnakeCase = new Lazy<IHttp>(() => new Http(_sinchOauth, _httpClient,
+            _httpSnakeCase = new Lazy<IHttp>(() => new Http(_sinchOauth, _httpClientAccessor,
                 _loggerFactory?.Create<IHttp>(),
                 SnakeCaseNamingPolicy.Instance), isThreadSafe: true);
 
@@ -212,7 +217,7 @@ namespace Sinch
                     auth = new BasicAuth(config.AppKey, config.AppSecret);
 
 
-                var http = new Http(new Lazy<ISinchAuth>(auth), _httpClient, _loggerFactory?.Create<IHttp>(),
+                var http = new Http(new Lazy<ISinchAuth>(auth), _httpClientAccessor, _loggerFactory?.Create<IHttp>(),
                     JsonNamingPolicy.CamelCase);
                 return new SinchVerificationClient(config.ResolveUrl(),
                     _loggerFactory, http);
@@ -231,7 +236,7 @@ namespace Sinch
 
                 ISinchAuth auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
 
-                var http = new Http(new Lazy<ISinchAuth>(auth), _httpClient, _loggerFactory?.Create<IHttp>(),
+                var http = new Http(new Lazy<ISinchAuth>(auth), _httpClientAccessor, _loggerFactory?.Create<IHttp>(),
                     JsonNamingPolicy.CamelCase);
                 return new SinchVoiceClient(
                     config.ResolveUrl(),
@@ -284,7 +289,7 @@ namespace Sinch
                     servicePlanIdConfig.ServicePlanId,
                     servicePlanIdConfig.ServicePlanIdRegion.Value);
                 var bearerSnakeHttp = new Http(new Lazy<ISinchAuth>(new BearerAuth(servicePlanIdConfig.ApiToken)),
-                    _httpClient,
+                    _httpClientAccessor,
                     _loggerFactory?.Create<IHttp>(),
                     SnakeCaseNamingPolicy.Instance);
                 return new SmsClient(new ServicePlanId(servicePlanIdConfig.ServicePlanId),
@@ -304,6 +309,20 @@ namespace Sinch
                 sinchSmsConfiguration.ResolveUrl(),
                 _loggerFactory,
                 _httpSnakeCase.Value);
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+
+            if (_httpClientFactory is DefaultHttpClientFactory defaultFactory)
+            {
+                defaultFactory.Dispose();
+            }
+
+            _disposed = true;
         }
     }
 }

@@ -16,14 +16,18 @@ namespace Sinch.Tests
         internal readonly Http HttpCamelCase;
         protected readonly MockHttpMessageHandler HttpMessageHandlerMock = new();
         internal readonly Http HttpSnakeCase;
+        protected readonly HttpClient HttpClient;
 
         protected TestBase()
         {
-            var httpClient = new HttpClient(HttpMessageHandlerMock);
+            HttpClient = new HttpClient(HttpMessageHandlerMock);
             _tokenManager.GetAuthToken().Returns(Token);
             _tokenManager.Scheme.Returns("Bearer");
-            HttpCamelCase = new Http(new Lazy<ISinchAuth>(_tokenManager), httpClient, null, JsonNamingPolicy.CamelCase);
-            HttpSnakeCase = new Http(new Lazy<ISinchAuth>(_tokenManager), httpClient, null, SnakeCaseNamingPolicy.Instance);
+
+            // Use accessor pattern for tests
+            Func<HttpClient> httpClientAccessor = () => HttpClient;
+            HttpCamelCase = new Http(new Lazy<ISinchAuth>(_tokenManager), httpClientAccessor, null, JsonNamingPolicy.CamelCase);
+            HttpSnakeCase = new Http(new Lazy<ISinchAuth>(_tokenManager), httpClientAccessor, null, SnakeCaseNamingPolicy.Instance);
         }
     }
 }
