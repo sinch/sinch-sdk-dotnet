@@ -24,16 +24,10 @@ namespace Sinch
         /// <returns>The IHttpClientBuilder for further HttpClient configuration (e.g., Polly policies).</returns>
         /// <example>
         /// <code>
-        /// builder.Services.AddSinchClient((projectId, keyId, keySecret, verificationConfig, voiceConfig) =>
+        /// builder.Services.AddSinchClient(() => new SinchClientConfiguration
         /// {
-        ///     projectId = builder.Configuration["Sinch:ProjectId"]!;
-        ///     keyId = builder.Configuration["Sinch:KeyId"]!;
-        ///     keySecret = builder.Configuration["Sinch:KeySecret"]!;
-        ///     // Optional configurations
-        ///     verificationConfig = new SinchVerificationConfiguration { ... };
-        ///     voiceConfig = new SinchVoiceConfiguration { ... };
+        ///     // Configure your Sinch client here
         /// })
-        /// .SetHandlerLifetime(TimeSpan.FromMinutes(5));
         /// </code>
         /// </example>
         public static IHttpClientBuilder AddSinchClient(
