@@ -16,7 +16,7 @@ namespace Sinch.Numbers.VoiceConfigurations
         /// </summary>
         [JsonInclude]
         [JsonPropertyName("scheduledVoiceProvisioning")]
-        public new ScheduledVoiceEstProvisioning? ScheduledVoiceProvisioning { get; internal set; }
+        public ScheduledVoiceEstProvisioning? ScheduledVoiceProvisioning { get; internal set; }
 
         [JsonPropertyName("type")]
         [JsonInclude]

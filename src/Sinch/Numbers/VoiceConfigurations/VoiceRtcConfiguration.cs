@@ -8,7 +8,7 @@ namespace Sinch.Numbers.VoiceConfigurations
         ///     Your app ID for the Voice API. The &#x60;appId&#x60; can be found in your [Sinch Customer Dashboard](https://dashboard.sinch.com/voice/apps).
         /// </summary>
         [JsonPropertyName("appId")]
-        public new string? AppId { get; set; }
+        public string? AppId { get; set; }
 
         /// <summary>
         ///     This object is temporary and will appear while the scheduled voice provisioning is processing.
@@ -16,7 +16,7 @@ namespace Sinch.Numbers.VoiceConfigurations
         /// </summary>
         [JsonInclude]
         [JsonPropertyName("scheduledVoiceProvisioning")]
-        public new ScheduledVoiceRtcProvisioning? ScheduledVoiceProvisioning { get; internal set; }
+        public ScheduledVoiceRtcProvisioning? ScheduledVoiceProvisioning { get; internal set; }
 
         [JsonPropertyName("type")]
         [JsonInclude]
