@@ -222,11 +222,11 @@ namespace Sinch
 
                 var http = new Http(new Lazy<ISinchAuth>(auth), _httpClient, _loggerFactory?.Create<IHttp>(),
                     JsonNamingPolicy.CamelCase);
-                
+
                 var verificationUrl = ResolveUrl(
                     _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VerificationUrl,
                     config.ResolveUrl);
-                
+
                 return new SinchVerificationClient(verificationUrl, _loggerFactory, http, (auth as ApplicationSignedAuth)!);
             }, isThreadSafe: true);
 
@@ -245,15 +245,15 @@ namespace Sinch
 
                 var http = new Http(new Lazy<ISinchAuth>(auth), _httpClient, _loggerFactory?.Create<IHttp>(),
                     JsonNamingPolicy.CamelCase);
-                
+
                 var voiceUrl = ResolveUrl(
                     _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VoiceUrl,
                     config.ResolveUrl);
-                
+
                 var voiceAppMgmtUrl = ResolveUrl(
                     _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VoiceApplicationManagementUrl,
                     config.ResolveApplicationManagementUrl);
-                
+
                 return new SinchVoiceClient(
                     voiceUrl,
                     _loggerFactory, http, (auth as ApplicationSignedAuth)!,
@@ -303,11 +303,11 @@ namespace Sinch
                 _logger?.LogInformation("Initializing SMS client with {service_plan_id} in {region}",
                     servicePlanIdConfig.ServicePlanId,
                     servicePlanIdConfig.ServicePlanIdRegion.Value);
-                
+
                 var smsBaseUrl = ResolveUrl(
                     _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.SmsUrl,
                     sinchSmsConfiguration.ServicePlanIdConfiguration.ResolveUrl);
-                
+
                 var bearerSnakeHttp = new Http(new Lazy<ISinchAuth>(new BearerAuth(servicePlanIdConfig.ApiToken)),
                     _httpClient,
                     _loggerFactory?.Create<IHttp>(),
