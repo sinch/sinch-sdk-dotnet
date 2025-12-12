@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
@@ -49,9 +49,36 @@ namespace Sinch.Voice
         /// <param name="headers"></param>
         /// <param name="body"></param>
         /// <param name="method"></param>
+        /// <param name="rawBody"></param>
         /// <returns>True, if produced signature match with that of a header.</returns>
+        [Obsolete("Will be removed in a future version. Use only `string body` version of the methods.")]
         bool ValidateAuthenticationHeader(HttpMethod method, string path, Dictionary<string, StringValues> headers,
-            JsonObject body);
+            JsonObject body, string? rawBody = null);
+
+        /// <summary>
+        ///     Validates callback request.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="headers"></param>
+        /// <param name="contentHeaders"></param>
+        /// <param name="body"></param>
+        /// <param name="method"></param>
+        /// <returns>True, if produced signature match with that of a header.</returns>
+        bool ValidateAuthenticationHeader(HttpMethod method, string path, HttpResponseHeaders headers,
+            HttpContentHeaders contentHeaders,
+            string body);
+
+        /// <summary>
+        ///     Validates callback request.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="headers"></param>
+        /// <param name="body"></param>
+        /// <param name="method"></param>
+        /// <returns>True, if produced signature match with that of a header.</returns>
+        bool ValidateAuthenticationHeader(HttpMethod method, string path,
+            Dictionary<string, IEnumerable<string>> headers,
+            string body);
 
         /// <summary>
         ///     Parses a Voice callback
@@ -109,60 +136,25 @@ namespace Sinch.Voice
         public ISinchVoiceApplications Applications { get; }
 
         public bool ValidateAuthenticationHeader(HttpMethod method, string path,
-            Dictionary<string, StringValues> headers, JsonObject body)
+            Dictionary<string, StringValues> headers, JsonObject body, string? rawBody = null)
         {
-            var headersCaseInsensitive =
-                new Dictionary<string, StringValues>(headers, StringComparer.InvariantCultureIgnoreCase);
+            return AuthorizationHeaderValidation.Validate(method, path, headers, body, _applicationSignedAuth, rawBody,
+                _logger);
+        }
 
-            if (!headersCaseInsensitive.TryGetValue("authorization", out var authHeaderValue))
-            {
-                _logger?.LogDebug("Failed to validate auth header. Authorization header is missing.");
-                return false;
-            }
+        public bool ValidateAuthenticationHeader(HttpMethod method, string path, HttpResponseHeaders headers,
+            HttpContentHeaders contentHeaders,
+            string body)
+        {
+            return AuthorizationHeaderValidation.Validate(method, path, headers, contentHeaders, body,
+                _applicationSignedAuth, _logger);
+        }
 
-            if (authHeaderValue.Count == 0)
-            {
-                _logger?.LogDebug("Failed to validate auth header. Authorization header values is missing.");
-                return false;
-            }
-
-            var authSignature = authHeaderValue.FirstOrDefault();
-            if (authSignature == null)
-            {
-                _logger?.LogDebug("Failed to validate auth header. Authorization header value is null.");
-                return false;
-            }
-
-            const string timestampHeader = "x-timestamp";
-            var bytesBody = JsonSerializer.SerializeToUtf8Bytes(body);
-            var contentType = headersCaseInsensitive.GetValueOrDefault("content-type");
-            var timestamp = headersCaseInsensitive.GetValueOrDefault(timestampHeader, string.Empty);
-            var calculatedSignature =
-                _applicationSignedAuth.GetSignedAuth(bytesBody, method.Method, path,
-                    string.Join(':', timestampHeader, timestamp), contentType);
-            var splitAuthHeader = authSignature.Split(' ');
-
-            if (splitAuthHeader.FirstOrDefault() != "application")
-            {
-                _logger?.LogDebug(
-                    "Failed to validate auth header. Authorization header not starting from 'application'.");
-                return false;
-            }
-
-            var signature = splitAuthHeader.Skip(1).FirstOrDefault();
-
-            if (string.IsNullOrEmpty(signature))
-            {
-                _logger?.LogDebug("Failed to validate auth header. Signature is missing from the header.");
-                return false;
-            }
-
-            _logger?.LogDebug("{CalculatedSignature}", calculatedSignature);
-            _logger?.LogDebug("{AuthorizationSignature}", signature);
-
-            var isValidSignature = string.Equals(signature, calculatedSignature, StringComparison.Ordinal);
-            _logger?.LogInformation("The signature was validated with {success}", isValidSignature);
-            return isValidSignature;
+        public bool ValidateAuthenticationHeader(HttpMethod method, string path,
+            Dictionary<string, IEnumerable<string>> headers, string body)
+        {
+            return AuthorizationHeaderValidation.Validate(method, path, headers, body, _applicationSignedAuth,
+                _logger);
         }
 
         public IVoiceEvent ParseEvent(string json)

@@ -1,0 +1,12 @@
+{
+  "displayName": "a display",
+  "smsConfiguration": {
+    "servicePlanId": "service plan id",
+    "campaignId": "campaign id"
+  },
+  "voiceConfiguration": {
+    "appId": "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEE",
+    "type": "RTC"
+  },
+  "callbackUrl": "foo callback"
+}

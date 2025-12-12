@@ -127,5 +127,32 @@ namespace Sinch.Tests.Verification
             var actual = JToken.Parse(json);
             actual.Should().BeEquivalentTo(expected);
         }
+
+        [Fact]
+        public void SerializeHookWhatsAppResponse()
+        {
+            var expected = Helpers.LoadResources("Verification/Webhooks/VerificationResponseWhatsAppDto.json");
+
+            var response = new WhatsAppRequestEventResponse
+            {
+                Action = Action.Allow,
+                WhatsApp = new WhatsApp
+                {
+                    CodeType = WhatsAppCodeType.Numeric,
+                    AcceptLanguage = new List<string>()
+                    {
+                        "a language"
+                    },
+                    AdditionalProperties = new Dictionary<string, JsonElement>()
+                        {
+                            { "my key", JsonDocument.Parse("\"my value\"").RootElement }
+                        }
+                }
+            };
+
+            var responseJson = JsonSerializer.Serialize(response);
+            Helpers.AssertJsonEqual(expected, responseJson);
+        }
+
     }
 }

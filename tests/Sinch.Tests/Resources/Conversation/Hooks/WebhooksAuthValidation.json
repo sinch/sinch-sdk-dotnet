@@ -1,0 +1,23 @@
+{
+    "app_id": "01W4FFL35P4NC4K35CONVAPP01",
+    "event_time": "2024-06-06T14:42:42.379863404Z",
+    "project_id": "tinyfrog-jump-high-over-lilypadbasin",
+    "event": {
+        "direction": "TO_APP",
+        "contact_event": {
+            "composing_event": {}
+        },
+        "id": "01W4FFL35P4NC4K35EVENT0001",
+        "conversation_id": "01W4FFL35P4NC4K35CONVERS01",
+        "contact_id": "01W4FFL35P4NC4K35CONTACT01",
+        "channel_identity": {
+            "channel": "RCS",
+            "identity": "12015555555",
+            "app_id": ""
+        },
+        "accept_time": "2024-06-06T14:42:42.429455346Z",
+        "processing_mode": "CONVERSATION"
+    },
+    "message_metadata": "",
+    "correlation_id": ""
+}

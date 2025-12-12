@@ -214,8 +214,7 @@ namespace Sinch
 
                 var http = new Http(new Lazy<ISinchAuth>(auth), _httpClient, _loggerFactory?.Create<IHttp>(),
                     JsonNamingPolicy.CamelCase);
-                return new SinchVerificationClient(config.ResolveUrl(),
-                    _loggerFactory, http);
+                return new SinchVerificationClient(config.ResolveUrl(), _loggerFactory, http, (auth as ApplicationSignedAuth)!);
             }, isThreadSafe: true);
 
             _voice = new Lazy<ISinchVoiceClient>(() =>
@@ -259,7 +258,6 @@ namespace Sinch
 
         /// <inheritdoc/>
         public ISinchVerificationClient Verification => _verification.Value;
-
 
         /// <inheritdoc />
         public ISinchVoiceClient Voice => _voice.Value;

@@ -31,6 +31,18 @@ jobs:
             8.0.x
             9.0.x
 
+      - name: Checkout mockserver e2e
+        uses: actions/checkout@v4
+        with:
+          repository: sinch/sinch-sdk-mockserver
+          token: ${{ secrets.GH_PAT_MOCK_SERVER }}
+          ref: main
+          path: tests/Sinch.Tests.Features/sinch-sdk-mockserver
+
+      - name: Run mockserver docker-compose
+        run: docker compose up -d
+        working-directory: tests/Sinch.Tests.Features/sinch-sdk-mockserver
+        
       - name: Install dependencies
         run: dotnet restore
 
@@ -40,8 +52,11 @@ jobs:
       - name: Build
         run: dotnet build -p:Version=${{ steps.gitversion.outputs.semVer }} --configuration Release --no-restore
 
-      - name: Test
-        run: dotnet test --no-restore --verbosity normal
+      - name: Test 
+        run: dotnet test tests/Sinch.Tests --no-restore --verbosity normal
+        
+      - name: Test e2e
+        run: dotnet test tests/Sinch.Tests.Features --filter "(FeatureTitle~[Voice]|FeatureTitle~[Numbers]|FeatureTitle~[Verification]|FeatureTitle~[SMS][Groups]|FeatureTitle~[SMS][Batches]|FeatureTitle~[SMS][Delivery Reports])&(FeatureTitle!~[Numbers][Emergency Address])" --no-restore --verbosity normal
       
       # --include-symbols?
       - name: Pack
