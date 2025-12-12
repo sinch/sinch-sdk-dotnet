@@ -17,8 +17,7 @@ namespace Sinch.Tests.Features.Verification
                     {
                         ApiUrlOverrides = new ApiUrlOverrides()
                         {
-                            AuthUrl = "http://localhost:3011",
-                            VerificationUrl = "http://localhost:3011"
+                            VerificationUrl = "http://localhost:3018"
                         }
                     }
                 }
