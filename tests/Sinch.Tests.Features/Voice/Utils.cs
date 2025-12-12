@@ -19,7 +19,7 @@ namespace Sinch.Tests.Features.Voice
                     VoiceConfiguration = new SinchVoiceConfiguration()
                     {
                         AppKey = "appKey",
-                        AppSecret = "keyId"
+                        AppSecret = "BeIukql3pTKJ8RGL5zo0DA=="
                     }
                 }
             ).Voice;
