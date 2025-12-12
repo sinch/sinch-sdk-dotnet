@@ -21,8 +21,6 @@ namespace Sinch.Conversation.TemplatesV1
         [JsonPropertyName("create_time")]
         public DateTime? CreateTime { get; set; }
 
-
-        // TODO: make required when net9 PR merges
         /// <summary>
         ///     The default translation to use if not specified. Specified as a BCP-47 &#x60;language_code&#x60; and the &#x60;language_code&#x60; must exist in the translations list.
         /// </summary>
@@ -43,8 +41,6 @@ namespace Sinch.Conversation.TemplatesV1
         [JsonPropertyName("id")]
         public string? Id { get; set; }
 
-
-        // TODO: make required when net9 PR merges
         /// <summary>
         ///     List of translations for the template.
         /// </summary>

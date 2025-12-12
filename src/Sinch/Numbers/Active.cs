@@ -12,7 +12,7 @@ using Sinch.Numbers.Active.Update;
 
 namespace Sinch.Numbers
 {
-    public interface ISinchNumbersActive
+    internal interface ISinchNumbersActive
     {
         /// <summary>
         ///     Lists all virtual numbers for a project.<br /><br />
@@ -25,8 +25,6 @@ namespace Sinch.Numbers
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [Obsolete(
-            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.List)} instead.")]
         Task<ListActiveNumbersResponse> List(ListActiveNumbersRequest request,
             CancellationToken cancellationToken = default);
 
@@ -48,8 +46,6 @@ namespace Sinch.Numbers
         /// <param name="request">A request object</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [Obsolete(
-            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.Update)} instead.")]
         Task<ActiveNumber> Update(string phoneNumber,
             UpdateActiveNumberRequest request, CancellationToken cancellationToken = default);
 
@@ -59,8 +55,6 @@ namespace Sinch.Numbers
         /// <param name="phoneNumber">Number to get info about</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [Obsolete(
-            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.Get)} instead.")]
         Task<ActiveNumber> Get(string phoneNumber,
             CancellationToken cancellationToken = default);
 
@@ -74,13 +68,9 @@ namespace Sinch.Numbers
         /// </param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [Obsolete(
-            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.Release)} instead.")]
         Task<ActiveNumber> Release(
             string phoneNumber, CancellationToken cancellationToken = default);
 
-        [Obsolete(
-            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.ListAuto)} instead.")]
         IAsyncEnumerable<ActiveNumber> ListAuto(ListActiveNumbersRequest request,
             CancellationToken cancellationToken = default);
     }
