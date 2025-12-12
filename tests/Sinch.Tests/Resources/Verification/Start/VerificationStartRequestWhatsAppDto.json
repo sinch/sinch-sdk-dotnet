@@ -1,0 +1,13 @@
+{
+  "identity": {
+    "type": "number",
+    "endpoint": "+33123456789"
+  },
+  "reference": "a reference",
+  "custom": "a custom",
+  "method": "whatsapp",
+  "whatsappOptions": {
+    "codeType": "Alphanumeric",
+    "my key": "my value"
+  }
+}

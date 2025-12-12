@@ -1,0 +1,43 @@
+{
+  "phoneNumber": "+447520651116XYZ",
+  "projectId": "project id",
+  "displayName": "a display",
+  "regionCode": "GB",
+  "type": "MOBILE",
+  "capability": [
+    "SMS",
+    "VOICE"
+  ],
+  "money": {
+    "currencyCode": "EUR",
+    "amount": "0.8"
+  },
+  "paymentIntervalMonths": 1,
+  "nextChargeDate": "2023-09-22T15:49:58.813424Z",
+  "expireAt": "2023-10-06T15:49:58.813381Z",
+  "smsConfiguration": {
+    "servicePlanId": "service plan id",
+    "campaignId": "campaign id",
+    "scheduledProvisioning": {
+      "servicePlanId": "service plan id from scheduled",
+      "campaignId": "campaign id from scheduled",
+      "status": "PROVISIONING_STATUS_UNSPECIFIED",
+      "lastUpdatedTime": "2023-09-25T12:08:02.115Z",
+      "errorCodes": [
+        "ERROR_CODE_UNSPECIFIED"
+      ]
+    }
+  },
+  "voiceConfiguration": {
+    "appId": "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEE",
+    "scheduledVoiceProvisioning": {
+      "appId": "EEEEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAA",
+      "status": "WAITING",
+      "lastUpdatedTime": "2024-07-01T11:58:35.610198Z",
+      "type": "RTC"
+    },
+    "lastUpdatedTime": "2024-06-30T07:08:09.100Z",
+    "type": "RTC"
+  },
+  "callbackUrl": "foo callback"
+}

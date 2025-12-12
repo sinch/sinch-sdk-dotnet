@@ -47,5 +47,10 @@ namespace Sinch.SMS.DeliveryReports
         ///     Represents a recipient delivery report for SMS.
         /// </summary>
         public static readonly RecipientDeliveryReportType Sms = new("recipient_delivery_report_sms");
+
+        /// <summary>
+        ///     An MMS recipient delivery report.
+        /// </summary>
+        public static readonly RecipientDeliveryReportType Mms = new("recipient_delivery_report_mms");
     }
 }

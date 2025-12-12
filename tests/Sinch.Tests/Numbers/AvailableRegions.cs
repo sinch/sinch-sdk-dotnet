@@ -29,7 +29,7 @@ namespace Sinch.Tests.Numbers
                     }
                 }));
 
-            var response = await Numbers.Regions.List(new List<Types>());
+            var response = await Numbers.Regions.List();
 
             response.Count().Should().Be(3);
         }

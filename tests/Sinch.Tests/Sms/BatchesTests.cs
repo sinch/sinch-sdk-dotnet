@@ -662,8 +662,8 @@ namespace Sinch.Tests.Sms
                 .Respond(HttpStatusCode.OK, JsonContent.Create(new
                 {
                     page = 0,
-                    count = 30,
-                    page_size = 10,
+                    count = 3,
+                    page_size = 1,
                     batches = new[]
                     {
                         Batch
@@ -675,8 +675,8 @@ namespace Sinch.Tests.Sms
                 .Respond(HttpStatusCode.OK, JsonContent.Create(new
                 {
                     page = 1,
-                    count = 30,
-                    page_size = 10,
+                    count = 3,
+                    page_size = 1,
                     batches = new[]
                     {
                         Batch
@@ -688,8 +688,8 @@ namespace Sinch.Tests.Sms
                 .Respond(HttpStatusCode.OK, JsonContent.Create(new
                 {
                     page = 2,
-                    count = 30,
-                    page_size = 10,
+                    count = 3,
+                    page_size = 1,
                     batches = new[]
                     {
                         Batch

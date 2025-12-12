@@ -1,0 +1,20 @@
+{
+  "id": "the id",
+  "method":"whatsapp",
+  "whatsapp": {
+    "codeType": "Numeric",
+    "my key": "my value"
+  },
+  "_links": [
+    {
+      "rel": "status",
+      "href": "an href for status",
+      "method": "GET"
+    },
+    {
+      "rel": "report",
+      "href": "an href for report",
+      "method": "PUT"
+    }
+  ]
+}

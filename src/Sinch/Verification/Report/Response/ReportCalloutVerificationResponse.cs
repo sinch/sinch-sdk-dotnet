@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Report.Response
@@ -9,6 +10,7 @@ namespace Sinch.Verification.Report.Response
         /// <summary>
         ///     Shows whether the call is complete or not.
         /// </summary>
+        [JsonPropertyName("callComplete")]
         public bool? CallComplete { get; set; }
     }
 }

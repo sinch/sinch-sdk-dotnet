@@ -1,4 +1,3 @@
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using FluentAssertions;
 using Sinch.Numbers;
@@ -21,7 +20,10 @@ namespace Sinch.Tests.Numbers
         {
             var voiceConfig = new VoiceConfiguration()
             {
+#pragma warning disable CS0618 // Type or member is obsolete
+                // TODO: remove in 2.0
                 AppId = "app id value"
+#pragma warning restore CS0618 // Type or member is obsolete
             };
             var jsonString = SerializeAsNumbersClient(new Container()
             {
@@ -97,20 +99,23 @@ namespace Sinch.Tests.Numbers
                 DeserializeAsNumbersClient<Container>(
                     Helpers.LoadResources("Numbers/EstVoiceResponse.json"));
 
-            obj.Should().BeEquivalentTo(new Container()
+            var prov = new ScheduledVoiceEstProvisioning()
             {
-                VoiceConfiguration = new VoiceEstConfiguration()
+                TrunkId = "trunk id value",
+                Status = ProvisioningStatus.Waiting,
+                LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
+            };
+            obj.VoiceConfiguration.Should().BeEquivalentTo(
+                new VoiceEstConfiguration()
                 {
                     LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
                     TrunkId = "trunk id value",
-                    ScheduledVoiceProvisioning = new ScheduledVoiceEstProvisioning()
-                    {
-                        TrunkId = "trunk id value",
-                        Status = ProvisioningStatus.Waiting,
-                        LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
-                    },
+                    ScheduledVoiceProvisioning = prov,
                 }
-            });
+            );
+            // cast to expected type to test exclusively 
+            obj.VoiceConfiguration.ScheduledVoiceProvisioning.As<ScheduledVoiceEstProvisioning>().Should()
+                .BeEquivalentTo(prov);
         }
 
         [Fact]
@@ -120,20 +125,24 @@ namespace Sinch.Tests.Numbers
                 DeserializeAsNumbersClient<Container>(
                     Helpers.LoadResources("Numbers/FaxVoiceResponse.json"));
 
-            obj.Should().BeEquivalentTo(new Container()
+            var scheduledVoiceFaxProvisioning = new ScheduledVoiceFaxProvisioning()
             {
-                VoiceConfiguration = new VoiceFaxConfiguration()
+                ServiceId = "service id value",
+                Status = ProvisioningStatus.Waiting,
+                LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
+            };
+            obj.VoiceConfiguration.Should().BeEquivalentTo(
+                new VoiceFaxConfiguration()
                 {
                     ServiceId = "service id value",
                     LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
-                    ScheduledVoiceProvisioning = new ScheduledVoiceFaxProvisioning()
-                    {
-                        ServiceId = "service id value",
-                        Status = ProvisioningStatus.Waiting,
-                        LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
-                    }
+                    ScheduledVoiceProvisioning = scheduledVoiceFaxProvisioning
                 }
-            });
+            );
+            // cast to expected type to test exclusively 
+            obj.VoiceConfiguration.ScheduledVoiceProvisioning.As<ScheduledVoiceFaxProvisioning>().Should()
+                .BeEquivalentTo(
+                    scheduledVoiceFaxProvisioning);
         }
 
         [Fact]
@@ -142,16 +151,17 @@ namespace Sinch.Tests.Numbers
             var obj =
                 DeserializeAsNumbersClient<Container>(
                     Helpers.LoadResources("Numbers/RtcVoiceResponse.json"));
+            var expectedProvisioning = new ScheduledVoiceRtcProvisioning()
+            {
+                AppId = "app id value",
+                Status = ProvisioningStatus.Waiting,
+                LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
+            };
             var expected = new VoiceRtcConfiguration()
             {
                 AppId = "app id value",
                 LastUpdatedTime = Helpers.ParseUtc("2024-06-30T07:08:09.100Z"),
-                ScheduledVoiceProvisioning = new ScheduledVoiceRtcProvisioning()
-                {
-                    AppId = "app id value",
-                    Status = ProvisioningStatus.Waiting,
-                    LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
-                }
+                ScheduledVoiceProvisioning = expectedProvisioning
             };
 #pragma warning disable CS0618 // Type or member is obsolete
             // backward compatibility for old plain ScheduledVoiceProvisioning and VoiceConfiguration
@@ -164,10 +174,42 @@ namespace Sinch.Tests.Numbers
                 LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
             };
 #pragma warning restore CS0618 // Type or member is obsolete
-            obj.Should().BeEquivalentTo(new Container()
+            obj.VoiceConfiguration.Should().BeEquivalentTo(expected);
+            // if inheritance in play, to check object correctly with BeEquivalentTo,
+            // it should have a cast to desired type to be checked
+            obj.VoiceConfiguration.ScheduledVoiceProvisioning.As<ScheduledVoiceRtcProvisioning>().Should()
+                .BeEquivalentTo(
+                    new ScheduledVoiceRtcProvisioning()
+                    {
+                        AppId = "app id value",
+                        Status = ProvisioningStatus.Waiting,
+                        LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
+                    });
+        }
+
+        [Fact]
+        public void ShouldDeserializeVoiceRtcConfigurationButWithFaxProvisioning()
+        {
+            var obj =
+                DeserializeAsNumbersClient<Container>(
+                    Helpers.LoadResources("Numbers/RtcVoiceConfigWithFaxProvisioning.json"));
+            var prov = new ScheduledVoiceFaxProvisioning()
             {
-                VoiceConfiguration = expected
-            });
+                ServiceId = "service id value",
+                Status = ProvisioningStatus.Waiting,
+                LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
+            };
+            var expected = new VoiceRtcConfiguration()
+            {
+                AppId = "app id value",
+                LastUpdatedTime = Helpers.ParseUtc("2024-06-30T07:08:09.100Z"),
+                ScheduledVoiceProvisioning = prov
+            };
+
+            obj.VoiceConfiguration.Should().BeEquivalentTo(expected);
+            // cast to expected type to test exclusively 
+            obj.VoiceConfiguration.ScheduledVoiceProvisioning.As<ScheduledVoiceFaxProvisioning>().Should()
+                .BeEquivalentTo(prov);
         }
     }
 }

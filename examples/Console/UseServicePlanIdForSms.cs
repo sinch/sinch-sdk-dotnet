@@ -1,5 +1,4 @@
 using Sinch;
-using Sinch.Numbers;
 using Sinch.SMS;
 using Sinch.SMS.Batches.Send;
 
