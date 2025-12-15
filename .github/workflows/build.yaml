@@ -1,4 +1,4 @@
-name: build
+﻿name: build
 on: [ push ]
 
 jobs:
@@ -47,10 +47,15 @@ jobs:
           mkdir -p tests/Sinch.Tests.Features/features/verification
           
           # Copy feature files we support
-          cp sinch-sdk-mockserver/features/numbers/*.feature tests/Sinch.Tests.Features/features/numbers/
+          cp sinch-sdk-mockserver/features/numbers/available-regions.feature tests/Sinch.Tests.Features/features/numbers/
+          cp sinch-sdk-mockserver/features/numbers/callback-configuration.feature tests/Sinch.Tests.Features/features/numbers/
+          cp sinch-sdk-mockserver/features/numbers/numbers.feature tests/Sinch.Tests.Features/features/numbers/
+          cp sinch-sdk-mockserver/features/numbers/webhooks.feature tests/Sinch.Tests.Features/features/numbers/
+
           cp sinch-sdk-mockserver/features/sms/batches.feature tests/Sinch.Tests.Features/features/sms/
           cp sinch-sdk-mockserver/features/sms/delivery-reports.feature tests/Sinch.Tests.Features/features/sms/
           cp sinch-sdk-mockserver/features/sms/groups.feature tests/Sinch.Tests.Features/features/sms/
+
           cp sinch-sdk-mockserver/features/voice/*.feature tests/Sinch.Tests.Features/features/voice/
           cp sinch-sdk-mockserver/features/verification/*.feature tests/Sinch.Tests.Features/features/verification/
 
@@ -71,7 +76,7 @@ jobs:
         run: dotnet test tests/Sinch.Tests --no-restore --verbosity normal
         
       - name: Test e2e
-        run: dotnet test tests/Sinch.Tests.Features --filter "(FeatureTitle~[Voice]|FeatureTitle~[Numbers]|FeatureTitle~[Verification]|FeatureTitle~[SMS][Groups]|FeatureTitle~[SMS][Batches]|FeatureTitle~[SMS][Delivery Reports])&(FeatureTitle!~[Numbers][Emergency Address])" --no-restore --verbosity normal
+        run: dotnet test tests/Sinch.Tests.Features --no-restore --verbosity normal
       
       # --include-symbols?
       - name: Pack
