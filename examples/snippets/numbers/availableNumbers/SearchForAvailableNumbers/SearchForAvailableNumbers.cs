@@ -15,8 +15,8 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 
 // ISO 3166-1 alpha-2 country code of the phone number. e.g. "US", "GB", "SE"...
 // See https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 for details
-var regionCode = "GB";
-var type = Types.Mobile;
+var regionCode = "MY_REGION_CODE";
+var type = Types.Local;
 
 var request = new ListAvailableNumbersRequest
 {

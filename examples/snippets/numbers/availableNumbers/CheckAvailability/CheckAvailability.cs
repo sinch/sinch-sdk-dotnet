@@ -11,7 +11,7 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
     }
 });
 
-var phoneNumber = "+447418629954";
+var phoneNumber = "A_PHONE_NUMBER_TO_CHECK";
 
 Console.WriteLine($"CheckAvailability for: {phoneNumber}");
 
