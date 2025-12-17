@@ -33,6 +33,7 @@ var sinch = new SinchClient(new SinchClientConfiguration()
 With ASP.NET dependency injection:
 
 ```csharp
+var builder = WebApplication.CreateBuilder();
 builder.Services.AddSinchClient(() => new SinchClientConfiguration
 {
     SinchUnifiedCredentials = new SinchUnifiedCredentials
@@ -51,8 +52,8 @@ This automatically integrates with `IHttpClientFactory` and `ILoggerFactory` fro
 Version 1:
 ```csharp
 var sinchClient = new SinchClient(null, null, null);
-var sinchVoiceClient = sinchClient.Voice("APP_KEY", "APP_SECRET");
-var sinchVerificationClient = sinchClient.Verification("APP_KEY", "APP_SECRET");
+var sinchVoiceClient = sinchClient.Voice("APPLICATION_KEY", "APPLICATION_SECRET");
+var sinchVerificationClient = sinchClient.Verification("APPLICATION_KEY", "APPLICATION_SECRET");
 ```
 
 Version 2:
@@ -61,13 +62,13 @@ var sinch = new SinchClient(new SinchClientConfiguration()
 {
     VoiceConfiguration = new SinchVoiceConfiguration()
     {
-        AppKey = "APP_KEY",
-        AppSecret = "APP_SECRET",
+        AppKey = "APPLICATION_KEY",
+        AppSecret = "APPLICATION_SECRET",
     },
     VerificationConfiguration = new SinchVerificationConfiguration()
     {
-        AppKey = "APP_KEY",
-        AppSecret = "APP_SECRET",
+        AppKey = "APPLICATION_KEY",
+        AppSecret = "APPLICATION_SECRET",
     }
 });
 var sinchVoiceClient = sinch.Voice;

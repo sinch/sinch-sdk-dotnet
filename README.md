@@ -56,6 +56,7 @@ var sinch = new SinchClient(new SinchClientConfiguration
 With ASP.NET dependency injection:
 
 ```csharp
+var builder = WebApplication.CreateBuilder();
 builder.Services.AddSinchClient(() => new SinchClientConfiguration
 {
     SinchUnifiedCredentials = new SinchUnifiedCredentials
