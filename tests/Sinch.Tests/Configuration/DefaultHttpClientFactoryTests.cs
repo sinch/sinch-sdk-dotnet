@@ -84,7 +84,7 @@ namespace Sinch.Tests.Configuration
         }
 
         [Fact]
-        public void CreateClient_ShouldReturnSameInstance()
+        public void CreateClient_WithoutConfiguration_ShouldReturnSameInstance()
         {
             // Arrange
             var factory = new DefaultHttpClientFactory();
@@ -92,11 +92,57 @@ namespace Sinch.Tests.Configuration
             // Act
             var client1 = factory.CreateClient("test1");
             var client2 = factory.CreateClient("test2");
-            var client3 = factory.CreateClient("different-name");
 
             // Assert
-            client1.Should().BeSameAs(client2); // Should return same instance
-            client1.Should().BeSameAs(client3); // Name doesn't matter
+            client1.Should().BeSameAs(client2);
+        }
+
+        [Fact]
+        public void CreateClient_WithNullConfiguration_ShouldReturnSameInstance()
+        {
+            // Arrange
+            var factory = new DefaultHttpClientFactory(null);
+
+            // Act
+            var client1 = factory.CreateClient("test1");
+            var client2 = factory.CreateClient("test2");
+
+            // Assert
+            client1.Should().BeSameAs(client2);
+        }
+
+        [Fact]
+        public void CreateClient_WithDefaultConfiguration_ShouldReturnSameInstance()
+        {
+            // Arrange
+            var factory = new DefaultHttpClientFactory(HttpClientHandlerConfiguration.Default);
+
+            // Act
+            var client1 = factory.CreateClient("test1");
+            var client2 = factory.CreateClient("test2");
+
+            // Assert
+            client1.Should().BeSameAs(client2);
+        }
+
+        [Fact]
+        public void CreateClient_WithCustomConfiguration_ShouldReturnSameInstance()
+        {
+            // Arrange
+            var config = new HttpClientHandlerConfiguration
+            {
+                PooledConnectionLifetime = TimeSpan.FromMinutes(3),
+                PooledConnectionIdleTimeout = TimeSpan.FromMinutes(1),
+                MaxConnectionsPerServer = 20
+            };
+            var factory = new DefaultHttpClientFactory(config);
+
+            // Act
+            var client1 = factory.CreateClient("test1");
+            var client2 = factory.CreateClient("test2");
+
+            // Assert
+            client1.Should().BeSameAs(client2);
         }
 
         [Fact]
