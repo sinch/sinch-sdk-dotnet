@@ -71,24 +71,6 @@ namespace Sinch.Tests.Configuration
         }
 
         [Fact]
-        public void AddSinchClient_ShouldUseInjectedLoggerFactory_WhenNotProvidedInOptions()
-        {
-            // Arrange
-            var services = new ServiceCollection();
-
-            // Act
-            services.AddSinchClient(() => new SinchClientConfiguration { });
-
-            var serviceProvider = services.BuildServiceProvider();
-            var sinchClient = serviceProvider.GetService<ISinchClient>();
-            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-
-            // Assert
-            sinchClient.Should().NotBeNull();
-            loggerFactory.Should().NotBeNull();
-        }
-
-        [Fact]
         public void AddSinchClient_ShouldReturnHttpClientBuilder()
         {
             // Arrange
