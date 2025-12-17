@@ -12,12 +12,12 @@
 
 Console application:
 
-Version 1.*:
+Version 1:
 ```csharp
 var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET");
 ```
 
-Version 2.*:
+Version 2:
 ```csharp
 var sinch = new SinchClient(new SinchClientConfiguration()
 {
@@ -48,14 +48,14 @@ This automatically integrates with `IHttpClientFactory` and `ILoggerFactory` fro
 
 ## Initialize `Voice` and `Verification` clients:
 
-Version 1.*:
+Version 1:
 ```csharp
 var sinchClient = new SinchClient(null, null, null);
 var sinchVoiceClient = sinchClient.Voice("APP_KEY", "APP_SECRET");
 var sinchVerificationClient = sinchClient.Verification("APP_KEY", "APP_SECRET");
 ```
 
-Version 2.*:
+Version 2:
 ```csharp
 var sinch = new SinchClient(new SinchClientConfiguration()
 {
@@ -76,7 +76,7 @@ var sinchVerificationClient = sinch.Verification;
 
 ## Provide `Logger`, and your own `HttpClient`:
 
-Version 1.*:
+Version 1:
 ```csharp
 var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET", options =>
 {
@@ -85,7 +85,7 @@ var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET", options 
 });
 ```
 
-Version 2.*:
+Version 2:
 ```csharp
 var sinch = new SinchClient(new SinchClientConfiguration()
 {
@@ -97,11 +97,11 @@ var sinch = new SinchClient(new SinchClientConfiguration()
 });
 ```
 
-**Note:** In version 2.*, you no longer need to provide your own `HttpClient`. The SDK manages HTTP client lifecycle internally with proper connection pooling and DNS refresh. Only provide a custom `IHttpClientFactory` if you have specific requirements.
+**Note:** In version 2, you no longer need to provide your own `HttpClient`. The SDK manages HTTP client lifecycle internally with proper connection pooling and DNS refresh. Only provide a custom `IHttpClientFactory` if you have specific requirements.
 
 ## Set API Regions(where applicable):
 
-Version 1.*, with `SinchOptions`:
+Version 1, with `SinchOptions`:
 ```csharp
 var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET", options =>
 {
@@ -110,7 +110,7 @@ var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET", options 
 });
 ```
 
-Version 2.*, each `Region` is set in dedicated API config:
+Version 2, each `Region` is set in dedicated API config:
 ```csharp
 var sinch = new SinchClient(new SinchClientConfiguration()
 {
@@ -128,7 +128,7 @@ var sinch = new SinchClient(new SinchClientConfiguration()
 
 ## Override API urls:
 
-Version 1.*, with `ApiUrlOverrides` class:
+Version 1, with `ApiUrlOverrides` class:
 ```csharp
 var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET", options =>
 {
@@ -141,7 +141,7 @@ var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET", options 
 });
 ```
 
-Version 2.*, each URL is overriden in dedicated API config:
+Version 2, each URL is overriden in dedicated API config:
 ```csharp
 var sinch = new SinchClient(new SinchClientConfiguration()
 {
@@ -164,7 +164,7 @@ var sinch = new SinchClient(new SinchClientConfiguration()
 
 ## Use SMS API with `ServicePlanId`:
 
-Version 1.*:
+Version 1:
 ```csharp
 var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET", options =>
 {
@@ -172,7 +172,7 @@ var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET", options 
 });
 ```
 
-Version 2.*:
+Version 2:
 ```csharp
 var sinchClient = new SinchClient(new SinchClientConfiguration()
 {
