@@ -9,16 +9,6 @@ builder.Logging.AddConsole();
 
 builder.Services.AddControllers();
 
-builder.Services.Configure<RouteOptions>(options =>
-{
-    options.LowercaseUrls = true;
-    options.LowercaseQueryStrings = false; // Keep query strings as-is
-});
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 // Sinch SDK with IHttpClientFactory
 // This demonstrates the recommended configuration for ASP.NET Core applications
 builder.Services.AddSinchClient(() => new SinchClientConfiguration
@@ -32,13 +22,6 @@ builder.Services.AddSinchClient(() => new SinchClientConfiguration
 });
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 app.UseHttpsRedirection();
 

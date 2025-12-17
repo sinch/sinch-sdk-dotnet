@@ -70,7 +70,3 @@ This example uses **User Secrets** to securely store your Sinch API credentials 
    dotnet run
    ```
 
-3. The API will be available at:
-   - HTTP: `http://localhost:5000`
-   - Swagger UI: `https://localhost:5000/swagger`
-
