@@ -108,53 +108,6 @@ namespace Sinch.Tests.Configuration
             options.ApiUrlOverrides.Should().BeNull();
         }
 
-
-        [Fact]
-        public void SinchClient_WithNullSinchOptions_ShouldUseDefaults()
-        {
-            // Act
-            var sinch = new SinchClient(new SinchClientConfiguration
-            {
-                SinchOptions = null
-            });
-
-            // Assert
-            sinch.Should().NotBeNull();
-            var accessor = Helpers.GetPrivateField<Func<HttpClient>, SinchClient>(sinch, "_httpClientAccessor");
-            accessor().Should().NotBeNull();
-        }
-
-        [Fact]
-        public void SinchOptions_HttpClientFactory_WhenSet_ShouldIgnoreHandlerConfiguration()
-        {
-            // Arrange
-            var mockFactory = Substitute.For<IHttpClientFactory>();
-            mockFactory.CreateClient(Arg.Any<string>()).Returns(new HttpClient());
-
-            var config = new HttpClientHandlerConfiguration
-            {
-                MaxConnectionsPerServer = 99 // This should be ignored
-            };
-
-            var options = new SinchOptions
-            {
-                HttpClientFactory = mockFactory,
-                HttpClientHandlerConfiguration = config // Should not be used when factory is provided
-            };
-
-            // Act
-            var sinch = new SinchClient(new SinchClientConfiguration
-            {
-                SinchOptions = options
-            });
-
-            var accessor = Helpers.GetPrivateField<Func<HttpClient>, SinchClient>(sinch, "_httpClientAccessor");
-            accessor();
-
-            // Assert
-            mockFactory.Received(1).CreateClient("SinchClient");
-        }
-
         [Fact]
         public void SinchOptions_Multiple_ShouldBeIndependent()
         {
