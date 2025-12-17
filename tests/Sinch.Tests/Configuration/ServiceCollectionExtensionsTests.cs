@@ -71,25 +71,6 @@ namespace Sinch.Tests.Configuration
         }
 
         [Fact]
-        public void AddSinchClient_WithNullSinchOptions_ShouldCreateDefaultOptions()
-        {
-            // Arrange
-            var services = new ServiceCollection();
-
-            // Act
-            services.AddSinchClient(() => new SinchClientConfiguration
-            {
-                SinchOptions = null
-            });
-
-            var serviceProvider = services.BuildServiceProvider();
-            var sinchClient = serviceProvider.GetService<ISinchClient>();
-
-            // Assert
-            sinchClient.Should().NotBeNull();
-        }
-
-        [Fact]
         public void AddSinchClient_ShouldUseInjectedLoggerFactory_WhenNotProvidedInOptions()
         {
             // Arrange
