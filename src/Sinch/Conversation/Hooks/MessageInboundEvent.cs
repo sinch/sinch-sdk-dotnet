@@ -9,10 +9,12 @@ namespace Sinch.Conversation.Hooks
     /// </summary>
     public sealed class MessageInboundEvent : CallbackEventBase
     {
+        public const string JsonDiscriminator = "message";
+
         /// <summary>
         ///     Gets or Sets Message
         /// </summary>
-        [JsonPropertyName("message")]
+        [JsonPropertyName(JsonDiscriminator)]
         public MessageInboundEventItem? Message { get; set; }
 
 
