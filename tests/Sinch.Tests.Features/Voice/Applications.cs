@@ -114,7 +114,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the response contains details about the specific number")]
         public void ThenTheResponseContainsDetailsAboutTheSpecificNumber()
         {
-            _queryNumberResponse.NumberItem.Should().BeEquivalentTo(
+            _queryNumberResponse.Number.Should().BeEquivalentTo(
                 new Sinch.Voice.Applications.QueryNumber.NumberItem()
                 {
                     CountryId = "US",

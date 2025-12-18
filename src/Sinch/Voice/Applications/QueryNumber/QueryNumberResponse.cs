@@ -15,9 +15,7 @@ namespace Sinch.Voice.Applications.QueryNumber
         ///     Gets or Sets Number
         /// </summary>
         [JsonPropertyName("number")]
-        // TODO: rename to Number in 2.0
-        public NumberItem? NumberItem { get; set; }
-
+        public NumberItem? Number { get; set; }
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -28,7 +26,7 @@ namespace Sinch.Voice.Applications.QueryNumber
             var sb = new StringBuilder();
             sb.Append($"class {nameof(QueryNumberResponse)} {{\n");
             sb.Append($"  {nameof(Method)}: ").Append(Method).Append("\n");
-            sb.Append($"  {nameof(NumberItem)}: ").Append(NumberItem).Append("\n");
+            sb.Append($"  {nameof(Number)}: ").Append(Number).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
