@@ -70,11 +70,6 @@ namespace Sinch.Tests.Core
             string body,
             bool expected)
         {
-            // TODO: remove in 2.0
-            _voiceClient.ValidateAuthenticationHeader(httpMethod, path,
-                headersStringValues
-                , JsonNode.Parse(body)!.AsObject()).Should().Be(expected);
-
             _voiceClient.ValidateAuthenticationHeader(httpMethod, path,
                 headers, body).Should().Be(expected);
 
