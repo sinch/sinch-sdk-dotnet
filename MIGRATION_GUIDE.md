@@ -7,6 +7,8 @@
 - [Set API Regions (where applicable)](#set-api-regionswhere-applicable)
 - [Override API urls](#override-api-urls)
 - [Use SMS API with ServicePlanId](#use-sms-api-with-serviceplanid)
+- [VoiceConfiguration is now abstract](#voiceconfiguration-is-now-abstract)
+- [ScheduledVoiceProvisioning is now abstract](#scheduledvoiceprovisioning-is-now-abstract)
 
 ## Initialize `SinchClient` with unified credentials:
 
@@ -162,3 +164,47 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 });
 ```
 
+## VoiceConfiguration is now abstract
+
+The `VoiceConfiguration` class in the Numbers API is now abstract. You must use one of the concrete implementations based on your voice application type:
+
+Version 1.*:
+```csharp
+var voiceConfig = new VoiceConfiguration()
+{
+    Type = VoiceApplicationType.Rtc
+};
+```
+
+Version 2.*:
+```csharp
+// For RTC (Voice) applications
+var voiceConfig = new VoiceRtcConfiguration();
+
+// For EST (Elastic SIP Trunking)
+var voiceConfig = new VoiceEstConfiguration();
+
+// For FAX services
+var voiceConfig = new VoiceFaxConfiguration();
+```
+
+## ScheduledVoiceProvisioning is now abstract
+
+The `ScheduledVoiceProvisioning` class is now abstract. You must use one of the concrete implementations based on your voice application type:
+
+Version 1.*:
+```csharp
+var scheduledProvisioning = new ScheduledVoiceProvisioning();
+```
+
+Version 2.*:
+```csharp
+// For RTC (Voice) applications
+var scheduledProvisioning = new ScheduledVoiceRtcProvisioning();
+
+// For EST (Elastic SIP Trunking)
+var scheduledProvisioning = new ScheduledVoiceEstProvisioning();
+
+// For FAX services
+var scheduledProvisioning = new ScheduledVoiceFaxProvisioning();
+```

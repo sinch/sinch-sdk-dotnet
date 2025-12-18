@@ -237,12 +237,9 @@ namespace Sinch.Tests.Numbers
                     ErrorCodes = new List<string> { "ERROR_CODE_UNSPECIFIED" }
                 }
             },
-            VoiceConfiguration = new VoiceConfiguration
+            VoiceConfiguration = new VoiceRtcConfiguration
             {
-#pragma warning disable CS0618 // Type or member is obsolete
-                // TODO: remove in 2.0
                 AppId = "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEE",
-#pragma warning restore CS0618 // Type or member is obsolete
                 LastUpdatedTime = Helpers.ParseUtc("2024-06-30T07:08:09.100Z"),
                 ScheduledVoiceProvisioning = new ScheduledVoiceRtcProvisioning()
                 {

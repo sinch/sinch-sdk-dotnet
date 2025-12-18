@@ -93,7 +93,6 @@ namespace Sinch.Tests.Features.Numbers
                     AppId = "sunshine-rain-drop-very-beautifulday",
                     ScheduledVoiceProvisioning = new ScheduledVoiceFaxProvisioning()
                     {
-                        AppId = string.Empty,
                         ServiceId = "01W4FFL35P4NC4K35FAXSERVICE",
                         Status = ProvisioningStatus.Waiting,
                         LastUpdatedTime = Helpers.ParseUtc("2024-06-06T20:02:20.437509Z")
