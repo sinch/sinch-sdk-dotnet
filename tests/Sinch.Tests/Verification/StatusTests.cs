@@ -2,14 +2,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
 using RichardSzalay.MockHttp;
-
-/* Unmerged change from project 'Sinch.Tests(net7.0)'
-Before:
-using Sinch.Verification.Report.Response;
-using Sinch.Verification.Status;
-After:
-using Sinch.Verification.Status;
-*/
 using Sinch.Verification.Status;
 using Xunit;
 
