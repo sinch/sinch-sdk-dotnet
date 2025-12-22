@@ -7,7 +7,7 @@ using System.Text.Json;
 // The phone number you want to verify, in E.164 format (e.g. +46701234567).
 var phoneNumber = "PHONE_NUMBER";
 
-var sinchClient = new SinchClient(new SinchClientConfiguration()
+var sinch = new SinchClient(new SinchClientConfiguration()
 {
     VerificationConfiguration = new SinchVerificationConfiguration()
     {
@@ -16,7 +16,7 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
     }
 });
 
-var verificationService = sinchClient.Verification;
+var sinchVerificationClient = sinch.Verification;
 
 Console.WriteLine($"Start a verification by WhatsApp onto phone number {phoneNumber}");
 
@@ -25,7 +25,7 @@ var request = new StartWhatsAppVerificationRequest()
     Identity = Identity.Number(phoneNumber)
 };
 
-var response = await verificationService.Verification.StartWhatsApp(request);
+var response = await sinchVerificationClient.Verification.StartWhatsApp(request);
 
 var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions()
 {

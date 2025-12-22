@@ -3,7 +3,7 @@ using Sinch;
 using Sinch.Conversation;
 using Sinch.Conversation.Messages.List;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration()
+var sinch = new SinchClient(new SinchClientConfiguration()
 {
     SinchUnifiedCredentials = new SinchUnifiedCredentials()
     {
@@ -18,7 +18,8 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
     }
 });
 
-var messagesService = sinchClient.Conversation.Messages;
+var sinchConversationClient = sinch.Conversation;
+var conversationMessages = sinchConversationClient.Messages;
 
 var request = new ListMessagesRequest
 {
@@ -27,7 +28,7 @@ var request = new ListMessagesRequest
 
 Console.WriteLine("Get messages list");
 
-var response = await messagesService.List(request);
+var response = await conversationMessages.List(request);
 
 var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions()
 {

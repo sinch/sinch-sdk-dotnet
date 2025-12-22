@@ -10,7 +10,7 @@ var phoneNumber = "PHONE_NUMBER";
 // The verification method you used when starting the verification.
 var verificationMethod = VerificationMethod.Sms;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration()
+var sinch = new SinchClient(new SinchClientConfiguration()
 {
     VerificationConfiguration = new SinchVerificationConfiguration()
     {
@@ -21,7 +21,8 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 
 Console.WriteLine($"Verification status for phone number {phoneNumber}");
 
-var verificationStatus = sinchClient.Verification.VerificationStatus;
+var sinchVerificationClient = sinch.Verification;
+var verificationStatus = sinchVerificationClient.VerificationStatus;
 
 var response = await verificationStatus.GetByIdentity(phoneNumber, verificationMethod);
 

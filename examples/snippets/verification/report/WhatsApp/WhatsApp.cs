@@ -9,7 +9,7 @@ var phoneNumber = "PHONE_NUMBER";
 // The OTP is the code the user received via Whatsapp as part of the verification process.
 var code = "OTP_CODE";
 
-var sinchClient = new SinchClient(new SinchClientConfiguration()
+var sinch = new SinchClient(new SinchClientConfiguration()
 {
     VerificationConfiguration = new SinchVerificationConfiguration()
     {
@@ -18,7 +18,7 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
     }
 });
 
-var verificationService = sinchClient.Verification;
+var verificationClient = sinch.Verification;
 
 Console.WriteLine($"Report Whatsapp verification code for phone number {phoneNumber}");
 
@@ -30,7 +30,7 @@ var request = new ReportWhatsAppVerificationRequest()
     }
 };
 
-var response = await verificationService.Verification.ReportWhatsAppByIdentity(phoneNumber, request);
+var response = await verificationClient.Verification.ReportWhatsAppByIdentity(phoneNumber, request);
 
 var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions()
 {
