@@ -4,8 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 using Microsoft.Extensions.Primitives;
 using Sinch.Auth;
 using Sinch.Logger;
@@ -18,11 +16,8 @@ namespace Sinch.Core
     /// </summary>
     internal static class AuthorizationHeaderValidation
     {
-        // TODO: refactor in 2.0 and remove JsonObject variant
-        // kept for backward compatibility
         public static bool Validate<TLogger>(HttpMethod method, string path,
-            Dictionary<string, StringValues> headers, JsonObject body, ApplicationSignedAuth applicationSignedAuth,
-            string? rawBody = null,
+            Dictionary<string, StringValues> headers, string body, ApplicationSignedAuth applicationSignedAuth,
             ILoggerAdapter<TLogger>? logger = null)
         {
             var headersCaseInsensitive =
@@ -48,10 +43,7 @@ namespace Sinch.Core
             }
 
             const string timestampHeader = "x-timestamp";
-            var bytesBody =
-                rawBody != null
-                    ? Encoding.UTF8.GetBytes(rawBody)
-                    : JsonSerializer.SerializeToUtf8Bytes(body);
+            var bytesBody = Encoding.UTF8.GetBytes(body);
             var contentType = headersCaseInsensitive.GetValueOrDefault("content-type");
             var timestamp = headersCaseInsensitive.GetValueOrDefault(timestampHeader, string.Empty);
             var calculatedSignature =
@@ -91,27 +83,16 @@ namespace Sinch.Core
             var contentHeadersReformat =
                 contentHeaders.ToDictionary(x => x.Key, y => new StringValues(y.Value.ToArray()));
             var allHeaders = headersReformat.Concat(contentHeadersReformat).ToDictionary(x => x.Key, y => y.Value);
-            var json = JsonNode.Parse(body);
-            if (json == null)
-            {
-                throw new InvalidOperationException($"Parameter {nameof(body)} is not a valid json.");
-            }
 
-            return Validate(method, path, allHeaders, json.AsObject(), applicationSignedAuth, body, logger);
+            return Validate(method, path, allHeaders, body, applicationSignedAuth, logger);
         }
 
         public static bool Validate<TLogger>(HttpMethod method, string path,
             Dictionary<string, IEnumerable<string>> headers, string body, ApplicationSignedAuth applicationSignedAuth,
             ILoggerAdapter<TLogger>? logger = null)
         {
-            var json = JsonNode.Parse(body);
-            if (json == null)
-            {
-                throw new InvalidOperationException($"Parameter {nameof(body)} is not a valid json.");
-            }
-
             var reHeaders = headers.ToDictionary(x => x.Key, y => new StringValues(y.Value.ToArray()));
-            return Validate(method, path, reHeaders, json.AsObject(), applicationSignedAuth, body, logger);
+            return Validate(method, path, reHeaders, body, applicationSignedAuth, logger);
         }
     }
 }

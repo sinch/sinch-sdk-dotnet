@@ -7,7 +7,6 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Primitives;
 using Sinch.Auth;
 using Sinch.Core;
 using Sinch.Logger;
@@ -45,24 +44,11 @@ namespace Sinch.Voice
         /// <summary>
         ///     Validates callback request.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="headers"></param>
-        /// <param name="body"></param>
         /// <param name="method"></param>
-        /// <param name="rawBody"></param>
-        /// <returns>True, if produced signature match with that of a header.</returns>
-        [Obsolete("Will be removed in a future version. Use only `string body` version of the methods.")]
-        bool ValidateAuthenticationHeader(HttpMethod method, string path, Dictionary<string, StringValues> headers,
-            JsonObject body, string? rawBody = null);
-
-        /// <summary>
-        ///     Validates callback request.
-        /// </summary>
         /// <param name="path"></param>
         /// <param name="headers"></param>
         /// <param name="contentHeaders"></param>
         /// <param name="body"></param>
-        /// <param name="method"></param>
         /// <returns>True, if produced signature match with that of a header.</returns>
         bool ValidateAuthenticationHeader(HttpMethod method, string path, HttpResponseHeaders headers,
             HttpContentHeaders contentHeaders,
@@ -71,10 +57,10 @@ namespace Sinch.Voice
         /// <summary>
         ///     Validates callback request.
         /// </summary>
+        /// <param name="method"></param>
         /// <param name="path"></param>
         /// <param name="headers"></param>
         /// <param name="body"></param>
-        /// <param name="method"></param>
         /// <returns>True, if produced signature match with that of a header.</returns>
         bool ValidateAuthenticationHeader(HttpMethod method, string path,
             Dictionary<string, IEnumerable<string>> headers,
@@ -134,13 +120,6 @@ namespace Sinch.Voice
 
         /// <inheritdoc />
         public ISinchVoiceApplications Applications { get; }
-
-        public bool ValidateAuthenticationHeader(HttpMethod method, string path,
-            Dictionary<string, StringValues> headers, JsonObject body, string? rawBody = null)
-        {
-            return AuthorizationHeaderValidation.Validate(method, path, headers, body, _applicationSignedAuth, rawBody,
-                _logger);
-        }
 
         public bool ValidateAuthenticationHeader(HttpMethod method, string path, HttpResponseHeaders headers,
             HttpContentHeaders contentHeaders,

@@ -3,12 +3,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json.Nodes;
 using FluentAssertions;
-using Microsoft.Extensions.Primitives;
 using Sinch.Verification;
 using Sinch.Voice;
 using Xunit;
-
-#pragma warning disable CS0618 // Type or member is obsolete
 
 namespace Sinch.Tests.Core
 {
@@ -44,28 +41,21 @@ namespace Sinch.Tests.Core
                 .ToDictionary(x => x.Key, y => y.Value);
         }
 
-        private Dictionary<string, StringValues> StringValuesFromEnumerable(
-            Dictionary<string, IEnumerable<string>> headers)
-        {
-            return headers.ToDictionary(x => x.Key, y => new StringValues(y.Value.ToArray()));
-        }
-
-        private (HttpResponseMessage, Dictionary<string, IEnumerable<string>>, Dictionary<string, StringValues>)
+        private (HttpResponseMessage, Dictionary<string, IEnumerable<string>>)
             SetupTestHeaders(string timestamp, string auth, string contentType)
         {
             var message = new HttpResponseMessage();
             message.Headers.Add("x-timestamp", timestamp);
-            message.Headers.Add("authorization",
-                auth);
+            message.Headers.Add("authorization", auth);
             message.Content.Headers.Add("content-type", contentType);
             var headers = HeadersFromHttpMessage(message);
-            var headersAsStringValues = StringValuesFromEnumerable(headers);
-            return (message, headers, headersAsStringValues);
+            return (message, headers);
         }
 
 
         private void AssertHeaderValidation(Dictionary<string, IEnumerable<string>> headers,
-            Dictionary<string, StringValues> headersStringValues, HttpResponseMessage message, string path,
+            HttpResponseMessage message,
+            string path,
             HttpMethod httpMethod,
             string body,
             bool expected)
@@ -88,22 +78,22 @@ namespace Sinch.Tests.Core
         {
             // https://developers.sinch.com/docs/voice/api-reference/authentication/callback-signed-request/
             // full path: "https://callbacks.yourdomain.com/sinch/callback/ace"
-            var (message, headers, headersStringValues) = SetupTestHeaders("2014-09-24T10:59:41Z",
+            var (message, headers) = SetupTestHeaders("2014-09-24T10:59:41Z",
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "application/json");
 
-            AssertHeaderValidation(headers, headersStringValues, message, "/sinch/callback/ace", HttpMethod.Post, _body,
+            AssertHeaderValidation(headers, message, "/sinch/callback/ace", HttpMethod.Post, _body,
                 expected: true);
         }
 
         [Fact]
         public void FailIfInvalidAuthHeaderValue()
         {
-            var (message, headers, headersStringValues) = SetupTestHeaders("2014-09-24T10:59:41Z",
+            var (message, headers) = SetupTestHeaders("2014-09-24T10:59:41Z",
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:bdJO/XUVvIsb5SlZAKmvfw==",
                 "application/json");
 
-            AssertHeaderValidation(headers, headersStringValues, message, "/sinch/callback/ace", HttpMethod.Post, _body,
+            AssertHeaderValidation(headers, message, "/sinch/callback/ace", HttpMethod.Post, _body,
                 expected: false);
         }
 
@@ -111,55 +101,55 @@ namespace Sinch.Tests.Core
         [Fact]
         public void FailIfAuthHeaderMissing()
         {
-            var (message, headers, headersStringValues) = SetupTestHeaders("2014-09-24T10:59:41Z",
+            var (message, headers) = SetupTestHeaders("2014-09-24T10:59:41Z",
                 null,
                 "application/json");
 
-            AssertHeaderValidation(headers, headersStringValues, message, "/sinch/callback/ace", HttpMethod.Post, _body,
+            AssertHeaderValidation(headers, message, "/sinch/callback/ace", HttpMethod.Post, _body,
                 expected: false);
         }
 
         [Fact]
         public void FailIfInvalidPath()
         {
-            var (message, headers, headersStringValues) = SetupTestHeaders("2014-09-24T10:59:41Z",
+            var (message, headers) = SetupTestHeaders("2014-09-24T10:59:41Z",
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "application/json");
 
-            AssertHeaderValidation(headers, headersStringValues, message, "/not/that/path", HttpMethod.Post, _body,
+            AssertHeaderValidation(headers, message, "/not/that/path", HttpMethod.Post, _body,
                 expected: false);
         }
 
         [Fact]
         public void FailNotThatHttpMethod()
         {
-            var (message, headers, headersStringValues) = SetupTestHeaders("2014-09-24T10:59:41Z",
+            var (message, headers) = SetupTestHeaders("2014-09-24T10:59:41Z",
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "application/json");
 
-            AssertHeaderValidation(headers, headersStringValues, message, "/sinch/callback/ace", HttpMethod.Get, _body,
+            AssertHeaderValidation(headers, message, "/sinch/callback/ace", HttpMethod.Get, _body,
                 expected: false);
         }
 
         [Fact]
         public void FailNotThatTimestamp()
         {
-            var (message, headers, headersStringValues) = SetupTestHeaders("2019-11-03T10:59:41Z",
+            var (message, headers) = SetupTestHeaders("2019-11-03T10:59:41Z",
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "application/json");
 
-            AssertHeaderValidation(headers, headersStringValues, message, "/sinch/callback/ace", HttpMethod.Post, _body,
+            AssertHeaderValidation(headers, message, "/sinch/callback/ace", HttpMethod.Post, _body,
                 expected: false);
         }
 
         [Fact]
         public void FailNotThatContentType()
         {
-            var (message, headers, headersStringValues) = SetupTestHeaders("2019-11-03T10:59:41Z",
+            var (message, headers) = SetupTestHeaders("2019-11-03T10:59:41Z",
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "text/html");
 
-            AssertHeaderValidation(headers, headersStringValues, message, "/sinch/callback/ace", HttpMethod.Post, _body,
+            AssertHeaderValidation(headers, message, "/sinch/callback/ace", HttpMethod.Post, _body,
                 expected: false);
         }
 
@@ -167,11 +157,11 @@ namespace Sinch.Tests.Core
         public void FailNotThatBody()
         {
             var newBody = JsonNode.Parse("{\"hello\": \"world\"}")!.ToJsonString();
-            var (message, headers, headersStringValues) = SetupTestHeaders("2014-09-24T10:59:41Z",
+            var (message, headers) = SetupTestHeaders("2014-09-24T10:59:41Z",
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "application/json");
 
-            AssertHeaderValidation(headers, headersStringValues, message, "/sinch/callback/ace", HttpMethod.Post,
+            AssertHeaderValidation(headers, message, "/sinch/callback/ace", HttpMethod.Post,
                 newBody,
                 expected: false);
         }
@@ -179,11 +169,11 @@ namespace Sinch.Tests.Core
         [Fact]
         public void FailNotApplicationHeader()
         {
-            var (message, headers, headersStringValues) = SetupTestHeaders("2014-09-24T10:59:41Z",
+            var (message, headers) = SetupTestHeaders("2014-09-24T10:59:41Z",
                 "authorization 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=", // diff is here with `authorization`
                 "application/json");
 
-            AssertHeaderValidation(headers, headersStringValues, message, "/sinch/callback/ace", HttpMethod.Post,
+            AssertHeaderValidation(headers, message, "/sinch/callback/ace", HttpMethod.Post,
                 _body, expected: false);
         }
     }
