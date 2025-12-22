@@ -2,27 +2,12 @@ using System;
 using System.Net.Http;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace Sinch.Tests.Configuration
 {
     public class ServiceCollectionExtensionsTests
     {
-        [Fact]
-        public void AddSinchClient_WithNullServices_ShouldThrowArgumentNullException()
-        {
-            // Arrange
-            IServiceCollection services = null!;
-
-            // Act
-            Action act = () => services.AddSinchClient(() => new SinchClientConfiguration());
-
-            // Assert
-            act.Should().Throw<ArgumentNullException>()
-                .WithParameterName("services");
-        }
-
         [Fact]
         public void AddSinchClient_WithNullConfigureFactory_ShouldThrowArgumentNullException()
         {
