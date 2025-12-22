@@ -53,7 +53,6 @@ namespace Sinch.Verification
     {
         private readonly ILoggerAdapter<ISinchVerificationClient>? _logger;
 
-        // TODO: 2.0 make it ApplicationSignedAuth
         private readonly ApplicationSignedAuth _applicationSignedAuth;
 
         internal SinchVerificationClient(Uri baseAddress, LoggerFactory? loggerFactory,
