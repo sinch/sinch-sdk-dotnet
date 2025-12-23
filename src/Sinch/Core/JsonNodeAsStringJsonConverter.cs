@@ -11,6 +11,11 @@ namespace Sinch.Core
     /// </summary>
     public sealed class JsonNodeAsStringJsonConverter : JsonConverter<JsonNode>
     {
+        private static readonly JsonSerializerOptions RelaxedJsonEscapingOptions = new()
+        {
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        };
+
         public override JsonNode? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             throw new InvalidOperationException("Read is not supported");
@@ -20,10 +25,7 @@ namespace Sinch.Core
         {
             var result = value.GetValueKind() switch
             {
-                JsonValueKind.Object => value.ToJsonString(new JsonSerializerOptions(options)
-                {
-                    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                }),
+                JsonValueKind.Object => value.ToJsonString(RelaxedJsonEscapingOptions),
                 JsonValueKind.String => value.ToString(),
                 _ => throw new ArgumentOutOfRangeException(
                     $"Expected json object or string, found {value.GetValueKind()}")
