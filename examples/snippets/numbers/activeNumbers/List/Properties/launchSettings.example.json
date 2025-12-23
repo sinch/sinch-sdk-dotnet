@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Default": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "SINCH_PROJECT_ID": "YOUR_PROJECT_ID",
+        "SINCH_KEY_ID": "YOUR_KEY_ID",
+        "SINCH_KEY_SECRET": "YOUR_KEY_SECRET"
+      }
+    }
+  }
+}

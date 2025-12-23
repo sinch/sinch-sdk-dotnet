@@ -17,12 +17,55 @@ Each snippet is a standalone project that can be run directly using the `dotnet`
 
 When executing a snippet you will need to provide certain information about your Sinch account (credentials, Sinch virtual phone number, etc.).
 
-These settings can be placed directly in the snippet source or you can set environment variables, in which case they will be shared and used automatically by each snippet.
+#### Option 1: Using `launchSettings.json` (Recommended)
 
+Each snippet includes a `Properties/launchSettings.example.json` file. Copy it to `launchSettings.json` and fill in your credentials:
+
+```powershell
+cd examples/snippets/numbers/activeNumbers/List
+copy Properties\launchSettings.example.json Properties\launchSettings.json
+```
+
+Then edit `Properties/launchSettings.json` with your credentials:
+
+```json
+{
+  "profiles": {
+    "Default": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "SINCH_PROJECT_ID": "your-project-id",
+        "SINCH_KEY_ID": "your-key-id",
+        "SINCH_KEY_SECRET": "your-key-secret"
+      }
+    }
+  }
+}
+```
+
+#### Option 2: Using Environment Variables
+
+Alternatively, set environment variables directly in your shell:
+
+**PowerShell:**
 ```powershell
 $env:SINCH_PROJECT_ID = "your-project-id"
 $env:SINCH_KEY_ID = "your-key-id"
 $env:SINCH_KEY_SECRET = "your-key-secret"
+```
+
+**Command Prompt:**
+```cmd
+set SINCH_PROJECT_ID=your-project-id
+set SINCH_KEY_ID=your-key-id
+set SINCH_KEY_SECRET=your-key-secret
+```
+
+**Bash (Linux/macOS):**
+```bash
+export SINCH_PROJECT_ID="your-project-id"
+export SINCH_KEY_ID="your-key-id"
+export SINCH_KEY_SECRET="your-key-secret"
 ```
 
 ### Running a Snippet
