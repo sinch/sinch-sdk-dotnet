@@ -12,12 +12,7 @@ namespace Sinch.Conversation.Apps
         ///     The ID that identifies a Business Chat Account (BCA).
         /// </summary>
         [JsonPropertyName("business_chat_account_id")]
-#if NET7_0_OR_GREATER
         public required string BusinessChatAccountId { get; set; }
-#else
-        public string BusinessChatAccountId { get; set; } = null!;
-#endif
-
 
         /// <summary>
         ///     Merchant ID, required if our client wants to use Apple Pay.

@@ -21,10 +21,6 @@ namespace Sinch.Verification.Report.Request
         ///     The code which was received by the user submitting the WhatsApp verification.
         /// </summary>
         [JsonPropertyName("code")]
-#if NET7_0_OR_GREATER
         public required string Code { get; set; }
-#else
-        public string Code { get; set; } = null!;
-#endif
     }
 }
