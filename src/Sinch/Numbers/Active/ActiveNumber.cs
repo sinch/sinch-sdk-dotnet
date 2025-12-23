@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using Sinch.Numbers.VoiceConfigurations;
 
 namespace Sinch.Numbers.Active
 {
@@ -94,5 +93,10 @@ namespace Sinch.Numbers.Active
         /// </summary>
         [JsonConverter(typeof(VoiceConfigurationConverter))]
         public VoiceConfiguration? VoiceConfiguration { get; set; }
+
+        /// <summary>
+        ///     The callback URL to be called for a rented number's provisioning / deprovisioning operations.
+        /// </summary>
+        public string? CallbackUrl { get; set; }
     }
 }

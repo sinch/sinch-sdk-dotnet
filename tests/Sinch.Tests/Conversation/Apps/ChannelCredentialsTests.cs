@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Newtonsoft.Json.Linq;
 using Sinch.Conversation;
 using Sinch.Conversation.Apps;
 using Sinch.Conversation.Apps.Credentials;

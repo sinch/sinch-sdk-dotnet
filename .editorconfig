@@ -65,6 +65,7 @@ resharper_web_config_wrong_module_highlighting = warning
 
 [*.cs]
 place_attribute_on_same_line = never
+dotnet_diagnostic.IDE0005.severity = warning
 
 [{*.har,*.jsb2,*.jsb3,*.json,*.jsonc,*.postman_collection,*.postman_collection.json,*.postman_environment,*.postman_environment.json,.babelrc,.eslintrc,.prettierrc,.stylelintrc,bowerrc,jest.config}]
 indent_style = space

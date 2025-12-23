@@ -14,7 +14,7 @@ namespace Sinch.Voice.Hooks
         ///     Must have the value notify.
         /// </summary>
         [JsonPropertyName("event")]
-        public EventType? Event { get; set; }
+        internal override EventType Event { get; set; } = EventType.NotificationEvent;
 
         /// <summary>
         ///     The unique ID assigned to this call.

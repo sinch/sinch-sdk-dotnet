@@ -47,7 +47,8 @@ namespace Sinch.SMS.Inbounds
         private readonly ILoggerAdapter<ISinchSmsInbounds>? _logger;
         private readonly string _projectOrServicePlanId;
 
-        internal Inbounds(string projectOrServicePlanId, Uri baseAddress, ILoggerAdapter<ISinchSmsInbounds>? logger, IHttp http)
+        internal Inbounds(string projectOrServicePlanId, Uri baseAddress, ILoggerAdapter<ISinchSmsInbounds>? logger,
+            IHttp http)
         {
             _projectOrServicePlanId = projectOrServicePlanId;
             _baseAddress = baseAddress;
@@ -55,29 +56,35 @@ namespace Sinch.SMS.Inbounds
             _http = http;
         }
 
-        public Task<ListInboundsResponse> List(ListInboundsRequest request, CancellationToken cancellationToken = default)
+        public Task<ListInboundsResponse> List(ListInboundsRequest request,
+            CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/inbounds?{request.GetQueryString()}");
             _logger?.LogDebug("Listing inbounds...");
             return _http.Send<ListInboundsResponse>(uri, HttpMethod.Get, cancellationToken);
         }
 
-        public async IAsyncEnumerable<IInbound> ListAuto(ListInboundsRequest request, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        public async IAsyncEnumerable<IInbound> ListAuto(ListInboundsRequest request,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Auto listing inbounds...");
             bool isLastPage;
+            int total = 0;
             do
             {
-                var uri = new Uri(_baseAddress, $"xms/v1/{_projectOrServicePlanId}/inbounds?{request.GetQueryString()}");
+                var uri = new Uri(_baseAddress,
+                    $"xms/v1/{_projectOrServicePlanId}/inbounds?{request.GetQueryString()}");
                 _logger?.LogDebug("Auto list {page}", request.Page);
                 var response = await _http.Send<ListInboundsResponse>(uri, HttpMethod.Get, cancellationToken);
+                total += response.PageSize;
                 if (response.Inbounds != null)
                     foreach (var inbound in response.Inbounds)
                     {
                         yield return inbound;
                     }
+                isLastPage = total >= response.Count;
 
-                isLastPage = Utils.IsLastPage(response.Page, response.PageSize, response.Count);
+                request.Page ??= response.Page;
                 request.Page++;
             } while (!isLastPage);
         }

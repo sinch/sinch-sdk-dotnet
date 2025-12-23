@@ -13,23 +13,13 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     Unique ID used to query the current payment status.
         /// </summary>
         [JsonPropertyName("reference_id")]
-#if NET7_0_OR_GREATER
         public required string ReferenceId { get; set; }
-#else
-        public string ReferenceId { get; set; } = null!;
-#endif
-
 
         /// <summary>
         ///     Gets or Sets Order
         /// </summary>
         [JsonPropertyName("order")]
-#if NET7_0_OR_GREATER
         public required OrderStatusPaymentDetails Order { get; set; }
-#else
-        public OrderStatusPaymentDetails Order { get; set; } = null!;
-#endif
-
 
         /// <summary>
         ///     Returns the string presentation of the object

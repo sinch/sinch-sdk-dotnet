@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text.Json.Nodes;
 using FluentAssertions;
-using Microsoft.Extensions.Primitives;
 using Sinch.Voice;
 using Xunit;
 
@@ -35,7 +33,7 @@ namespace Sinch.Tests.Voice
             // full path: "https://callbacks.yourdomain.com/sinch/callback/ace"
 
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                new Dictionary<string, StringValues>()
+                new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
                     { "content-type", new[] { "application/json" } },
@@ -47,14 +45,14 @@ namespace Sinch.Tests.Voice
                         }
                     }
                 }
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeTrue();
+                , _body).Should().BeTrue();
         }
 
         [Fact]
         public void FailIfInvalidAuthHeaderValue()
         {
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                new Dictionary<string, StringValues>()
+                new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
                     { "content-type", new[] { "application/json" } },
@@ -66,26 +64,26 @@ namespace Sinch.Tests.Voice
                         }
                     }
                 }
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
+                , _body).Should().BeFalse();
         }
 
         [Fact]
         public void FailIfAuthHeaderMissing()
         {
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                new Dictionary<string, StringValues>()
+                new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
                     { "content-type", new[] { "application/json" } },
                 }
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
+                , _body).Should().BeFalse();
         }
 
         [Fact]
         public void FailIfInvalidPath()
         {
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/not/that/path",
-                new Dictionary<string, StringValues>()
+                new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
                     { "content-type", new[] { "application/json" } },
@@ -97,14 +95,14 @@ namespace Sinch.Tests.Voice
                         }
                     }
                 }
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
+                , _body).Should().BeFalse();
         }
 
         [Fact]
         public void FailNotThatHttpMethod()
         {
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
-                new Dictionary<string, StringValues>()
+                new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
                     { "content-type", new[] { "application/json" } },
@@ -116,14 +114,14 @@ namespace Sinch.Tests.Voice
                         }
                     }
                 }
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
+                , _body).Should().BeFalse();
         }
 
         [Fact]
         public void FailNotThatTimestamp()
         {
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                new Dictionary<string, StringValues>()
+                new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2019-11-03T10:59:41Z" } },
                     { "content-type", new[] { "application/json" } },
@@ -135,14 +133,14 @@ namespace Sinch.Tests.Voice
                         }
                     }
                 }
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
+                , _body).Should().BeFalse();
         }
 
         [Fact]
         public void FailNotThatContentType()
         {
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                new Dictionary<string, StringValues>()
+                new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
                     { "content-type", new[] { "text" } },
@@ -154,15 +152,15 @@ namespace Sinch.Tests.Voice
                         }
                     }
                 }
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
+                , _body).Should().BeFalse();
         }
 
         [Fact]
         public void FailNotThatBody()
         {
-            _body = JsonNode.Parse("{\"hello\": \"world\"}")!.ToJsonString();
+            var differentBody = "{\"hello\":\"world\"}";
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                new Dictionary<string, StringValues>()
+                new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
                     { "content-type", new[] { "application/json" } },
@@ -174,14 +172,14 @@ namespace Sinch.Tests.Voice
                         }
                     }
                 }
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
+                , differentBody).Should().BeFalse();
         }
 
         [Fact]
         public void FailNotApplicationHeader()
         {
             _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
-                new Dictionary<string, StringValues>()
+                new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
                     { "content-type", new[] { "application/json" } },
@@ -193,7 +191,7 @@ namespace Sinch.Tests.Voice
                         }
                     }
                 }
-                , JsonNode.Parse(_body)!.AsObject()).Should().BeFalse();
+                , _body).Should().BeFalse();
         }
     }
 }

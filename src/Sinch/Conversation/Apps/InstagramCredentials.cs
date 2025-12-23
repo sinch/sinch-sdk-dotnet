@@ -12,12 +12,7 @@ namespace Sinch.Conversation.Apps
         ///     The static token.
         /// </summary>
         [JsonPropertyName("token")]
-#if NET7_0_OR_GREATER
         public required string Token { get; set; }
-#else
-        public string Token { get; set; } = null!;
-#endif
-
 
         /// <summary>
         ///     Required if using the Sinch Facebook App.

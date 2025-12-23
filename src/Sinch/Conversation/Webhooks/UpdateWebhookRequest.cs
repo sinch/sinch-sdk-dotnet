@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Text;
-using System.Text.Json.Serialization;
 using Sinch.Core;
 
 namespace Sinch.Conversation.Webhooks

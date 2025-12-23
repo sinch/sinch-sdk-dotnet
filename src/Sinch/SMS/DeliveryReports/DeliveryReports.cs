@@ -22,7 +22,8 @@ namespace Sinch.SMS.DeliveryReports
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<GetDeliveryReportResponse> Get(GetDeliveryReportRequest request, CancellationToken cancellationToken = default);
+        Task<GetDeliveryReportResponse> Get(GetDeliveryReportRequest request,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     A recipient delivery report contains the message status for a single recipient phone number.
@@ -41,7 +42,8 @@ namespace Sinch.SMS.DeliveryReports
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ListDeliveryReportsResponse> List(ListDeliveryReportsRequest request, CancellationToken cancellationToken = default);
+        Task<ListDeliveryReportsResponse> List(ListDeliveryReportsRequest request,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Get a list of finished delivery reports.<br /><br />
@@ -50,7 +52,8 @@ namespace Sinch.SMS.DeliveryReports
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>An async enumerable of <see cref="DeliveryReport"/></returns>
-        IAsyncEnumerable<DeliveryReport> ListAuto(ListDeliveryReportsRequest request, CancellationToken cancellationToken = default);
+        IAsyncEnumerable<DeliveryReport> ListAuto(ListDeliveryReportsRequest request,
+            CancellationToken cancellationToken = default);
     }
 
     /// <inheritdoc />
@@ -61,7 +64,8 @@ namespace Sinch.SMS.DeliveryReports
         private readonly ILoggerAdapter<ISinchSmsDeliveryReports>? _logger;
         private readonly string _projectOrServicePlanId;
 
-        internal DeliveryReports(string projectOrServicePlanId, Uri baseAddress, ILoggerAdapter<ISinchSmsDeliveryReports>? logger, IHttp http)
+        internal DeliveryReports(string projectOrServicePlanId, Uri baseAddress,
+            ILoggerAdapter<ISinchSmsDeliveryReports>? logger, IHttp http)
         {
             _projectOrServicePlanId = projectOrServicePlanId;
             _baseAddress = baseAddress;
@@ -70,7 +74,8 @@ namespace Sinch.SMS.DeliveryReports
         }
 
         /// <inheritdoc />
-        public Task<GetDeliveryReportResponse> Get(GetDeliveryReportRequest request, CancellationToken cancellationToken = default)
+        public Task<GetDeliveryReportResponse> Get(GetDeliveryReportRequest request,
+            CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress,
                 $"xms/v1/{_projectOrServicePlanId}/batches/{request.BatchId}/delivery_report?{request.GetQueryString()}");
@@ -92,7 +97,8 @@ namespace Sinch.SMS.DeliveryReports
         }
 
         /// <inheritdoc />
-        public Task<ListDeliveryReportsResponse> List(ListDeliveryReportsRequest request, CancellationToken cancellationToken = default)
+        public Task<ListDeliveryReportsResponse> List(ListDeliveryReportsRequest request,
+            CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress,
                 $"xms/v1/{_projectOrServicePlanId}/delivery_reports?{request.GetQueryString()}");
@@ -108,6 +114,7 @@ namespace Sinch.SMS.DeliveryReports
         {
             _logger?.LogDebug("Listing delivery reports for {projectOrServicePlanId}", _projectOrServicePlanId);
             bool isLastPage;
+            int total = 0;
             do
             {
                 var uri = new Uri(_baseAddress,
@@ -115,13 +122,15 @@ namespace Sinch.SMS.DeliveryReports
 
 
                 var response = await _http.Send<ListDeliveryReportsResponse>(uri, HttpMethod.Get, cancellationToken);
+                total += response.PageSize;
                 if (response.DeliveryReports != null)
                     foreach (var report in response.DeliveryReports)
                     {
                         yield return report;
                     }
 
-                isLastPage = Utils.IsLastPage(response.Page, response.PageSize, response.Count);
+                isLastPage = total >= response.Count;
+                request.Page ??= response.Page;
                 request.Page++;
             } while (!isLastPage);
         }

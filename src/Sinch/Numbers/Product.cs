@@ -12,11 +12,11 @@ namespace Sinch.Numbers
         /// <summary>
         ///     The SMS product can use the number.
         /// </summary>
-        public static readonly Product Sms = new("Sms");
+        public static readonly Product Sms = new("SMS");
 
         /// <summary>
         ///     The Voice product can use the number.
         /// </summary>
-        public static readonly Product Voice = new("Voice");
+        public static readonly Product Voice = new("VOICE");
     }
 }

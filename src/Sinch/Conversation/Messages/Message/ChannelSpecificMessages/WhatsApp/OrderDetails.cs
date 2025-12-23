@@ -13,12 +13,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     Gets or Sets Payment
         /// </summary>
         [JsonPropertyName("payment")]
-#if NET7_0_OR_GREATER
         public required OrderDetailsPayment Payment { get; set; }
-#else
-        public OrderDetailsPayment Payment { get; set; } = null!;
-#endif
-
 
         /// <summary>
         ///     Returns the string presentation of the object

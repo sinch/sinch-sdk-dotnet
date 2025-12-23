@@ -21,6 +21,11 @@ namespace Sinch.Numbers
         [JsonInclude]
         [JsonPropertyName("lastUpdatedTime")]
         public DateTime? LastUpdatedTime { get; internal set; }
+
+        [JsonPropertyName("scheduledVoiceProvisioning")]
+        [JsonInclude]
+        [JsonConverter(typeof(ScheduledVoiceProvisioningConverter))]
+        public ScheduledVoiceProvisioning? ScheduledVoiceProvisioning { get; internal set; }
     }
 
 

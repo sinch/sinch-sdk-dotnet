@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Voice.Applications.QueryNumber
 {
@@ -11,10 +12,10 @@ namespace Sinch.Voice.Applications.QueryNumber
 
 
         /// <summary>
-        ///     Gets or Sets NumberItem
+        ///     Gets or Sets Number
         /// </summary>
-        public NumberItem? NumberItem { get; set; }
-
+        [JsonPropertyName("number")]
+        public NumberItem? Number { get; set; }
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -23,9 +24,9 @@ namespace Sinch.Voice.Applications.QueryNumber
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class QueryNumberResponse {\n");
-            sb.Append("  Method: ").Append(Method).Append("\n");
-            sb.Append("  NumberItem: ").Append(NumberItem).Append("\n");
+            sb.Append($"class {nameof(QueryNumberResponse)} {{\n");
+            sb.Append($"  {nameof(Method)}: ").Append(Method).Append("\n");
+            sb.Append($"  {nameof(Number)}: ").Append(Number).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

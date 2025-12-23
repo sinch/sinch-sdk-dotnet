@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sinch", "src\Sinch\Sinch.cs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sinch.Tests", "tests\Sinch.Tests\Sinch.Tests.csproj", "{9DE6577D-ED36-41A9-98A1-B2491F6D3B4C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sinch.Tests.Features", "tests\Sinch.Tests.Features\Sinch.Tests.Features.csproj", "{B51A4229-7B4D-404C-B0EB-132C91345CE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{9DE6577D-ED36-41A9-98A1-B2491F6D3B4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DE6577D-ED36-41A9-98A1-B2491F6D3B4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DE6577D-ED36-41A9-98A1-B2491F6D3B4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B51A4229-7B4D-404C-B0EB-132C91345CE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B51A4229-7B4D-404C-B0EB-132C91345CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B51A4229-7B4D-404C-B0EB-132C91345CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B51A4229-7B4D-404C-B0EB-132C91345CE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

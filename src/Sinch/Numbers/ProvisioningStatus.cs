@@ -23,5 +23,10 @@ namespace Sinch.Numbers
         ///     The provisioning has failed.
         /// </summary>
         public static readonly ProvisioningStatus Failed = new("FAILED");
+
+        /// <summary>
+        ///    The provisioning status is unspecified.
+        /// </summary>
+        public static readonly ProvisioningStatus Unspecified = new("PROVISIONING_STATUS_UNSPECIFIED");
     }
 }

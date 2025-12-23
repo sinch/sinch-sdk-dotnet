@@ -1,0 +1,6 @@
+{
+  "method": "whatsapp",
+  "whatsapp": {
+    "code": "foo code"
+  }
+}

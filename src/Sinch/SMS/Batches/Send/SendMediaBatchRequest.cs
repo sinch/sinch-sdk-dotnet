@@ -63,12 +63,7 @@ namespace Sinch.SMS.Batches.Send
         ///     URL to the media file
         /// </summary>
         [JsonPropertyName("url")]
-#if NET7_0_OR_GREATER
         public required Uri Url { get; set; }
-#else
-        public Uri Url { get; set; } = null!;
-#endif
-
 
         /// <summary>
         ///     Returns the string presentation of the object

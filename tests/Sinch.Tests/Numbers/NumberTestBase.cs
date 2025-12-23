@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Sinch.Numbers;
 
 namespace Sinch.Tests.Numbers
@@ -21,7 +22,10 @@ namespace Sinch.Tests.Numbers
 
         protected T DeserializeAsNumbersClient<T>(string json)
         {
-            return JsonSerializer.Deserialize<T>(json, Numbers.JsonSerializerOptions);
+            // for unit tests worth checking if model is missing properties from json
+            var withFailOnUnexpectedProps = new JsonSerializerOptions(Numbers.JsonSerializerOptions);
+            withFailOnUnexpectedProps.UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow;
+            return JsonSerializer.Deserialize<T>(json, withFailOnUnexpectedProps);
         }
     }
 }
