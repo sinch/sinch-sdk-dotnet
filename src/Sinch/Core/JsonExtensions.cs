@@ -9,6 +9,14 @@ namespace Sinch.Core
 {
     public static class JsonExtensions
     {
+        private static readonly JsonSerializerOptions serializerIndentedOptions = new() { WriteIndented = true };
+
+        /// <summary>
+        /// Serializes the object to a formatted JSON string.
+        /// </summary>
+        public static string ToJson<T>(this T obj) =>
+            JsonSerializer.Serialize(obj, serializerIndentedOptions);
+
         public static object? ToObject(this JsonElement element, Type type, JsonSerializerOptions? options = null)
         {
             var bufferWriter = new ArrayBufferWriter<byte>();

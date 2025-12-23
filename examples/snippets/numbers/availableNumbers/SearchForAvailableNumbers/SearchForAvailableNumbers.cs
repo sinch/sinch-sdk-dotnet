@@ -1,5 +1,5 @@
-using System.Text.Json;
 using Sinch;
+using Sinch.Core;
 using Sinch.Numbers;
 using Sinch.Numbers.Available.List;
 
@@ -28,10 +28,4 @@ Console.WriteLine("Looking for available numbers");
 
 var response = await sinchClient.Numbers.SearchForAvailableNumbers(request);
 
-var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions()
-{
-    WriteIndented = true
-});
-
-Console.WriteLine($"Response: {jsonResponse}");
-
+Console.WriteLine($"Response: {response.ToJson()}");

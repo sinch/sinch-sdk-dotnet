@@ -1,5 +1,5 @@
-using System.Text.Json;
 using Sinch;
+using Sinch.Core;
 
 var sinchClient = new SinchClient(new SinchClientConfiguration()
 {
@@ -15,9 +15,4 @@ Console.WriteLine("Get callback configuration");
 
 var response = await sinchClient.Numbers.Callbacks.Get();
 
-var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions()
-{
-    WriteIndented = true
-});
-
-Console.WriteLine($"Response: {jsonResponse}");
+Console.WriteLine($"Response: {response.ToJson()}");

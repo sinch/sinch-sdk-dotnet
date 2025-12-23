@@ -1,5 +1,5 @@
-using System.Text.Json;
 using Sinch;
+using Sinch.Core;
 using Sinch.Numbers.Active.Update;
 
 var sinchClient = new SinchClient(new SinchClientConfiguration()
@@ -22,9 +22,4 @@ var response = await sinchClient.Numbers.Update(phoneNumber, new UpdateActiveNum
     DisplayName = displayName
 });
 
-var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions()
-{
-    WriteIndented = true
-});
-
-Console.WriteLine($"Response: {jsonResponse}");
+Console.WriteLine($"Response: {response.ToJson()}");

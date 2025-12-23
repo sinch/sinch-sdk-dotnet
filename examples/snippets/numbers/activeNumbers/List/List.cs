@@ -1,5 +1,5 @@
-using System.Text.Json;
 using Sinch;
+using Sinch.Core;
 using Sinch.Numbers;
 using Sinch.Numbers.Active.List;
 
@@ -23,9 +23,4 @@ Console.WriteLine("Listing active numbers");
 
 var response = await sinchClient.Numbers.List(request);
 
-var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions()
-{
-    WriteIndented = true
-});
-
-Console.WriteLine($"Response: {jsonResponse}");
+Console.WriteLine($"Response: {response.ToJson()}");

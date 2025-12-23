@@ -1,5 +1,5 @@
-using System.Text.Json;
 using Sinch;
+using Sinch.Core;
 using Sinch.Numbers;
 using Sinch.Numbers.Available.Rent;
 
@@ -32,10 +32,4 @@ var request = new RentActiveNumberRequest
 
 var response = await sinchClient.Numbers.Rent(phoneNumberToBeRented, request);
 
-var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions()
-{
-    WriteIndented = true
-});
-
-Console.WriteLine($"Response: {jsonResponse}");
-
+Console.WriteLine($"Response: {response.ToJson()}");
