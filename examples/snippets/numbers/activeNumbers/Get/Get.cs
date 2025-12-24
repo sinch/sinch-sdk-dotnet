@@ -25,4 +25,4 @@ Console.WriteLine($"Get for: {phoneNumber}");
 
 var response = await sinchClient.Numbers.Get(phoneNumber);
 
-Console.WriteLine($"Response: {response.ToJson()}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");

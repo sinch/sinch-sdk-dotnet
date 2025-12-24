@@ -43,4 +43,4 @@ var request = new RentAnyNumberRequest
 
 var response = await sinchClient.Numbers.RentAny(request);
 
-Console.WriteLine($"Response: {response.ToJson()}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");

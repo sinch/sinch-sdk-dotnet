@@ -25,4 +25,4 @@ Console.WriteLine($"CheckAvailability for: {phoneNumber}");
 
 var response = await sinchClient.Numbers.CheckAvailability(phoneNumber);
 
-Console.WriteLine($"Response: {response.ToJson()}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");

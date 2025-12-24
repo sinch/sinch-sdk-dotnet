@@ -40,4 +40,4 @@ var request = new RentActiveNumberRequest
 
 var response = await sinchClient.Numbers.Rent(phoneNumberToBeRented, request);
 
-Console.WriteLine($"Response: {response.ToJson()}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");

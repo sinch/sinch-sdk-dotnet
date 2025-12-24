@@ -31,4 +31,4 @@ Console.WriteLine("Listing active numbers");
 
 var response = await sinchClient.Numbers.List(request);
 
-Console.WriteLine($"Response: {response.ToJson()}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");

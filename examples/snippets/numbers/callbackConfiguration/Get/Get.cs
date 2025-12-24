@@ -23,4 +23,4 @@ Console.WriteLine("Get callback configuration");
 
 var response = await sinchClient.Numbers.Callbacks.Get();
 
-Console.WriteLine($"Response: {response.ToJson()}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");

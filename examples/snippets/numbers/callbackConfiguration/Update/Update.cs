@@ -25,4 +25,4 @@ Console.WriteLine("Update callback HMAC secret");
 
 var response = await sinchClient.Numbers.Callbacks.Update(hmacSecret);
 
-Console.WriteLine($"Response: {response.ToJson()}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");

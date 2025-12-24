@@ -36,4 +36,4 @@ Console.WriteLine("Looking for available numbers");
 
 var response = await sinchClient.Numbers.SearchForAvailableNumbers(request);
 
-Console.WriteLine($"Response: {response.ToJson()}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");

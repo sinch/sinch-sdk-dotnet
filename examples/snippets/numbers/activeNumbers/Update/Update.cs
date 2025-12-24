@@ -30,4 +30,4 @@ var response = await sinchClient.Numbers.Update(phoneNumber, new UpdateActiveNum
     DisplayName = displayName
 });
 
-Console.WriteLine($"Response: {response.ToJson()}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");
