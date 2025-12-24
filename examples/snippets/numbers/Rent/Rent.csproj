@@ -5,6 +5,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>DeprovisionEmergencyAddress</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup Condition="'$(Configuration)'!='Debug'">
@@ -16,7 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Shared\SnippetsConfig.Shared.csproj" />
+        <ProjectReference Include="..\..\Shared\SnippetsConfig.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>
