@@ -1,0 +1,8 @@
+<Project>
+    <ItemGroup>
+        <None Include="$(MSBuildThisFileDirectory)appsettings.json" 
+              Condition="Exists('$(MSBuildThisFileDirectory)appsettings.json')"
+              CopyToOutputDirectory="PreserveNewest"
+              Link="appsettings.json" />
+    </ItemGroup>
+</Project>

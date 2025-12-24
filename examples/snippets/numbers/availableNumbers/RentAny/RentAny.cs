@@ -10,18 +10,19 @@ using Sinch;
 using Sinch.Core;
 using Sinch.Numbers;
 using Sinch.Numbers.Available.RentAny;
+using Sinch.Snippets.Shared;
 
 var sinchClient = new SinchClient(new SinchClientConfiguration()
 {
     SinchUnifiedCredentials = new SinchUnifiedCredentials()
     {
-        ProjectId = Environment.GetEnvironmentVariable("SINCH_PROJECT_ID") ?? "MY_PROJECT_ID",
-        KeyId = Environment.GetEnvironmentVariable("SINCH_KEY_ID") ?? "MY_KEY_ID",
-        KeySecret = Environment.GetEnvironmentVariable("SINCH_KEY_SECRET") ?? "MY_KEY_SECRET"
+        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
+        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
+        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
     }
 });
 
-var servicePlanId = Environment.GetEnvironmentVariable("SINCH_SERVICE_PLAN_ID") ?? "MY_SERVICE_PLAN_ID";
+var servicePlanId = ConfigurationHelper.GetServicePlanId() ?? "MY_SERVICE_PLAN_ID";
 
 // ISO 3166-1 alpha-2 country code of the phone number. e.g. "US", "GB", "SE"...
 // See https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 for details

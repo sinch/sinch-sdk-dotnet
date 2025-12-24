@@ -15,4 +15,12 @@
     <ItemGroup Condition="'$(Configuration)'=='Debug'">
         <ProjectReference Include="C:\Work\sinch-sdk-dotnet\src\Sinch\Sinch.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Shared\SnippetsConfig.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Properties\" />
+    </ItemGroup>
 </Project>

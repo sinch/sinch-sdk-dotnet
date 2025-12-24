@@ -5,6 +5,9 @@ project.lock.json
 *.pyc
 nupkg/
 .env
+launchSettings.json
+examples/snippets/appsettings.json
+/tests/Sinch.Tests.Features/features
 
 # Visual Studio Code
 .vscode
