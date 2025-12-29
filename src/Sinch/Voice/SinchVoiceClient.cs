@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
@@ -40,19 +39,6 @@ namespace Sinch.Voice
         ///     You can use the API to manage features of applications in your project.
         /// </summary>
         ISinchVoiceApplications Applications { get; }
-
-        /// <summary>
-        ///     Validates callback request.
-        /// </summary>
-        /// <param name="method"></param>
-        /// <param name="path"></param>
-        /// <param name="headers"></param>
-        /// <param name="contentHeaders"></param>
-        /// <param name="body"></param>
-        /// <returns>True, if produced signature match with that of a header.</returns>
-        bool ValidateAuthenticationHeader(HttpMethod method, string path, HttpResponseHeaders headers,
-            HttpContentHeaders contentHeaders,
-            string body);
 
         /// <summary>
         ///     Validates callback request.
@@ -120,14 +106,6 @@ namespace Sinch.Voice
 
         /// <inheritdoc />
         public ISinchVoiceApplications Applications { get; }
-
-        public bool ValidateAuthenticationHeader(HttpMethod method, string path, HttpResponseHeaders headers,
-            HttpContentHeaders contentHeaders,
-            string body)
-        {
-            return AuthorizationHeaderValidation.Validate(method, path, headers, contentHeaders, body,
-                _applicationSignedAuth, _logger);
-        }
 
         public bool ValidateAuthenticationHeader(HttpMethod method, string path,
             Dictionary<string, IEnumerable<string>> headers, string body)

@@ -36,7 +36,7 @@ namespace Sinch.Tests.Features.Verification
         {
             _rawBody = await _verificationRequestResponseMessage.Content.ReadAsStringAsync();
             _sinchVerificationClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/verification",
-                _verificationRequestResponseMessage.Headers, _verificationRequestResponseMessage.Content.Headers,
+                _verificationRequestResponseMessage.GetAllHeaders(),
                 _rawBody).Should().BeTrue();
         }
 
@@ -71,7 +71,7 @@ namespace Sinch.Tests.Features.Verification
         {
             _rawBody = await _verificationResultResponse.Content.ReadAsStringAsync();
             _sinchVerificationClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/verification",
-                _verificationResultResponse.Headers, _verificationResultResponse.Content.Headers,
+                _verificationResultResponse.GetAllHeaders(),
                 _rawBody).Should().BeTrue();
         }
 

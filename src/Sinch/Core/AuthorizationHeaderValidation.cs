@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.Extensions.Primitives;
 using Sinch.Auth;
@@ -72,19 +71,6 @@ namespace Sinch.Core
             var isValidSignature = string.Equals(signature, calculatedSignature, StringComparison.Ordinal);
             logger?.LogInformation("The signature was validated with {success}", isValidSignature);
             return isValidSignature;
-        }
-
-        public static bool Validate<TLogger>(HttpMethod method, string path, HttpResponseHeaders headers,
-            HttpContentHeaders contentHeaders,
-            string body, ApplicationSignedAuth applicationSignedAuth, ILoggerAdapter<TLogger>? logger = null)
-        {
-            // apparently, `HttpResponseHeaders` does not contains `Content-Type`, which sits in HttpContentHeaders
-            var headersReformat = headers.ToDictionary(x => x.Key, y => new StringValues(y.Value.ToArray()));
-            var contentHeadersReformat =
-                contentHeaders.ToDictionary(x => x.Key, y => new StringValues(y.Value.ToArray()));
-            var allHeaders = headersReformat.Concat(contentHeadersReformat).ToDictionary(x => x.Key, y => y.Value);
-
-            return Validate(method, path, allHeaders, body, applicationSignedAuth, logger);
         }
 
         public static bool Validate<TLogger>(HttpMethod method, string path,
