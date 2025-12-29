@@ -26,7 +26,8 @@ namespace Sinch.Tests
             var httpClient = new HttpClient(_messageHandlerMock);
             const string mockKeyId = "mock_key_id";
             const string mockKeySecret = "mock_key_secret";
-            _auth = new OAuth(mockKeyId, mockKeySecret, httpClient, _logger, new Uri("https://auth.sinch.com/"));
+            Func<HttpClient> httpClientAccessor = () => httpClient;
+            _auth = new OAuth(mockKeyId, mockKeySecret, httpClientAccessor, _logger, new Uri("https://auth.sinch.com/"));
             var basicAuthHeaderValue = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{mockKeyId}:{mockKeySecret}"));
             _mockedRequest = _messageHandlerMock.When(HttpMethod.Post, "https://auth.sinch.com/oauth2/token")
                 .WithFormData(new[]

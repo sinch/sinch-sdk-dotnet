@@ -12,46 +12,65 @@
 
 ## Initialize `SinchClient` with unified credentials:
 
-Version 1.*:
+Console application:
+
+Version 1:
 ```csharp
-var sinchClient = new SinchClient("YOUR_project_id", "YOUR_key_id", "YOUR_key_secret");
+var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET");
 ```
 
-Version 2.*:
+Version 2:
 ```csharp
 var sinch = new SinchClient(new SinchClientConfiguration()
 {
     SinchUnifiedCredentials = new SinchUnifiedCredentials()
     {
-        ProjectId = "YOUR_project_id",
-        KeyId = "YOUR_key_id",
-        KeySecret = "YOUR_key_secret"
+        ProjectId = "PROJECT_ID",
+        KeyId = "KEY_ID",
+        KeySecret = "KEY_SECRET"
     }
 });
 ```
 
-## Initialize `Voice` and `Verification` clients:
+With ASP.NET dependency injection:
 
-Version 1.*:
 ```csharp
-var sinchClient = new SinchClient(null, null, null);
-var sinchVoiceClient = sinchClient.Voice("YOUR_app_key", "YOUR_app_secret");
-var sinchVerificationClient = sinchClient.Verification("YOUR_app_key", "YOUR_app_secret");
+var builder = WebApplication.CreateBuilder();
+builder.Services.AddSinchClient(() => new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials
+    {
+        ProjectId = "PROJECT_ID",
+        KeyId = "KEY_ID",
+        KeySecret = "KEY_SECRET"
+    }
+});
 ```
 
-Version 2.*:
+This automatically integrates with `IHttpClientFactory` and `ILoggerFactory` from the DI container.
+
+## Initialize `Voice` and `Verification` clients:
+
+Version 1:
+```csharp
+var sinchClient = new SinchClient(null, null, null);
+var sinchVoiceClient = sinchClient.Voice("APPLICATION_KEY", "APPLICATION_SECRET");
+var sinchVerificationClient = sinchClient.Verification("APPLICATION_KEY", "APPLICATION_SECRET");
+```
+
+Version 2:
 ```csharp
 var sinch = new SinchClient(new SinchClientConfiguration()
 {
     VoiceConfiguration = new SinchVoiceConfiguration()
     {
-        AppKey = "YOUR_app_key",
-        AppSecret = "YOUR_app_secret",
+        AppKey = "APPLICATION_KEY",
+        AppSecret = "APPLICATION_SECRET",
     },
     VerificationConfiguration = new SinchVerificationConfiguration()
     {
-        AppKey = "YOUR_app_key",
-        AppSecret = "YOUR_app_secret",
+        AppKey = "APPLICATION_KEY",
+        AppSecret = "APPLICATION_SECRET",
     }
 });
 var sinchVoiceClient = sinch.Voice;
@@ -60,40 +79,41 @@ var sinchVerificationClient = sinch.Verification;
 
 ## Provide `Logger`, and your own `HttpClient`:
 
-Version 1.*:
+Version 1:
 ```csharp
-var sinchClient = new SinchClient("YOUR_project_id", "YOUR_key", "YOUR_secret", options =>
+var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET", options =>
 {
     options.HttpClient = new HttpClient();
     options.LoggerFactory =  Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory.Instance;
 });
 ```
 
-Version 2.*:
+Version 2:
 ```csharp
 var sinch = new SinchClient(new SinchClientConfiguration()
 {
     // ... set credentials
     SinchOptions = new SinchOptions()
     {
-        HttpClient = new HttpClient(),
         LoggerFactory = Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory.Instance
     }
 });
 ```
 
+**Note:** In version 2, you no longer need to provide your own `HttpClient`. The SDK manages HTTP client lifecycle internally with proper connection pooling and DNS refresh. Only provide a custom `IHttpClientFactory` if you have specific requirements.
+
 ## Set API Regions(where applicable):
 
-Version 1.*, with `SinchOptions`:
+Version 1, with `SinchOptions`:
 ```csharp
-var sinchClient = new SinchClient("YOUR_project_id", "YOUR_key", "YOUR_secret", options =>
+var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET", options =>
 {
     options.SmsRegion = SmsRegion.Eu;
     options.ConversationRegion = ConversationRegion.Us;
 });
 ```
 
-Version 2.*, each `Region` is set in dedicated API config:
+Version 2, each `Region` is set in dedicated API config:
 ```csharp
 var sinch = new SinchClient(new SinchClientConfiguration()
 {
@@ -111,9 +131,9 @@ var sinch = new SinchClient(new SinchClientConfiguration()
 
 ## Override API urls:
 
-Version 1.*, with `ApiUrlOverrides` class:
+Version 1, with `ApiUrlOverrides` class:
 ```csharp
-var sinchClient = new SinchClient("YOUR_project_id", "YOUR_key", "YOUR_secret", options =>
+var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET", options =>
 {
     options.ApiUrlOverrides = new ApiUrlOverrides()
     {
@@ -124,7 +144,7 @@ var sinchClient = new SinchClient("YOUR_project_id", "YOUR_key", "YOUR_secret", 
 });
 ```
 
-Version 2.*, each URL is overriden in dedicated API config:
+Version 2, each URL is overriden in dedicated API config:
 ```csharp
 var sinch = new SinchClient(new SinchClientConfiguration()
 {
@@ -139,28 +159,28 @@ var sinch = new SinchClient(new SinchClientConfiguration()
     VerificationConfiguration = new SinchVerificationConfiguration()
     {
         UrlOverride = "https://my-verification-proxy.io",
-        AppKey = "YOUR_app_key",
-        AppSecret = "YOUR_app_secret",
+        AppKey = "APP_KEY",
+        AppSecret = "APP_SECRET",
     }
 });
 ```
 
 ## Use SMS API with `ServicePlanId`:
 
-Version 1.*:
+Version 1:
 ```csharp
-var sinchClient = new SinchClient("YOUR_project_id", "YOUR_key", "YOUR_secret", options =>
+var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET", options =>
 {
-    options.UseServicePlanIdWithSms("YOUR_service_plan_id", "YOUR_api_token", SmsServicePlanIdRegion.Eu);
+    options.UseServicePlanIdWithSms("SERVICE_PLAN_ID", "API_TOKEN", SmsServicePlanIdRegion.Eu);
 });
 ```
 
-Version 2.*:
+Version 2:
 ```csharp
 var sinchClient = new SinchClient(new SinchClientConfiguration()
 {
-    SmsConfiguration = SinchSmsConfiguration.WithServicePlanId("YOUR_service_plan_id",
-        "YOUR_api_token", SmsServicePlanIdRegion.Eu)
+    SmsConfiguration = SinchSmsConfiguration.WithServicePlanId("SERVICE_PLAN_ID",
+        "API_TOKEN", SmsServicePlanIdRegion.Eu)
 });
 ```
 

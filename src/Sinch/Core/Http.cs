@@ -67,19 +67,19 @@ namespace Sinch.Core
     /// <inheritdoc /> 
     internal sealed class Http : IHttp
     {
-        private readonly HttpClient _httpClient;
+        private readonly Func<HttpClient> _httpClientAccessor;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
         private readonly ILoggerAdapter<IHttp>? _logger;
         private readonly Lazy<ISinchAuth> _auth;
         private readonly string _userAgentHeaderValue;
 
 
-        public Http(Lazy<ISinchAuth> auth, HttpClient httpClient, ILoggerAdapter<IHttp>? logger,
+        public Http(Lazy<ISinchAuth> auth, Func<HttpClient> httpClientAccessor, ILoggerAdapter<IHttp>? logger,
             JsonNamingPolicy jsonNamingPolicy)
         {
             _logger = logger;
             _auth = auth;
-            _httpClient = httpClient;
+            _httpClientAccessor = httpClientAccessor;
             _jsonSerializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web)
             {
                 PropertyNamingPolicy = jsonNamingPolicy,
@@ -208,8 +208,9 @@ namespace Sinch.Core
                     AddOrOverrideHeaders(msg, headers);
                 }
 
-
-                var result = await _httpClient.SendAsync(msg, cancellationToken);
+                // Get HttpClient from factory/accessor - do not dispose as factory manages lifetime
+                var httpClient = _httpClientAccessor();
+                var result = await httpClient.SendAsync(msg, cancellationToken);
 
                 if (result.StatusCode == HttpStatusCode.Unauthorized && retry)
                 {

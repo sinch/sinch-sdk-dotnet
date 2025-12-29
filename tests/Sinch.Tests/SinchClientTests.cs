@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
+using NSubstitute;
 using Xunit;
 
 namespace Sinch.Tests
@@ -90,7 +91,7 @@ namespace Sinch.Tests
         }
 
         [Fact]
-        public void InitializeOwnHttpIfNotPassed()
+        public void InitializeOwnHttpClientFactoryIfNotPassed()
         {
             var sinch = new SinchClient(new SinchClientConfiguration()
             {
@@ -101,22 +102,23 @@ namespace Sinch.Tests
                     KeySecret = "keysecret",
                 }
             });
-            Helpers.GetPrivateField<HttpClient, SinchClient>(sinch, "_httpClient").Should().NotBeNull();
+            Helpers.GetPrivateField<Func<HttpClient>, SinchClient>(sinch, "_httpClientAccessor").Should().NotBeNull();
         }
 
         [Fact]
-        public void InitSinchClientWithCustomHttpClient()
+        public void InitSinchClientWithCustomHttpClientFactory()
         {
-            var httpClient = new HttpClient();
+            var httpClientFactory = Substitute.For<IHttpClientFactory>();
             var sinch = new SinchClient(new SinchClientConfiguration()
             {
                 SinchOptions = new SinchOptions()
                 {
-                    HttpClient = httpClient,
+                    HttpClientFactory = httpClientFactory,
                 }
             });
             sinch.Should().NotBeNull();
-            Helpers.GetPrivateField<HttpClient, SinchClient>(sinch, "_httpClient").Should().Be(httpClient);
+            var accessor = Helpers.GetPrivateField<Func<HttpClient>, SinchClient>(sinch, "_httpClientAccessor");
+            accessor.Should().NotBeNull();
         }
     }
 }
