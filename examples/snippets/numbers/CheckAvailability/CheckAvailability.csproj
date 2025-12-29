@@ -16,10 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="C:\Work\sinch-sdk-dotnet\examples\snippets\appsettings.json" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\..\Shared\SnippetsConfig.Shared.csproj" />
     </ItemGroup>
 </Project>
