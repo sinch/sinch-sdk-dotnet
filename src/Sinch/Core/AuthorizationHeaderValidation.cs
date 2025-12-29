@@ -16,7 +16,7 @@ namespace Sinch.Core
     /// </summary>
     internal static class AuthorizationHeaderValidation
     {
-        public static bool Validate<TLogger>(HttpMethod method, string path,
+        private static bool Validate<TLogger>(HttpMethod method, string path,
             Dictionary<string, StringValues> headers, string body, ApplicationSignedAuth applicationSignedAuth,
             ILoggerAdapter<TLogger>? logger = null)
         {
@@ -92,6 +92,7 @@ namespace Sinch.Core
             ILoggerAdapter<TLogger>? logger = null)
         {
             var reHeaders = headers.ToDictionary(x => x.Key, y => new StringValues(y.Value.ToArray()));
+
             return Validate(method, path, reHeaders, body, applicationSignedAuth, logger);
         }
     }
