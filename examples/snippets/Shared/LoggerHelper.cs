@@ -8,6 +8,8 @@ public static class LoggerHelper
 {
     private static readonly Lazy<ILoggerFactory> _loggerFactory = new(CreateLoggerFactory);
 
+    private static ILoggerFactory Factory => _loggerFactory.Value;
+
     private static readonly Lazy<ILogger> _logger = new(() => Factory.CreateLogger("Snippet"));
 
     private static ILoggerFactory CreateLoggerFactory()
@@ -17,11 +19,6 @@ public static class LoggerHelper
             builder.AddConsole();
         });
     }
-
-    /// <summary> 
-    /// Gets a shared logger factory instance. 
-    /// </summary> 
-    public static ILoggerFactory Factory => _loggerFactory.Value;
 
     /// <summary> 
     /// Gets a shared logger instance for snippets. 
