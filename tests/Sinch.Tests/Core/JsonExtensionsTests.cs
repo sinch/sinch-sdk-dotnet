@@ -1,6 +1,5 @@
 using System.Text.Json.Serialization;
 using FluentAssertions;
-using Sinch.Core;
 using Xunit;
 
 namespace Sinch.Tests.Core
