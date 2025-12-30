@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using FluentAssertions;
+using Sinch.Core;
 using Xunit;
 
 namespace Sinch.Tests.Core
@@ -11,7 +12,7 @@ namespace Sinch.Tests.Core
         {
             var obj = new { Name = "Test", Value = 42 };
 
-            var result = obj.ToJson();
+            var result = obj.ToPrettyString();
 
             result.Should().Contain("\"Name\": \"Test\"");
             result.Should().Contain("\"Value\": 42");
@@ -23,7 +24,7 @@ namespace Sinch.Tests.Core
         {
             var obj = new TestClass { MyProperty = "value" };
 
-            var result = obj.ToJson();
+            var result = obj.ToPrettyString();
 
             result.Should().Contain("\"custom_name\"");
             result.Should().NotContain("\"MyProperty\"");
@@ -34,7 +35,7 @@ namespace Sinch.Tests.Core
         {
             object? obj = null;
 
-            var result = obj.ToJson();
+            var result = obj.ToPrettyString();
 
             result.Should().Be("null");
         }
@@ -44,7 +45,7 @@ namespace Sinch.Tests.Core
         {
             var obj = new { };
 
-            var result = obj.ToJson();
+            var result = obj.ToPrettyString();
 
             result.Should().Be("{}");
         }
