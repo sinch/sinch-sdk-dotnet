@@ -22,7 +22,7 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 
 Console.WriteLine("List available regions");
 
-var response = await sinchClient.Numbers.Regions.List(new[] { Types.Mobile, Types.Local, Types.TollFree });
+var response = await sinchClient.Numbers.Regions.List();
 
 Console.WriteLine("Available regions:");
 
