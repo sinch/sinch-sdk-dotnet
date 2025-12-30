@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)'=='Debug'">
-        <ProjectReference Include="C:\Work\sinch-sdk-dotnet\src\Sinch\Sinch.csproj" />
+        <ProjectReference Include="..\..\..\..\src\Sinch\Sinch.csproj" />
     </ItemGroup>
 
     <ItemGroup>

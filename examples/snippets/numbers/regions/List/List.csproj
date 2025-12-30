@@ -5,7 +5,6 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>List</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup Condition="'$(Configuration)'!='Debug'">
@@ -13,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)'=='Debug'">
-        <ProjectReference Include="C:\Work\sinch-sdk-dotnet\src\Sinch\Sinch.csproj" />
+        <ProjectReference Include="..\..\..\..\..\src\Sinch\Sinch.csproj" />
     </ItemGroup>
 
     <ItemGroup>
