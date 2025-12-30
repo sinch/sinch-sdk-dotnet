@@ -10,14 +10,6 @@ namespace Sinch.Numbers.VoiceConfigurations
         [JsonPropertyName("trunkId")]
         public string? TrunkId { get; set; }
 
-        /// <summary>
-        ///     This object is temporary and will appear while the scheduled voice provisioning is processing.
-        ///     Once it has successfully processed, only the ID of the Voice configuration will display.
-        /// </summary>
-        [JsonInclude]
-        [JsonPropertyName("scheduledVoiceProvisioning")]
-        public ScheduledVoiceEstProvisioning? ScheduledVoiceProvisioning { get; internal set; }
-
         [JsonPropertyName("type")]
         [JsonInclude]
         public override VoiceApplicationType? Type { get; protected set; } = VoiceApplicationType.Est;

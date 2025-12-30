@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Primitives;
 using Sinch.Auth;
 using Sinch.Core;
 using Sinch.Logger;
@@ -45,13 +43,14 @@ namespace Sinch.Voice
         /// <summary>
         ///     Validates callback request.
         /// </summary>
+        /// <param name="method"></param>
         /// <param name="path"></param>
         /// <param name="headers"></param>
         /// <param name="body"></param>
-        /// <param name="method"></param>
         /// <returns>True, if produced signature match with that of a header.</returns>
-        bool ValidateAuthenticationHeader(HttpMethod method, string path, Dictionary<string, StringValues> headers,
-            JsonObject body);
+        bool ValidateAuthenticationHeader(HttpMethod method, string path,
+            Dictionary<string, IEnumerable<string>> headers,
+            string body);
 
         /// <summary>
         ///     Parses a Voice callback
@@ -109,60 +108,10 @@ namespace Sinch.Voice
         public ISinchVoiceApplications Applications { get; }
 
         public bool ValidateAuthenticationHeader(HttpMethod method, string path,
-            Dictionary<string, StringValues> headers, JsonObject body)
+            Dictionary<string, IEnumerable<string>> headers, string body)
         {
-            var headersCaseInsensitive =
-                new Dictionary<string, StringValues>(headers, StringComparer.InvariantCultureIgnoreCase);
-
-            if (!headersCaseInsensitive.TryGetValue("authorization", out var authHeaderValue))
-            {
-                _logger?.LogDebug("Failed to validate auth header. Authorization header is missing.");
-                return false;
-            }
-
-            if (authHeaderValue.Count == 0)
-            {
-                _logger?.LogDebug("Failed to validate auth header. Authorization header values is missing.");
-                return false;
-            }
-
-            var authSignature = authHeaderValue.FirstOrDefault();
-            if (authSignature == null)
-            {
-                _logger?.LogDebug("Failed to validate auth header. Authorization header value is null.");
-                return false;
-            }
-
-            const string timestampHeader = "x-timestamp";
-            var bytesBody = JsonSerializer.SerializeToUtf8Bytes(body);
-            var contentType = headersCaseInsensitive.GetValueOrDefault("content-type");
-            var timestamp = headersCaseInsensitive.GetValueOrDefault(timestampHeader, string.Empty);
-            var calculatedSignature =
-                _applicationSignedAuth.GetSignedAuth(bytesBody, method.Method, path,
-                    string.Join(':', timestampHeader, timestamp), contentType);
-            var splitAuthHeader = authSignature.Split(' ');
-
-            if (splitAuthHeader.FirstOrDefault() != "application")
-            {
-                _logger?.LogDebug(
-                    "Failed to validate auth header. Authorization header not starting from 'application'.");
-                return false;
-            }
-
-            var signature = splitAuthHeader.Skip(1).FirstOrDefault();
-
-            if (string.IsNullOrEmpty(signature))
-            {
-                _logger?.LogDebug("Failed to validate auth header. Signature is missing from the header.");
-                return false;
-            }
-
-            _logger?.LogDebug("{CalculatedSignature}", calculatedSignature);
-            _logger?.LogDebug("{AuthorizationSignature}", signature);
-
-            var isValidSignature = string.Equals(signature, calculatedSignature, StringComparison.Ordinal);
-            _logger?.LogInformation("The signature was validated with {success}", isValidSignature);
-            return isValidSignature;
+            return AuthorizationHeaderValidation.Validate(method, path, headers, body, _applicationSignedAuth,
+                _logger);
         }
 
         public IVoiceEvent ParseEvent(string json)

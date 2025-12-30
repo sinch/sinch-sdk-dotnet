@@ -12,6 +12,7 @@ namespace Sinch.Verification.Start.Response
         /// <summary>
         ///     Verification identifier used to query for status.
         /// </summary>
+        [JsonPropertyName("id")]
         public string? Id { get; set; }
 
         /// <summary>
@@ -23,6 +24,7 @@ namespace Sinch.Verification.Start.Response
         /// <summary>
         ///     The value of the method used for the Verification.
         /// </summary>
+        [JsonPropertyName("method")]
         public VerificationMethodEx Method { get; set; } = null!;
     }
 
@@ -69,6 +71,11 @@ namespace Sinch.Verification.Start.Response
                        throw new InvalidOperationException(
                            $"{nameof(StartCalloutVerificationResponse)} deserialization result is null.");
 
+            if (VerificationMethodEx.WhatsApp.Value == method)
+                return elem.Deserialize<StartWhatsAppVerificationResponse>(options) ??
+                       throw new InvalidOperationException(
+                           $"{nameof(StartWhatsAppVerificationResponse)} deserialization result is null.");
+
             throw new JsonException(
                 $"Failed to match verification method object, got prop `{descriptor.Name}` with value `{method}`");
         }
@@ -89,6 +96,9 @@ namespace Sinch.Verification.Start.Response
                     break;
                 case StartDataVerificationResponse startDataVerificationResponse:
                     JsonSerializer.Serialize(writer, startDataVerificationResponse, options);
+                    break;
+                case StartWhatsAppVerificationResponse startWhatsAppVerificationResponse:
+                    JsonSerializer.Serialize(writer, startWhatsAppVerificationResponse, options);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value),

@@ -16,7 +16,7 @@ For more information on the Sinch APIs on which this SDK is based, refer to the 
 - [Client initialization](#client-initialization)
 - [Migrating to 2.0](#migrating-to-20)
 - [Supported Sinch Products](#supported-sinch-products)
-- [Logging, HttpClient, and additional options](#logging-httpclient-and-additional-options)
+- [Logging and additional options](#logging-and-additional-options)
 - [Handling exceptions](#handling-exceptions)
 - [Sample apps](#sample-apps)
 - [License](#license)
@@ -37,35 +37,51 @@ Once the SDK is installed, you must start by initializing the main client class.
 
 To initialize communication with the Sinch servers, credentials obtained from the Sinch dashboard must be provided to the main client class of this SDK. It's highly recommended to not hardcode these credentials and to load them from environment variables instead or any key-secret storage (for example, [app-secrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0)).
 
+Console application:
+
 ```csharp
 using Sinch;
 
-var sinch = new SinchClient(configuration["Sinch:ProjectId"], configuration["Sinch:KeyId"], configuration["Sinch:KeySecret"]);
+var sinch = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials
+    {
+        ProjectId = "PROJECT_ID",
+        KeyId = "KEY_ID",
+        KeySecret = "KEY_SECRET"
+    }
+});
 ```
 
 With ASP.NET dependency injection:
 
 ```csharp
-// SinchClient is thread safe so it's okay to add it as a singleton
-builder.Services.AddSingleton<ISinch>(x => new SinchClient(
-    builder.Configuration["Sinch:ProjectId"],
-    builder.Configuration["Sinch:KeyId"],
-    builder.Configuration["Sinch:KeySecret"]
-));
+var builder = WebApplication.CreateBuilder();
+builder.Services.AddSinchClient(() => new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials
+    {
+        ProjectId = "PROJECT_ID",
+        KeyId = "KEY_ID",
+        KeySecret = "KEY_SECRET"
+    }
+});
 ```
 
-To configure Conversation or Sms hosting regions, and any other additional parameters, use [`SinchOptions`](https://github.com/sinch/sinch-sdk-dotnet/blob/main/src/Sinch/SinchOptions.cs):
+To configure Conversation or Sms hosting regions, and any other additional parameters, use the dedicated configuration classes:
 
 ```csharp
-var sinch = new SinchClient(
-    configuration["Sinch:ProjectId"],
-    configuration["Sinch:KeyId"],
-    configuration["Sinch:KeySecret"],
-    options =>
+var sinch = new SinchClient(new SinchClientConfiguration
+{
+    SmsConfiguration = new SinchSmsConfiguration
     {
-        options.SmsRegion = Sinch.SMS.SmsRegion.Eu;
-        options.ConversationRegion = Sinch.Conversation.ConversationRegion.Eu;
-    });
+        Region = Sinch.SMS.SmsRegion.Eu
+    },
+    ConversationConfiguration = new SinchConversationConfiguration
+    {
+        ConversationRegion = Sinch.Conversation.ConversationRegion.Eu
+    }
+});
 ```
 ## Migrating to 2.0
 
@@ -93,31 +109,26 @@ ListActiveNumbersResponse response = await sinch.Numbers.Active.List(new ListAct
 });
 ```
 
-## Logging, HttpClient, and additional options
+## Logging and additional options
 
-To configure a logger, provide your own `HttpClient`, or any additional options utilize `SinchOptions` action within the constructor:
+To configure a logger for console applications, use `SinchOptions` within the configuration:
 
 ```csharp
 using Sinch;
-using Sinch.SMS;
 
-var sinch = new SinchClient(
-    configuration["Sinch:ProjectId"],
-    configuration["Sinch:KeyId"],
-    configuration["Sinch:KeySecret"],
-    options =>
+var sinch = new SinchClient(new SinchClientConfiguration
+{
+    SinchOptions = new SinchOptions
     {
-        // provide any logger factory which satisfies Microsoft.Extensions.Logging.ILoggerFactory
-        options.LoggerFactory = LoggerFactory.Create(config => {
-            // add log output to console
+        LoggerFactory = LoggerFactory.Create(config =>
+        {
             config.AddConsole();
-        });
-        // Provide your http client here
-        options.HttpClient = new HttpClient();
-        // Set a hosting region for Sms
-        options.SmsRegion = SmsRegion.Eu;
-    });
+        })
+    }
+});
 ```
+
+For ASP.NET Core applications, the SDK automatically uses `ILoggerFactory` from the DI container when using `AddSinchClient()`.
 
 ## Handling exceptions
 

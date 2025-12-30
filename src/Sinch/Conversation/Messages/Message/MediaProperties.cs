@@ -19,12 +19,7 @@ namespace Sinch.Conversation.Messages.Message
         ///     Url to the media file.
         /// </summary>
         [JsonPropertyName("url")]
-#if NET7_0_OR_GREATER
         public required string Url { get; set; }
-#else
-        public string Url { get; set; } = null!;
-#endif
-
 
         /// <summary>
         ///     Overrides the media file name.
