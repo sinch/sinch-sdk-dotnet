@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text.Json.Nodes;
 using FluentAssertions;
 using Sinch.Verification;
 using Sinch.Voice;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text.Json.Nodes;
 using Xunit;
 
 namespace Sinch.Tests.Core
