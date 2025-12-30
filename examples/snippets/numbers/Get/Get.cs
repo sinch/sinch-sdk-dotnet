@@ -4,12 +4,9 @@
 /// See https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets/README.md for details
 /// </summary>
 
-using Microsoft.Extensions.Logging;
 using Sinch;
 using Sinch.Core;
 using Sinch.Snippets.Shared;
-
-var logger = LoggerHelper.Logger;
 
 var sinchClient = new SinchClient(new SinchClientConfiguration()
 {
@@ -23,8 +20,8 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 
 var phoneNumber = ConfigurationHelper.GetPhoneNumber() ?? "MY_SINCH_PHONE_NUMBER";
 
-logger.LogInformation("Get for: {PhoneNumber}", phoneNumber);
+Console.WriteLine($"Get for: {phoneNumber}", phoneNumber);
 
 var response = await sinchClient.Numbers.Get(phoneNumber);
 
-logger.LogInformation("Response: {Response}", response.ToPrettyString());
+Console.WriteLine($"Response: {response.ToPrettyString()}");
