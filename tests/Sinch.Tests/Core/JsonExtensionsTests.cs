@@ -3,57 +3,58 @@ using FluentAssertions;
 using Sinch.Core;
 using Xunit;
 
-namespace Sinch.Tests.Core
+namespace Sinch.Tests.Core;
+
+public class JsonExtensionsTests
 {
-    public class JsonExtensionsTests
+    [Fact]
+    public void SimpleObjectReturnsFormattedJson()
     {
-        [Fact]
-        public void SimpleObjectReturnsFormattedJson()
-        {
-            var obj = new { Name = "Test", Value = 42 };
+        var obj = new { Name = "Test", Value = 42 };
 
-            var result = obj.ToPrettyString();
+        var result = obj.ToPrettyString().ReplaceLineEndings("\n");
 
-            result.Should().Contain("\"Name\": \"Test\"");
-            result.Should().Contain("\"Value\": 42");
-            result.Should().Contain("\n");
-        }
+        var expectedJson = "{\n  \"Name\": \"Test\",\n  \"Value\": 42\n}";
 
-        [Fact]
-        public void ObjectWithJsonPropertyNameUsesPropertyName()
-        {
-            var obj = new TestClass { MyProperty = "value" };
+        result.Should().Be(expectedJson);
+    }
 
-            var result = obj.ToPrettyString();
+    [Fact]
+    public void ObjectWithJsonPropertyNameUsesPropertyName()
+    {
+        var obj = new TestClass { MyProperty = "value" };
 
-            result.Should().Contain("\"custom_name\"");
-            result.Should().NotContain("\"MyProperty\"");
-        }
+        var result = obj.ToPrettyString().ReplaceLineEndings("\n");
 
-        [Fact]
-        public void NullObjectReturnsNullString()
-        {
-            object? obj = null;
+        var expectedJson = "{\n  \"custom_name\": \"value\"\n}";
 
-            var result = obj.ToPrettyString();
+        result.Should().Be(expectedJson);
+        result.Should().NotContain("MyProperty");
+    }
 
-            result.Should().Be("null");
-        }
+    [Fact]
+    public void NullObjectReturnsNullString()
+    {
+        object obj = null;
 
-        [Fact]
-        public void EmptyObjectReturnsEmptyJsonObject()
-        {
-            var obj = new { };
+        var result = obj.ToPrettyString();
 
-            var result = obj.ToPrettyString();
+        result.Should().Be("null");
+    }
 
-            result.Should().Be("{}");
-        }
+    [Fact]
+    public void EmptyObjectReturnsEmptyJsonObject()
+    {
+        var obj = new { };
 
-        private class TestClass
-        {
-            [JsonPropertyName("custom_name")]
-            public string? MyProperty { get; set; }
-        }
+        var result = obj.ToPrettyString();
+
+        result.Should().Be("{}");
+    }
+
+    private class TestClass
+    {
+        [JsonPropertyName("custom_name")]
+        public string MyProperty { get; set; }
     }
 }
