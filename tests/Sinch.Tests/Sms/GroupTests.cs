@@ -74,7 +74,6 @@ namespace Sinch.Tests.Sms
             HttpMessageHandlerMock
                 .Expect(HttpMethod.Get,
                     $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/groups")
-                .WithQueryString("page", "0")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(new
                 {
                     page = 0,

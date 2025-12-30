@@ -13,45 +13,25 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     Unique ID of the retailer.
         /// </summary>
         [JsonPropertyName("retailer_id")]
-#if NET7_0_OR_GREATER
         public required string RetailerId { get; set; }
-#else
-        public string RetailerId { get; set; } = null!;
-#endif
-
 
         /// <summary>
         ///     Item&#39;s name as displayed to the user.
         /// </summary>
         [JsonPropertyName("name")]
-#if NET7_0_OR_GREATER
         public required string Name { get; set; }
-#else
-        public string Name { get; set; } = null!;
-#endif
-
 
         /// <summary>
         ///     Price per item.
         /// </summary>
         [JsonPropertyName("amount_value")]
-#if NET7_0_OR_GREATER
         public required int AmountValue { get; set; }
-#else
-        public int AmountValue { get; set; }
-#endif
-
 
         /// <summary>
         ///     Number of items in this order.
         /// </summary>
         [JsonPropertyName("quantity")]
-#if NET7_0_OR_GREATER
         public required int Quantity { get; set; }
-#else
-        public int Quantity { get; set; }
-#endif
-
 
         /// <summary>
         ///     Discounted price per item.

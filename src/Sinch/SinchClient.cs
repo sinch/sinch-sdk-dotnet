@@ -148,9 +148,14 @@ namespace Sinch
             _sinchOauth = new Lazy<ISinchAuth>(() =>
                 {
                     var unifiedCredentials = ValidateUnifiedCredentials();
+
+                    var oauthBaseUrl = ResolveUrl(
+                       _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.AuthUrl,
+                       _sinchClientConfiguration.SinchOAuthConfiguration.ResolveUrl);
+
                     var auth = new OAuth(unifiedCredentials.KeyId, unifiedCredentials.KeySecret, _httpClientAccessor,
                         _loggerFactory?.Create<OAuth>(),
-                        _sinchClientConfiguration.SinchOAuthConfiguration.ResolveUrl()
+                        oauthBaseUrl
                     );
                     return auth;
                 }, isThreadSafe: true
@@ -167,8 +172,12 @@ namespace Sinch
             {
                 var unifiedCredentials = ValidateUnifiedCredentials();
 
+                var numbersBaseUrl = ResolveUrl(
+                    _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.NumbersUrl,
+                    _sinchClientConfiguration.NumbersConfiguration.ResolveUrl);
+
                 return new Numbers.Numbers(unifiedCredentials.ProjectId,
-                    _sinchClientConfiguration.NumbersConfiguration.ResolveUrl(),
+                    numbersBaseUrl,
                     _loggerFactory, httpCamelCase.Value);
             }, isThreadSafe: true);
 
@@ -219,8 +228,12 @@ namespace Sinch
 
                 var http = new Http(new Lazy<ISinchAuth>(auth), _httpClientAccessor, _loggerFactory?.Create<IHttp>(),
                     JsonNamingPolicy.CamelCase);
-                return new SinchVerificationClient(config.ResolveUrl(),
-                    _loggerFactory, http);
+
+                var verificationUrl = ResolveUrl(
+                    _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VerificationUrl,
+                    config.ResolveUrl);
+
+                return new SinchVerificationClient(verificationUrl, _loggerFactory, http, (auth as ApplicationSignedAuth)!);
             }, isThreadSafe: true);
 
             _voice = new Lazy<ISinchVoiceClient>(() =>
@@ -238,10 +251,19 @@ namespace Sinch
 
                 var http = new Http(new Lazy<ISinchAuth>(auth), _httpClientAccessor, _loggerFactory?.Create<IHttp>(),
                     JsonNamingPolicy.CamelCase);
+
+                var voiceUrl = ResolveUrl(
+                    _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VoiceUrl,
+                    config.ResolveUrl);
+
+                var voiceAppMgmtUrl = ResolveUrl(
+                    _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VoiceApplicationManagementUrl,
+                    config.ResolveApplicationManagementUrl);
+
                 return new SinchVoiceClient(
-                    config.ResolveUrl(),
+                    voiceUrl,
                     _loggerFactory, http, (auth as ApplicationSignedAuth)!,
-                    config.ResolveApplicationManagementUrl());
+                    voiceAppMgmtUrl);
             }, isThreadSafe: true);
             _logger?.LogInformation("SinchClient initialized.");
         }
@@ -265,7 +287,6 @@ namespace Sinch
         /// <inheritdoc/>
         public ISinchVerificationClient Verification => _verification.Value;
 
-
         /// <inheritdoc />
         public ISinchVoiceClient Voice => _voice.Value;
 
@@ -288,12 +309,17 @@ namespace Sinch
                 _logger?.LogInformation("Initializing SMS client with {service_plan_id} in {region}",
                     servicePlanIdConfig.ServicePlanId,
                     servicePlanIdConfig.ServicePlanIdRegion.Value);
+
+                var smsBaseUrl = ResolveUrl(
+                    _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.SmsUrl,
+                    sinchSmsConfiguration.ServicePlanIdConfiguration.ResolveUrl);
+
                 var bearerSnakeHttp = new Http(new Lazy<ISinchAuth>(new BearerAuth(servicePlanIdConfig.ApiToken)),
                     _httpClientAccessor,
                     _loggerFactory?.Create<IHttp>(),
                     SnakeCaseNamingPolicy.Instance);
                 return new SmsClient(new ServicePlanId(servicePlanIdConfig.ServicePlanId),
-                    sinchSmsConfiguration.ServicePlanIdConfiguration.ResolveUrl(),
+                    smsBaseUrl,
                     _loggerFactory, bearerSnakeHttp);
             }
 
@@ -302,13 +328,28 @@ namespace Sinch
                 unifiedCredentials.ProjectId,
                 sinchSmsConfiguration.Region);
 
+            var smsResolvedUrl = ResolveUrl(
+                _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.SmsUrl,
+                sinchSmsConfiguration.ResolveUrl);
+
             return new SmsClient(
                 new ProjectId(
                     unifiedCredentials
-                        .ProjectId), // exception is throw when trying to get SMS client property if _projectId is null
-                sinchSmsConfiguration.ResolveUrl(),
+                        .ProjectId),
+                smsResolvedUrl,
                 _loggerFactory,
                 _httpSnakeCase.Value);
+        }
+
+
+        /// <summary>
+        /// Resolves URL by preferring ApiUrlOverrides, then falling back to the configuration default.
+        /// </summary>
+        private Uri ResolveUrl(string? urlOverride, Func<Uri> defaultResolver)
+        {
+            return !string.IsNullOrEmpty(urlOverride)
+                ? new Uri(urlOverride)
+                : defaultResolver();
         }
 
         /// <inheritdoc />

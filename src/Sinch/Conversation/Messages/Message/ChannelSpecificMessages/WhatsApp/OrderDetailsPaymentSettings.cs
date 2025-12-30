@@ -14,13 +14,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         ///     Gets or Sets DynamicPix
         /// </summary>
         [JsonPropertyName("dynamic_pix")]
-#if NET7_0_OR_GREATER
         public required OrderDetailsPaymentSettingsDynamicPix DynamicPix { get; set; }
-#else
-        public OrderDetailsPaymentSettingsDynamicPix DynamicPix { get; set; } =
-            null!;
-#endif
-
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -61,44 +55,25 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         /// Pix key type.
         /// </summary>
         [JsonPropertyName("key_type")]
-#if NET7_0_OR_GREATER
         public required KeyTypeEnum KeyType { get; set; }
-#else
-        public KeyTypeEnum KeyType { get; set; } = null!;
-#endif
 
         /// <summary>
         ///     The dynamic Pix code to be used by the buyer to pay.
         /// </summary>
         [JsonPropertyName("code")]
-#if NET7_0_OR_GREATER
         public required string Code { get; set; }
-#else
-        public string Code { get; set; } = null!;
-#endif
-
 
         /// <summary>
         ///     Account holder name.
         /// </summary>
         [JsonPropertyName("merchant_name")]
-#if NET7_0_OR_GREATER
         public required string MerchantName { get; set; }
-#else
-        public string MerchantName { get; set; } = null!;
-#endif
-
 
         /// <summary>
         ///     Pix key.
         /// </summary>
         [JsonPropertyName("key")]
-#if NET7_0_OR_GREATER
         public required string Key { get; set; }
-#else
-        public string Key { get; set; } = null!;
-#endif
-
 
         /// <summary>
         ///     Returns the string presentation of the object

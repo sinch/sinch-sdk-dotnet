@@ -30,11 +30,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         /// The new payment message status.
         /// </summary>
         [JsonPropertyName("status")]
-#if NET7_0_OR_GREATER
         public required StatusEnum Status { get; set; }
-#else
-        public StatusEnum Status { get; set; } = null!;
-#endif
 
         /// <summary>
         ///     The description of payment message status update (120 characters maximum).

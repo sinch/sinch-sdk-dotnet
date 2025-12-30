@@ -1,7 +1,6 @@
 using System;
 using System.Net.Http;
 using Microsoft.Extensions.Logging;
-using Sinch.Conversation;
 using Sinch.Fax;
 using Sinch.SMS;
 

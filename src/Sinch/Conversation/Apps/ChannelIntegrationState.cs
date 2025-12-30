@@ -13,18 +13,13 @@ namespace Sinch.Conversation.Apps
         /// Gets or Sets Status
         /// </summary>
         [JsonPropertyName("status")]
-#if NET7_0_OR_GREATER
         public required ChannelIntegrationStatus Status { get; set; }
-#else
-        public ChannelIntegrationStatus Status { get; set; } = null!;
-#endif
 
         /// <summary>
         ///     Description in case the integration fails
         /// </summary>
         [JsonPropertyName("description")]
         public string? Description { get; set; }
-
 
         /// <summary>
         ///     Returns the string presentation of the object
