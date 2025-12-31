@@ -9,6 +9,7 @@
 - [Use SMS API with ServicePlanId](#use-sms-api-with-serviceplanid)
 - [VoiceConfiguration is now abstract](#voiceconfiguration-is-now-abstract)
 - [ScheduledVoiceProvisioning is now abstract](#scheduledvoiceprovisioning-is-now-abstract)
+- [VoiceConfiguration and ScheduledVoiceProvisioning classes moved to new namespace](#voiceconfiguration-and-scheduledvoiceprovisioning-classes-moved-to-new-namespace)
 - [Removed obsolete UrlMessage and CallMessage constructors](#removed-obsolete-urlmessage-and-callmessage-constructors)
 
 ## Initialize `SinchClient` with unified credentials:
@@ -228,6 +229,25 @@ var scheduledProvisioning = new ScheduledVoiceEstProvisioning();
 
 // For FAX services
 var scheduledProvisioning = new ScheduledVoiceFaxProvisioning();
+```
+
+## VoiceConfiguration and ScheduledVoiceProvisioning classes moved to new namespace
+
+The following classes have been moved from the `Sinch.Numbers` namespace to `Sinch.Numbers.VoiceConfigurations`:
+
+- `VoiceConfiguration`
+- `ScheduledVoiceProvisioning`
+- `VoiceConfigurationConverter`
+- `ScheduledVoiceProvisioningConverter`
+
+Version 1.*:
+```csharp
+using Sinch.Numbers;
+```
+
+Version 2.*:
+```csharp
+using Sinch.Numbers.VoiceConfigurations;
 ```
 
 ## Removed obsolete UrlMessage and CallMessage constructors
