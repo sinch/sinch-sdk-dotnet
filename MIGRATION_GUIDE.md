@@ -10,6 +10,7 @@
 - [VoiceConfiguration is now abstract](#voiceconfiguration-is-now-abstract)
 - [ScheduledVoiceProvisioning is now abstract](#scheduledvoiceprovisioning-is-now-abstract)
 - [VoiceConfiguration and ScheduledVoiceProvisioning classes moved to new namespace](#voiceconfiguration-and-scheduledvoiceprovisioning-classes-moved-to-new-namespace)
+- [VoiceConfiguration Type property is now internal](#voiceconfiguration-type-property-is-now-internal)
 - [Removed obsolete UrlMessage and CallMessage constructors](#removed-obsolete-urlmessage-and-callmessage-constructors)
 
 ## Initialize `SinchClient` with unified credentials:
@@ -249,6 +250,36 @@ Version 2.*:
 ```csharp
 using Sinch.Numbers.VoiceConfigurations;
 ```
+
+## VoiceConfiguration Type property is now internal
+
+The `Type` property on `VoiceConfiguration` and its derived classes (`VoiceRtcConfiguration`, `VoiceEstConfiguration`, `VoiceFaxConfiguration`) is now `internal`. The same applies to `ScheduledVoiceProvisioning` derived classes.
+
+**Impact:**
+- Code that accessed the `Type` property directly will no longer compile
+- The SDK automatically handles the `type` field during serialization/deserialization
+- Use pattern matching or type checking to determine the concrete type
+
+Version 1.*:
+```csharp
+var voiceConfig = activeNumber.VoiceConfiguration;
+if (voiceConfig.Type == VoiceApplicationType.Rtc)
+{
+    // handle RTC configuration
+}
+```
+
+Version 2.*:
+```csharp
+var voiceConfig = activeNumber.VoiceConfiguration;
+if (voiceConfig is VoiceRtcConfiguration rtcConfig)
+{
+    // handle RTC configuration
+    var appId = rtcConfig.AppId;
+}
+```
+
+**Serialization behavior:** When serializing `VoiceConfiguration` objects, the SDK automatically includes the correct `type` field in the JSON output based on the concrete type. You don't need to set the type manually.
 
 ## Removed obsolete UrlMessage and CallMessage constructors
 
