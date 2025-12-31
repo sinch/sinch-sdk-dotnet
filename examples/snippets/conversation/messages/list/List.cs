@@ -14,7 +14,6 @@ var sinch = new SinchClient(new SinchClientConfiguration()
     ConversationConfiguration = new SinchConversationConfiguration
     {
         ConversationRegion = new ConversationRegion(Environment.GetEnvironmentVariable("SINCH_CONVERSATION_REGION") ?? "MY_CONVERSATION_REGION")
-            
     }
 });
 
