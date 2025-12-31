@@ -12,14 +12,11 @@ namespace Sinch.Conversation.Messages.Message
         [JsonPropertyName("choices")]
         public required List<Choice> Choices { get; set; }
 
-
-
         /// <summary>
         ///     Gets or Sets TextMessage
         /// </summary>
         [JsonPropertyName("text_message")]
         public TextMessage? TextMessage { get; set; }
-
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -68,7 +65,6 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonPropertyName("phone_number")]
         public required string PhoneNumber { get; set; }
-
 
         /// <summary>
         ///     Title shown close to the phone number. The title is clickable in some cases.

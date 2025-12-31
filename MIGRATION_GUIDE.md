@@ -9,6 +9,7 @@
 - [Use SMS API with ServicePlanId](#use-sms-api-with-serviceplanid)
 - [VoiceConfiguration is now abstract](#voiceconfiguration-is-now-abstract)
 - [ScheduledVoiceProvisioning is now abstract](#scheduledvoiceprovisioning-is-now-abstract)
+- [Removed obsolete UrlMessage and CallMessage constructors](#removed-obsolete-urlmessage-and-callmessage-constructors)
 
 ## Initialize `SinchClient` with unified credentials:
 
@@ -227,4 +228,29 @@ var scheduledProvisioning = new ScheduledVoiceEstProvisioning();
 
 // For FAX services
 var scheduledProvisioning = new ScheduledVoiceFaxProvisioning();
+```
+
+## Removed obsolete UrlMessage and CallMessage constructors
+
+The obsolete constructors for `UrlMessage` and `CallMessage` (used in Choice messages in the Conversation API) have been removed. Use object initializer syntax instead:
+
+Version 1.*:
+```csharp
+var urlMessage = new UrlMessage("Click here", new Uri("https://example.com"));
+var callMessage = new CallMessage("+1234567890", "Call us");
+```
+
+Version 2.*:
+```csharp
+var urlMessage = new UrlMessage
+{
+    Title = "Click here",
+    Url = "https://example.com"
+};
+
+var callMessage = new CallMessage
+{
+    PhoneNumber = "+1234567890",
+    Title = "Call us"
+};
 ```
