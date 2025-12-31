@@ -38,21 +38,13 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         /// The type of good associated with this order.
         /// </summary>
         [JsonPropertyName("type_of_goods")]
-#if NET7_0_OR_GREATER
         public required TypeOfGoods TypeOfGoods { get; set; }
-#else
-        public TypeOfGoods TypeOfGoods { get; set; } = null!;
-#endif
 
         /// <summary>
         ///     Unique reference ID.
         /// </summary>
         [JsonPropertyName("reference_id")]
-#if NET7_0_OR_GREATER
         public required string ReferenceId { get; set; }
-#else
-        public string ReferenceId { get; set; } = null!;
-#endif
 
         /// <summary>
         ///     Gets or Sets PaymentSettings

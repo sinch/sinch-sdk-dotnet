@@ -1,34 +1,9 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Sinch.Numbers.VoiceConfigurations;
 
-namespace Sinch.Numbers
+namespace Sinch.Numbers.VoiceConfigurations
 {
-    public abstract class VoiceConfiguration
-    {
-        /// <summary>
-        /// Gets or Sets Type
-        /// </summary>
-        [JsonPropertyName("type")]
-        [JsonInclude]
-        // Expected to be set by the API response, or by Subclasses
-        public virtual VoiceApplicationType? Type { get; protected set; } = VoiceApplicationType.Rtc;
-
-        /// <summary>
-        ///     Timestamp when the status was last updated.
-        /// </summary>
-        [JsonInclude]
-        [JsonPropertyName("lastUpdatedTime")]
-        public DateTime? LastUpdatedTime { get; internal set; }
-
-        [JsonPropertyName("scheduledVoiceProvisioning")]
-        [JsonInclude]
-        [JsonConverter(typeof(ScheduledVoiceProvisioningConverter))]
-        public ScheduledVoiceProvisioning? ScheduledVoiceProvisioning { get; internal set; }
-    }
-
-
     public sealed class VoiceConfigurationConverter : JsonConverter<VoiceConfiguration>
     {
         public override VoiceConfiguration? Read(ref Utf8JsonReader reader, Type typeToConvert,

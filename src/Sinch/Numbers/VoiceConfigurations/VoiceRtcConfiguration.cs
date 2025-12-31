@@ -12,6 +12,6 @@ namespace Sinch.Numbers.VoiceConfigurations
 
         [JsonPropertyName("type")]
         [JsonInclude]
-        public override VoiceApplicationType? Type { get; protected set; } = VoiceApplicationType.Rtc;
+        internal override VoiceApplicationType Type { get; set; } = VoiceApplicationType.Rtc;
     }
 }

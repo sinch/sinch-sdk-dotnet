@@ -1,0 +1,13 @@
+{
+  "voiceConfiguration": {
+    "trunkId": "trunk id value",
+    "scheduledVoiceProvisioning": {
+      "appId": "app id value",
+      "status": "IN_PROGRESS",
+      "lastUpdatedTime": "2024-07-01T11:58:35.610198Z",
+      "type": "RTC"
+    },
+    "lastUpdatedTime": "2024-06-30T07:08:09.100Z",
+    "type": "EST"
+  }
+}

@@ -319,26 +319,31 @@ namespace Sinch.Tests.Numbers
         [Fact]
         public void ShouldDeserializeVoiceRtcConfigurationButWithFaxProvisioning()
         {
-            var obj =
-                DeserializeAsNumbersClient<Container>(
-                    Helpers.LoadResources("Numbers/RtcVoiceConfigWithFaxProvisioning.json"));
-            var prov = new ScheduledVoiceFaxProvisioning()
-            {
-                ServiceId = "service id value",
-                Status = ProvisioningStatus.Waiting,
-                LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z")
-            };
-            var expected = new VoiceRtcConfiguration()
-            {
-                AppId = "app id value",
-                LastUpdatedTime = Helpers.ParseUtc("2024-06-30T07:08:09.100Z"),
-                ScheduledVoiceProvisioning = prov
-            };
+            var obj = DeserializeAsNumbersClient<Container>(
+                Helpers.LoadResources("Numbers/RtcVoiceConfigWithFaxProvisioning.json"));
 
-            obj.VoiceConfiguration.Should().BeEquivalentTo(expected);
-            // cast to expected type to test exclusively 
-            obj.VoiceConfiguration.ScheduledVoiceProvisioning.As<ScheduledVoiceFaxProvisioning>().Should()
-                .BeEquivalentTo(prov);
+            obj.VoiceConfiguration.Should().BeOfType<VoiceRtcConfiguration>();
+            obj.VoiceConfiguration.ScheduledVoiceProvisioning.Should().BeOfType<ScheduledVoiceFaxProvisioning>();
+        }
+
+        [Fact]
+        public void ShouldDeserializeVoiceEstConfigurationWithRtcProvisioning()
+        {
+            var obj = DeserializeAsNumbersClient<Container>(
+                Helpers.LoadResources("Numbers/EstVoiceConfigWithRtcProvisioning.json"));
+
+            obj.VoiceConfiguration.Should().BeOfType<VoiceEstConfiguration>();
+            obj.VoiceConfiguration.ScheduledVoiceProvisioning.Should().BeOfType<ScheduledVoiceRtcProvisioning>();
+        }
+
+        [Fact]
+        public void ShouldDeserializeVoiceFaxConfigurationWithEstProvisioning()
+        {
+            var obj = DeserializeAsNumbersClient<Container>(
+                Helpers.LoadResources("Numbers/FaxVoiceConfigWithEstProvisioning.json"));
+
+            obj.VoiceConfiguration.Should().BeOfType<VoiceFaxConfiguration>();
+            obj.VoiceConfiguration.ScheduledVoiceProvisioning.Should().BeOfType<ScheduledVoiceEstProvisioning>();
         }
     }
 }

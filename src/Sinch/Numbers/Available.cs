@@ -12,7 +12,7 @@ using Sinch.Numbers.Available.RentAny;
 
 namespace Sinch.Numbers
 {
-    public interface ISinchNumbersAvailable
+    internal interface ISinchNumbersAvailable
     {
         /// <summary>
         ///     Search for and activate an available Sinch virtual number all in one API call.
@@ -21,7 +21,6 @@ namespace Sinch.Numbers
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [Obsolete($"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.RentAny)} instead.")]
         Task<ActiveNumber> RentAny(RentAnyNumberRequest request,
             CancellationToken cancellationToken = default);
 
@@ -37,7 +36,6 @@ namespace Sinch.Numbers
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [Obsolete($"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.Rent)} instead.")]
         Task<ActiveNumber> Rent(string phoneNumber,
             RentActiveNumberRequest request, CancellationToken cancellationToken = default);
 
@@ -51,8 +49,6 @@ namespace Sinch.Numbers
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [Obsolete(
-            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.SearchForAvailableNumbers)} instead.")]
         Task<ListAvailableNumbersResponse> List(
             ListAvailableNumbersRequest request, CancellationToken cancellationToken = default);
 
@@ -66,8 +62,6 @@ namespace Sinch.Numbers
         /// </param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        [Obsolete(
-            $"This method is obsolete, use {nameof(ISinchNumbers)}.{nameof(Numbers.CheckAvailability)} instead.")]
         Task<AvailableNumber> CheckAvailability(string phoneNumber,
             CancellationToken cancellationToken = default);
     }

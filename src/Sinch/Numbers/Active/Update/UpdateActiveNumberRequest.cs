@@ -1,3 +1,4 @@
+using Sinch.Numbers.VoiceConfigurations;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Numbers.Active.Update
