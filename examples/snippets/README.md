@@ -112,4 +112,4 @@ To run a snippet:
 
 ## Available Snippets
 
-- Numbers: [numbers/](numbers/)
+- Numbers: [README.md](numbers/README.md)
