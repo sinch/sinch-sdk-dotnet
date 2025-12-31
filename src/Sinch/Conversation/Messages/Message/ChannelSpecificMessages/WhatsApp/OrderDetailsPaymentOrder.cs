@@ -40,13 +40,11 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         [JsonPropertyName("subtotal_value")]
         public required int SubtotalValue { get; set; }
 
-
         /// <summary>
         ///     Value representing the tax amount for this order.
         /// </summary>
         [JsonPropertyName("tax_value")]
         public required int TaxValue { get; set; }
-
 
         /// <summary>
         ///     Description of the tax for this order.
@@ -95,7 +93,6 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         /// </summary>
         [JsonPropertyName("items")]
         public required List<OrderDetailsPaymentOrderItems> Items { get; set; }
-
 
         /// <summary>
         ///     Returns the string presentation of the object

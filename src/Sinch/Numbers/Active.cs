@@ -114,7 +114,7 @@ namespace Sinch.Numbers
                 {
                     yield return activeNumber;
                 }
-            } while (request.PageToken is not null);
+            } while (!string.IsNullOrEmpty(request.PageToken));
         }
 
         /// <inheritdoc />

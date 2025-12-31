@@ -1,4 +1,5 @@
 using Sinch.Numbers.VoiceConfigurations;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Numbers.Active.Update
 {
@@ -25,6 +26,12 @@ namespace Sinch.Numbers.Active.Update
         ///     The status of scheduled provisioning will show under a scheduledVoiceProvisioning object if it's still running.
         ///     Once processed successfully, the appId sent will appear directly under the voiceConfiguration object.
         /// </summary>
+        [JsonConverter(typeof(VoiceConfigurationConverter))]
         public VoiceConfiguration? VoiceConfiguration { get; set; }
+
+        /// <summary>
+        ///     The callback URL to be called for a rented number's provisioning / deprovisioning operations.
+        /// </summary>
+        public string? CallbackUrl { get; set; }
     }
 }

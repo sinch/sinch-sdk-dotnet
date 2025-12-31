@@ -21,7 +21,6 @@ namespace Sinch.Conversation.Messages.Message
         [JsonPropertyName("url")]
         public required string Url { get; set; }
 
-
         /// <summary>
         ///     Overrides the media file name.
         /// </summary>

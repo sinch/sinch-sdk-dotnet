@@ -42,6 +42,7 @@ namespace Sinch.Tests.Voice
                     Timestamp = Helpers.ParseUtc("2024-01-19T12:49:53Z"),
                     Version = 1,
                     Custom = "my custom value",
+                    ApplicationKey = "my application key",
                     Amd = new AnsweringMachineDetection
                     {
                         Status = AnsweringMachineDetection.AnsweringMachineDetectionStatus.Human,
@@ -88,7 +89,6 @@ namespace Sinch.Tests.Voice
         public void DeserializePromtInputEvent()
         {
             var json = Helpers.LoadResources("Voice/PromtInputEvent.json");
-
             var @event = JsonSerializer.Deserialize<IVoiceEvent>(json);
             var eventWithClient = _voiceClient.ParseEvent(json);
 
@@ -110,7 +110,9 @@ namespace Sinch.Tests.Voice
                         Type = MenuType.Sequence,
                         Value = "1452",
                         InputMethod = InputMethod.Dtmf
-                    }
+                    },
+                    Custom = "my custom value",
+                    ConferenceId = "a conference id",
                 });
             }
         }
@@ -155,6 +157,7 @@ namespace Sinch.Tests.Voice
                     ApplicationKey = "an app key",
                     Duration = 1,
                     From = "private",
+                    ConferenceId = "a conference id",
                 });
             }
         }
@@ -202,7 +205,8 @@ namespace Sinch.Tests.Voice
                             Key = "the key",
                             Value = "the value"
                         }
-                    }
+                    },
+                    ConferenceId = "a conference id",
                 });
             }
         }

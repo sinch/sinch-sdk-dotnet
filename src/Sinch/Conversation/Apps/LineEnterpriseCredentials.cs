@@ -88,7 +88,6 @@ namespace Sinch.Conversation.Apps
         [JsonPropertyName("token")]
         public required string Token { get; set; }
 
-
         /// <summary>
         ///     The secret for the LINE channel to which you are connecting.
         /// </summary>

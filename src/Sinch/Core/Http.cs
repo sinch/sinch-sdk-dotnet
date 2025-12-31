@@ -67,19 +67,19 @@ namespace Sinch.Core
     /// <inheritdoc /> 
     internal sealed class Http : IHttp
     {
-        private readonly HttpClient _httpClient;
+        private readonly Func<HttpClient> _httpClientAccessor;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
         private readonly ILoggerAdapter<IHttp>? _logger;
         private readonly Lazy<ISinchAuth> _auth;
         private readonly string _userAgentHeaderValue;
 
 
-        public Http(Lazy<ISinchAuth> auth, HttpClient httpClient, ILoggerAdapter<IHttp>? logger,
+        public Http(Lazy<ISinchAuth> auth, Func<HttpClient> httpClientAccessor, ILoggerAdapter<IHttp>? logger,
             JsonNamingPolicy jsonNamingPolicy)
         {
             _logger = logger;
             _auth = auth;
-            _httpClient = httpClient;
+            _httpClientAccessor = httpClientAccessor;
             _jsonSerializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web)
             {
                 PropertyNamingPolicy = jsonNamingPolicy,
@@ -208,8 +208,9 @@ namespace Sinch.Core
                     AddOrOverrideHeaders(msg, headers);
                 }
 
-
-                var result = await _httpClient.SendAsync(msg, cancellationToken);
+                // Get HttpClient from factory/accessor - do not dispose as factory manages lifetime
+                var httpClient = _httpClientAccessor();
+                var result = await httpClient.SendAsync(msg, cancellationToken);
 
                 if (result.StatusCode == HttpStatusCode.Unauthorized && retry)
                 {
@@ -245,6 +246,22 @@ namespace Sinch.Core
                     Debug.WriteLine($"Failed to parse json {e.Message}");
                 }
 #endif
+
+                // if empty response is expected, any non-related response is dropped
+                if (typeof(TResponse) == typeof(EmptyResponse))
+                {
+                    // if not empty content, check what is there for debug purposes.
+                    // C# EmptyContent class is internal, so checking it by the name
+                    // for more details, see: https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http/src/System/Net/Http/EmptyContent.cs
+                    if (result.Content.GetType().Name != "EmptyContent")
+                    {
+                        _logger?.LogDebug("Expected empty content, but got {content}",
+                            await result.Content.ReadAsStringAsync(cancellationToken));
+                    }
+
+                    return (TResponse)(object)new EmptyResponse();
+                }
+
                 // NOTE: there wil probably be other files supported in the future
                 if (result.IsPdf())
                 {
@@ -263,26 +280,13 @@ namespace Sinch.Core
                     };
                 }
 
+
+
                 if (result.IsJson())
                     return await result.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken,
                                options: _jsonSerializerOptions)
                            ?? throw new InvalidOperationException(
                                $"{typeof(TResponse).Name} is null");
-
-                // if empty response is expected, any non-related response is dropped
-                if (typeof(TResponse) == typeof(EmptyResponse))
-                {
-                    // if not empty content, check what is there for debug purposes.
-                    // C# EmptyContent class is internal, so checking it by the name
-                    // for more details, see: https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http/src/System/Net/Http/EmptyContent.cs
-                    if (result.Content.GetType().Name != "EmptyContent")
-                    {
-                        _logger?.LogDebug("Expected empty content, but got {content}",
-                            await result.Content.ReadAsStringAsync(cancellationToken));
-                    }
-
-                    return (TResponse)(object)new EmptyResponse();
-                }
 
                 // unexpected content, log warning and throw exception
                 _logger?.LogWarning("Response is not json, but {content}",

@@ -15,7 +15,6 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         [JsonPropertyName("payment")]
         public required OrderDetailsPayment Payment { get; set; }
 
-
         /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>

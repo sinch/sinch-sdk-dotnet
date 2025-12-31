@@ -30,12 +30,15 @@ namespace Sinch.Tests.Core
         };
 
         private Lazy<ISinchAuth> GetMock => new Lazy<ISinchAuth>(_tokenManagerMock);
+
         public HttpTests()
         {
             _tokenManagerMock = Substitute.For<ISinchAuth>();
             _tokenManagerMock.Scheme.Returns("Bearer");
             _httpMessageHandlerMock = new MockHttpMessageHandler();
         }
+
+        private Func<HttpClient> CreateHttpClientAccessor(HttpClient httpClient) => () => httpClient;
 
         [Fact]
         public async Task ForceNewToken()
@@ -56,7 +59,7 @@ namespace Sinch.Tests.Core
                 .Respond(HttpStatusCode.OK);
 
             var httpClient = new HttpClient(_httpMessageHandlerMock);
-            var http = new Http(GetMock, httpClient, null, new SnakeCaseNamingPolicy());
+            var http = new Http(GetMock, CreateHttpClientAccessor(httpClient), null, new SnakeCaseNamingPolicy());
 
             var response = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
 
@@ -80,7 +83,7 @@ namespace Sinch.Tests.Core
                 .Respond(HttpStatusCode.Unauthorized);
             var httpClient = new HttpClient(_httpMessageHandlerMock);
 
-            var http = new Http(GetMock, httpClient, null, new SnakeCaseNamingPolicy());
+            var http = new Http(GetMock, CreateHttpClientAccessor(httpClient), null, new SnakeCaseNamingPolicy());
             Func<Task<object>> response = () => http.Send<object>(uri, HttpMethod.Get);
 
             var ex = await response.Should().ThrowAsync<SinchApiException>();
@@ -103,7 +106,7 @@ namespace Sinch.Tests.Core
                 }, (HttpContent)null);
 
             var httpClient = new HttpClient(_httpMessageHandlerMock);
-            var http = new Http(GetMock, httpClient, null, new SnakeCaseNamingPolicy());
+            var http = new Http(GetMock, CreateHttpClientAccessor(httpClient), null, new SnakeCaseNamingPolicy());
 
             Func<Task<object>> response = () => http.Send<object>(uri, HttpMethod.Get);
 
@@ -133,7 +136,7 @@ namespace Sinch.Tests.Core
                 .Respond(HttpStatusCode.OK);
 
             var httpClient = new HttpClient(_httpMessageHandlerMock);
-            var http = new Http(GetMock, httpClient, null, new SnakeCaseNamingPolicy());
+            var http = new Http(GetMock, CreateHttpClientAccessor(httpClient), null, new SnakeCaseNamingPolicy());
 
             var response = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
 
@@ -164,7 +167,7 @@ namespace Sinch.Tests.Core
                 .Respond(HttpStatusCode.OK);
 
             var httpClient = new HttpClient(_httpMessageHandlerMock);
-            var http = new Http(GetMock, httpClient, null, new SnakeCaseNamingPolicy());
+            var http = new Http(GetMock, CreateHttpClientAccessor(httpClient), null, new SnakeCaseNamingPolicy());
 
             await http.Send<EmptyResponse>(uri, HttpMethod.Get);
 
@@ -190,7 +193,7 @@ namespace Sinch.Tests.Core
                 .Respond(HttpStatusCode.OK);
 
             var httpClient = new HttpClient(_httpMessageHandlerMock);
-            var http = new Http(GetMock, httpClient, null, new SnakeCaseNamingPolicy());
+            var http = new Http(GetMock, CreateHttpClientAccessor(httpClient), null, new SnakeCaseNamingPolicy());
 
             await http.Send<EmptyResponse>(uri, HttpMethod.Get, headers: new Dictionary<string, IEnumerable<string>>()
             {
@@ -212,7 +215,7 @@ namespace Sinch.Tests.Core
                 .WithPartialContent("HeaderPageNumbers\r\n\r\nTrue")
                 .Respond(HttpStatusCode.OK);
             var httpClient = new HttpClient(_httpMessageHandlerMock);
-            var http = new Http(GetMock, httpClient, null, new SnakeCaseNamingPolicy());
+            var http = new Http(GetMock, CreateHttpClientAccessor(httpClient), null, new SnakeCaseNamingPolicy());
             var faxRequest = new SendFaxRequest(new MemoryStream(), "file.pdf")
             {
                 MaxRetries = 3,
@@ -245,7 +248,7 @@ namespace Sinch.Tests.Core
                 .Respond(HttpStatusCode.Unauthorized);
 
             var httpClient = new HttpClient(_httpMessageHandlerMock);
-            var http = new Http(GetMock, httpClient, null, new SnakeCaseNamingPolicy());
+            var http = new Http(GetMock, CreateHttpClientAccessor(httpClient), null, new SnakeCaseNamingPolicy());
             Func<Task<EmptyResponse>> op1 = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
 
             await op1.Should().ThrowAsync<SinchApiException>();
@@ -294,7 +297,7 @@ namespace Sinch.Tests.Core
                 .Respond(HttpStatusCode.OK);
 
             var httpClient = new HttpClient(_httpMessageHandlerMock);
-            var http = new Http(GetMock, httpClient, null, new SnakeCaseNamingPolicy());
+            var http = new Http(GetMock, CreateHttpClientAccessor(httpClient), null, new SnakeCaseNamingPolicy());
 
             Func<Task<EmptyResponse>> op1 = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
             Func<Task<EmptyResponse>> op2 = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
@@ -322,7 +325,7 @@ namespace Sinch.Tests.Core
                 .Respond(HttpStatusCode.OK, JsonContent.Create("😼"));
 
             var httpClient = new HttpClient(_httpMessageHandlerMock);
-            var http = new Http(GetMock, httpClient, null, new SnakeCaseNamingPolicy());
+            var http = new Http(GetMock, CreateHttpClientAccessor(httpClient), null, new SnakeCaseNamingPolicy());
             var op1 = await http.Send<string, string>(uri, HttpMethod.Get, "😼");
 
             op1.Should().BeEquivalentTo("😼");

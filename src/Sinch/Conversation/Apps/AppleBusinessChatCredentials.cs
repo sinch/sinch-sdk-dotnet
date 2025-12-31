@@ -14,7 +14,6 @@ namespace Sinch.Conversation.Apps
         [JsonPropertyName("business_chat_account_id")]
         public required string BusinessChatAccountId { get; set; }
 
-
         /// <summary>
         ///     Merchant ID, required if our client wants to use Apple Pay.
         /// </summary>

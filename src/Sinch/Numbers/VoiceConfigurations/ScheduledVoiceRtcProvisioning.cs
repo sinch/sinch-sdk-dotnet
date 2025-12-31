@@ -4,10 +4,6 @@ namespace Sinch.Numbers.VoiceConfigurations
 {
     public sealed class ScheduledVoiceRtcProvisioning : ScheduledVoiceProvisioning
     {
-        [JsonConstructor]
-        public ScheduledVoiceRtcProvisioning()
-        {
-        }
         /// <summary>
         ///     Your app ID for the Voice API. The &#x60;appId&#x60; can be found in your [Sinch Customer Dashboard](https://dashboard.sinch.com/voice/apps).
         /// </summary>
@@ -16,6 +12,6 @@ namespace Sinch.Numbers.VoiceConfigurations
 
         [JsonPropertyName("type")]
         [JsonInclude]
-        internal override VoiceApplicationType? Type { get; set; } = VoiceApplicationType.Rtc;
+        public override VoiceApplicationType? Type { get; internal set; } = VoiceApplicationType.Rtc;
     }
 }

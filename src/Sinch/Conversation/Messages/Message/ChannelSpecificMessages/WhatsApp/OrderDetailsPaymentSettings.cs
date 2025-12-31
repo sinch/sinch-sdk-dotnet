@@ -63,7 +63,6 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         [JsonPropertyName("code")]
         public required string Code { get; set; }
 
-
         /// <summary>
         ///     Account holder name.
         /// </summary>

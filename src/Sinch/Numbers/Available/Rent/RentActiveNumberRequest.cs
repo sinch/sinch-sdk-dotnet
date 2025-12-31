@@ -1,5 +1,5 @@
-using System.Text.Json.Serialization;
 using Sinch.Numbers.VoiceConfigurations;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Numbers.Available.Rent
 {

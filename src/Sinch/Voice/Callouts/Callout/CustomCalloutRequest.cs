@@ -44,16 +44,16 @@ namespace Sinch.Voice.Callouts.Callout
         ///     If inline ICE SVAML is passed, exclude cli and destination properties from the customCallout request body.
         ///     <example>"{\"action\":{\"name\":\"connectPstn\",\"number\":\"46000000001\",\"maxDuration\":90}}"</example>
         /// </summary>
-        [JsonConverter(typeof(JsonObjectAsStringJsonConverter))]
-        public JsonObject? Ice { get; set; }
+        [JsonConverter(typeof(JsonNodeAsStringJsonConverter))]
+        public JsonNode? Ice { get; set; }
 
         /// <summary>
         ///     You can use inline <see href="https://developers.sinch.com/docs/voice/api-reference/svaml/">SVAML</see>
         ///     to replace a callback URL when using custom callouts.
         ///     Ensure that the JSON object is escaped correctly.
         /// </summary>
-        [JsonConverter(typeof(JsonObjectAsStringJsonConverter))]
-        public JsonObject? Ace { get; set; }
+        [JsonConverter(typeof(JsonNodeAsStringJsonConverter))]
+        public JsonNode? Ace { get; set; }
 
         /// <summary>
         ///     <b>Note:</b> PIE callbacks are not available for DATA Calls; only PSTN and SIP calls. <br/><br/>

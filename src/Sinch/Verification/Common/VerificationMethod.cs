@@ -13,6 +13,7 @@ namespace Sinch.Verification.Common
         public static readonly VerificationMethod Sms = new("sms");
         public static readonly VerificationMethod FlashCall = new("flashcall");
         public static readonly VerificationMethod Callout = new("callout");
+        public static readonly VerificationMethod WhatsApp = new("whatsapp");
     }
 
     /// <summary>
@@ -26,5 +27,7 @@ namespace Sinch.Verification.Common
         public static readonly VerificationMethodEx FlashCall = new("flashcall");
         public static readonly VerificationMethodEx Callout = new("callout");
         public static readonly VerificationMethodEx Seamless = new("seamless");
+        public static readonly VerificationMethodEx WhatsApp = new("whatsapp");
+
     }
 }

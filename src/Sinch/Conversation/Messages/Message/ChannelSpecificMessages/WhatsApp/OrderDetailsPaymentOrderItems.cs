@@ -15,13 +15,11 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         [JsonPropertyName("retailer_id")]
         public required string RetailerId { get; set; }
 
-
         /// <summary>
         ///     Item&#39;s name as displayed to the user.
         /// </summary>
         [JsonPropertyName("name")]
         public required string Name { get; set; }
-
 
         /// <summary>
         ///     Price per item.
@@ -29,13 +27,11 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         [JsonPropertyName("amount_value")]
         public required int AmountValue { get; set; }
 
-
         /// <summary>
         ///     Number of items in this order.
         /// </summary>
         [JsonPropertyName("quantity")]
         public required int Quantity { get; set; }
-
 
         /// <summary>
         ///     Discounted price per item.

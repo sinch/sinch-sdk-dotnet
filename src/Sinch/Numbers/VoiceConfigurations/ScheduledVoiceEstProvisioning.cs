@@ -13,6 +13,6 @@ namespace Sinch.Numbers.VoiceConfigurations
 
         [JsonPropertyName("type")]
         [JsonInclude]
-        internal override VoiceApplicationType? Type { get; set; } = VoiceApplicationType.Est;
+        public override VoiceApplicationType? Type { get; internal set; } = VoiceApplicationType.Est;
     }
 }

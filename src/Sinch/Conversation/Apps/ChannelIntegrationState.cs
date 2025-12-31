@@ -21,7 +21,6 @@ namespace Sinch.Conversation.Apps
         [JsonPropertyName("description")]
         public string? Description { get; set; }
 
-
         /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>

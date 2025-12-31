@@ -14,13 +14,11 @@ namespace Sinch.Conversation.Apps
         [JsonPropertyName("token")]
         public required string Token { get; set; }
 
-
         /// <summary>
         ///     Required if using the Sinch Facebook App.
         /// </summary>
         [JsonPropertyName("business_account_id")]
         public string? BusinessAccountId { get; set; }
-
 
         /// <summary>
         ///     Returns the string presentation of the object

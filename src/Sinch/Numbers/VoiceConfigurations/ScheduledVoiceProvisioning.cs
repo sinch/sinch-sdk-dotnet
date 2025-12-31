@@ -11,7 +11,7 @@ namespace Sinch.Numbers.VoiceConfigurations
         [JsonPropertyName("type")]
         [JsonInclude]
         // Expected to be set by the API response, or by Subclasses
-        internal virtual VoiceApplicationType? Type { get; set; }
+        public abstract VoiceApplicationType? Type { get; internal set; }
 
         /// <summary>
         ///     The provisioning status. It will be either WAITING, IN_PROGRESS or FAILED.
