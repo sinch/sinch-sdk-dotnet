@@ -253,11 +253,6 @@ using Sinch.Numbers.VoiceConfigurations;
 
 The `Type` property on `VoiceConfiguration` and its derived classes (`VoiceRtcConfiguration`, `VoiceEstConfiguration`, `VoiceFaxConfiguration`) is now `internal`. The same applies to `ScheduledVoiceProvisioning` derived classes.
 
-**Impact:**
-- Code that accessed the `Type` property directly will no longer compile
-- The SDK automatically handles the `type` field during serialization/deserialization
-- Use pattern matching or type checking to determine the concrete type
-
 Version 1.*:
 ```csharp
 var voiceConfig = activeNumber.VoiceConfiguration;
@@ -276,8 +271,6 @@ if (voiceConfig is VoiceRtcConfiguration rtcConfig)
     var appId = rtcConfig.AppId;
 }
 ```
-
-**Serialization behavior:** When serializing `VoiceConfiguration` objects, the SDK automatically includes the correct `type` field in the JSON output based on the concrete type. You don't need to set the type manually.
 
 ## Removed obsolete UrlMessage and CallMessage constructors
 
