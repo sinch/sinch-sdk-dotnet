@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Numbers.VoiceConfigurations
 {
-    public sealed class VoiceConfigurationConverter : JsonConverter<VoiceConfiguration>
+    internal sealed class VoiceConfigurationConverter : JsonConverter<VoiceConfiguration>
     {
         public override VoiceConfiguration? Read(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)

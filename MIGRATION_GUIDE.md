@@ -238,8 +238,6 @@ The following classes have been moved from the `Sinch.Numbers` namespace to `Sin
 
 - `VoiceConfiguration`
 - `ScheduledVoiceProvisioning`
-- `VoiceConfigurationConverter`
-- `ScheduledVoiceProvisioningConverter`
 
 Version 1.*:
 ```csharp
@@ -304,4 +302,3 @@ var callMessage = new CallMessage
     PhoneNumber = "+1234567890",
     Title = "Call us"
 };
-```
