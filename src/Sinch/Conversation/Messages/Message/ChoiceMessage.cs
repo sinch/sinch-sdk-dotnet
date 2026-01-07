@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -13,14 +12,11 @@ namespace Sinch.Conversation.Messages.Message
         [JsonPropertyName("choices")]
         public required List<Choice> Choices { get; set; }
 
-
-
         /// <summary>
         ///     Gets or Sets TextMessage
         /// </summary>
         [JsonPropertyName("text_message")]
         public TextMessage? TextMessage { get; set; }
-
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -47,16 +43,6 @@ namespace Sinch.Conversation.Messages.Message
         {
         }
 
-        [Obsolete(
-            message:
-            "This method is obsolete and will be removed in a future version. Consider initializing properties directly",
-            error: false)]
-        public UrlMessage(string title, Uri url)
-        {
-            Title = title;
-            Url = url.ToString();
-        }
-
         [JsonPropertyName("title")]
         public required string Title { get; set; }
 
@@ -75,26 +61,10 @@ namespace Sinch.Conversation.Messages.Message
         }
 
         /// <summary>
-        ///     Create an instance of CallMessage
-        /// </summary>
-        /// <param name="phoneNumber">Phone number in E.164 with leading +.</param>
-        /// <param name="title">Title shown close to the phone number. The title is clickable in some cases.</param>
-        [Obsolete(
-            message:
-            "This method is obsolete and will be removed in a future version. Consider initializing properties directly",
-            error: false)]
-        public CallMessage(string phoneNumber, string title)
-        {
-            PhoneNumber = phoneNumber;
-            Title = title;
-        }
-
-        /// <summary>
         ///     Phone number in E.164 with leading +.
         /// </summary>
         [JsonPropertyName("phone_number")]
         public required string PhoneNumber { get; set; }
-
 
         /// <summary>
         ///     Title shown close to the phone number. The title is clickable in some cases.

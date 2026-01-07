@@ -1,0 +1,13 @@
+{
+  "voiceConfiguration": {
+    "serviceId": "service id value",
+    "scheduledVoiceProvisioning": {
+      "trunkId": "trunk id value",
+      "status": "FAILED",
+      "lastUpdatedTime": "2024-07-01T11:58:35.610198Z",
+      "type": "EST"
+    },
+    "lastUpdatedTime": "2024-06-30T07:08:09.100Z",
+    "type": "FAX"
+  }
+}

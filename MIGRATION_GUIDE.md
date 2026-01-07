@@ -9,6 +9,9 @@
 - [Use SMS API with ServicePlanId](#use-sms-api-with-serviceplanid)
 - [VoiceConfiguration is now abstract](#voiceconfiguration-is-now-abstract)
 - [ScheduledVoiceProvisioning is now abstract](#scheduledvoiceprovisioning-is-now-abstract)
+- [VoiceConfiguration and ScheduledVoiceProvisioning classes moved to new namespace](#voiceconfiguration-and-scheduledvoiceprovisioning-classes-moved-to-new-namespace)
+- [VoiceConfiguration Type property is now internal](#voiceconfiguration-type-property-is-now-internal)
+- [Removed obsolete UrlMessage and CallMessage constructors](#removed-obsolete-urlmessage-and-callmessage-constructors)
 
 ## Initialize `SinchClient` with unified credentials:
 
@@ -228,3 +231,67 @@ var scheduledProvisioning = new ScheduledVoiceEstProvisioning();
 // For FAX services
 var scheduledProvisioning = new ScheduledVoiceFaxProvisioning();
 ```
+
+## VoiceConfiguration and ScheduledVoiceProvisioning classes moved to new namespace
+
+The following classes have been moved from the `Sinch.Numbers` namespace to `Sinch.Numbers.VoiceConfigurations`:
+
+- `VoiceConfiguration`
+- `ScheduledVoiceProvisioning`
+
+Version 1.*:
+```csharp
+using Sinch.Numbers;
+```
+
+Version 2.*:
+```csharp
+using Sinch.Numbers.VoiceConfigurations;
+```
+
+## VoiceConfiguration Type property is now internal
+
+The `Type` property on `VoiceConfiguration` and its derived classes (`VoiceRtcConfiguration`, `VoiceEstConfiguration`, `VoiceFaxConfiguration`) is now `internal`. The same applies to `ScheduledVoiceProvisioning` derived classes.
+
+Version 1.*:
+```csharp
+var voiceConfig = activeNumber.VoiceConfiguration;
+if (voiceConfig.Type == VoiceApplicationType.Rtc)
+{
+    // handle RTC configuration
+}
+```
+
+Version 2.*:
+```csharp
+var voiceConfig = activeNumber.VoiceConfiguration;
+if (voiceConfig is VoiceRtcConfiguration rtcConfig)
+{
+    // handle RTC configuration
+    var appId = rtcConfig.AppId;
+}
+```
+
+## Removed obsolete UrlMessage and CallMessage constructors
+
+The obsolete constructors for `UrlMessage` and `CallMessage` (used in Choice messages in the Conversation API) have been removed. Use object initializer syntax instead:
+
+Version 1.*:
+```csharp
+var urlMessage = new UrlMessage("Click here", new Uri("https://example.com"));
+var callMessage = new CallMessage("+1234567890", "Call us");
+```
+
+Version 2.*:
+```csharp
+var urlMessage = new UrlMessage
+{
+    Title = "Click here",
+    Url = "https://example.com"
+};
+
+var callMessage = new CallMessage
+{
+    PhoneNumber = "+1234567890",
+    Title = "Call us"
+};

@@ -1,3 +1,4 @@
+using Sinch.Numbers.VoiceConfigurations;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -11,35 +12,24 @@ namespace Sinch.Numbers.Active
         ///     leading +. <br /> Example:
         ///     <example>+12025550134</example>
         /// </summary>
-
         public required string PhoneNumber { get; set; }
-
 
         /// <summary>
         ///     Project ID. Your project ID can be found on your
         ///     <see href="https://dashboard.sinch.com/settings/project-management">Sinch Customer Dashboard</see>
         /// </summary>
-
         public required string ProjectId { get; set; }
-
-
 
         /// <summary>
         ///     User supplied name for the phone number.
         /// </summary>
-
         public required string DisplayName { get; set; }
-
-
 
         /// <summary>
         ///     ISO 3166-1 alpha-2 country code of the phone number.<br />
         ///     Example: US, UK or SE.
         /// </summary>
-
         public required string RegionCode { get; set; }
-
-
 
         /// <summary>
         ///     The number type.
@@ -49,17 +39,12 @@ namespace Sinch.Numbers.Active
         /// <summary>
         ///     The capability of the number.
         /// </summary>
-
         public required List<Product> Capability { get; set; }
-
 
         /// <summary>
         ///     An object giving details on currency code and the amount charged.
         /// </summary>
-
         public required Money Money { get; set; }
-
-
 
         /// <summary>
         ///     How often the recurring price is charged in months.

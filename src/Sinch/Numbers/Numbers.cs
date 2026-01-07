@@ -28,19 +28,6 @@ namespace Sinch.Numbers
         /// </summary>
         public ISinchNumbersRegions Regions { get; }
 
-        /// <summary>
-        ///     You can use the Available Number API to search for available numbers or activate an available number.
-        /// </summary>
-        [Obsolete($"This property is obsolete, use methods of this ({nameof(ISinchNumbers)}) interface instead.")]
-        public ISinchNumbersAvailable Available { get; }
-
-        /// <summary>
-        ///     You can use the Active Number API to manage numbers you own. Assign numbers to projects,
-        ///     release numbers from projects, or list all numbers assigned to a project.
-        /// </summary>
-        [Obsolete($"This property is obsolete, use methods of this ({nameof(ISinchNumbers)}) interface instead.")]
-        public ISinchNumbersActive Active { get; }
-
         /// <inheritdoc cref="ISinchNumbersCallbacks"/>
         public ISinchNumbersCallbacks Callbacks { get; }
 
@@ -106,14 +93,16 @@ namespace Sinch.Numbers
 
     public sealed class Numbers : ISinchNumbers
     {
+        private readonly ISinchNumbersActive _activeNumbers;
+        private readonly ISinchNumbersAvailable _available;
         internal Numbers(string projectId, Uri baseAddress,
             LoggerFactory? loggerFactory, IHttp http)
         {
             Regions = new AvailableRegions(projectId, baseAddress,
                 loggerFactory?.Create<AvailableRegions>(), http);
-            Active = new ActiveNumbers(projectId, baseAddress,
+            _activeNumbers = new ActiveNumbers(projectId, baseAddress,
                 loggerFactory?.Create<ActiveNumbers>(), http);
-            Available = new AvailableNumbers(projectId, baseAddress,
+            _available = new AvailableNumbers(projectId, baseAddress,
                 loggerFactory?.Create<AvailableNumbers>(), http);
             Callbacks = new SinchNumbersCallbacks(projectId, baseAddress,
                 loggerFactory?.Create<ISinchNumbersCallbacks>(), http);
@@ -122,77 +111,67 @@ namespace Sinch.Numbers
 
         public ISinchNumbersRegions Regions { get; }
 
-        public ISinchNumbersActive Active { get; }
-
-        public ISinchNumbersAvailable Available { get; }
-
         public ISinchNumbersCallbacks Callbacks { get; }
 
-        // disabling obsolete usage as in next major version, active and available interfaces will remain,
-        // but visibility changed to internal, and public interface will be available only through this methods
-#pragma warning disable CS0618 // Type or member is obsolete
         /// <inheritdoc />
         public Task<ActiveNumber> RentAny(RentAnyNumberRequest request, CancellationToken cancellationToken = default)
         {
-            return Available.RentAny(request, cancellationToken);
+            return _available.RentAny(request, cancellationToken);
         }
 
         /// <inheritdoc />
         public Task<ActiveNumber> Rent(string phoneNumber, RentActiveNumberRequest request,
             CancellationToken cancellationToken = default)
         {
-            return Available.Rent(phoneNumber, request, cancellationToken);
+            return _available.Rent(phoneNumber, request, cancellationToken);
         }
 
         /// <inheritdoc />
         public Task<ListAvailableNumbersResponse> SearchForAvailableNumbers(ListAvailableNumbersRequest request,
             CancellationToken cancellationToken = default)
         {
-            return Available.List(request, cancellationToken);
+            return _available.List(request, cancellationToken);
         }
 
         /// <inheritdoc />
         public Task<AvailableNumber> CheckAvailability(string phoneNumber,
             CancellationToken cancellationToken = default)
         {
-            return Available.CheckAvailability(phoneNumber, cancellationToken);
+            return _available.CheckAvailability(phoneNumber, cancellationToken);
         }
 
         /// <inheritdoc />
         public Task<ActiveNumber> Release(string phoneNumber, CancellationToken cancellationToken = default)
         {
-            return Active.Release(phoneNumber, cancellationToken);
+            return _activeNumbers.Release(phoneNumber, cancellationToken);
         }
 
         /// <inheritdoc />
         public Task<ActiveNumber> Get(string phoneNumber, CancellationToken cancellationToken = default)
         {
-            return Active.Get(phoneNumber, cancellationToken);
+            return _activeNumbers.Get(phoneNumber, cancellationToken);
         }
 
         /// <inheritdoc />
         public Task<ActiveNumber> Update(string phoneNumber, UpdateActiveNumberRequest request,
             CancellationToken cancellationToken = default)
         {
-            return Active.Update(phoneNumber, request, cancellationToken);
+            return _activeNumbers.Update(phoneNumber, request, cancellationToken);
         }
 
         /// <inheritdoc />
         public Task<ListActiveNumbersResponse> List(ListActiveNumbersRequest request,
             CancellationToken cancellationToken = default)
         {
-            return Active.List(request, cancellationToken);
+            return _activeNumbers.List(request, cancellationToken);
         }
 
         /// <inheritdoc />
         public IAsyncEnumerable<ActiveNumber> ListAuto(ListActiveNumbersRequest request,
             CancellationToken cancellationToken = default)
         {
-            return Active.ListAuto(request, cancellationToken);
+            return _activeNumbers.ListAuto(request, cancellationToken);
         }
-
-
-#pragma warning restore CS0618 // Type or member is obsolete
 
         public JsonSerializerOptions JsonSerializerOptions { get; }
 

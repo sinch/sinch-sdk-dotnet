@@ -20,7 +20,6 @@ namespace Sinch.Conversation.Apps
         [JsonPropertyName("business_account_id")]
         public string? BusinessAccountId { get; set; }
 
-
         /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>
