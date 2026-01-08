@@ -9,6 +9,7 @@ using FluentAssertions;
 using NSubstitute;
 using RichardSzalay.MockHttp;
 using Sinch.Auth;
+using Sinch.Core;
 using Sinch.Logger;
 using Xunit;
 
@@ -141,6 +142,29 @@ namespace Sinch.Tests
 
             result.Should()
                 .BeEquivalentTo("669E367E-6BBA-48AB-AF15-266871C28135:srx3SkKXw/ryFJLfwFFzZTigPxR/1+9Ae+eB3olDIjM=");
+        }
+        
+        [Fact]
+        public async Task OAuthRequestShouldIncludeUserAgentHeader()
+        {
+            _messageHandlerMock.Expect(HttpMethod.Post, "https://auth.sinch.com/oauth2/token")
+                .With(request => request.Headers.UserAgent.ToString() == Http.UserAgent)
+                .Respond(JsonContent.Create(new { access_token = "token", expires_in = 3600 }));
+
+            await _auth.GetAuthToken();
+
+            _messageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
+        public async Task OAuthRequestShouldFailWithoutCorrectUserAgentHeader()
+        {
+            _messageHandlerMock.Expect(HttpMethod.Post, "https://auth.sinch.com/oauth2/token")
+                .With(request => request.Headers.UserAgent.ToString() == "wrong-user-agent");
+
+            var act = () => _auth.GetAuthToken();
+
+            await act.Should().ThrowAsync<SinchAuthException>();
         }
     }
 }
