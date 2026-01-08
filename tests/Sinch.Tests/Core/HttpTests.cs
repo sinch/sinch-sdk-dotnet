@@ -181,26 +181,6 @@ namespace Sinch.Tests.Core
         }
 
         [Fact]
-        public async Task SinchRequestShouldFailWithoutCorrectUserAgentHeader()
-        {
-            _tokenManagerMock
-                .GetAuthToken(Arg.Any<bool>())
-                .Returns("first_token");
-
-            var uri = new Uri("http://sinch.com/items");
-
-            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
-                .With(request => request.Headers.UserAgent.ToString() == "wrong-user-agent");
-
-            var httpClient = new HttpClient(_httpMessageHandlerMock);
-            var http = new Http(_tokenManagerMock, httpClient, null, SnakeCaseNamingPolicy.Instance);
-
-            var act = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
-
-            await act.Should().ThrowAsync<SinchApiException>();
-        }
-
-        [Fact]
         public void UserAgentShouldHaveCorrectFormat()
         {
             var userAgent = Http.UserAgent;

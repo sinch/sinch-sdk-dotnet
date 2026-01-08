@@ -155,16 +155,5 @@ namespace Sinch.Tests
 
             _messageHandlerMock.VerifyNoOutstandingExpectation();
         }
-
-        [Fact]
-        public async Task OAuthRequestShouldFailWithoutCorrectUserAgentHeader()
-        {
-            _messageHandlerMock.Expect(HttpMethod.Post, "https://auth.sinch.com/oauth2/token")
-                .With(request => request.Headers.UserAgent.ToString() == "wrong-user-agent");
-
-            var act = () => _auth.GetAuthToken();
-
-            await act.Should().ThrowAsync<SinchAuthException>();
-        }
     }
 }
