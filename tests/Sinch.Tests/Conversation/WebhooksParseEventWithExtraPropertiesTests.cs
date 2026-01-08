@@ -7,29 +7,23 @@ namespace Sinch.Tests.Conversation
     public class WebhooksParseEventWithExtraPropertiesTests : ConversationTestBase
     {
         [Fact]
-        public void ParseEvent_ShouldSucceed_WhenPayloadContainsOnlyKnownProperties()
+        public void ParseEventShouldSucceedWhenPayloadContainsOnlyKnownProperties()
         {
-            // Arrange
-            string json = Helpers.LoadResources("Conversation/Hooks/MessageInboundEventSms.json");
-
-            // Act
+            var json = Helpers.LoadResources("Conversation/Hooks/MessageInboundEventSms.json");
+            
             var result = Conversation.Webhooks.ParseEvent(json);
-
-            // Assert
+            
             result.Should().NotBeNull();
             result.Should().BeOfType<MessageInboundEvent>();
         }
 
         [Fact]
-        public void ParseEvent_ShouldSucceed_WhenPayloadContainsExtraProperties()
+        public void ParseEventShouldSucceedWhenPayloadContainsExtraProperties()
         {
-            // Arrange
-            string json = Helpers.LoadResources("Conversation/Hooks/MessageInboundEventWithExtraProperties.json");
-
-            // Act
+            var json = Helpers.LoadResources("Conversation/Hooks/MessageInboundEventSmsWithExtraProperties.json");
+            
             var result = Conversation.Webhooks.ParseEvent(json);
-
-            // Assert
+            
             result.Should().NotBeNull();
             result.Should().BeOfType<MessageInboundEvent>();
         }

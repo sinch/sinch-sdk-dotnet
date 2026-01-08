@@ -7,7 +7,6 @@ namespace Sinch.Conversation.Hooks
     ///     Marker interface for all callback events
     /// </summary>
     [JsonConverter(typeof(CallbackEventConverter))]
-    //[JsonInterfaceConverter(typeof(InterfaceConverter<ICallbackEvent>))]
     public interface ICallbackEvent
     {
     }
