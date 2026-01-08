@@ -56,7 +56,7 @@ namespace Sinch.Auth
                 Headers = { Authorization = new AuthenticationHeaderValue("Basic", @base) }
             };
             request.Headers.Add("User-Agent", Http.UserAgent);
-            
+
             var result = await _httpClient.SendAsync(request);
 
             if (!result.IsSuccessStatusCode)

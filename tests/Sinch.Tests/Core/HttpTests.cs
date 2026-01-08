@@ -158,7 +158,7 @@ namespace Sinch.Tests.Core
 
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
-        
+
         [Fact]
         public async Task SinchRequestShouldContainUserAgentHeader()
         {

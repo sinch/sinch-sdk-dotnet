@@ -143,7 +143,7 @@ namespace Sinch.Tests
             result.Should()
                 .BeEquivalentTo("669E367E-6BBA-48AB-AF15-266871C28135:srx3SkKXw/ryFJLfwFFzZTigPxR/1+9Ae+eB3olDIjM=");
         }
-        
+
         [Fact]
         public async Task OAuthRequestShouldIncludeUserAgentHeader()
         {

@@ -209,7 +209,7 @@ namespace Sinch.Core
                 {
                     AddOrOverrideHeaders(msg, headers);
                 }
-                
+
                 var result = await _httpClient.SendAsync(msg, cancellationToken);
 
                 if (result.StatusCode == HttpStatusCode.Unauthorized && retry)
@@ -362,14 +362,14 @@ namespace Sinch.Core
             return await SendHttpContent<TResponse>(uri: uri, httpMethod: httpMethod, httpContent,
                 cancellationToken: cancellationToken, headers: headers);
         }
-        
+
         private static string BuildUserAgent()
         {
             var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo().Assembly.FullName!).Version!.ToString();
             var frameworkDescription = RuntimeInformation.FrameworkDescription;
             var runtimeIdentifier = RuntimeInformation.RuntimeIdentifier;
             var processArchitecture = RuntimeInformation.ProcessArchitecture.ToString().ToLowerInvariant();
-            
+
             return $"sinch-sdk/{sdkVersion} (csharp/{frameworkDescription}; {runtimeIdentifier}; {processArchitecture})";
         }
     }
