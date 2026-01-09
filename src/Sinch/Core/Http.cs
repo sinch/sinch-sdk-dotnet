@@ -367,7 +367,7 @@ namespace Sinch.Core
             var frameworkDescription = RuntimeInformation.FrameworkDescription;
             var runtimeIdentifier = RuntimeInformation.RuntimeIdentifier;
 
-            return $"sinch-sdk/{sdkVersion} (csharp/{frameworkDescription}; {runtimeIdentifier})";
+            return $"sinch-sdk/{sdkVersion} (csharp/{frameworkDescription}; {runtimeIdentifier};)";
         }
     }
 }

@@ -182,7 +182,7 @@ namespace Sinch.Tests.Core
         {
             var userAgent = Http.UserAgent;
 
-            userAgent.Should().MatchRegex(@"^sinch-sdk/.* \(csharp/.*; .*\)$");
+            userAgent.Should().MatchRegex(@"^sinch-sdk/.* \(csharp/.*; .*;\)$");
         }
 
         [Fact]
