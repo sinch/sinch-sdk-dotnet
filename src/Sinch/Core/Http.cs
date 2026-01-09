@@ -363,7 +363,7 @@ namespace Sinch.Core
 
         private static string BuildUserAgent()
         {
-            var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo().Assembly.FullName!).Version!.ToString();
+            var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo().Assembly.FullName!).Version!.ToString(3);
             var frameworkDescription = RuntimeInformation.FrameworkDescription;
             var runtimeIdentifier = RuntimeInformation.RuntimeIdentifier;
             var processArchitecture = RuntimeInformation.ProcessArchitecture.ToString().ToLowerInvariant();
