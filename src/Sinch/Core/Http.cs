@@ -366,9 +366,8 @@ namespace Sinch.Core
             var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo().Assembly.FullName!).Version!.ToString(3);
             var frameworkDescription = RuntimeInformation.FrameworkDescription;
             var runtimeIdentifier = RuntimeInformation.RuntimeIdentifier;
-            var processArchitecture = RuntimeInformation.ProcessArchitecture.ToString().ToLowerInvariant();
 
-            return $"sinch-sdk/{sdkVersion} (csharp/{frameworkDescription}; {runtimeIdentifier}; {processArchitecture})";
+            return $"sinch-sdk/{sdkVersion} (csharp/{frameworkDescription}; {runtimeIdentifier})";
         }
     }
 }
