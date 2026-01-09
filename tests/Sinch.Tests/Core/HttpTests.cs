@@ -162,9 +162,6 @@ namespace Sinch.Tests.Core
         [Fact]
         public async Task SinchRequestShouldContainUserAgentHeader()
         {
-            _tokenManagerMock
-                .GetAuthToken(Arg.Any<bool>())
-                .Returns("first_token");
 
             var uri = new Uri("http://sinch.com/items");
 
