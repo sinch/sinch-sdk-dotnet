@@ -71,7 +71,6 @@ namespace Sinch.Core
         private readonly JsonSerializerOptions _jsonSerializerOptions;
         private readonly ILoggerAdapter<IHttp>? _logger;
         private readonly ISinchAuth _auth;
-        private readonly string _userAgentHeaderValue;
 
         /// <summary>
         ///     Gets the User-Agent header value for HTTP requests.
@@ -89,7 +88,6 @@ namespace Sinch.Core
                 PropertyNamingPolicy = jsonNamingPolicy,
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             };
-            _userAgentHeaderValue = UserAgent;
         }
 
         public Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream,
@@ -203,7 +201,7 @@ namespace Sinch.Core
 
                 msg.Headers.Authorization = new AuthenticationHeaderValue(_auth.Scheme, token);
 
-                msg.Headers.Add("User-Agent", _userAgentHeaderValue);
+                msg.Headers.Add("User-Agent", UserAgent);
 
                 if (headers != null && headers.Any())
                 {
