@@ -13,5 +13,6 @@
         "quality_rating": "quality rating value"
       }
     }
-  }
+  },
+  "foo": "bar"
 }
