@@ -14,5 +14,6 @@
       "description": "Error description value"
     },
     "processing_mode": "DISPATCH"
-  }
+  },
+  "foo": "bar"
 }

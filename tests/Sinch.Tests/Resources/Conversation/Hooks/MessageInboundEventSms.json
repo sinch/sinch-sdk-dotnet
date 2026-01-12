@@ -19,5 +19,6 @@
     "contact_id": "01HQ8CONTACT456",
     "accept_time": "2024-01-15T10:30:00Z",
     "processing_mode": "CONVERSATION"
-  }
+  },
+  "foo": "bar"
 }
