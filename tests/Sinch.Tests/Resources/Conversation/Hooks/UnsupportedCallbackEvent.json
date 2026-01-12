@@ -17,5 +17,6 @@
       "channel": "MESSENGER",
       "identity": "an identity"
     }
-  }
+  },
+  "foo": "bar"
 }

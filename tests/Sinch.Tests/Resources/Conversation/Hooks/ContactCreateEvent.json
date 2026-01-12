@@ -29,6 +29,7 @@
       "metadata": "metadata value",
       "language": "AR"
     }
-  }
+  },
+  "foo": "bar"
 }
 

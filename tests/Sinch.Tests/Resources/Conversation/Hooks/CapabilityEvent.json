@@ -17,5 +17,6 @@
       "description":"reason description",
       "sub_code": "UNSPECIFIED_SUB_CODE"
     }
-  }
+  },
+  "foo": "bar"
 }

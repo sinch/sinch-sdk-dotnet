@@ -21,5 +21,6 @@
     },
     "metadata": "metadata value",
     "processing_mode": "DISPATCH"
-  }
+  },
+  "foo": "bar"
 }
