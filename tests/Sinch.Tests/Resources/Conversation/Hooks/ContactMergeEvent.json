@@ -47,5 +47,6 @@
       "metadata": "metadata value",
       "language": "UNSPECIFIED"
     }
-  }
+  },
+  "foo": "bar"
 }

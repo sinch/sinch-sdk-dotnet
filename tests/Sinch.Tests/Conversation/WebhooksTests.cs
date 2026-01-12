@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using FluentAssertions;
 using Microsoft.Extensions.Primitives;
@@ -1288,6 +1290,40 @@ namespace Sinch.Tests.Conversation
                 Type = "OPEN_THREAD",
                 ExistingThread = null
             });
+        }
+
+        [Fact]
+        public void SerializeUnknownCallbackEventThrowsArgumentOutOfRangeException()
+        {
+            var unknownEvent = new UnknownCallbackEvent();
+
+            var act = () => JsonSerializer.Serialize<ICallbackEvent>(unknownEvent);
+
+            act.Should().Throw<ArgumentOutOfRangeException>()
+                .WithMessage($"*Cannot find a matching class for the interface {nameof(ICallbackEvent)}*");
+        }
+
+        [Fact]
+        public void DeserializeUnknownCallbackEventReturnsNull()
+        {
+            const string json = @"{
+                ""app_id"": ""test_app_id"",
+                ""project_id"": ""test_project_id"",
+                ""unknown_notification"": {
+                    ""some_field"": ""some_value""
+                }
+            }";
+
+            var result = JsonSerializer.Deserialize<ICallbackEvent>(json);
+
+            result.Should().BeNull();
+        }
+
+        /// <summary>
+        /// A test implementation of ICallbackEvent that is not handled by CallbackEventConverter.
+        /// </summary>
+        private class UnknownCallbackEvent : ICallbackEvent
+        {
         }
     }
 }

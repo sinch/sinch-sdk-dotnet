@@ -28,5 +28,6 @@
         "message_id": "message id value"
       }
     }
-  }
+  },
+  "foo": "bar"
 }

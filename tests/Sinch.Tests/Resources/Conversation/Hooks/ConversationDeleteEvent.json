@@ -19,6 +19,7 @@
       },
       "correlation_id":"correlation id value"
     }
-  }
+  },
+  "foo": "bar"
 }
 

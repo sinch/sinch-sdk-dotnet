@@ -4,8 +4,6 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -141,7 +139,7 @@ namespace Sinch.Tests.Core
         }
 
         [Fact]
-        public async Task SendSinchHeader()
+        public async Task SinchRequestShouldContainAuthorizationHeader()
         {
             _tokenManagerMock
                 .GetAuthToken(Arg.Any<bool>())
@@ -149,25 +147,42 @@ namespace Sinch.Tests.Core
 
             var uri = new Uri("http://sinch.com/items");
 
-            var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo().Assembly.FullName!).Version!.ToString();
-
             _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
                 .WithHeaders("Authorization", "Bearer first_token")
-                // net framework splits header value at whitespace and returns list of values
-                // so we check for exact sequence of header value
-                .WithHeaderExact("User-Agent", new[]
-                {
-                    $"sinch-sdk/{sdkVersion}",
-                    $"(csharp/{RuntimeInformation.FrameworkDescription};;)"
-                })
                 .Respond(HttpStatusCode.OK);
 
             var httpClient = new HttpClient(_httpMessageHandlerMock);
-            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+            var http = new Http(_tokenManagerMock, httpClient, null, SnakeCaseNamingPolicy.Instance);
 
             await http.Send<EmptyResponse>(uri, HttpMethod.Get);
 
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
+        public async Task SinchRequestShouldContainUserAgentHeader()
+        {
+
+            var uri = new Uri("http://sinch.com/items");
+
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .With(request => request.Headers.UserAgent.ToString() == Http.UserAgent)
+                .Respond(HttpStatusCode.OK);
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, SnakeCaseNamingPolicy.Instance);
+
+            await http.Send<EmptyResponse>(uri, HttpMethod.Get);
+
+            _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
+        public void UserAgentShouldHaveCorrectFormat()
+        {
+            var userAgent = Http.UserAgent;
+
+            userAgent.Should().MatchRegex(@"^sinch-sdk/.* \(csharp/.*; .*;\)$");
         }
 
         [Fact]
