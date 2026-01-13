@@ -6,7 +6,7 @@ namespace Sinch.Core
     {
         public static SnakeCaseNamingPolicy Instance { get; } = new();
 
-        private SnakeCaseNamingPolicy() {}
+        private SnakeCaseNamingPolicy() { }
 
         public override string ConvertName(string name)
         {
