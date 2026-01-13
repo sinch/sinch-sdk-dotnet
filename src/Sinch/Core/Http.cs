@@ -71,8 +71,11 @@ namespace Sinch.Core
         private readonly JsonSerializerOptions _jsonSerializerOptions;
         private readonly ILoggerAdapter<IHttp>? _logger;
         private readonly Lazy<ISinchAuth> _auth;
-        private readonly string _userAgentHeaderValue;
 
+        /// <summary>
+        ///     Gets the User-Agent header value for HTTP requests.
+        /// </summary>
+        internal static string UserAgent { get; } = BuildUserAgent();
 
         public Http(Lazy<ISinchAuth> auth, Func<HttpClient> httpClientAccessor, ILoggerAdapter<IHttp>? logger,
             JsonNamingPolicy jsonNamingPolicy)
@@ -85,9 +88,6 @@ namespace Sinch.Core
                 PropertyNamingPolicy = jsonNamingPolicy,
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             };
-            var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo().Assembly.FullName!).Version!.ToString();
-            _userAgentHeaderValue =
-                $"sinch-sdk/{sdkVersion} (csharp/{RuntimeInformation.FrameworkDescription};;)";
         }
 
         public Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream,
@@ -201,7 +201,7 @@ namespace Sinch.Core
 
                 msg.Headers.Authorization = new AuthenticationHeaderValue(_auth.Value.Scheme, token);
 
-                msg.Headers.Add("User-Agent", _userAgentHeaderValue);
+                msg.Headers.Add("User-Agent", UserAgent);
 
                 if (headers != null && headers.Any())
                 {
@@ -361,6 +361,15 @@ namespace Sinch.Core
 
             return await SendHttpContent<TResponse>(uri: uri, httpMethod: httpMethod, httpContent,
                 cancellationToken: cancellationToken, headers: headers);
+        }
+
+        private static string BuildUserAgent()
+        {
+            var sdkVersion = new AssemblyName(typeof(Http).GetTypeInfo().Assembly.FullName!).Version!.ToString(3);
+            var frameworkDescription = RuntimeInformation.FrameworkDescription;
+            var runtimeIdentifier = RuntimeInformation.RuntimeIdentifier;
+
+            return $"sinch-sdk/{sdkVersion} (csharp/{frameworkDescription}; {runtimeIdentifier};)";
         }
     }
 }

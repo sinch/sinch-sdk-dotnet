@@ -30,5 +30,6 @@
     "sender_id": "sender id",
     "processing_mode": "DISPATCH",
     "injected": true
-  }
+  },
+  "foo": "bar"
 }
