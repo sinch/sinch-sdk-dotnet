@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -1331,6 +1332,40 @@ namespace Sinch.Tests.Conversation
             await op.Should()
                 .ThrowExactlyAsync<ArgumentNullException>(
                     "Value cannot be null. (Parameter 'SinchUnifiedCredentials is null.')");
+        }
+
+        [Fact]
+        public void SerializeUnknownCallbackEventThrowsArgumentOutOfRangeException()
+        {
+            var unknownEvent = new UnknownCallbackEvent();
+
+            var act = () => JsonSerializer.Serialize<ICallbackEvent>(unknownEvent);
+
+            act.Should().Throw<ArgumentOutOfRangeException>()
+                .WithMessage($"*Cannot find a matching class for the interface {nameof(ICallbackEvent)}*");
+        }
+
+        [Fact]
+        public void DeserializeUnknownCallbackEventReturnsNull()
+        {
+            const string json = @"{
+                ""app_id"": ""test_app_id"",
+                ""project_id"": ""test_project_id"",
+                ""unknown_notification"": {
+                    ""some_field"": ""some_value""
+                }
+            }";
+
+            var result = JsonSerializer.Deserialize<ICallbackEvent>(json);
+
+            result.Should().BeNull();
+        }
+
+        /// <summary>
+        /// A test implementation of ICallbackEvent that is not handled by CallbackEventConverter.
+        /// </summary>
+        private class UnknownCallbackEvent : ICallbackEvent
+        {
         }
     }
 }

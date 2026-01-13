@@ -1,11 +1,11 @@
-using Sinch.Core;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Hooks
 {
     /// <summary>
     ///     Marker interface for all callback events
     /// </summary>
-    [JsonInterfaceConverter(typeof(InterfaceConverter<ICallbackEvent>))]
+    [JsonConverter(typeof(CallbackEventConverter))]
     public interface ICallbackEvent
     {
     }
