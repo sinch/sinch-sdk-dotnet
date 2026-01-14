@@ -24,6 +24,6 @@ var hmacSecret = "NEW_HMAC_SECRET";
 
 Console.WriteLine("Update callback HMAC secret");
 
-var response = await sinchClient.Numbers.Callbacks.Update(hmacSecret);
+var response = await sinchClient.Numbers.CallbackConfiguration.Update(hmacSecret);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

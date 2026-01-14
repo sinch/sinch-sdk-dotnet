@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
-using Sinch.Numbers.Callbacks;
+using Sinch.Numbers.CallbackConfiguration;
 using Xunit;
 
 namespace Sinch.Tests.Numbers
@@ -19,7 +19,7 @@ namespace Sinch.Tests.Numbers
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond("application/json", Helpers.LoadResources("Numbers/CallbackConfigurationResponse.json"));
 
-            var response = await Numbers.Callbacks.Get();
+            var response = await Numbers.CallbackConfiguration.Get();
 
             response.Should().BeEquivalentTo(new CallbackConfiguration()
             {
@@ -40,7 +40,7 @@ namespace Sinch.Tests.Numbers
                 }))
                 .Respond("application/json", Helpers.LoadResources("Numbers/CallbackConfigurationResponse.json"));
 
-            var response = await Numbers.Callbacks.Update("HMAC value");
+            var response = await Numbers.CallbackConfiguration.Update("HMAC value");
 
             response.Should().BeEquivalentTo(new CallbackConfiguration()
             {
@@ -63,7 +63,7 @@ namespace Sinch.Tests.Numbers
                 }))
                 .Respond("application/json", Helpers.LoadResources("Numbers/CallbackConfigurationResponse.json"));
 
-            var responseOp = () => Numbers.Callbacks.Update(hmacSecret);
+            var responseOp = () => Numbers.CallbackConfiguration.Update(hmacSecret);
 
             await responseOp.Should().ThrowAsync<ArgumentNullException>();
         }
