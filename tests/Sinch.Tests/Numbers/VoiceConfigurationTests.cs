@@ -28,10 +28,9 @@ namespace Sinch.Tests.Numbers
             {
                 AppId = "app id value",
             };
-            var jsonString = SerializeAsNumbersClient(new Container()
-            {
-                VoiceConfiguration = config
-            });
+            var jsonString = JsonSerializer.Serialize(
+                new Container { VoiceConfiguration = config }, 
+                Numbers.JsonSerializerOptions);
 
             Helpers.AssertJsonEqual(Helpers.LoadResources("Numbers/RtcVoiceSerializationExpected.json"), jsonString);
         }
@@ -43,10 +42,9 @@ namespace Sinch.Tests.Numbers
             {
                 ServiceId = "service id value",
             };
-            var jsonString = SerializeAsNumbersClient(new Container()
-            {
-                VoiceConfiguration = config
-            });
+            var jsonString = JsonSerializer.Serialize(
+                new Container { VoiceConfiguration = config }, 
+                Numbers.JsonSerializerOptions);
 
             Helpers.AssertJsonEqual(Helpers.LoadResources("Numbers/FaxVoiceSerializationExpected.json"), jsonString);
         }
@@ -58,10 +56,9 @@ namespace Sinch.Tests.Numbers
             {
                 TrunkId = "trunk id value",
             };
-            var jsonString = SerializeAsNumbersClient(new Container()
-            {
-                VoiceConfiguration = config
-            });
+            var jsonString = JsonSerializer.Serialize(
+                new Container { VoiceConfiguration = config }, 
+                Numbers.JsonSerializerOptions);
 
             Helpers.AssertJsonEqual(Helpers.LoadResources("Numbers/EstVoiceSerializationExpected.json"), jsonString);
         }
@@ -69,9 +66,9 @@ namespace Sinch.Tests.Numbers
         [Fact]
         public void ShouldDeserializeVoiceEstConfiguration()
         {
-            var obj =
-                DeserializeAsNumbersClient<Container>(
-                    Helpers.LoadResources("Numbers/EstVoiceResponse.json"));
+            var obj = JsonSerializer.Deserialize<Container>(
+                Helpers.LoadResources("Numbers/EstVoiceResponse.json"), 
+                Numbers.JsonSerializerOptions);
 
             var prov = new ScheduledVoiceEstProvisioning()
             {
@@ -95,9 +92,9 @@ namespace Sinch.Tests.Numbers
         [Fact]
         public void ShouldDeserializeVoiceFaxConfiguration()
         {
-            var obj =
-                DeserializeAsNumbersClient<Container>(
-                    Helpers.LoadResources("Numbers/FaxVoiceResponse.json"));
+            var obj = JsonSerializer.Deserialize<Container>(
+                Helpers.LoadResources("Numbers/FaxVoiceResponse.json"),
+                Numbers.JsonSerializerOptions);
 
             var scheduledVoiceFaxProvisioning = new ScheduledVoiceFaxProvisioning()
             {
@@ -122,7 +119,9 @@ namespace Sinch.Tests.Numbers
         [Fact]
         public void ShouldDeserializeVoiceRtcConfiguration()
         {
-            var container = DeserializeAsNumbersClient<Container>(Helpers.LoadResources("Numbers/RtcVoiceResponse.json"));
+            var container = JsonSerializer.Deserialize<Container>(
+                Helpers.LoadResources("Numbers/RtcVoiceResponse.json"),
+                Numbers.JsonSerializerOptions);
 
             var expectedProvisioning = new ScheduledVoiceRtcProvisioning()
             {
@@ -152,8 +151,9 @@ namespace Sinch.Tests.Numbers
         [Fact]
         public void ScheduledVoiceRtcProvisioning_ShouldDeserializeToConcreteType()
         {
-            var obj = DeserializeAsNumbersClient<Container>(
-                Helpers.LoadResources("Numbers/RtcVoiceResponse.json"));
+            var obj = JsonSerializer.Deserialize<Container>(
+                Helpers.LoadResources("Numbers/RtcVoiceResponse.json"),
+                Numbers.JsonSerializerOptions);
 
             var voiceRtc = (VoiceRtcConfiguration)obj.VoiceConfiguration;
 
@@ -173,8 +173,9 @@ namespace Sinch.Tests.Numbers
         [Fact]
         public void ScheduledVoiceFaxProvisioning_ShouldDeserializeToConcreteType()
         {
-            var container = DeserializeAsNumbersClient<Container>(
-                Helpers.LoadResources("Numbers/FaxVoiceResponse.json"));
+            var container = JsonSerializer.Deserialize<Container>(
+                Helpers.LoadResources("Numbers/FaxVoiceResponse.json"),
+                Numbers.JsonSerializerOptions);
 
             var voiceFax = (VoiceFaxConfiguration)container.VoiceConfiguration;
             voiceFax.ScheduledVoiceProvisioning.Should().BeOfType<ScheduledVoiceFaxProvisioning>();
@@ -183,8 +184,9 @@ namespace Sinch.Tests.Numbers
         [Fact]
         public void ScheduledVoiceEstProvisioning_ShouldDeserializeToConcreteType()
         {
-            var container = DeserializeAsNumbersClient<Container>(
-                Helpers.LoadResources("Numbers/EstVoiceResponse.json"));
+            var container = JsonSerializer.Deserialize<Container>(
+                Helpers.LoadResources("Numbers/EstVoiceResponse.json"),
+                Numbers.JsonSerializerOptions);
 
             var voiceEst = (VoiceEstConfiguration)container.VoiceConfiguration;
             voiceEst.ScheduledVoiceProvisioning.Should().BeOfType<ScheduledVoiceEstProvisioning>();
@@ -193,8 +195,9 @@ namespace Sinch.Tests.Numbers
         [Fact]
         public void VoiceRtcConfiguration_ShouldDeserializeToConcreteType()
         {
-            var obj = DeserializeAsNumbersClient<Container>(
-                Helpers.LoadResources("Numbers/RtcVoiceResponse.json"));
+            var obj = JsonSerializer.Deserialize<Container>(
+                Helpers.LoadResources("Numbers/RtcVoiceResponse.json"),
+                Numbers.JsonSerializerOptions);
 
             obj.VoiceConfiguration.Should().BeOfType<VoiceRtcConfiguration>();
         }
@@ -202,8 +205,9 @@ namespace Sinch.Tests.Numbers
         [Fact]
         public void VoiceEstConfiguration_ShouldDeserializeToConcreteType()
         {
-            var obj = DeserializeAsNumbersClient<Container>(
-                Helpers.LoadResources("Numbers/EstVoiceResponse.json"));
+            var obj = JsonSerializer.Deserialize<Container>(
+                Helpers.LoadResources("Numbers/EstVoiceResponse.json"),
+                Numbers.JsonSerializerOptions);
 
             obj.VoiceConfiguration.Should().BeOfType<VoiceEstConfiguration>();
         }
@@ -211,8 +215,9 @@ namespace Sinch.Tests.Numbers
         [Fact]
         public void VoiceFaxConfiguration_ShouldDeserializeToConcreteType()
         {
-            var obj = DeserializeAsNumbersClient<Container>(
-                Helpers.LoadResources("Numbers/FaxVoiceResponse.json"));
+            var obj = JsonSerializer.Deserialize<Container>(
+                Helpers.LoadResources("Numbers/FaxVoiceResponse.json"),
+                Numbers.JsonSerializerOptions);
 
             obj.VoiceConfiguration.Should().BeOfType<VoiceFaxConfiguration>();
         }
@@ -222,7 +227,7 @@ namespace Sinch.Tests.Numbers
         {
             var unknownJson = """{"voiceConfiguration": {"type": "UNKNOWN"}}""";
 
-            var act = () => DeserializeAsNumbersClient<Container>(unknownJson);
+            var act = () => JsonSerializer.Deserialize<Container>(unknownJson, Numbers.JsonSerializerOptions);
 
             act.Should().Throw<JsonException>()
                 .WithMessage("*Type tag is invalid*");
@@ -233,7 +238,7 @@ namespace Sinch.Tests.Numbers
         {
             var noTypeJson = """{"voiceConfiguration": {"lastUpdatedTime": "2024-07-01T11:58:35.610198Z"}}""";
 
-            var act = () => DeserializeAsNumbersClient<Container>(noTypeJson);
+            var act = () => JsonSerializer.Deserialize<Container>(noTypeJson, Numbers.JsonSerializerOptions);
 
             act.Should().Throw<JsonException>()
                 .WithMessage("*Failed to deserialize VoiceConfiguration*");
@@ -247,8 +252,8 @@ namespace Sinch.Tests.Numbers
                 AppId = "test-app-id"
             };
 
-            var json = SerializeAsNumbersClient(new Container { VoiceConfiguration = original });
-            var deserialized = DeserializeAsNumbersClient<Container>(json);
+            var json = JsonSerializer.Serialize(new Container { VoiceConfiguration = original }, Numbers.JsonSerializerOptions);
+            var deserialized = JsonSerializer.Deserialize<Container>(json, Numbers.JsonSerializerOptions);
 
             deserialized.VoiceConfiguration.Should().BeOfType<VoiceRtcConfiguration>();
             var rtcConfig = (VoiceRtcConfiguration)deserialized.VoiceConfiguration;
@@ -264,8 +269,8 @@ namespace Sinch.Tests.Numbers
                 ServiceId = "test-service-id"
             };
 
-            var json = SerializeAsNumbersClient(new Container { VoiceConfiguration = original });
-            var deserialized = DeserializeAsNumbersClient<Container>(json);
+            var json = JsonSerializer.Serialize(new Container { VoiceConfiguration = original }, Numbers.JsonSerializerOptions);
+            var deserialized = JsonSerializer.Deserialize<Container>(json, Numbers.JsonSerializerOptions);
 
             deserialized.VoiceConfiguration.Should().BeOfType<VoiceFaxConfiguration>();
             var faxConfig = (VoiceFaxConfiguration)deserialized.VoiceConfiguration;
@@ -281,8 +286,8 @@ namespace Sinch.Tests.Numbers
                 TrunkId = "test-trunk-id"
             };
 
-            var json = SerializeAsNumbersClient(new Container { VoiceConfiguration = original });
-            var deserialized = DeserializeAsNumbersClient<Container>(json);
+            var json = JsonSerializer.Serialize(new Container { VoiceConfiguration = original }, Numbers.JsonSerializerOptions);
+            var deserialized = JsonSerializer.Deserialize<Container>(json, Numbers.JsonSerializerOptions);
 
             deserialized.VoiceConfiguration.Should().BeOfType<VoiceEstConfiguration>();
             var estConfig = (VoiceEstConfiguration)deserialized.VoiceConfiguration;
@@ -319,8 +324,9 @@ namespace Sinch.Tests.Numbers
         [Fact]
         public void ShouldDeserializeVoiceRtcConfigurationButWithFaxProvisioning()
         {
-            var obj = DeserializeAsNumbersClient<Container>(
-                Helpers.LoadResources("Numbers/RtcVoiceConfigWithFaxProvisioning.json"));
+            var obj = JsonSerializer.Deserialize<Container>(
+                Helpers.LoadResources("Numbers/RtcVoiceConfigWithFaxProvisioning.json"),
+                Numbers.JsonSerializerOptions);
 
             obj.VoiceConfiguration.Should().BeOfType<VoiceRtcConfiguration>();
             obj.VoiceConfiguration.ScheduledVoiceProvisioning.Should().BeOfType<ScheduledVoiceFaxProvisioning>();
@@ -329,8 +335,9 @@ namespace Sinch.Tests.Numbers
         [Fact]
         public void ShouldDeserializeVoiceEstConfigurationWithRtcProvisioning()
         {
-            var obj = DeserializeAsNumbersClient<Container>(
-                Helpers.LoadResources("Numbers/EstVoiceConfigWithRtcProvisioning.json"));
+            var obj = JsonSerializer.Deserialize<Container>(
+                Helpers.LoadResources("Numbers/EstVoiceConfigWithRtcProvisioning.json"),
+                Numbers.JsonSerializerOptions);
 
             obj.VoiceConfiguration.Should().BeOfType<VoiceEstConfiguration>();
             obj.VoiceConfiguration.ScheduledVoiceProvisioning.Should().BeOfType<ScheduledVoiceRtcProvisioning>();
@@ -339,8 +346,9 @@ namespace Sinch.Tests.Numbers
         [Fact]
         public void ShouldDeserializeVoiceFaxConfigurationWithEstProvisioning()
         {
-            var obj = DeserializeAsNumbersClient<Container>(
-                Helpers.LoadResources("Numbers/FaxVoiceConfigWithEstProvisioning.json"));
+            var obj = JsonSerializer.Deserialize<Container>(
+                Helpers.LoadResources("Numbers/FaxVoiceConfigWithEstProvisioning.json"),
+                Numbers.JsonSerializerOptions);
 
             obj.VoiceConfiguration.Should().BeOfType<VoiceFaxConfiguration>();
             obj.VoiceConfiguration.ScheduledVoiceProvisioning.Should().BeOfType<ScheduledVoiceEstProvisioning>();

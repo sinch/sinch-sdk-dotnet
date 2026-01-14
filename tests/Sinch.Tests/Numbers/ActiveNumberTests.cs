@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using RichardSzalay.MockHttp;
@@ -256,7 +257,7 @@ namespace Sinch.Tests.Numbers
         public void DeserializeActiveNumber()
         {
             var json = Helpers.LoadResources("Numbers/Active/ActiveNumber.json");
-            var activeNumber = DeserializeAsNumbersClient<ActiveNumber>(json);
+            var activeNumber = JsonSerializer.Deserialize<ActiveNumber>(json, Numbers.JsonSerializerOptions);
             activeNumber.Should().BeOfType<ActiveNumber>().And.BeEquivalentTo(_activeNumber);
         }
 
