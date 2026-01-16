@@ -1,0 +1,13 @@
+﻿{
+  "displayName": "a display",
+  "smsConfiguration": {
+    "servicePlanId": "service plan id",
+    "campaignId": "campaign id"
+  },
+  "voiceConfiguration": {
+    "trunkId": "trunk-id-12345",
+    "type": "EST"
+  },
+  "callbackUrl": "foo callback"
+}
+

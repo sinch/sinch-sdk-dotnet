@@ -262,32 +262,211 @@ namespace Sinch.Tests.Numbers
         }
 
         [Fact]
-        public async Task UpdateActiveNumber()
+        public async Task UpdateActiveNumber_WithVoiceRtcConfiguration()
         {
+            var expectedActiveNumber = new ActiveNumber
+            {
+                PhoneNumber = "+447520651116XYZ",
+                ProjectId = "project id",
+                DisplayName = "a display",
+                RegionCode = "GB",
+                Type = Types.Mobile,
+                Capability = new List<Product> { Product.Sms, Product.Voice },
+                Money = new Money { CurrencyCode = "EUR", Amount = 0.8m },
+                PaymentIntervalMonths = 1,
+                NextChargeDate = Helpers.ParseUtc("2023-09-22T15:49:58.813424Z"),
+                ExpireAt = Helpers.ParseUtc("2023-10-06T15:49:58.813381Z"),
+                SmsConfiguration = new SmsConfiguration
+                {
+                    ServicePlanId = "service plan id",
+                    CampaignId = "campaign id",
+                    ScheduledProvisioning = new ScheduledProvisioning
+                    {
+                        ServicePlanId = "service plan id from scheduled",
+                        CampaignId = "campaign id from scheduled",
+                        Status = ProvisioningStatus.Unspecified,
+                        LastUpdatedTime = Helpers.ParseUtc("2023-09-25T12:08:02.115Z"),
+                        ErrorCodes = new List<string> { "ERROR_CODE_UNSPECIFIED" }
+                    }
+                },
+                VoiceConfiguration = new VoiceRtcConfiguration
+                {
+                    AppId = "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEE",
+                    LastUpdatedTime = Helpers.ParseUtc("2024-06-30T07:08:09.100Z"),
+                    ScheduledVoiceProvisioning = new ScheduledVoiceRtcProvisioning
+                    {
+                        AppId = "EEEEEEEEEE-DDDD-CCCC-BBBB-AAAAAAAA",
+                        Status = ProvisioningStatus.Waiting,
+                        LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
+                    }
+                },
+                CallbackUrl = "foo callback"
+            };
+
             HttpMessageHandlerMock
                 .When(HttpMethod.Patch,
                     $"https://numbers.api.sinch.com/v1/projects/{ProjectId}/activeNumbers/+12025550134")
                 .WithHeaders("Authorization", $"Bearer {Token}")
-                .WithJson(Helpers.LoadResources("Numbers/Active/ActiveNumberUpdateRequest.json"))
+                .WithJson(Helpers.LoadResources("Numbers/Active/ActiveNumberUpdateRequest_VoiceRtc.json"))
                 .Respond("application/json",
-                    Helpers.LoadResources("Numbers/Active/ActiveNumber.json"));
+                    Helpers.LoadResources("Numbers/Active/ActiveNumber_VoiceRtc.json"));
 
-            var response = await Numbers.Update("+12025550134", new UpdateActiveNumberRequest()
+            var response = await Numbers.Update("+12025550134", 
+                new UpdateActiveNumberRequest
+                {
+                    DisplayName = "a display",
+                    SmsConfiguration = new SmsConfiguration()
+                    {
+                        ServicePlanId = "service plan id",
+                        CampaignId = "campaign id"
+                    },
+                    VoiceConfiguration = new VoiceRtcConfiguration()
+                    {
+                        AppId = "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEE",
+                        Type = VoiceApplicationType.Rtc
+                    },
+                    CallbackUrl = "foo callback"
+                });
+
+            response.Should().BeEquivalentTo(expectedActiveNumber);
+        }
+
+        [Fact]
+        public async Task UpdateActiveNumber_WithVoiceEstConfiguration()
+        {
+            var expectedActiveNumber = new ActiveNumber
             {
+                PhoneNumber = "+447520651116XYZ",
+                ProjectId = "project id",
                 DisplayName = "a display",
-                SmsConfiguration = new SmsConfiguration()
+                RegionCode = "GB",
+                Type = Types.Mobile,
+                Capability = new List<Product> { Product.Sms, Product.Voice },
+                Money = new Money { CurrencyCode = "EUR", Amount = 0.8m },
+                PaymentIntervalMonths = 1,
+                NextChargeDate = Helpers.ParseUtc("2023-09-22T15:49:58.813424Z"),
+                ExpireAt = Helpers.ParseUtc("2023-10-06T15:49:58.813381Z"),
+                SmsConfiguration = new SmsConfiguration
                 {
                     ServicePlanId = "service plan id",
-                    CampaignId = "campaign id"
+                    CampaignId = "campaign id",
+                    ScheduledProvisioning = new ScheduledProvisioning
+                    {
+                        ServicePlanId = "service plan id from scheduled",
+                        CampaignId = "campaign id from scheduled",
+                        Status = ProvisioningStatus.Unspecified,
+                        LastUpdatedTime = Helpers.ParseUtc("2023-09-25T12:08:02.115Z"),
+                        ErrorCodes = new List<string> { "ERROR_CODE_UNSPECIFIED" }
+                    }
                 },
-                VoiceConfiguration = new VoiceRtcConfiguration()
+                VoiceConfiguration = new VoiceEstConfiguration
                 {
-                    AppId = "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEE",
+                    TrunkId = "trunk-id-12345",
+                    LastUpdatedTime = Helpers.ParseUtc("2024-06-30T07:08:09.100Z"),
+                    ScheduledVoiceProvisioning = new ScheduledVoiceEstProvisioning
+                    {
+                        TrunkId = "trunk-id-scheduled",
+                        Status = ProvisioningStatus.Waiting,
+                        LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
+                    }
                 },
                 CallbackUrl = "foo callback"
-            });
+            };
 
-            response.Should().BeEquivalentTo(_activeNumber);
+            HttpMessageHandlerMock
+                .When(HttpMethod.Patch,
+                    $"https://numbers.api.sinch.com/v1/projects/{ProjectId}/activeNumbers/+12025550134")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(Helpers.LoadResources("Numbers/Active/ActiveNumberUpdateRequest_VoiceEst.json"))
+                .Respond("application/json",
+                    Helpers.LoadResources("Numbers/Active/ActiveNumber_VoiceEst.json"));
+
+            var response = await Numbers.Update("+12025550134", 
+                new UpdateActiveNumberRequest
+                {
+                    DisplayName = "a display",
+                    SmsConfiguration = new SmsConfiguration()
+                    {
+                        ServicePlanId = "service plan id",
+                        CampaignId = "campaign id"
+                    },
+                    VoiceConfiguration = new VoiceEstConfiguration()
+                    {
+                        TrunkId = "trunk-id-12345"
+                    },
+                    CallbackUrl = "foo callback"
+                });
+
+            response.Should().BeEquivalentTo(expectedActiveNumber);
+        }
+
+        [Fact]
+        public async Task UpdateActiveNumber_WithVoiceFaxConfiguration()
+        {
+            var expectedActiveNumber = new ActiveNumber
+            {
+                PhoneNumber = "+447520651116XYZ",
+                ProjectId = "project id",
+                DisplayName = "a display",
+                RegionCode = "GB",
+                Type = Types.Mobile,
+                Capability = new List<Product> { Product.Sms, Product.Voice },
+                Money = new Money { CurrencyCode = "EUR", Amount = 0.8m },
+                PaymentIntervalMonths = 1,
+                NextChargeDate = Helpers.ParseUtc("2023-09-22T15:49:58.813424Z"),
+                ExpireAt = Helpers.ParseUtc("2023-10-06T15:49:58.813381Z"),
+                SmsConfiguration = new SmsConfiguration
+                {
+                    ServicePlanId = "service plan id",
+                    CampaignId = "campaign id",
+                    ScheduledProvisioning = new ScheduledProvisioning
+                    {
+                        ServicePlanId = "service plan id from scheduled",
+                        CampaignId = "campaign id from scheduled",
+                        Status = ProvisioningStatus.Unspecified,
+                        LastUpdatedTime = Helpers.ParseUtc("2023-09-25T12:08:02.115Z"),
+                        ErrorCodes = new List<string> { "ERROR_CODE_UNSPECIFIED" }
+                    }
+                },
+                VoiceConfiguration = new VoiceFaxConfiguration
+                {
+                    ServiceId = "fax-service-id-12345",
+                    LastUpdatedTime = Helpers.ParseUtc("2024-06-30T07:08:09.100Z"),
+                    ScheduledVoiceProvisioning = new ScheduledVoiceFaxProvisioning
+                    {
+                        ServiceId = "fax-service-id-scheduled",
+                        Status = ProvisioningStatus.Waiting,
+                        LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
+                    }
+                },
+                CallbackUrl = "foo callback"
+            };
+
+            HttpMessageHandlerMock
+                .When(HttpMethod.Patch,
+                    $"https://numbers.api.sinch.com/v1/projects/{ProjectId}/activeNumbers/+12025550134")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(Helpers.LoadResources("Numbers/Active/ActiveNumberUpdateRequest_VoiceFax.json"))
+                .Respond("application/json",
+                    Helpers.LoadResources("Numbers/Active/ActiveNumber_VoiceFax.json"));
+
+            var response = await Numbers.Update("+12025550134", 
+                new UpdateActiveNumberRequest
+                {
+                    DisplayName = "a display",
+                    SmsConfiguration = new SmsConfiguration()
+                    {
+                        ServicePlanId = "service plan id",
+                        CampaignId = "campaign id"
+                    },
+                    VoiceConfiguration = new VoiceFaxConfiguration()
+                    {
+                        ServiceId = "fax-service-id-12345"
+                    },
+                    CallbackUrl = "foo callback"
+                });
+
+            response.Should().BeEquivalentTo(expectedActiveNumber);
         }
     }
 }
