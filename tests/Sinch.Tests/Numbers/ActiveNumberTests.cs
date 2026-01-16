@@ -311,7 +311,7 @@ namespace Sinch.Tests.Numbers
                 .Respond("application/json",
                     Helpers.LoadResources("Numbers/Active/ActiveNumber_VoiceRtc.json"));
 
-            var response = await Numbers.Update("+12025550134", 
+            var response = await Numbers.Update("+12025550134",
                 new UpdateActiveNumberRequest
                 {
                     DisplayName = "a display",
@@ -381,7 +381,7 @@ namespace Sinch.Tests.Numbers
                 .Respond("application/json",
                     Helpers.LoadResources("Numbers/Active/ActiveNumber_VoiceEst.json"));
 
-            var response = await Numbers.Update("+12025550134", 
+            var response = await Numbers.Update("+12025550134",
                 new UpdateActiveNumberRequest
                 {
                     DisplayName = "a display",
@@ -450,7 +450,7 @@ namespace Sinch.Tests.Numbers
                 .Respond("application/json",
                     Helpers.LoadResources("Numbers/Active/ActiveNumber_VoiceFax.json"));
 
-            var response = await Numbers.Update("+12025550134", 
+            var response = await Numbers.Update("+12025550134",
                 new UpdateActiveNumberRequest
                 {
                     DisplayName = "a display",

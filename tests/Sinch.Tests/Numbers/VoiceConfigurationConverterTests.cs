@@ -29,7 +29,7 @@ namespace Sinch.Tests.Numbers
                 AppId = "app id value",
             };
             var jsonString = JsonSerializer.Serialize(
-                new Container { VoiceConfiguration = config }, 
+                new Container { VoiceConfiguration = config },
                 Numbers.JsonSerializerOptions);
 
             Helpers.AssertJsonEqual(Helpers.LoadResources("Numbers/RtcVoiceSerializationExpected.json"), jsonString);
@@ -43,7 +43,7 @@ namespace Sinch.Tests.Numbers
                 ServiceId = "service id value",
             };
             var jsonString = JsonSerializer.Serialize(
-                new Container { VoiceConfiguration = config }, 
+                new Container { VoiceConfiguration = config },
                 Numbers.JsonSerializerOptions);
 
             Helpers.AssertJsonEqual(Helpers.LoadResources("Numbers/FaxVoiceSerializationExpected.json"), jsonString);
@@ -57,7 +57,7 @@ namespace Sinch.Tests.Numbers
                 TrunkId = "trunk id value",
             };
             var jsonString = JsonSerializer.Serialize(
-                new Container { VoiceConfiguration = config }, 
+                new Container { VoiceConfiguration = config },
                 Numbers.JsonSerializerOptions);
 
             Helpers.AssertJsonEqual(Helpers.LoadResources("Numbers/EstVoiceSerializationExpected.json"), jsonString);
@@ -67,7 +67,7 @@ namespace Sinch.Tests.Numbers
         public void ShouldDeserializeVoiceEstConfiguration()
         {
             var obj = JsonSerializer.Deserialize<Container>(
-                Helpers.LoadResources("Numbers/EstVoiceResponse.json"), 
+                Helpers.LoadResources("Numbers/EstVoiceResponse.json"),
                 Numbers.JsonSerializerOptions);
 
             var prov = new ScheduledVoiceEstProvisioning()
