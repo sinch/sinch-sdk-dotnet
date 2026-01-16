@@ -1,7 +1,6 @@
 using System;
 using System.Net.Http;
 using Microsoft.Extensions.Logging;
-using Sinch.Fax;
 using Sinch.SMS;
 
 namespace Sinch
@@ -28,10 +27,6 @@ namespace Sinch
         /// </summary>
         public HttpClientHandlerConfiguration? HttpClientHandlerConfiguration { get; set; }
 
-        /// <summary>
-        ///     Set's the regions for the Fax api.
-        /// </summary>
-        public FaxRegion? FaxRegion { get; set; }
 
         /// <inheritdoc cref="ApiUrlOverrides"/>
         public ApiUrlOverrides? ApiUrlOverrides { get; set; }

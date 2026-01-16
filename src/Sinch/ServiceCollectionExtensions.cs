@@ -60,7 +60,6 @@ namespace Sinch
                     {
                         HttpClientFactory = configurationFactory.SinchOptions.HttpClientFactory ?? httpClientFactory,
                         LoggerFactory = configurationFactory.SinchOptions.LoggerFactory ?? loggerFactory,
-                        FaxRegion = configurationFactory.SinchOptions.FaxRegion,
                         ApiUrlOverrides = configurationFactory.SinchOptions.ApiUrlOverrides
                     };
                 }
