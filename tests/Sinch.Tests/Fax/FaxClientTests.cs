@@ -7,120 +7,29 @@ namespace Sinch.Tests.Fax
 {
     public class FaxClientTests
     {
-        [Fact]
-        public void FaxConfiguration_ShouldResolveDefaultUrl_WhenNoRegionSpecified()
+        public static TheoryData<FaxRegion, string> RegionUrlTestData => new()
         {
-            var config = new SinchClientConfiguration()
-            {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials()
-                {
-                    ProjectId = "PROJECT_ID",
-                    KeyId = "KEY_ID",
-                    KeySecret = "KEY_SECRET"
-                }
-            };
-            var faxUrl = config.FaxConfiguration.ResolveUrl();
-            faxUrl.Should().BeEquivalentTo(new Uri("https://fax.api.sinch.com/"));
-        }
+            { null, "https://fax.api.sinch.com/" },
+            { FaxRegion.Europe, "https://eu1.fax.api.sinch.com/" },
+            { FaxRegion.UsEastCost, "https://use1.fax.api.sinch.com/" },
+            { FaxRegion.SouthAmerica, "https://sae1.fax.api.sinch.com/" },
+            { FaxRegion.SouthEastAsia1, "https://apse1.fax.api.sinch.com/" },
+            { FaxRegion.SouthEastAsia2, "https://apse2.fax.api.sinch.com/" },
+        };
 
-        [Fact]
-        public void FaxConfiguration_ShouldResolveEuropeUrl_WhenEuropeRegionSpecified()
+        [Theory]
+        [MemberData(nameof(RegionUrlTestData))]
+        public void FaxConfiguration_ShouldResolveCorrectUrl_WhenRegionSpecified(FaxRegion region, string expectedUrl)
         {
             var config = new SinchClientConfiguration()
             {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials()
-                {
-                    ProjectId = "PROJECT_ID",
-                    KeyId = "KEY_ID",
-                    KeySecret = "KEY_SECRET"
-                },
                 FaxConfiguration = new SinchFaxConfiguration()
                 {
-                    Region = FaxRegion.Europe
+                    Region = region
                 }
             };
             var faxUrl = config.FaxConfiguration.ResolveUrl();
-            faxUrl.Should().BeEquivalentTo(new Uri("https://eu1.fax.api.sinch.com/"));
-        }
-
-        [Fact]
-        public void FaxConfiguration_ShouldResolveUsEastCoastUrl_WhenUsEastCoastRegionSpecified()
-        {
-            var config = new SinchClientConfiguration()
-            {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials()
-                {
-                    ProjectId = "PROJECT_ID",
-                    KeyId = "KEY_ID",
-                    KeySecret = "KEY_SECRET"
-                },
-                FaxConfiguration = new SinchFaxConfiguration()
-                {
-                    Region = FaxRegion.UsEastCost
-                }
-            };
-            var faxUrl = config.FaxConfiguration.ResolveUrl();
-            faxUrl.Should().BeEquivalentTo(new Uri("https://use1.fax.api.sinch.com/"));
-        }
-
-        [Fact]
-        public void FaxConfiguration_ShouldResolveSouthAmericaUrl_WhenSouthAmericaRegionSpecified()
-        {
-            var config = new SinchClientConfiguration()
-            {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials()
-                {
-                    ProjectId = "PROJECT_ID",
-                    KeyId = "KEY_ID",
-                    KeySecret = "KEY_SECRET"
-                },
-                FaxConfiguration = new SinchFaxConfiguration()
-                {
-                    Region = FaxRegion.SouthAmerica
-                }
-            };
-            var faxUrl = config.FaxConfiguration.ResolveUrl();
-            faxUrl.Should().BeEquivalentTo(new Uri("https://sae1.fax.api.sinch.com/"));
-        }
-
-        [Fact]
-        public void FaxConfiguration_ShouldResolveSouthEastAsia1Url_WhenSouthEastAsia1RegionSpecified()
-        {
-            var config = new SinchClientConfiguration()
-            {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials()
-                {
-                    ProjectId = "PROJECT_ID",
-                    KeyId = "KEY_ID",
-                    KeySecret = "KEY_SECRET"
-                },
-                FaxConfiguration = new SinchFaxConfiguration()
-                {
-                    Region = FaxRegion.SouthEastAsia1
-                }
-            };
-            var faxUrl = config.FaxConfiguration.ResolveUrl();
-            faxUrl.Should().BeEquivalentTo(new Uri("https://apse1.fax.api.sinch.com/"));
-        }
-
-        [Fact]
-        public void FaxConfiguration_ShouldResolveSouthEastAsia2Url_WhenSouthEastAsia2RegionSpecified()
-        {
-            var config = new SinchClientConfiguration()
-            {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials()
-                {
-                    ProjectId = "PROJECT_ID",
-                    KeyId = "KEY_ID",
-                    KeySecret = "KEY_SECRET"
-                },
-                FaxConfiguration = new SinchFaxConfiguration()
-                {
-                    Region = FaxRegion.SouthEastAsia2
-                }
-            };
-            var faxUrl = config.FaxConfiguration.ResolveUrl();
-            faxUrl.Should().BeEquivalentTo(new Uri("https://apse2.fax.api.sinch.com/"));
+            faxUrl.Should().BeEquivalentTo(new Uri(expectedUrl));
         }
 
         [Fact]
@@ -128,12 +37,6 @@ namespace Sinch.Tests.Fax
         {
             var config = new SinchClientConfiguration()
             {
-                SinchUnifiedCredentials = new SinchUnifiedCredentials()
-                {
-                    ProjectId = "PROJECT_ID",
-                    KeyId = "KEY_ID",
-                    KeySecret = "KEY_SECRET"
-                },
                 FaxConfiguration = new SinchFaxConfiguration()
                 {
                     Region = FaxRegion.Europe, // This should be ignored when UrlOverride is set
