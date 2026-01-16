@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Sinch.Tests.Numbers
 {
-    public class VoiceConfigurationTests : NumberTestBase
+    public class VoiceConfigurationConverterTests : NumberTestBase
     {
         private class Container
         {
