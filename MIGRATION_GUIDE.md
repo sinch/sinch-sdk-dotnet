@@ -322,12 +322,9 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 });
 ```
 
-
-```
-
 ## Numbers API
 
-The `Callbacks` property on `ISinchNumbers` has been renamed to `CallbackConfiguration` for clarity and consistency.
+The `Callbacks` property on `ISinchNumbers` has been renamed to `CallbackConfiguration`.
 
 Version 1.*:
 ```csharp
