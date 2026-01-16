@@ -12,6 +12,7 @@
 - [VoiceConfiguration and ScheduledVoiceProvisioning classes moved to new namespace](#voiceconfiguration-and-scheduledvoiceprovisioning-classes-moved-to-new-namespace)
 - [VoiceConfiguration Type property is now internal](#voiceconfiguration-type-property-is-now-internal)
 - [Removed obsolete UrlMessage and CallMessage constructors](#removed-obsolete-urlmessage-and-callmessage-constructors)
+- [FaxRegion moved from SinchOptions to SinchFaxConfiguration](#faxregion-moved-from-sinchoptions-to-sinchfaxconfiguration)
 - [Numbers API: Callbacks renamed to CallbackConfiguration](#callbacks-renamed-to-callbackconfiguration)
 
 ## Initialize `SinchClient` with unified credentials:
@@ -296,6 +297,31 @@ var callMessage = new CallMessage
     PhoneNumber = "+1234567890",
     Title = "Call us"
 };
+```
+
+## FaxRegion moved from SinchOptions to SinchFaxConfiguration
+
+The `FaxRegion` property has been removed from `SinchOptions`. Use the `Region` property on `SinchFaxConfiguration` instead.
+
+Version 1.*:
+```csharp
+var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET", options =>
+{
+    options.FaxRegion = FaxRegion.Europe;
+});
+```
+
+Version 2.*:
+```csharp
+var sinchClient = new SinchClient(new SinchClientConfiguration()
+{
+    FaxConfiguration = new SinchFaxConfiguration()
+    {
+        Region = FaxRegion.Europe
+    }
+});
+```
+
 
 ```
 
