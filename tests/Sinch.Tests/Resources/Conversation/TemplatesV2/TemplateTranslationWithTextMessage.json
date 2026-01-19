@@ -1,0 +1,20 @@
+﻿{
+  "language_code": "en-US",
+  "version": "1.0",
+  "text_message": {
+    "text": "Hello, this is a template text message."
+  },
+  "variables": [
+    {
+      "key": "name",
+      "preview_value": "John Doe"
+    },
+    {
+      "key": "order_id",
+      "preview_value": "12345"
+    }
+  ],
+  "create_time": "2024-01-15T10:30:00Z",
+  "update_time": "2024-01-16T14:45:00Z"
+}
+

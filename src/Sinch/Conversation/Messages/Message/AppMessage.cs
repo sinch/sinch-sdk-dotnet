@@ -11,104 +11,64 @@ namespace Sinch.Conversation.Messages.Message
 {
     public sealed class AppMessage
     {
-        // Thank you System.Text.Json -_-
         [JsonConstructor]
-        [Obsolete("Needed for System.Text.Json", true)]
-        public AppMessage()
-        {
-        }
+        private AppMessage() { }
 
         #region Oneof app message props and constructors
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("text_message")]
-        public TextMessage? TextMessage { get; private set; }
+        public TextMessage? TextMessage { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("card_message")]
-        public CardMessage? CardMessage { get; private set; }
+        public CardMessage? CardMessage { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("carousel_message")]
-        public CarouselMessage? CarouselMessage { get; private set; }
+        public CarouselMessage? CarouselMessage { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("choice_message")]
-        public ChoiceMessage? ChoiceMessage { get; private set; }
+        public ChoiceMessage? ChoiceMessage { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("location_message")]
-        public LocationMessage? LocationMessage { get; private set; }
+        public LocationMessage? LocationMessage { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("media_message")]
-        public MediaMessage? MediaMessage { get; private set; }
+        public MediaMessage? MediaMessage { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("template_message")]
-        public TemplateMessage? TemplateMessage { get; private set; }
+        public TemplateMessage? TemplateMessage { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("list_message")]
-        public ListMessage? ListMessage { get; private set; }
+        public ListMessage? ListMessage { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("contact_info_message")]
-        public ContactInfoMessage? ContactInfoMessage { get; private set; }
+        public ContactInfoMessage? ContactInfoMessage { get; init; }
 
-        public AppMessage(ChoiceMessage choiceMessage)
-        {
-            ChoiceMessage = choiceMessage;
-        }
+        public AppMessage(ChoiceMessage choiceMessage) => ChoiceMessage = choiceMessage;
 
-        public AppMessage(LocationMessage locationMessage)
-        {
-            LocationMessage = locationMessage;
-        }
+        public AppMessage(LocationMessage locationMessage) => LocationMessage = locationMessage;
 
-        public AppMessage(MediaMessage mediaMessage)
-        {
-            MediaMessage = mediaMessage;
-        }
+        public AppMessage(MediaMessage mediaMessage) => MediaMessage = mediaMessage;
 
-        public AppMessage(TemplateMessage templateMessage)
-        {
-            TemplateMessage = templateMessage;
-        }
+        public AppMessage(TemplateMessage templateMessage) => TemplateMessage = templateMessage;
 
-        public AppMessage(ListMessage listMessage)
-        {
-            ListMessage = listMessage;
-        }
+        public AppMessage(ListMessage listMessage) => ListMessage = listMessage;
 
-        public AppMessage(TextMessage textMessage)
-        {
-            TextMessage = textMessage;
-        }
+        public AppMessage(TextMessage textMessage) => TextMessage = textMessage;
 
-        public AppMessage(CardMessage cardMessage)
-        {
-            CardMessage = cardMessage;
-        }
+        public AppMessage(CardMessage cardMessage) => CardMessage = cardMessage;
 
-        public AppMessage(CarouselMessage carouselMessage)
-        {
-            CarouselMessage = carouselMessage;
-        }
+        public AppMessage(CarouselMessage carouselMessage) => CarouselMessage = carouselMessage;
 
-        public AppMessage(ContactInfoMessage contactInfoMessage)
-        {
-            ContactInfoMessage = contactInfoMessage;
-        }
+        public AppMessage(ContactInfoMessage contactInfoMessage) => ContactInfoMessage = contactInfoMessage;
 
         #endregion
 

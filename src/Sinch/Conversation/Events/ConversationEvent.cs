@@ -86,48 +86,33 @@ namespace Sinch.Conversation.Events
 
     public sealed class ConversationEventEvent
     {
-        // Thank you System.Text.Json -_-
         [JsonConstructor]
-        [Obsolete("Needed for System.Text.Json", true)]
-        public ConversationEventEvent()
-        {
-        }
+        private ConversationEventEvent() { }
 
-        public ConversationEventEvent(AppEvent appEvent)
-        {
-            AppEvent = appEvent;
-        }
+        public ConversationEventEvent(AppEvent appEvent) => AppEvent = appEvent;
 
-        public ConversationEventEvent(ContactEvent contactEvent)
-        {
-            ContactEvent = contactEvent;
-        }
+        public ConversationEventEvent(ContactEvent contactEvent) => ContactEvent = contactEvent;
 
-        public ConversationEventEvent(ContactMessageEvent contactMessageEvent)
-        {
+        public ConversationEventEvent(ContactMessageEvent contactMessageEvent) =>
             ContactMessageEvent = contactMessageEvent;
-        }
 
         /// <summary>
         ///     Gets or Sets AppEvent
         /// </summary>
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public AppEvent? AppEvent { get; private set; }
+        public AppEvent? AppEvent { get; init; }
 
         /// <summary>
         ///     Gets or Sets ContactEvent
         /// </summary>
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ContactEvent? ContactEvent { get; private set; }
+        public ContactEvent? ContactEvent { get; init; }
 
         /// <summary>
         ///     Gets or Sets ContactMessageEvent
         /// </summary>
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ContactMessageEvent? ContactMessageEvent { get; private set; }
+        public ContactMessageEvent? ContactMessageEvent { get; init; }
 
         /// <summary>
         /// Returns the string presentation of the object
