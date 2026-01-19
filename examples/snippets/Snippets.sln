@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "numbers", "numbers", "{1F3F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "regions", "regions", "{C9ABC05C-1010-AA2A-AAD9-A3A6DB064F27}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "callbacks", "callbacks", "{556E60D1-386E-388B-3939-689550C4E04E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "callbackConfiguration", "callbackConfiguration", "{556E60D1-386E-388B-3939-689550C4E04E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{4F52FD11-658E-A102-6CD3-7D7C16FFA15B}"
 EndProject

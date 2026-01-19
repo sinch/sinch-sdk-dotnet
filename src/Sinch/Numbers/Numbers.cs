@@ -13,7 +13,7 @@ using Sinch.Numbers.Available;
 using Sinch.Numbers.Available.List;
 using Sinch.Numbers.Available.Rent;
 using Sinch.Numbers.Available.RentAny;
-using Sinch.Numbers.Callbacks;
+using Sinch.Numbers.CallbackConfiguration;
 
 namespace Sinch.Numbers
 {
@@ -28,8 +28,8 @@ namespace Sinch.Numbers
         /// </summary>
         public ISinchNumbersRegions Regions { get; }
 
-        /// <inheritdoc cref="ISinchNumbersCallbacks"/>
-        public ISinchNumbersCallbacks Callbacks { get; }
+        /// <inheritdoc cref="ISinchNumbersCallbackConfiguration"/>
+        public ISinchNumbersCallbackConfiguration CallbackConfiguration { get; }
 
         /// <inheritdoc cref="ISinchNumbersAvailable.RentAny" />
         Task<ActiveNumber> RentAny(RentAnyNumberRequest request,
@@ -104,14 +104,14 @@ namespace Sinch.Numbers
                 loggerFactory?.Create<ActiveNumbers>(), http);
             _available = new AvailableNumbers(projectId, baseAddress,
                 loggerFactory?.Create<AvailableNumbers>(), http);
-            Callbacks = new SinchNumbersCallbacks(projectId, baseAddress,
-                loggerFactory?.Create<ISinchNumbersCallbacks>(), http);
+            CallbackConfiguration = new SinchNumbersCallbackConfiguration(projectId, baseAddress,
+                loggerFactory?.Create<ISinchNumbersCallbackConfiguration>(), http);
             JsonSerializerOptions = http.JsonSerializerOptions;
         }
 
         public ISinchNumbersRegions Regions { get; }
 
-        public ISinchNumbersCallbacks Callbacks { get; }
+        public ISinchNumbersCallbackConfiguration CallbackConfiguration { get; }
 
         /// <inheritdoc />
         public Task<ActiveNumber> RentAny(RentAnyNumberRequest request, CancellationToken cancellationToken = default)

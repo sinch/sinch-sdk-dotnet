@@ -13,6 +13,7 @@
 - [VoiceConfiguration Type property is now internal](#voiceconfiguration-type-property-is-now-internal)
 - [Removed obsolete UrlMessage and CallMessage constructors](#removed-obsolete-urlmessage-and-callmessage-constructors)
 - [FaxRegion moved from SinchOptions to SinchFaxConfiguration](#faxregion-moved-from-sinchoptions-to-sinchfaxconfiguration)
+- [Numbers API: Callbacks renamed to CallbackConfiguration](#callbacks-renamed-to-callbackconfiguration)
 
 ## Initialize `SinchClient` with unified credentials:
 
@@ -321,3 +322,16 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 });
 ```
 
+## Numbers API
+
+The `Callbacks` property on `ISinchNumbers` has been renamed to `CallbackConfiguration`.
+
+Version 1.*:
+```csharp
+var callbacks = sinchClient.Numbers.Callbacks;
+```
+
+Version 2.*:
+```csharp
+var callbackConfiguration = sinchClient.Numbers.CallbackConfiguration;
+```

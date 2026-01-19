@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
 
-namespace Sinch.Numbers.Callbacks
+namespace Sinch.Numbers.CallbackConfiguration
 {
     /// <summary>
     /// You can set up callback URLs to receive event notifications when your numbers are updated.
@@ -56,7 +56,7 @@ namespace Sinch.Numbers.Callbacks
     /// <b>Note:</b> Compute the HMAC on the plain text value before parsing the JSON payload.
     /// </para>
     /// </remarks>
-    public interface ISinchNumbersCallbacks
+    public interface ISinchNumbersCallbackConfiguration
     {
         /// <summary>
         ///     Returns the callbacks configuration for your project
@@ -74,14 +74,14 @@ namespace Sinch.Numbers.Callbacks
         Task<CallbackConfiguration> Update(string hmacSecret, CancellationToken cancellationToken = default);
     }
 
-    internal sealed class SinchNumbersCallbacks : ISinchNumbersCallbacks
+    internal sealed class SinchNumbersCallbackConfiguration : ISinchNumbersCallbackConfiguration
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchNumbersCallbacks>? _logger;
+        private readonly ILoggerAdapter<ISinchNumbersCallbackConfiguration>? _logger;
         private readonly string _projectId;
 
-        public SinchNumbersCallbacks(string projectId, Uri baseAddress, ILoggerAdapter<ISinchNumbersCallbacks>? logger,
+        public SinchNumbersCallbackConfiguration(string projectId, Uri baseAddress, ILoggerAdapter<ISinchNumbersCallbackConfiguration>? logger,
             IHttp http)
         {
             _projectId = projectId;
