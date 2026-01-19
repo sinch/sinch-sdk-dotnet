@@ -11,9 +11,9 @@ namespace Sinch.Voice.Calls.Instructions
 
         /// <summary>
         ///     An object that specifies details about the recording. For more details, see
-        ///     https://developers.sinch.com/docs/in-app-calling/voice-recording/#recording-options
+        ///     https://developers.sinch.com/docs/in-app-calling/misc/voice-recording
         /// </summary>
-        // TODO: check if class is correct
+        // TODO: check if class is correct. Note: transcriptionOptions is missing.
         [JsonPropertyName("options")]
         public StartRecordingOptions? Options { get; set; }
     }

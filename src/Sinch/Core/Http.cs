@@ -319,7 +319,6 @@ namespace Sinch.Core
             string token;
             // Due to all the additional params appSignAuth is requiring,
             // it's makes sense to still keep it in Http to manage all the details.
-            // TODO: get insight how to refactor this ?!?!?!
             if (_auth.Value is ApplicationSignedAuth appSignAuth)
             {
                 var now = DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture);
