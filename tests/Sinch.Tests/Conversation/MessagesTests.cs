@@ -129,7 +129,7 @@ namespace Sinch.Tests.Conversation
                 PageSize = 2,
                 PageToken = "3",
                 View = View.WithMetadata,
-                MessageSource = MessageSource.DispatchSource,
+                MessagesSource = MessageSource.DispatchSource,
                 OnlyRecipientOriginated = true
             });
 
