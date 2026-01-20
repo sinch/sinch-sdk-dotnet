@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using FluentAssertions;
@@ -16,7 +16,7 @@ namespace Sinch.Tests.Conversation.TemplatesV2
             var json = Helpers.LoadResources("Conversation/TemplatesV2/TemplateTranslationWithTextMessage.json");
 
             var result = JsonSerializer.Deserialize<TemplateTranslation>(json, Conversation.JsonSerializerOptions);
-            
+
             result.Should().BeEquivalentTo(new TemplateTranslation(new TextMessage("Hello, this is a template text message."))
             {
                 LanguageCode = "en-US",

@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using FluentAssertions;
 using Sinch.Conversation.Events;
 using Sinch.Conversation.Events.EventTypes;
