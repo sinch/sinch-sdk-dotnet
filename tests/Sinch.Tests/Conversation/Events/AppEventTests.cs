@@ -20,5 +20,20 @@ namespace Sinch.Tests.Conversation.Events
                 Text = "This is a reply to a comment"
             }));
         }
+
+        [Fact]
+        public void SerializeAppEventWithCommentReplyEvent()
+        {
+            var appEvent = new AppEvent(new CommentReplyEvent
+            {
+                Text = "This is a reply to a comment"
+            });
+
+            var actual = JsonSerializer.Serialize(appEvent, Conversation.JsonSerializerOptions);
+
+            var expected = Helpers.LoadResources("Conversation/Events/AppEventWithCommentReplyEvent.json");
+            
+            Helpers.AssertJsonEqual(expected, actual);
+        }
     }
 }
