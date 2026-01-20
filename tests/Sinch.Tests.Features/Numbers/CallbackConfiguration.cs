@@ -3,28 +3,28 @@ using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
-using Sinch.Numbers.Callbacks;
+using Sinch.Numbers.CallbackConfiguration;
 
 namespace Sinch.Tests.Features.Numbers
 {
     [Binding]
     public class CallbackConfigurations
     {
-        private ISinchNumbersCallbacks _sinchNumbersCallbacks;
+        private ISinchNumbersCallbackConfiguration _sinchNumbersCallbackConfiguration;
         private CallbackConfiguration _callbackConfig;
         private Func<Task<CallbackConfiguration>> _callbackConfigOp;
 
         [Given(@"the Numbers service ""Callback Configuration"" is available")]
         public void GivenTheNumbersServiceIsAvailable()
         {
-            _sinchNumbersCallbacks = Utils.SinchNumbersClient().Callbacks;
+            _sinchNumbersCallbackConfiguration = Utils.SinchNumbersClient().CallbackConfiguration;
         }
 
 
         [When(@"I send a request to retrieve the callback configuration")]
         public async Task WhenISendARequestToRetrieveTheCallbackConfiguration()
         {
-            _callbackConfig = await _sinchNumbersCallbacks.Get();
+            _callbackConfig = await _sinchNumbersCallbackConfiguration.Get();
         }
 
         [Then(@"the response contains the project's callback configuration")]
@@ -40,7 +40,7 @@ namespace Sinch.Tests.Features.Numbers
         [When(@"I send a request to update the callback configuration with the secret ""(.*)""")]
         public void WhenISendARequestToUpdateTheCallbackConfigurationWithTheSecret(string hmacSecret)
         {
-            _callbackConfigOp = () => _sinchNumbersCallbacks.Update(hmacSecret);
+            _callbackConfigOp = () => _sinchNumbersCallbackConfiguration.Update(hmacSecret);
         }
 
         [Then(@"the response contains the updated project's callback configuration")]

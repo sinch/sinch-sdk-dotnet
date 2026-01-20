@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Numbers.Callbacks
+namespace Sinch.Numbers.CallbackConfiguration
 {
     /// <summary>
     ///     Response message containing the callbacks configuration for a specific project

@@ -13,6 +13,7 @@
 - [VoiceConfiguration Type property is now internal](#voiceconfiguration-type-property-is-now-internal)
 - [Removed obsolete UrlMessage and CallMessage constructors](#removed-obsolete-urlmessage-and-callmessage-constructors)
 - [FaxRegion moved from SinchOptions to SinchFaxConfiguration](#faxregion-moved-from-sinchoptions-to-sinchfaxconfiguration)
+- [Numbers API: Callbacks renamed to CallbackConfiguration](#callbacks-renamed-to-callbackconfiguration)
 - [Removed obsolete MessageSource property from ListMessagesRequest](#removed-obsolete-messagesource-property-from-listmessagesrequest)
 - [Removed TemplatesV1 from Conversation API](#removed-templatesv1-from-conversation-api)
 
@@ -323,6 +324,19 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 });
 ```
 
+## Numbers API
+
+The `Callbacks` property on `ISinchNumbers` has been renamed to `CallbackConfiguration`.
+
+Version 1.*:
+```csharp
+var callbacks = sinchClient.Numbers.Callbacks;
+```
+
+Version 2.*:
+```csharp
+var callbackConfiguration = sinchClient.Numbers.CallbackConfiguration;
+```
 ## Removed obsolete MessageSource property from ListMessagesRequest
 
 The deprecated `MessageSource` property has been removed from `ListMessagesRequest`. Use `MessagesSource` instead.

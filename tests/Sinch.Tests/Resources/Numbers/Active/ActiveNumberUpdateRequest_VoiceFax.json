@@ -1,0 +1,13 @@
+﻿{
+  "displayName": "a display",
+  "smsConfiguration": {
+    "servicePlanId": "service plan id",
+    "campaignId": "campaign id"
+  },
+  "voiceConfiguration": {
+    "serviceId": "fax-service-id-12345",
+    "type": "FAX"
+  },
+  "callbackUrl": "foo callback"
+}
+
