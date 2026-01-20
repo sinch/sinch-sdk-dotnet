@@ -14,6 +14,7 @@ using Sinch.Numbers.Available;
 using Sinch.Numbers.Available.List;
 using Sinch.Numbers.Available.Rent;
 using Sinch.Numbers.Available.RentAny;
+using Sinch.Numbers.Hooks;
 using Sinch.Numbers.VoiceConfigurations;
 
 namespace Sinch.Tests.Features.Numbers
@@ -83,7 +84,7 @@ namespace Sinch.Tests.Features.Numbers
                     {
                         ServicePlanId = "SingingMooseSociety",
                         CampaignId = string.Empty,
-                        ErrorCodes = [],
+                        ErrorCodes = new List<FailureCode>(),
                         Status = ProvisioningStatus.Waiting,
                         LastUpdatedTime = Helpers.ParseUtc("2024-06-06T20:02:20.432220Z")
                     }
@@ -248,7 +249,7 @@ namespace Sinch.Tests.Features.Numbers
                         Status = ProvisioningStatus.Waiting,
                         LastUpdatedTime = Helpers.ParseUtc("2024-06-06T14:42:42.596223Z"),
                         CampaignId = "",
-                        ErrorCodes = new List<string>()
+                        ErrorCodes = new List<FailureCode>()
                     },
                     CampaignId = ""
                 },
@@ -368,7 +369,7 @@ namespace Sinch.Tests.Features.Numbers
             number.SmsConfiguration!.ServicePlanId.Should().BeEmpty();
             number.SmsConfiguration!.ScheduledProvisioning!.Status.Should().Be(ProvisioningStatus.Failed);
             number.SmsConfiguration!.ScheduledProvisioning.ErrorCodes.Should()
-                .BeEquivalentTo(new List<string>() { "SMS_PROVISIONING_FAILED" });
+                .BeEquivalentTo(new List<FailureCode>() { new("SMS_PROVISIONING_FAILED") });
         }
 
         [Then(@"the response contains an error about the number ""(.*)"" not being a rented number")]

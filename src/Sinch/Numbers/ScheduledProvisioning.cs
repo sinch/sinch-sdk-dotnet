@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Sinch.Numbers.Hooks;
 
 namespace Sinch.Numbers
 {
@@ -26,8 +27,7 @@ namespace Sinch.Numbers
         ///     The provisioning status codes are found
         ///     <see href="https://developers.sinch.com/docs/numbers/api-reference/error-codes/provisioning-errors/">here</see>.
         /// </summary>
-        // TODO?: provide error codes in enum
-        public List<string>? ErrorCodes { get; set; }
+        public IList<FailureCode>? ErrorCodes { get; set; }
 
         /// <summary>
         ///     Timestamp when the status was last updated.

@@ -1,0 +1,11 @@
+﻿{
+  "servicePlanId": "test-service-plan-id",
+  "campaignId": "test-campaign-id",
+  "status": "FAILED",
+  "lastUpdatedTime": "2024-01-15T10:30:00.000Z",
+  "errorCodes": [
+    "CAMPAIGN_NOT_AVAILABLE",
+    "CUSTOM_ERROR_CODE"
+  ]
+}
+
