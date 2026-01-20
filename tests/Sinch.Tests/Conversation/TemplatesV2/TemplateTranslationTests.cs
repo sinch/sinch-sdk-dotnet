@@ -50,7 +50,7 @@ namespace Sinch.Tests.Conversation.TemplatesV2
             var actual = JsonSerializer.Serialize(templateTranslation, Conversation.JsonSerializerOptions);
 
             var expected = Helpers.LoadResources("Conversation/TemplatesV2/TemplateTranslationWithTextMessage.json");
-            
+
             Helpers.AssertJsonEqual(expected, actual);
         }
     }

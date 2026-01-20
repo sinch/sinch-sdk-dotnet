@@ -37,7 +37,7 @@ namespace Sinch.Tests.Conversation.Apps
             var actual = JsonSerializer.Serialize(lineEnterpriseCredentials, Conversation.JsonSerializerOptions);
 
             var expected = Helpers.LoadResources("Conversation/Apps/LineEnterpriseCredentialsWithLineJapan.json");
-            
+
             Helpers.AssertJsonEqual(expected, actual);
         }
     }

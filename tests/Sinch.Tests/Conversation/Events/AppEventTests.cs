@@ -32,7 +32,7 @@ namespace Sinch.Tests.Conversation.Events
             var actual = JsonSerializer.Serialize(appEvent, Conversation.JsonSerializerOptions);
 
             var expected = Helpers.LoadResources("Conversation/Events/AppEventWithCommentReplyEvent.json");
-            
+
             Helpers.AssertJsonEqual(expected, actual);
         }
     }

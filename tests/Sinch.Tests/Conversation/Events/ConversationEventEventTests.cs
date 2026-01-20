@@ -28,7 +28,7 @@ namespace Sinch.Tests.Conversation.Events
             var actual = JsonSerializer.Serialize(conversationEventEvent, Conversation.JsonSerializerOptions);
 
             var expected = Helpers.LoadResources("Conversation/Events/ConversationEventEventWithAppEvent.json");
-            
+
             Helpers.AssertJsonEqual(expected, actual);
         }
     }
