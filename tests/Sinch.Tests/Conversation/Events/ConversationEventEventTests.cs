@@ -18,6 +18,19 @@ namespace Sinch.Tests.Conversation.Events
             result.Should().BeEquivalentTo(new ConversationEventEvent(
                 new AppEvent(new ComposingEvent())));
         }
+
+        [Fact]
+        public void SerializeConversationEventEventWithAppEvent()
+        {
+            var conversationEventEvent = new ConversationEventEvent(
+                new AppEvent(new ComposingEvent()));
+
+            var actual = JsonSerializer.Serialize(conversationEventEvent, Conversation.JsonSerializerOptions);
+
+            var expected = Helpers.LoadResources("Conversation/Events/ConversationEventEventWithAppEvent.json");
+            
+            Helpers.AssertJsonEqual(expected, actual);
+        }
     }
 }
 
