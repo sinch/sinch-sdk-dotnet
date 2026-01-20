@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
+using Sinch.SMS;
 using Sinch.SMS.Inbounds;
 using Sinch.SMS.Inbounds.List;
 
@@ -21,6 +22,20 @@ namespace Sinch.Tests.Features.Sms
         public void GivenTheSmsServiceIsAvailable()
         {
             _inbounds = Utils.SinchClient.Sms.Inbounds;
+        }
+
+        [Given(@"the SMS service ""Inbounds"" is available and is configured for servicePlanId authentication")]
+        public void GivenTheSmsServiceIsAvailableAndIsConfiguredForServicePlanIdAuthentication()
+        {
+            var sinchClient = new SinchClient(new SinchClientConfiguration()
+            {
+                SmsConfiguration = SinchSmsConfiguration.WithServicePlanId(
+                    "CappyPremiumPlan",
+                    "HappyCappyToken",
+                    SmsServicePlanIdRegion.Us,
+                    "http://localhost:3017")
+            });
+            _inbounds = sinchClient.Sms.Inbounds;
         }
 
         [When(@"I send a request to retrieve an inbound message")]
