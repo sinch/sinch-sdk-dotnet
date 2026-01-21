@@ -14,6 +14,7 @@
 - [Removed obsolete UrlMessage and CallMessage constructors](#removed-obsolete-urlmessage-and-callmessage-constructors)
 - [FaxRegion moved from SinchOptions to SinchFaxConfiguration](#faxregion-moved-from-sinchoptions-to-sinchfaxconfiguration)
 - [Numbers API: Callbacks renamed to CallbackConfiguration](#callbacks-renamed-to-callbackconfiguration)
+- [Numbers API: ScheduledProvisioning.ErrorCodes type changed to IList\<FailureCode\>](#scheduledprovisioningerrorcodes-type-changed-to-ilistfailurecode)
 
 ## Initialize `SinchClient` with unified credentials:
 
@@ -335,3 +336,31 @@ Version 2.*:
 ```csharp
 var callbackConfiguration = sinchClient.Numbers.CallbackConfiguration;
 ```
+
+## ScheduledProvisioning.ErrorCodes type changed to IList\<FailureCode\>
+
+The `ErrorCodes` property on `ScheduledProvisioning` has been changed from `List<string>?` to `IList<FailureCode>?`.
+
+Version 1.*:
+```csharp
+using Sinch.Numbers;
+
+var scheduledProvisioning = activeNumber.SmsConfiguration?.ScheduledProvisioning;
+if (scheduledProvisioning?.ErrorCodes?.Contains("CAMPAIGN_NOT_AVAILABLE"))
+{
+    // handle error
+}
+```
+
+Version 2.*:
+```csharp
+using Sinch.Numbers;
+using Sinch.Numbers.Hooks;
+
+var scheduledProvisioning = activeNumber.SmsConfiguration?.ScheduledProvisioning;
+if (scheduledProvisioning?.ErrorCodes?.Contains(FailureCode.CampaignNotAvailable))
+{
+    // handle error
+}
+```
+
