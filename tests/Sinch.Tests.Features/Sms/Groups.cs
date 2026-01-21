@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
+using Sinch.SMS;
 using Sinch.SMS.Groups;
 using Sinch.SMS.Groups.Create;
 using Sinch.SMS.Groups.List;
@@ -29,6 +30,12 @@ namespace Sinch.Tests.Features.Sms
         public void GivenTheSmsServiceIsAvailable()
         {
             _groups = Utils.SinchClient.Sms.Groups;
+        }
+
+        [Given(@"the SMS service ""Groups"" is available and is configured for servicePlanId authentication")]
+        public void GivenTheSmsServiceIsAvailableAndIsConfiguredForServicePlanIdAuthentication()
+        {
+            _groups = Utils.SinchClientServicePlanId.Sms.Groups;
         }
 
 
