@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Apps.Credentials;
@@ -7,10 +6,8 @@ namespace Sinch.Conversation.Apps
 {
     public sealed class LineEnterpriseCredentials
     {
-        [Obsolete("Required for System.Text.Json", error: true)]
-        public LineEnterpriseCredentials()
-        {
-        }
+        [JsonConstructor]
+        private LineEnterpriseCredentials() { }
 
         public LineEnterpriseCredentials(LineJapanEnterpriseCredentials lineJapanEnterpriseCredentials)
         {
@@ -33,21 +30,18 @@ namespace Sinch.Conversation.Apps
         }
 
         [JsonPropertyName("line_japan")]
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public LineJapan? LineJapan { get; private set; }
+        public LineJapan? LineJapan { get; init; }
 
         [JsonPropertyName("line_thailand")]
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public LineThailand? LineThailand { get; private set; }
+        public LineThailand? LineThailand { get; init; }
 
         /// <summary>
         ///     When an app contains multiple LINE or LINE Enterprise credentials, one of the credentials needs to be defined as the default. Setting this property to &#x60;true&#x60; marks the corresponding credentials as the default credentials.
         /// </summary>
         [JsonPropertyName("is_default")]
-        [JsonInclude]
-        public bool IsDefault { get; private set; }
+        public bool IsDefault { get; init; }
 
         /// <summary>
         ///     Returns the string presentation of the object
