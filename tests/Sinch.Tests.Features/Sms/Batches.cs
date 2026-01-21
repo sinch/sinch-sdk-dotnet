@@ -31,6 +31,20 @@ namespace Sinch.Tests.Features.Sms
             _sinchSmsBatches = Utils.SinchClient.Sms.Batches;
         }
 
+        [Given(@"the SMS service ""Batches"" is available and is configured for servicePlanId authentication")]
+        public void GivenTheSmsServiceIsAvailableAndIsConfiguredForServicePlanIdAuthentication()
+        {
+            var sinchClient = new SinchClient(new SinchClientConfiguration()
+            {
+                SmsConfiguration = SinchSmsConfiguration.WithServicePlanId(
+                    "CappyPremiumPlan",
+                    "HappyCappyToken",
+                    SmsServicePlanIdRegion.Us,
+                    "http://localhost:3017")
+            });
+            _sinchSmsBatches = sinchClient.Sms.Batches;
+        }
+
         [When(@"I send a request to send a text message")]
         public async Task WhenISendARequestToSendATextMessage()
         {
