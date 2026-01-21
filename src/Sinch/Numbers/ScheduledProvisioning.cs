@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Sinch.Numbers.Hooks;
 
 namespace Sinch.Numbers
 {

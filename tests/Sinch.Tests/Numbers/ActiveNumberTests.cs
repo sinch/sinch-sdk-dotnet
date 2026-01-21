@@ -11,7 +11,6 @@ using Sinch.Numbers;
 using Sinch.Numbers.Active;
 using Sinch.Numbers.Active.List;
 using Sinch.Numbers.Active.Update;
-using Sinch.Numbers.Hooks;
 using Sinch.Numbers.VoiceConfigurations;
 using Xunit;
 

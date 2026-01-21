@@ -14,7 +14,6 @@ using Sinch.Numbers.Available;
 using Sinch.Numbers.Available.List;
 using Sinch.Numbers.Available.Rent;
 using Sinch.Numbers.Available.RentAny;
-using Sinch.Numbers.Hooks;
 using Sinch.Numbers.VoiceConfigurations;
 
 namespace Sinch.Tests.Features.Numbers
