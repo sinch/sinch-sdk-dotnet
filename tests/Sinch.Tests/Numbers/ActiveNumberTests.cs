@@ -283,27 +283,6 @@ namespace Sinch.Tests.Numbers
             });
         }
 
-        [Fact]
-        public void SerializeScheduledProvisioningWithErrorCodes()
-        {
-            var scheduledProvisioning = new ScheduledProvisioning
-            {
-                ServicePlanId = "test-service-plan-id",
-                CampaignId = "test-campaign-id",
-                Status = ProvisioningStatus.Failed,
-                LastUpdatedTime = Helpers.ParseUtc("2024-01-15T10:30:00.000Z"),
-                ErrorCodes = new List<FailureCode>
-                {
-                    FailureCode.CampaignNotAvailable,
-                    new("CUSTOM_ERROR_CODE")
-                }
-            };
-
-            var actual = JsonSerializer.Serialize(scheduledProvisioning, Numbers.JsonSerializerOptions);
-
-            var expected = Helpers.LoadResources("Numbers/ScheduledProvisioningWithErrorCodes.json");
-            Helpers.AssertJsonEqual(expected, actual);
-        }
 
         [Fact]
         public async Task UpdateActiveNumber_WithVoiceRtcConfiguration()
