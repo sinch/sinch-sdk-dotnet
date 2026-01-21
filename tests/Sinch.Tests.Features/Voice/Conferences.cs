@@ -30,7 +30,7 @@ namespace Sinch.Tests.Features.Voice
         [When(@"I send a request to make a Conference call with the ""Conferences"" service")]
         public async Task WhenISendARequestToMakeAConferenceCallWithTheService()
         {
-            _conferencesResponse = await Utils.TestSinchVoiceClient.Callouts.Conference(new ConferenceCalloutRequest()
+            _conferencesResponse = await _sinchVoiceConferences.Call(new ConferenceCalloutRequest()
             {
                 Cli = "+12015555555",
                 Destination = new Destination()
