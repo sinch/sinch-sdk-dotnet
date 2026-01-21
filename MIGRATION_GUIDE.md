@@ -346,7 +346,7 @@ Version 1.*:
 using Sinch.Numbers;
 
 var scheduledProvisioning = activeNumber.SmsConfiguration?.ScheduledProvisioning;
-if (scheduledProvisioning?.ErrorCodes?.Contains("SMS_PROVISIONING_FAILED"))
+if (scheduledProvisioning?.ErrorCodes?.Contains("CAMPAIGN_NOT_AVAILABLE"))
 {
     // handle error
 }
