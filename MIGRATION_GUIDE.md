@@ -14,6 +14,7 @@
 - [Removed obsolete UrlMessage and CallMessage constructors](#removed-obsolete-urlmessage-and-callmessage-constructors)
 - [FaxRegion moved from SinchOptions to SinchFaxConfiguration](#faxregion-moved-from-sinchoptions-to-sinchfaxconfiguration)
 - [Numbers API: Callbacks renamed to CallbackConfiguration](#callbacks-renamed-to-callbackconfiguration)
+- [Numbers API: ScheduledProvisioning.ErrorCodes type changed to IList\<FailureCode\>](#scheduledprovisioningerrorcodes-type-changed-to-ilistfailurecode)
 - [Removed obsolete MessageSource property from ListMessagesRequest](#removed-obsolete-messagesource-property-from-listmessagesrequest)
 - [Removed TemplatesV1 from Conversation API](#removed-templatesv1-from-conversation-api)
 - [Immutable properties in Conversation API classes](#immutable-properties-in-conversation-api-classes)
@@ -393,5 +394,33 @@ Example:
 // Properties are immutable after construction
 var credentials = new ConversationChannelCredentials(staticBearer);
 // credentials.StaticBearer = newValue; // Compile error - init-only property
+```
+
+
+## ScheduledProvisioning.ErrorCodes type changed to IList\<FailureCode\>
+
+The `ErrorCodes` property on `ScheduledProvisioning` has been changed from `List<string>?` to `IList<FailureCode>?`.
+
+Version 1.*:
+```csharp
+using Sinch.Numbers;
+
+var scheduledProvisioning = activeNumber.SmsConfiguration?.ScheduledProvisioning;
+if (scheduledProvisioning?.ErrorCodes?.Contains("CAMPAIGN_NOT_AVAILABLE"))
+{
+    // handle error
+}
+```
+
+Version 2.*:
+```csharp
+using Sinch.Numbers;
+using Sinch.Numbers.Hooks;
+
+var scheduledProvisioning = activeNumber.SmsConfiguration?.ScheduledProvisioning;
+if (scheduledProvisioning?.ErrorCodes?.Contains(FailureCode.CampaignNotAvailable))
+{
+    // handle error
+}
 ```
 
