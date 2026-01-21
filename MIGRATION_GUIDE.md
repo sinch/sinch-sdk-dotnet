@@ -16,6 +16,7 @@
 - [Numbers API: Callbacks renamed to CallbackConfiguration](#callbacks-renamed-to-callbackconfiguration)
 - [Removed obsolete MessageSource property from ListMessagesRequest](#removed-obsolete-messagesource-property-from-listmessagesrequest)
 - [Removed TemplatesV1 from Conversation API](#removed-templatesv1-from-conversation-api)
+- [Immutable properties in Conversation API classes](#immutable-properties-in-conversation-api-classes)
 
 ## Initialize `SinchClient` with unified credentials:
 
@@ -369,5 +370,28 @@ var templates = await sinchClient.Conversation.TemplatesV1.List();
 Version 2.*:
 ```csharp
 var templates = await sinchClient.Conversation.TemplatesV2.List();
+```
+
+## Immutable properties in Conversation API classes
+
+Several Conversation API classes now use `init` instead of `private set` for certain properties, making them truly immutable after object construction. This affects the following classes:
+
+- `ConversationChannelCredentials`
+- `InjectEventRequest`
+- `LineEnterpriseCredentials`
+- `AppEvent`
+- `AppMessage`
+- `ContactEvent`
+- `ContactMessage`
+- `ContactMessageEvent`
+- `ConversationEventEvent`
+
+These properties can only be set during object initialization and cannot be modified afterward. Use the provided constructors or object initializers to set the desired values.
+
+Example:
+```csharp
+// Properties are immutable after construction
+var credentials = new ConversationChannelCredentials(staticBearer);
+// credentials.StaticBearer = newValue; // Compile error - init-only property
 ```
 
