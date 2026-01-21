@@ -235,7 +235,7 @@ namespace Sinch.Tests.Numbers
                     CampaignId = "campaign id from scheduled",
                     Status = ProvisioningStatus.Unspecified,
                     LastUpdatedTime = Helpers.ParseUtc("2023-09-25T12:08:02.115Z"),
-                    ErrorCodes = new List<string> { "ERROR_CODE_UNSPECIFIED" }
+                    ErrorCodes = new List<FailureCode> { new("ERROR_CODE_UNSPECIFIED") }
                 }
             },
             VoiceConfiguration = new VoiceRtcConfiguration
@@ -262,6 +262,28 @@ namespace Sinch.Tests.Numbers
         }
 
         [Fact]
+        public void DeserializeScheduledProvisioningWithErrorCodes()
+        {
+            var json = Helpers.LoadResources("Numbers/ScheduledProvisioningWithErrorCodes.json");
+
+            var result = JsonSerializer.Deserialize<ScheduledProvisioning>(json, Numbers.JsonSerializerOptions);
+
+            result.Should().BeEquivalentTo(new ScheduledProvisioning
+            {
+                ServicePlanId = "test-service-plan-id",
+                CampaignId = "test-campaign-id",
+                Status = ProvisioningStatus.Failed,
+                LastUpdatedTime = Helpers.ParseUtc("2024-01-15T10:30:00.000Z"),
+                ErrorCodes = new List<FailureCode>
+                {
+                    FailureCode.CampaignNotAvailable,
+                    new("CUSTOM_ERROR_CODE")
+                }
+            });
+        }
+
+
+        [Fact]
         public async Task UpdateActiveNumber_WithVoiceRtcConfiguration()
         {
             var expectedActiveNumber = new ActiveNumber
@@ -286,7 +308,7 @@ namespace Sinch.Tests.Numbers
                         CampaignId = "campaign id from scheduled",
                         Status = ProvisioningStatus.Unspecified,
                         LastUpdatedTime = Helpers.ParseUtc("2023-09-25T12:08:02.115Z"),
-                        ErrorCodes = new List<string> { "ERROR_CODE_UNSPECIFIED" }
+                        ErrorCodes = new List<FailureCode> { new("ERROR_CODE_UNSPECIFIED") }
                     }
                 },
                 VoiceConfiguration = new VoiceRtcConfiguration
@@ -356,7 +378,7 @@ namespace Sinch.Tests.Numbers
                         CampaignId = "campaign id from scheduled",
                         Status = ProvisioningStatus.Unspecified,
                         LastUpdatedTime = Helpers.ParseUtc("2023-09-25T12:08:02.115Z"),
-                        ErrorCodes = new List<string> { "ERROR_CODE_UNSPECIFIED" }
+                        ErrorCodes = new List<FailureCode> { new("ERROR_CODE_UNSPECIFIED") }
                     }
                 },
                 VoiceConfiguration = new VoiceEstConfiguration
@@ -425,7 +447,7 @@ namespace Sinch.Tests.Numbers
                         CampaignId = "campaign id from scheduled",
                         Status = ProvisioningStatus.Unspecified,
                         LastUpdatedTime = Helpers.ParseUtc("2023-09-25T12:08:02.115Z"),
-                        ErrorCodes = new List<string> { "ERROR_CODE_UNSPECIFIED" }
+                        ErrorCodes = new List<FailureCode> { new("ERROR_CODE_UNSPECIFIED") }
                     }
                 },
                 VoiceConfiguration = new VoiceFaxConfiguration
