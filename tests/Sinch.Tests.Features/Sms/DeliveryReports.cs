@@ -25,6 +25,12 @@ namespace Sinch.Tests.Features.Sms
             _deliveryReports = Utils.SinchClient.Sms.DeliveryReports;
         }
 
+        [Given(@"the SMS service ""Delivery Reports"" is available and is configured for servicePlanId authentication")]
+        public void GivenTheSmsServiceIsAvailableAndIsConfiguredForServicePlanIdAuthentication()
+        {
+            _deliveryReports = Utils.SinchClientServicePlanId.Sms.DeliveryReports;
+        }
+
         [When(@"I send a request to retrieve a summary SMS delivery report")]
         public async Task WhenISendARequestToRetrieveASummarySmsDeliveryReport()
         {
