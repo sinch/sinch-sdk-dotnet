@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
-using Sinch.SMS;
 using Sinch.SMS.Groups;
 using Sinch.SMS.Groups.Create;
 using Sinch.SMS.Groups.List;
