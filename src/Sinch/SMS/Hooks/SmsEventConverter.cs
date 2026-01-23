@@ -13,10 +13,11 @@ namespace Sinch.SMS.Hooks
     ///     <list type="bullet">
     ///         <item><description>mo_text - <see cref="TextMessage"/></description></item>
     ///         <item><description>mo_binary - <see cref="BinaryMessage"/></description></item>
+    ///         <item><description>mo_media - <see cref="MediaMessage"/></description></item>
     ///         <item><description>delivery_report_sms - <see cref="DeliveryReport"/></description></item>
-    ///         <item><description>delivery_report_mms - <see cref="DeliveryReport"/></description></item>
+    ///         <item><description>delivery_report_mms - <see cref="DeliveryReportMms"/></description></item>
     ///         <item><description>recipient_delivery_report_sms - <see cref="RecipientDeliveryReport"/></description></item>
-    ///         <item><description>recipient_delivery_report_mms - <see cref="RecipientDeliveryReport"/></description></item>
+    ///         <item><description>recipient_delivery_report_mms - <see cref="RecipientDeliveryReportMms"/></description></item>
     ///     </list>
     /// </remarks>
     public sealed class SmsEventConverter : JsonConverter<ISmsEvent>
@@ -41,17 +42,15 @@ namespace Sinch.SMS.Hooks
                 // Inbound messages
                 "mo_text" => element.Deserialize<TextMessage>(options),
                 "mo_binary" => element.Deserialize<BinaryMessage>(options),
-                // NOTE: mo_media (IncomingMediaSms) will be added in Step 2
+                "mo_media" => element.Deserialize<MediaMessage>(options),
 
                 // Batch delivery reports
                 "delivery_report_sms" => element.Deserialize<DeliveryReport>(options),
-                "delivery_report_mms" => element.Deserialize<DeliveryReport>(options),
-                // NOTE: DeliveryReportMms will be added in Step 2 as a separate class if needed
+                "delivery_report_mms" => element.Deserialize<DeliveryReportMms>(options),
 
                 // Recipient delivery reports
                 "recipient_delivery_report_sms" => element.Deserialize<RecipientDeliveryReport>(options),
-                "recipient_delivery_report_mms" => element.Deserialize<RecipientDeliveryReport>(options),
-                // NOTE: RecipientDeliveryReportMms will be added in Step 2 as a separate class if needed
+                "recipient_delivery_report_mms" => element.Deserialize<RecipientDeliveryReportMms>(options),
 
                 // Unknown type
                 _ => null
@@ -68,11 +67,20 @@ namespace Sinch.SMS.Hooks
                 case BinaryMessage binarySms:
                     JsonSerializer.Serialize(writer, binarySms, options);
                     break;
+                case MediaMessage mediaSms:
+                    JsonSerializer.Serialize(writer, mediaSms, options);
+                    break;
                 case DeliveryReport deliveryReport:
                     JsonSerializer.Serialize(writer, deliveryReport, options);
                     break;
+                case DeliveryReportMms deliveryReportMms:
+                    JsonSerializer.Serialize(writer, deliveryReportMms, options);
+                    break;
                 case RecipientDeliveryReport recipientReport:
                     JsonSerializer.Serialize(writer, recipientReport, options);
+                    break;
+                case RecipientDeliveryReportMms recipientReportMms:
+                    JsonSerializer.Serialize(writer, recipientReportMms, options);
                     break;
                 default:
                     // For unknown types, serialize as object
