@@ -65,12 +65,12 @@ namespace Sinch.Tests.Sms
                             ""type"": ""mo_binary"",
                             ""udh"": ""10010203040506070809000a0b0c0d0e0f""
                         }";
-            var report = JsonSerializer.Deserialize<IncomingBinarySms>(json);
+            var report = JsonSerializer.Deserialize<BinaryMessage>(json);
             report!.Type.Should().Be(SmsType.Binary);
         }
 
         [Fact]
-        public void DeserializeIncomingTextSms()
+        public void DeserializeTextMessage()
         {
             string json = @"{
                                 ""body"": ""This is a test message."",
@@ -82,7 +82,7 @@ namespace Sinch.Tests.Sms
                                 ""to"": ""13185551234"",
                                 ""type"": ""mo_text""
                             }";
-            var report = JsonSerializer.Deserialize<IncomingTextSms>(json);
+            var report = JsonSerializer.Deserialize<TextMessage>(json);
             report!.Type.Should().Be(SmsType.Text);
         }
     }

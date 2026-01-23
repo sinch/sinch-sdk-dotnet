@@ -5,7 +5,10 @@ using Sinch.SMS.DeliveryReports;
 
 namespace Sinch.SMS.Hooks
 {
-    public sealed class RecipientDeliveryReport
+    /// <summary>
+    ///     Per-recipient delivery report webhook event.
+    /// </summary>
+    public sealed class RecipientDeliveryReport : ISmsEvent
     {
         /// <summary>
         ///     A timestamp of when the Delivery Report was created in the Sinch service.

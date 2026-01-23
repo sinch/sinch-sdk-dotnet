@@ -24,7 +24,7 @@ public class InboundSmsController : ControllerBase
 
     [HttpPost]
     [Route("subscription")]
-    public async Task Subscribe([FromBody] IncomingTextSms incomingSms)
+    public async Task Subscribe([FromBody] TextMessage incomingSms)
     {
         var group = await _sinchClient.Sms.Groups.Create(new CreateGroupRequest() { Name = "Pirates of Sinch" });
         var fromNumber = incomingSms.From;

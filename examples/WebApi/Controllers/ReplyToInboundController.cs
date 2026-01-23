@@ -20,12 +20,12 @@ public class ReplyToInboundController : ControllerBase
     }
 
     /// <summary>
-    ///     If you want to handle either <see cref="IncomingTextSms"/> or <see cref="IncomingBinarySms"/>
-    ///     use <see cref="IIncomingSms"/> as a parameter and match by type.
+    ///     If you want to handle either <see cref="TextMessage"/> or <see cref="BinaryMessage"/>
+    ///     use <see cref="IInboundMessage"/> as a parameter and match by type.
     /// </summary>
     /// <param name="incomingSms"></param>
     [HttpPost(Name = "receive")]
-    public async Task Receive([FromBody] IncomingTextSms incomingSms)
+    public async Task Receive([FromBody] TextMessage incomingSms)
     {
         _logger.LogInformation("Incoming {text} from {sender} to {recipient}",
             incomingSms.Body,

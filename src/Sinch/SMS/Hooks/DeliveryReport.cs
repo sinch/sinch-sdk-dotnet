@@ -4,7 +4,10 @@ using Sinch.SMS.DeliveryReports;
 
 namespace Sinch.SMS.Hooks
 {
-    public sealed class DeliveryReport
+    /// <summary>
+    ///     Batch-level delivery report webhook event.
+    /// </summary>
+    public sealed class DeliveryReport : ISmsEvent
     {
         /// <summary>
         ///     The ID of the batch this delivery report belongs to.
