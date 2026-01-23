@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Core;
@@ -7,24 +6,17 @@ namespace Sinch.Conversation.Events
 {
     public sealed class ContactMessageEvent
     {
-        // Thank you System.Text.Json -_-
         [JsonConstructor]
-        [Obsolete("Needed for System.Text.Json", true)]
-        public ContactMessageEvent()
-        {
-        }
+        private ContactMessageEvent() { }
 
-        public ContactMessageEvent(PaymentStatusUpdateEvent paymentStatusUpdateEvent)
-        {
+        public ContactMessageEvent(PaymentStatusUpdateEvent paymentStatusUpdateEvent) =>
             PaymentStatusUpdateEvent = paymentStatusUpdateEvent;
-        }
 
         /// <summary>
         ///     Gets or Sets ContactMessageEvent
         /// </summary>
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public PaymentStatusUpdateEvent? PaymentStatusUpdateEvent { get; private set; }
+        public PaymentStatusUpdateEvent? PaymentStatusUpdateEvent { get; init; }
     }
 
 
