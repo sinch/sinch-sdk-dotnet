@@ -42,7 +42,7 @@ namespace Sinch.SMS.Webhooks
         ///         <item><description><see cref="TextMessage"/> - Incoming text message (mo_text)</description></item>
         ///         <item><description><see cref="BinaryMessage"/> - Incoming binary message (mo_binary)</description></item>
         ///         <item><description><see cref="DeliveryReport"/> - Batch delivery report (delivery_report_sms, delivery_report_mms)</description></item>
-        ///         <item><description><see cref="RecipientDeliveryReport"/> - Per-recipient delivery report (recipient_delivery_report_sms, recipient_delivery_report_mms)</description></item>
+        ///         <item><description><see cref="RecipientDeliveryReportSms"/> - Per-recipient delivery report (recipient_delivery_report_sms, recipient_delivery_report_mms)</description></item>
         ///     </list>
         /// </returns>
         /// <exception cref="System.Text.Json.JsonException">Thrown when JSON is invalid or cannot be deserialized.</exception>

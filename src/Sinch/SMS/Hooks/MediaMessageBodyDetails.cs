@@ -5,7 +5,7 @@ namespace Sinch.SMS.Hooks
     /// <summary>
     /// Media attachment in an MMS message
     /// </summary>
-    public class MediaItem
+    public class MediaMessageBodyDetails
     {
         /// <summary>
         /// Result code: 0=success, 1=upload error, 2=bucket error, 3=key error
@@ -23,30 +23,13 @@ namespace Sinch.SMS.Hooks
         /// Upload status
         /// </summary>
         [JsonPropertyName("status")]
-        public MediaItemStatus Status { get; set; }
+        public MediaStatus Status { get; set; }
 
         /// <summary>
         /// URL to download the media file (null if upload failed)
         /// </summary>
         [JsonPropertyName("url")]
         public string? Url { get; set; }
-    }
-
-    /// <summary>
-    /// Media item upload status
-    /// </summary>
-    [JsonConverter(typeof(JsonStringEnumConverter))]
-    public enum MediaItemStatus
-    {
-        /// <summary>
-        /// Media was successfully uploaded
-        /// </summary>
-        Uploaded,
-
-        /// <summary>
-        /// Media upload failed (check Code for reason)
-        /// </summary>
-        Failed
     }
 }
 

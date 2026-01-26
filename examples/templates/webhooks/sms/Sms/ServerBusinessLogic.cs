@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Sinch.SMS.Hooks;
+﻿using Sinch.SMS.Hooks;
 
 namespace SmsWebhookTemplate.Sms;
 
@@ -17,21 +16,21 @@ public class ServerBusinessLogic
         switch (smsEvent)
         {
             case TextMessage textSms:
-                await HandleIncomingTextMessage(textSms);
+                await HandleTextMessage(textSms);
                 break;
             case BinaryMessage binarySms:
-                await HandleIncomingBinaryMessage(binarySms);
+                await HandleBinaryMessage(binarySms);
                 break;
             case MediaMessage mediaSms:
-                await HandleIncomingMediaMessage(mediaSms);
+                await HandleMediaMessage(mediaSms);
                 break;
-            case DeliveryReport deliveryReport:
+            case BatchDeliveryReportSms deliveryReport:
                 await HandleBatchDeliveryReport(deliveryReport);
                 break;
-            case DeliveryReportMms deliveryReportMms:
+            case BatchDeliveryReportMms deliveryReportMms:
                 await HandleBatchDeliveryReportMms(deliveryReportMms);
                 break;
-            case RecipientDeliveryReport recipientDeliveryReport:
+            case RecipientDeliveryReportSms recipientDeliveryReport:
                 await HandleRecipientDeliveryReport(recipientDeliveryReport);
                 break;
             case RecipientDeliveryReportMms recipientDeliveryReportMms:
@@ -43,39 +42,39 @@ public class ServerBusinessLogic
         }
     }
 
-    private Task HandleIncomingTextMessage(TextMessage message)
+    private Task HandleTextMessage(TextMessage message)
     {
         _logger.LogInformation("Received text SMS from {From}: {Body}", message.From, message.Body);
         return Task.CompletedTask;
     }
 
-    private Task HandleIncomingBinaryMessage(BinaryMessage message)
+    private Task HandleBinaryMessage(BinaryMessage message)
     {
         _logger.LogInformation("Received binary SMS from {From}", message.From);
         return Task.CompletedTask;
     }
 
-    private Task HandleIncomingMediaMessage(MediaMessage message)
+    private Task HandleMediaMessage(MediaMessage message)
     {
-        _logger.LogInformation("Received MMS from {From} with {Count} media items", message.From, message.Body.Media?.Count ?? 0);
+        _logger.LogInformation("Received MMS from {From} with {Count} media items", message.From, message.MessageBody.Media?.Count ?? 0);
         return Task.CompletedTask;
     }
 
-    private Task HandleBatchDeliveryReport(DeliveryReport report)
+    private Task HandleBatchDeliveryReport(BatchDeliveryReportSms reportSms)
     {
-        _logger.LogInformation("Received batch report: {Type}", report.Type);
+        _logger.LogInformation("Received batch report: {Type}", reportSms.Type);
         return Task.CompletedTask;
     }
     
-    private Task HandleBatchDeliveryReportMms(DeliveryReportMms report)
+    private Task HandleBatchDeliveryReportMms(BatchDeliveryReportMms report)
     {
         _logger.LogInformation("Received batch report: {Type}", report.Type);
         return Task.CompletedTask;
     }
 
-    private Task HandleRecipientDeliveryReport(RecipientDeliveryReport report)
+    private Task HandleRecipientDeliveryReport(RecipientDeliveryReportSms reportSms)
     {
-        _logger.LogInformation("Received recipient report: {Recipient}", report.Recipient);
+        _logger.LogInformation("Received recipient report: {Recipient}", reportSms.Recipient);
         return Task.CompletedTask;
     }
     

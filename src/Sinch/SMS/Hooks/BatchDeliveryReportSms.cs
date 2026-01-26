@@ -7,7 +7,7 @@ namespace Sinch.SMS.Hooks
     /// <summary>
     ///     Batch-level delivery report webhook event.
     /// </summary>
-    public sealed class DeliveryReport : ISmsEvent
+    public sealed class BatchDeliveryReportSms : ISmsEvent
     {
         /// <summary>
         ///     The ID of the batch this delivery report belongs to.

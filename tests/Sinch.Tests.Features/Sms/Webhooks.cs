@@ -10,7 +10,6 @@ using Sinch.SMS.DeliveryReports;
 using Sinch.SMS.Hooks;
 using Sinch.SMS.Inbounds;
 using Sinch.SMS.Webhooks;
-using DeliveryReport = Sinch.SMS.Hooks.DeliveryReport;
 
 namespace Sinch.Tests.Features.Sms
 {
@@ -111,11 +110,11 @@ namespace Sinch.Tests.Features.Sms
         [Then(@"the SMS event describes an ""SMS delivery report"" event")]
         public void ThenTheSmsEventDescribesAnSmsDeliveryReportEvent()
         {
-            var deliveryReport = JsonSerializer.Deserialize<DeliveryReport>(_rawDeliveryReportContent, new JsonSerializerOptions
+            var deliveryReport = JsonSerializer.Deserialize<BatchDeliveryReportSms>(_rawDeliveryReportContent, new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
             });
-            deliveryReport.Should().BeEquivalentTo(new DeliveryReport
+            deliveryReport.Should().BeEquivalentTo(new BatchDeliveryReportSms
             {
                 BatchId = "01W4FFL35P4NC4K35SMSBATCH8",
                 ClientReference = "client-ref",
@@ -137,11 +136,11 @@ namespace Sinch.Tests.Features.Sms
         [Then(@"the SMS event describes an SMS recipient delivery report event with the status ""Delivered""")]
         public void ThenTheSmsEventDescribesAnSmsRecipientDeliveryReportEventWithStatusDelivered()
         {
-            var recipientDeliveryReport = JsonSerializer.Deserialize<RecipientDeliveryReport>(_rawRecipientDeliveryReportDeliveredContent, new JsonSerializerOptions
+            var recipientDeliveryReport = JsonSerializer.Deserialize<RecipientDeliveryReportSms>(_rawRecipientDeliveryReportDeliveredContent, new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
             });
-            recipientDeliveryReport.Should().BeEquivalentTo(new RecipientDeliveryReport
+            recipientDeliveryReport.Should().BeEquivalentTo(new RecipientDeliveryReportSms
             {
                 At = Helpers.ParseUtc("2024-06-06T08:17:19.210Z"),
                 BatchId = "01W4FFL35P4NC4K35SMSBATCH9",
@@ -157,11 +156,11 @@ namespace Sinch.Tests.Features.Sms
         [Then(@"the SMS event describes an SMS recipient delivery report event with the status ""Aborted""")]
         public void ThenTheSmsEventDescribesAnSmsRecipientDeliveryReportEventWithStatusAborted()
         {
-            var recipientDeliveryReport = JsonSerializer.Deserialize<RecipientDeliveryReport>(_rawRecipientDeliveryReportAbortedContent, new JsonSerializerOptions
+            var recipientDeliveryReport = JsonSerializer.Deserialize<RecipientDeliveryReportSms>(_rawRecipientDeliveryReportAbortedContent, new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
             });
-            recipientDeliveryReport.Should().BeEquivalentTo(new RecipientDeliveryReport
+            recipientDeliveryReport.Should().BeEquivalentTo(new RecipientDeliveryReportSms
             {
                 At = Helpers.ParseUtc("2024-06-06T08:17:15.603Z"),
                 BatchId = "01W4FFL35P4NC4K35SMSBATCH9",

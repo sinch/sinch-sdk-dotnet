@@ -5,7 +5,6 @@ using Sinch.SMS.DeliveryReports;
 using Sinch.SMS.Hooks;
 using Sinch.SMS.Inbounds;
 using Xunit;
-using DeliveryReport = Sinch.SMS.Hooks.DeliveryReport;
 
 namespace Sinch.Tests.Sms
 {
@@ -29,7 +28,7 @@ namespace Sinch.Tests.Sms
                             ""total_message_count"": 1,
                             ""type"": ""delivery_report_sms""
                         }";
-            var report = JsonSerializer.Deserialize<DeliveryReport>(json);
+            var report = JsonSerializer.Deserialize<BatchDeliveryReportSms>(json);
             report!.BatchId.Should().Be("01FC66621XXXXX119Z8PMV1QPQ");
             report.Type.Should().Be(DeliveryReportType.Sms);
             report.Statuses.First().Status.Should().Be(DeliveryReportStatus.Delivered);
@@ -46,7 +45,7 @@ namespace Sinch.Tests.Sms
                             ""status"": ""Dispatched"",
                             ""at"": ""2022-08-30T08:16:08.930Z""
                         }";
-            var report = JsonSerializer.Deserialize<RecipientDeliveryReport>(json);
+            var report = JsonSerializer.Deserialize<RecipientDeliveryReportSms>(json);
             report!.Code.Should().Be(401);
             report.Status.Should().Be(DeliveryReportStatus.Dispatched);
         }

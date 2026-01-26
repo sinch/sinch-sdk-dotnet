@@ -14,9 +14,9 @@ namespace Sinch.SMS.Hooks
     ///         <item><description>mo_text - <see cref="TextMessage"/></description></item>
     ///         <item><description>mo_binary - <see cref="BinaryMessage"/></description></item>
     ///         <item><description>mo_media - <see cref="MediaMessage"/></description></item>
-    ///         <item><description>delivery_report_sms - <see cref="DeliveryReport"/></description></item>
-    ///         <item><description>delivery_report_mms - <see cref="DeliveryReportMms"/></description></item>
-    ///         <item><description>recipient_delivery_report_sms - <see cref="RecipientDeliveryReport"/></description></item>
+    ///         <item><description>delivery_report_sms - <see cref="BatchDeliveryReportSms"/></description></item>
+    ///         <item><description>delivery_report_mms - <see cref="BatchDeliveryReportMms"/></description></item>
+    ///         <item><description>recipient_delivery_report_sms - <see cref="RecipientDeliveryReportSms"/></description></item>
     ///         <item><description>recipient_delivery_report_mms - <see cref="RecipientDeliveryReportMms"/></description></item>
     ///     </list>
     /// </remarks>
@@ -45,11 +45,11 @@ namespace Sinch.SMS.Hooks
                 "mo_media" => element.Deserialize<MediaMessage>(options),
 
                 // Batch delivery reports
-                "delivery_report_sms" => element.Deserialize<DeliveryReport>(options),
-                "delivery_report_mms" => element.Deserialize<DeliveryReportMms>(options),
+                "delivery_report_sms" => element.Deserialize<BatchDeliveryReportSms>(options),
+                "delivery_report_mms" => element.Deserialize<BatchDeliveryReportMms>(options),
 
                 // Recipient delivery reports
-                "recipient_delivery_report_sms" => element.Deserialize<RecipientDeliveryReport>(options),
+                "recipient_delivery_report_sms" => element.Deserialize<RecipientDeliveryReportSms>(options),
                 "recipient_delivery_report_mms" => element.Deserialize<RecipientDeliveryReportMms>(options),
 
                 // Unknown type
@@ -70,13 +70,13 @@ namespace Sinch.SMS.Hooks
                 case MediaMessage mediaSms:
                     JsonSerializer.Serialize(writer, mediaSms, options);
                     break;
-                case DeliveryReport deliveryReport:
+                case BatchDeliveryReportSms deliveryReport:
                     JsonSerializer.Serialize(writer, deliveryReport, options);
                     break;
-                case DeliveryReportMms deliveryReportMms:
+                case BatchDeliveryReportMms deliveryReportMms:
                     JsonSerializer.Serialize(writer, deliveryReportMms, options);
                     break;
-                case RecipientDeliveryReport recipientReport:
+                case RecipientDeliveryReportSms recipientReport:
                     JsonSerializer.Serialize(writer, recipientReport, options);
                     break;
                 case RecipientDeliveryReportMms recipientReportMms:

@@ -6,7 +6,7 @@ namespace Sinch.SMS.Hooks
     /// <summary>
     /// MMS message body with media attachments
     /// </summary>
-    public class MediaBody
+    public class MediaMessageBody
     {
         /// <summary>
         /// Text message content
@@ -24,6 +24,6 @@ namespace Sinch.SMS.Hooks
         /// List of media items attached to the message
         /// </summary>
         [JsonPropertyName("media")]
-        public List<MediaItem>? Media { get; set; }
+        public List<MediaMessageBodyDetails>? Media { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace Sinch.SMS.Hooks
     /// <summary>
     ///     Per-recipient delivery report webhook event.
     /// </summary>
-    public sealed class RecipientDeliveryReport : ISmsEvent
+    public sealed class RecipientDeliveryReportSms : ISmsEvent
     {
         /// <summary>
         ///     A timestamp of when the Delivery Report was created in the Sinch service.

@@ -71,16 +71,16 @@ namespace Sinch.SMS.Hooks
         public required string To { get; set; }
 
         /// <summary>
-        ///     Gets or sets the Type. Regular SMS.
+        ///     Gets or sets the Type.
         /// </summary>
         [JsonPropertyName("type")]
 
         public required Sinch.SMS.Inbounds.SmsType Type { get; set; }
 
         /// <summary>
-        ///     Returns the string presentation of the object.
+        ///     Returns the string representation of the object.
         /// </summary>
-        /// <returns>String presentation of the object.</returns>
+        /// <returns>String representation of the object.</returns>
         public override string ToString()
         {
             var sb = new StringBuilder();

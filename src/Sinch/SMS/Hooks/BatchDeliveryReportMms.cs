@@ -7,7 +7,7 @@ namespace Sinch.SMS.Hooks
     /// <summary>
     /// MMS batch delivery report webhook event
     /// </summary>
-    public class DeliveryReportMms : ISmsEvent
+    public class BatchDeliveryReportMms : ISmsEvent
     {
         /// <summary>
         /// Event type discriminator (always "delivery_report_mms")

@@ -33,6 +33,6 @@ namespace Sinch.SMS.Hooks
         public string? ClientReference { get; set; }
 
         [JsonPropertyName("body")]
-        public MediaBody Body { get; set; } = new();
+        public MediaMessageBody MessageBody { get; set; } = new();
     }
 }
