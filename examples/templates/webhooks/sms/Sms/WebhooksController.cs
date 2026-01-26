@@ -18,8 +18,9 @@ public class WebhooksController : ControllerBase
         _configuration = configuration;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Post()
+    [HttpPost("SmsEvent")]
+    [Consumes("application/json")]
+    public async Task<IActionResult> SmsDeliveryEvent()
     {
         var secret = _configuration["Sinch:WebhookSecret"] ?? string.Empty;
 

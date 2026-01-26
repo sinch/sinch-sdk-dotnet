@@ -11,54 +11,28 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 // Add controllers
 builder.Services.AddControllers();
 
-// Swagger/OpenAPI
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
+builder.Services.AddSingleton<ServerBusinessLogic>();
+
+var sinchKeyId = builder.Configuration["Sinch:KeyId"];
+var sinchKeySecret = builder.Configuration["Sinch:KeySecret"];
+var projectId = builder.Configuration["Sinch:ProjectId"];
+
+// Use the recommended DI helper which configures IHttpClientFactory and proper options
+builder.Services.AddSinchClient(() => new SinchClientConfiguration
 {
-    var xmlFile = System.IO.Path.ChangeExtension(System.Reflection.Assembly.GetExecutingAssembly().Location, ".xml");
-    if (System.IO.File.Exists(xmlFile))
+    SinchUnifiedCredentials = new SinchUnifiedCredentials
     {
-        options.IncludeXmlComments(xmlFile);
+        ProjectId = projectId,
+        KeyId = sinchKeyId,
+        KeySecret = sinchKeySecret
     }
 });
 
-builder.Services.AddSingleton<ServerBusinessLogic>();
-
-// Configure Sinch client (placeholder - real credentials in appsettings)
-var sinchKeyId = builder.Configuration["Sinch:KeyId"]; // optional
-var sinchKeySecret = builder.Configuration["Sinch:KeySecret"]; // optional
-var projectId = builder.Configuration["Sinch:ProjectId"]; // optional
-
-if (!string.IsNullOrEmpty(projectId) && !string.IsNullOrEmpty(sinchKeyId) && !string.IsNullOrEmpty(sinchKeySecret))
-{
-    // Use the recommended DI helper which configures IHttpClientFactory and proper options
-    builder.Services.AddSinchClient(() => new SinchClientConfiguration
-    {
-        SinchUnifiedCredentials = new SinchUnifiedCredentials
-        {
-            ProjectId = projectId,
-            KeyId = sinchKeyId,
-            KeySecret = sinchKeySecret
-        }
-    });
-
-    // Expose ISmsWebhooks directly for convenience in the webhook template
-    builder.Services.AddSingleton<ISmsWebhooks>(sp => sp.GetRequiredService<ISinchClient>().Sms.Webhooks);
-}
-else
-{
-    // Provide a manual registration of a local SmsWebhooks implementation if the Sinch package is not present
-    builder.Services.AddSingleton<ISmsWebhooks>(_ => new LocalSmsWebhooks());
-}
+builder.Services.AddSingleton<ISmsWebhooks>(sp => sp.GetRequiredService<ISinchClient>().Sms.Webhooks);
 
 var app = builder.Build();
-
-// Enable swagger unconditionally (always available for the example)
-app.UseSwagger();
-app.UseSwaggerUI();
 
 app.MapControllers();
 
 app.Run();
 
-// LocalSmsWebhooks has been moved to Sms/LocalSmsWebhooks.cs
