@@ -1,0 +1,9 @@
+﻿{
+  "type": "delivery_report_mms",
+  "batch_id": "01FC66621XXXXX119Z8PMV1QPQ",
+  "statuses": [
+    "Delivered"
+  ],
+  "total_message_count": 1,
+  "client_reference": "a client reference"
+}
