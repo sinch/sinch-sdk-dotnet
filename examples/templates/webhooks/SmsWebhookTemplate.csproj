@@ -8,11 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\src\Sinch\Sinch.csproj" />
+    <ProjectReference Include="..\..\..\src\Sinch\Sinch.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Sinch" Version="1.*" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="sms\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="sms\obj\SmsWebhookTemplate.csproj.nuget.dgspec.json" />
   </ItemGroup>
 </Project>
