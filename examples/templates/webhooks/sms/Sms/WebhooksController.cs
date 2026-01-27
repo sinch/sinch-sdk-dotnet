@@ -37,8 +37,8 @@ public class WebhooksController : ControllerBase
             return Unauthorized();
         }
 
-        var evt = _webhooks.ParseEvent(body);
-        await _service.HandleEvent(evt);
+        var smsEvent = _webhooks.ParseEvent(body);
+        await _service.HandleEvent(smsEvent);
 
         return Ok();
     }
