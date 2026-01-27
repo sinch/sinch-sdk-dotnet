@@ -10,8 +10,9 @@ namespace Sinch.SMS.Hooks
     internal sealed class SmsWebhooks : ISmsWebhooks
     {
         private readonly HmacAuthenticationValidation _authenticationChecker;
-        private readonly JsonSerializerOptions _jsonSerializerOptions;
         private readonly ILoggerAdapter<ISmsWebhooks>? _logger;
+        
+        public JsonSerializerOptions JsonSerializerOptions { get; }
 
         public SmsWebhooks(
             HmacAuthenticationValidation authenticationChecker,
@@ -19,14 +20,14 @@ namespace Sinch.SMS.Hooks
             ILoggerAdapter<ISmsWebhooks>? logger = null)
         {
             _authenticationChecker = authenticationChecker;
-            _jsonSerializerOptions = jsonSerializerOptions;
+            JsonSerializerOptions = jsonSerializerOptions;
             _logger = logger;
         }
 
         /// <inheritdoc />
         public ISmsEvent ParseEvent(string json)
         {
-            var result = JsonSerializer.Deserialize<ISmsEvent>(json, _jsonSerializerOptions);
+            var result = JsonSerializer.Deserialize<ISmsEvent>(json, JsonSerializerOptions);
             if (result == null)
             {
                 _logger?.LogError("Failed to deserialize SMS webhook event. No matching event type found for payload: {json}", json);

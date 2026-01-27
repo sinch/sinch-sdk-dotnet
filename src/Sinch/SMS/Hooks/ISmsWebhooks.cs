@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace Sinch.SMS.Hooks
 {
@@ -31,6 +32,8 @@ namespace Sinch.SMS.Hooks
     /// <seealso href="https://developers.sinch.com/docs/sms/api-reference/sms/tag/Webhooks/">SMS Webhooks Documentation</seealso>
     public interface ISmsWebhooks
     {
+        internal JsonSerializerOptions JsonSerializerOptions { get; }
+        
         /// <summary>
         ///     Parse a webhook event from JSON payload.
         /// </summary>
