@@ -1,4 +1,4 @@
-﻿using Sinch.SMS.Hooks;
+using Sinch.SMS.Hooks;
 
 namespace SmsWebhookTemplate.Sms;
 
@@ -65,7 +65,7 @@ public class ServerBusinessLogic
         _logger.LogInformation("Received batch report: {Type}", reportSms.Type);
         return Task.CompletedTask;
     }
-    
+
     private Task HandleBatchDeliveryReportMms(BatchDeliveryReportMms report)
     {
         _logger.LogInformation("Received batch report: {Type}", report.Type);
@@ -77,7 +77,7 @@ public class ServerBusinessLogic
         _logger.LogInformation("Received recipient report: {Recipient}", reportSms.Recipient);
         return Task.CompletedTask;
     }
-    
+
     private Task HandleRecipientDeliveryReportMms(RecipientDeliveryReportMms report)
     {
         _logger.LogInformation("Received recipient report: {Recipient}", report.Recipient);

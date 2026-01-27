@@ -33,7 +33,7 @@ namespace Sinch.SMS.Hooks
     public interface ISmsWebhooks
     {
         internal JsonSerializerOptions JsonSerializerOptions { get; }
-        
+
         /// <summary>
         ///     Parse a webhook event from JSON payload.
         /// </summary>

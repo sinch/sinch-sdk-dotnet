@@ -11,7 +11,7 @@ namespace Sinch.SMS.Hooks
     {
         private readonly HmacAuthenticationValidation _authenticationChecker;
         private readonly ILoggerAdapter<ISmsWebhooks>? _logger;
-        
+
         public JsonSerializerOptions JsonSerializerOptions { get; }
 
         public SmsWebhooks(

@@ -1,4 +1,4 @@
-﻿using Sinch;
+using Sinch;
 using Sinch.SMS.Hooks;
 using SmsWebhookTemplate.Sms;
 

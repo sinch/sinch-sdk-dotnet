@@ -15,7 +15,7 @@ namespace Sinch.Tests.Sms
 
             var parsed = Sms.Webhooks.ParseEvent(json).As<BatchDeliveryReportSms>();
             AssertDeliveryReport(parsed);
-            
+
             var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.Webhooks.JsonSerializerOptions).As<BatchDeliveryReportSms>();
             AssertDeliveryReport(deserialized);
 

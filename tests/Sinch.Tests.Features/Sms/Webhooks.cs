@@ -17,7 +17,7 @@ namespace Sinch.Tests.Features.Sms
     {
         private const string WebhookSecret = "KayakingTheSwell";
         private const string WebhooksUrlPrefix = "http://localhost:3017/webhooks/sms";
-        
+
         private readonly HttpClient _httpClient = new();
         private static ISmsWebhooks _webhooks;
         private HttpResponseMessage _incomingSmsResponse;
