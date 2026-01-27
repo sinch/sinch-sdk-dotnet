@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sinch.SMS.Webhooks;
+using Sinch.SMS.Hooks;
 
 namespace SmsWebhookTemplate.Sms;
 

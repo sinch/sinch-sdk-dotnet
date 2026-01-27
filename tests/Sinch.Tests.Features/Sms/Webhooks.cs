@@ -9,7 +9,6 @@ using Reqnroll;
 using Sinch.SMS.DeliveryReports;
 using Sinch.SMS.Hooks;
 using Sinch.SMS.Inbounds;
-using Sinch.SMS.Webhooks;
 
 namespace Sinch.Tests.Features.Sms
 {

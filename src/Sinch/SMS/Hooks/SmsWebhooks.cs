@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Sinch.Auth;
 using Sinch.Logger;
-using Sinch.SMS.Hooks;
 
-namespace Sinch.SMS.Webhooks
+namespace Sinch.SMS.Hooks
 {
     /// <inheritdoc />
     internal sealed class SmsWebhooks : ISmsWebhooks

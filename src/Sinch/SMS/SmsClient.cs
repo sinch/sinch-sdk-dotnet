@@ -4,8 +4,8 @@ using Sinch.Logger;
 using Sinch.SMS.Batches;
 using Sinch.SMS.DeliveryReports;
 using Sinch.SMS.Groups;
+using Sinch.SMS.Hooks;
 using Sinch.SMS.Inbounds;
-using Sinch.SMS.Webhooks;
 
 namespace Sinch.SMS
 {
@@ -116,7 +116,7 @@ namespace Sinch.SMS
                 http);
             DeliveryReports = new DeliveryReports.DeliveryReports(projectIdOrServicePlanId, baseAddress,
                 loggerFactory?.Create<ISinchSmsDeliveryReports>(), http);
-            Webhooks = new Webhooks.SmsWebhooks(
+            Webhooks = new SmsWebhooks(
                 new Auth.HmacAuthenticationValidation(),
                 http.JsonSerializerOptions,
                 loggerFactory?.Create<ISmsWebhooks>());

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using Sinch.SMS.Hooks;
 
-namespace Sinch.SMS.Webhooks
+namespace Sinch.SMS.Hooks
 {
     /// <summary>
     ///     SMS WebHooks service.
