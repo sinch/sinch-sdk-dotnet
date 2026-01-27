@@ -26,9 +26,15 @@ namespace Sinch.Tests.Features.Sms
         private IEnumerable<string> _memberList;
 
         [Given(@"the SMS service ""Groups"" is available")]
-        public void GivenTheSmsServiceIsAvailable()
+        public void GivenTheSmsServiceGroupsIsAvailable()
         {
             _groups = Utils.SinchClient.Sms.Groups;
+        }
+
+        [Given(@"the SMS service ""Groups"" is available and is configured for servicePlanId authentication")]
+        public void GivenTheSmsServiceGroupsIsAvailableAndIsConfiguredForServicePlanIdAuthentication()
+        {
+            _groups = Utils.SinchClientServicePlanId.Sms.Groups;
         }
 
 
