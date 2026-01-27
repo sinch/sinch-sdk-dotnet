@@ -15,9 +15,9 @@
 - [FaxRegion moved from SinchOptions to SinchFaxConfiguration](#faxregion-moved-from-sinchoptions-to-sinchfaxconfiguration)
 - [Numbers API: Callbacks renamed to CallbackConfiguration](#callbacks-renamed-to-callbackconfiguration)
 - [Numbers API: ScheduledProvisioning.ErrorCodes type changed to IList\<FailureCode\>](#scheduledprovisioningerrorcodes-type-changed-to-ilistfailurecode)
-- [SMS Webhooks: renamed and removed types](#sms-webhooks-renamed-and-removed-types)
 - [Removed obsolete MessageSource property from ListMessagesRequest](#removed-obsolete-messagesource-property-from-listmessagesrequest)
 - [Removed TemplatesV1 from Conversation API](#removed-templatesv1-from-conversation-api)
+- [SMS Webhooks: renamed and removed types](#sms-webhooks-renamed-and-removed-types)
 
 ## Initialize `SinchClient` with unified credentials:
 
@@ -339,6 +339,7 @@ Version 2.*:
 ```csharp
 var callbackConfiguration = sinchClient.Numbers.CallbackConfiguration;
 ```
+
 ## Removed obsolete MessageSource property from ListMessagesRequest
 
 The deprecated `MessageSource` property has been removed from `ListMessagesRequest`. Use `MessagesSource` instead.
