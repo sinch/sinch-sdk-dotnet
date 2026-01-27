@@ -8,7 +8,6 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
        .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true)
        .AddEnvironmentVariables();
 
-// Add controllers
 builder.Services.AddControllers();
 
 builder.Services.AddSingleton<ServerBusinessLogic>();
@@ -17,7 +16,6 @@ var sinchKeyId = builder.Configuration["Sinch:KeyId"];
 var sinchKeySecret = builder.Configuration["Sinch:KeySecret"];
 var projectId = builder.Configuration["Sinch:ProjectId"];
 
-// Use the recommended DI helper which configures IHttpClientFactory and proper options
 builder.Services.AddSinchClient(() => new SinchClientConfiguration
 {
     SinchUnifiedCredentials = new SinchUnifiedCredentials

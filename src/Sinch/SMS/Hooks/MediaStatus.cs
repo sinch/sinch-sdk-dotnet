@@ -14,7 +14,7 @@ namespace Sinch.SMS.Hooks
         Uploaded,
 
         /// <summary>
-        /// Media upload failed (check Code for reason)
+        /// Media upload failed
         /// </summary>
         Failed
     }

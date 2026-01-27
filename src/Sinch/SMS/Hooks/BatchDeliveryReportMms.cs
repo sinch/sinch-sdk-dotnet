@@ -10,10 +10,10 @@ namespace Sinch.SMS.Hooks
     public class BatchDeliveryReportMms : ISmsEvent
     {
         /// <summary>
-        /// Event type discriminator (always "delivery_report_mms")
+        /// The delivery report type.
         /// </summary>
         [JsonPropertyName("type")]
-        public string Type { get; set; } = "delivery_report_mms";
+        public DeliveryReportType Type { get; set; } = DeliveryReportType.Mms;
 
         /// <summary>
         /// Batch ID
@@ -28,7 +28,7 @@ namespace Sinch.SMS.Hooks
         public string? ClientReference { get; set; }
 
         /// <summary>
-        /// Statuses for the batch (list of status/count/recipients)
+        /// Statuses for the batch
         /// </summary>
         [JsonPropertyName("statuses")]
         public List<DeliveryReportStatus>? Statuses { get; set; }

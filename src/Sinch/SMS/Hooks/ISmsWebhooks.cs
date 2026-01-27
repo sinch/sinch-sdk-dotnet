@@ -72,7 +72,7 @@ namespace Sinch.SMS.Hooks
         ///     The signature is computed as: <c>Base64(HMAC(secret, "{body}.{nonce}.{timestamp}"))</c>
         ///     </para>
         ///     <para>
-        ///     Supported algorithms: HmacSHA256, HmacSHA512
+        ///     Supported algorithms: HmacSHA256, HmacSHA384, HmacSHA512
         ///     </para>
         /// </remarks>
         bool ValidateAuthenticationHeader(

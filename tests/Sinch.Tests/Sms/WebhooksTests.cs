@@ -188,7 +188,7 @@ namespace Sinch.Tests.Sms
                     BatchId = "01FC66621XXXXX119Z8PMV1QPQ",
                     ClientReference = "a client reference",
                     TotalMessageCount = 1,
-                    Type = "delivery_report_mms",
+                    Type = DeliveryReportType.Mms,
                     Statuses = new System.Collections.Generic.List<DeliveryReportStatus>
                     {
                         DeliveryReportStatus.Delivered
