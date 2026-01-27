@@ -26,9 +26,15 @@ namespace Sinch.Tests.Features.Sms
         private Func<Task> _deliveryFeedbackOp;
 
         [Given(@"the SMS service ""Batches"" is available")]
-        public void GivenTheSmsServiceIsAvailable()
+        public void GivenTheSmsServiceBatchesIsAvailable()
         {
             _sinchSmsBatches = Utils.SinchClient.Sms.Batches;
+        }
+
+        [Given(@"the SMS service ""Batches"" is available and is configured for servicePlanId authentication")]
+        public void GivenTheSmsServiceBatchesIsAvailableAndIsConfiguredForServicePlanIdAuthentication()
+        {
+            _sinchSmsBatches = Utils.SinchClientServicePlanId.Sms.Batches;
         }
 
         [When(@"I send a request to send a text message")]

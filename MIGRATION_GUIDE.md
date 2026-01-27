@@ -16,6 +16,8 @@
 - [Numbers API: Callbacks renamed to CallbackConfiguration](#callbacks-renamed-to-callbackconfiguration)
 - [Numbers API: ScheduledProvisioning.ErrorCodes type changed to IList\<FailureCode\>](#scheduledprovisioningerrorcodes-type-changed-to-ilistfailurecode)
 - [SMS Webhooks: renamed and removed types](#sms-webhooks-renamed-and-removed-types)
+- [Removed obsolete MessageSource property from ListMessagesRequest](#removed-obsolete-messagesource-property-from-listmessagesrequest)
+- [Removed TemplatesV1 from Conversation API](#removed-templatesv1-from-conversation-api)
 
 ## Initialize `SinchClient` with unified credentials:
 
@@ -336,6 +338,39 @@ var callbacks = sinchClient.Numbers.Callbacks;
 Version 2.*:
 ```csharp
 var callbackConfiguration = sinchClient.Numbers.CallbackConfiguration;
+```
+## Removed obsolete MessageSource property from ListMessagesRequest
+
+The deprecated `MessageSource` property has been removed from `ListMessagesRequest`. Use `MessagesSource` instead.
+
+Version 1.*:
+```csharp
+var request = new ListMessagesRequest
+{
+    MessageSource = MessageSource.DispatchSource
+};
+```
+
+Version 2.*:
+```csharp
+var request = new ListMessagesRequest
+{
+    MessagesSource = MessageSource.DispatchSource
+};
+```
+
+## Removed TemplatesV1 from Conversation API
+
+The `TemplatesV1` property has been removed from the Conversation API client. Use `TemplatesV2` instead.
+
+Version 1.*:
+```csharp
+var templates = await sinchClient.Conversation.TemplatesV1.List();
+```
+
+Version 2.*:
+```csharp
+var templates = await sinchClient.Conversation.TemplatesV2.List();
 ```
 
 ## ScheduledProvisioning.ErrorCodes type changed to IList\<FailureCode\>

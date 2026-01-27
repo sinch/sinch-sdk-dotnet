@@ -18,9 +18,15 @@ namespace Sinch.Tests.Features.Sms
         private int _totalPages;
 
         [Given(@"the SMS service ""Inbounds"" is available")]
-        public void GivenTheSmsServiceIsAvailable()
+        public void GivenTheSmsServiceInboundsIsAvailable()
         {
             _inbounds = Utils.SinchClient.Sms.Inbounds;
+        }
+
+        [Given(@"the SMS service ""Inbounds"" is available and is configured for servicePlanId authentication")]
+        public void GivenTheSmsServiceInboundsIsAvailableAndIsConfiguredForServicePlanIdAuthentication()
+        {
+            _inbounds = Utils.SinchClientServicePlanId.Sms.Inbounds;
         }
 
         [When(@"I send a request to retrieve an inbound message")]

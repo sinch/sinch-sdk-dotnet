@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -6,102 +5,71 @@ namespace Sinch.Conversation.Messages.Message
 {
     public sealed class ContactMessage
     {
-        // Thank you System.Text.Json -_-
         [JsonConstructor]
-        [Obsolete("Needed for System.Text.Json", true)]
-        public ContactMessage()
-        {
-        }
+        private ContactMessage() { }
 
-        public ContactMessage(ChoiceResponseMessage choiceResponseMessage)
-        {
+        public ContactMessage(ChoiceResponseMessage choiceResponseMessage) =>
             ChoiceResponseMessage = choiceResponseMessage;
-        }
 
-        public ContactMessage(FallbackMessage fallbackMessage)
-        {
-            FallbackMessage = fallbackMessage;
-        }
+        public ContactMessage(FallbackMessage fallbackMessage) => FallbackMessage = fallbackMessage;
 
-        public ContactMessage(LocationMessage locationMessage)
-        {
-            LocationMessage = locationMessage;
-        }
+        public ContactMessage(LocationMessage locationMessage) => LocationMessage = locationMessage;
 
-        public ContactMessage(MediaCardMessage mediaCardMessage)
-        {
-            MediaCardMessage = mediaCardMessage;
-        }
+        public ContactMessage(MediaCardMessage mediaCardMessage) => MediaCardMessage = mediaCardMessage;
 
-        public ContactMessage(MediaMessage mediaMessage)
-        {
-            MediaMessage = mediaMessage;
-        }
+        public ContactMessage(MediaMessage mediaMessage) => MediaMessage = mediaMessage;
 
-        public ContactMessage(TextMessage textMessage)
-        {
-            TextMessage = textMessage;
-        }
+        public ContactMessage(TextMessage textMessage) => TextMessage = textMessage;
 
-        public ContactMessage(ProductResponseMessage productResponseMessage)
-        {
+        public ContactMessage(ProductResponseMessage productResponseMessage) =>
             ProductResponseMessage = productResponseMessage;
-        }
 
-        public ContactMessage(ChannelSpecificContactMessage channelSpecificMessage)
-        {
+        public ContactMessage(ChannelSpecificContactMessage channelSpecificMessage) =>
             ChannelSpecificMessage = channelSpecificMessage;
-        }
 
         /// <summary>
         ///     Gets or Sets ChoiceResponseMessage
         /// </summary>
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("choice_response_message")]
-        public ChoiceResponseMessage? ChoiceResponseMessage { get; internal set; }
+        public ChoiceResponseMessage? ChoiceResponseMessage { get; init; }
 
 
         /// <summary>
         ///     Gets or Sets FallbackMessage
         /// </summary>
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("fallback_message")]
-        public FallbackMessage? FallbackMessage { get; internal set; }
+        public FallbackMessage? FallbackMessage { get; init; }
 
 
         /// <summary>
         ///     Gets or Sets LocationMessage
         /// </summary>
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("location_message")]
-        public LocationMessage? LocationMessage { get; internal set; }
+        public LocationMessage? LocationMessage { get; init; }
 
 
         /// <summary>
         ///     Gets or Sets MediaCardMessage
         /// </summary>
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("media_card_message")]
-        public MediaCardMessage? MediaCardMessage { get; internal set; }
+        public MediaCardMessage? MediaCardMessage { get; init; }
 
 
         /// <summary>
         ///     Gets or Sets MediaMessage
         /// </summary>
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("media_message")]
-        public MediaMessage? MediaMessage { get; internal set; }
+        public MediaMessage? MediaMessage { get; init; }
 
 
         /// <summary>
         ///     Gets or Sets ReplyTo
         /// </summary>
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("reply_to")]
         public ReplyTo? ReplyTo { get; set; }
@@ -110,24 +78,21 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     Gets or Sets TextMessage
         /// </summary>
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("text_message")]
-        public TextMessage? TextMessage { get; internal set; }
+        public TextMessage? TextMessage { get; init; }
 
         /// <summary>
         ///     Gets or Sets ProductResponseMessage
         /// </summary>
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("product_response_message")]
-        public ProductResponseMessage? ProductResponseMessage { get; internal set; }
+        public ProductResponseMessage? ProductResponseMessage { get; init; }
 
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("channel_specific_message")]
-        public ChannelSpecificContactMessage? ChannelSpecificMessage { get; internal set; }
+        public ChannelSpecificContactMessage? ChannelSpecificMessage { get; init; }
 
         /// <summary>
         ///     Returns the string presentation of the object

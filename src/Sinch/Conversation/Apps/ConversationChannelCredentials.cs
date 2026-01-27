@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Apps.Credentials;
@@ -10,134 +9,92 @@ namespace Sinch.Conversation.Apps
     /// </summary>
     public sealed class ConversationChannelCredentials
     {
+        [JsonConstructor]
+        private ConversationChannelCredentials() { }
+
         /// <summary>
         /// Gets or Sets Channel
         /// </summary>
         [JsonPropertyName("channel")]
         public ConversationChannel? Channel { get; set; }
 
-        [JsonConstructor]
-        [Obsolete("Needed for System.Text.Json", true)]
-        public ConversationChannelCredentials()
-        {
-        }
-
         #region Oneof credential props and constructors
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("static_bearer")]
-        public StaticBearerCredentials? StaticBearer { get; private set; }
+        public StaticBearerCredentials? StaticBearer { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("static_token")]
-        public StaticTokenCredentials? StaticToken { get; private set; }
+        public StaticTokenCredentials? StaticToken { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("mms_credentials")]
-        public MmsCredentials? MmsCredentials { get; private set; }
+        public MmsCredentials? MmsCredentials { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("kakaotalk_credentials")]
-        public KakaoTalkCredentials? KakaoTalkCredentials { get; private set; }
+        public KakaoTalkCredentials? KakaoTalkCredentials { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("telegram_credentials")]
-        public TelegramCredentials? TelegramCredentials { get; private set; }
+        public TelegramCredentials? TelegramCredentials { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("line_credentials")]
-        public LineCredentials? LineCredentials { get; private set; }
+        public LineCredentials? LineCredentials { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("line_enterprise_credentials")]
-        public LineEnterpriseCredentials? LineEnterpriseCredentials { get; private set; }
+        public LineEnterpriseCredentials? LineEnterpriseCredentials { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("wechat_credentials")]
-        public WeChatCredentials? WechatCredentials { get; private set; }
+        public WeChatCredentials? WechatCredentials { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("instagram_credentials")]
-        public InstagramCredentials? InstagramCredentials { get; private set; }
+        public InstagramCredentials? InstagramCredentials { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("applebc_credentials")]
-        public AppleBusinessChatCredentials? ApplebcCredentials { get; private set; }
+        public AppleBusinessChatCredentials? ApplebcCredentials { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("kakaotalkchat_credentials")]
-        public KakaoTalkChatCredentials? KakaoTalkChatCredentials { get; private set; }
+        public KakaoTalkChatCredentials? KakaoTalkChatCredentials { get; init; }
 
-        public ConversationChannelCredentials(StaticBearerCredentials staticBearer)
-        {
-            StaticBearer = staticBearer;
-        }
+        public ConversationChannelCredentials(StaticBearerCredentials staticBearer) => StaticBearer = staticBearer;
 
-        public ConversationChannelCredentials(StaticTokenCredentials staticToken)
-        {
-            StaticToken = staticToken;
-        }
+        public ConversationChannelCredentials(StaticTokenCredentials staticToken) => StaticToken = staticToken;
 
-        public ConversationChannelCredentials(MmsCredentials mmsCredentials)
-        {
-            MmsCredentials = mmsCredentials;
-        }
+        public ConversationChannelCredentials(MmsCredentials mmsCredentials) => MmsCredentials = mmsCredentials;
 
-        public ConversationChannelCredentials(KakaoTalkCredentials kakaoTalkCredentials)
-        {
+        public ConversationChannelCredentials(KakaoTalkCredentials kakaoTalkCredentials) =>
             KakaoTalkCredentials = kakaoTalkCredentials;
-        }
 
-        public ConversationChannelCredentials(TelegramCredentials telegramCredentials)
-        {
+        public ConversationChannelCredentials(TelegramCredentials telegramCredentials) =>
             TelegramCredentials = telegramCredentials;
-        }
 
-        public ConversationChannelCredentials(LineCredentials lineCredentials)
-        {
-            LineCredentials = lineCredentials;
-        }
+        public ConversationChannelCredentials(LineCredentials lineCredentials) => LineCredentials = lineCredentials;
 
-        public ConversationChannelCredentials(LineJapanEnterpriseCredentials lineJapanEnterpriseCredentials)
-        {
+        public ConversationChannelCredentials(LineJapanEnterpriseCredentials lineJapanEnterpriseCredentials) =>
             LineEnterpriseCredentials = new LineEnterpriseCredentials(lineJapanEnterpriseCredentials);
-        }
 
-        public ConversationChannelCredentials(LineThailandEnterpriseCredentials lineThailandEnterpriseCredentials)
-        {
+        public ConversationChannelCredentials(LineThailandEnterpriseCredentials lineThailandEnterpriseCredentials) =>
             LineEnterpriseCredentials = new LineEnterpriseCredentials(lineThailandEnterpriseCredentials);
-        }
 
-        public ConversationChannelCredentials(WeChatCredentials wechatCredentials)
-        {
+        public ConversationChannelCredentials(WeChatCredentials wechatCredentials) =>
             WechatCredentials = wechatCredentials;
-        }
 
-        public ConversationChannelCredentials(InstagramCredentials instagramCredentials)
-        {
+        public ConversationChannelCredentials(InstagramCredentials instagramCredentials) =>
             InstagramCredentials = instagramCredentials;
-        }
 
-        public ConversationChannelCredentials(AppleBusinessChatCredentials applebcCredentials)
-        {
+        public ConversationChannelCredentials(AppleBusinessChatCredentials applebcCredentials) =>
             ApplebcCredentials = applebcCredentials;
-        }
 
-        public ConversationChannelCredentials(KakaoTalkChatCredentials kakaoTalkChatCredentials)
-        {
+        public ConversationChannelCredentials(KakaoTalkChatCredentials kakaoTalkChatCredentials) =>
             KakaoTalkChatCredentials = kakaoTalkChatCredentials;
-        }
 
         #endregion
 
@@ -147,6 +104,7 @@ namespace Sinch.Conversation.Apps
         /// </summary>
         [JsonPropertyName("callback_secret")]
         public string? CallbackSecret { get; set; }
+
 
 
         /// <summary>

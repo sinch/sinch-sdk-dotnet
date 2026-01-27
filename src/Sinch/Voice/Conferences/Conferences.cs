@@ -4,6 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
+using Sinch.Voice.Callouts;
+using Sinch.Voice.Callouts.Callout;
 using Sinch.Voice.Conferences.Get;
 using Sinch.Voice.Conferences.ManageParticipants;
 
@@ -15,6 +17,15 @@ namespace Sinch.Voice.Conferences
     /// </summary>
     public interface ISinchVoiceConferences
     {
+        /// <summary>
+        ///     Makes a conference callout to a phone number or a user.
+        ///     When the call is answered, it's connected to a conference room.
+        /// </summary>
+        /// <param name="request">The conference callout request.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>A callout response containing the call ID.</returns>
+        Task<CalloutResponse> Call(ConferenceCalloutRequest request, CancellationToken cancellationToken = default);
+
         /// <summary>
         ///     Returns information about a conference that matches the provided conference ID.
         /// </summary>
@@ -59,12 +70,22 @@ namespace Sinch.Voice.Conferences
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
         private readonly ILoggerAdapter<ISinchVoiceConferences>? _logger;
+        private readonly ISinchVoiceCallout _callouts;
 
-        public SinchConferences(ILoggerAdapter<ISinchVoiceConferences>? logger, Uri baseAddress, IHttp http)
+        public SinchConferences(ILoggerAdapter<ISinchVoiceConferences>? logger, Uri baseAddress, IHttp http,
+            ISinchVoiceCallout callouts)
         {
             _logger = logger;
             _baseAddress = baseAddress;
             _http = http;
+            _callouts = callouts;
+        }
+
+        /// <inheritdoc />
+        public Task<CalloutResponse> Call(ConferenceCalloutRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            return _callouts.Conference(request, cancellationToken);
         }
 
         /// <inheritdoc />

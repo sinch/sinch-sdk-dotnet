@@ -90,7 +90,8 @@ namespace Sinch.Voice
             _logger = loggerFactory?.Create<ISinchVoiceClient>();
             Callouts = new SinchCallout(loggerFactory?.Create<ISinchVoiceCallout>(), baseAddress, http);
             Calls = new SinchCalls(loggerFactory?.Create<ISinchVoiceCalls>(), baseAddress, http);
-            Conferences = new SinchConferences(loggerFactory?.Create<ISinchVoiceConferences>(), baseAddress, http);
+            Conferences = new SinchConferences(loggerFactory?.Create<ISinchVoiceConferences>(), baseAddress, http,
+                Callouts);
             Applications = new SinchApplications(loggerFactory?.Create<ISinchVoiceApplications>(),
                 applicationManagementBaseAddress, http);
         }
