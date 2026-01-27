@@ -8,84 +8,48 @@ namespace Sinch.Conversation.TemplatesV2
 {
     public sealed class TemplateTranslation
     {
-        // Thank you System.Text.Json -_-
         [JsonConstructor]
-        [Obsolete("Needed for System.Text.Json", true)]
-        public TemplateTranslation()
-        {
-        }
+        private TemplateTranslation() { }
 
-        public TemplateTranslation(ChoiceMessage choiceMessage)
-        {
-            ChoiceMessage = choiceMessage;
-        }
+        public TemplateTranslation(ChoiceMessage choiceMessage) => ChoiceMessage = choiceMessage;
 
-        public TemplateTranslation(LocationMessage locationMessage)
-        {
-            LocationMessage = locationMessage;
-        }
+        public TemplateTranslation(LocationMessage locationMessage) => LocationMessage = locationMessage;
 
-        public TemplateTranslation(MediaMessage mediaMessage)
-        {
-            MediaMessage = mediaMessage;
-        }
+        public TemplateTranslation(MediaMessage mediaMessage) => MediaMessage = mediaMessage;
 
-        public TemplateTranslation(TemplateMessage templateMessage)
-        {
-            TemplateMessage = templateMessage;
-        }
+        public TemplateTranslation(TemplateMessage templateMessage) => TemplateMessage = templateMessage;
 
-        public TemplateTranslation(ListMessage listMessage)
-        {
-            ListMessage = listMessage;
-        }
+        public TemplateTranslation(ListMessage listMessage) => ListMessage = listMessage;
 
-        public TemplateTranslation(TextMessage textMessage)
-        {
-            TextMessage = textMessage;
-        }
+        public TemplateTranslation(TextMessage textMessage) => TextMessage = textMessage;
 
-        public TemplateTranslation(CardMessage cardMessage)
-        {
-            CardMessage = cardMessage;
-        }
+        public TemplateTranslation(CardMessage cardMessage) => CardMessage = cardMessage;
 
-        public TemplateTranslation(CarouselMessage carouselMessage)
-        {
-            CarouselMessage = carouselMessage;
-        }
+        public TemplateTranslation(CarouselMessage carouselMessage) => CarouselMessage = carouselMessage;
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public TextMessage? TextMessage { get; private set; }
+        public TextMessage? TextMessage { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public CardMessage? CardMessage { get; private set; }
+        public CardMessage? CardMessage { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public CarouselMessage? CarouselMessage { get; private set; }
+        public CarouselMessage? CarouselMessage { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ChoiceMessage? ChoiceMessage { get; private set; }
+        public ChoiceMessage? ChoiceMessage { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public LocationMessage? LocationMessage { get; private set; }
+        public LocationMessage? LocationMessage { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public MediaMessage? MediaMessage { get; private set; }
+        public MediaMessage? MediaMessage { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public TemplateMessage? TemplateMessage { get; private set; }
+        public TemplateMessage? TemplateMessage { get; init; }
 
-        [JsonInclude]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ListMessage? ListMessage { get; private set; }
+        public ListMessage? ListMessage { get; init; }
 
         /// <summary>
         ///     The BCP-47 language code, such as &#x60;en-US&#x60; or &#x60;sr-Latn&#x60;. For more information, see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.

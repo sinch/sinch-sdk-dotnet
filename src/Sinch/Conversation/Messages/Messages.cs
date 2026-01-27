@@ -99,7 +99,7 @@ namespace Sinch.Conversation.Messages
                 cancellationToken: cancellationToken);
         }
 
-        //TODO: add simplified send text to app of recipient
+        //TODO: add simplified send text to app of recipient (DEVEXP-1243)
 
         /// <inheritdoc/>  
         public Task<ConversationMessage> Get(string messageId, MessageSource? messagesSource = default,
