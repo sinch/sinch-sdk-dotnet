@@ -21,7 +21,7 @@ internal sealed class HmacAuthenticationValidation
     /// <param name="headers">HTTP headers from the request (case-insensitive lookup will be performed).</param>
     /// <param name="jsonPayload">The raw JSON payload body.</param>
     /// <returns>True if the signature is valid, false otherwise.</returns>
-    /// <exception cref="Exception">Thrown when the HMAC algorithm is not supported.</exception>
+    /// <exception cref="System.NotSupportedException">Thrown when the HMAC algorithm is not supported.</exception>
     public static bool ValidateAuthenticationHeader(
         string secret,
         IDictionary<string, string> headers,
@@ -58,7 +58,7 @@ internal sealed class HmacAuthenticationValidation
         }
         catch (CryptographicException ex)
         {
-            throw new Exception($"Unsupported HMAC algorithm: {algorithm}", ex);
+            throw new NotSupportedException($"Unsupported HMAC algorithm: {algorithm}", ex);
         }
     }
 

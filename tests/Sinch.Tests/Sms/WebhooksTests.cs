@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 using FluentAssertions;
 using Sinch.SMS.DeliveryReports;
@@ -226,6 +227,32 @@ namespace Sinch.Tests.Sms
                     Type = "recipient_delivery_report_mms"
                 });
             }
+        }
+
+        [Fact]
+        public void ParseEvent_ThrowsOnRandomObject()
+        {
+            // Arrange: an object with no "type" field
+            var payload = "{\"unknownProperty\":\"anyValue\"}";
+
+            // Act
+            Action act = () => Sms.Webhooks.ParseEvent(payload);
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>().WithMessage("*Deserialization of SMS webhook event failed*");
+        }
+
+        [Fact]
+        public void ParseEvent_ThrowsOnUnknownType()
+        {
+            // Arrange: an object with an unknown type
+            var payload = "{\"type\":\"unknown\"}";
+
+            // Act
+            Action act = () => Sms.Webhooks.ParseEvent(payload);
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>().WithMessage("*Deserialization of SMS webhook event failed*");
         }
     }
 }
