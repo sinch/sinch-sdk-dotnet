@@ -21,7 +21,7 @@ namespace Sinch.Auth
         /// <param name="headers">HTTP headers from the request (case-insensitive lookup will be performed).</param>
         /// <param name="jsonPayload">The raw JSON payload body.</param>
         /// <returns>True if the signature is valid, false otherwise.</returns>
-        /// <exception cref="ApiException">Thrown when the HMAC algorithm is not supported.</exception>
+        /// <exception cref="Exception">Thrown when the HMAC algorithm is not supported.</exception>
         public bool ValidateAuthenticationHeader(
             string secret,
             IDictionary<string, string> headers,
@@ -58,7 +58,7 @@ namespace Sinch.Auth
             }
             catch (CryptographicException ex)
             {
-                throw new ApiException($"Unsupported HMAC algorithm: {algorithm}", ex);
+                throw new Exception($"Unsupported HMAC algorithm: {algorithm}", ex);
             }
         }
 
