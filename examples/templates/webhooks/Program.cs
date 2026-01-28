@@ -1,6 +1,6 @@
 using Sinch;
 using Sinch.SMS.Hooks;
-using SmsWebhookTemplate.Sms;
+using Webhook.Template.Sms;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,6 +1,6 @@
 using Sinch.SMS.Hooks;
 
-namespace SmsWebhookTemplate.Sms;
+namespace Webhook.Template.Sms;
 
 public class ServerBusinessLogic
 {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Sinch.SMS.Hooks;
 
-namespace SmsWebhookTemplate.Sms;
+namespace Webhook.Template.Sms;
 
 [ApiController]
 public class WebhooksController : ControllerBase
@@ -31,13 +31,12 @@ public class WebhooksController : ControllerBase
             h => h.Value.ToString(),
             StringComparer.OrdinalIgnoreCase);
 
-        // Ensure valid authentication to handle request
-        // See
-        // https://developers.sinch.com/docs/sms/api-reference/sms/tag/Webhooks/#tag/Webhooks/section/Callbacks
+        // Ensure valid authentication to handle request.
+        // See https://developers.sinch.com/docs/sms/api-reference/sms/tag/Webhooks/#tag/Webhooks/section/Callbacks
         // Contact your account manager to configure your callback sending headers validation and
-        // set ensureValidAuthentication to true to validate request from Sinch servers
-        // see https://developers.sinch.com/docs/numbers/api-reference/numbers/tag/Numbers-Callbacks for
-        // more information
+        // set ensureValidAuthentication to true to validate request from Sinch servers.
+        // See https://developers.sinch.com/docs/numbers/api-reference/numbers/tag/Numbers-Callbacks for
+        // more information.
         
         var ensureValidAuthentication = false;
         if (ensureValidAuthentication)
