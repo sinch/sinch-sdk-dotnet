@@ -22,14 +22,8 @@ public class WebhooksController : ControllerBase
     public async Task<IActionResult> SmsDeliveryEvent()
     {
         var secret = _configuration["Sinch:Sms:WebhookSecret"] ?? string.Empty;
-
-        using var reader = new StreamReader(Request.Body, System.Text.Encoding.UTF8);
-        var body = await reader.ReadToEndAsync();
-
-        var headers = Request.Headers.ToDictionary(
-            h => h.Key,
-            h => h.Value.ToString(),
-            StringComparer.OrdinalIgnoreCase);
+        var headers = Request.Headers;
+        var body = await Request.ReadBodyAsStringAsync();
 
         // Ensure valid authentication to handle request.
         // See https://developers.sinch.com/docs/sms/api-reference/sms/tag/Webhooks/#tag/Webhooks/section/Callbacks
