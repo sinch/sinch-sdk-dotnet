@@ -14,12 +14,9 @@ namespace Sinch.SMS.Hooks
 
         public JsonSerializerOptions JsonSerializerOptions { get; }
 
-        public SmsWebhooks(
-            HmacAuthenticationValidation authenticationChecker,
-            JsonSerializerOptions jsonSerializerOptions,
+        public SmsWebhooks(JsonSerializerOptions jsonSerializerOptions,
             ILoggerAdapter<ISmsWebhooks>? logger = null)
         {
-            _authenticationChecker = authenticationChecker;
             JsonSerializerOptions = jsonSerializerOptions;
             _logger = logger;
         }
@@ -43,7 +40,7 @@ namespace Sinch.SMS.Hooks
             IDictionary<string, string> headers,
             string body)
         {
-            return _authenticationChecker.ValidateAuthenticationHeader(secret, headers, body);
+            return HmacAuthenticationValidation.ValidateAuthenticationHeader(secret, headers, body);
         }
     }
 }

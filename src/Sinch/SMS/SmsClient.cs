@@ -117,7 +117,6 @@ namespace Sinch.SMS
             DeliveryReports = new DeliveryReports.DeliveryReports(projectIdOrServicePlanId, baseAddress,
                 loggerFactory?.Create<ISinchSmsDeliveryReports>(), http);
             Webhooks = new SmsWebhooks(
-                new Auth.HmacAuthenticationValidation(),
                 http.JsonSerializerOptions,
                 loggerFactory?.Create<ISmsWebhooks>());
         }
