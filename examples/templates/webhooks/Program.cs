@@ -12,17 +12,13 @@ builder.Services.AddControllers();
 
 builder.Services.AddSingleton<ServerBusinessLogic>();
 
-var sinchKeyId = builder.Configuration["Sinch:KeyId"];
-var sinchKeySecret = builder.Configuration["Sinch:KeySecret"];
-var projectId = builder.Configuration["Sinch:ProjectId"];
-
 builder.Services.AddSinchClient(() => new SinchClientConfiguration
 {
     SinchUnifiedCredentials = new SinchUnifiedCredentials
     {
-        ProjectId = projectId,
-        KeyId = sinchKeyId,
-        KeySecret = sinchKeySecret
+        ProjectId = builder.Configuration["Sinch:ProjectId"]!,
+        KeyId = builder.Configuration["Sinch:KeyId"]!,
+        KeySecret = builder.Configuration["Sinch:KeySecret"]!
     }
 });
 

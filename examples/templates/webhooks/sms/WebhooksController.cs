@@ -4,17 +4,16 @@ using Sinch.SMS.Hooks;
 namespace SmsWebhookTemplate.Sms;
 
 [ApiController]
-[Route("webhooks/sms")]
 public class WebhooksController : ControllerBase
 {
     private readonly ISmsWebhooks _webhooks;
-    private readonly ServerBusinessLogic _service;
+    private readonly ServerBusinessLogic _webhooksBusinessLogic;
     private readonly IConfiguration _configuration;
 
-    public WebhooksController(ISmsWebhooks webhooks, ServerBusinessLogic service, IConfiguration configuration)
+    public WebhooksController(ISmsWebhooks webhooks, ServerBusinessLogic webhooksBusinessLogic, IConfiguration configuration)
     {
         _webhooks = webhooks;
-        _service = service;
+        _webhooksBusinessLogic = webhooksBusinessLogic;
         _configuration = configuration;
     }
 
@@ -22,7 +21,7 @@ public class WebhooksController : ControllerBase
     [Consumes("application/json")]
     public async Task<IActionResult> SmsDeliveryEvent()
     {
-        var secret = _configuration["Sinch:WebhookSecret"] ?? string.Empty;
+        var secret = _configuration["Sinch:Sms:WebhookSecret"] ?? string.Empty;
 
         using var reader = new StreamReader(Request.Body, System.Text.Encoding.UTF8);
         var body = await reader.ReadToEndAsync();
@@ -32,13 +31,25 @@ public class WebhooksController : ControllerBase
             h => h.Value.ToString(),
             StringComparer.OrdinalIgnoreCase);
 
-        if (!_webhooks.ValidateAuthenticationHeader(secret, headers, body))
+        // Ensure valid authentication to handle request
+        // See
+        // https://developers.sinch.com/docs/sms/api-reference/sms/tag/Webhooks/#tag/Webhooks/section/Callbacks
+        // Contact your account manager to configure your callback sending headers validation and
+        // set ensureValidAuthentication to true to validate request from Sinch servers
+        // see https://developers.sinch.com/docs/numbers/api-reference/numbers/tag/Numbers-Callbacks for
+        // more information
+        
+        var ensureValidAuthentication = false;
+        if (ensureValidAuthentication)
         {
-            return Unauthorized();
+            if (!_webhooks.ValidateAuthenticationHeader(secret, headers, body))
+            {
+                return Unauthorized();
+            }
         }
 
         var smsEvent = _webhooks.ParseEvent(body);
-        await _service.HandleEvent(smsEvent);
+        await _webhooksBusinessLogic.HandleEvent(smsEvent);
 
         return Ok();
     }
