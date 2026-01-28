@@ -1,3 +1,8 @@
+// Sinch Webhook Template
+// This snippet is available at https://github.com/sinch/sinch-sdk-dotnet
+// See https://github.com/sinch/sinch-sdk-dotnet/tree/main/examples/templates/webhooks/README.md for details
+
+
 using Sinch;
 using Sinch.SMS.Hooks;
 using Webhook.Template.Sms;
