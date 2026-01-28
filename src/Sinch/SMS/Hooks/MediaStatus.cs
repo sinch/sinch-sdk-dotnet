@@ -1,21 +1,21 @@
 using System.Text.Json.Serialization;
+using Sinch.Core;
 
 namespace Sinch.SMS.Hooks
 {
     /// <summary>
     /// Media item upload status
     /// </summary>
-    [JsonConverter(typeof(JsonStringEnumConverter))]
-    public enum MediaStatus
+    [JsonConverter(typeof(EnumRecordJsonConverter<MediaStatus>))]
+    public record MediaStatus(string Value) : EnumRecord(Value)
     {
         /// <summary>
         /// Media was successfully uploaded
         /// </summary>
-        Uploaded,
-
+        public static readonly MediaStatus Uploaded = new("Uploaded");
         /// <summary>
         /// Media upload failed
         /// </summary>
-        Failed
+        public static readonly MediaStatus Failed = new("Failed");
     }
 }

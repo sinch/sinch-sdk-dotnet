@@ -15,7 +15,7 @@ namespace Sinch.SMS.Hooks
         /// </summary>
         [JsonPropertyName("body")]
 
-        public required virtual string Body { get; set; }
+        public virtual required string Body { get; set; }
 
         /// <summary>
         ///     If this inbound message is in response to a previously sent message that contained a client reference,
