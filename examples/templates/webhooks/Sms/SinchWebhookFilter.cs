@@ -26,7 +26,7 @@ public class SinchWebhookFilter : IAsyncActionFilter
 
         using var reader = new StreamReader(request.Body, System.Text.Encoding.UTF8);
         var body = await reader.ReadToEndAsync();
-        
+
         // Always read and cache the body so controllers can reuse it regardless of auth requirement.
         context.HttpContext.Items[SinchWebhookConstants.BodyItemKey] = body;
 
@@ -40,7 +40,7 @@ public class SinchWebhookFilter : IAsyncActionFilter
         var secret = _configuration["Sinch:Sms:WebhookSecret"] ?? string.Empty;
 
         var headersDictionary = request.Headers.ToDictionary(h => h.Key, h => h.Value.ToString(), StringComparer.OrdinalIgnoreCase);
-        
+
         if (!_webhooks.ValidateAuthenticationHeader(secret, headersDictionary, body))
         {
             context.Result = new UnauthorizedResult();
