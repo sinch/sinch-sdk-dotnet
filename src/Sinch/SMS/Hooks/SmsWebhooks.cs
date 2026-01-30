@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Sinch.Logger;
-using Sinch.SMS;
 
 namespace Sinch.SMS.Hooks
 {

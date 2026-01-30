@@ -16,7 +16,7 @@ namespace Sinch.SMS.Inbounds
         /// </summary>
         [JsonPropertyName("type")]
         public SmsType Type { get; set; } = SmsType.Media;
-        
+
         /// <summary>
         ///     If this inbound message is in response to a previously sent message that contained a client reference, then this field contains *that* client reference.   Utilizing this feature requires additional setup on your account. Contact your [account manager](https://dashboard.sinch.com/settings/account-details) to enable this feature.
         /// </summary>
@@ -140,7 +140,7 @@ namespace Sinch.SMS.Inbounds
             public static readonly StatusEnum Uploaded = new("Uploaded");
             public static readonly StatusEnum Failed = new("Failed");
         }
-        
+
         /// <summary>
         /// Status of the uploaded media.
         /// </summary>

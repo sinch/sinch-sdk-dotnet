@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Sinch;
 using Sinch.Conversation.Messages.Message;
 using Sinch.SMS.Batches.Send;
-using Sinch.SMS.Hooks;
 using Sinch.SMS.Inbounds;
 using DeliveryReport = Sinch.SMS.DeliveryReport;
 

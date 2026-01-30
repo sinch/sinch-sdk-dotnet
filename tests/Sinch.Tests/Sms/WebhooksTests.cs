@@ -3,7 +3,6 @@ using System.Text.Json;
 using FluentAssertions;
 using Sinch.SMS;
 using Sinch.SMS.DeliveryReports;
-using Sinch.SMS.Hooks;
 using Sinch.SMS.Inbounds;
 using Xunit;
 

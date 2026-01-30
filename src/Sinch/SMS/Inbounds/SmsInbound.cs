@@ -17,14 +17,14 @@ namespace Sinch.SMS.Inbounds
         /// </summary>
         [JsonPropertyName("type")]
         public SmsType Type { get; set; } = SmsType.Text;
-        
+
         /// <summary>
         ///     The phone number that sent the message.
         ///     <see href="https://community.sinch.com/t5/Glossary/MSISDN/ta-p/7628">More info</see>
         /// </summary>
         [JsonPropertyName("from")]
         public required string From { get; set; }
-        
+
         /// <summary>
         ///     The Sinch phone number or short code to which the message was sent.
         /// </summary>

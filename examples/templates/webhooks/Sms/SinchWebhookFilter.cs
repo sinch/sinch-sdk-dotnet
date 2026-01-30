@@ -7,7 +7,7 @@ namespace Webhook.Template.Sms;
 /// <summary>
 /// Action filter that validates Sinch SMS webhook HMAC signature before executing the action.
 /// </summary>
-public class SinchWebhookFilter(ISmsWebhooks webhooks, IConfiguration configuration, bool requireAuthentication) 
+public class SinchWebhookFilter(ISmsWebhooks webhooks, IConfiguration configuration, bool requireAuthentication)
     : IAsyncActionFilter
 {
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)

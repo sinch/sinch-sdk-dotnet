@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Text.Json;
-using Sinch.SMS;
 using Sinch.SMS.DeliveryReports;
 using Sinch.SMS.Inbounds;
 

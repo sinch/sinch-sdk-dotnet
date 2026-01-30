@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Sinch.Core;
-using Sinch.SMS;
 
 namespace Sinch.SMS.Inbounds
 {
