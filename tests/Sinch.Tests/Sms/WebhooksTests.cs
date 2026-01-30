@@ -226,7 +226,7 @@ namespace Sinch.Tests.Sms
                     Encoding = "encoding",
                     NumberOfMessageParts = 123,
                     OperatorStatusAt = System.DateTime.Parse("2022-08-30T08:16:08.150Z").ToUniversalTime(),
-                    Type = "recipient_delivery_report_mms"
+                    Type = RecipientDeliveryReportType.Mms
                 });
             }
         }

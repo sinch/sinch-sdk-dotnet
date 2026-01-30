@@ -7,7 +7,7 @@ namespace Sinch.SMS.DeliveryReports
     /// <summary>
     ///     Per-recipient delivery report webhook event.
     /// </summary>
-    public sealed class RecipientDeliveryReportSms : IDeliveryReport
+    public sealed class RecipientDeliveryReportSms : IRecipientDeliveryReport
     {
         /// <summary>
         ///     A timestamp of when the Delivery Report was created in the Sinch service.
@@ -44,7 +44,7 @@ namespace Sinch.SMS.DeliveryReports
         ///     The recipient delivery report type.
         /// </summary>
         [JsonPropertyName("type")]
-        public RecipientDeliveryReportType? Type { get; set; }
+        public RecipientDeliveryReportType? Type { get; set; } = RecipientDeliveryReportType.Sms;
 
         /// <summary>
         ///     The default originator used for the recipient this delivery report belongs to,
