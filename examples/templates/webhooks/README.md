@@ -40,12 +40,15 @@ When running under `dotnet run` in development, the app will typically listen on
 
 ## How to run
 
-Restore and run the project from the `examples/templates/webhooks` folder:
+Restore and run the project:
 
 ```powershell
-# from repository root or examples/templates/webhooks
+# Navigate to the webhooks folder
+cd examples\templates\webhooks
+
+# Restore and run
 dotnet restore
-dotnet run --project .\Webhook.Template.csproj
+dotnet run
 ```
 
 **Authentication / Validating callbacks**
