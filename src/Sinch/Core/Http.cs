@@ -54,12 +54,6 @@ namespace Sinch.Core
         Task<TResponse> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest httpContent,
             CancellationToken cancellationToken = default, Dictionary<string, IEnumerable<string>>? headers = null);
 
-        Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, IEnumerable<MultipartFile> files,
-            CancellationToken cancellationToken = default);
-
-        Task<TResponse> SendMultipartContent<TResponse>(Uri uri, HttpContent content,
-            CancellationToken cancellationToken = default, Dictionary<string, IEnumerable<string>>? headers = null);
-
         JsonSerializerOptions JsonSerializerOptions { get; }
     }
 
