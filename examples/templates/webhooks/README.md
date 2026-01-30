@@ -28,6 +28,9 @@ The sample reads configuration from `appsettings.json`:
 - `Sinch:KeySecret` - your Sinch API key secret
 - `Sinch:Sms:WebhookSecret` - optional shared secret used to validate incoming webhook signatures (the controller shows how to use this)
 
+### AllowedHosts configuration
+The `appsettings.json` sets `"AllowedHosts": "*"` to allow all hosts during development, which is necessary for webhook development where external services (e.g., nGrok) must be able to POST (forward requests) to your endpoint. **In production, you should restrict this to Sinch's domain(s) for security.**
+
 ### Server URLs and ports
 - Development launch settings (Properties/launchSettings.json) set the local URLs to:
   - https://localhost:5001
