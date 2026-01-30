@@ -37,7 +37,7 @@ public class ServerBusinessLogic
                 await HandleRecipientDeliveryReportMms(recipientDeliveryReportMms);
                 break;
             default:
-                _logger.LogInformation("Unknown SMS event type: {Type}", smsEvent.GetType());
+                _logger.LogWarning("Unknown SMS event type: {Type}", smsEvent.GetType());
                 break;
         }
     }
