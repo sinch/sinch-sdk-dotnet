@@ -1,8 +1,10 @@
 using System;
 using System.Text.Json;
 using FluentAssertions;
+using Sinch.SMS;
 using Sinch.SMS.DeliveryReports;
 using Sinch.SMS.Hooks;
+using Sinch.SMS.Inbounds;
 using Xunit;
 
 namespace Sinch.Tests.Sms
@@ -66,7 +68,7 @@ namespace Sinch.Tests.Sms
                     Operator = "operator",
                     AppliedOriginator = "applied originator",
                     ClientReference = "client reference",
-                    Encoding = Sinch.SMS.Hooks.Encoding.Gsm,
+                    Encoding = Sinch.SMS.DeliveryReports.Encoding.Gsm,
                     NumberOfMessageParts = 2,
                     OperatorStatusAt = System.DateTime.Parse("2022-08-30T08:16:08.150Z").ToUniversalTime()
                 });
@@ -78,15 +80,15 @@ namespace Sinch.Tests.Sms
         {
             var json = Helpers.LoadResources("Sms/Hooks/InboundBinary.json");
 
-            var parsed = Sms.Webhooks.ParseEvent(json).As<BinaryMessage>();
+            var parsed = Sms.Webhooks.ParseEvent(json).As<BinaryInbound>();
             AssertBinary(parsed);
 
-            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.Webhooks.JsonSerializerOptions).As<BinaryMessage>();
+            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.Webhooks.JsonSerializerOptions).As<BinaryInbound>();
             AssertBinary(deserialized);
 
-            void AssertBinary(BinaryMessage report)
+            void AssertBinary(BinaryInbound report)
             {
-                report!.Should().BeOfType<BinaryMessage>().Which.Should().BeEquivalentTo(new BinaryMessage
+                report!.Should().BeOfType<BinaryInbound>().Which.Should().BeEquivalentTo(new BinaryInbound
                 {
                     Id = "01XXXXX21XXXXX119Z8P1XXXXX",
                     Body = "VGV4dCBtZXNzYWdl",
@@ -107,15 +109,15 @@ namespace Sinch.Tests.Sms
         {
             var json = Helpers.LoadResources("Sms/Hooks/InboundText.json");
 
-            var parsed = Sms.Webhooks.ParseEvent(json).As<TextMessage>();
+            var parsed = Sms.Webhooks.ParseEvent(json).As<SmsInbound>();
             AssertText(parsed);
 
-            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.Webhooks.JsonSerializerOptions).As<TextMessage>();
+            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.Webhooks.JsonSerializerOptions).As<SmsInbound>();
             AssertText(deserialized);
 
-            void AssertText(TextMessage report)
+            void AssertText(SmsInbound report)
             {
-                report!.Should().BeOfType<TextMessage>().Which.Should().BeEquivalentTo(new TextMessage
+                report!.Should().BeOfType<SmsInbound>().Which.Should().BeEquivalentTo(new SmsInbound
                 {
                     Id = "01XXXXX21XXXXX119Z8P1XXXXX",
                     Body = "This is a test message.",
@@ -135,15 +137,15 @@ namespace Sinch.Tests.Sms
         {
             var json = Helpers.LoadResources("Sms/Hooks/InboundMedia.json");
 
-            var parsed = Sms.Webhooks.ParseEvent(json).As<MediaMessage>();
+            var parsed = Sms.Webhooks.ParseEvent(json).As<MediaInbound>();
             AssertMedia(parsed);
 
-            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.Webhooks.JsonSerializerOptions).As<MediaMessage>();
+            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.Webhooks.JsonSerializerOptions).As<MediaInbound>();
             AssertMedia(deserialized);
 
-            void AssertMedia(MediaMessage evt)
+            void AssertMedia(MediaInbound evt)
             {
-                evt!.Should().BeOfType<MediaMessage>().Which.Should().BeEquivalentTo(new MediaMessage
+                evt!.Should().BeOfType<MediaInbound>().Which.Should().BeEquivalentTo(new MediaInbound
                 {
                     Id = "01FC66621XXXXX119Z8PMV1QPA",
                     From = "+11203494390",
@@ -152,17 +154,17 @@ namespace Sinch.Tests.Sms
                     ClientReference = "a client reference",
                     ReceivedAt = System.DateTime.Parse("2019-08-24T14:17:22Z").ToUniversalTime(),
                     SentAt = System.DateTime.Parse("2019-08-24T14:15:22Z").ToUniversalTime(),
-                    MessageBody = new MediaMessageBody
+                    Body = new MmsMoBody()
                     {
                         Subject = "mmy subject",
                         Message = "my message",
-                        Media = new System.Collections.Generic.List<MediaMessageBodyDetails>
+                        Media = new System.Collections.Generic.List<MmsMedia>
                         {
-                            new MediaMessageBodyDetails
+                            new MmsMedia
                             {
                                 Url = "https://foo.url",
                                 ContentType = "content/type",
-                                Status = MediaStatus.Uploaded,
+                                Status = MmsMedia.StatusEnum.Uploaded,
                                 Code = 1234
                             }
                         }

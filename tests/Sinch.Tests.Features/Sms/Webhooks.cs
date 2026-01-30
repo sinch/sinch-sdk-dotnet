@@ -90,11 +90,11 @@ namespace Sinch.Tests.Features.Sms
         [Then(@"the SMS event describes an ""incoming SMS"" event")]
         public void ThenTheSmsEventDescribesAnIncomingSmsEvent()
         {
-            var incomingSms = JsonSerializer.Deserialize<TextMessage>(_rawIncomingSmsContent, new JsonSerializerOptions
+            var incomingSms = JsonSerializer.Deserialize<SmsInbound>(_rawIncomingSmsContent, new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
             });
-            incomingSms.Should().BeEquivalentTo(new TextMessage
+            incomingSms.Should().BeEquivalentTo(new SmsInbound
             {
                 Body = "Hello John! 👋",
                 From = "12015555555",

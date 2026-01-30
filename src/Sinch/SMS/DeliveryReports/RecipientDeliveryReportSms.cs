@@ -1,14 +1,13 @@
 using System;
 using System.Text.Json.Serialization;
 using Sinch.Core;
-using Sinch.SMS.DeliveryReports;
 
-namespace Sinch.SMS.Hooks
+namespace Sinch.SMS.DeliveryReports
 {
     /// <summary>
     ///     Per-recipient delivery report webhook event.
     /// </summary>
-    public sealed class RecipientDeliveryReportSms : ISmsEvent
+    public sealed class RecipientDeliveryReportSms : IDeliveryReport
     {
         /// <summary>
         ///     A timestamp of when the Delivery Report was created in the Sinch service.

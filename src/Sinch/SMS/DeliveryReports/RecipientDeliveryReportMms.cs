@@ -1,12 +1,12 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace Sinch.SMS.Hooks
+namespace Sinch.SMS.DeliveryReports
 {
     /// <summary>
     /// MMS recipient delivery report webhook event
     /// </summary>
-    public class RecipientDeliveryReportMms : ISmsEvent
+    public class RecipientDeliveryReportMms : IDeliveryReport
     {
         [JsonPropertyName("type")]
         public string Type { get; set; } = "recipient_delivery_report_mms";

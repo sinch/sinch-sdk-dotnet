@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Sinch;
+using Sinch.Conversation.Messages.Message;
 using Sinch.SMS.Batches.Send;
 using Sinch.SMS.Hooks;
+using Sinch.SMS.Inbounds;
 using DeliveryReport = Sinch.SMS.DeliveryReport;
 
 namespace WebApiExamples.Controllers;
@@ -21,11 +23,11 @@ public class ReplyToInboundController : ControllerBase
 
     /// <summary>
     ///     If you want to handle either <see cref="TextMessage"/> or <see cref="BinaryMessage"/>
-    ///     use <see cref="IInboundMessage"/> as a parameter and match by type.
+    ///     use <see cref="IInbound"/> as a parameter and match by type.
     /// </summary>
     /// <param name="incomingSms"></param>
     [HttpPost(Name = "receive")]
-    public async Task Receive([FromBody] TextMessage incomingSms)
+    public async Task Receive([FromBody] SmsInbound incomingSms)
     {
         _logger.LogInformation("Incoming {text} from {sender} to {recipient}",
             incomingSms.Body,

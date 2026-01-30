@@ -25,7 +25,7 @@ namespace Sinch.Tests.Sms
                 body = "some_body",
                 client_reference = "ccc",
                 operator_id = "op_id",
-                send_at = "2019-08-24T14:15:22Z",
+                sent_at = "2019-08-24T14:15:22Z",
                 received_at = "2019-08-24T14:15:22Z",
                 udh = "hey"
             };
@@ -48,7 +48,7 @@ namespace Sinch.Tests.Sms
             {
                 Id = "in-bound",
                 Body = "some_body",
-                SendAt = new DateTime(2019, 8, 24, 14, 15, 22),
+                SentAt = new DateTime(2019, 8, 24, 14, 15, 22),
                 ReceivedAt = new DateTime(2019, 8, 24, 14, 15, 22),
                 From = "123",
                 To = "456",

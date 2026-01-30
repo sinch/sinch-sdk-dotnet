@@ -1,4 +1,5 @@
 using System;
+using Sinch.SMS;
 
 namespace Sinch.SMS.DeliveryReports
 {

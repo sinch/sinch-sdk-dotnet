@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using Sinch.SMS.DeliveryReports;
 
-namespace Sinch.SMS.Hooks
+namespace Sinch.SMS.DeliveryReports
 {
     /// <summary>
     ///     Batch-level delivery report webhook event.
     /// </summary>
-    public sealed class BatchDeliveryReportSms : ISmsEvent
+    public sealed class BatchDeliveryReportSms : IDeliveryReport
     {
         /// <summary>
         ///     The ID of the batch this delivery report belongs to.

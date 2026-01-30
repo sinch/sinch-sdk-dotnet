@@ -1,19 +1,21 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Sinch.SMS.DeliveryReports;
+using Sinch.SMS.Inbounds;
 
-namespace Sinch.SMS.Hooks
+namespace Sinch.SMS
 {
     /// <summary>
     ///     JSON converter for <see cref="ISmsEvent"/> that uses the "type" discriminator field
-    ///     to determine the concrete event type.
+    ///     to determine the concrete event type (inbound messages or delivery reports).
     /// </summary>
     /// <remarks>
     ///     <para>Supported discriminator values:</para>
     ///     <list type="bullet">
-    ///         <item><description>mo_text - <see cref="TextMessage"/></description></item>
-    ///         <item><description>mo_binary - <see cref="BinaryMessage"/></description></item>
-    ///         <item><description>mo_media - <see cref="MediaMessage"/></description></item>
+    ///         <item><description>mo_text - <see cref="SmsInbound"/></description></item>
+    ///         <item><description>mo_binary - <see cref="BinaryInbound"/></description></item>
+    ///         <item><description>mo_media - <see cref="MediaInbound"/></description></item>
     ///         <item><description>delivery_report_sms - <see cref="BatchDeliveryReportSms"/></description></item>
     ///         <item><description>delivery_report_mms - <see cref="BatchDeliveryReportMms"/></description></item>
     ///         <item><description>recipient_delivery_report_sms - <see cref="RecipientDeliveryReportSms"/></description></item>
@@ -39,10 +41,10 @@ namespace Sinch.SMS.Hooks
 
             return typeValue switch
             {
-                // Inbound messages
-                "mo_text" => element.Deserialize<TextMessage>(options),
-                "mo_binary" => element.Deserialize<BinaryMessage>(options),
-                "mo_media" => element.Deserialize<MediaMessage>(options),
+                // Inbound messages - route directly to concrete types
+                "mo_text" => element.Deserialize<SmsInbound>(options),
+                "mo_binary" => element.Deserialize<BinaryInbound>(options),
+                "mo_media" => element.Deserialize<MediaInbound>(options),
 
                 // Batch delivery reports
                 "delivery_report_sms" => element.Deserialize<BatchDeliveryReportSms>(options),
@@ -61,14 +63,14 @@ namespace Sinch.SMS.Hooks
         {
             switch (value)
             {
-                case TextMessage textSms:
-                    JsonSerializer.Serialize(writer, textSms, options);
+                case SmsInbound smsInbound:
+                    JsonSerializer.Serialize(writer, smsInbound, options);
                     break;
-                case BinaryMessage binarySms:
-                    JsonSerializer.Serialize(writer, binarySms, options);
+                case BinaryInbound binaryInbound:
+                    JsonSerializer.Serialize(writer, binaryInbound, options);
                     break;
-                case MediaMessage mediaSms:
-                    JsonSerializer.Serialize(writer, mediaSms, options);
+                case MediaInbound mediaInbound:
+                    JsonSerializer.Serialize(writer, mediaInbound, options);
                     break;
                 case BatchDeliveryReportSms deliveryReport:
                     JsonSerializer.Serialize(writer, deliveryReport, options);

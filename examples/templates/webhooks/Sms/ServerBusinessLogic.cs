@@ -1,4 +1,6 @@
-using Sinch.SMS.Hooks;
+using Sinch.SMS;
+using Sinch.SMS.DeliveryReports;
+using Sinch.SMS.Inbounds;
 
 namespace Webhook.Template.Sms;
 
@@ -8,13 +10,13 @@ public class ServerBusinessLogic(ILogger<ServerBusinessLogic> logger)
     {
         switch (smsEvent)
         {
-            case TextMessage textSms:
+            case SmsInbound textSms:
                 await HandleIncomingTextMessage(textSms);
                 break;
-            case BinaryMessage binarySms:
+            case BinaryInbound binarySms:
                 await HandleIncomingBinaryMessage(binarySms);
                 break;
-            case MediaMessage mediaSms:
+            case MediaInbound mediaSms:
                 await HandleIncomingMediaMessage(mediaSms);
                 break;
             case BatchDeliveryReportSms deliveryReport:
@@ -35,21 +37,21 @@ public class ServerBusinessLogic(ILogger<ServerBusinessLogic> logger)
         }
     }
 
-    private Task HandleIncomingTextMessage(TextMessage message)
+    private Task HandleIncomingTextMessage(SmsInbound message)
     {
         logger.LogInformation("Received text SMS from {From}: {Body}", message.From, message.Body);
         return Task.CompletedTask;
     }
 
-    private Task HandleIncomingBinaryMessage(BinaryMessage message)
+    private Task HandleIncomingBinaryMessage(BinaryInbound message)
     {
         logger.LogInformation("Received binary SMS from {From}", message.From);
         return Task.CompletedTask;
     }
 
-    private Task HandleIncomingMediaMessage(MediaMessage message)
+    private Task HandleIncomingMediaMessage(MediaInbound message)
     {
-        logger.LogInformation("Received MMS from {From} with {Count} media items", message.From, message.MessageBody.Media?.Count ?? 0);
+        logger.LogInformation("Received MMS from {From} with {Count} media items", message.From, message.Body.Media?.Count ?? 0);
         return Task.CompletedTask;
     }
 

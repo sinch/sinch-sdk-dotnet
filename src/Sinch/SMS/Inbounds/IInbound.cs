@@ -3,15 +3,18 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Sinch.Core;
+using Sinch.SMS;
 
 namespace Sinch.SMS.Inbounds
 {
     /// <summary>
-    ///     Marker interface for Inbound types
+    ///     Marker interface for Inbound types (SmsInbound, BinaryInbound, MediaInbound).
+    ///     Supports deserialization from REST API responses via type discriminator.
     /// </summary>
     [JsonInterfaceConverter(typeof(InboundJsonConverter))]
-    public interface IInbound
+    public interface IInbound : ISmsEvent
     {
+        SmsType Type { get; set; }
     }
 
     public sealed class InboundJsonConverter : JsonConverter<IInbound>
