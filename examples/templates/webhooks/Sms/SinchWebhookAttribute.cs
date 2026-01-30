@@ -8,7 +8,7 @@ namespace Webhook.Template.Sms;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
 public class SinchWebhookAttribute : TypeFilterAttribute
 {
-    public SinchWebhookAttribute(bool requireAuthentication = true)
+    public SinchWebhookAttribute(bool requireAuthentication)
         : base(typeof(SinchWebhookFilter))
     {
         Arguments = [requireAuthentication];
