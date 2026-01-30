@@ -17,6 +17,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddSingleton<ServerBusinessLogic>();
 
+// Note: Unified credentials are not required for webhook validation (only Sinch:Sms:WebhookSecret is).
+// They are included here so you can respond to incoming messages using the SMS API if needed.
 builder.Services.AddSinchClient(() => new SinchClientConfiguration
 {
     SinchUnifiedCredentials = new SinchUnifiedCredentials
