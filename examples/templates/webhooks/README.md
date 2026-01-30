@@ -32,7 +32,7 @@ The sample reads configuration from [appsettings.json](appsettings.json):
 The `appsettings.json` sets `"AllowedHosts": "*"` to allow all hosts during development, which is necessary for webhook development where external services (e.g., nGrok) must be able to POST (forward requests) to your endpoint. **In production, you should restrict this to Sinch's domain(s) for security.**
 
 ### Server URLs and ports
-- Development launch settings (Properties/launchSettings.json) set the local URLs to:
+- Development launch settings ([Properties/launchSettings.json](Properties/launchSettings.json)) set the local URLs to:
   - https://localhost:5001
   - http://localhost:5000
 
