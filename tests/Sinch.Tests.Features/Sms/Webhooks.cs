@@ -145,7 +145,7 @@ namespace Sinch.Tests.Features.Sms
                 BatchId = "01W4FFL35P4NC4K35SMSBATCH9",
                 ClientReference = "client-ref",
                 Code = 0,
-                OperatorStatusName = Helpers.ParseUtc("2024-06-06T08:17:00Z"),
+                OperatorStatusAt = Helpers.ParseUtc("2024-06-06T08:17:00Z"),
                 Recipient = "12017777777",
                 Status = DeliveryReportStatus.Delivered,
                 Type = RecipientDeliveryReportType.Sms

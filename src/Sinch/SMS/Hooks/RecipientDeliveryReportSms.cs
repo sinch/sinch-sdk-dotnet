@@ -85,7 +85,7 @@ namespace Sinch.SMS.Hooks
         ///     Formatted as <see href="https://en.wikipedia.org/wiki/ISO_8601">ISO-8601</see>: YYYY-MM-DDThh:mm:ss.SSSZ.
         /// </summary>
         [JsonPropertyName("operator_status_at")]
-        public DateTime OperatorStatusName { get; set; }
+        public DateTime OperatorStatusAt { get; set; }
     }
 
     /// <summary>

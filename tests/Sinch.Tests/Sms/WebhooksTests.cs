@@ -68,7 +68,7 @@ namespace Sinch.Tests.Sms
                     ClientReference = "client reference",
                     Encoding = Sinch.SMS.Hooks.Encoding.Gsm,
                     NumberOfMessageParts = 2,
-                    OperatorStatusName = System.DateTime.Parse("2022-08-30T08:16:08.150Z").ToUniversalTime()
+                    OperatorStatusAt = System.DateTime.Parse("2022-08-30T08:16:08.150Z").ToUniversalTime()
                 });
             }
         }

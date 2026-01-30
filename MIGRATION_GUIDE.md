@@ -18,6 +18,7 @@
 - [Removed obsolete MessageSource property from ListMessagesRequest](#removed-obsolete-messagesource-property-from-listmessagesrequest)
 - [Removed TemplatesV1 from Conversation API](#removed-templatesv1-from-conversation-api)
 - [SMS Webhooks: renamed and removed types](#sms-webhooks-renamed-and-removed-types)
+- [SMS Webhooks: property rename for per-recipient delivery reports](#sms-webhooks-property-rename-for-per-recipient-delivery-reports)
 
 ## Initialize `SinchClient` with unified credentials:
 
@@ -479,4 +480,25 @@ Version 2.*:
 var bin = sinchClient.Sms.Webhooks.ParseEvent(json).As<BinaryMessage>();
 // or when using plain deserialization:
 var bin = JsonSerializer.Deserialize<BinaryMessage>(json);
+```
+
+## SMS Webhooks: property rename for recipient delivery reports
+
+The property `OperatorStatusName` in `RecipientDeliveryReportSms` was renamed to `OperatorStatusAt`.
+
+Version 1.*:
+```csharp
+public sealed class RecipientDeliveryReportSms : ISmsEvent
+{
+    [JsonPropertyName("operator_status_name")]
+    public string? OperatorStatusName { get; set; }
+}
+```
+Version 2.*:
+```csharp
+public sealed class RecipientDeliveryReportSms : ISmsEvent
+{
+    [JsonPropertyName("operator_status_at")]
+    public DateTime OperatorStatusAt { get; set; }
+}
 ```
