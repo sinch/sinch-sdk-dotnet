@@ -8,7 +8,7 @@ This directory contains a server application based onto [Sinch .NET SDK](https:/
 - [ngrok](https://ngrok.com/docs)
 
 ## Configuration
-The sample reads configuration from `appsettings.json`:
+The sample reads configuration from [appsettings.json](appsettings.json):
 
 ```json
 {
@@ -23,10 +23,10 @@ The sample reads configuration from `appsettings.json`:
 }
 ```
 
-- `Sinch:ProjectId` - your Sinch project id
-- `Sinch:KeyId` - your Sinch API key id
-- `Sinch:KeySecret` - your Sinch API key secret
-- `Sinch:Sms:WebhookSecret` - optional shared secret used to validate incoming webhook signatures (the controller shows how to use this)
+- [`Sinch:ProjectId`](appsettings.json) - your Sinch project id
+- [`Sinch:KeyId`](appsettings.json) - your Sinch API key id
+- [`Sinch:KeySecret`](appsettings.json) - your Sinch API key secret
+- [`Sinch:Sms:WebhookSecret`](appsettings.json) - optional shared secret used to validate incoming webhook signatures
 
 ### AllowedHosts configuration
 The `appsettings.json` sets `"AllowedHosts": "*"` to allow all hosts during development, which is necessary for webhook development where external services (e.g., nGrok) must be able to POST (forward requests) to your endpoint. **In production, you should restrict this to Sinch's domain(s) for security.**
