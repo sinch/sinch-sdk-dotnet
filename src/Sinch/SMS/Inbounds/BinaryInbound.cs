@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Sinch.SMS.Inbounds
@@ -69,5 +70,27 @@ namespace Sinch.SMS.Inbounds
         /// </summary>
         [JsonPropertyName("udh")]
         public required string Udh { get; set; }
+
+        /// <summary>
+        ///     Returns the string representation of the object.
+        /// </summary>
+        /// <returns>String representation of the object.</returns>
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append($"class {nameof(BinaryInbound)} {{\n");
+            sb.Append("  Body: ").Append(Body).Append('\n');
+            sb.Append("  ClientReference: ").Append(ClientReference).Append('\n');
+            sb.Append("  From: ").Append(From).Append('\n');
+            sb.Append("  Id: ").Append(Id).Append('\n');
+            sb.Append("  OperatorId: ").Append(OperatorId).Append('\n');
+            sb.Append("  ReceivedAt: ").Append(ReceivedAt).Append('\n');
+            sb.Append("  SentAt: ").Append(SentAt).Append('\n');
+            sb.Append("  To: ").Append(To).Append('\n');
+            sb.Append("  Type: ").Append(Type).Append('\n');
+            sb.Append("  Udh: ").Append(Udh).Append('\n');
+            sb.Append("}\n");
+            return sb.ToString();
+        }
     }
 }
