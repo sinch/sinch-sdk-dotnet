@@ -16,7 +16,7 @@ namespace Sinch.SMS.Inbounds
         ///     Gets or sets the Type.
         /// </summary>
         [JsonPropertyName("type")]
-        public required SmsType Type { get; init; } = SmsType.Text;
+        public SmsType Type { get; init; } = SmsType.Text;
 
         /// <summary>
         ///     The phone number that sent the message.

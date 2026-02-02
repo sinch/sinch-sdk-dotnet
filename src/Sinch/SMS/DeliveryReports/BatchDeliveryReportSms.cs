@@ -24,7 +24,7 @@ namespace Sinch.SMS.DeliveryReports
         ///     The delivery report type.
         /// </summary>
         [JsonPropertyName("type")]
-        public required DeliveryReportType Type { get; init; } = DeliveryReportType.Sms;
+        public DeliveryReportType Type { get; init; } = DeliveryReportType.Sms;
 
         /// <summary>
         ///     The total number of messages in the batch.
