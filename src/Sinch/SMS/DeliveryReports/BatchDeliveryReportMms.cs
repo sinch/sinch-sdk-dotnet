@@ -6,13 +6,13 @@ namespace Sinch.SMS.DeliveryReports
     /// <summary>
     /// MMS batch delivery report webhook event
     /// </summary>
-    public class BatchDeliveryReportMms : IBatchDeliveryReport
+    public sealed class BatchDeliveryReportMms : IBatchDeliveryReport
     {
         /// <summary>
         /// The delivery report type.
         /// </summary>
         [JsonPropertyName("type")]
-        public DeliveryReportType Type { get; set; } = DeliveryReportType.Mms;
+        public DeliveryReportType Type { get; init; } = DeliveryReportType.Mms;
 
         /// <summary>
         /// Batch ID
