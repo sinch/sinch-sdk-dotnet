@@ -52,7 +52,7 @@ dotnet run
 ```
 
 **Authentication / Validating callbacks**
-The controller includes an optional validation step that checks headers and payload against a shared secret (configured at [`Sinch:Sms:WebhookSecret`](appsettings.json)). The example defaults to [`ensureValidAuthentication = false`](Sms/WebhooksController.cs) — enable and configure it if you require strict validation of incoming callbacks.
+The controller includes an optional validation step that checks headers and payload against a shared secret (configured at [`Sinch:Sms:WebhookSecret`](appsettings.json)). The example defaults to [`requireAuthentication = false`](Sms/WebhooksController.cs) — enable and configure it if you require strict validation of incoming callbacks.
 
 ## Use ngrok to forward request to local server
 
