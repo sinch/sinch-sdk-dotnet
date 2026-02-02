@@ -12,26 +12,26 @@ namespace Sinch.SMS.DeliveryReports
         public RecipientDeliveryReportType Type => RecipientDeliveryReportType.Mms;
 
         [JsonPropertyName("batch_id")]
-        public string BatchId { get; set; } = string.Empty;
+        public required string BatchId { get; init; }
 
         [JsonPropertyName("client_reference")]
         public string? ClientReference { get; set; }
 
         [JsonPropertyName("at")]
-        public DateTime At { get; set; }
+        public required DateTime At { get; init; }
 
         /// <summary>
         ///     The detailed status code.
         ///     See <see href="https://developers.sinch.com/docs/sms/api-reference/sms/delivery-reports/delivery-report-error-codes">Delivery Report Error Codes</see>.
         /// </summary>
         [JsonPropertyName("code")]
-        public DeliveryReceiptStatusCode Code { get; init; }
+        public required DeliveryReceiptStatusCode Code { get; init; }
 
         [JsonPropertyName("recipient")]
-        public string Recipient { get; set; } = string.Empty;
+        public required string Recipient { get; init; }
 
         [JsonPropertyName("status")]
-        public string Status { get; set; } = string.Empty;
+        public required string Status { get; init; }
 
         [JsonPropertyName("applied_originator")]
         public string? AppliedOriginator { get; set; }
