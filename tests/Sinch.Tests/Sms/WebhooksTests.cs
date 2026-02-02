@@ -27,7 +27,6 @@ namespace Sinch.Tests.Sms
                 {
                     BatchId = "01FC66621XXXXX119Z8PMV1QPQ",
                     TotalMessageCount = 1,
-                    Type = DeliveryReportType.Sms,
                     Statuses = new System.Collections.Generic.List<DeliveryReportStatusVerbose>
                     {
                         new DeliveryReportStatusVerbose
@@ -97,8 +96,7 @@ namespace Sinch.Tests.Sms
                     ClientReference = "ccc",
                     ReceivedAt = System.DateTime.Parse("2022-08-24T14:15:22Z").ToUniversalTime(),
                     SentAt = System.DateTime.Parse("2022-08-24T14:15:22Z").ToUniversalTime(),
-                    Udh = "10010203040506070809000a0b0c0d0e0f",
-                    Type = Sinch.SMS.Inbounds.SmsType.Binary
+                    Udh = "10010203040506070809000a0b0c0d0e0f"
                 });
             }
         }
@@ -125,8 +123,7 @@ namespace Sinch.Tests.Sms
                     OperatorId = "string",
                     ClientReference = "text-client-ref",
                     ReceivedAt = System.DateTime.Parse("2022-08-24T14:15:22Z").ToUniversalTime(),
-                    SentAt = System.DateTime.Parse("2022-08-24T14:15:22Z").ToUniversalTime(),
-                    Type = Sinch.SMS.Inbounds.SmsType.Text
+                    SentAt = System.DateTime.Parse("2022-08-24T14:15:22Z").ToUniversalTime()
                 });
             }
         }
@@ -190,7 +187,6 @@ namespace Sinch.Tests.Sms
                     BatchId = "01FC66621XXXXX119Z8PMV1QPQ",
                     ClientReference = "a client reference",
                     TotalMessageCount = 1,
-                    Type = DeliveryReportType.Mms,
                     Statuses = new System.Collections.Generic.List<DeliveryReportStatus>
                     {
                         DeliveryReportStatus.Delivered

@@ -101,8 +101,7 @@ namespace Sinch.Tests.Features.Sms
                 Id = "01W4FFL35P4NC4K35SMSBATCH8",
                 OperatorId = "311071",
                 ReceivedAt = Helpers.ParseUtc("2024-06-06T07:52:37.386Z"),
-                To = "12017777777",
-                Type = SmsType.Text
+                To = "12017777777"
             });
         }
 
@@ -118,7 +117,6 @@ namespace Sinch.Tests.Features.Sms
                 BatchId = "01W4FFL35P4NC4K35SMSBATCH8",
                 ClientReference = "client-ref",
                 TotalMessageCount = 2,
-                Type = DeliveryReportType.Sms,
                 Statuses = new List<DeliveryReportStatusVerbose>
                 {
                     new DeliveryReportStatusVerbose

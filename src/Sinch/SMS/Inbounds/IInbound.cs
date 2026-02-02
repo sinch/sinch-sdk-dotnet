@@ -9,6 +9,6 @@ namespace Sinch.SMS.Inbounds
     [JsonInterfaceConverter(typeof(InboundJsonConverter))]
     public interface IInbound : ISmsEvent
     {
-        SmsType Type { get; init; }
+        SmsType Type { get; }
     }
 }

@@ -9,7 +9,7 @@ namespace Sinch.SMS.Inbounds
         ///     Gets or sets the Type.
         /// </summary>
         [JsonPropertyName("type")]
-        public SmsType Type { get; init; } = SmsType.Binary;
+        public SmsType Type => SmsType.Binary;
 
         /// <summary>
         ///     The ID of this inbound message.
