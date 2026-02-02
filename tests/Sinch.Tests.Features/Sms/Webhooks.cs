@@ -145,8 +145,7 @@ namespace Sinch.Tests.Features.Sms
                 Code = 0,
                 OperatorStatusAt = Helpers.ParseUtc("2024-06-06T08:17:00Z"),
                 Recipient = "12017777777",
-                Status = DeliveryReportStatus.Delivered,
-                Type = RecipientDeliveryReportType.Sms
+                Status = DeliveryReportStatus.Delivered
             });
         }
 
@@ -162,10 +161,9 @@ namespace Sinch.Tests.Features.Sms
                 At = Helpers.ParseUtc("2024-06-06T08:17:15.603Z"),
                 BatchId = "01W4FFL35P4NC4K35SMSBATCH9",
                 ClientReference = "client-ref",
-                Code = 412,
+                Code = DeliveryReceiptStatusCode.UnprovisionedRegion,
                 Recipient = "12010000000",
-                Status = DeliveryReportStatus.Aborted,
-                Type = RecipientDeliveryReportType.Sms
+                Status = DeliveryReportStatus.Aborted
             });
         }
 

@@ -58,11 +58,10 @@ namespace Sinch.Tests.Sms
                 report!.Should().BeEquivalentTo(new RecipientDeliveryReportSms
                 {
                     BatchId = "01FC66621XXXXX119Z8PMV1QPQ",
-                    Code = 401,
+                    Code = DeliveryReceiptStatusCode.Dispatched,
                     Recipient = "+44231235674",
                     Status = DeliveryReportStatus.Dispatched,
                     At = System.DateTime.Parse("2022-08-30T08:16:08.930Z").ToUniversalTime(),
-                    Type = RecipientDeliveryReportType.Sms,
                     Operator = "operator",
                     AppliedOriginator = "applied originator",
                     ClientReference = "client reference",
@@ -211,7 +210,7 @@ namespace Sinch.Tests.Sms
                 report!.Should().BeEquivalentTo(new RecipientDeliveryReportMms
                 {
                     BatchId = "01FC66621XXXXX119Z8PMV1QPQ",
-                    Code = 401,
+                    Code = DeliveryReceiptStatusCode.Dispatched,
                     Recipient = "+44231235674",
                     Status = "Dispatched",
                     At = System.DateTime.Parse("2022-08-30T08:16:08.930Z").ToUniversalTime(),
@@ -220,8 +219,7 @@ namespace Sinch.Tests.Sms
                     ClientReference = "client reference",
                     Encoding = "encoding",
                     NumberOfMessageParts = 123,
-                    OperatorStatusAt = System.DateTime.Parse("2022-08-30T08:16:08.150Z").ToUniversalTime(),
-                    Type = RecipientDeliveryReportType.Mms
+                    OperatorStatusAt = System.DateTime.Parse("2022-08-30T08:16:08.150Z").ToUniversalTime()
                 });
             }
         }

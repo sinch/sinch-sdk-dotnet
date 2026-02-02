@@ -9,7 +9,7 @@ namespace Sinch.SMS.DeliveryReports
     public class RecipientDeliveryReportMms : IRecipientDeliveryReport
     {
         [JsonPropertyName("type")]
-        public RecipientDeliveryReportType Type { get; set; } = RecipientDeliveryReportType.Mms;
+        public RecipientDeliveryReportType Type => RecipientDeliveryReportType.Mms;
 
         [JsonPropertyName("batch_id")]
         public string BatchId { get; set; } = string.Empty;
@@ -20,8 +20,12 @@ namespace Sinch.SMS.DeliveryReports
         [JsonPropertyName("at")]
         public DateTime At { get; set; }
 
+        /// <summary>
+        ///     The detailed status code.
+        ///     See <see href="https://developers.sinch.com/docs/sms/api-reference/sms/delivery-reports/delivery-report-error-codes">Delivery Report Error Codes</see>.
+        /// </summary>
         [JsonPropertyName("code")]
-        public int Code { get; set; }
+        public DeliveryReceiptStatusCode Code { get; init; }
 
         [JsonPropertyName("recipient")]
         public string Recipient { get; set; } = string.Empty;

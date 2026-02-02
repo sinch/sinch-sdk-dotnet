@@ -5,6 +5,6 @@ namespace Sinch.SMS.DeliveryReports
     /// </summary>
     public interface IRecipientDeliveryReport : IDeliveryReport
     {
-        RecipientDeliveryReportType Type { get; set; }
+        RecipientDeliveryReportType Type { get; }
     }
 }

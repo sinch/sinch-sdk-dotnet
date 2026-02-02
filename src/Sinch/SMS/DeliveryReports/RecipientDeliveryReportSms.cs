@@ -24,9 +24,10 @@ namespace Sinch.SMS.DeliveryReports
 
         /// <summary>
         ///     The detailed status code.
+        ///     See <see href="https://developers.sinch.com/docs/sms/api-reference/sms/delivery-reports/delivery-report-error-codes">Delivery Report Error Codes</see>.
         /// </summary>
         [JsonPropertyName("code")]
-        public int Code { get; set; }
+        public DeliveryReceiptStatusCode Code { get; init; }
 
         /// <summary>
         ///     Phone number that was queried.
@@ -44,7 +45,7 @@ namespace Sinch.SMS.DeliveryReports
         ///     The recipient delivery report type.
         /// </summary>
         [JsonPropertyName("type")]
-        public RecipientDeliveryReportType? Type { get; set; } = RecipientDeliveryReportType.Sms;
+        public RecipientDeliveryReportType Type => RecipientDeliveryReportType.Sms;
 
         /// <summary>
         ///     The default originator used for the recipient this delivery report belongs to,
