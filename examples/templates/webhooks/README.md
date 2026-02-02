@@ -31,13 +31,6 @@ The sample reads configuration from [appsettings.json](appsettings.json):
 ### AllowedHosts configuration
 The `appsettings.json` sets `"AllowedHosts": "*"` to allow all hosts during development, which is necessary for webhook development where external services (e.g., nGrok) must be able to POST (forward requests) to your endpoint. **In production, you should restrict this to Sinch's domain(s) for security.**
 
-### Server URLs and ports
-- Development launch settings ([Properties/launchSettings.json](Properties/launchSettings.json)) set the local URLs to:
-  - https://localhost:5001
-  - http://localhost:5000
-
-When running under `dotnet run` in development, the app will typically listen on those URLs.
-
 ## How to run
 
 Restore and run the project:
