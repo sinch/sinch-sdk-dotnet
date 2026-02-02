@@ -92,7 +92,7 @@ namespace Sinch.Tests.Sms
         [Fact]
         public async Task GetMediaInbound()
         {
-            var json = Helpers.LoadResources("Sms/Inbounds/InboundMedia.json");
+            var json = Helpers.LoadResources("Sms/Hooks/InboundMedia.json");
             const string inboundId = "media-inbound";
             HttpMessageHandlerMock
                 .When(HttpMethod.Get, $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/inbounds/{inboundId}")
@@ -121,7 +121,7 @@ namespace Sinch.Tests.Sms
                         {
                             Url = "https://foo.url",
                             ContentType = "content/type",
-                            Status = new MmsMedia.StatusEnum("a status"),
+                            Status = new MmsMedia.StatusEnum("Uploaded"),
                             Code = 1234
                         }
                     }
