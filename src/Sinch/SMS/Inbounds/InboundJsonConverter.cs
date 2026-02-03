@@ -13,13 +13,13 @@ namespace Sinch.SMS.Inbounds
             var descriptor = elem.EnumerateObject().FirstOrDefault(x => x.Name == "type");
             var method = descriptor.Value.GetString();
 
-            if (SmsType.Text.Value == method)
+            if (InboundMessageType.Text.Value == method)
                 return elem.Deserialize<SmsInbound>(options);
 
-            if (SmsType.Binary.Value == method)
+            if (InboundMessageType.Binary.Value == method)
                 return elem.Deserialize<BinaryInbound>(options);
 
-            if (SmsType.Media.Value == method)
+            if (InboundMessageType.Media.Value == method)
                 return elem.Deserialize<MediaInbound>(options);
 
             throw new JsonException(

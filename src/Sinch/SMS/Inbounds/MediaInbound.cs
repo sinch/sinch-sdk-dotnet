@@ -15,7 +15,7 @@ namespace Sinch.SMS.Inbounds
         ///     Gets or sets the Type.
         /// </summary>
         [JsonPropertyName("type")]
-        public SmsType Type => SmsType.Media;
+        public InboundMessageType Type => InboundMessageType.Media;
 
         /// <summary>
         ///     If this inbound message is in response to a previously sent message that contained a client reference, then this field contains *that* client reference.   Utilizing this feature requires additional setup on your account. Contact your [account manager](https://dashboard.sinch.com/settings/account-details) to enable this feature.
