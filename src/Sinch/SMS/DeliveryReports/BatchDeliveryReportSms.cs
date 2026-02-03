@@ -13,13 +13,13 @@ namespace Sinch.SMS.DeliveryReports
         /// </summary>
         [JsonPropertyName("type")]
         public DeliveryReportType Type => DeliveryReportType.Sms;
-        
+
         /// <summary>
         ///     The ID of the batch this delivery report belongs to.
         /// </summary>
         [JsonPropertyName("batch_id")]
         public required string BatchId { get; set; }
-        
+
         /// <summary>
         ///     The client identifier of the batch this delivery report belongs to, if set when submitting batch.
         /// </summary>

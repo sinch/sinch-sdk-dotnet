@@ -18,7 +18,7 @@ namespace Sinch.SMS.Inbounds
         ///     Represents a binary SMS type.
         /// </summary>
         public static readonly InboundMessageType Binary = new("mo_binary");
-        
+
         /// <summary>
         ///     Represents an MMS type.
         /// </summary>
