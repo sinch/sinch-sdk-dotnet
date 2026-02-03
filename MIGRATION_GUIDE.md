@@ -19,6 +19,7 @@
 - [Removed TemplatesV1 from Conversation API](#removed-templatesv1-from-conversation-api)
 - [SMS Webhooks: renamed and removed types](#sms-webhooks-renamed-and-removed-types)
 - [SMS Webhooks: property rename for per-recipient delivery reports](#sms-webhooks-property-rename-for-per-recipient-delivery-reports)
+- [Verification API: Callout renamed to PhoneCall and Seamless renamed to Data](#verification-api-callout-renamed-to-phonecall-and-seamless-renamed-to-data)
 
 ## Initialize `SinchClient` with unified credentials:
 
@@ -501,4 +502,50 @@ public sealed class RecipientDeliveryReportSms : ISmsEvent
     [JsonPropertyName("operator_status_at")]
     public DateTime OperatorStatusAt { get; set; }
 }
+```
+
+## Verification API: Callout renamed to PhoneCall and Seamless renamed to Data
+
+### Renamed Classes
+
+- `CalloutRequestEventResponse` → `PhoneCallRequestEventResponse`
+- `ReportCalloutVerificationRequest` → `ReportPhoneCallVerificationRequest`
+- `ReportCalloutVerificationResponse` → `ReportPhoneCallVerificationResponse`
+- `StartCalloutVerificationResponse` → `StartPhoneCallVerificationResponse`
+- `CalloutVerificationStatusResponse` → `PhoneCallVerificationStatusResponse`
+
+### Renamed Methods
+
+In `ISinchVerification` and `SinchVerification`:
+
+Version 1.*:
+```csharp
+await sinchClient.Verification.StartCallout(...);
+await sinchClient.Verification.StartSeamless(...);
+await sinchClient.Verification.ReportCalloutByIdentity(...);
+await sinchClient.Verification.ReportCalloutById(...);
+```
+
+Version 2.*:
+```csharp
+await sinchClient.Verification.StartPhoneCall(...);
+await sinchClient.Verification.StartData(...);
+await sinchClient.Verification.ReportPhoneCallByIdentity(...);
+await sinchClient.Verification.ReportPhoneCallById(...);
+```
+
+In `ISinchVerificationStatus` and `SinchVerificationStatus`:
+
+Version 1.*:
+```csharp
+var status = await sinchClient.Verification.Status.GetCalloutById(...);
+var status = await sinchClient.Verification.Status.GetCalloutByIdentity(...);
+var status = await sinchClient.Verification.Status.GetCalloutByReference(...);
+```
+
+Version 2.*:
+```csharp
+var status = await sinchClient.Verification.Status.GetPhoneCallById(...);
+var status = await sinchClient.Verification.Status.GetPhoneCallByIdentity(...);
+var status = await sinchClient.Verification.Status.GetPhoneCallByReference(...);
 ```
