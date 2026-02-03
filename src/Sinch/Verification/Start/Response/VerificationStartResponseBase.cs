@@ -67,9 +67,9 @@ namespace Sinch.Verification.Start.Response
                            $"{nameof(StartFlashCallVerificationResponse)} deserialization result is null.");
 
             if (VerificationMethodEx.Callout.Value == method)
-                return elem.Deserialize<StartCalloutVerificationResponse>(options) ??
+                return elem.Deserialize<StartPhoneCallVerificationResponse>(options) ??
                        throw new InvalidOperationException(
-                           $"{nameof(StartCalloutVerificationResponse)} deserialization result is null.");
+                           $"{nameof(StartPhoneCallVerificationResponse)} deserialization result is null.");
 
             if (VerificationMethodEx.WhatsApp.Value == method)
                 return elem.Deserialize<StartWhatsAppVerificationResponse>(options) ??
@@ -88,8 +88,8 @@ namespace Sinch.Verification.Start.Response
                 case StartFlashCallVerificationResponse startFlashCallVerificationResponse:
                     JsonSerializer.Serialize(writer, startFlashCallVerificationResponse, options);
                     break;
-                case StartCalloutVerificationResponse startCalloutVerificationResponse:
-                    JsonSerializer.Serialize(writer, startCalloutVerificationResponse, options);
+                case StartPhoneCallVerificationResponse startPhoneCallVerificationResponse:
+                    JsonSerializer.Serialize(writer, startPhoneCallVerificationResponse, options);
                     break;
                 case StartSmsVerificationResponse startSmsVerificationResponse:
                     JsonSerializer.Serialize(writer, startSmsVerificationResponse, options);

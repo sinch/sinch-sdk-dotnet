@@ -51,7 +51,7 @@ namespace Sinch.Verification
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<StartCalloutVerificationResponse> StartCallout(StartCalloutVerificationRequest request,
+        Task<StartPhoneCallVerificationResponse> StartPhoneCall(StartPhoneCallVerificationRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Sinch.Verification
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<StartDataVerificationResponse> StartSeamless(StartDataVerificationRequest request,
+        Task<StartDataVerificationResponse> StartData(StartDataVerificationRequest request,
             CancellationToken cancellationToken = default);
 
 
@@ -105,8 +105,8 @@ namespace Sinch.Verification
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ReportCalloutVerificationResponse> ReportCalloutByIdentity(string endpoint,
-            ReportCalloutVerificationRequest request,
+        Task<ReportPhoneCallVerificationResponse> ReportPhoneCallByIdentity(string endpoint,
+            ReportPhoneCallVerificationRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -148,8 +148,8 @@ namespace Sinch.Verification
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ReportCalloutVerificationResponse> ReportCalloutById(string id,
-            ReportCalloutVerificationRequest request,
+        Task<ReportPhoneCallVerificationResponse> ReportPhoneCallById(string id,
+            ReportPhoneCallVerificationRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace Sinch.Verification
         }
 
         /// <inheritdoc />
-        public async Task<StartCalloutVerificationResponse> StartCallout(StartCalloutVerificationRequest request,
+        public async Task<StartPhoneCallVerificationResponse> StartPhoneCall(StartPhoneCallVerificationRequest request,
             CancellationToken cancellationToken = default)
         {
             var result = await Start(new StartVerificationRequest
@@ -258,12 +258,12 @@ namespace Sinch.Verification
                     }
                 }
             }, cancellationToken);
-            return result as StartCalloutVerificationResponse ??
-                   throw new InvalidOperationException($"{nameof(StartCalloutVerificationResponse)} result is null.");
+            return result as StartPhoneCallVerificationResponse ??
+                   throw new InvalidOperationException($"{nameof(StartPhoneCallVerificationResponse)} result is null.");
         }
 
         /// <inheritdoc />
-        public async Task<StartDataVerificationResponse> StartSeamless(StartDataVerificationRequest request,
+        public async Task<StartDataVerificationResponse> StartData(StartDataVerificationRequest request,
             CancellationToken cancellationToken = default)
         {
             var result = await Start(new StartVerificationRequest
@@ -334,13 +334,13 @@ namespace Sinch.Verification
                        $"{nameof(ReportFlashCallVerificationResponse)} result is null.");
         }
 
-        public async Task<ReportCalloutVerificationResponse> ReportCalloutByIdentity(string endpoint,
-            ReportCalloutVerificationRequest request,
+        public async Task<ReportPhoneCallVerificationResponse> ReportPhoneCallByIdentity(string endpoint,
+            ReportPhoneCallVerificationRequest request,
             CancellationToken cancellationToken = default)
         {
             var result = await ReportIdentity(endpoint, request, cancellationToken);
-            return result as ReportCalloutVerificationResponse ??
-                   throw new InvalidOperationException($"{nameof(ReportCalloutVerificationResponse)} result is null.");
+            return result as ReportPhoneCallVerificationResponse ??
+                   throw new InvalidOperationException($"{nameof(ReportPhoneCallVerificationResponse)} result is null.");
         }
 
         public async Task<ReportWhatsAppVerificationResponse> ReportWhatsAppByIdentity(string endpoint,
@@ -382,13 +382,13 @@ namespace Sinch.Verification
         }
 
         /// <inheritdoc />
-        public async Task<ReportCalloutVerificationResponse> ReportCalloutById(string id,
-            ReportCalloutVerificationRequest request,
+        public async Task<ReportPhoneCallVerificationResponse> ReportPhoneCallById(string id,
+            ReportPhoneCallVerificationRequest request,
             CancellationToken cancellationToken = default)
         {
             var result = await ReportId(id, request, cancellationToken);
-            return result as ReportCalloutVerificationResponse ??
-                   throw new InvalidOperationException($"{nameof(ReportCalloutVerificationResponse)} result is null.");
+            return result as ReportPhoneCallVerificationResponse ??
+                   throw new InvalidOperationException($"{nameof(ReportPhoneCallVerificationResponse)} result is null.");
         }
 
         /// <inheritdoc />
@@ -424,8 +424,8 @@ namespace Sinch.Verification
                         uri, HttpMethod.Put,
                         smsVerificationRequest,
                         cancellationToken),
-                ReportCalloutVerificationRequest phoneRequest => _http
-                    .Send<ReportCalloutVerificationRequest, IVerificationReportResponse>(uri, HttpMethod.Put,
+                ReportPhoneCallVerificationRequest phoneRequest => _http
+                    .Send<ReportPhoneCallVerificationRequest, IVerificationReportResponse>(uri, HttpMethod.Put,
                         phoneRequest,
                         cancellationToken),
                 ReportWhatsAppVerificationRequest phoneRequest => _http

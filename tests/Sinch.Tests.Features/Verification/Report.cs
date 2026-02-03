@@ -13,7 +13,7 @@ namespace Sinch.Tests.Features.Verification
     {
         private ISinchVerification _sinchVerifications;
         private ReportSmsVerificationResponse _smsReport;
-        private ReportCalloutVerificationResponse _phoneCallReport;
+        private ReportPhoneCallVerificationResponse _phoneCallReport;
         private ReportFlashCallVerificationResponse _flashCallReport;
         private ReportWhatsAppVerificationResponse _whatsAppReport;
 
@@ -63,10 +63,10 @@ namespace Sinch.Tests.Features.Verification
         [When("I send a request to report a Phone Call verification by {string} with the verification ID {string}")]
         public async Task WhenISendARequestToReportAPhoneCallVerificationWithTheVerificationId(string byType, string id)
         {
-            _phoneCallReport = await _sinchVerifications.ReportCalloutById(id,
-                new ReportCalloutVerificationRequest()
+            _phoneCallReport = await _sinchVerifications.ReportPhoneCallById(id,
+                new ReportPhoneCallVerificationRequest()
                 {
-                    Callout = new Callout()
+                    Callout = new PhoneCall()
                     {
                         Code = "123456"
                     }
@@ -76,7 +76,7 @@ namespace Sinch.Tests.Features.Verification
         [Then("the response by {string} contains the details of a Phone Call verification report")]
         public void ThenTheResponseContainsTheDetailsOfAPhoneCallVerificationReport(string byType)
         {
-            _phoneCallReport.Should().BeEquivalentTo(new ReportCalloutVerificationResponse()
+            _phoneCallReport.Should().BeEquivalentTo(new ReportPhoneCallVerificationResponse()
             {
                 Id = "1ce0ffee-c0de-5eed-d11d-f00dfeed1337",
                 Status = VerificationStatus.Successful,
@@ -87,10 +87,10 @@ namespace Sinch.Tests.Features.Verification
         [When("I send a request to report a Phone Call verification by {string} with the phone number {string}")]
         public async Task WhenISendARequestToReportAPhoneCallVerificationWithThePhoneNumber(string byType, string phoneNumber)
         {
-            _phoneCallReport = await _sinchVerifications.ReportCalloutByIdentity(phoneNumber,
-                new ReportCalloutVerificationRequest()
+            _phoneCallReport = await _sinchVerifications.ReportPhoneCallByIdentity(phoneNumber,
+                new ReportPhoneCallVerificationRequest()
                 {
-                    Callout = new Callout()
+                    Callout = new PhoneCall()
                     {
                         Code = "123456"
                     }
