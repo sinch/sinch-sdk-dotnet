@@ -27,7 +27,7 @@ namespace Sinch.SMS.DeliveryReports
         public string? ClientReference { get; set; }
 
         /// <summary>
-        ///     The total number of messages in the batch.
+        ///     Statuses for the batch
         /// </summary>
         [JsonPropertyName("statuses")]
         public required List<DeliveryReportStatusVerbose> Statuses { get; set; }

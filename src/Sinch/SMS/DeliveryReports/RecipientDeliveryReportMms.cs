@@ -37,7 +37,7 @@ namespace Sinch.SMS.DeliveryReports
         public string? AppliedOriginator { get; set; }
 
         [JsonPropertyName("encoding")]
-        public string? Encoding { get; set; }
+        public Encoding? Encoding { get; set; }
 
         [JsonPropertyName("number_of_message_parts")]
         public int? NumberOfMessageParts { get; set; }
