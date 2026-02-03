@@ -18,7 +18,7 @@ namespace Sinch.SMS.DeliveryReports
         /// Batch ID
         /// </summary>
         [JsonPropertyName("batch_id")]
-        public string BatchId { get; set; } = string.Empty;
+        public required string BatchId { get; set; }
 
         /// <summary>
         /// Client reference, if any
@@ -30,12 +30,12 @@ namespace Sinch.SMS.DeliveryReports
         /// Statuses for the batch
         /// </summary>
         [JsonPropertyName("statuses")]
-        public List<DeliveryReportStatus>? Statuses { get; set; }
+        public required List<DeliveryReportStatus> Statuses { get; set; }
 
         /// <summary>
         /// Total number of messages in the batch
         /// </summary>
         [JsonPropertyName("total_message_count")]
-        public int TotalMessageCount { get; set; }
+        public required uint TotalMessageCount { get; set; }
     }
 }
