@@ -1,0 +1,11 @@
+﻿{
+  "body": "This is a test message.",
+  "from": "16051234567",
+  "id": "01XXXXX21XXXXX119Z8P1XXXXX",
+  "operator_id": "string",
+  "client_reference": "text-client-ref",
+  "received_at": "2022-08-24T14:15:22Z",
+  "sent_at": "2022-08-24T14:15:22Z",
+  "to": "13185551234",
+  "type": "mo_text"
+}

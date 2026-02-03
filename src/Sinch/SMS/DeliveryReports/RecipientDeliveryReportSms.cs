@@ -1,48 +1,51 @@
 using System;
 using System.Text.Json.Serialization;
 using Sinch.Core;
-using Sinch.SMS.DeliveryReports;
 
-namespace Sinch.SMS.Hooks
+namespace Sinch.SMS.DeliveryReports
 {
-    public sealed class RecipientDeliveryReport
+    /// <summary>
+    ///     Per-recipient delivery report webhook event.
+    /// </summary>
+    public sealed class RecipientDeliveryReportSms : IRecipientDeliveryReport
     {
         /// <summary>
         ///     A timestamp of when the Delivery Report was created in the Sinch service.
         ///     Formatted as <see href="https://en.wikipedia.org/wiki/ISO_8601">ISO-8601</see>: YYYY-MM-DDThh:mm:ss.SSSZ.
         /// </summary>
         [JsonPropertyName("at")]
-        public DateTime At { get; set; }
+        public required DateTime At { get; init; }
 
         /// <summary>
         ///     The ID of the batch this delivery report belongs to
         /// </summary>
         [JsonPropertyName("batch_id")]
-        public string? BatchId { get; set; }
+        public required string BatchId { get; init; }
 
         /// <summary>
         ///     The detailed status code.
+        ///     See <see href="https://developers.sinch.com/docs/sms/api-reference/sms/delivery-reports/delivery-report-error-codes">Delivery Report Error Codes</see>.
         /// </summary>
         [JsonPropertyName("code")]
-        public int Code { get; set; }
+        public required DeliveryReceiptStatusCode Code { get; init; }
 
         /// <summary>
         ///     Phone number that was queried.
         /// </summary>
         [JsonPropertyName("recipient")]
-        public string? Recipient { get; set; }
+        public required string Recipient { get; init; }
 
         /// <summary>
         ///     The simplified status as described in Delivery Report Statuses.
         /// </summary>
         [JsonPropertyName("status")]
-        public DeliveryReportStatus? Status { get; set; }
+        public required DeliveryReportStatus Status { get; init; }
 
         /// <summary>
         ///     The recipient delivery report type.
         /// </summary>
         [JsonPropertyName("type")]
-        public RecipientDeliveryReportType? Type { get; set; }
+        public RecipientDeliveryReportType Type => RecipientDeliveryReportType.Sms;
 
         /// <summary>
         ///     The default originator used for the recipient this delivery report belongs to,
@@ -82,7 +85,7 @@ namespace Sinch.SMS.Hooks
         ///     Formatted as <see href="https://en.wikipedia.org/wiki/ISO_8601">ISO-8601</see>: YYYY-MM-DDThh:mm:ss.SSSZ.
         /// </summary>
         [JsonPropertyName("operator_status_at")]
-        public DateTime OperatorStatusName { get; set; }
+        public DateTime? OperatorStatusAt { get; set; }
     }
 
     /// <summary>

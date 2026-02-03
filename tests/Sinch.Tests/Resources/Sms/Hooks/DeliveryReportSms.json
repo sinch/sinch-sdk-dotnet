@@ -1,0 +1,16 @@
+﻿{
+  "batch_id": "01FC66621XXXXX119Z8PMV1QPQ",
+  "statuses": [
+    {
+      "code": 0,
+      "count": 1,
+      "recipients": [
+        "44231235674"
+      ],
+      "status": "Delivered"
+    }
+  ],
+  "total_message_count": 1,
+  "type": "delivery_report_sms",
+  "client_reference": "a client reference"
+}

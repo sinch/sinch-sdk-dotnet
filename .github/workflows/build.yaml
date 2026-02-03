@@ -52,15 +52,7 @@ jobs:
           cp sinch-sdk-mockserver/features/numbers/numbers.feature tests/Sinch.Tests.Features/features/numbers/
           cp sinch-sdk-mockserver/features/numbers/webhooks.feature tests/Sinch.Tests.Features/features/numbers/
 
-          cp sinch-sdk-mockserver/features/sms/batches.feature tests/Sinch.Tests.Features/features/sms/
-          cp sinch-sdk-mockserver/features/sms/batches_servicePlanId.feature tests/Sinch.Tests.Features/features/sms/
-          cp sinch-sdk-mockserver/features/sms/delivery-reports.feature tests/Sinch.Tests.Features/features/sms/
-          cp sinch-sdk-mockserver/features/sms/delivery-reports_servicePlanId.feature tests/Sinch.Tests.Features/features/sms/
-          cp sinch-sdk-mockserver/features/sms/groups.feature tests/Sinch.Tests.Features/features/sms/
-          cp sinch-sdk-mockserver/features/sms/groups_servicePlanId.feature tests/Sinch.Tests.Features/features/sms/
-          cp sinch-sdk-mockserver/features/sms/inbounds.feature tests/Sinch.Tests.Features/features/sms/
-          cp sinch-sdk-mockserver/features/sms/inbounds_servicePlanId.feature tests/Sinch.Tests.Features/features/sms/
-
+          cp sinch-sdk-mockserver/features/sms/*.feature tests/Sinch.Tests.Features/features/sms/
           cp sinch-sdk-mockserver/features/voice/*.feature tests/Sinch.Tests.Features/features/voice/
           cp sinch-sdk-mockserver/features/verification/*.feature tests/Sinch.Tests.Features/features/verification/
 

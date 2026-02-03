@@ -7,6 +7,7 @@ nupkg/
 .env
 launchSettings.json
 examples/snippets/appsettings.json
+appsettings.Development.json
 /tests/Sinch.Tests.Features/features
 
 # Visual Studio Code

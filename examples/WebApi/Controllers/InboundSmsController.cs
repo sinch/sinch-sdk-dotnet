@@ -4,7 +4,7 @@ using Sinch;
 using Sinch.SMS.Batches.Send;
 using Sinch.SMS.Groups.Create;
 using Sinch.SMS.Groups.Update;
-using Sinch.SMS.Hooks;
+using Sinch.SMS.Inbounds;
 using DeliveryReport = Sinch.SMS.DeliveryReport;
 
 namespace WebApiExamples.Controllers;
@@ -24,7 +24,7 @@ public class InboundSmsController : ControllerBase
 
     [HttpPost]
     [Route("subscription")]
-    public async Task Subscribe([FromBody] IncomingTextSms incomingSms)
+    public async Task Subscribe([FromBody] SmsInbound incomingSms)
     {
         var group = await _sinchClient.Sms.Groups.Create(new CreateGroupRequest() { Name = "Pirates of Sinch" });
         var fromNumber = incomingSms.From;

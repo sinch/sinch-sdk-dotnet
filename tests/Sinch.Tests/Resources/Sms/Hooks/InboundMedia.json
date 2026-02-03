@@ -1,4 +1,4 @@
-{
+﻿{
   "body": {
     "subject": "mmy subject",
     "message": "my message",
@@ -6,7 +6,7 @@
       {
         "url": "https://foo.url",
         "content_type": "content/type",
-        "status": "a status",
+        "status": "Uploaded",
         "code": 1234
       }
     ]

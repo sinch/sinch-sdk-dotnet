@@ -12,11 +12,16 @@ namespace Sinch.SMS.Inbounds
     public sealed class MediaInbound : IInbound
     {
         /// <summary>
+        ///     Gets or sets the Type.
+        /// </summary>
+        [JsonPropertyName("type")]
+        public InboundMessageType Type => InboundMessageType.Media;
+
+        /// <summary>
         ///     If this inbound message is in response to a previously sent message that contained a client reference, then this field contains *that* client reference.   Utilizing this feature requires additional setup on your account. Contact your [account manager](https://dashboard.sinch.com/settings/account-details) to enable this feature.
         /// </summary>
         [JsonPropertyName("client_reference")]
         public string? ClientReference { get; set; }
-
 
         /// <summary>
         ///     The phone number that sent the message. [More info](https://community.sinch.com/t5/Glossary/MSISDN/ta-p/7628)
@@ -36,7 +41,6 @@ namespace Sinch.SMS.Inbounds
         [JsonPropertyName("operator_id")]
         public string? OperatorId { get; set; }
 
-
         /// <summary>
         ///     When the system received the message.   Formatted as [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601): &#x60;YYYY-MM-DDThh:mm:ss.SSSZ&#x60;.
         /// </summary>
@@ -48,7 +52,6 @@ namespace Sinch.SMS.Inbounds
         /// </summary>
         [JsonPropertyName("sent_at")]
         public DateTime? SentAt { get; set; }
-
 
         /// <summary>
         ///     The Sinch phone number or short code to which the message was sent.
@@ -138,7 +141,6 @@ namespace Sinch.SMS.Inbounds
             public static readonly StatusEnum Failed = new("Failed");
         }
 
-
         /// <summary>
         /// Status of the uploaded media.
         /// </summary>
@@ -162,7 +164,6 @@ namespace Sinch.SMS.Inbounds
         /// </summary>
         [JsonPropertyName("url")]
         public string? Url { get; set; }
-
 
         /// <summary>
         ///     Returns the string presentation of the object

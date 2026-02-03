@@ -4,6 +4,7 @@ using Sinch.Logger;
 using Sinch.SMS.Batches;
 using Sinch.SMS.DeliveryReports;
 using Sinch.SMS.Groups;
+using Sinch.SMS.Hooks;
 using Sinch.SMS.Inbounds;
 
 namespace Sinch.SMS
@@ -47,6 +48,19 @@ namespace Sinch.SMS
         ///     or sent to a callback.
         /// </summary>
         ISinchSmsDeliveryReports DeliveryReports { get; }
+
+        /// <summary>
+        ///     Service for handling SMS webhook events.
+        ///     <para>
+        ///     Use this to parse incoming webhook payloads and validate HMAC signatures
+        ///     for inbound messages (mo_text, mo_binary) and delivery reports.
+        ///     </para>
+        /// </summary>
+        /// <remarks>
+        ///     SMS webhooks are configured in the Sinch Dashboard, not via API.
+        ///     This service only handles parsing and validation of incoming webhook requests.
+        /// </remarks>
+        ISmsWebhooks Webhooks { get; }
 
         internal bool IsUsingServicePlanId { get; }
     }
@@ -102,6 +116,9 @@ namespace Sinch.SMS
                 http);
             DeliveryReports = new DeliveryReports.DeliveryReports(projectIdOrServicePlanId, baseAddress,
                 loggerFactory?.Create<ISinchSmsDeliveryReports>(), http);
+            Webhooks = new SmsWebhooks(
+                http.JsonSerializerOptions,
+                loggerFactory?.Create<ISmsWebhooks>());
         }
 
         public ISinchSmsBatches Batches { get; }
@@ -111,6 +128,8 @@ namespace Sinch.SMS
         public ISinchSmsGroups Groups { get; }
 
         public ISinchSmsDeliveryReports DeliveryReports { get; }
+
+        public ISmsWebhooks Webhooks { get; }
 
         public bool IsUsingServicePlanId { get; }
     }

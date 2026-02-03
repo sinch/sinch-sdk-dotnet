@@ -25,7 +25,7 @@ namespace Sinch.Tests.Sms
                 body = "some_body",
                 client_reference = "ccc",
                 operator_id = "op_id",
-                send_at = "2019-08-24T14:15:22Z",
+                sent_at = "2019-08-24T14:15:22Z",
                 received_at = "2019-08-24T14:15:22Z",
                 udh = "hey"
             };
@@ -48,7 +48,7 @@ namespace Sinch.Tests.Sms
             {
                 Id = "in-bound",
                 Body = "some_body",
-                SendAt = new DateTime(2019, 8, 24, 14, 15, 22),
+                SentAt = new DateTime(2019, 8, 24, 14, 15, 22),
                 ReceivedAt = new DateTime(2019, 8, 24, 14, 15, 22),
                 From = "123",
                 To = "456",
@@ -92,7 +92,7 @@ namespace Sinch.Tests.Sms
         [Fact]
         public async Task GetMediaInbound()
         {
-            var json = Helpers.LoadResources("Sms/Inbounds/InboundMedia.json");
+            var json = Helpers.LoadResources("Sms/Hooks/InboundMedia.json");
             const string inboundId = "media-inbound";
             HttpMessageHandlerMock
                 .When(HttpMethod.Get, $"https://zt.us.sms.api.sinch.com/xms/v1/{ProjectId}/inbounds/{inboundId}")
@@ -121,7 +121,7 @@ namespace Sinch.Tests.Sms
                         {
                             Url = "https://foo.url",
                             ContentType = "content/type",
-                            Status = new MmsMedia.StatusEnum("a status"),
+                            Status = new MmsMedia.StatusEnum("Uploaded"),
                             Code = 1234
                         }
                     }

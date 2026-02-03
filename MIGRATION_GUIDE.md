@@ -17,6 +17,8 @@
 - [Numbers API: ScheduledProvisioning.ErrorCodes type changed to IList\<FailureCode\>](#scheduledprovisioningerrorcodes-type-changed-to-ilistfailurecode)
 - [Removed obsolete MessageSource property from ListMessagesRequest](#removed-obsolete-messagesource-property-from-listmessagesrequest)
 - [Removed TemplatesV1 from Conversation API](#removed-templatesv1-from-conversation-api)
+- [SMS Webhooks: renamed and removed types](#sms-webhooks-renamed-and-removed-types)
+- [SMS Webhooks: property rename for per-recipient delivery reports](#sms-webhooks-property-rename-for-per-recipient-delivery-reports)
 
 ## Initialize `SinchClient` with unified credentials:
 
@@ -338,6 +340,7 @@ Version 2.*:
 ```csharp
 var callbackConfiguration = sinchClient.Numbers.CallbackConfiguration;
 ```
+
 ## Removed obsolete MessageSource property from ListMessagesRequest
 
 The deprecated `MessageSource` property has been removed from `ListMessagesRequest`. Use `MessagesSource` instead.
@@ -399,3 +402,103 @@ if (scheduledProvisioning?.ErrorCodes?.Contains(FailureCode.CampaignNotAvailable
 }
 ```
 
+## SMS Webhooks: renamed and removed types
+
+Several types used for SMS webhook payloads have been renamed to make their intent more explicit and to avoid collisions with other APIs. A couple of now-redundant inbound types were removed.
+
+Renamed types
+
+- `DeliveryReport` -> `BatchDeliveryReportSms`
+- `RecipientDeliveryReport` -> `RecipientDeliveryReportSms`
+- `IncomingTextSms` -> `TextMessage`
+
+Example — batch delivery report
+
+Version 1.*:
+```csharp
+// Deserialize directly to the old type
+var report = JsonSerializer.Deserialize<DeliveryReport>(json);
+```
+
+Version 2.*:
+```csharp
+// Deserialize to the new explicit type
+var report = JsonSerializer.Deserialize<BatchDeliveryReportSms>(json);
+
+// or use the SMS webhooks helper which dispatches to the correct type based on the payload
+var report = sinchClient.Sms.Webhooks.ParseEvent(json).As<BatchDeliveryReportSms>();
+```
+
+Example — recipient delivery report
+
+Version 1.*:
+```csharp
+var recipientReport = JsonSerializer.Deserialize<RecipientDeliveryReport>(json);
+```
+
+Version 2.*:
+```csharp
+var recipientReport = JsonSerializer.Deserialize<RecipientDeliveryReportSms>(json);
+// or via the webhooks parser:
+var recipientReport = sinchClient.Sms.Webhooks.ParseEvent(json).As<RecipientDeliveryReportSms>();
+```
+
+Example — incoming text message
+
+Version 1.*:
+```csharp
+var incoming = JsonSerializer.Deserialize<IncomingTextSms>(json);
+```
+
+Version 2.*:
+```csharp
+var incoming = JsonSerializer.Deserialize<TextMessage>(json);
+// or via the webhooks parser:
+var incoming = sinchClient.Sms.Webhooks.ParseEvent(json).As<TextMessage>();
+```
+
+Deleted files / types
+
+The following source files were removed as part of the refactor and should be deleted from any code references you may have:
+
+- `src/Sinch/SMS/Hooks/IIncomingSms.cs`
+- `src/Sinch/SMS/Hooks/IncomingBinarySms.cs`
+
+Replacement guidance
+
+- If you previously relied on `IIncomingSms` or `IncomingBinarySms`, switch to the new strongly-typed webhook models (`TextMessage`, `BinaryMessage`, etc.) and prefer the `ISmsWebhooks.ParseEvent(string json)` helper which returns an `ISmsEvent` that you can pattern-match or cast as shown above.
+
+- Example migrating code that previously deserialized the old incoming binary type:
+
+Version 1.*:
+```csharp
+var bin = JsonSerializer.Deserialize<IncomingBinarySms>(json);
+```
+
+Version 2.*:
+```csharp
+var bin = sinchClient.Sms.Webhooks.ParseEvent(json).As<BinaryMessage>();
+// or when using plain deserialization:
+var bin = JsonSerializer.Deserialize<BinaryMessage>(json);
+```
+
+## SMS Webhooks: property rename for recipient delivery reports
+
+The property `OperatorStatusName` in `RecipientDeliveryReportSms` was renamed to `OperatorStatusAt`.
+
+Version 1.*:
+```csharp
+public sealed class RecipientDeliveryReportSms : ISmsEvent
+{
+    [JsonPropertyName("operator_status_name")]
+    public string? OperatorStatusName { get; set; }
+}
+```
+Version 2.*:
+```csharp
+public sealed class RecipientDeliveryReportSms : ISmsEvent
+{
+    [JsonPropertyName("operator_status_at")]
+    public DateTime OperatorStatusAt { get; set; }
+}
+```
