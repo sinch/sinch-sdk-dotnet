@@ -217,7 +217,7 @@ namespace Sinch.Tests.Sms
                     Operator = "operator",
                     AppliedOriginator = "applied originator",
                     ClientReference = "client reference",
-                    Encoding = "encoding",
+                    Encoding = Encoding.Unicode,
                     NumberOfMessageParts = 123,
                     OperatorStatusAt = System.DateTime.Parse("2022-08-30T08:16:08.150Z").ToUniversalTime()
                 });
