@@ -518,34 +518,13 @@ public sealed class RecipientDeliveryReportSms : ISmsEvent
 
 In `ISinchVerification` and `SinchVerification`:
 
-Version 1.*:
-```csharp
-await sinchClient.Verification.StartCallout(...);
-await sinchClient.Verification.StartSeamless(...);
-await sinchClient.Verification.ReportCalloutByIdentity(...);
-await sinchClient.Verification.ReportCalloutById(...);
-```
-
-Version 2.*:
-```csharp
-await sinchClient.Verification.StartPhoneCall(...);
-await sinchClient.Verification.StartData(...);
-await sinchClient.Verification.ReportPhoneCallByIdentity(...);
-await sinchClient.Verification.ReportPhoneCallById(...);
-```
+- `StartCallout(...)` → `StartPhoneCall(...)`
+- `StartSeamless(...)` → `StartData(...)`
+- `ReportCalloutByIdentity(...)` → `ReportPhoneCallByIdentity(...)`
+- `ReportCalloutById(...)` → `ReportPhoneCallById(...)`
 
 In `ISinchVerificationStatus` and `SinchVerificationStatus`:
 
-Version 1.*:
-```csharp
-var status = await sinchClient.Verification.Status.GetCalloutById(...);
-var status = await sinchClient.Verification.Status.GetCalloutByIdentity(...);
-var status = await sinchClient.Verification.Status.GetCalloutByReference(...);
-```
-
-Version 2.*:
-```csharp
-var status = await sinchClient.Verification.Status.GetPhoneCallById(...);
-var status = await sinchClient.Verification.Status.GetPhoneCallByIdentity(...);
-var status = await sinchClient.Verification.Status.GetPhoneCallByReference(...);
-```
+- `GetCalloutById(...)` → `GetPhoneCallById(...)`
+- `GetCalloutByIdentity(...)` → `GetPhoneCallByIdentity(...)`
+- `GetCalloutByReference(...)` → `GetPhoneCallByReference(...)`
