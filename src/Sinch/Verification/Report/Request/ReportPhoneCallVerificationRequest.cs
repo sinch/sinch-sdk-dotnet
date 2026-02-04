@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Report.Request
@@ -9,7 +10,8 @@ namespace Sinch.Verification.Report.Request
         /// <summary>
         ///     A configuration object containing settings specific to Phone Call verifications.
         /// </summary>
-        public required PhoneCall Callout { get; set; }
+        [JsonPropertyName("callout")]
+        public required PhoneCall PhoneCall { get; set; }
     }
 
     public sealed class PhoneCall

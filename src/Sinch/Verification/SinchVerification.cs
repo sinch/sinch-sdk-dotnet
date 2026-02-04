@@ -250,7 +250,7 @@ namespace Sinch.Verification
                 Identity = request.Identity,
                 Method = request.Method,
                 Reference = request.Reference,
-                CalloutOptions = new CalloutOptions()
+                PhoneCallOptions = new PhoneCallOptions()
                 {
                     Speech = new SpeechEngineSetting()
                     {

@@ -66,7 +66,7 @@ namespace Sinch.Tests.Features.Verification
             _phoneCallReport = await _sinchVerifications.ReportPhoneCallById(id,
                 new ReportPhoneCallVerificationRequest()
                 {
-                    Callout = new PhoneCall()
+                    PhoneCall = new PhoneCall()
                     {
                         Code = "123456"
                     }
@@ -90,7 +90,7 @@ namespace Sinch.Tests.Features.Verification
             _phoneCallReport = await _sinchVerifications.ReportPhoneCallByIdentity(phoneNumber,
                 new ReportPhoneCallVerificationRequest()
                 {
-                    Callout = new PhoneCall()
+                    PhoneCall = new PhoneCall()
                     {
                         Code = "123456"
                     }

@@ -5,10 +5,10 @@ namespace Sinch.Verification.Hooks
     public sealed class PhoneCallRequestEventResponse : RequestEventResponseBase
     {
         [JsonPropertyName("callout")]
-        public Callout? Callout { get; set; }
+        public PhoneCallData? PhoneCall { get; set; }
     }
 
-    public sealed class Callout
+    public sealed class PhoneCallData
     {
         /// <summary>
         ///     The Phone Call PIN that should be entered by the user.
