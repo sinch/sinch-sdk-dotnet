@@ -208,7 +208,9 @@ namespace Sinch
             _fax = new Lazy<ISinchFax>(() =>
             {
                 var validateUnifiedCredentials = ValidateUnifiedCredentials();
-                var faxUrl = _sinchClientConfiguration.FaxConfiguration.ResolveUrl();
+                var faxUrl = ResolveUrl(
+                    _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.FaxUrl,
+                    _sinchClientConfiguration.FaxConfiguration.ResolveUrl);
                 return new FaxClient(validateUnifiedCredentials.ProjectId, faxUrl, _loggerFactory, httpCamelCase.Value);
             }, isThreadSafe: true);
             _verification = new Lazy<ISinchVerificationClient>(() =>
