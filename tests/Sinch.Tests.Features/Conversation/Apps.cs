@@ -116,7 +116,7 @@ public class Apps
     {
         _deleteCompleted.Should().BeTrue();
     }
-        
+
     private void AssertCommonAppFields(App app)
     {
         app.Id.Should().Be(AppId);
