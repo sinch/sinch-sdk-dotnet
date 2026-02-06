@@ -201,8 +201,6 @@ namespace Sinch.Fax.Services
         {
             _logger?.LogDebug("Auto Listing services for {projectId}", _projectId);
 
-            page = Utils.GetAutoPage(page, PageStart.One);
-
             do
             {
                 var response = await List(page, pageSize, cancellationToken);
@@ -210,12 +208,12 @@ namespace Sinch.Fax.Services
                 foreach (var service in response.Services)
                     yield return service;
 
-                if (Utils.IsLastPage(page.Value, response.PageSize, response.TotalItems, PageStart.One))
+                if (Utils.IsLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One))
                 {
                     yield break;
                 }
 
-                page += 1;
+                page = response.Page + 1;
             } while (true);
         }
 
@@ -250,8 +248,6 @@ namespace Sinch.Fax.Services
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Auto Listing emails for number...");
-
-            page = Utils.GetAutoPage(page, PageStart.One);
             
             do
             {
@@ -260,12 +256,12 @@ namespace Sinch.Fax.Services
                 foreach (var contact in response.Emails)
                     yield return contact;
 
-                if (Utils.IsLastPage(page.Value, response.PageSize, response.TotalItems, PageStart.One))
+                if (Utils.IsLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One))
                 {
                     yield break;
                 }
 
-                page += 1;
+                page = response.Page + 1;
             } while (true);
         }
 
@@ -312,8 +308,6 @@ namespace Sinch.Fax.Services
 
             ExceptionUtils.CheckEmptyString(nameof(serviceId), serviceId);
 
-            page = Utils.GetAutoPage(page, PageStart.One);
-
             do
             {
                 var response = await ListNumbers(serviceId, page, pageSize, cancellationToken);
@@ -321,12 +315,12 @@ namespace Sinch.Fax.Services
                 foreach (var number in response.PhoneNumbers)
                     yield return number;
 
-                if (Utils.IsLastPage(page.Value, response.PageSize, response.TotalItems, PageStart.One))
+                if (Utils.IsLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One))
                 {
                     yield break;
                 }
 
-                page += 1;
+                page = response.Page + 1;
             } while (true);
         }
     }
