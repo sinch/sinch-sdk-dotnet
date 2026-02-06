@@ -20,7 +20,7 @@ public class Services
     private readonly List<ServicePhoneNumber> _numbersList = new();
     private ListEmailsResponse<string> _listEmailsResponse;
     private readonly List<string> _emailsList = new();
-    
+
     [Given(@"the Fax service ""Services"" is available")]
     public void GivenTheFaxServiceIsAvailable()
     {

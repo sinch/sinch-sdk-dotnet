@@ -202,16 +202,15 @@ namespace Sinch.Fax.Services
             _logger?.LogDebug("Auto Listing services for {projectId}", _projectId);
 
             ListServicesResponse response;
-            
             do
             {
                 response = await List(page, pageSize, cancellationToken);
-                
+
                 foreach (var service in response.Services)
                     yield return service;
 
                 page = response.Page + 1;
-                
+
             }
             while (Utils.IsNotLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One));
         }
@@ -247,13 +246,12 @@ namespace Sinch.Fax.Services
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Auto Listing emails for number...");
-            
+
             ListEmailsResponse<string> response;
-            
             do
             {
                 response = await ListEmailsForNumber(serviceId, phoneNumber, page, pageSize, cancellationToken);
-                
+
                 foreach (var contact in response.Emails)
                     yield return contact;
 
@@ -309,7 +307,7 @@ namespace Sinch.Fax.Services
             do
             {
                 response = await ListNumbers(serviceId, page, pageSize, cancellationToken);
-                
+
                 foreach (var number in response.PhoneNumbers)
                     yield return number;
 
