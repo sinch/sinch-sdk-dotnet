@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Sinch.Fax
 {
     public class PagedResponse
@@ -5,6 +7,8 @@ namespace Sinch.Fax
         /// <summary>
         ///     Current page
         /// </summary>
+        /// TODO: Remove [JsonPropertyName("pageNumber")] after mock server update.
+        [JsonPropertyName("pageNumber")]
         public int Page { get; set; }
 
         /// <summary>
