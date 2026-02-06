@@ -19,6 +19,7 @@
 - [Removed TemplatesV1 from Conversation API](#removed-templatesv1-from-conversation-api)
 - [SMS Webhooks: renamed and removed types](#sms-webhooks-renamed-and-removed-types)
 - [SMS Webhooks: property rename for per-recipient delivery reports](#sms-webhooks-property-rename-for-per-recipient-delivery-reports)
+- [ConversationChannelCredentials, InstagramCredentials and LineEnterpriseCredentials moved to new namespace](#conversationchanelcredentials-instagramcredentials-and-lineenterprisecredentials-moved-to-new-namespace)
 
 ## Initialize `SinchClient` with unified credentials:
 
@@ -501,4 +502,22 @@ public sealed class RecipientDeliveryReportSms : ISmsEvent
     [JsonPropertyName("operator_status_at")]
     public DateTime OperatorStatusAt { get; set; }
 }
+```
+
+## ConversationChannelCredentials, InstagramCredentials and LineEnterpriseCredentials moved to new namespace
+
+The following classes have been moved from the `Sinch.Conversation.Apps` namespace to `Sinch.Conversation.Apps.Credentials`:
+
+- `ConversationChannelCredentials`
+- `InstagramCredentials`
+- `LineEnterpriseCredentials`
+
+Version 1.*:
+```csharp
+using Sinch.Conversation.Apps;
+```
+
+Version 2.*:
+```csharp
+using Sinch.Conversation.Apps.Credentials;
 ```
