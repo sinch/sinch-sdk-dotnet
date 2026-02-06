@@ -1,6 +1,7 @@
 using System.Text.Json;
 using FluentAssertions;
 using Sinch.Conversation.Apps;
+using Sinch.Conversation.Apps.Credentials;
 using Xunit;
 
 namespace Sinch.Tests.Conversation.Apps
