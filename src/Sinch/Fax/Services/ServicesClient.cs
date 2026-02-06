@@ -210,7 +210,6 @@ namespace Sinch.Fax.Services
                     yield return service;
 
                 page = response.Page + 1;
-
             }
             while (Utils.IsNotLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One));
         }
