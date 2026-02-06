@@ -70,7 +70,6 @@ public class Services
     [When(@"I send a request to list all the services")]
     public async Task WhenISendARequestToListAllTheServices()
     {
-        _servicesList.Clear();
         await foreach (var service in _servicesApi.ListAuto(pageSize: 2))
         {
             _servicesList.Add(service);
@@ -170,7 +169,6 @@ public class Services
     [When(@"I send a request to list all the numbers associated to a fax service")]
     public async Task WhenISendARequestToListAllTheNumbersAssociatedToAFaxService()
     {
-        _numbersList.Clear();
         await foreach (var number in _servicesApi.ListNumbersAuto("01W4FFL35P4NC4K35FAXSERVICE"))
         {
             _numbersList.Add(number);
@@ -200,7 +198,6 @@ public class Services
     [When(@"I send a request to list all the emails associated to a phone number")]
     public async Task WhenISendARequestToListAllTheEmailsAssociatedToAPhoneNumber()
     {
-        _emailsList.Clear();
         await foreach (var email in _servicesApi.ListEmailsForNumberAuto("01W4FFL35P4NC4K35FAXSERVICE", "+12014444444"))
         {
             _emailsList.Add(email);

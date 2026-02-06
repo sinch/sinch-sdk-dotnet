@@ -297,7 +297,7 @@ namespace Sinch.Fax.Services
             return new ListNumbersResponse()
             {
                 PhoneNumbers = response.Numbers,
-                PageNumber = response.PageNumber,
+                Page = response.Page,
                 TotalItems = response.TotalItems,
                 PageSize = response.PageSize,
                 TotalPages = response.TotalPages

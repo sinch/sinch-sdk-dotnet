@@ -5,7 +5,7 @@ namespace Sinch.Fax
         /// <summary>
         ///     Current page
         /// </summary>
-        public int PageNumber { get; set; }
+        public int Page { get; set; }
 
         /// <summary>
         ///     Total number of pages.
