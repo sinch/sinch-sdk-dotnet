@@ -201,20 +201,19 @@ namespace Sinch.Fax.Services
         {
             _logger?.LogDebug("Auto Listing services for {projectId}", _projectId);
 
+            ListServicesResponse response;
+            
             do
             {
-                var response = await List(page, pageSize, cancellationToken);
+                response = await List(page, pageSize, cancellationToken);
                 
                 foreach (var service in response.Services)
                     yield return service;
 
-                if (Utils.IsLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One))
-                {
-                    yield break;
-                }
-
                 page = response.Page + 1;
-            } while (true);
+                
+            }
+            while (Utils.IsNotLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One));
         }
 
         /// <inheritdoc />
@@ -249,20 +248,18 @@ namespace Sinch.Fax.Services
         {
             _logger?.LogDebug("Auto Listing emails for number...");
             
+            ListEmailsResponse<string> response;
+            
             do
             {
-                var response = await ListEmailsForNumber(serviceId, phoneNumber, page, pageSize, cancellationToken);
+                response = await ListEmailsForNumber(serviceId, phoneNumber, page, pageSize, cancellationToken);
                 
                 foreach (var contact in response.Emails)
                     yield return contact;
 
-                if (Utils.IsLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One))
-                {
-                    yield break;
-                }
-
                 page = response.Page + 1;
-            } while (true);
+            }
+            while (Utils.IsNotLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One));
         }
 
         public async Task<ListNumbersResponse> ListNumbers(string serviceId, int? page = null, int? pageSize = null,
@@ -308,20 +305,17 @@ namespace Sinch.Fax.Services
 
             ExceptionUtils.CheckEmptyString(nameof(serviceId), serviceId);
 
+            ListNumbersResponse response;
             do
             {
-                var response = await ListNumbers(serviceId, page, pageSize, cancellationToken);
+                response = await ListNumbers(serviceId, page, pageSize, cancellationToken);
                 
                 foreach (var number in response.PhoneNumbers)
                     yield return number;
 
-                if (Utils.IsLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One))
-                {
-                    yield break;
-                }
-
                 page = response.Page + 1;
-            } while (true);
+            }
+            while (Utils.IsNotLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One));
         }
     }
 }
