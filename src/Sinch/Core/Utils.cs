@@ -89,6 +89,23 @@ namespace Sinch.Core
             return page * pageSize >= totalCount;
         }
 
+        public static int GetAutoPage(int? page, PageStart pageStart = PageStart.Zero)
+        {
+            switch (pageStart)
+            {
+                case PageStart.Zero:
+                    page ??= 0;
+                    break;
+                case PageStart.One:
+                    page = page is null or < 1 ? 1 : page;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(pageStart), pageStart, null);
+            }
+
+            return page.Value;
+        }  
+
         public static string ToSnakeCaseQueryString<T>(T obj) where T : class
         {
             var props = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public |

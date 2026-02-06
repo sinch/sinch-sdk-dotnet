@@ -57,7 +57,7 @@ public class Services
     [When(@"I send a request to list the existing services")]
     public async Task WhenISendARequestToListTheExistingServices()
     {
-        _listResponse = await _servicesApi.List();
+        _listResponse = await _servicesApi.List(pageSize: 2);
     }
 
     [Then("the response contains {string} services")]
