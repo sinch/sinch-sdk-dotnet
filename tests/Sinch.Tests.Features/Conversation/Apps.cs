@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
-using Sinch.Conversation;
 using Sinch.Conversation.Apps;
 using Sinch.Conversation.Apps.Create;
 using Sinch.Conversation.Apps.Credentials;

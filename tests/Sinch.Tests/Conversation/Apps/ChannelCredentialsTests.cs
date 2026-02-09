@@ -47,7 +47,7 @@ namespace Sinch.Tests.Conversation.Apps
                     Status = ChannelIntegrationStatus.Pending,
                     Description = "description value"
                 });
-            
+
             var actual = SerializeAsConversationClient(request);
 
             var expected = Helpers.LoadResources(

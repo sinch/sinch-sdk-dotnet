@@ -292,7 +292,7 @@ namespace Sinch.Tests.Conversation.Apps
                         Token = "token"
                     }),
                     "sec"),
-                
+
                 WithCallbackSecret(
                     ConversationChannelCredentialsBuilderFactory.Telegram(new TelegramCredentials
                     {
