@@ -35,14 +35,11 @@ public class Apps
             DisplayName = "E2E Conversation App",
             ChannelCredentials =
             [
-                new ConversationChannelCredentials(new StaticBearerCredentials
+                ConversationChannelCredentialsBuilderFactory.Sms(new StaticBearerCredentials
                 {
                     ClaimedIdentity = "SpaceMonkeySquadron",
                     Token = "00112233445566778899aabbccddeeff"
                 })
-                {
-                    Channel = ConversationChannel.Sms
-                }
             ]
         });
     }
