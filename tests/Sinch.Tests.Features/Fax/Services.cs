@@ -156,7 +156,7 @@ public class Services
     [When(@"I send a request to list the numbers associated to a fax service")]
     public async Task WhenISendARequestToListTheNumbersAssociatedToAFaxService()
     {
-        _listNumbersResponse = await _servicesApi.ListNumbers("01W4FFL35P4NC4K35FAXSERVICE");
+        _listNumbersResponse = await _servicesApi.ListNumbers("01W4FFL35P4NC4K35FAXSERVICE", pageSize: 20);
     }
 
     [Then("the response contains {string} numbers associated to the fax service")]
@@ -169,7 +169,7 @@ public class Services
     [When(@"I send a request to list all the numbers associated to a fax service")]
     public async Task WhenISendARequestToListAllTheNumbersAssociatedToAFaxService()
     {
-        await foreach (var number in _servicesApi.ListNumbersAuto("01W4FFL35P4NC4K35FAXSERVICE"))
+        await foreach (var number in _servicesApi.ListNumbersAuto("01W4FFL35P4NC4K35FAXSERVICE", pageSize: 20))
         {
             _numbersList.Add(number);
         }

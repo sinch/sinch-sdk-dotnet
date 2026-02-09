@@ -122,9 +122,6 @@ namespace Sinch.Fax.Services
 
     internal sealed class ServicesClient : ISinchFaxServices
     {
-        private const int DefaultPageSize = 20;
-        private const int EmailsDefaultPageSize = 100;
-
         private readonly string _projectId;
         private readonly ILoggerAdapter<ISinchFaxServices>? _logger;
         private readonly IHttp _http;
@@ -182,14 +179,15 @@ namespace Sinch.Fax.Services
             var uriBuilder = new UriBuilder(_apiBasePath);
             var queryString = HttpUtility.ParseQueryString(string.Empty);
 
-            var actualPageSize = pageSize ?? DefaultPageSize;
-
             if (page.HasValue)
             {
                 queryString.Add("page", page.Value.ToString());
             }
 
-            queryString.Add("pageSize", actualPageSize.ToString());
+            if (pageSize.HasValue)
+            {
+                queryString.Add("pageSize", pageSize.Value.ToString());
+            }
 
             uriBuilder.Query = queryString.ToString();
 
@@ -227,14 +225,15 @@ namespace Sinch.Fax.Services
             uriBuilder.Path += $"/{serviceId}/numbers/{phoneNumber}/emails";
             var queryString = HttpUtility.ParseQueryString(string.Empty);
 
-            var actualPageSize = pageSize ?? EmailsDefaultPageSize;
-
             if (page.HasValue)
             {
                 queryString.Add("page", page.Value.ToString());
             }
 
-            queryString.Add("pageSize", actualPageSize.ToString());
+            if (pageSize.HasValue)
+            {
+                queryString.Add("pageSize", pageSize.Value.ToString());
+            }
 
             uriBuilder.Query = queryString.ToString();
             return _http.Send<ListEmailsResponse<string>>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
@@ -272,14 +271,15 @@ namespace Sinch.Fax.Services
 
             var queryString = HttpUtility.ParseQueryString(string.Empty);
 
-            var actualPageSize = pageSize ?? DefaultPageSize;
-
             if (page.HasValue)
             {
                 queryString.Add("page", page.Value.ToString());
             }
 
-            queryString.Add("pageSize", actualPageSize.ToString());
+            if (pageSize.HasValue)
+            {
+                queryString.Add("pageSize", pageSize.Value.ToString());
+            }
 
             uriBuilder.Query = queryString.ToString();
             var response =
