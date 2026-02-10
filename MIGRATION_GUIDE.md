@@ -19,6 +19,7 @@
 - [Removed TemplatesV1 from Conversation API](#removed-templatesv1-from-conversation-api)
 - [SMS Webhooks: renamed and removed types](#sms-webhooks-renamed-and-removed-types)
 - [SMS Webhooks: property rename for per-recipient delivery reports](#sms-webhooks-property-rename-for-per-recipient-delivery-reports)
+- [Verification API: Callout renamed to PhoneCall and Seamless renamed to Data](#verification-api-callout-renamed-to-phonecall-and-seamless-renamed-to-data)
 
 ## Initialize `SinchClient` with unified credentials:
 
@@ -502,3 +503,28 @@ public sealed class RecipientDeliveryReportSms : ISmsEvent
     public DateTime OperatorStatusAt { get; set; }
 }
 ```
+
+## Verification API: Callout renamed to PhoneCall and Seamless renamed to Data
+
+### Renamed Classes
+
+- `CalloutRequestEventResponse` → `PhoneCallRequestEventResponse`
+- `ReportCalloutVerificationRequest` → `ReportPhoneCallVerificationRequest`
+- `ReportCalloutVerificationResponse` → `ReportPhoneCallVerificationResponse`
+- `StartCalloutVerificationResponse` → `StartPhoneCallVerificationResponse`
+- `CalloutVerificationStatusResponse` → `PhoneCallVerificationStatusResponse`
+
+### Renamed Methods
+
+In `ISinchVerification` and `SinchVerification`:
+
+- `StartCallout(...)` → `StartPhoneCall(...)`
+- `StartSeamless(...)` → `StartData(...)`
+- `ReportCalloutByIdentity(...)` → `ReportPhoneCallByIdentity(...)`
+- `ReportCalloutById(...)` → `ReportPhoneCallById(...)`
+
+In `ISinchVerificationStatus` and `SinchVerificationStatus`:
+
+- `GetCalloutById(...)` → `GetPhoneCallById(...)`
+- `GetCalloutByIdentity(...)` → `GetPhoneCallByIdentity(...)`
+- `GetCalloutByReference(...)` → `GetPhoneCallByReference(...)`

@@ -74,8 +74,8 @@ namespace Sinch.Verification.Report.Response
 
             if (method == VerificationMethod.Callout.Value)
             {
-                return (ReportCalloutVerificationResponse?)elem.Deserialize(
-                    typeof(ReportCalloutVerificationResponse),
+                return (ReportPhoneCallVerificationResponse?)elem.Deserialize(
+                    typeof(ReportPhoneCallVerificationResponse),
                     options);
             }
 
@@ -103,9 +103,9 @@ namespace Sinch.Verification.Report.Response
                     JsonSerializer.Serialize(
                         writer, flashCallVerificationReportResponse, options);
                     break;
-                case ReportCalloutVerificationResponse reportCalloutVerificationResponse:
+                case ReportPhoneCallVerificationResponse reportPhoneCallVerificationResponse:
                     JsonSerializer.Serialize(
-                        writer, reportCalloutVerificationResponse, options);
+                        writer, reportPhoneCallVerificationResponse, options);
                     break;
                 case ReportSmsVerificationResponse smsVerificationReportResponse:
                     JsonSerializer.Serialize(

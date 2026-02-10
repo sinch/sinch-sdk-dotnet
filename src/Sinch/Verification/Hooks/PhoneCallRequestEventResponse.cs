@@ -2,13 +2,13 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Verification.Hooks
 {
-    public sealed class CalloutRequestEventResponse : RequestEventResponseBase
+    public sealed class PhoneCallRequestEventResponse : RequestEventResponseBase
     {
         [JsonPropertyName("callout")]
-        public Callout? Callout { get; set; }
+        public PhoneCall? PhoneCall { get; set; }
     }
 
-    public sealed class Callout
+    public sealed class PhoneCall
     {
         /// <summary>
         ///     The Phone Call PIN that should be entered by the user.
