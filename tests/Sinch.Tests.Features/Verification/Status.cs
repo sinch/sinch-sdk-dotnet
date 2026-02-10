@@ -12,7 +12,7 @@ namespace Sinch.Tests.Features.Verification
     {
         private ISinchVerificationStatus _sinchVerificationStatus;
         private SmsVerificationStatusResponse _smsVerification;
-        private CalloutVerificationStatusResponse _phoneVerificationStatus;
+        private PhoneCallVerificationStatusResponse _phoneVerificationStatus;
         private FlashCallVerificationStatusResponse _flashcallStatus;
 
         [Given(@"the Verification service ""Status"" is available")]
@@ -52,13 +52,13 @@ namespace Sinch.Tests.Features.Verification
         [When(@"I send a request to retrieve a Phone Call verification status by the phone number to verify")]
         public async Task WhenISendARequestToRetrieveAPhoneCallVerificationStatusByThePhoneNumberToVerify()
         {
-            _phoneVerificationStatus = await _sinchVerificationStatus.GetCalloutByIdentity("+33612345678");
+            _phoneVerificationStatus = await _sinchVerificationStatus.GetPhoneCallByIdentity("+33612345678");
         }
 
         [Then(@"the response contains the details of the Phone Call verification status")]
         public void ThenTheResponseContainsTheDetailsOfThePhoneCallVerificationStatus()
         {
-            _phoneVerificationStatus.Should().BeEquivalentTo(new CalloutVerificationStatusResponse
+            _phoneVerificationStatus.Should().BeEquivalentTo(new PhoneCallVerificationStatusResponse
             {
                 Id = "1ce0ffee-c0de-5eed-d11d-f00dfeed1337",
                 Status = VerificationStatus.Successful,

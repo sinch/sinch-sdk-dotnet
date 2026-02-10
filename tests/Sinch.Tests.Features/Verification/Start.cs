@@ -17,7 +17,7 @@ namespace Sinch.Tests.Features.Verification
     {
         private ISinchVerification _sinchVerification;
         private StartSmsVerificationResponse _startSms;
-        private StartCalloutVerificationResponse _startPhoneCallResponse;
+        private StartPhoneCallVerificationResponse _startPhoneCallResponse;
         private StartFlashCallVerificationResponse _startFlashCall;
         private Func<Task<StartDataVerificationResponse>> _dataResponseOp;
         private StartWhatsAppVerificationResponse _startWhatsApp;
@@ -74,7 +74,7 @@ namespace Sinch.Tests.Features.Verification
         [When(@"I send a request to start a verification with a Phone Call")]
         public async Task WhenISendARequestToStartAVerificationWithAPhoneCall()
         {
-            _startPhoneCallResponse = await _sinchVerification.StartCallout(new StartCalloutVerificationRequest()
+            _startPhoneCallResponse = await _sinchVerification.StartPhoneCall(new StartPhoneCallVerificationRequest()
             {
                 Identity = Identity.Number("+33612345678"),
                 Locale = "fr-FR"
@@ -84,7 +84,7 @@ namespace Sinch.Tests.Features.Verification
         [Then(@"the response contains the details of a verification started with a Phone Call")]
         public void ThenTheResponseContainsTheDetailsOfAVerificationStartedWithAPhoneCall()
         {
-            _startPhoneCallResponse.Should().BeEquivalentTo(new StartCalloutVerificationResponse()
+            _startPhoneCallResponse.Should().BeEquivalentTo(new StartPhoneCallVerificationResponse()
             {
                 Id = "1ce0ffee-c0de-5eed-d11d-f00dfeed1337",
                 Method = VerificationMethodEx.Callout,
@@ -160,7 +160,7 @@ namespace Sinch.Tests.Features.Verification
         [When(@"I send a request to start a Data verification for a not available destination")]
         public void WhenISendARequestToStartADataVerificationForANotAvailableDestination()
         {
-            _dataResponseOp = () => _sinchVerification.StartSeamless(new StartDataVerificationRequest()
+            _dataResponseOp = () => _sinchVerification.StartData(new StartDataVerificationRequest()
             {
                 Identity = Identity.Number("+17818880008")
             });
