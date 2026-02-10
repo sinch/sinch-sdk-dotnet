@@ -3,7 +3,7 @@ using Sinch.Verification.Common;
 
 namespace Sinch.Verification.Status
 {
-    public sealed class CalloutVerificationStatusResponse : VerificationStatusResponseBase, IVerificationStatusResponse
+    public sealed class PhoneCallVerificationStatusResponse : VerificationStatusResponseBase, IVerificationStatusResponse
     {
         /// <summary>
         ///     Shows whether the call is complete or not.

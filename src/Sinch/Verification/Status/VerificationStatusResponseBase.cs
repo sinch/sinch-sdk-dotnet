@@ -80,8 +80,8 @@ namespace Sinch.Verification.Status
 
             if (method == VerificationMethod.Callout.Value)
             {
-                return (CalloutVerificationStatusResponse?)elem.Deserialize(
-                    typeof(CalloutVerificationStatusResponse),
+                return (PhoneCallVerificationStatusResponse?)elem.Deserialize(
+                    typeof(PhoneCallVerificationStatusResponse),
                     options);
             }
 
@@ -110,9 +110,9 @@ namespace Sinch.Verification.Status
                     JsonSerializer.Serialize(
                         writer, flashCallVerificationStatusResponse, options);
                     break;
-                case CalloutVerificationStatusResponse calloutVerificationStatusResponse:
+                case PhoneCallVerificationStatusResponse phoneCallVerificationStatusResponse:
                     JsonSerializer.Serialize(
-                        writer, calloutVerificationStatusResponse, options);
+                        writer, phoneCallVerificationStatusResponse, options);
                     break;
                 case SmsVerificationStatusResponse smsVerificationStatusResponse:
                     JsonSerializer.Serialize(

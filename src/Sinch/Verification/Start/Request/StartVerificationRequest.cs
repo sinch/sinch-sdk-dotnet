@@ -47,7 +47,7 @@ namespace Sinch.Verification.Start.Request
         ///     An optional object for Phone Call Verification, with default values assumed for all contained values if not provided.
         /// </summary>
         [JsonPropertyName("calloutOptions")]
-        public CalloutOptions? CalloutOptions { get; set; }
+        public PhoneCallOptions? PhoneCallOptions { get; set; }
 
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Sinch.Verification.Start.Request
         public WhatsAppOptions? WhatsAppOptions { get; set; }
     }
 
-    internal sealed class CalloutOptions
+    internal sealed class PhoneCallOptions
     {
         /// <summary>
         ///     Text-To-Speech engine settings
