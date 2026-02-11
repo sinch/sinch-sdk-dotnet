@@ -1,8 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
-using Sinch.Conversation.Apps.Credentials;
 
-namespace Sinch.Conversation.Apps
+namespace Sinch.Conversation.Apps.Credentials
 {
     /// <summary>
     ///     Enables access to the underlying messaging channel.

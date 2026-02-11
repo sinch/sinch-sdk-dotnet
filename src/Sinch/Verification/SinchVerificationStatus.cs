@@ -51,7 +51,7 @@ namespace Sinch.Verification
         Task<SmsVerificationStatusResponse> GetSmsById(string id, CancellationToken cancellationToken = default);
 
         /// <inheritdoc cref="GetSmsById" />
-        Task<CalloutVerificationStatusResponse> GetCalloutById(string id, CancellationToken cancellationToken = default);
+        Task<PhoneCallVerificationStatusResponse> GetPhoneCallById(string id, CancellationToken cancellationToken = default);
 
         /// <inheritdoc cref="GetSmsById" />
         Task<FlashCallVerificationStatusResponse> GetFlashCallById(string id, CancellationToken cancellationToken = default);
@@ -70,7 +70,7 @@ namespace Sinch.Verification
         Task<SmsVerificationStatusResponse> GetSmsByIdentity(string endpoint, CancellationToken cancellationToken = default);
 
         /// <inheritdoc cref="GetSmsByIdentity" />
-        Task<CalloutVerificationStatusResponse> GetCalloutByIdentity(string endpoint, CancellationToken cancellationToken = default);
+        Task<PhoneCallVerificationStatusResponse> GetPhoneCallByIdentity(string endpoint, CancellationToken cancellationToken = default);
 
         /// <inheritdoc cref="GetSmsByIdentity" />
         Task<FlashCallVerificationStatusResponse> GetFlashcallByIdentity(string endpoint, CancellationToken cancellationToken = default);
@@ -93,7 +93,7 @@ namespace Sinch.Verification
             CancellationToken cancellationToken = default);
 
         /// <inheritdoc cref="GetSmsByReference" />
-        Task<CalloutVerificationStatusResponse> GetCalloutByReference(string reference,
+        Task<PhoneCallVerificationStatusResponse> GetPhoneCallByReference(string reference,
             CancellationToken cancellationToken = default);
 
         /// <inheritdoc cref="GetSmsByReference" />
@@ -148,11 +148,11 @@ namespace Sinch.Verification
             return (result as SmsVerificationStatusResponse)!;
         }
 
-        public async Task<CalloutVerificationStatusResponse> GetCalloutById(string id,
+        public async Task<PhoneCallVerificationStatusResponse> GetPhoneCallById(string id,
             CancellationToken cancellationToken = default)
         {
             var result = await GetById(id, cancellationToken);
-            return (result as CalloutVerificationStatusResponse)!;
+            return (result as PhoneCallVerificationStatusResponse)!;
         }
 
         public async Task<FlashCallVerificationStatusResponse> GetFlashCallById(string id,
@@ -177,11 +177,11 @@ namespace Sinch.Verification
             return (result as SmsVerificationStatusResponse)!;
         }
 
-        public async Task<CalloutVerificationStatusResponse> GetCalloutByIdentity(string endpoint,
+        public async Task<PhoneCallVerificationStatusResponse> GetPhoneCallByIdentity(string endpoint,
             CancellationToken cancellationToken = default)
         {
             var result = await GetByIdentity(endpoint, VerificationMethod.Callout, cancellationToken);
-            return (result as CalloutVerificationStatusResponse)!;
+            return (result as PhoneCallVerificationStatusResponse)!;
         }
 
         public async Task<FlashCallVerificationStatusResponse> GetFlashcallByIdentity(string endpoint,
@@ -212,11 +212,11 @@ namespace Sinch.Verification
             return (result as FlashCallVerificationStatusResponse)!;
         }
 
-        public async Task<CalloutVerificationStatusResponse> GetCalloutByReference(string reference,
+        public async Task<PhoneCallVerificationStatusResponse> GetPhoneCallByReference(string reference,
             CancellationToken cancellationToken = default)
         {
             var result = await GetByReference(reference, cancellationToken);
-            return (result as CalloutVerificationStatusResponse)!;
+            return (result as PhoneCallVerificationStatusResponse)!;
         }
 
         public async Task<WhatsAppVerificationStatusResponse> GetWhatsAppByReference(string reference,

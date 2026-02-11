@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Sinch.Conversation;
 using Sinch.Conversation.Apps;
 using Sinch.Conversation.Apps.Credentials;
 using Xunit;
@@ -11,20 +10,16 @@ namespace Sinch.Tests.Conversation.Apps
         [Fact]
         public void SerializeConversationChannelCredentialsLineThailandEnterprise()
         {
-            var request = new ConversationChannelCredentials(
-                new LineThailandEnterpriseCredentials()
-                {
-                    Token = "line enterprise credentials thailand token value",
-                    Secret = "line enterprise credentials thailand secret value",
-                    IsDefault = true
-                }
-            )
-            {
-                Channel = ConversationChannel.Line,
-                CallbackSecret = "callback secret",
-                CredentialOrdinalNumber = 1,
-            };
-
+            var request = WithCallbackSecretAndOrdinal(
+                ConversationChannelCredentialsBuilderFactory.LineEnterprise(
+                    new LineThailandEnterpriseCredentials()
+                    {
+                        Token = "line enterprise credentials thailand token value",
+                        Secret = "line enterprise credentials thailand secret value",
+                        IsDefault = true
+                    }),
+                "callback secret",
+                1);
 
             var actual = SerializeAsConversationClient(request);
 
@@ -36,25 +31,22 @@ namespace Sinch.Tests.Conversation.Apps
         [Fact]
         public void SerializeConversationChannelCredentialsLineJapanEnterprise()
         {
-            var request = new ConversationChannelCredentials(
-                new LineJapanEnterpriseCredentials
-                {
-                    Token = "line enterprise credentials japan token value",
-                    Secret = "line enterprise credentials japan secret value",
-                    IsDefault = true
-                })
-            {
-                Channel = ConversationChannel.Line,
-                CallbackSecret = "callback secret",
-                CredentialOrdinalNumber = 1,
-                ChannelKnownId = "channel id",
-                State = new ChannelIntegrationState
+            var request = WithCallbackSecretOrdinalAndState(
+                ConversationChannelCredentialsBuilderFactory.LineEnterprise(
+                    new LineJapanEnterpriseCredentials
+                    {
+                        Token = "line enterprise credentials japan token value",
+                        Secret = "line enterprise credentials japan secret value",
+                        IsDefault = true
+                    }),
+                "callback secret",
+                1,
+                "channel id",
+                new ChannelIntegrationState
                 {
                     Status = ChannelIntegrationStatus.Pending,
                     Description = "description value"
-                }
-            };
-
+                });
 
             var actual = SerializeAsConversationClient(request);
 
@@ -66,17 +58,15 @@ namespace Sinch.Tests.Conversation.Apps
         [Fact]
         public void SerializeLineCredentials()
         {
-            var lineCredentials = new ConversationChannelCredentials(new LineCredentials()
-            {
-                Token = "lineChannel a token value",
-                Secret = "lineChannel a secret value",
-                IsDefault = true
-            })
-            {
-                Channel = ConversationChannel.Line,
-                CallbackSecret = "callback secret",
-                CredentialOrdinalNumber = 1,
-            };
+            var lineCredentials = WithCallbackSecretAndOrdinal(
+                ConversationChannelCredentialsBuilderFactory.Line(new LineCredentials()
+                {
+                    Token = "lineChannel a token value",
+                    Secret = "lineChannel a secret value",
+                    IsDefault = true
+                }),
+                "callback secret",
+                1);
 
             var actual = SerializeAsConversationClient(lineCredentials);
 
@@ -92,19 +82,16 @@ namespace Sinch.Tests.Conversation.Apps
 
             var result = DeserializeAsConversationClient<ConversationChannelCredentials>(json);
 
-            result.Should().BeEquivalentTo(new ConversationChannelCredentials(
-                new LineThailandEnterpriseCredentials()
-                {
-                    Token = "line enterprise credentials thailand token value",
-                    Secret = "line enterprise credentials thailand secret value",
-                    IsDefault = true
-                }
-            )
-            {
-                Channel = ConversationChannel.Line,
-                CallbackSecret = "callback secret",
-                CredentialOrdinalNumber = 1,
-            });
+            result.Should().BeEquivalentTo(WithCallbackSecretAndOrdinal(
+                ConversationChannelCredentialsBuilderFactory.LineEnterprise(
+                    new LineThailandEnterpriseCredentials()
+                    {
+                        Token = "line enterprise credentials thailand token value",
+                        Secret = "line enterprise credentials thailand secret value",
+                        IsDefault = true
+                    }),
+                "callback secret",
+                1));
         }
 
         [Fact]
@@ -115,24 +102,22 @@ namespace Sinch.Tests.Conversation.Apps
 
             var result = DeserializeAsConversationClient<ConversationChannelCredentials>(json);
 
-            result.Should().BeEquivalentTo(new ConversationChannelCredentials(
-                new LineJapanEnterpriseCredentials
-                {
-                    Token = "line enterprise credentials japan token value",
-                    Secret = "line enterprise credentials japan secret value",
-                    IsDefault = true
-                })
-            {
-                Channel = ConversationChannel.Line,
-                CallbackSecret = "callback secret",
-                CredentialOrdinalNumber = 1,
-                ChannelKnownId = "channel id",
-                State = new ChannelIntegrationState
+            result.Should().BeEquivalentTo(WithCallbackSecretOrdinalAndState(
+                ConversationChannelCredentialsBuilderFactory.LineEnterprise(
+                    new LineJapanEnterpriseCredentials
+                    {
+                        Token = "line enterprise credentials japan token value",
+                        Secret = "line enterprise credentials japan secret value",
+                        IsDefault = true
+                    }),
+                "callback secret",
+                1,
+                "channel id",
+                new ChannelIntegrationState
                 {
                     Status = ChannelIntegrationStatus.Pending,
                     Description = "description value"
-                }
-            });
+                }));
         }
 
         [Fact]
@@ -143,19 +128,39 @@ namespace Sinch.Tests.Conversation.Apps
 
             var result = DeserializeAsConversationClient<ConversationChannelCredentials>(json);
 
-            result.Should().BeEquivalentTo(new ConversationChannelCredentials(
-                new LineCredentials()
+            result.Should().BeEquivalentTo(WithCallbackSecretAndOrdinal(
+                ConversationChannelCredentialsBuilderFactory.Line(new LineCredentials()
                 {
                     Token = "lineChannel a token value",
                     Secret = "lineChannel a secret value",
                     IsDefault = true
-                }
-            )
-            {
-                Channel = ConversationChannel.Line,
-                CallbackSecret = "callback secret",
-                CredentialOrdinalNumber = 1,
-            });
+                }),
+                "callback secret",
+                1));
+        }
+
+        private static ConversationChannelCredentials WithCallbackSecretAndOrdinal(
+            ConversationChannelCredentials credentials,
+            string callbackSecret,
+            int credentialOrdinalNumber)
+        {
+            credentials.CallbackSecret = callbackSecret;
+            credentials.CredentialOrdinalNumber = credentialOrdinalNumber;
+            return credentials;
+        }
+
+        private static ConversationChannelCredentials WithCallbackSecretOrdinalAndState(
+            ConversationChannelCredentials credentials,
+            string callbackSecret,
+            int credentialOrdinalNumber,
+            string channelKnownId,
+            ChannelIntegrationState state)
+        {
+            credentials.CallbackSecret = callbackSecret;
+            credentials.CredentialOrdinalNumber = credentialOrdinalNumber;
+            credentials.ChannelKnownId = channelKnownId;
+            credentials.State = state;
+            return credentials;
         }
     }
 }
