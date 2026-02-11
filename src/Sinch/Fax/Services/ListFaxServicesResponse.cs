@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Fax.Services
 {
-    public sealed class ListServicesResponse : PagedResponse
+    public sealed class ListFaxServicesResponse : PagedResponse
     {
         [JsonPropertyName("services")]
         public List<Service> Services { get; set; } = new();

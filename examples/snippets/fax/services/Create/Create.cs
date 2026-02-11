@@ -22,7 +22,7 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
 
 Console.WriteLine("Creating a new fax service");
 
-var request = new CreateServiceRequest
+var request = new CreateFaxServiceRequest
 {
     Name = "My Fax Service"
 };

@@ -1,19 +1,9 @@
 using System.Text;
-using System.Text.Json.Serialization;
 
 namespace Sinch.Fax.Services
 {
-    public sealed class UpdateServiceRequest : ServiceBase
+    public sealed class CreateFaxServiceRequest : ServiceBase
     {
-        /// <summary>
-        ///     ID of the fax service used.
-        /// </summary>
-        [JsonPropertyName("id")]
-
-        public required string Id { get; set; } = null!;
-
-
-
         /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>
@@ -22,7 +12,6 @@ namespace Sinch.Fax.Services
         {
             var sb = new StringBuilder();
             sb.Append($"class {nameof(Service)} {{\n");
-            sb.Append($"  {nameof(Id)}: ").Append(Id).Append('\n');
             sb.Append($"  {nameof(Name)}: ").Append(Name).Append('\n');
             sb.Append($"  {nameof(IncomingWebhookUrl)}: ").Append(IncomingWebhookUrl).Append('\n');
             sb.Append($"  {nameof(WebhookContentType)}: ").Append(WebhookContentType).Append('\n');

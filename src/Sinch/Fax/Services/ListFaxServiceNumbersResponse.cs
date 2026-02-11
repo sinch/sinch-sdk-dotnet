@@ -4,7 +4,7 @@ using Sinch.Fax.Emails;
 
 namespace Sinch.Fax.Services
 {
-    internal sealed class ListServiceNumbersResponse : PagedResponse
+    internal sealed class ListFaxServiceNumbersResponse : PagedResponse
     {
         [JsonPropertyName("numbers")]
         public List<ServicePhoneNumber> Numbers { get; set; } = new();

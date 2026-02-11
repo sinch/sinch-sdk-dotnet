@@ -27,7 +27,7 @@ namespace Sinch.Fax.Services
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Service> Create(CreateServiceRequest request, CancellationToken cancellationToken = default);
+        Task<Service> Create(CreateFaxServiceRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Get a service resource.
@@ -43,7 +43,7 @@ namespace Sinch.Fax.Services
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Service> Update(UpdateServiceRequest request, CancellationToken cancellationToken = default);
+        Task<Service> Update(UpdateFaxServiceRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Delete a service.
@@ -60,7 +60,7 @@ namespace Sinch.Fax.Services
         /// <param name="pageSize"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ListServicesResponse> List(int? page = null, int? pageSize = null, CancellationToken cancellationToken = default);
+        Task<ListFaxServicesResponse> List(int? page = null, int? pageSize = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Auto List Services
@@ -135,11 +135,11 @@ namespace Sinch.Fax.Services
             _apiBasePath = new Uri(baseAddress, $"/v3/projects/{projectId}/services");
         }
 
-        public Task<Service> Create(CreateServiceRequest request, CancellationToken cancellationToken = default)
+        public Task<Service> Create(CreateFaxServiceRequest request, CancellationToken cancellationToken = default)
         {
             _logger?.LogInformation("Creating a service for {projectId}", _projectId);
 
-            return _http.Send<CreateServiceRequest, Service>(_apiBasePath, HttpMethod.Post, request, cancellationToken);
+            return _http.Send<CreateFaxServiceRequest, Service>(_apiBasePath, HttpMethod.Post, request, cancellationToken);
         }
 
         public Task<Service> Get(string serviceId, CancellationToken cancellationToken = default)
@@ -151,14 +151,14 @@ namespace Sinch.Fax.Services
             return _http.Send<Service>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
 
-        public Task<Service> Update(UpdateServiceRequest request, CancellationToken cancellationToken = default)
+        public Task<Service> Update(UpdateFaxServiceRequest request, CancellationToken cancellationToken = default)
         {
             _logger?.LogInformation("Updating a {serviceId} for {projectId}", request.Id, _projectId);
             ExceptionUtils.CheckEmptyString(nameof(request.Id), request.Id);
 
             var uriBuilder = new UriBuilder(_apiBasePath);
             uriBuilder.Path += "/" + request.Id;
-            return _http.Send<UpdateServiceRequest, Service>(uriBuilder.Uri, HttpMethod.Patch, request,
+            return _http.Send<UpdateFaxServiceRequest, Service>(uriBuilder.Uri, HttpMethod.Patch, request,
                 cancellationToken);
         }
 
@@ -172,7 +172,7 @@ namespace Sinch.Fax.Services
             return _http.Send<EmptyResponse>(uriBuilder.Uri, HttpMethod.Delete, cancellationToken);
         }
 
-        public Task<ListServicesResponse> List(int? page = null, int? pageSize = null, CancellationToken cancellationToken = default)
+        public Task<ListFaxServicesResponse> List(int? page = null, int? pageSize = null, CancellationToken cancellationToken = default)
         {
             _logger?.LogInformation("Listing services for {projectId}", _projectId);
 
@@ -191,7 +191,7 @@ namespace Sinch.Fax.Services
 
             uriBuilder.Query = queryString.ToString();
 
-            return _http.Send<ListServicesResponse>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
+            return _http.Send<ListFaxServicesResponse>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
 
         public async IAsyncEnumerable<Service> ListAuto(int? page = null, int? pageSize = null,
@@ -199,7 +199,7 @@ namespace Sinch.Fax.Services
         {
             _logger?.LogDebug("Auto Listing services for {projectId}", _projectId);
 
-            ListServicesResponse response;
+            ListFaxServicesResponse response;
             do
             {
                 response = await List(page, pageSize, cancellationToken);
@@ -283,7 +283,7 @@ namespace Sinch.Fax.Services
 
             uriBuilder.Query = queryString.ToString();
             var response =
-                await _http.Send<ListServiceNumbersResponse>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
+                await _http.Send<ListFaxServiceNumbersResponse>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
             return new ListNumbersResponse()
             {
                 PhoneNumbers = response.Numbers,

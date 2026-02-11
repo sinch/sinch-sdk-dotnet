@@ -25,7 +25,7 @@ const string serviceId = "my-service-id";
 
 Console.WriteLine($"Updating fax service: {serviceId}");
 
-var request = new UpdateServiceRequest
+var request = new UpdateFaxServiceRequest
 {
     Id = serviceId,
     Name = "Updated Fax Service Name"
