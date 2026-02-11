@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Conversation.Apps
+namespace Sinch.Conversation.Apps.Credentials
 {
     /// <summary>
     ///     If you are including the INSTAGRAM channel in the &#x60;channel_identifier&#x60; property, you must include this object.
