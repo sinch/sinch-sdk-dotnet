@@ -26,6 +26,6 @@ const string phoneNumber = "my-virtual-number";
 
 Console.WriteLine($"Listing emails for phone number {phoneNumber} in service {serviceId}");
 
-var response = await sinchClient.Fax.Services.ListEmailsForNumber(serviceId, phoneNumber, page: 1, pageSize: 10);
+var response = await sinchClient.Fax.Services.ListEmailsForNumber(serviceId, phoneNumber, page: 1, pageSize: 20);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

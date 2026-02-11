@@ -22,7 +22,7 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
 
 Console.WriteLine("Listing all fax services");
 
-await foreach (var service in sinchClient.Fax.Services.ListAuto())
+await foreach (var service in sinchClient.Fax.Services.ListAuto(page: 1, pageSize: 20))
 {
     Console.WriteLine(service.ToPrettyString());
 }

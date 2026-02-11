@@ -25,7 +25,7 @@ const string serviceId = "FAX_SERVICE_ID";
 
 Console.WriteLine($"Listing all numbers for fax service: {serviceId}");
 
-await foreach (var number in sinchClient.Fax.Services.ListNumbersAuto(serviceId))
+await foreach (var number in sinchClient.Fax.Services.ListNumbersAuto(serviceId, page: 1, pageSize: 20))
 {
     Console.WriteLine(number.ToPrettyString());
 }
