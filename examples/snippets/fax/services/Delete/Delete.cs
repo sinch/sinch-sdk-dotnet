@@ -20,7 +20,8 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
     }
 });
 
-const string serviceId = "my-service-id";
+// The Fax Service ID you want to delete
+const string serviceId = "FAX_SERVICE_ID";
 
 Console.WriteLine($"Deleting fax service: {serviceId}");
 
