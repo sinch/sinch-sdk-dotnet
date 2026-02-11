@@ -173,7 +173,7 @@ namespace Sinch.Fax.Emails
             return _http.Send<ListEmailsResponse<EmailAddress>>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
 
-        public async IAsyncEnumerable<string> ListForNumberAuto(string serviceId, string phoneNumber, int? page = null, int? pageSize = null, 
+        public async IAsyncEnumerable<string> ListForNumberAuto(string serviceId, string phoneNumber, int? page = null, int? pageSize = null,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Auto Listing emails for number...");
@@ -209,7 +209,7 @@ namespace Sinch.Fax.Emails
         }
 
         /// <inheritdoc />
-        public Task<EmailAddress> Add(string serviceId, EmailRequest emailRequest, 
+        public Task<EmailAddress> Add(string serviceId, EmailRequest emailRequest,
             CancellationToken cancellationToken = default)
         {
             if (emailRequest == null)
@@ -249,7 +249,7 @@ namespace Sinch.Fax.Emails
         }
 
         /// <inheritdoc />
-        public Task<EmailAddress> Update(string serviceId, string email, UpdateEmailRequest updateRequest, 
+        public Task<EmailAddress> Update(string serviceId, string email, UpdateEmailRequest updateRequest,
             CancellationToken cancellationToken = default)
         {
             if (updateRequest == null)
