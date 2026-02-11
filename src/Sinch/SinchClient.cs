@@ -188,9 +188,12 @@ namespace Sinch
             _conversation = new Lazy<ISinchConversation>(() =>
             {
                 var conversationConfig = _sinchClientConfiguration.ConversationConfiguration;
-                var conversationBaseAddress =
-                    conversationConfig.ResolveConversationUrl();
-                var templatesBaseAddress = conversationConfig.ResolveTemplateUrl();
+                var conversationBaseAddress = ResolveUrl(
+                    _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.ConversationUrl,
+                    conversationConfig.ResolveConversationUrl);
+                var templatesBaseAddress = ResolveUrl(
+                    _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.TemplatesUrl,
+                    conversationConfig.ResolveTemplateUrl);
 
                 return new SinchConversationClient(
                     _sinchClientConfiguration.SinchUnifiedCredentials
