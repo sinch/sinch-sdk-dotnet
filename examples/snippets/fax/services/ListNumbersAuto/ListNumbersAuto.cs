@@ -20,7 +20,8 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
     }
 });
 
-const string serviceId = "my-service-id";
+// The Fax Service ID for which you want to list numbers for
+const string serviceId = "FAX_SERVICE_ID";
 
 Console.WriteLine($"Listing all numbers for fax service: {serviceId}");
 

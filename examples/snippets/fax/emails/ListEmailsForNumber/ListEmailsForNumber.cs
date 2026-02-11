@@ -20,7 +20,8 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
     }
 });
 
-const string serviceId = "my-service-id";
+// The Fax Service ID and phone number you want to list emails for
+const string serviceId = "FAX_SERVICE_ID";
 const string phoneNumber = "my-virtual-number";
 
 Console.WriteLine($"Listing emails for phone number {phoneNumber} in service {serviceId}");

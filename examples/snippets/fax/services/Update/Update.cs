@@ -21,7 +21,8 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
     }
 });
 
-const string serviceId = "my-service-id";
+// The Fax Service ID you want to update
+const string serviceId = "FAX_SERVICE_ID";
 
 Console.WriteLine($"Updating fax service: {serviceId}");
 
