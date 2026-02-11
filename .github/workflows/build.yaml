@@ -46,6 +46,7 @@ jobs:
           mkdir -p tests/Sinch.Tests.Features/features/voice
           mkdir -p tests/Sinch.Tests.Features/features/verification
           mkdir -p tests/Sinch.Tests.Features/features/conversation
+          mkdir -p tests/Sinch.Tests.Features/features/fax
           
           # Copy feature files we support
           cp sinch-sdk-mockserver/features/numbers/available-regions.feature tests/Sinch.Tests.Features/features/numbers/
@@ -58,6 +59,7 @@ jobs:
           cp sinch-sdk-mockserver/features/verification/*.feature tests/Sinch.Tests.Features/features/verification/
 
           cp sinch-sdk-mockserver/features/conversation/apps.feature tests/Sinch.Tests.Features/features/conversation/
+          cp sinch-sdk-mockserver/features/fax/services.feature tests/Sinch.Tests.Features/features/fax/
       - name: Run mockserver docker-compose
         run: docker compose up -d
         working-directory: sinch-sdk-mockserver

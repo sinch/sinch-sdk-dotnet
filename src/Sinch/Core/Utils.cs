@@ -89,6 +89,11 @@ namespace Sinch.Core
             return page * pageSize >= totalCount;
         }
 
+        public static bool IsNotLastPage(int page, int pageSize, int totalCount, PageStart pageStart = PageStart.Zero)
+        {
+            return !IsLastPage(page, pageSize, totalCount, pageStart);
+        }
+
         public static string ToSnakeCaseQueryString<T>(T obj) where T : class
         {
             var props = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public |

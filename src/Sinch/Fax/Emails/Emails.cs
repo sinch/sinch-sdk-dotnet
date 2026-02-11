@@ -184,7 +184,7 @@ namespace Sinch.Fax.Emails
                 foreach (var email in response.Emails)
                     yield return email;
                 page += 1;
-            } while (!Utils.IsLastPage(response.PageNumber, response.PageSize, response.TotalItems, PageStart.One));
+            } while (!Utils.IsLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One));
         }
 
         /// <inheritdoc />
@@ -275,7 +275,7 @@ namespace Sinch.Fax.Emails
                 foreach (var number in response.PhoneNumbers)
                     yield return number;
                 page += 1;
-            } while (!Utils.IsLastPage(response.PageNumber, response.PageSize, response.TotalItems, PageStart.One));
+            } while (!Utils.IsLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One));
         }
     }
 }
