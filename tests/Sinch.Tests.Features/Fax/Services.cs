@@ -13,7 +13,7 @@ public class Services
 {
     private ISinchFaxServices _servicesApi;
     private Service _createServiceResponse;
-    private ListServicesResponse _listResponse;
+    private ListFaxServicesResponse _listFaxResponse;
     private readonly List<Service> _servicesList = new();
     private Service _service;
     private ListNumbersResponse _listNumbersResponse;
@@ -32,7 +32,7 @@ public class Services
     public async Task WhenISendARequestToCreateANewService()
     {
         _createServiceResponse = await _servicesApi.Create(
-            new CreateServiceRequest
+            new CreateFaxServiceRequest
             {
                 Name = "Fax service for e2e tests",
                 IncomingWebhookUrl = "https://my-callback-server.com/fax",
@@ -57,20 +57,20 @@ public class Services
     [When(@"I send a request to list the existing services")]
     public async Task WhenISendARequestToListTheExistingServices()
     {
-        _listResponse = await _servicesApi.List();
+        _listFaxResponse = await _servicesApi.List(pageSize: 2);
     }
 
     [Then("the response contains {string} services")]
     public void ThenTheResponseContainsServices(string expectedAnswer)
     {
         var expectedServices = int.Parse(expectedAnswer);
-        _listResponse.Services.Should().HaveCount(expectedServices);
+        _listFaxResponse.Services.Should().HaveCount(expectedServices);
     }
 
     [When(@"I send a request to list all the services")]
     public async Task WhenISendARequestToListAllTheServices()
     {
-        await foreach (var service in _servicesApi.ListAuto())
+        await foreach (var service in _servicesApi.ListAuto(pageSize: 2))
         {
             _servicesList.Add(service);
         }
@@ -111,7 +111,7 @@ public class Services
     public async Task WhenISendARequestToUpdateAService()
     {
         _service = await _servicesApi.Update(
-            new UpdateServiceRequest
+            new UpdateFaxServiceRequest
             {
                 Id = "01W4FFL35P4NC4K35FAXSERVICE",
                 Name = "Updated Fax service name",
@@ -156,7 +156,7 @@ public class Services
     [When(@"I send a request to list the numbers associated to a fax service")]
     public async Task WhenISendARequestToListTheNumbersAssociatedToAFaxService()
     {
-        _listNumbersResponse = await _servicesApi.ListNumbers("01W4FFL35P4NC4K35FAXSERVICE");
+        _listNumbersResponse = await _servicesApi.ListNumbers("01W4FFL35P4NC4K35FAXSERVICE", pageSize: 20);
     }
 
     [Then("the response contains {string} numbers associated to the fax service")]
@@ -169,7 +169,7 @@ public class Services
     [When(@"I send a request to list all the numbers associated to a fax service")]
     public async Task WhenISendARequestToListAllTheNumbersAssociatedToAFaxService()
     {
-        await foreach (var number in _servicesApi.ListNumbersAuto("01W4FFL35P4NC4K35FAXSERVICE"))
+        await foreach (var number in _servicesApi.ListNumbersAuto("01W4FFL35P4NC4K35FAXSERVICE", pageSize: 20))
         {
             _numbersList.Add(number);
         }
