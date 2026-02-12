@@ -25,6 +25,6 @@ const string serviceId = "FAX_SERVICE_ID";
 
 Console.WriteLine($"Listing numbers for fax service: {serviceId}");
 
-var response = await sinchClient.Fax.Services.ListNumbers(serviceId, page: 1, pageSize: 20);
+var response = await sinchClient.Fax.Services.ListNumbers(serviceId);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");
