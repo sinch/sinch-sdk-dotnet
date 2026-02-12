@@ -21,10 +21,10 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 });
 
 const string serviceId = "FAX_SERVICE_ID";
-const string phoneNumber = "my-virtual-number";
+const string emailAddress = "my-email";
 
-Console.WriteLine($"Listing emails for phone number {phoneNumber} in service {serviceId}");
+Console.WriteLine($"Listing phone numbers for email {emailAddress}");
 
-var response = await sinchClient.Fax.Emails.ListForNumber(serviceId, phoneNumber);
+var response = await sinchClient.Fax.Emails.ListNumbers(serviceId, emailAddress, page: 1, pageSize: 20);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");
