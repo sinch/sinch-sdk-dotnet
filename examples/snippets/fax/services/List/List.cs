@@ -22,6 +22,6 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
 
 Console.WriteLine("Listing fax services");
 
-var response = await sinchClient.Fax.Services.List(page: 1, pageSize: 20);
+var response = await sinchClient.Fax.Services.List();
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

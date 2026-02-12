@@ -26,7 +26,7 @@ const string serviceId = "FAX_SERVICE_ID";
 Console.WriteLine($"Listing all numbers for fax service: {serviceId}");
 
 // ListNumbersAuto handles pagination automatically, but you can control the page size
-await foreach (var number in sinchClient.Fax.Services.ListNumbersAuto(serviceId, page: 1, pageSize: 20))
+await foreach (var number in sinchClient.Fax.Services.ListNumbersAuto(serviceId))
 {
     Console.WriteLine(number.ToPrettyString());
 }
