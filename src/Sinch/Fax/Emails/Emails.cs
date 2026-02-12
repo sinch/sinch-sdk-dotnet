@@ -159,9 +159,9 @@ namespace Sinch.Fax.Emails
 
             var uriBuilder = new UriBuilder(_apiBasePath);
             uriBuilder.Path += $"/{serviceId}/emails";
-            
+
             var queryString = HttpUtility.ParseQueryString(string.Empty);
-            
+
             if (page.HasValue)
             {
                 queryString.Add("page", page.Value.ToString());
@@ -234,7 +234,7 @@ namespace Sinch.Fax.Emails
 
             var uriBuilder = new UriBuilder(_apiBasePath);
             uriBuilder.Path += $"/{serviceId}/emails";
-            
+
             return _http.Send<EmailRequest, EmailAddress>(uriBuilder.Uri, HttpMethod.Post, emailRequest,
                 cancellationToken);
         }
@@ -244,13 +244,13 @@ namespace Sinch.Fax.Emails
         {
             _logger?.LogInformation("Deleting an {email} for {projectId} from {serviceId}", email, _projectId,
                 serviceId);
-            
+
             ArgumentException.ThrowIfNullOrEmpty(serviceId);
             ArgumentException.ThrowIfNullOrEmpty(email);
 
             var uriBuilder = new UriBuilder(_apiBasePath);
             uriBuilder.Path += $"/{serviceId}/emails/{email}";
-            
+
             return _http.Send<EmptyResponse>(uriBuilder.Uri, HttpMethod.Delete, cancellationToken);
         }
 
@@ -265,7 +265,7 @@ namespace Sinch.Fax.Emails
 
             _logger?.LogInformation("Updating an {email} for {projectId} in {serviceId}", email, _projectId,
                 serviceId);
-            
+
             ArgumentException.ThrowIfNullOrEmpty(serviceId);
             ArgumentException.ThrowIfNullOrEmpty(email);
 
@@ -276,7 +276,7 @@ namespace Sinch.Fax.Emails
 
             var uriBuilder = new UriBuilder(_apiBasePath);
             uriBuilder.Path += $"/{serviceId}/emails/{email}";
-            
+
             return _http.Send<UpdateEmailRequest, EmailAddress>(uriBuilder.Uri, HttpMethod.Put, updateRequest,
                 cancellationToken);
         }
@@ -293,7 +293,7 @@ namespace Sinch.Fax.Emails
             uriBuilder.Path += $"/{serviceId}/emails/{email}/numbers";
 
             var queryString = HttpUtility.ParseQueryString(string.Empty);
-            
+
             if (page.HasValue)
             {
                 queryString.Add("page", page.Value.ToString());

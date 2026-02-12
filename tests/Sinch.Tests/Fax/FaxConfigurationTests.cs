@@ -41,7 +41,7 @@ namespace Sinch.Tests.Fax
             };
             faxConfig.ResolveUrl().ToString().Should().BeEquivalentTo(testCase.ExpectedUrl);
         }
-        
+
         public static TheoryData<FaxRegion, string> RegionUrlTestData => new()
         {
             { null, "https://fax.api.sinch.com/" },
