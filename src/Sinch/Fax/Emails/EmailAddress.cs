@@ -20,7 +20,7 @@ namespace Sinch.Fax.Emails
         ///     Numbers you want to associate with this email.
         /// </summary>
         [JsonPropertyName("phoneNumbers")]
-        public List<NumberWithPermissions>? PhoneNumbers { get; set; }
+        public List<PhoneNumber>? PhoneNumbers { get; set; }
 
 
         /// <summary>

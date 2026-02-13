@@ -99,7 +99,7 @@ public class Emails
             new EmailRequest
             {
                 Email = "spaceship@galaxy.far.far.away",
-                PhoneNumbers = new List<NumberWithPermissions>
+                PhoneNumbers = new List<PhoneNumber>
                 {
                     new()
                     {
@@ -116,7 +116,7 @@ public class Emails
     {
         _email.Should().NotBeNull();
         _email.Email.Should().Be("spaceship@galaxy.far.far.away");
-        _email.PhoneNumbers.Should().BeEquivalentTo(new List<NumberWithPermissions>
+        _email.PhoneNumbers.Should().BeEquivalentTo(new List<PhoneNumber>
         {
             new()
             {
@@ -135,7 +135,7 @@ public class Emails
             "spaceship@galaxy.far.far.away",
             new UpdateEmailRequest
             {
-                PhoneNumbers = new List<NumberWithPermissions>
+                PhoneNumbers = new List<PhoneNumber>
                 {
                     new()
                     {
@@ -157,7 +157,7 @@ public class Emails
     {
         _email.Should().NotBeNull();
         _email.Email.Should().Be("spaceship@galaxy.far.far.away");
-        _email.PhoneNumbers.Should().BeEquivalentTo(new List<NumberWithPermissions>
+        _email.PhoneNumbers.Should().BeEquivalentTo(new List<PhoneNumber>
         {
             new()
             {

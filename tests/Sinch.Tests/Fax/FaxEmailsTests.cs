@@ -173,7 +173,7 @@ namespace Sinch.Tests.Fax
         [Fact]
         public async Task Add_WithValidRequest_SendsPostRequest()
         {
-            var phoneNumbers = new List<NumberWithPermissions>
+            var phoneNumbers = new List<PhoneNumber>
             {
                 new() { Number = PhoneNumber }
             };
@@ -208,7 +208,7 @@ namespace Sinch.Tests.Fax
             var emailRequest = new EmailRequest
             {
                 Email = Email,
-                PhoneNumbers = new List<NumberWithPermissions> { new() { Number = PhoneNumber } }
+                PhoneNumbers = new List<PhoneNumber> { new() { Number = PhoneNumber } }
             };
 
             ArgumentException exception;
@@ -283,7 +283,7 @@ namespace Sinch.Tests.Fax
         [Fact]
         public async Task Update_WithValidRequest_SendsPutRequest()
         {
-            var phoneNumbers = new List<NumberWithPermissions>
+            var phoneNumbers = new List<PhoneNumber>
             {
                 new() { Number = "+12025550135" }
             };
@@ -316,7 +316,7 @@ namespace Sinch.Tests.Fax
         {
             var updateRequest = new UpdateEmailRequest
             {
-                PhoneNumbers = new List<NumberWithPermissions> { new() { Number = PhoneNumber } }
+                PhoneNumbers = new List<PhoneNumber> { new() { Number = PhoneNumber } }
             };
 
             ArgumentException exception;
@@ -342,7 +342,7 @@ namespace Sinch.Tests.Fax
         {
             var updateRequest = new UpdateEmailRequest
             {
-                PhoneNumbers = new List<NumberWithPermissions> { new() { Number = PhoneNumber } }
+                PhoneNumbers = new List<PhoneNumber> { new() { Number = PhoneNumber } }
             };
 
             ArgumentException exception;
