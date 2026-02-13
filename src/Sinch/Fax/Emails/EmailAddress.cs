@@ -10,7 +10,7 @@ namespace Sinch.Fax.Emails
     public sealed class EmailAddress
     {
         /// <summary>
-        ///     Gets or Sets VarEmail
+        ///     Gets or Sets Email address
         /// </summary>
         [JsonPropertyName("email")]
         public string? Email { get; set; }
