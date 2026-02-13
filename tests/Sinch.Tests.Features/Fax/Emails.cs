@@ -104,7 +104,7 @@ public class Emails
                     new()
                     {
                         Number = "+12016666666",
-                        Permissions = EmailPermissions.Both
+                        Permissions = PhoneNumberPermission.Both
                     }
                 }
             }
@@ -121,7 +121,7 @@ public class Emails
             new()
             {
                 Number = "+12016666666",
-                Permissions = EmailPermissions.Both
+                Permissions = PhoneNumberPermission.Both
             }
         });
         _email.ProjectId.Should().Be("123c0ffee-dada-beef-cafe-baadc0de5678");
@@ -140,12 +140,12 @@ public class Emails
                     new()
                     {
                         Number = "+12016666666",
-                        Permissions = EmailPermissions.Send
+                        Permissions = PhoneNumberPermission.Send
                     },
                     new()
                     {
                         Number = "+12017777777",
-                        Permissions = EmailPermissions.Receive
+                        Permissions = PhoneNumberPermission.Receive
                     }
                 }
             }
@@ -162,12 +162,12 @@ public class Emails
             new()
             {
                 Number = "+12016666666",
-                Permissions = EmailPermissions.Send
+                Permissions = PhoneNumberPermission.Send
             },
             new()
             {
                 Number = "+12017777777",
-                Permissions = EmailPermissions.Receive
+                Permissions = PhoneNumberPermission.Receive
             }
         });
         _email.ProjectId.Should().Be("123c0ffee-dada-beef-cafe-baadc0de5678");

@@ -17,6 +17,6 @@ namespace Sinch.Fax.Emails
         ///     Allows you to set permissions for sending and receiving faxes to this email/phone number combination.
         /// </summary>
         [JsonPropertyName("permissions")]
-        public EmailPermissions? Permissions { get; set; }
+        public PhoneNumberPermission? Permissions { get; set; }
     }
 }
