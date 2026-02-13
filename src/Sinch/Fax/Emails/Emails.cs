@@ -226,12 +226,6 @@ namespace Sinch.Fax.Emails
             ArgumentException.ThrowIfNullOrEmpty(serviceId);
             ArgumentException.ThrowIfNullOrEmpty(emailRequest.Email);
 
-            // NOT: API allows sending an empty list of numbers, returns 200, but don't actually create an email record
-            if (emailRequest.PhoneNumbers.Count == 0)
-            {
-                throw new InvalidOperationException("Phone numbers list should have at least one record");
-            }
-
             var uriBuilder = new UriBuilder(_apiBasePath);
             uriBuilder.Path += $"/{serviceId}/emails";
 
@@ -268,11 +262,6 @@ namespace Sinch.Fax.Emails
 
             ArgumentException.ThrowIfNullOrEmpty(serviceId);
             ArgumentException.ThrowIfNullOrEmpty(email);
-
-            if (updateRequest.PhoneNumbers.Count == 0)
-            {
-                throw new InvalidOperationException("Phone numbers list should have at least one record");
-            }
 
             var uriBuilder = new UriBuilder(_apiBasePath);
             uriBuilder.Path += $"/{serviceId}/emails/{email}";

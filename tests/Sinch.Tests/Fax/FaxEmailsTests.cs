@@ -257,17 +257,6 @@ namespace Sinch.Tests.Fax
         }
 
         [Fact]
-        public async Task Add_WithEmptyPhoneNumbers_ThrowsInvalidOperationException()
-        {
-            var emailRequest = new EmailRequest { Email = Email, PhoneNumbers = [] };
-
-            var exception = await Assert.ThrowsAsync<InvalidOperationException>(
-                async () => await Fax.Emails.Add(ServiceId, emailRequest));
-
-            exception.Message.Should().Contain("Phone numbers list should have at least one record");
-        }
-
-        [Fact]
         public async Task Add_WithNullEmailRequest_ThrowsArgumentNullException()
         {
             var exception = await Assert.ThrowsAsync<ArgumentNullException>(
@@ -359,17 +348,6 @@ namespace Sinch.Tests.Fax
             }
 
             exception.ParamName.Should().Be("email");
-        }
-
-        [Fact]
-        public async Task Update_WithEmptyPhoneNumbers_ThrowsInvalidOperationException()
-        {
-            var updateRequest = new UpdateEmailRequest { PhoneNumbers = [] };
-
-            var exception = await Assert.ThrowsAsync<InvalidOperationException>(
-                async () => await Fax.Emails.Update(ServiceId, Email, updateRequest));
-
-            exception.Message.Should().Contain("Phone numbers list should have at least one record");
         }
 
         [Fact]
