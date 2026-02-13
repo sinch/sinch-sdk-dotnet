@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace Sinch.Fax.Emails
 {
     /// <summary>
-    /// Object from emails/ endoint that is used to send and recieve a fax via email
+    /// Object from emails/endpoint that is used to send and receive a fax via email
     /// </summary>
     public sealed class EmailAddress
     {
