@@ -13,7 +13,7 @@ namespace Sinch.Tests.Fax
 {
     public class FaxEmailsTests : FaxTestBase
     {
-        private const string ServiceId = "TEST_SERVICE_ID";
+        private const string ServiceId = "FAX_SERVICE_ID";
         private const string PhoneNumber = "+12025550134";
         private const string Email = "test_email@sinch.com";
         private const string BaseEmailsPath = $"/v3/projects/{ProjectId}/services/{ServiceId}/emails";
@@ -32,10 +32,10 @@ namespace Sinch.Tests.Fax
                     {
                         new
                         {
-                            email = "test1_email",
+                            email = "test1@example.com",
                             phoneNumbers = new[]
                             {
-                                new { number = "+12025550134", permissions = "SEND_AND_RECEIVE" }
+                                new { number = "+12025550134", permissions = "both" }
                             },
                             projectId = ProjectId
                         }
@@ -50,7 +50,7 @@ namespace Sinch.Tests.Fax
 
             response.Should().NotBeNull();
             response.Emails.Should().HaveCount(1);
-            response.Emails[0].Email.Should().Be("test1_email");
+            response.Emails[0].Email.Should().Be("test1@example.com");
             response.Page.Should().Be(1);
             response.PageSize.Should().Be(20);
             response.TotalItems.Should().Be(1);
@@ -183,12 +183,12 @@ namespace Sinch.Tests.Fax
                 .When(HttpMethod.Post, $"https://fax.api.sinch.com{BaseEmailsPath}")
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .WithPartialContent(Email)
-                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                .Respond(HttpStatusCode.Created, JsonContent.Create(new
                 {
                     email = Email,
                     phoneNumbers = new[]
                     {
-                        new { number = PhoneNumber, permissions = "SEND_AND_RECEIVE" }
+                        new { number = PhoneNumber, permissions = "both" }
                     },
                     projectId = ProjectId
                 }));
@@ -297,7 +297,7 @@ namespace Sinch.Tests.Fax
                     email = Email,
                     phoneNumbers = new[]
                     {
-                        new { number = "+12025550135", permissions = "SEND_AND_RECEIVE" }
+                        new { number = "+12025550135", permissions = "both" }
                     },
                     projectId = ProjectId
                 }));
