@@ -62,7 +62,7 @@ namespace Sinch.Tests.Fax
         public async Task List_WithNullOrEmptyServiceId_ThrowsException(string invalidServiceId)
         {
             ArgumentException exception;
-            
+
             if (invalidServiceId == null)
             {
                 exception = await Assert.ThrowsAsync<ArgumentNullException>(
@@ -73,7 +73,7 @@ namespace Sinch.Tests.Fax
                 exception = await Assert.ThrowsAsync<ArgumentException>(
                     async () => await Fax.Emails.List(invalidServiceId));
             }
-            
+
             exception.ParamName.Should().Be("serviceId");
         }
 
@@ -212,19 +212,19 @@ namespace Sinch.Tests.Fax
             };
 
             ArgumentException exception;
-            
+
             if (invalidServiceId == null)
             {
                 exception = await Assert.ThrowsAsync<ArgumentNullException>(
                     async () => await Fax.Emails.Add(invalidServiceId, emailRequest));
-                
+
             }
             else
             {
                 exception = await Assert.ThrowsAsync<ArgumentException>(
                     async () => await Fax.Emails.Add(invalidServiceId, emailRequest));
             }
-            
+
             exception.ParamName.Should().Be("serviceId");
         }
 
@@ -240,19 +240,19 @@ namespace Sinch.Tests.Fax
             };
 
             ArgumentException exception;
-            
+
             if (invalidEmail == null)
             {
                 exception = await Assert.ThrowsAsync<ArgumentNullException>(
                     async () => await Fax.Emails.Add(ServiceId, emailRequest));
-                
+
             }
             else
             {
                 exception = await Assert.ThrowsAsync<ArgumentException>(
                     async () => await Fax.Emails.Add(ServiceId, emailRequest));
             }
-            
+
             exception.ParamName.Should().Contain("Email");
         }
 
@@ -320,7 +320,7 @@ namespace Sinch.Tests.Fax
             };
 
             ArgumentException exception;
-            
+
             if (invalidServiceId == null)
             {
                 exception = await Assert.ThrowsAsync<ArgumentNullException>(
@@ -331,7 +331,7 @@ namespace Sinch.Tests.Fax
                 exception = await Assert.ThrowsAsync<ArgumentException>(
                     async () => await Fax.Emails.Update(invalidServiceId, Email, updateRequest));
             }
-            
+
             exception.ParamName.Should().Be("serviceId");
         }
 
@@ -346,7 +346,7 @@ namespace Sinch.Tests.Fax
             };
 
             ArgumentException exception;
-            
+
             if (invalidEmail == null)
             {
                 exception = await Assert.ThrowsAsync<ArgumentNullException>(
@@ -357,7 +357,7 @@ namespace Sinch.Tests.Fax
                 exception = await Assert.ThrowsAsync<ArgumentException>(
                     async () => await Fax.Emails.Update(ServiceId, invalidEmail, updateRequest));
             }
-            
+
             exception.ParamName.Should().Be("email");
         }
 
@@ -404,7 +404,7 @@ namespace Sinch.Tests.Fax
         public async Task Delete_WithNullOrEmptyServiceId_ThrowsException(string invalidServiceId)
         {
             ArgumentException exception;
-            
+
             if (invalidServiceId == null)
             {
                 exception = await Assert.ThrowsAsync<ArgumentNullException>(
@@ -415,7 +415,7 @@ namespace Sinch.Tests.Fax
                 exception = await Assert.ThrowsAsync<ArgumentException>(
                     async () => await Fax.Emails.Delete(invalidServiceId, Email));
             }
-            
+
             exception.ParamName.Should().Be("serviceId");
         }
 
@@ -425,7 +425,7 @@ namespace Sinch.Tests.Fax
         public async Task Delete_WithNullOrEmptyEmail_ThrowsException(string invalidEmail)
         {
             ArgumentException exception;
-            
+
             if (invalidEmail == null)
             {
                 exception = await Assert.ThrowsAsync<ArgumentNullException>(
@@ -436,7 +436,7 @@ namespace Sinch.Tests.Fax
                 exception = await Assert.ThrowsAsync<ArgumentException>(
                     async () => await Fax.Emails.Delete(ServiceId, invalidEmail));
             }
-            
+
             exception.ParamName.Should().Be("email");
         }
 
@@ -502,7 +502,7 @@ namespace Sinch.Tests.Fax
         public async Task ListNumbers_WithNullOrEmptyServiceId_ThrowsException(string invalidServiceId)
         {
             ArgumentException exception;
-            
+
             if (invalidServiceId == null)
             {
                 exception = await Assert.ThrowsAsync<ArgumentNullException>(
@@ -513,7 +513,7 @@ namespace Sinch.Tests.Fax
                 exception = await Assert.ThrowsAsync<ArgumentException>(
                     async () => await Fax.Emails.ListNumbers(invalidServiceId, Email));
             }
-            
+
             exception.ParamName.Should().Be("serviceId");
         }
 
@@ -523,7 +523,7 @@ namespace Sinch.Tests.Fax
         public async Task ListNumbers_WithNullOrEmptyEmail_ThrowsException(string invalidEmail)
         {
             ArgumentException exception;
-            
+
             if (invalidEmail == null)
             {
                 exception = await Assert.ThrowsAsync<ArgumentNullException>(
@@ -534,7 +534,7 @@ namespace Sinch.Tests.Fax
                 exception = await Assert.ThrowsAsync<ArgumentException>(
                     async () => await Fax.Emails.ListNumbers(ServiceId, invalidEmail));
             }
-            
+
             exception.ParamName.Should().Be("email");
         }
 
