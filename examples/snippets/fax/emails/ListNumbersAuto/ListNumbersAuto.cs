@@ -25,7 +25,7 @@ const string emailAddress = "my-email";
 
 Console.WriteLine($"Listing all phone numbers for email {emailAddress}");
 
-await foreach (var number in sinchClient.Fax.Emails.ListNumbersAuto(serviceId, emailAddress, pageSize: 20))
+await foreach (var number in sinchClient.Fax.Emails.ListNumbersAuto(serviceId, emailAddress))
 {
     Console.WriteLine(number.ToPrettyString());
 }

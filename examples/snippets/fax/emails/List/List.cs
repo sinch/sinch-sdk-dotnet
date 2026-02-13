@@ -24,6 +24,6 @@ const string serviceId = "FAX_SERVICE_ID";
 
 Console.WriteLine($"Listing emails for service: {serviceId}");
 
-var response = await sinchClient.Fax.Emails.List(serviceId, page: 1, pageSize: 10);
+var response = await sinchClient.Fax.Emails.List(serviceId);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

@@ -24,7 +24,7 @@ const string serviceId = "FAX_SERVICE_ID";
 
 Console.WriteLine($"Listing all emails for service: {serviceId}");
 
-await foreach (var email in sinchClient.Fax.Emails.ListAuto(serviceId, pageSize: 10))
+await foreach (var email in sinchClient.Fax.Emails.ListAuto(serviceId))
 {
     Console.WriteLine(email.ToPrettyString());
 }

@@ -25,7 +25,7 @@ const string phoneNumber = "my-virtual-number";
 
 Console.WriteLine($"Listing all emails for phone number {phoneNumber}");
 
-await foreach (var email in sinchClient.Fax.Emails.ListForNumberAuto(serviceId, phoneNumber, pageSize: 10))
+await foreach (var email in sinchClient.Fax.Emails.ListForNumberAuto(serviceId, phoneNumber))
 {
     Console.WriteLine(email);
 }

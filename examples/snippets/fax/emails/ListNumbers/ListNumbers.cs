@@ -25,6 +25,6 @@ const string emailAddress = "my-email";
 
 Console.WriteLine($"Listing phone numbers for email {emailAddress}");
 
-var response = await sinchClient.Fax.Emails.ListNumbers(serviceId, emailAddress, page: 1, pageSize: 20);
+var response = await sinchClient.Fax.Emails.ListNumbers(serviceId, emailAddress);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");
