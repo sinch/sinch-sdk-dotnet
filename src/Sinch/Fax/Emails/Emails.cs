@@ -41,7 +41,7 @@ namespace Sinch.Fax.Emails
         /// <param name="pageSize">Number of items to return on each page.</param>
         /// <param name="cancellationToken"></param>
         /// <returns>An object of page with a list of email addresses</returns>
-        Task<ListEmailsResponse<EmailAddress>> List(string serviceId, int? page = null, int? pageSize = null,
+        Task<ListEmailsResponse<Email>> List(string serviceId, int? page = null, int? pageSize = null,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Sinch.Fax.Emails
         /// <param name="pageSize">Number of items to return on each page.</param>
         /// <param name="cancellationToken"></param>
         /// <returns>A list of emails addresses</returns>
-        IAsyncEnumerable<EmailAddress> ListAuto(string serviceId, int? page = null, int? pageSize = null,
+        IAsyncEnumerable<Email> ListAuto(string serviceId, int? page = null, int? pageSize = null,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Sinch.Fax.Emails
         /// <param name="emailRequest"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<EmailAddress> Add(string serviceId, EmailRequest emailRequest,
+        Task<Email> Add(string serviceId, EmailRequest emailRequest,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Sinch.Fax.Emails
         /// <param name="updateRequest"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<EmailAddress> Update(string serviceId, string email, UpdateEmailRequest updateRequest,
+        Task<Email> Update(string serviceId, string email, UpdateEmailRequest updateRequest,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace Sinch.Fax.Emails
             return _services.ListEmailsForNumber(serviceId, phoneNumber, page, pageSize, cancellationToken);
         }
 
-        public Task<ListEmailsResponse<EmailAddress>> List(string serviceId, int? page = null, int? pageSize = null,
+        public Task<ListEmailsResponse<Email>> List(string serviceId, int? page = null, int? pageSize = null,
             CancellationToken cancellationToken = default)
         {
             _logger?.LogInformation("Listing emails...");
@@ -173,7 +173,7 @@ namespace Sinch.Fax.Emails
             }
 
             uriBuilder.Query = queryString.ToString();
-            return _http.Send<ListEmailsResponse<EmailAddress>>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
+            return _http.Send<ListEmailsResponse<Email>>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
 
         public async IAsyncEnumerable<string> ListForNumberAuto(string serviceId, string phoneNumber, int? page = null, int? pageSize = null,
@@ -194,12 +194,12 @@ namespace Sinch.Fax.Emails
             while (Utils.IsNotLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One));
         }
 
-        public async IAsyncEnumerable<EmailAddress> ListAuto(string serviceId, int? page = null, int? pageSize = null,
+        public async IAsyncEnumerable<Email> ListAuto(string serviceId, int? page = null, int? pageSize = null,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Auto Listing emails");
 
-            ListEmailsResponse<EmailAddress> response;
+            ListEmailsResponse<Email> response;
             do
             {
                 response = await List(serviceId, page, pageSize, cancellationToken);
@@ -212,7 +212,7 @@ namespace Sinch.Fax.Emails
         }
 
         /// <inheritdoc />
-        public Task<EmailAddress> Add(string serviceId, EmailRequest emailRequest,
+        public Task<Email> Add(string serviceId, EmailRequest emailRequest,
             CancellationToken cancellationToken = default)
         {
             if (emailRequest == null)
@@ -229,7 +229,7 @@ namespace Sinch.Fax.Emails
             var uriBuilder = new UriBuilder(_apiBasePath);
             uriBuilder.Path += $"/{serviceId}/emails";
 
-            return _http.Send<EmailRequest, EmailAddress>(uriBuilder.Uri, HttpMethod.Post, emailRequest,
+            return _http.Send<EmailRequest, Email>(uriBuilder.Uri, HttpMethod.Post, emailRequest,
                 cancellationToken);
         }
 
@@ -249,7 +249,7 @@ namespace Sinch.Fax.Emails
         }
 
         /// <inheritdoc />
-        public Task<EmailAddress> Update(string serviceId, string email, UpdateEmailRequest updateRequest,
+        public Task<Email> Update(string serviceId, string email, UpdateEmailRequest updateRequest,
             CancellationToken cancellationToken = default)
         {
             if (updateRequest == null)
@@ -266,7 +266,7 @@ namespace Sinch.Fax.Emails
             var uriBuilder = new UriBuilder(_apiBasePath);
             uriBuilder.Path += $"/{serviceId}/emails/{email}";
 
-            return _http.Send<UpdateEmailRequest, EmailAddress>(uriBuilder.Uri, HttpMethod.Put, updateRequest,
+            return _http.Send<UpdateEmailRequest, Email>(uriBuilder.Uri, HttpMethod.Put, updateRequest,
                 cancellationToken);
         }
 

@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Sinch.Tests.Fax
 {
-    public class FaxEmailsTests : FaxTestBase
+    public class EmailsTests : FaxTestBase
     {
         private const string ServiceId = "FAX_SERVICE_ID";
         private const string PhoneNumber = "+12025550134";
@@ -50,7 +50,7 @@ namespace Sinch.Tests.Fax
 
             response.Should().NotBeNull();
             response.Emails.Should().HaveCount(1);
-            response.Emails[0].Email.Should().Be("test1@example.com");
+            response.Emails[0].EmailAddress.Should().Be("test1@example.com");
             response.Page.Should().Be(1);
             response.PageSize.Should().Be(20);
             response.TotalItems.Should().Be(1);
@@ -153,16 +153,16 @@ namespace Sinch.Tests.Fax
                     totalPages = 3
                 }));
 
-            var emails = new List<EmailAddress>();
+            var emails = new List<Email>();
             await foreach (var email in Fax.Emails.ListAuto(ServiceId, pageSize: 1))
             {
                 emails.Add(email);
             }
 
             emails.Should().HaveCount(3);
-            emails[0].Email.Should().Be("test1@example.com");
-            emails[1].Email.Should().Be("test2@example.com");
-            emails[2].Email.Should().Be("test3@example.com");
+            emails[0].EmailAddress.Should().Be("test1@example.com");
+            emails[1].EmailAddress.Should().Be("test2@example.com");
+            emails[2].EmailAddress.Should().Be("test3@example.com");
             HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 
@@ -196,7 +196,7 @@ namespace Sinch.Tests.Fax
             var response = await Fax.Emails.Add(ServiceId, emailRequest);
 
             response.Should().NotBeNull();
-            response.Email.Should().Be(Email);
+            response.EmailAddress.Should().Be(Email);
             response.PhoneNumbers.Should().HaveCount(1);
         }
 
@@ -294,7 +294,7 @@ namespace Sinch.Tests.Fax
             var response = await Fax.Emails.Update(ServiceId, Email, updateRequest);
 
             response.Should().NotBeNull();
-            response.Email.Should().Be(Email);
+            response.EmailAddress.Should().Be(Email);
             HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 

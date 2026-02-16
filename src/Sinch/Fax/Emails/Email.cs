@@ -7,13 +7,13 @@ namespace Sinch.Fax.Emails
     /// <summary>
     /// Object from emails/endpoint that is used to send and receive a fax via email
     /// </summary>
-    public sealed class EmailAddress
+    public sealed class Email
     {
         /// <summary>
         ///     Gets or Sets Email address
         /// </summary>
         [JsonPropertyName("email")]
-        public string? Email { get; set; }
+        public string? EmailAddress { get; set; }
 
 
         /// <summary>
@@ -37,8 +37,8 @@ namespace Sinch.Fax.Emails
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(Email)} {{\n");
-            sb.Append($"  {nameof(Email)}: ").Append(Email).Append('\n');
+            sb.Append($"class {nameof(EmailAddress)} {{\n");
+            sb.Append($"  {nameof(EmailAddress)}: ").Append(EmailAddress).Append('\n');
             sb.Append($"  {nameof(PhoneNumbers)}: ").Append(PhoneNumbers).Append('\n');
             sb.Append($"  {nameof(ProjectId)}: ").Append(ProjectId).Append('\n');
             sb.Append("}\n");
