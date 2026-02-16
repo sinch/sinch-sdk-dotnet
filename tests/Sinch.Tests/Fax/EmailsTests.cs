@@ -78,7 +78,7 @@ namespace Sinch.Tests.Fax
         }
 
         [Fact]
-        public async Task List_WithPageAndPageSize_IncludesQueryParameters()
+        public async Task List_WithPageAndPageSize_ReturnsPagedResponse()
         {
             HttpMessageHandlerMock
                 .When(HttpMethod.Get, $"https://fax.api.sinch.com{BaseEmailsPath}?page=2&pageSize=5")
@@ -105,6 +105,7 @@ namespace Sinch.Tests.Fax
             response.Should().NotBeNull();
             response.Page.Should().Be(2);
             response.PageSize.Should().Be(5);
+            response.TotalPages.Should().Be(3);
             response.TotalItems.Should().Be(15);
             HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
@@ -448,7 +449,7 @@ namespace Sinch.Tests.Fax
         }
 
         [Fact]
-        public async Task ListNumbers_WithPageAndPageSize_IncludesQueryParameters()
+        public async Task ListNumbers_WithPageAndPageSize_ReturnsPagedResponse()
         {
             HttpMessageHandlerMock
                 .When(HttpMethod.Get, $"https://fax.api.sinch.com{BaseEmailsPath}/{Email}/numbers?page=3&pageSize=10")
@@ -471,6 +472,7 @@ namespace Sinch.Tests.Fax
             response.Page.Should().Be(3);
             response.PageSize.Should().Be(10);
             response.TotalItems.Should().Be(25);
+            response.TotalPages.Should().Be(3);
             HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 
@@ -587,7 +589,7 @@ namespace Sinch.Tests.Fax
         }
 
         [Fact]
-        public async Task ListForNumber_WithPageAndPageSize_IncludesQueryParameters()
+        public async Task ListForNumber_WithPageAndPageSize_ReturnsPagedResponse()
         {
             HttpMessageHandlerMock
                 .When(HttpMethod.Get, $"https://fax.api.sinch.com/v3/projects/{ProjectId}/services/{ServiceId}/numbers/{PhoneNumber}/emails?page=1&pageSize=5")
@@ -607,6 +609,7 @@ namespace Sinch.Tests.Fax
             response.Page.Should().Be(1);
             response.PageSize.Should().Be(5);
             response.TotalItems.Should().Be(8);
+            response.TotalPages.Should().Be(2);
             response.EmailAddresses.Should().HaveCount(2);
             HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
