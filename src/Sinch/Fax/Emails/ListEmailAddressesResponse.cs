@@ -9,6 +9,6 @@ namespace Sinch.Fax.Emails
         ///     List of email addresses as strings.
         /// </summary>
         [JsonPropertyName("emails")]
-        public List<string> EmailAddresses { get; set;  } = new();
+        public List<string> EmailAddresses { get; set; } = new();
     }
 }
