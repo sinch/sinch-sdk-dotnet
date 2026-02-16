@@ -581,9 +581,9 @@ namespace Sinch.Tests.Fax
             var response = await Fax.Emails.ListForNumber(ServiceId, PhoneNumber);
 
             response.Should().NotBeNull();
-            response.Emails.Should().HaveCount(2);
-            response.Emails[0].Should().Be("test1@example.com");
-            response.Emails[1].Should().Be("test2@example.com");
+            response.EmailAddresses.Should().HaveCount(2);
+            response.EmailAddresses[0].Should().Be("test1@example.com");
+            response.EmailAddresses[1].Should().Be("test2@example.com");
         }
 
         [Fact]
@@ -607,7 +607,7 @@ namespace Sinch.Tests.Fax
             response.Page.Should().Be(1);
             response.PageSize.Should().Be(5);
             response.TotalItems.Should().Be(8);
-            response.Emails.Should().HaveCount(2);
+            response.EmailAddresses.Should().HaveCount(2);
             HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 

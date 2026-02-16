@@ -80,7 +80,7 @@ namespace Sinch.Fax.Services
         /// <param name="pageSize">Number of items to return on each page.</param>
         /// <param name="cancellationToken"></param>
         /// <returns>An object of page with a list of email addresses</returns>
-        Task<ListEmailsResponse<string>> ListEmailsForNumber(string serviceId, string phoneNumber, int? page = null,
+        Task<ListEmailAddressesResponse> ListEmailsForNumber(string serviceId, string phoneNumber, int? page = null,
             int? pageSize = null,
             CancellationToken cancellationToken = default);
 
@@ -213,7 +213,7 @@ namespace Sinch.Fax.Services
         }
 
         /// <inheritdoc />
-        public Task<ListEmailsResponse<string>> ListEmailsForNumber(string serviceId, string phoneNumber, int? page = null,
+        public Task<ListEmailAddressesResponse> ListEmailsForNumber(string serviceId, string phoneNumber, int? page = null,
             int? pageSize = null,
             CancellationToken cancellationToken = default)
         {
@@ -236,7 +236,7 @@ namespace Sinch.Fax.Services
             }
 
             uriBuilder.Query = queryString.ToString();
-            return _http.Send<ListEmailsResponse<string>>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
+            return _http.Send<ListEmailAddressesResponse>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
 
         public async IAsyncEnumerable<string> ListEmailsForNumberAuto(string serviceId, string phoneNumber, int? page = null,
@@ -245,12 +245,12 @@ namespace Sinch.Fax.Services
         {
             _logger?.LogDebug("Auto Listing emails for number...");
 
-            ListEmailsResponse<string> response;
+            ListEmailAddressesResponse response;
             do
             {
                 response = await ListEmailsForNumber(serviceId, phoneNumber, page, pageSize, cancellationToken);
 
-                foreach (var contact in response.Emails)
+                foreach (var contact in response.EmailAddresses)
                     yield return contact;
 
                 page = response.Page + 1;

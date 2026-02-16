@@ -11,9 +11,9 @@ namespace Sinch.Tests.Features.Fax;
 public class EmailsSteps
 {
     private ISinchFaxEmails _emailsApi;
-    private ListEmailsResponse<string> _listEmailsForNumberResponse;
+    private ListEmailAddressesResponse _listEmailsForNumberResponse;
     private readonly List<string> _emailsForNumber = new();
-    private ListEmailsResponse<Email> _listEmailsResponse;
+    private ListEmailsResponse _listEmailsResponse;
     private readonly List<Email> _emailsList = new();
     private Email _email;
     private Func<Task> _deleteEmailOp;
@@ -40,7 +40,7 @@ public class EmailsSteps
     public void ThenTheEmailsServiceResponseContainsEmailsAssociatedToThePhoneNumber(string expectedAnswer)
     {
         var expectedEmails = int.Parse(expectedAnswer);
-        _listEmailsForNumberResponse.Emails.Should().HaveCount(expectedEmails);
+        _listEmailsForNumberResponse.EmailAddresses.Should().HaveCount(expectedEmails);
     }
 
     [When("I send a request to list all the emails associated to a phone number via the \"Emails\" Service")]

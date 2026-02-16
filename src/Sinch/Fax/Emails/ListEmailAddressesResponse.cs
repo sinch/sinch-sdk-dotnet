@@ -3,12 +3,12 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Fax.Emails
 {
-    public sealed class ListEmailsResponse : PagedResponse
+    public sealed class ListEmailAddressesResponse : PagedResponse
     {
         /// <summary>
-        ///     List of emails with associated phone numbers.
+        ///     List of email addresses as strings.
         /// </summary>
         [JsonPropertyName("emails")]
-        public List<Email> Emails { get; set; } = new();
+        public List<string> EmailAddresses { get; set;  } = new();
     }
 }
