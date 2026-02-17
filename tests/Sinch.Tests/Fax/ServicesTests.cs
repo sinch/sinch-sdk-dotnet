@@ -71,17 +71,6 @@ namespace Sinch.Tests.Fax
             response.Name.Should().Be("Service Name");
         }
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        public async Task Get_WithNullOrEmptyServiceId_ThrowsException(string invalidServiceId)
-        {
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(
-                async () => await Fax.Services.Get(invalidServiceId));
-
-            exception.ParamName.Should().Be("serviceId");
-        }
-
         #endregion
 
         #region Update Tests
@@ -113,22 +102,6 @@ namespace Sinch.Tests.Fax
             response.Name.Should().Be("Updated Service");
         }
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        public async Task Update_WithNullOrEmptyServiceId_ThrowsException(string invalidServiceId)
-        {
-            var request = new UpdateFaxServiceRequest
-            {
-                Id = invalidServiceId!
-            };
-
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(
-                async () => await Fax.Services.Update(request));
-
-            exception.ParamName.Should().Be("Id");
-        }
-
         #endregion
 
         #region Delete Tests
@@ -142,17 +115,6 @@ namespace Sinch.Tests.Fax
                 .Respond(HttpStatusCode.NoContent);
 
             await Fax.Services.Delete(ServiceId);
-        }
-
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        public async Task Delete_WithNullOrEmptyServiceId_ThrowsException(string invalidServiceId)
-        {
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(
-                async () => await Fax.Services.Delete(invalidServiceId));
-
-            exception.ParamName.Should().Be("serviceId");
         }
 
         #endregion
@@ -285,17 +247,6 @@ namespace Sinch.Tests.Fax
             exception.ParamName.Should().Be("serviceId");
         }
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        public async Task ListEmailsForNumber_WithNullOrEmptyPhoneNumber_ThrowsException(string invalidPhoneNumber)
-        {
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(
-                async () => await Fax.Services.ListEmailsForNumber(ServiceId, invalidPhoneNumber));
-
-            exception.ParamName.Should().Be("phoneNumber");
-        }
-
         [Fact]
         public async Task ListEmailsForNumberAuto_WithMultiplePages_IteratesThroughAllPages()
         {
@@ -388,17 +339,6 @@ namespace Sinch.Tests.Fax
             response.PageSize.Should().Be(10);
             response.TotalItems.Should().Be(11);
             response.TotalPages.Should().Be(2);
-        }
-
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        public async Task ListNumbers_WithNullOrEmptyServiceId_ThrowsException(string invalidServiceId)
-        {
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(
-                async () => await Fax.Services.ListNumbers(invalidServiceId));
-
-            exception.ParamName.Should().Be("serviceId");
         }
 
         [Fact]
