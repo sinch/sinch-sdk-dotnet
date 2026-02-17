@@ -6,7 +6,6 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using RichardSzalay.MockHttp;
-using Sinch.Fax.Emails;
 using Sinch.Fax.Services;
 using Xunit;
 

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
 using Sinch.Fax.Emails;
+using Sinch.Fax.Services;
 
 namespace Sinch.Tests.Features.Fax;
 

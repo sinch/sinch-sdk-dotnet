@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Fax.Emails
+namespace Sinch.Fax.Services
 {
     public sealed class ServicePhoneNumber
     {

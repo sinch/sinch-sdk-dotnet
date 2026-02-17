@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Sinch.Fax.Services;
 
 namespace Sinch.Fax.Emails
 {
