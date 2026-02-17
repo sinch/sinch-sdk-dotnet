@@ -223,11 +223,12 @@ namespace Sinch.Tests.Core
         {
             var uri = new Uri("http://hello.fax");
             _httpMessageHandlerMock.Expect(HttpMethod.Post, uri.ToString())
-                .WithPartialContent("To\r\n\r\n123,456")
-                .WithPartialContent("MaxRetries\r\n\r\n3")
-                .WithPartialContent("\"Labels[hello]\"\r\n\r\nworld")
-                .WithPartialContent("\"Labels[no]\"\r\n\r\nidea")
-                .WithPartialContent("HeaderPageNumbers\r\n\r\nTrue")
+                .WithPartialContent("name=\"to\"\r\n\r\n123")
+                .WithPartialContent("name=\"to\"\r\n\r\n456")
+                .WithPartialContent("name=\"maxRetries\"\r\n\r\n3")
+                .WithPartialContent("name=\"labels[hello]\"\r\n\r\nworld")
+                .WithPartialContent("name=\"labels[no]\"\r\n\r\nidea")
+                .WithPartialContent("name=\"headerPageNumbers\"\r\n\r\nTrue")
                 .Respond(HttpStatusCode.OK);
             var httpClient = new HttpClient(_httpMessageHandlerMock);
             var http = new Http(GetMock, CreateHttpClientAccessor(httpClient), null, SnakeCaseNamingPolicy.Instance);

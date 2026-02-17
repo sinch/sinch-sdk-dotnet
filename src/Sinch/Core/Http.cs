@@ -90,76 +90,31 @@ namespace Sinch.Core
             };
         }
 
-        public Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream,
+        public async Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream,
             string fileName, CancellationToken cancellationToken = default)
         {
-            var content = BuildMultipartFormDataContent(request);
-
-            stream.Position = 0;
-            var isContentType = new FileExtensionContentTypeProvider().TryGetContentType(fileName, out var contentType);
-            var streamContent = new StreamContent(stream)
+            var boundary = Guid.NewGuid().ToString();
+            var multipartContent = BuildMultipartFormDataBody<TRequest>(request, stream, fileName, boundary);
+            
+            var content = new ByteArrayContent(multipartContent);
+            content.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data")
             {
-                Headers =
-                {
-                    ContentType = isContentType ? new MediaTypeHeaderValue(contentType!) : null
-                }
+                Parameters = { new NameValueHeaderValue("boundary", boundary) }
             };
-            content.Add(streamContent, "file", fileName);
 
-
-            return SendHttpContent<TResponse>(uri, HttpMethod.Post, content, cancellationToken);
+            return await SendHttpContent<TResponse>(uri, HttpMethod.Post, content, cancellationToken);
         }
 
         /// <summary>
-        ///     Builds multi-part form data. Not to generic solutions as it handles some types specifically for SendFax request
-        ///     As map{string, string{>} without nested typing as map{string,list{string}}
-        ///     So, for any future use, keep that in mind to make the solution more generic.
+        ///     Manually builds properly formatted multipart/form-data body.
+        ///     Uses quoted field names per RFC 7578 to match curl and form-data npm library behavior.
         /// </summary>
-        /// <param name="request"></param>
-        /// <typeparam name="TRequest"></typeparam>
-        /// <returns></returns>
-        private static MultipartFormDataContent BuildMultipartFormDataContent<TRequest>(TRequest request)
+        private static byte[] BuildMultipartFormDataBody<TRequest>(TRequest request, Stream fileStream, string fileName, string boundary)
         {
-            {
-                var content = new MultipartFormDataContent();
-                var props = request!.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public |
-                                                             BindingFlags.DeclaredOnly)
-                    .Where(DoesntHaveJsonIgnoreAttribute).Where(HasNonNullValue);
-                foreach (var prop in props)
-                {
-                    var value = prop.GetValue(request);
-                    if (value == null)
-                    {
-                        continue;
-                    }
+            var body = new MemoryStream();
+            var writer = new StreamWriter(body, System.Text.Encoding.UTF8, leaveOpen: true);
 
-                    var type = value.GetType();
-                    if (type == typeof(List<string>))
-                    {
-                        var asString = string.Join(',', (value as List<string>)!);
-                        content.Add(new StringContent(asString), prop.Name);
-                    }
-                    else if (type == typeof(Dictionary<string, string>))
-                    {
-                        foreach (var (key, val) in (value as Dictionary<string, string>)!)
-                        {
-                            var strVal = prop.Name + "[" + key + "]";
-                            content.Add(new StringContent(val), strVal);
-                        }
-                    }
-                    else
-                    {
-                        var str = value.ToString();
-                        if (!string.IsNullOrEmpty(str))
-                        {
-                            content.Add(new StringContent(str), prop.Name);
-                        }
-                    }
-                }
-
-                return content;
-            }
-
+            // Local helper functions
             bool DoesntHaveJsonIgnoreAttribute(PropertyInfo prop)
             {
                 return !prop.GetCustomAttributes(typeof(JsonIgnoreAttribute)).Any();
@@ -169,6 +124,91 @@ namespace Sinch.Core
             {
                 return x.GetValue(request) != null;
             }
+
+            string ToCamelCase(string pascalCaseName)
+            {
+                if (string.IsNullOrEmpty(pascalCaseName) || char.IsLower(pascalCaseName[0]))
+                {
+                    return pascalCaseName;
+                }
+                return char.ToLowerInvariant(pascalCaseName[0]) + pascalCaseName.Substring(1);
+            }
+
+            void WriteFormField(string fieldName, string fieldValue)
+            {
+                writer.Write($"--{boundary}\r\n");
+                writer.Write($"Content-Disposition: form-data; name=\"{fieldName}\"\r\n");
+                writer.Write("\r\n");
+                writer.Write(fieldValue);
+                writer.Write("\r\n");
+            }
+
+            var props = request!.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public |
+                                                         BindingFlags.DeclaredOnly)
+                .Where(DoesntHaveJsonIgnoreAttribute).Where(HasNonNullValue);
+
+            foreach (var prop in props)
+            {
+                var value = prop.GetValue(request);
+                if (value == null)
+                {
+                    continue;
+                }
+
+                var type = value.GetType();
+                var fieldName = ToCamelCase(prop.Name);
+
+                if (type == typeof(List<string>))
+                {
+                    var asStringList = value as List<string>;
+                    foreach (var item in asStringList!)
+                    {
+                        WriteFormField(fieldName, item);
+                    }
+                }
+                else if (type == typeof(Dictionary<string, string>))
+                {
+                    foreach (var (key, val) in (value as Dictionary<string, string>)!)
+                    {
+                        var strVal = fieldName + "[" + key + "]";
+                        WriteFormField(strVal, val);
+                    }
+                }
+                else
+                {
+                    var str = value.ToString();
+                    if (!string.IsNullOrEmpty(str))
+                    {
+                        WriteFormField(fieldName, str);
+                    }
+                }
+            }
+
+            // Add file field only if stream has content
+            if (fileStream != null)
+            {
+                fileStream.Position = 0;
+                if (fileStream.Length > 0)
+                {
+                    writer.Write($"--{boundary}\r\n");
+                    writer.Write($"Content-Disposition: form-data; name=\"file\"; filename=\"{fileName}\"\r\n");
+                    writer.Write("Content-Type: application/octet-stream\r\n");
+                    writer.Write("\r\n");
+                    writer.Flush();
+
+                    fileStream.CopyTo(body);
+                    writer.Write("\r\n");
+                }
+            }
+
+            // Final boundary
+            writer.Write($"--{boundary}--\r\n");
+            writer.Flush();
+
+            var result = body.ToArray();
+            writer.Dispose();
+            body.Dispose();
+            return result;
         }
 
         public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
@@ -189,7 +229,16 @@ namespace Sinch.Core
 #if DEBUG
                 Debug.WriteLine($"Http Method: {httpMethod}");
                 Debug.WriteLine($"Request uri: {uri}");
-                Debug.WriteLine($"Request body: {httpContent?.ReadAsStringAsync(cancellationToken).Result}");
+                if (httpContent is MultipartFormDataContent mfd)
+                {
+                    Debug.WriteLine($"[MULTIPART] Content-Type: {httpContent.Headers.ContentType}");
+                    // For multipart, we can't easily read the body without consuming it
+                    Debug.WriteLine($"[MULTIPART] Multipart form data request");
+                }
+                else
+                {
+                    Debug.WriteLine($"Request body: {httpContent?.ReadAsStringAsync(cancellationToken).Result}");
+                }
 #endif
 
                 using var msg = new HttpRequestMessage();
