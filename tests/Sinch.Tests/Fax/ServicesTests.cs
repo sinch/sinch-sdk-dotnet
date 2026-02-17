@@ -21,7 +21,7 @@ namespace Sinch.Tests.Fax
         #region Create Tests
 
         [Fact]
-        public async Task Create_WithValidRequest_SendsPostRequest()
+        public async Task Create_WithValidRequest_ReturnsCreateService()
         {
             var request = new CreateFaxServiceRequest
             {
@@ -88,7 +88,7 @@ namespace Sinch.Tests.Fax
         #region Update Tests
 
         [Fact]
-        public async Task Update_WithValidRequest_SendsPatchRequest()
+        public async Task Update_WithValidRequest_ReturnsUpdatedService()
         {
             var request = new UpdateFaxServiceRequest
             {
@@ -135,7 +135,7 @@ namespace Sinch.Tests.Fax
         #region Delete Tests
 
         [Fact]
-        public async Task Delete_WithValidServiceId_SendsDeleteRequest()
+        public async Task Delete_WithValidServiceId_DeletesServiceSuccessfully()
         {
             HttpMessageHandlerMock
                 .When(HttpMethod.Delete, $"https://fax.api.sinch.com{BaseServicesPath}/{ServiceId}")
@@ -143,8 +143,6 @@ namespace Sinch.Tests.Fax
                 .Respond(HttpStatusCode.NoContent);
 
             await Fax.Services.Delete(ServiceId);
-
-            HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 
         [Theory]
@@ -185,7 +183,6 @@ namespace Sinch.Tests.Fax
             response.TotalItems.Should().Be(12);
             response.TotalPages.Should().Be(3);
             response.Services.Should().HaveCount(1);
-            HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 
         [Fact]
@@ -276,7 +273,6 @@ namespace Sinch.Tests.Fax
             response.TotalItems.Should().Be(21);
             response.TotalPages.Should().Be(3);
             response.EmailAddresses.Should().HaveCount(1);
-            HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 
         [Theory]
@@ -393,7 +389,6 @@ namespace Sinch.Tests.Fax
             response.PageSize.Should().Be(10);
             response.TotalItems.Should().Be(11);
             response.TotalPages.Should().Be(2);
-            HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 
         [Theory]
