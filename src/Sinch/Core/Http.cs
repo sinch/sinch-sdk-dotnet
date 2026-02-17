@@ -93,38 +93,9 @@ namespace Sinch.Core
         public async Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream,
             string fileName, CancellationToken cancellationToken = default)
         {
-            var boundary = Guid.NewGuid().ToString();
-            var multipartContent = BuildMultipartFormDataBody<TRequest>(request, stream, fileName, boundary);
+            var multipartContent = new MultipartFormDataContent();
             
-            var content = new ByteArrayContent(multipartContent);
-            content.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data")
-            {
-                Parameters = { new NameValueHeaderValue("boundary", boundary) }
-            };
-
-            return await SendHttpContent<TResponse>(uri, HttpMethod.Post, content, cancellationToken);
-        }
-
-        /// <summary>
-        ///     Manually builds properly formatted multipart/form-data body.
-        ///     Uses quoted field names per RFC 7578 to match curl and form-data npm library behavior.
-        /// </summary>
-        private static byte[] BuildMultipartFormDataBody<TRequest>(TRequest request, Stream fileStream, string fileName, string boundary)
-        {
-            var body = new MemoryStream();
-            var writer = new StreamWriter(body, System.Text.Encoding.UTF8, leaveOpen: true);
-
-            // Local helper functions
-            bool DoesntHaveJsonIgnoreAttribute(PropertyInfo prop)
-            {
-                return !prop.GetCustomAttributes(typeof(JsonIgnoreAttribute)).Any();
-            }
-
-            bool HasNonNullValue(PropertyInfo x)
-            {
-                return x.GetValue(request) != null;
-            }
-
+            // Helper to convert PascalCase to camelCase
             string ToCamelCase(string pascalCaseName)
             {
                 if (string.IsNullOrEmpty(pascalCaseName) || char.IsLower(pascalCaseName[0]))
@@ -134,44 +105,32 @@ namespace Sinch.Core
                 return char.ToLowerInvariant(pascalCaseName[0]) + pascalCaseName.Substring(1);
             }
 
-            void WriteFormField(string fieldName, string fieldValue)
-            {
-                writer.Write($"--{boundary}\r\n");
-                writer.Write($"Content-Disposition: form-data; name=\"{fieldName}\"\r\n");
-                writer.Write("\r\n");
-                writer.Write(fieldValue);
-                writer.Write("\r\n");
-            }
-
-            var props = request!.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public |
-                                                         BindingFlags.DeclaredOnly)
-                .Where(DoesntHaveJsonIgnoreAttribute).Where(HasNonNullValue);
+            // Add all public properties from the request object
+            var props = request!.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
+                .Where(prop => !prop.GetCustomAttributes(typeof(JsonIgnoreAttribute)).Any())
+                .Where(prop => prop.GetValue(request) != null);
 
             foreach (var prop in props)
             {
                 var value = prop.GetValue(request);
-                if (value == null)
-                {
-                    continue;
-                }
+                if (value == null) continue;
 
-                var type = value.GetType();
                 var fieldName = ToCamelCase(prop.Name);
+                var type = value.GetType();
 
                 if (type == typeof(List<string>))
                 {
-                    var asStringList = value as List<string>;
-                    foreach (var item in asStringList!)
+                    var stringList = value as List<string>;
+                    foreach (var item in stringList!)
                     {
-                        WriteFormField(fieldName, item);
+                        multipartContent.Add(new StringContent(item), fieldName);
                     }
                 }
                 else if (type == typeof(Dictionary<string, string>))
                 {
                     foreach (var (key, val) in (value as Dictionary<string, string>)!)
                     {
-                        var strVal = fieldName + "[" + key + "]";
-                        WriteFormField(strVal, val);
+                        multipartContent.Add(new StringContent(val), $"{fieldName}[{key}]");
                     }
                 }
                 else
@@ -179,36 +138,22 @@ namespace Sinch.Core
                     var str = value.ToString();
                     if (!string.IsNullOrEmpty(str))
                     {
-                        WriteFormField(fieldName, str);
+                        multipartContent.Add(new StringContent(str), fieldName);
                     }
                 }
             }
 
-            // Add file field only if stream has content
-            if (fileStream != null)
+            // Add file content only if stream has content
+            if (stream != null)
             {
-                fileStream.Position = 0;
-                if (fileStream.Length > 0)
+                stream.Position = 0;
+                if (stream.Length > 0)
                 {
-                    writer.Write($"--{boundary}\r\n");
-                    writer.Write($"Content-Disposition: form-data; name=\"file\"; filename=\"{fileName}\"\r\n");
-                    writer.Write("Content-Type: application/octet-stream\r\n");
-                    writer.Write("\r\n");
-                    writer.Flush();
-
-                    fileStream.CopyTo(body);
-                    writer.Write("\r\n");
+                    multipartContent.Add(new StreamContent(stream), "file", fileName);
                 }
             }
 
-            // Final boundary
-            writer.Write($"--{boundary}--\r\n");
-            writer.Flush();
-
-            var result = body.ToArray();
-            writer.Dispose();
-            body.Dispose();
-            return result;
+            return await SendHttpContent<TResponse>(uri, HttpMethod.Post, multipartContent, cancellationToken);
         }
 
         public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
