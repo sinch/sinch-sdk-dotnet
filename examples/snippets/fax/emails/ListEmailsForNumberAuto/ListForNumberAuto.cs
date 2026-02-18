@@ -5,7 +5,7 @@
 /// 
 /// See https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets/README.md for details
 /// </summary>
-
+/// 
 using Sinch;
 using Sinch.Core;
 using Sinch.Snippets.Shared;
@@ -23,8 +23,9 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 const string serviceId = "FAX_SERVICE_ID";
 const string phoneNumber = "my-virtual-number";
 
-Console.WriteLine($"Listing emails for phone number {phoneNumber} in service {serviceId}");
+Console.WriteLine($"Listing all emails for phone number {phoneNumber}");
 
-var response = await sinchClient.Fax.Emails.ListForNumber(serviceId, phoneNumber);
-
-Console.WriteLine($"Response: {response.ToPrettyString()}");
+await foreach (var email in sinchClient.Fax.Emails.ListForNumberAuto(serviceId, phoneNumber))
+{
+    Console.WriteLine(email);
+}
