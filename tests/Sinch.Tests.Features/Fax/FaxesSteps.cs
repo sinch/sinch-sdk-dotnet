@@ -226,28 +226,9 @@ public class FaxesSteps
     [When("I send a request to list all the faxes")]
     public async Task WhenISendARequestToListAllTheFaxes()
     {
-        _faxesList.Clear();
-
-        var page = 1;
-        while (true)
+        await foreach (var fax in _faxesApi.ListAuto(new ListFaxesRequest()))
         {
-            var response = await _faxesApi.List(new ListFaxesRequest
-            {
-                Page = page,
-                PageSize = 2
-            });
-
-            if (response.Faxes != null)
-            {
-                _faxesList.AddRange(response.Faxes);
-            }
-
-            if (response.PageNumber * response.PageSize >= response.TotalItems)
-            {
-                break;
-            }
-
-            page++;
+            _faxesList.Add(fax);
         }
     }
 

@@ -184,16 +184,18 @@ namespace Sinch.Fax.Faxes
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _loggerAdapter?.LogDebug("Auto Listing faxes");
-
-            var response = await List(listFaxesRequest, cancellationToken);
-            while (!Utils.IsLastPage(response.PageNumber, response.PageSize, response.TotalItems, PageStart.One))
+            
+            ListFaxResponse response;
+            do
             {
-                if (response.Faxes != null)
-                    foreach (var contact in response.Faxes)
-                        yield return contact;
-                listFaxesRequest.Page = (response.PageNumber + 1);
                 response = await List(listFaxesRequest, cancellationToken);
+
+                foreach (var contact in response.Faxes)
+                    yield return contact;
+
+                listFaxesRequest.Page = response.Page + 1;
             }
+            while (Utils.IsNotLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One));
         }
 
         /// <inheritdoc />
