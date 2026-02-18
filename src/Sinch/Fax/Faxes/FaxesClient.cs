@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
@@ -151,17 +152,17 @@ namespace Sinch.Fax.Faxes
             _loggerAdapter?.LogInformation(
                 "Sending fax with content urls - {isContentUrls}; with base64 files - {isBase64Files}",
                 sendingContentUrls, sendingBase64Files);
-
-
+            
+            using var emptyStream = new MemoryStream();
             if (request.To!.Count > 1)
             {
-                var faxResponseList = await _http.Send<SendFaxRequest, SendFaxResponse>(_uri, HttpMethod.Post, request,
-                    cancellationToken: cancellationToken);
+                var faxResponseList = await _http.SendMultipart<SendFaxRequest, SendFaxResponse>(_uri, request,
+                    emptyStream, "content", cancellationToken: cancellationToken);
                 return faxResponseList.Faxes;
             }
 
-            var faxJson = await _http.Send<SendFaxRequest, Fax>(_uri, HttpMethod.Post, request,
-                cancellationToken: cancellationToken);
+            var faxJson = await _http.SendMultipart<SendFaxRequest, Fax>(_uri, request,
+                emptyStream, "content", cancellationToken: cancellationToken);
             return new List<Fax>() { faxJson };
         }
 
