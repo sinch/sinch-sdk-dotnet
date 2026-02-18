@@ -1,6 +1,7 @@
 # Migration to 2.0
 
 ## Content list:
+- [.NET Framework Support](#net-framework-support)
 - [Initialize SinchClient with unified credentials](#initialize-sinchclient-with-unified-credentials)
 - [Initialize Voice and Verification clients](#initialize-voice-and-verification-clients)
 - [Provide Logger, and your own HttpClient](#provide-logger-and-your-own-httpclient)
@@ -21,6 +22,19 @@
 - [SMS Webhooks: property rename for per-recipient delivery reports](#sms-webhooks-property-rename-for-per-recipient-delivery-reports)
 - [ConversationChannelCredentials, InstagramCredentials and LineEnterpriseCredentials moved to new namespace](#conversationchanelcredentials-instagramcredentials-and-lineenterprisecredentials-moved-to-new-namespace)
 - [Verification API: Callout renamed to PhoneCall and Seamless renamed to Data](#verification-api-callout-renamed-to-phonecall-and-seamless-renamed-to-data)
+
+## .NET Framework Support
+
+Version 2.0 of the Sinch .NET SDK drops support for .NET 6 and .NET 7. The SDK now requires either **.NET 8.0** or **.NET 9.0**.
+
+If you are currently targeting .NET 6 or 7, you must upgrade your project's target framework before using version 2.0 of the SDK. You can do this by updating the `<TargetFramework>` element in your `.csproj` file:
+
+```xml
+<!-- Update from .NET 6 or 7 -->
+<TargetFramework>net8.0</TargetFramework>
+<!-- or -->
+<TargetFramework>net9.0</TargetFramework>
+```
 
 ## Initialize `SinchClient` with unified credentials:
 
