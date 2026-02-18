@@ -5,14 +5,14 @@
 /// 
 /// See https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets/README.md for details
 /// </summary>
-
+/// 
 using Sinch;
 using Sinch.Core;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration()
+var sinchClient = new SinchClient(new SinchClientConfiguration
 {
-    SinchUnifiedCredentials = new SinchUnifiedCredentials()
+    SinchUnifiedCredentials = new SinchUnifiedCredentials
     {
         ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
         KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
@@ -20,11 +20,12 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
     }
 });
 
+// The Fax Service ID and phone number you want to list emails for
 const string serviceId = "FAX_SERVICE_ID";
 const string phoneNumber = "my-virtual-number";
 
 Console.WriteLine($"Listing emails for phone number {phoneNumber} in service {serviceId}");
 
-var response = await sinchClient.Fax.Emails.ListForNumber(serviceId, phoneNumber);
+var response = await sinchClient.Fax.Services.ListEmailsForNumber(serviceId, phoneNumber);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

@@ -7,7 +7,6 @@
 /// </summary>
 
 using Sinch;
-using Sinch.Core;
 using Sinch.Snippets.Shared;
 
 var sinchClient = new SinchClient(new SinchClientConfiguration()
@@ -21,10 +20,10 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 });
 
 const string serviceId = "FAX_SERVICE_ID";
-const string phoneNumber = "my-virtual-number";
+const string emailAddress = "my-email";
 
-Console.WriteLine($"Listing emails for phone number {phoneNumber} in service {serviceId}");
+Console.WriteLine($"Deleting email {emailAddress} from service: {serviceId}");
 
-var response = await sinchClient.Fax.Emails.ListForNumber(serviceId, phoneNumber);
+await sinchClient.Fax.Emails.Delete(serviceId, emailAddress);
 
-Console.WriteLine($"Response: {response.ToPrettyString()}");
+Console.WriteLine("Delete completed.");
