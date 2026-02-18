@@ -21,6 +21,7 @@
 - [SMS Webhooks: property rename for per-recipient delivery reports](#sms-webhooks-property-rename-for-per-recipient-delivery-reports)
 - [ConversationChannelCredentials, InstagramCredentials and LineEnterpriseCredentials moved to new namespace](#conversationchanelcredentials-instagramcredentials-and-lineenterprisecredentials-moved-to-new-namespace)
 - [Verification API: Callout renamed to PhoneCall and Seamless renamed to Data](#verification-api-callout-renamed-to-phonecall-and-seamless-renamed-to-data)
+- [Fax API: ListEmailsResponse replaced with concrete response types](#fax-api-listemailsresponse-replaced-with-concrete-response-types)
 
 ## Initialize `SinchClient` with unified credentials:
 
@@ -547,3 +548,29 @@ In `ISinchVerificationStatus` and `SinchVerificationStatus`:
 - `GetCalloutById(...)` → `GetPhoneCallById(...)`
 - `GetCalloutByIdentity(...)` → `GetPhoneCallByIdentity(...)`
 - `GetCalloutByReference(...)` → `GetPhoneCallByReference(...)`
+
+## Fax API: ListEmailsResponse replaced with concrete response types
+
+The generic `ListEmailsResponse<T>` class has been replaced with two concrete response types. The methods in `ISinchFaxEmails` and `ISinchFaxServices` now return explicitly-typed response objects instead of a generic type.
+
+Version 1.*:
+```csharp
+// ListForNumber returns ListEmailsResponse<string>
+var emailStringsResponse = await sinchClient.Fax.Emails.ListForNumber("serviceId", "+1234567890");
+var emails = emailStringsResponse.Emails; // List<string>
+
+// List returns ListEmailsResponse<EmailAddress>
+var emailAddressesResponse = await sinchClient.Fax.Emails.List("serviceId");
+var emailAddresses = emailAddressesResponse.Emails; // List<EmailAddress>
+```
+
+Version 2.*:
+```csharp
+// ListForNumber now returns ListEmailAddressesResponse
+var emailAddressesResponse = await sinchClient.Fax.Emails.ListForNumber("serviceId", "+1234567890");
+var emails = emailAddressesResponse.EmailAddresses; // List<string>
+
+// List now returns ListEmailsResponse
+var emailsResponse = await sinchClient.Fax.Emails.List("serviceId");
+var emailObjects = emailsResponse.Emails; // List<Email>
+```

@@ -5,7 +5,7 @@ namespace Sinch.Fax.Emails
     /// <summary>
     /// A phone number and its permissions.
     /// </summary>
-    public sealed class NumberWithPermissions
+    public sealed class PhoneNumber
     {
         /// <summary>
         ///     A phone number in E.164 format, including the leading '+'.
@@ -17,6 +17,6 @@ namespace Sinch.Fax.Emails
         ///     Allows you to set permissions for sending and receiving faxes to this email/phone number combination.
         /// </summary>
         [JsonPropertyName("permissions")]
-        public EmailPermissions? Permissions { get; set; }
+        public PhoneNumberPermission? Permissions { get; set; }
     }
 }

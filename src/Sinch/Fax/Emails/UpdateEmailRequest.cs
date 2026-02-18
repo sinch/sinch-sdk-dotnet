@@ -6,6 +6,6 @@ namespace Sinch.Fax.Emails
     public sealed class UpdateEmailRequest
     {
         [JsonPropertyName("phoneNumbers")]
-        public List<NumberWithPermissions> PhoneNumbers { get; set; } = new();
+        public List<PhoneNumber> PhoneNumbers { get; set; } = new();
     }
 }

@@ -9,6 +9,6 @@ namespace Sinch.Fax.Emails
         public string Email { get; set; } = null!;
 
         [JsonPropertyName("phoneNumbers")]
-        public List<NumberWithPermissions> PhoneNumbers { get; set; } = new();
+        public List<PhoneNumber> PhoneNumbers { get; set; } = new();
     }
 }

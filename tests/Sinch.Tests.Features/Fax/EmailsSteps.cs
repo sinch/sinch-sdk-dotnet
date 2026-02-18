@@ -8,14 +8,14 @@ using Sinch.Fax.Emails;
 namespace Sinch.Tests.Features.Fax;
 
 [Binding]
-public class Emails
+public class EmailsSteps
 {
     private ISinchFaxEmails _emailsApi;
-    private ListEmailsResponse<string> _listEmailsForNumberResponse;
+    private ListEmailAddressesResponse _listEmailsForNumberResponse;
     private readonly List<string> _emailsForNumber = new();
-    private ListEmailsResponse<EmailAddress> _listEmailsResponse;
-    private readonly List<EmailAddress> _emailsList = new();
-    private EmailAddress _email;
+    private ListEmailsResponse _listEmailsResponse;
+    private readonly List<Email> _emailsList = new();
+    private Email _email;
     private Func<Task> _deleteEmailOp;
     private ListNumbersResponse _listNumbersResponse;
     private readonly List<ServicePhoneNumber> _numbersList = new();
@@ -40,7 +40,7 @@ public class Emails
     public void ThenTheEmailsServiceResponseContainsEmailsAssociatedToThePhoneNumber(string expectedAnswer)
     {
         var expectedEmails = int.Parse(expectedAnswer);
-        _listEmailsForNumberResponse.Emails.Should().HaveCount(expectedEmails);
+        _listEmailsForNumberResponse.EmailAddresses.Should().HaveCount(expectedEmails);
     }
 
     [When("I send a request to list all the emails associated to a phone number via the \"Emails\" Service")]
@@ -99,12 +99,12 @@ public class Emails
             new EmailRequest
             {
                 Email = "spaceship@galaxy.far.far.away",
-                PhoneNumbers = new List<NumberWithPermissions>
+                PhoneNumbers = new List<PhoneNumber>
                 {
                     new()
                     {
                         Number = "+12016666666",
-                        Permissions = EmailPermissions.Both
+                        Permissions = PhoneNumberPermission.Both
                     }
                 }
             }
@@ -115,13 +115,13 @@ public class Emails
     public void ThenTheResponseContainsTheAddedEmail()
     {
         _email.Should().NotBeNull();
-        _email.Email.Should().Be("spaceship@galaxy.far.far.away");
-        _email.PhoneNumbers.Should().BeEquivalentTo(new List<NumberWithPermissions>
+        _email.EmailAddress.Should().Be("spaceship@galaxy.far.far.away");
+        _email.PhoneNumbers.Should().BeEquivalentTo(new List<PhoneNumber>
         {
             new()
             {
                 Number = "+12016666666",
-                Permissions = EmailPermissions.Both
+                Permissions = PhoneNumberPermission.Both
             }
         });
         _email.ProjectId.Should().Be("123c0ffee-dada-beef-cafe-baadc0de5678");
@@ -135,17 +135,17 @@ public class Emails
             "spaceship@galaxy.far.far.away",
             new UpdateEmailRequest
             {
-                PhoneNumbers = new List<NumberWithPermissions>
+                PhoneNumbers = new List<PhoneNumber>
                 {
                     new()
                     {
                         Number = "+12016666666",
-                        Permissions = EmailPermissions.Send
+                        Permissions = PhoneNumberPermission.Send
                     },
                     new()
                     {
                         Number = "+12017777777",
-                        Permissions = EmailPermissions.Receive
+                        Permissions = PhoneNumberPermission.Receive
                     }
                 }
             }
@@ -156,18 +156,18 @@ public class Emails
     public void ThenTheResponseContainsTheUpdatedEmail()
     {
         _email.Should().NotBeNull();
-        _email.Email.Should().Be("spaceship@galaxy.far.far.away");
-        _email.PhoneNumbers.Should().BeEquivalentTo(new List<NumberWithPermissions>
+        _email.EmailAddress.Should().Be("spaceship@galaxy.far.far.away");
+        _email.PhoneNumbers.Should().BeEquivalentTo(new List<PhoneNumber>
         {
             new()
             {
                 Number = "+12016666666",
-                Permissions = EmailPermissions.Send
+                Permissions = PhoneNumberPermission.Send
             },
             new()
             {
                 Number = "+12017777777",
-                Permissions = EmailPermissions.Receive
+                Permissions = PhoneNumberPermission.Receive
             }
         });
         _email.ProjectId.Should().Be("123c0ffee-dada-beef-cafe-baadc0de5678");

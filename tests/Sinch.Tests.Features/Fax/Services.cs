@@ -18,7 +18,7 @@ public class Services
     private Service _service;
     private ListNumbersResponse _listNumbersResponse;
     private readonly List<ServicePhoneNumber> _numbersList = new();
-    private ListEmailsResponse<string> _listEmailsResponse;
+    private ListEmailAddressesResponse _listEmailsResponse;
     private readonly List<string> _emailsList = new();
 
     [Given(@"the Fax service ""Services"" is available")]
@@ -192,7 +192,7 @@ public class Services
     public void ThenTheResponseContainsEmailsAssociatedToThePhoneNumber(string expectedAnswer)
     {
         var expectedEmails = int.Parse(expectedAnswer);
-        _listEmailsResponse.Emails.Should().HaveCount(expectedEmails);
+        _listEmailsResponse.EmailAddresses.Should().HaveCount(expectedEmails);
     }
 
     [When(@"I send a request to list all the emails associated to a phone number")]

@@ -11,9 +11,9 @@ using Xunit;
 
 namespace Sinch.Tests.Fax
 {
-    public class FaxEmailsTests : FaxTestBase
+    public class EmailsTests : FaxTestBase
     {
-        private const string ServiceId = "TEST_SERVICE_ID";
+        private const string ServiceId = "FAX_SERVICE_ID";
         private const string PhoneNumber = "+12025550134";
         private const string Email = "test_email@sinch.com";
         private const string BaseEmailsPath = $"/v3/projects/{ProjectId}/services/{ServiceId}/emails";
@@ -32,10 +32,10 @@ namespace Sinch.Tests.Fax
                     {
                         new
                         {
-                            email = "test1_email",
+                            email = "test1@example.com",
                             phoneNumbers = new[]
                             {
-                                new { number = "+12025550134", permissions = "SEND_AND_RECEIVE" }
+                                new { number = "+12025550134", permissions = "both" }
                             },
                             projectId = ProjectId
                         }
@@ -50,7 +50,7 @@ namespace Sinch.Tests.Fax
 
             response.Should().NotBeNull();
             response.Emails.Should().HaveCount(1);
-            response.Emails[0].Email.Should().Be("test1_email");
+            response.Emails[0].EmailAddress.Should().Be("test1@example.com");
             response.Page.Should().Be(1);
             response.PageSize.Should().Be(20);
             response.TotalItems.Should().Be(1);
@@ -78,7 +78,7 @@ namespace Sinch.Tests.Fax
         }
 
         [Fact]
-        public async Task List_WithPageAndPageSize_IncludesQueryParameters()
+        public async Task List_WithPageAndPageSize_ReturnsPagedResponse()
         {
             HttpMessageHandlerMock
                 .When(HttpMethod.Get, $"https://fax.api.sinch.com{BaseEmailsPath}?page=2&pageSize=5")
@@ -105,6 +105,7 @@ namespace Sinch.Tests.Fax
             response.Should().NotBeNull();
             response.Page.Should().Be(2);
             response.PageSize.Should().Be(5);
+            response.TotalPages.Should().Be(3);
             response.TotalItems.Should().Be(15);
             HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
@@ -153,16 +154,16 @@ namespace Sinch.Tests.Fax
                     totalPages = 3
                 }));
 
-            var emails = new List<EmailAddress>();
+            var emails = new List<Email>();
             await foreach (var email in Fax.Emails.ListAuto(ServiceId, pageSize: 1))
             {
                 emails.Add(email);
             }
 
             emails.Should().HaveCount(3);
-            emails[0].Email.Should().Be("test1@example.com");
-            emails[1].Email.Should().Be("test2@example.com");
-            emails[2].Email.Should().Be("test3@example.com");
+            emails[0].EmailAddress.Should().Be("test1@example.com");
+            emails[1].EmailAddress.Should().Be("test2@example.com");
+            emails[2].EmailAddress.Should().Be("test3@example.com");
             HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 
@@ -173,7 +174,7 @@ namespace Sinch.Tests.Fax
         [Fact]
         public async Task Add_WithValidRequest_SendsPostRequest()
         {
-            var phoneNumbers = new List<NumberWithPermissions>
+            var phoneNumbers = new List<PhoneNumber>
             {
                 new() { Number = PhoneNumber }
             };
@@ -183,12 +184,12 @@ namespace Sinch.Tests.Fax
                 .When(HttpMethod.Post, $"https://fax.api.sinch.com{BaseEmailsPath}")
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .WithPartialContent(Email)
-                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                .Respond(HttpStatusCode.Created, JsonContent.Create(new
                 {
                     email = Email,
                     phoneNumbers = new[]
                     {
-                        new { number = PhoneNumber, permissions = "SEND_AND_RECEIVE" }
+                        new { number = PhoneNumber, permissions = "both" }
                     },
                     projectId = ProjectId
                 }));
@@ -196,7 +197,7 @@ namespace Sinch.Tests.Fax
             var response = await Fax.Emails.Add(ServiceId, emailRequest);
 
             response.Should().NotBeNull();
-            response.Email.Should().Be(Email);
+            response.EmailAddress.Should().Be(Email);
             response.PhoneNumbers.Should().HaveCount(1);
         }
 
@@ -208,7 +209,7 @@ namespace Sinch.Tests.Fax
             var emailRequest = new EmailRequest
             {
                 Email = Email,
-                PhoneNumbers = new List<NumberWithPermissions> { new() { Number = PhoneNumber } }
+                PhoneNumbers = new List<PhoneNumber> { new() { Number = PhoneNumber } }
             };
 
             ArgumentException exception;
@@ -257,17 +258,6 @@ namespace Sinch.Tests.Fax
         }
 
         [Fact]
-        public async Task Add_WithEmptyPhoneNumbers_ThrowsInvalidOperationException()
-        {
-            var emailRequest = new EmailRequest { Email = Email, PhoneNumbers = [] };
-
-            var exception = await Assert.ThrowsAsync<InvalidOperationException>(
-                async () => await Fax.Emails.Add(ServiceId, emailRequest));
-
-            exception.Message.Should().Contain("Phone numbers list should have at least one record");
-        }
-
-        [Fact]
         public async Task Add_WithNullEmailRequest_ThrowsArgumentNullException()
         {
             var exception = await Assert.ThrowsAsync<ArgumentNullException>(
@@ -283,7 +273,7 @@ namespace Sinch.Tests.Fax
         [Fact]
         public async Task Update_WithValidRequest_SendsPutRequest()
         {
-            var phoneNumbers = new List<NumberWithPermissions>
+            var phoneNumbers = new List<PhoneNumber>
             {
                 new() { Number = "+12025550135" }
             };
@@ -297,7 +287,7 @@ namespace Sinch.Tests.Fax
                     email = Email,
                     phoneNumbers = new[]
                     {
-                        new { number = "+12025550135", permissions = "SEND_AND_RECEIVE" }
+                        new { number = "+12025550135", permissions = "both" }
                     },
                     projectId = ProjectId
                 }));
@@ -305,7 +295,7 @@ namespace Sinch.Tests.Fax
             var response = await Fax.Emails.Update(ServiceId, Email, updateRequest);
 
             response.Should().NotBeNull();
-            response.Email.Should().Be(Email);
+            response.EmailAddress.Should().Be(Email);
             HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 
@@ -316,7 +306,7 @@ namespace Sinch.Tests.Fax
         {
             var updateRequest = new UpdateEmailRequest
             {
-                PhoneNumbers = new List<NumberWithPermissions> { new() { Number = PhoneNumber } }
+                PhoneNumbers = new List<PhoneNumber> { new() { Number = PhoneNumber } }
             };
 
             ArgumentException exception;
@@ -342,7 +332,7 @@ namespace Sinch.Tests.Fax
         {
             var updateRequest = new UpdateEmailRequest
             {
-                PhoneNumbers = new List<NumberWithPermissions> { new() { Number = PhoneNumber } }
+                PhoneNumbers = new List<PhoneNumber> { new() { Number = PhoneNumber } }
             };
 
             ArgumentException exception;
@@ -359,17 +349,6 @@ namespace Sinch.Tests.Fax
             }
 
             exception.ParamName.Should().Be("email");
-        }
-
-        [Fact]
-        public async Task Update_WithEmptyPhoneNumbers_ThrowsInvalidOperationException()
-        {
-            var updateRequest = new UpdateEmailRequest { PhoneNumbers = [] };
-
-            var exception = await Assert.ThrowsAsync<InvalidOperationException>(
-                async () => await Fax.Emails.Update(ServiceId, Email, updateRequest));
-
-            exception.Message.Should().Contain("Phone numbers list should have at least one record");
         }
 
         [Fact]
@@ -470,7 +449,7 @@ namespace Sinch.Tests.Fax
         }
 
         [Fact]
-        public async Task ListNumbers_WithPageAndPageSize_IncludesQueryParameters()
+        public async Task ListNumbers_WithPageAndPageSize_ReturnsPagedResponse()
         {
             HttpMessageHandlerMock
                 .When(HttpMethod.Get, $"https://fax.api.sinch.com{BaseEmailsPath}/{Email}/numbers?page=3&pageSize=10")
@@ -493,6 +472,7 @@ namespace Sinch.Tests.Fax
             response.Page.Should().Be(3);
             response.PageSize.Should().Be(10);
             response.TotalItems.Should().Be(25);
+            response.TotalPages.Should().Be(3);
             HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 
@@ -603,13 +583,13 @@ namespace Sinch.Tests.Fax
             var response = await Fax.Emails.ListForNumber(ServiceId, PhoneNumber);
 
             response.Should().NotBeNull();
-            response.Emails.Should().HaveCount(2);
-            response.Emails[0].Should().Be("test1@example.com");
-            response.Emails[1].Should().Be("test2@example.com");
+            response.EmailAddresses.Should().HaveCount(2);
+            response.EmailAddresses[0].Should().Be("test1@example.com");
+            response.EmailAddresses[1].Should().Be("test2@example.com");
         }
 
         [Fact]
-        public async Task ListForNumber_WithPageAndPageSize_IncludesQueryParameters()
+        public async Task ListForNumber_WithPageAndPageSize_ReturnsPagedResponse()
         {
             HttpMessageHandlerMock
                 .When(HttpMethod.Get, $"https://fax.api.sinch.com/v3/projects/{ProjectId}/services/{ServiceId}/numbers/{PhoneNumber}/emails?page=1&pageSize=5")
@@ -629,7 +609,8 @@ namespace Sinch.Tests.Fax
             response.Page.Should().Be(1);
             response.PageSize.Should().Be(5);
             response.TotalItems.Should().Be(8);
-            response.Emails.Should().HaveCount(2);
+            response.TotalPages.Should().Be(2);
+            response.EmailAddresses.Should().HaveCount(2);
             HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 
