@@ -8,6 +8,7 @@
 
 using Sinch;
 using Sinch.Core;
+using Sinch.Fax.Emails;
 using Sinch.Snippets.Shared;
 
 var sinchClient = new SinchClient(new SinchClientConfiguration()
@@ -22,9 +23,23 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 
 const string serviceId = "FAX_SERVICE_ID";
 const string phoneNumber = "my-virtual-number";
+const string emailAddress = "my-email";
 
-Console.WriteLine($"Listing emails for phone number {phoneNumber} in service {serviceId}");
+Console.WriteLine($"Adding email {emailAddress} to service: {serviceId}");
 
-var response = await sinchClient.Fax.Emails.ListForNumber(serviceId, phoneNumber);
+var request = new EmailRequest
+{
+    Email = emailAddress,
+    PhoneNumbers =
+    [
+        new()
+        {
+            Number = phoneNumber,
+            Permissions = EmailPermissions.Both
+        }
+    ]
+};
+
+var response = await sinchClient.Fax.Emails.Add(serviceId, request);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");
