@@ -28,17 +28,17 @@ Console.WriteLine($"Updating phone numbers for email {emailAddress}");
 
 var request = new UpdateEmailRequest
 {
-    PhoneNumbers = new List<NumberWithPermissions>
+    PhoneNumbers = new List<PhoneNumber>
     {
         new()
         {
             Number = "my-phone-number-1",
-            Permissions = EmailPermissions.Send
+            Permissions = PhoneNumberPermission.Send
         },
         new()
         {
             Number = "my-phone-number-2",
-            Permissions = EmailPermissions.Receive
+            Permissions = PhoneNumberPermission.Receive
         }
     }
 };

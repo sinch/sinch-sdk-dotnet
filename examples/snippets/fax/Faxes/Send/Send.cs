@@ -23,10 +23,12 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
 
 Console.WriteLine("Sending a fax with contentUrl to multiple recipients");
 
+const string phoneNumber = "my-virtual-number";
+
 var sendFaxResponse = await sinchClient.Fax.Faxes.Send(
-    new List<string> { "+12063091975" },
     new SendFaxRequest
     {
+        To = [phoneNumber],
         ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
     }
 );
