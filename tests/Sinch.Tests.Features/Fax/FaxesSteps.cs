@@ -31,16 +31,12 @@ public class FaxesSteps
     [When("I send a fax with a contentUrl only to a single recipient")]
     public async Task WhenISendAFaxWithAContentUrlOnlyToASingleRecipient()
     {
-        _sendFaxResponse = new List<FaxModel>
+        var request = new SendFaxRequest
         {
-            await _faxesApi.Send(
-                "+12015555555",
-                new SendFaxRequest
-                {
-                    ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
-                }
-            )
+            To = new List<string> { "+12015555555" },
+            ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
         };
+        _sendFaxResponse = await _faxesApi.Send(request);
     }
 
     [Then("the response contains a list of fax objects with a single element received from a multipart-form-data request with contentUrl only")]
@@ -53,13 +49,12 @@ public class FaxesSteps
     [When("I send a fax with a contentUrl only to multiple recipients")]
     public async Task WhenISendAFaxWithAContentUrlOnlyToMultipleRecipients()
     {
-        _sendFaxResponse = await _faxesApi.Send(
-            new List<string> { "+12015555555", "+12016666666" },
-            new SendFaxRequest
-            {
-                ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
-            }
-        );
+        var request = new SendFaxRequest
+        {
+            To = new List<string> { "+12015555555", "+12016666666" },
+            ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
+        };
+        _sendFaxResponse = await _faxesApi.Send(request);
     }
 
     [Then("the response contains a list of fax objects with multiple elements received from a multipart-form-data request with contentUrl only")]
@@ -77,13 +72,10 @@ public class FaxesSteps
         await using var stream = new MemoryStream(fileBytes);
         using var request = new SendFaxRequest(stream, "sinch-logo.png")
         {
+            To = new List<string> { "+12015555555" },
             ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
         };
-
-        _sendFaxResponse = new List<FaxModel>
-        {
-            await _faxesApi.Send("+12015555555", request)
-        };
+        _sendFaxResponse = await _faxesApi.Send(request);
     }
 
     [Then("the response contains a list of fax objects with a single element received from a multipart-form-data request")]
@@ -100,13 +92,10 @@ public class FaxesSteps
         await using var stream = new MemoryStream(fileBytes);
         using var request = new SendFaxRequest(stream, "sinch-logo.png")
         {
+            To = new List<string> { "+12015555555", "+12016666666" },
             ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
         };
-
-        _sendFaxResponse = await _faxesApi.Send(
-            new List<string> { "+12015555555", "+12016666666" },
-            request
-        );
+        _sendFaxResponse = await _faxesApi.Send(request);
     }
 
     [When("I send a fax with a contentUrl and a base64 file encoded to a single recipient")]
@@ -126,13 +115,10 @@ public class FaxesSteps
             }
         })
         {
+            To = new List<string> { "+12015555555" },
             ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
         };
-
-        _sendFaxResponse = new List<FaxModel>
-        {
-            await _faxesApi.Send("+12015555555", request)
-        };
+        _sendFaxResponse = await _faxesApi.Send(request);
     }
 
     [Then("the response contains a list of fax objects with a single element received from an application-json request")]
@@ -159,13 +145,10 @@ public class FaxesSteps
             }
         })
         {
+            To = new List<string> { "+12015555555", "+12016666666" },
             ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
         };
-
-        _sendFaxResponse = await _faxesApi.Send(
-            new List<string> { "+12015555555", "+12016666666" },
-            request
-        );
+        _sendFaxResponse = await _faxesApi.Send(request);
     }
 
     [Then("the response contains a list of fax objects with multiple elements received from an application-json request")]

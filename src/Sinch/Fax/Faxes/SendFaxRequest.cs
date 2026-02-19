@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Sinch.Core;
@@ -61,19 +62,15 @@ namespace Sinch.Fax.Faxes
         /// </summary>
         [JsonInclude]
         [JsonPropertyName("files")]
-        public List<Base64File>? Files { get; private set; }
+        public IEnumerable<Base64File>? Files { get; private set; }
 
         /// <summary>
         ///     A list of phone numbers in [E.164](https://community.sinch.com/t5/Glossary/E-164/ta-p/7537) format, including the leading &#39;+&#39;.
         /// </summary>
         [JsonInclude]
         [JsonPropertyName("to")]
-        public List<string>? To { get; private set; }
-
-        internal void SetTo(List<string> to)
-        {
-            To = to.ToList();
-        }
+        [JsonConverter(typeof(SingleOrArrayStringConverter))]
+        public IList<string>? To { get; set; }
 
         /// <summary>
         ///     A phone number in [E.164](https://community.sinch.com/t5/Glossary/E-164/ta-p/7537) format, including the leading &#39;+&#39;.
@@ -87,8 +84,9 @@ namespace Sinch.Fax.Faxes
         ///     If the file parameter is specified as well, content from URLs will be rendered before content from files.
         /// </summary>
         [JsonPropertyName("contentUrl")]
+        [JsonConverter(typeof(SingleOrArrayStringConverter))]
         [JsonInclude]
-        public List<string>? ContentUrl { get; set; }
+        public IList<string>? ContentUrl { get; set; }
 
         /// <summary>
         ///     Text that will be displayed at the top of each page of the fax. 50 characters maximum. Default header text is \&quot;-\&quot;. Note that the header is not applied until the fax is transmitted, so it will not appear on fax PDFs or thumbnails.
