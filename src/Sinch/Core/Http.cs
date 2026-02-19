@@ -37,7 +37,7 @@ namespace Sinch.Core
         Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default, Dictionary<string, IEnumerable<string>>? headers = null);
 
-        Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream, string fileName,
+        Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream? stream, string fileName,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Sinch.Core
             };
         }
 
-        public async Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream,
+        public async Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream? stream,
             string fileName, CancellationToken cancellationToken = default)
         {
             var multipartContent = new MultipartFormDataContent();
@@ -110,6 +110,25 @@ namespace Sinch.Core
                 .Where(prop => !prop.GetCustomAttributes(typeof(JsonIgnoreAttribute)).Any())
                 .Where(prop => prop.GetValue(request) != null);
 
+            var fileAdded = false;
+
+            void AddFileContent()
+            {
+                if (fileAdded) 
+                    return;
+                    
+                fileAdded = true;
+                
+                if (stream != null)
+                {
+                    stream.Position = 0;
+                    if (stream.Length > 0)
+                    {
+                        multipartContent.Add(new StreamContent(stream), "file", fileName);
+                    }
+                }
+            }
+
             foreach (var prop in props)
             {
                 var value = prop.GetValue(request);
@@ -117,6 +136,13 @@ namespace Sinch.Core
 
                 var fieldName = ToCamelCase(prop.Name);
                 var type = value.GetType();
+
+                // Insert file attachment before contentUrl so that binary content
+                // precedes URL references in the multipart body.
+                if (fieldName == "contentUrl")
+                {
+                    AddFileContent();
+                }
 
                 if (type == typeof(List<string>))
                 {
@@ -143,15 +169,8 @@ namespace Sinch.Core
                 }
             }
 
-            // Add file content only if stream has content
-            if (stream != null)
-            {
-                stream.Position = 0;
-                if (stream.Length > 0)
-                {
-                    multipartContent.Add(new StreamContent(stream), "file", fileName);
-                }
-            }
+            // Add file content at the end if no contentUrl property was encountered
+            AddFileContent();
 
             return await SendHttpContent<TResponse>(uri, HttpMethod.Post, multipartContent, cancellationToken);
         }

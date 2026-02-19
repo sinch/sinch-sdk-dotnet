@@ -236,7 +236,7 @@ namespace Sinch.Tests.Core
                 },
                 HeaderPageNumbers = true,
             };
-            faxRequest.SetTo(new List<string>() { "123", "456" });
+            faxRequest.To = new List<string>() { "123", "456" };
 
             await http.SendMultipart<SendFaxRequest, EmptyResponse>(uri, faxRequest,
                 faxRequest.FileContent!, faxRequest.FileName!);
