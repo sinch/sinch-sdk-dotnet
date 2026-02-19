@@ -97,24 +97,51 @@ namespace Sinch.Fax.Faxes
         {
             ApplyRequestDefaults(request);
             
-            if (request.FileContent is not null)
+            // Determine if we should send as JSON (base64 files) or multipart (file content or contentUrl)
+            // Priority: base64 files → multipart (file content or contentUrl) → JSON
+            var hasBase64Files = request.Files is not null && request.Files.Count() > 0;
+            
+            if (hasBase64Files)
             {
-                _loggerAdapter?.LogInformation("Sending fax with file content...");
+                // Base64 files are sent as JSON
+                _loggerAdapter?.LogInformation("Sending fax with base64 files...");
+                
+                if (request.To!.Count() > 1)
+                {
+                    var faxResponseList = await _http.Send<SendFaxRequest, SendFaxResponse>(_uri, HttpMethod.Post,
+                        request, cancellationToken: cancellationToken);
+                    return faxResponseList.Faxes;
+                }
+
+                var faxJson = await _http.Send<SendFaxRequest, Fax>(_uri, HttpMethod.Post,
+                    request, cancellationToken: cancellationToken);
+                
+                return [faxJson];
+            }
+            
+            // Check if we have file content or content URLs - send as multipart
+            var hasFileContent = request.FileContent is not null;
+            var hasContentUrl = request.ContentUrl is not null && request.ContentUrl.Count > 0;
+            
+            if (hasFileContent || hasContentUrl)
+            {
+                _loggerAdapter?.LogInformation("Sending fax with file content or content URLs...");
                 if (request.To!.Count() > 1)
                 {
                     var faxResponse = await _http.SendMultipart<SendFaxRequest, SendFaxResponse>(_uri, request,
                         request.FileContent,
-                        request.FileName!, cancellationToken: cancellationToken);
+                        request.FileName ?? "file", cancellationToken: cancellationToken);
                     return faxResponse.Faxes;
                 }
 
                 var fax = await _http.SendMultipart<SendFaxRequest, Fax>(_uri, request, request.FileContent,
-                    request.FileName!, cancellationToken: cancellationToken);
+                    request.FileName ?? "file", cancellationToken: cancellationToken);
                 
                 return [fax];
             }
 
-            _loggerAdapter?.LogInformation("Sending fax with content urls or base64 files...");
+            // Fallback to JSON for any other case
+            _loggerAdapter?.LogInformation("Sending fax with JSON...");
             
             if (request.To!.Count() > 1)
             {
@@ -123,10 +150,10 @@ namespace Sinch.Fax.Faxes
                 return faxResponseList.Faxes;
             }
 
-            var faxJson = await _http.Send<SendFaxRequest, Fax>(_uri, HttpMethod.Post,
+            var faxJsonFallback = await _http.Send<SendFaxRequest, Fax>(_uri, HttpMethod.Post,
                 request, cancellationToken: cancellationToken);
             
-            return [faxJson];
+            return [faxJsonFallback];
         }
 
         /// <inheritdoc />
@@ -148,7 +175,7 @@ namespace Sinch.Fax.Faxes
         {
             _loggerAdapter?.LogDebug("Auto Listing faxes");
             
-            ListFaxResponse response;
+            ListFaxResponse response = new();
             do
             {
                 response = await List(listFaxesRequest, cancellationToken);
