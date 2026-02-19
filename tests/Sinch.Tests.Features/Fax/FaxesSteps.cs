@@ -98,6 +98,14 @@ public class FaxesSteps
         _sendFaxResponse = await _faxesApi.Send(request);
     }
 
+    [Then("the response contains a list of fax objects with multiple elements received from a multipart-form-data request")]
+    public void ThenTheResponseContainsMultipleFaxesReceivedFromAMultipartFormDataRequest()
+    {
+        _sendFaxResponse.Should().HaveCount(2);
+        _sendFaxResponse[0].Id.Should().Be("01W4FFL35P4NC4K35BINMULTI01");
+        _sendFaxResponse[1].Id.Should().Be("01W4FFL35P4NC4K35BINMULTI02");
+    }
+
     [When("I send a fax with a contentUrl and a base64 file encoded to a single recipient")]
     public async Task WhenISendAFaxWithAContentUrlAndABase64FileEncodedToASingleRecipient()
     {
