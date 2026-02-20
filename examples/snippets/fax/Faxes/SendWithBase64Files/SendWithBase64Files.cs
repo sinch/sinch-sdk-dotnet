@@ -25,10 +25,8 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
 const string recipient = "recipient-phone-number";
 const string senderNumber = "my-virtual-number";
 
-// Generate base64-encoded content from a string
-// In a real scenario, you would read actual file content: File.ReadAllBytes("path/to/file.txt")
-var sampleContent = "Sample Text Document - This is page 1 content\nThis demonstrates sending text files as base64.";
-var base64FileContent = Convert.ToBase64String(Encoding.UTF8.GetBytes(sampleContent));
+var fileContent = File.ReadAllBytes("./sample.txt");
+var base64FileContent = Convert.ToBase64String(fileContent);
 
 Console.WriteLine("Sending a fax with base64-encoded text files");
 
