@@ -7,6 +7,7 @@
 /// </summary>
 using System.Text.Json;
 using Sinch;
+using Sinch.Core;
 using Sinch.Fax.Faxes;
 using Sinch.Snippets.Shared;
 
@@ -22,22 +23,17 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
 
 Console.WriteLine("Sending a fax with contentUrl to a single recipient");
 
-const string phoneNumber = "my-virtual-number";
+const string recipient = "recipient-phone-number";
 const string senderNumber = "my-virtual-number";
 
-var sendFaxResponse = await sinchClient.Fax.Faxes.Send(
+var response = await sinchClient.Fax.Faxes.Send(
     new SendFaxRequest
     {
-        To = [phoneNumber],
+        To = [recipient],
         From = senderNumber,
         ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
     }
 );
 
-var jsonResponse = JsonSerializer.Serialize(sendFaxResponse, new JsonSerializerOptions()
-{
-    WriteIndented = true
-});
-
-Console.WriteLine($"Response: {jsonResponse}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");
 

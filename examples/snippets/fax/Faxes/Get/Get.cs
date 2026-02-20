@@ -7,7 +7,6 @@
 /// </summary>
 using Sinch;
 using Sinch.Core;
-using Sinch.Fax.Faxes;
 using Sinch.Snippets.Shared;
 
 var sinchClient = new SinchClient(new SinchClientConfiguration()
@@ -24,6 +23,6 @@ Console.WriteLine("Getting a fax by ID");
 
 const string faxId = "FAX_ID";
 
-var fax = await sinchClient.Fax.Faxes.Get(faxId);
+var response = await sinchClient.Fax.Faxes.Get(faxId);
 
-Console.WriteLine($"Response: {fax.ToPrettyString()}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");

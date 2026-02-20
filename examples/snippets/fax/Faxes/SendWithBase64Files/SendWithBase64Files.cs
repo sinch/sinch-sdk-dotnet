@@ -8,6 +8,7 @@
 using System.Text;
 using System.Text.Json;
 using Sinch;
+using Sinch.Core;
 using Sinch.Fax.Faxes;
 using Sinch.Snippets.Shared;
 
@@ -21,8 +22,8 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
     }
 });
 
-const string recipient = "my-virtual-number";
-const string senderNumber = "my-virtual-number"; // Must be a number associated with your account
+const string recipient = "recipient-phone-number";
+const string senderNumber = "my-virtual-number";
 
 // Generate base64-encoded content from a string
 // In a real scenario, you would read actual file content: File.ReadAllBytes("path/to/file.txt")
@@ -43,6 +44,6 @@ var recipientRequest = new SendFaxRequest([
     From = senderNumber
 };
 
-var singleRecipientResponse = await sinchClient.Fax.Faxes.Send(recipientRequest);
+var response = await sinchClient.Fax.Faxes.Send(recipientRequest);
 
-Console.WriteLine($"Recipient response: {JsonSerializer.Serialize(singleRecipientResponse, new JsonSerializerOptions { WriteIndented = true })}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");

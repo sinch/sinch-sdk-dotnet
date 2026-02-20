@@ -1,10 +1,12 @@
 /// <summary>
 /// Sinch .NET SDK Snippet
 /// 
-/// This snippet is available at https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets
+/// This snippet demonstrates sending a fax to multiple recipients using the contentUrl.
+/// Each recipient in the "to" list will receive the fax independently.
 /// 
 /// See https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets/README.md for details
 /// </summary>
+
 using System.Text.Json;
 using Sinch;
 using Sinch.Core;
@@ -21,19 +23,20 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
     }
 });
 
-const string recipient = "recipient-phone-number";
-const string senderNumber = "my-virtual-number";
-const string faxContentUrl = "https://developers.sinch.com/fax/fax.pdf";
+Console.WriteLine("Sending a fax with contentUrl to multiple recipients");
 
-Console.WriteLine("Sending a fax with contentUrl to a recipient");
+const string senderNumber = "my-virtual-number";
+const string recipient1 = "recipient1-phone-number";
+const string recipient2 = "recipient2-phone-number";
 
 var response = await sinchClient.Fax.Faxes.Send(
     new SendFaxRequest
     {
-        To = new List<string> { recipient },
+        To = [recipient1, recipient2],
         From = senderNumber,
-        ContentUrl = new List<string> { faxContentUrl }
+        ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
     }
 );
 
+Console.WriteLine($"Successfully sent fax to {response.Count} recipients:");
 Console.WriteLine($"Response: {response.ToPrettyString()}");

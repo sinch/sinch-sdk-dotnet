@@ -7,6 +7,7 @@
 /// </summary>
 using System.Text.Json;
 using Sinch;
+using Sinch.Core;
 using Sinch.Fax.Faxes;
 using Sinch.Snippets.Shared;
 
@@ -21,15 +22,15 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
 });
 
 const string filePath = "./fax.pdf";
-const string singleRecipient = "+12063091975";
-const string senderNumber = "+12052275207";
+const string recipient = "recipient-phone-number";
+const string senderNumber = "my-virtual-number";
 
 Console.WriteLine("Sending a fax with file from path");
 
 using var singleRecipientRequest = new SendFaxRequest(filePath);
-singleRecipientRequest.To = new List<string> { singleRecipient };
+singleRecipientRequest.To = new List<string> { recipient };
 singleRecipientRequest.From = senderNumber;
 
-var singleRecipientResponse = await sinchClient.Fax.Faxes.Send(singleRecipientRequest);
+var response = await sinchClient.Fax.Faxes.Send(singleRecipientRequest);
 
-Console.WriteLine($"Single recipient response: {JsonSerializer.Serialize(singleRecipientResponse, new JsonSerializerOptions { WriteIndented = true })}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");

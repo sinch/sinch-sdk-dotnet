@@ -6,7 +6,6 @@
 /// See https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets/README.md for details
 /// </summary>
 using Sinch;
-using Sinch.Fax.Faxes;
 using Sinch.Snippets.Shared;
 
 var sinchClient = new SinchClient(new SinchClientConfiguration()
@@ -25,7 +24,6 @@ const string faxId = "FAX_ID";
 
 var contentResult = await sinchClient.Fax.Faxes.DownloadContent(faxId);
 
-// Save the PDF to a file
 var outputPath = Path.Combine(Directory.GetCurrentDirectory(), contentResult.FileName ?? "fax.pdf");
 await using var fileStream = File.Create(outputPath);
 await contentResult.Stream.CopyToAsync(fileStream);
