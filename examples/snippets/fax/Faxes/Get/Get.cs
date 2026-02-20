@@ -1,7 +1,7 @@
 /// <summary>
 /// Sinch .NET SDK Snippet
 /// 
-/// This snippet demonstrates retrieving a specific fax by ID.
+/// This snippet is available at https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets
 /// 
 /// See https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets/README.md for details
 /// </summary>

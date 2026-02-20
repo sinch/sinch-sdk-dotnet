@@ -114,18 +114,21 @@ namespace Sinch.Core
 
             void AddFileContent()
             {
+                if (stream == null) 
+                    return;
+                
                 if (fileAdded) 
                     return;
                     
                 fileAdded = true;
-                
-                if (stream != null)
+
+                stream.Position = 0;
+                if (stream.Length > 0)
                 {
-                    stream.Position = 0;
-                    if (stream.Length > 0)
-                    {
-                        multipartContent.Add(new StreamContent(stream), "file", fileName);
-                    }
+                    var streamContent = new StreamContent(stream);
+                    var contentType = GetContentType(fileName);
+                    streamContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+                    multipartContent.Add(streamContent, "file", fileName);
                 }
             }
 
@@ -179,6 +182,26 @@ namespace Sinch.Core
             CancellationToken cancellationToken = default, Dictionary<string, IEnumerable<string>>? headers = null)
         {
             return Send<EmptyResponse, TResponse>(uri, httpMethod, null, cancellationToken, headers);
+        }
+
+        private static string GetContentType(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+                return "application/octet-stream";
+            
+            var extension = Path.GetExtension(fileName).ToLowerInvariant();
+
+            return extension switch
+            {
+                ".pdf" => "application/pdf",
+                ".txt" => "text/plain",
+                ".tif" or ".tiff" => "image/tiff",
+                ".jpg" or ".jpeg" => "image/jpeg",
+                ".png" => "image/png",
+                ".docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                ".html" or ".htm" => "text/html",
+                _ => "application/octet-stream"
+            };
         }
 
         private async Task<TResponse> SendHttpContent<TResponse>(Uri uri, HttpMethod httpMethod,

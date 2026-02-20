@@ -20,24 +20,16 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
     }
 });
 
-Console.WriteLine("Sending a fax with contentUrl to a single recipient");
+const string filePath = "./fax.pdf";
+const string singleRecipient = "+12063091975";
+const string senderNumber = "+12052275207";
 
-const string phoneNumber = "my-virtual-number";
-const string senderNumber = "my-virtual-number";
+Console.WriteLine("Sending a fax with file from path");
 
-var sendFaxResponse = await sinchClient.Fax.Faxes.Send(
-    new SendFaxRequest
-    {
-        To = [phoneNumber],
-        From = senderNumber,
-        ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
-    }
-);
+using var singleRecipientRequest = new SendFaxRequest(filePath);
+singleRecipientRequest.To = new List<string> { singleRecipient };
+singleRecipientRequest.From = senderNumber;
 
-var jsonResponse = JsonSerializer.Serialize(sendFaxResponse, new JsonSerializerOptions()
-{
-    WriteIndented = true
-});
+var singleRecipientResponse = await sinchClient.Fax.Faxes.Send(singleRecipientRequest);
 
-Console.WriteLine($"Response: {jsonResponse}");
-
+Console.WriteLine($"Single recipient response: {JsonSerializer.Serialize(singleRecipientResponse, new JsonSerializerOptions { WriteIndented = true })}");

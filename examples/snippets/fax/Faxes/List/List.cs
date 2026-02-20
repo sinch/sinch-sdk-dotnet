@@ -5,7 +5,6 @@
 /// 
 /// See https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets/README.md for details
 /// </summary>
-/// 
 using Sinch;
 using Sinch.Core;
 using Sinch.Fax.Faxes;

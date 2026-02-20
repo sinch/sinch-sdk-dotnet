@@ -178,12 +178,10 @@ namespace Sinch.Fax.Faxes
     {
         // ReSharper disable InconsistentNaming
 
-        public static readonly FileType DOC = new("DOC");
         public static readonly FileType DOCX = new("DOCX");
         public static readonly FileType PDF = new("PDF");
         public static readonly FileType TIF = new("TIF");
         public static readonly FileType JPG = new("JPG");
-        public static readonly FileType ODT = new("ODT");
         public static readonly FileType TXT = new("TXT");
         public static readonly FileType PNG = new("PNG");
         public static readonly FileType HTML = new("HTML");

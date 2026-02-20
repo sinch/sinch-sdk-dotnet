@@ -20,24 +20,19 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
     }
 });
 
-Console.WriteLine("Sending a fax with contentUrl to a single recipient");
+const string singleRecipient = "my-virtual-number";
+const string senderNumber = "my-virtual-number"; // Must be a number associated with your account
+const string faxContentUrl = "https://developers.sinch.com/fax/fax.pdf";
 
-const string phoneNumber = "my-virtual-number";
-const string senderNumber = "my-virtual-number";
+Console.WriteLine("Sending a fax with contentUrl to a recipient");
 
-var sendFaxResponse = await sinchClient.Fax.Faxes.Send(
+var singleRecipientResponse = await sinchClient.Fax.Faxes.Send(
     new SendFaxRequest
     {
-        To = [phoneNumber],
+        To = new List<string> { singleRecipient },
         From = senderNumber,
-        ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
+        ContentUrl = new List<string> { faxContentUrl }
     }
 );
 
-var jsonResponse = JsonSerializer.Serialize(sendFaxResponse, new JsonSerializerOptions()
-{
-    WriteIndented = true
-});
-
-Console.WriteLine($"Response: {jsonResponse}");
-
+Console.WriteLine($"Recipient response: {JsonSerializer.Serialize(singleRecipientResponse, new JsonSerializerOptions { WriteIndented = true })}");

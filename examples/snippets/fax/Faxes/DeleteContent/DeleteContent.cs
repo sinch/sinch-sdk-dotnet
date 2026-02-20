@@ -1,8 +1,7 @@
 /// <summary>
 /// Sinch .NET SDK Snippet
 /// 
-/// This snippet demonstrates deleting the content of a fax from the server.
-/// Note: This only deletes the content, not the fax record itself.
+/// This snippet is available at https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets
 /// 
 /// See https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets/README.md for details
 /// </summary>
