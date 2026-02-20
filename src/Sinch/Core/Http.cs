@@ -95,51 +95,21 @@ namespace Sinch.Core
         {
             var multipartContent = new MultipartFormDataContent();
             
-            // Helper to convert PascalCase to camelCase
-            string ToCamelCase(string pascalCaseName)
-            {
-                if (string.IsNullOrEmpty(pascalCaseName) || char.IsLower(pascalCaseName[0]))
-                {
-                    return pascalCaseName;
-                }
-                return char.ToLowerInvariant(pascalCaseName[0]) + pascalCaseName.Substring(1);
-            }
-
-            // Add all public properties from the request object
-            var props = request!.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
-                .Where(prop => !prop.GetCustomAttributes(typeof(JsonIgnoreAttribute)).Any())
-                .Where(prop => prop.GetValue(request) != null);
+            var props = request!.GetType()
+                .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
+                .Where(DoesntHaveJsonIgnoreAttribute).Where(HasNonNullValue);
 
             var fileAdded = false;
-
-            void AddFileContent()
-            {
-                if (stream == null) 
-                    return;
-                
-                if (fileAdded) 
-                    return;
-                    
-                fileAdded = true;
-
-                stream.Position = 0;
-                if (stream.Length > 0)
-                {
-                    var streamContent = new StreamContent(stream);
-                    var contentType = GetContentType(fileName);
-                    streamContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
-                    multipartContent.Add(streamContent, "file", fileName);
-                }
-            }
 
             foreach (var prop in props)
             {
                 var value = prop.GetValue(request);
                 if (value == null) continue;
 
-                var fieldName = ToCamelCase(prop.Name);
+                var fieldName = StringUtils.PascalToCamelCase(prop.Name);
                 var type = value.GetType();
 
+                // TODO! This is needed to make e2e tests work. Remove once we have a proper solution.
                 // Insert file attachment before contentUrl so that binary content
                 // precedes URL references in the multipart body.
                 if (fieldName == "contentUrl")
@@ -171,37 +141,51 @@ namespace Sinch.Core
                     }
                 }
             }
-
-            // Add file content at the end if no contentUrl property was encountered
+            
             AddFileContent();
 
             return await SendHttpContent<TResponse>(uri, HttpMethod.Post, multipartContent, cancellationToken);
+
+            void AddFileContent()
+            {
+                if (stream == null) 
+                    return;
+                
+                if (fileAdded) 
+                    return;
+                    
+                fileAdded = true;
+
+                stream.Position = 0;
+                if (stream.Length > 0)
+                {
+                    var isContentType = new FileExtensionContentTypeProvider().TryGetContentType(fileName, out var contentType);
+                    var streamContent = new StreamContent(stream)
+                    {
+                        Headers =
+                        {
+                            ContentType = isContentType ? new MediaTypeHeaderValue(contentType!) : null
+                        }
+                    };
+                    multipartContent.Add(streamContent, "file", fileName);
+                }
+            }
+
+            bool HasNonNullValue(PropertyInfo x)
+            {
+                return x.GetValue(request) != null;
+            }
+
+            bool DoesntHaveJsonIgnoreAttribute(PropertyInfo prop)
+            {
+                return !prop.GetCustomAttributes(typeof(JsonIgnoreAttribute)).Any();
+            }
         }
 
         public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default, Dictionary<string, IEnumerable<string>>? headers = null)
         {
             return Send<EmptyResponse, TResponse>(uri, httpMethod, null, cancellationToken, headers);
-        }
-
-        private static string GetContentType(string fileName)
-        {
-            if (string.IsNullOrEmpty(fileName))
-                return "application/octet-stream";
-            
-            var extension = Path.GetExtension(fileName).ToLowerInvariant();
-
-            return extension switch
-            {
-                ".pdf" => "application/pdf",
-                ".txt" => "text/plain",
-                ".tif" or ".tiff" => "image/tiff",
-                ".jpg" or ".jpeg" => "image/jpeg",
-                ".png" => "image/png",
-                ".docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                ".html" or ".htm" => "text/html",
-                _ => "application/octet-stream"
-            };
         }
 
         private async Task<TResponse> SendHttpContent<TResponse>(Uri uri, HttpMethod httpMethod,
@@ -216,16 +200,6 @@ namespace Sinch.Core
 #if DEBUG
                 Debug.WriteLine($"Http Method: {httpMethod}");
                 Debug.WriteLine($"Request uri: {uri}");
-                if (httpContent is MultipartFormDataContent mfd)
-                {
-                    Debug.WriteLine($"[MULTIPART] Content-Type: {httpContent.Headers.ContentType}");
-                    // For multipart, we can't easily read the body without consuming it
-                    Debug.WriteLine($"[MULTIPART] Multipart form data request");
-                }
-                else
-                {
-                    Debug.WriteLine($"Request body: {httpContent?.ReadAsStringAsync(cancellationToken).Result}");
-                }
 #endif
 
                 using var msg = new HttpRequestMessage();
