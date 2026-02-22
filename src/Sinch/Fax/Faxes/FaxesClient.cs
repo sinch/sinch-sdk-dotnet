@@ -130,6 +130,13 @@ namespace Sinch.Fax.Faxes
         {
             var content = new MultipartFormDataContent();
 
+            if (request.To != null)
+                foreach (var to in request.To)
+                    content.Add(new StringContent(to), "to");
+
+            if (request.From != null)
+                content.Add(new StringContent(request.From), "from");
+
             if (request.FileContent is { Length: > 0 })
             {
                 request.FileContent.Position = 0;
@@ -139,13 +146,6 @@ namespace Sinch.Fax.Faxes
                     streamContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
                 content.Add(streamContent, "file", fileName);
             }
-
-            if (request.To != null)
-                foreach (var to in request.To)
-                    content.Add(new StringContent(to), "to");
-
-            if (request.From != null)
-                content.Add(new StringContent(request.From), "from");
 
             if (request.ContentUrl != null)
                 foreach (var url in request.ContentUrl)
