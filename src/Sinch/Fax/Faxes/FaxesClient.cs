@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using System.Threading;
@@ -96,64 +97,92 @@ namespace Sinch.Fax.Faxes
         public async Task<List<Fax>> Send(SendFaxRequest request, CancellationToken cancellationToken = default)
         {
             ApplyRequestDefaults(request);
-            
-            // Determine if we should send as JSON (base64 files) or multipart (file content or contentUrl)
-            // Priority: base64 files → multipart (file content or contentUrl) → JSON
-            var hasBase64Files = request.Files is not null && request.Files.Count() > 0;
-            
-            if (hasBase64Files)
+
+            var isMultipleRecipients = request.To?.Count() > 1;
+
+            if (request.Files is not null && request.Files.Any())
             {
-                // Base64 files are sent as JSON
-                _loggerAdapter?.LogInformation("Sending fax with base64 files...");
-                
-                if (request.To?.Count() > 1)
+                // Base64 files → JSON
+                if (isMultipleRecipients)
                 {
-                    var faxResponseList = await _http.Send<SendFaxRequest, SendFaxResponse>(_uri, HttpMethod.Post,
+                    var faxList = await _http.Send<SendFaxRequest, SendFaxResponse>(_uri, HttpMethod.Post,
                         request, cancellationToken: cancellationToken);
-                    return faxResponseList.Faxes;
+                    return faxList.Faxes;
                 }
 
-                var faxJson = await _http.Send<SendFaxRequest, Fax>(_uri, HttpMethod.Post,
-                    request, cancellationToken: cancellationToken);
-                
-                return [faxJson];
+                return [await _http.Send<SendFaxRequest, Fax>(_uri, HttpMethod.Post,
+                    request, cancellationToken: cancellationToken)];
             }
-            
-            // Check if we have file content or content URLs - send as multipart
-            var hasFileContent = request.FileContent is not null;
-            var hasContentUrl = request.ContentUrl is not null && request.ContentUrl.Count > 0;
-            
-            if (hasFileContent || hasContentUrl)
+
+            // File upload or content URLs → multipart/form-data
+            var multipartContent = BuildMultipartContent(request);
+            if (isMultipleRecipients)
             {
-                _loggerAdapter?.LogInformation("Sending fax with file content or content URLs...");
-                if (request.To?.Count() > 1)
-                {
-                    var faxResponse = await _http.SendMultipart<SendFaxRequest, SendFaxResponse>(_uri, request,
-                        request.FileContent,
-                        request.FileName ?? "file", cancellationToken: cancellationToken);
-                    return faxResponse.Faxes;
-                }
-
-                var fax = await _http.SendMultipart<SendFaxRequest, Fax>(_uri, request, request.FileContent,
-                    request.FileName ?? "file", cancellationToken: cancellationToken);
-                
-                return [fax];
+                var faxList = await _http.Send<SendFaxResponse>(_uri, HttpMethod.Post, multipartContent,
+                    cancellationToken);
+                return faxList.Faxes;
             }
 
-            // Fallback to JSON for any other case
-            _loggerAdapter?.LogInformation("Sending fax with JSON...");
-            
-            if (request.To?.Count() > 1)
+            return [await _http.Send<Fax>(_uri, HttpMethod.Post, multipartContent, cancellationToken)];
+        }
+
+        private static MultipartFormDataContent BuildMultipartContent(SendFaxRequest request)
+        {
+            var content = new MultipartFormDataContent();
+
+            if (request.FileContent is { Length: > 0 })
             {
-                var faxResponseList = await _http.Send<SendFaxRequest, SendFaxResponse>(_uri, HttpMethod.Post,
-                    request, cancellationToken: cancellationToken);
-                return faxResponseList.Faxes;
+                request.FileContent.Position = 0;
+                var streamContent = new StreamContent(request.FileContent);
+                var fileName = request.FileName ?? "file";
+                if (new FileExtensionContentTypeProvider().TryGetContentType(fileName, out var contentType))
+                    streamContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+                content.Add(streamContent, "file", fileName);
             }
 
-            var faxJsonFallback = await _http.Send<SendFaxRequest, Fax>(_uri, HttpMethod.Post,
-                request, cancellationToken: cancellationToken);
-            
-            return [faxJsonFallback];
+            if (request.To != null)
+                foreach (var to in request.To)
+                    content.Add(new StringContent(to), "to");
+
+            if (request.From != null)
+                content.Add(new StringContent(request.From), "from");
+
+            if (request.ContentUrl != null)
+                foreach (var url in request.ContentUrl)
+                    content.Add(new StringContent(url), "contentUrl");
+
+            if (request.HeaderText != null)
+                content.Add(new StringContent(request.HeaderText), "headerText");
+
+            if (request.HeaderPageNumbers.HasValue)
+                content.Add(new StringContent(request.HeaderPageNumbers.Value.ToString()), "headerPageNumbers");
+
+            if (request.HeaderTimeZone != null)
+                content.Add(new StringContent(request.HeaderTimeZone), "headerTimeZone");
+
+            if (request.RetryDelaySeconds.HasValue)
+                content.Add(new StringContent(request.RetryDelaySeconds.Value.ToString()), "retryDelaySeconds");
+
+            if (request.Labels != null)
+                foreach (var (key, value) in request.Labels)
+                    content.Add(new StringContent(value), $"labels[{key}]");
+
+            if (request.CallbackUrl != null)
+                content.Add(new StringContent(request.CallbackUrl), "callbackUrl");
+
+            if (request.CallbackUrlContentType != null)
+                content.Add(new StringContent(request.CallbackUrlContentType.ToString()), "callbackUrlContentType");
+
+            if (request.ImageConversionMethod != null)
+                content.Add(new StringContent(request.ImageConversionMethod.ToString()), "imageConversionMethod");
+
+            if (request.ServiceId != null)
+                content.Add(new StringContent(request.ServiceId), "serviceId");
+
+            if (request.MaxRetries.HasValue)
+                content.Add(new StringContent(request.MaxRetries.Value.ToString()), "maxRetries");
+
+            return content;
         }
 
         /// <inheritdoc />

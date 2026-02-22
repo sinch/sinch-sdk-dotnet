@@ -11,7 +11,6 @@ using NSubstitute;
 using RichardSzalay.MockHttp;
 using Sinch.Auth;
 using Sinch.Core;
-using Sinch.Fax.Faxes;
 using Xunit;
 
 namespace Sinch.Tests.Core
@@ -219,27 +218,20 @@ namespace Sinch.Tests.Core
         }
 
         [Fact]
-        public async Task SendMultipartFormData()
+        public async Task SendWithMultipartContent_SendsPostRequest()
         {
             var uri = new Uri("http://hello.fax");
             _httpMessageHandlerMock.Expect(HttpMethod.Post, uri.ToString())
                 .Respond(HttpStatusCode.OK);
             var httpClient = new HttpClient(_httpMessageHandlerMock);
             var http = new Http(GetMock, CreateHttpClientAccessor(httpClient), null, SnakeCaseNamingPolicy.Instance);
-            var faxRequest = new SendFaxRequest(new MemoryStream(), "file.pdf")
-            {
-                MaxRetries = 3,
-                Labels = new Dictionary<string, string>()
-                {
-                    { "hello", "world" },
-                    { "no", "idea" }
-                },
-                HeaderPageNumbers = true,
-            };
-            faxRequest.To = new List<string>() { "123", "456" };
 
-            await http.SendMultipart<SendFaxRequest, EmptyResponse>(uri, faxRequest,
-                faxRequest.FileContent!, faxRequest.FileName!);
+            var multipartContent = new MultipartFormDataContent();
+            multipartContent.Add(new StringContent("123"), "to");
+            multipartContent.Add(new StringContent("456"), "to");
+            multipartContent.Add(new StreamContent(new MemoryStream()), "file", "file.pdf");
+
+            await http.Send<EmptyResponse>(uri, HttpMethod.Post, multipartContent);
 
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }

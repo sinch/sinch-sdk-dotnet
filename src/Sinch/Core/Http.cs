@@ -15,7 +15,6 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Auth;
-using Sinch.Fax.Faxes;
 using Sinch.Logger;
 
 namespace Sinch.Core
@@ -37,7 +36,7 @@ namespace Sinch.Core
         Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default, Dictionary<string, IEnumerable<string>>? headers = null);
 
-        Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream? stream, string fileName,
+        Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod, HttpContent content,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -90,96 +89,10 @@ namespace Sinch.Core
             };
         }
 
-        public async Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream? stream,
-            string fileName, CancellationToken cancellationToken = default)
+        public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod, HttpContent content,
+            CancellationToken cancellationToken = default)
         {
-            var multipartContent = new MultipartFormDataContent();
-            
-            var props = request!.GetType()
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
-                .Where(DoesntHaveJsonIgnoreAttribute).Where(HasNonNullValue);
-
-            var fileAdded = false;
-
-            foreach (var prop in props)
-            {
-                var value = prop.GetValue(request);
-                if (value == null) continue;
-
-                var fieldName = StringUtils.PascalToCamelCase(prop.Name);
-                var type = value.GetType();
-
-                // TODO! This is needed to make e2e tests work. Remove once we have a proper solution.
-                // Insert file attachment before contentUrl so that binary content
-                // precedes URL references in the multipart body.
-                if (fieldName == "contentUrl")
-                {
-                    AddFileContent();
-                }
-
-                if (type == typeof(List<string>))
-                {
-                    var stringList = value as List<string>;
-                    foreach (var item in stringList!)
-                    {
-                        multipartContent.Add(new StringContent(item), fieldName);
-                    }
-                }
-                else if (type == typeof(Dictionary<string, string>))
-                {
-                    foreach (var (key, val) in (value as Dictionary<string, string>)!)
-                    {
-                        multipartContent.Add(new StringContent(val), $"{fieldName}[{key}]");
-                    }
-                }
-                else
-                {
-                    var str = value.ToString();
-                    if (!string.IsNullOrEmpty(str))
-                    {
-                        multipartContent.Add(new StringContent(str), fieldName);
-                    }
-                }
-            }
-            
-            AddFileContent();
-
-            return await SendHttpContent<TResponse>(uri, HttpMethod.Post, multipartContent, cancellationToken);
-
-            void AddFileContent()
-            {
-                if (stream == null) 
-                    return;
-                
-                if (fileAdded) 
-                    return;
-                    
-                fileAdded = true;
-
-                stream.Position = 0;
-                if (stream.Length > 0)
-                {
-                    var isContentType = new FileExtensionContentTypeProvider().TryGetContentType(fileName, out var contentType);
-                    var streamContent = new StreamContent(stream)
-                    {
-                        Headers =
-                        {
-                            ContentType = isContentType ? new MediaTypeHeaderValue(contentType!) : null
-                        }
-                    };
-                    multipartContent.Add(streamContent, "file", fileName);
-                }
-            }
-
-            bool HasNonNullValue(PropertyInfo x)
-            {
-                return x.GetValue(request) != null;
-            }
-
-            bool DoesntHaveJsonIgnoreAttribute(PropertyInfo prop)
-            {
-                return !prop.GetCustomAttributes(typeof(JsonIgnoreAttribute)).Any();
-            }
+            return SendHttpContent<TResponse>(uri, httpMethod, content, cancellationToken);
         }
 
         public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
