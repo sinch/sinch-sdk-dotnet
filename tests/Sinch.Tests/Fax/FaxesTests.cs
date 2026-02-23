@@ -524,7 +524,7 @@ namespace Sinch.Tests.Fax
             faxes[0].Id.Should().Be("01W4FFL35P4NC4K35FAXID01");
             faxes[1].Id.Should().Be("01W4FFL35P4NC4K35FAXID02");
             faxes[2].Id.Should().Be("01W4FFL35P4NC4K35FAXID03");
-            
+
             HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 

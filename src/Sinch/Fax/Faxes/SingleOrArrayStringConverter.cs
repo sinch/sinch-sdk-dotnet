@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -11,7 +11,7 @@ internal sealed class SingleOrArrayStringConverter : JsonConverter<IList<string>
     {
         if (reader.TokenType == JsonTokenType.String)
         {
-            return [ reader.GetString() ?? string.Empty ];
+            return [reader.GetString() ?? string.Empty];
         }
 
         if (reader.TokenType == JsonTokenType.StartArray)

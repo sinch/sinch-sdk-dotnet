@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -131,8 +130,10 @@ namespace Sinch.Fax.Faxes
             var content = new MultipartFormDataContent();
 
             if (request.To != null)
+            {
                 foreach (var to in request.To)
                     content.Add(new StringContent(to), "to");
+            }
 
             if (request.From != null)
                 content.Add(new StringContent(request.From), "from");
@@ -140,16 +141,21 @@ namespace Sinch.Fax.Faxes
             if (request.FileContent is { Length: > 0 })
             {
                 request.FileContent.Position = 0;
+
                 var streamContent = new StreamContent(request.FileContent);
                 var fileName = request.FileName ?? "file";
+
                 if (new FileExtensionContentTypeProvider().TryGetContentType(fileName, out var contentType))
                     streamContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+
                 content.Add(streamContent, "file", fileName);
             }
 
             if (request.ContentUrl != null)
+            {
                 foreach (var url in request.ContentUrl)
                     content.Add(new StringContent(url), "contentUrl");
+            }
 
             if (request.HeaderText != null)
                 content.Add(new StringContent(request.HeaderText), "headerText");
@@ -164,8 +170,10 @@ namespace Sinch.Fax.Faxes
                 content.Add(new StringContent(request.RetryDelaySeconds.Value.ToString()), "retryDelaySeconds");
 
             if (request.Labels != null)
+            {
                 foreach (var (key, value) in request.Labels)
                     content.Add(new StringContent(value), $"labels[{key}]");
+            }
 
             if (request.CallbackUrl != null)
                 content.Add(new StringContent(request.CallbackUrl), "callbackUrl");
@@ -203,7 +211,7 @@ namespace Sinch.Fax.Faxes
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _loggerAdapter?.LogDebug("Auto Listing faxes");
-            
+
             ListFaxResponse response = new();
             do
             {
@@ -261,7 +269,7 @@ namespace Sinch.Fax.Faxes
             uriBuilder.Path += $"/{id}/file.pdf"; // only pdf is supported for now
             return _http.Send<ContentResult>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
-        
+
         private static void ApplyRequestDefaults(SendFaxRequest request)
         {
             request.HeaderText ??= string.Empty;
