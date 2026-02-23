@@ -25,7 +25,6 @@ const string phoneNumber = "my-virtual-number";
 
 Console.WriteLine($"Listing all emails for phone number {phoneNumber} in service {serviceId}");
 
-// ListForNumberAuto handles pagination automatically, but you can control the page size
 await foreach (var email in sinchClient.Fax.Services.ListEmailsForNumberAuto(serviceId, phoneNumber))
 {
     Console.WriteLine(email);
