@@ -5,13 +5,14 @@
 /// 
 /// See https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets/README.md for details
 /// </summary>
-/// 
+
 using Sinch;
+using Sinch.Core;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration
+var sinchClient = new SinchClient(new SinchClientConfiguration()
 {
-    SinchUnifiedCredentials = new SinchUnifiedCredentials
+    SinchUnifiedCredentials = new SinchUnifiedCredentials()
     {
         ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
         KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
@@ -19,14 +20,11 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
     }
 });
 
-// The Fax Service ID and phone number you want to list emails for
 const string serviceId = "FAX_SERVICE_ID";
 const string phoneNumber = "my-virtual-number";
 
-Console.WriteLine($"Listing all emails for phone number {phoneNumber} in service {serviceId}");
+Console.WriteLine($"Listing emails for phone number {phoneNumber} in service {serviceId}");
 
-// ListEmailsForNumberAuto handles pagination automatically, but you can control the page size
-await foreach (var email in sinchClient.Fax.Services.ListEmailsForNumberAuto(serviceId, phoneNumber))
-{
-    Console.WriteLine(email);
-}
+var response = await sinchClient.Fax.Emails.ListForNumber(serviceId, phoneNumber);
+
+Console.WriteLine($"Response: {response.ToPrettyString()}");

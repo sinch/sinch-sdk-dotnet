@@ -63,15 +63,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListNumbersAuto", "fax\serv
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "emails", "emails", "{E95D07D2-E353-46F2-B20E-EC8B7117DDFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListServiceEmailsForNumber", "fax\emails\ListServiceEmailsForNumber\ListServiceEmailsForNumber.csproj", "{4ED48CEA-1C79-4E83-B06A-7FB8D28FC8B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListEmailsForNumber", "fax\emails\ListEmailsForNumber\ListEmailsForNumber.csproj", "{4ED48CEA-1C79-4E83-B06A-7FB8D28FC8B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListServiceEmailsForNumberAuto", "fax\emails\ListServiceEmailsForNumberAuto\ListServiceEmailsForNumberAuto.csproj", "{A92F4ABD-A20E-49DF-8403-C4BD07A54712}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListEmailsForNumberAuto", "fax\emails\ListEmailsForNumberAuto\ListEmailsForNumberAuto.csproj", "{A92F4ABD-A20E-49DF-8403-C4BD07A54712}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListEmailsForNumber", "fax\emails\ListEmailsForNumber\ListEmailsForNumber.csproj", "{5EC3B2F5-2324-4A82-BD07-BEB43FBACA15}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListForNumber", "fax\emails\ListForNumber\ListForNumber.csproj", "{5EC3B2F5-2324-4A82-BD07-BEB43FBACA15}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "List", "fax\emails\List\List.csproj", "{FD68AEA0-43A5-4C71-BA9F-2666F801BF06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListEmailsForNumberAuto", "fax\emails\ListEmailsForNumberAuto\ListEmailsForNumberAuto.csproj", "{92323F8D-A582-4E77-9C79-3CA6834E44F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListForNumberAuto", "fax\emails\ListForNumberAuto\ListForNumberAuto.csproj", "{92323F8D-A582-4E77-9C79-3CA6834E44F6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListAuto", "fax\emails\ListAuto\ListAuto.csproj", "{AC5E8B1F-548F-4778-8F64-25279275D1D6}"
 EndProject
