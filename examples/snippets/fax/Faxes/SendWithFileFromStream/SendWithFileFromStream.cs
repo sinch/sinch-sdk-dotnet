@@ -20,8 +20,8 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
     }
 });
 
-const string recipient = "+12052275207";
-const string senderNumber = "+12063091975";
+const string senderNumber = "my-virtual-number";
+const string recipient = "recipient-phone-number";
 const string fileName = "sample.txt";
 
 Console.WriteLine("Sending a fax with file from stream to a recipient");
