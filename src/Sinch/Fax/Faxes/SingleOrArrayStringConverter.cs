@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -19,7 +19,7 @@ internal sealed class SingleOrArrayStringConverter : JsonConverter<IList<string>
             return JsonSerializer.Deserialize<List<string>>(ref reader, options) ?? [];
         }
 
-        throw new JsonException("Expected a string or array of strings for 'to'.");
+        throw new JsonException("Expected a string or array of strings.");
     }
 
     public override void Write(Utf8JsonWriter writer, IList<string> value, JsonSerializerOptions options)
