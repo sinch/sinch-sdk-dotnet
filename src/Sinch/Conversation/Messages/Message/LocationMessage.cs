@@ -51,14 +51,14 @@ namespace Sinch.Conversation.Messages.Message
     /// <summary>
     ///     Coordinates
     /// </summary>
-    public record Coordinates(float Latitude, float Longitude)
+    public record Coordinates(double Latitude, double Longitude)
     {
         /// <summary>
         ///     The latitude.
         /// </summary>
 
         [JsonPropertyName("latitude")]
-        public float Latitude { get; init; } = Latitude;
+        public double Latitude { get; init; } = Latitude;
 
 
 
@@ -67,7 +67,7 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
 
         [JsonPropertyName("longitude")]
-        public float Longitude { get; init; } = Longitude;
+        public double Longitude { get; init; } = Longitude;
 
 
 

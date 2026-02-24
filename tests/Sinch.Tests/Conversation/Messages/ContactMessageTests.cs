@@ -111,7 +111,7 @@ namespace Sinch.Tests.Conversation.Messages
             {
                 Label = "label value",
                 Title = "title value",
-                Coordinates = new Coordinates(47.6279809f, -2.8229159f)
+                Coordinates = new Coordinates(47.6279809, -2.8229159)
             })
             {
                 ReplyTo = new ReplyTo("message id value")

@@ -867,7 +867,7 @@ namespace Sinch.Tests.Conversation
                                                     {
                                                         LocationMessage = new LocationMessage
                                                         {
-                                                            Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                                                            Coordinates = new Coordinates(47.6279809, -2.8229159),
                                                             Title = "title value",
                                                             Label = "label value"
                                                         },
