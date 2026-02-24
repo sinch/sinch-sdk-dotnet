@@ -5,7 +5,6 @@
 /// 
 /// See https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets/README.md for details
 /// </summary>
-using System.Text.Json;
 using Sinch;
 using Sinch.Core;
 using Sinch.Fax.Faxes;
@@ -22,15 +21,15 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
 });
 
 const string filePath = "./fax.pdf";
-const string recipient = "recipient-phone-number";
-const string senderNumber = "my-virtual-number";
+const string recipient = "RECIPIENT_PHONE_NUMBER";
 
 Console.WriteLine("Sending a fax with file from path");
 
-using var singleRecipientRequest = new SendFaxRequest(filePath);
-singleRecipientRequest.To = new List<string> { recipient };
-singleRecipientRequest.From = senderNumber;
+using var request = new SendFaxRequest(filePath)
+{
+    To = [recipient]
+};
 
-var response = await sinchClient.Fax.Faxes.Send(singleRecipientRequest);
+var response = await sinchClient.Fax.Faxes.Send(request);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

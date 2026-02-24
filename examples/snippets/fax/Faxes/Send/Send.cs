@@ -5,7 +5,6 @@
 /// 
 /// See https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets/README.md for details
 /// </summary>
-using System.Text.Json;
 using Sinch;
 using Sinch.Core;
 using Sinch.Fax.Faxes;
@@ -23,15 +22,13 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
 
 Console.WriteLine("Sending a fax with contentUrl to a single recipient");
 
-const string recipient = "recipient-phone-number";
-const string senderNumber = "my-virtual-number";
+const string recipient = "RECIPIENT_PHONE_NUMBER";
 
 var response = await sinchClient.Fax.Faxes.Send(
     new SendFaxRequest
     {
         To = [recipient],
-        From = senderNumber,
-        ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
+        ContentUrl = ["https://developers.sinch.com/fax/fax.pdf"]
     }
 );
 

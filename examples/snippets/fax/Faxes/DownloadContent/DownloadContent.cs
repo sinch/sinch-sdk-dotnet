@@ -20,11 +20,12 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 
 Console.WriteLine("Downloading fax content as PDF");
 
+// The Fax ID you want to download
 const string faxId = "FAX_ID";
 
 var contentResult = await sinchClient.Fax.Faxes.DownloadContent(faxId);
 
-var outputPath = Path.Combine(Directory.GetCurrentDirectory(), contentResult.FileName ?? "fax.pdf");
+var outputPath = Path.Combine(Directory.GetCurrentDirectory(), contentResult.FileName ?? $"fax_{faxId}.pdf");
 await using var fileStream = File.Create(outputPath);
 await contentResult.Stream.CopyToAsync(fileStream);
 

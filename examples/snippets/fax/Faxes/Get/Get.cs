@@ -21,6 +21,7 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 
 Console.WriteLine("Getting a fax by ID");
 
+// The Fax ID to retrieve
 const string faxId = "FAX_ID";
 
 var response = await sinchClient.Fax.Faxes.Get(faxId);

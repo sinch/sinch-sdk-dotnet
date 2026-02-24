@@ -20,6 +20,7 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 
 Console.WriteLine("Deleting fax content on the server");
 
+// The Fax ID you want to delete
 const string faxId = "FAX_ID";
 
 await sinchClient.Fax.Faxes.DeleteContent(faxId);

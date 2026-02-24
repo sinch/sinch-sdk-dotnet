@@ -5,8 +5,6 @@
 /// 
 /// See https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets/README.md for details
 /// </summary>
-using System.Text;
-using System.Text.Json;
 using Sinch;
 using Sinch.Core;
 using Sinch.Fax.Faxes;
@@ -22,8 +20,7 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
     }
 });
 
-const string recipient = "recipient-phone-number";
-const string senderNumber = "my-virtual-number";
+const string recipient = "RECIPIENT_PHONE_NUMBER";
 
 var fileContent = File.ReadAllBytes("./sample.txt");
 var base64FileContent = Convert.ToBase64String(fileContent);
@@ -38,8 +35,7 @@ var recipientRequest = new SendFaxRequest([
     }
 ])
 {
-    To = new List<string> { recipient },
-    From = senderNumber
+    To = [recipient]
 };
 
 var response = await sinchClient.Fax.Faxes.Send(recipientRequest);

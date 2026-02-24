@@ -145,7 +145,8 @@ namespace Sinch.Fax.Faxes
                 var streamContent = new StreamContent(request.FileContent);
                 var fileName = request.FileName ?? "file";
 
-                if (new FileExtensionContentTypeProvider().TryGetContentType(fileName, out var contentType))
+                if (new FileExtensionContentTypeProvider().TryGetContentType(fileName, out var contentType) &&
+                    contentType is not null)
                     streamContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
 
                 content.Add(streamContent, "file", fileName);

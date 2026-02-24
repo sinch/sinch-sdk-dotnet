@@ -20,8 +20,7 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
     }
 });
 
-const string senderNumber = "my-virtual-number";
-const string recipient = "recipient-phone-number";
+const string recipient = "RECIPIENT_PHONE_NUMBER";
 const string fileName = "sample.txt";
 
 Console.WriteLine("Sending a fax with file from stream to a recipient");
@@ -30,8 +29,7 @@ var fileContent = File.ReadAllBytes("./sample.txt");
 await using var singleRecipientStream = new MemoryStream(fileContent);
 using var singleRecipientRequest = new SendFaxRequest(singleRecipientStream, fileName)
 {
-    To = new List<string> { recipient },
-    From = senderNumber
+    To = [recipient],
 };
 
 var response = await sinchClient.Fax.Faxes.Send(singleRecipientRequest);
