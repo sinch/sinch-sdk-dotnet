@@ -7,7 +7,6 @@
 /// </summary>
 /// 
 using Sinch;
-using Sinch.Core;
 using Sinch.Snippets.Shared;
 
 var sinchClient = new SinchClient(new SinchClientConfiguration
@@ -24,8 +23,9 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
 const string serviceId = "FAX_SERVICE_ID";
 const string phoneNumber = "my-virtual-number";
 
-Console.WriteLine($"Listing emails for phone number {phoneNumber} in service {serviceId}");
+Console.WriteLine($"Listing all emails for phone number {phoneNumber} in service {serviceId}");
 
-var response = await sinchClient.Fax.Services.ListEmailsForNumber(serviceId, phoneNumber);
-
-Console.WriteLine($"Response: {response.ToPrettyString()}");
+await foreach (var email in sinchClient.Fax.Services.ListEmailsForNumberAuto(serviceId, phoneNumber))
+{
+    Console.WriteLine(email);
+}

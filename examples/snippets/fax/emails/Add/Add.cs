@@ -35,7 +35,7 @@ var request = new EmailRequest
         new()
         {
             Number = phoneNumber,
-            Permissions = EmailPermissions.Both
+            Permissions = PhoneNumberPermission.Both
         }
     ]
 };
