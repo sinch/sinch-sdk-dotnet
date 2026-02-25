@@ -7,7 +7,7 @@ using Sinch.Core;
 using Sinch.Snippets.Shared;
 
 // Your conversation application id
-const string applicationId = "01KDQJGKW2HC87YM6NV53ZXD1M";
+const string applicationId = "APPLICATION_ID";
 
 var sinch = new SinchClient(new SinchClientConfiguration
 {
