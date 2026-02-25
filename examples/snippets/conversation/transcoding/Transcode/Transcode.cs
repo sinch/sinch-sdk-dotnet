@@ -3,10 +3,11 @@ using Sinch;
 using Sinch.Conversation;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Transcoding;
+using Sinch.Core;
 using Sinch.Snippets.Shared;
 
-const string appId = "MY_APP_ID";
-const string conversationRegion = "MY_CONVERSATION_REGION";
+// Your conversation application id
+const string applicationId = "01KDQJGKW2HC87YM6NV53ZXD1M";
 
 var sinch = new SinchClient(new SinchClientConfiguration
 {
@@ -15,35 +16,22 @@ var sinch = new SinchClient(new SinchClientConfiguration
         ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
         KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
         KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
-    },
-    ConversationConfiguration = new SinchConversationConfiguration
-    {
-        ConversationRegion = new ConversationRegion(conversationRegion)
     }
 });
 
 var request = new TranscodeRequest
 {
-    AppId = appId,
+    AppId = applicationId,
     AppMessage = new AppMessage(new LocationMessage
     {
         Title = "Phare d'Eckmühl",
-        Label = "Pointe de Penmarch",
         Coordinates = new Coordinates(47.7981899, -4.3727685)
     }),
-    Channels = new List<ConversationChannel>
-    {
-        ConversationChannel.Sms
-    }
+    Channels = [ConversationChannel.Sms]
 };
 
 Console.WriteLine("Transcoding a location message");
 
 var response = await sinch.Conversation.Transcoding.Transcode(request);
 
-var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions
-{
-    WriteIndented = true
-});
-
-Console.WriteLine($"Response: {jsonResponse}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");
