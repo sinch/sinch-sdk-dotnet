@@ -14,7 +14,7 @@ namespace Sinch.Tests.Conversation
 {
     public class CapabilityTests : ConversationTestBase
     {
-        private const string ConversationCapabilityUrl = $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/capability:query";
+        private const string CapabilityUrl = $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/capability:query";
 
         [Fact]
         public async Task Lookup_WithContactRecipient_ReturnsExpectedResponse()
@@ -29,7 +29,7 @@ namespace Sinch.Tests.Conversation
             };
 
             HttpMessageHandlerMock
-                .When(HttpMethod.Post, ConversationCapabilityUrl)
+                .When(HttpMethod.Post, CapabilityUrl)
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .WithJson(JsonConvert.SerializeObject(expectedRequest))
                 .Respond(HttpStatusCode.OK, JsonContent.Create(new
@@ -77,7 +77,7 @@ namespace Sinch.Tests.Conversation
             };
 
             HttpMessageHandlerMock
-                .When(HttpMethod.Post, ConversationCapabilityUrl)
+                .When(HttpMethod.Post, CapabilityUrl)
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .WithJson(JsonConvert.SerializeObject(expectedRequest))
                 .Respond(HttpStatusCode.OK, JsonContent.Create(new
