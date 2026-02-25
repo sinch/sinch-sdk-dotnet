@@ -95,8 +95,6 @@ namespace Sinch.Fax.Faxes
         /// <inheritdoc />
         public async Task<List<Fax>> Send(SendFaxRequest request, CancellationToken cancellationToken = default)
         {
-            ApplyRequestDefaults(request);
-
             var isMultipleRecipients = request.To?.Count() > 1;
 
             if (request.Files is not null && request.Files.Any())
@@ -271,14 +269,5 @@ namespace Sinch.Fax.Faxes
             return _http.Send<ContentResult>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
 
-        private static void ApplyRequestDefaults(SendFaxRequest request)
-        {
-            request.HeaderText ??= string.Empty;
-            request.HeaderPageNumbers ??= true;
-            request.HeaderTimeZone ??= "America/New_York";
-            request.RetryDelaySeconds ??= 60;
-            request.CallbackUrlContentType ??= CallbackUrlContentType.MultipartFormData;
-            request.ImageConversionMethod ??= ImageConversionMethod.Halftone;
-        }
     }
 }

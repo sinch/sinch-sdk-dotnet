@@ -124,7 +124,13 @@ public class FaxesSteps
         })
         {
             To = new List<string> { "+12015555555" },
-            ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
+            ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" },
+            HeaderText = string.Empty,
+            HeaderPageNumbers = true,
+            HeaderTimeZone = "America/New_York",
+            RetryDelaySeconds = 60,
+            CallbackUrlContentType = CallbackUrlContentType.MultipartFormData,
+            ImageConversionMethod = ImageConversionMethod.Halftone
         };
         _sendFaxResponse = await _faxesApi.Send(request);
     }
@@ -154,7 +160,13 @@ public class FaxesSteps
         })
         {
             To = new List<string> { "+12015555555", "+12016666666" },
-            ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
+            ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" },
+            HeaderText = string.Empty,
+            HeaderPageNumbers = true,
+            HeaderTimeZone = "America/New_York",
+            RetryDelaySeconds = 60,
+            CallbackUrlContentType = CallbackUrlContentType.MultipartFormData,
+            ImageConversionMethod = ImageConversionMethod.Halftone
         };
         _sendFaxResponse = await _faxesApi.Send(request);
     }
