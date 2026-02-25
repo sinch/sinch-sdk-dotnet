@@ -49,7 +49,7 @@ namespace Sinch.Conversation.Messages.Message
     }
 
     /// <summary>
-    ///     Coordinates
+    ///     Coordinates (latitude/longitude)
     /// </summary>
     public record Coordinates(double Latitude, double Longitude)
     {

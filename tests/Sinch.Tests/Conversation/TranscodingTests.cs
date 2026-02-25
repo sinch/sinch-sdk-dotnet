@@ -3,8 +3,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using System.Text.Json;
 using FluentAssertions;
-using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
 using Sinch.Conversation;
 using Sinch.Conversation.Messages.Message;
@@ -15,8 +15,7 @@ namespace Sinch.Tests.Conversation
 {
     public class TranscodingTests : ConversationTestBase
     {
-        private readonly string _transcodeUrl =
-            $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/messages:transcode";
+        private const string TranscodeUrl = $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/messages:transcode";
 
         [Fact]
         public async Task Transcode_TextMessage_ReturnsTranscodedMessage()
@@ -35,9 +34,9 @@ namespace Sinch.Tests.Conversation
             };
 
             HttpMessageHandlerMock
-                .When(HttpMethod.Post, _transcodeUrl)
+                .When(HttpMethod.Post, TranscodeUrl)
                 .WithHeaders("Authorization", $"Bearer {Token}")
-                .WithJson(JsonConvert.SerializeObject(expectedRequest))
+                .WithJson(JsonSerializer.Serialize(expectedRequest))
                 .Respond(HttpStatusCode.OK, JsonContent.Create(new
                 {
                     transcoded_message = new Dictionary<string, string>
@@ -51,17 +50,21 @@ namespace Sinch.Tests.Conversation
             {
                 AppId = "APP_001",
                 AppMessage = new AppMessage(new TextMessage("Hello, World!")),
-                Channels = new List<ConversationChannel>
-                {
+                Channels =
+                [
                     ConversationChannel.Sms,
                     ConversationChannel.WhatsApp
-                }
+                ]
             });
 
             response.Should().NotBeNull();
             response.TranscodedMessage.Should().ContainKey(ConversationChannel.Sms);
             response.TranscodedMessage.Should().ContainKey(ConversationChannel.WhatsApp);
             response.TranscodedMessage![ConversationChannel.Sms].Should().Be("Hello, World!");
+            var whatsAppPayload = JsonSerializer.Deserialize<JsonElement>(
+                    response.TranscodedMessage[ConversationChannel.WhatsApp]);
+            whatsAppPayload.GetProperty("type").GetString().Should().Be("text");
+            whatsAppPayload.GetProperty("text").GetProperty("body").GetString().Should().Be("Hello, World!");
         }
 
         [Fact]
@@ -83,9 +86,9 @@ namespace Sinch.Tests.Conversation
             };
 
             HttpMessageHandlerMock
-                .When(HttpMethod.Post, _transcodeUrl)
+                .When(HttpMethod.Post, TranscodeUrl)
                 .WithHeaders("Authorization", $"Bearer {Token}")
-                .WithJson(JsonConvert.SerializeObject(expectedRequest))
+                .WithJson(JsonSerializer.Serialize(expectedRequest))
                 .Respond(HttpStatusCode.OK, JsonContent.Create(new
                 {
                     transcoded_message = new Dictionary<string, string>
@@ -98,7 +101,7 @@ namespace Sinch.Tests.Conversation
             {
                 AppId = "APP_001",
                 AppMessage = new AppMessage(new TextMessage("Hi")),
-                Channels = new List<ConversationChannel> { ConversationChannel.Sms },
+                Channels = [ConversationChannel.Sms],
                 From = "+12025550001",
                 To = "+12025550002"
             });
