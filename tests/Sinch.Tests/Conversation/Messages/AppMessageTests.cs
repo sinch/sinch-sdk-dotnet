@@ -52,7 +52,7 @@ namespace Sinch.Tests.Conversation.Messages
                             {
                                 LocationMessage = new LocationMessage()
                                 {
-                                    Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                                    Coordinates = new Coordinates(47.6279809, -2.8229159),
                                     Title = "title value",
                                     Label = "label value"
                                 },
@@ -85,7 +85,7 @@ namespace Sinch.Tests.Conversation.Messages
                     {
                         LocationMessage = new LocationMessage()
                         {
-                            Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                            Coordinates = new Coordinates(47.6279809, -2.8229159),
                             Title = "title value",
                             Label = "label value"
                         },
@@ -133,7 +133,7 @@ namespace Sinch.Tests.Conversation.Messages
                                 {
                                     LocationMessage = new LocationMessage()
                                     {
-                                        Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                                        Coordinates = new Coordinates(47.6279809, -2.8229159),
                                         Title = "title value",
                                         Label = "label value"
                                     },
@@ -231,7 +231,7 @@ namespace Sinch.Tests.Conversation.Messages
                         {
                             Title = "title value",
                             Label = "label value",
-                            Coordinates = new Coordinates(47.6279809f, -2.8229159f)
+                            Coordinates = new Coordinates(47.6279809, -2.8229159)
                         },
                         PostbackData = "postback location_message data value"
                     },
@@ -280,7 +280,7 @@ namespace Sinch.Tests.Conversation.Messages
                                     {
                                         Title = "title value",
                                         Label = "label value",
-                                        Coordinates = new Coordinates(47.6279809f, -2.8229159f)
+                                        Coordinates = new Coordinates(47.6279809, -2.8229159)
                                     },
                                     PostbackData = "postback location_message data value"
                                 },
@@ -423,7 +423,7 @@ namespace Sinch.Tests.Conversation.Messages
                                     {
                                         Title = "title value",
                                         Label = "label value",
-                                        Coordinates = new Coordinates(47.6279809f, -2.8229159f)
+                                        Coordinates = new Coordinates(47.6279809, -2.8229159)
                                     },
                                     PostbackData = "postback location_message data value"
                                 },
@@ -501,7 +501,7 @@ namespace Sinch.Tests.Conversation.Messages
 
             result.Should().BeEquivalentTo(new AppMessage(new LocationMessage()
             {
-                Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                Coordinates = new Coordinates(47.6279809, -2.8229159),
                 Title = "title value",
                 Label = "label value"
             })
@@ -532,7 +532,7 @@ namespace Sinch.Tests.Conversation.Messages
                                 {
                                     LocationMessage = new LocationMessage()
                                     {
-                                        Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                                        Coordinates = new Coordinates(47.6279809, -2.8229159),
                                         Title = "title value",
                                         Label = "label value"
                                     },
@@ -643,7 +643,7 @@ namespace Sinch.Tests.Conversation.Messages
                                 {
                                     LocationMessage = new LocationMessage()
                                     {
-                                        Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                                        Coordinates = new Coordinates(47.6279809, -2.8229159),
                                         Title = "title value",
                                         Label = "label value"
                                     },
@@ -775,7 +775,7 @@ namespace Sinch.Tests.Conversation.Messages
                                 {
                                     LocationMessage = new LocationMessage()
                                     {
-                                        Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                                        Coordinates = new Coordinates(47.6279809, -2.8229159),
                                         Title = "title value",
                                         Label = "label value"
                                     },
@@ -947,7 +947,7 @@ namespace Sinch.Tests.Conversation.Messages
                     {
                         LocationMessage = new LocationMessage()
                         {
-                            Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                            Coordinates = new Coordinates(47.6279809, -2.8229159),
                             Title = "title value",
                             Label = "label value"
                         },
@@ -990,7 +990,7 @@ namespace Sinch.Tests.Conversation.Messages
                                 {
                                     LocationMessage = new LocationMessage()
                                     {
-                                        Coordinates = new Coordinates(47.6279809f, -2.8229159f),
+                                        Coordinates = new Coordinates(47.6279809, -2.8229159),
 
                                         Title = "title value",
                                         Label = "label value"
@@ -1098,7 +1098,7 @@ namespace Sinch.Tests.Conversation.Messages
                                     {
                                         Title = "title value",
                                         Label = "label value",
-                                        Coordinates = new Coordinates(47.6279809f, -2.8229159f)
+                                        Coordinates = new Coordinates(47.6279809, -2.8229159)
                                     },
                                     PostbackData = "postback location_message data value"
                                 },

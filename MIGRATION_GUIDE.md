@@ -23,6 +23,7 @@
 - [ConversationChannelCredentials, InstagramCredentials and LineEnterpriseCredentials moved to new namespace](#conversationchanelcredentials-instagramcredentials-and-lineenterprisecredentials-moved-to-new-namespace)
 - [Verification API: Callout renamed to PhoneCall and Seamless renamed to Data](#verification-api-callout-renamed-to-phonecall-and-seamless-renamed-to-data)
 - [Fax API: ListEmailsResponse replaced with concrete response types](#fax-api-listemailsresponse-replaced-with-concrete-response-types)
+- [Conversation API: Coordinates properties changed from float to double](#conversation-api-coordinates-properties-changed-from-float-to-double)
 
 ## .NET Framework Support
 
@@ -587,4 +588,24 @@ var emails = emailAddressesResponse.EmailAddresses; // List<string>
 // List now returns ListEmailsResponse
 var emailsResponse = await sinchClient.Fax.Emails.List("serviceId");
 var emailObjects = emailsResponse.Emails; // List<Email>
+```
+
+## Conversation API: Coordinates properties changed from float to double
+
+The `Latitude` and `Longitude` properties of the `Coordinates` record (used in `LocationMessage`) have been changed from `float` to `double`.
+
+Version 1.*:
+```csharp
+public record Coordinates(float Latitude, float Longitude);
+
+// Usage
+new Coordinates(47.7981899f, -4.3727685f)
+```
+
+Version 2.*:
+```csharp
+public record Coordinates(double Latitude, double Longitude);
+
+// Usage
+new Coordinates(47.7981899, -4.3727685)
 ```

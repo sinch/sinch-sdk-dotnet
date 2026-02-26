@@ -83,13 +83,13 @@ namespace Sinch.Tests.Conversation
                 title = "title",
                 coordinates = new
                 {
-                    latitude = 3.18f,
-                    longitude = 4.20f,
+                    latitude = 3.18,
+                    longitude = 4.20,
                 }
             };
             _baseRequest.Message = new AppMessage(new LocationMessage
             {
-                Coordinates = new Coordinates(3.18f, 4.20f),
+                Coordinates = new Coordinates(3.18, 4.20),
                 Label = "label",
                 Title = "title"
             });
