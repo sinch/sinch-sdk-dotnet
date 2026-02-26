@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -15,7 +14,6 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Auth;
-using Sinch.Fax.Faxes;
 using Sinch.Logger;
 
 namespace Sinch.Core
@@ -37,7 +35,7 @@ namespace Sinch.Core
         Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
             CancellationToken cancellationToken = default, Dictionary<string, IEnumerable<string>>? headers = null);
 
-        Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream, string fileName,
+        Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod, HttpContent content,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -90,85 +88,10 @@ namespace Sinch.Core
             };
         }
 
-        public Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream,
-            string fileName, CancellationToken cancellationToken = default)
+        public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod, HttpContent content,
+            CancellationToken cancellationToken = default)
         {
-            var content = BuildMultipartFormDataContent(request);
-
-            stream.Position = 0;
-            var isContentType = new FileExtensionContentTypeProvider().TryGetContentType(fileName, out var contentType);
-            var streamContent = new StreamContent(stream)
-            {
-                Headers =
-                {
-                    ContentType = isContentType ? new MediaTypeHeaderValue(contentType!) : null
-                }
-            };
-            content.Add(streamContent, "file", fileName);
-
-
-            return SendHttpContent<TResponse>(uri, HttpMethod.Post, content, cancellationToken);
-        }
-
-        /// <summary>
-        ///     Builds multi-part form data. Not to generic solutions as it handles some types specifically for SendFax request
-        ///     As map{string, string{>} without nested typing as map{string,list{string}}
-        ///     So, for any future use, keep that in mind to make the solution more generic.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <typeparam name="TRequest"></typeparam>
-        /// <returns></returns>
-        private static MultipartFormDataContent BuildMultipartFormDataContent<TRequest>(TRequest request)
-        {
-            {
-                var content = new MultipartFormDataContent();
-                var props = request!.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public |
-                                                             BindingFlags.DeclaredOnly)
-                    .Where(DoesntHaveJsonIgnoreAttribute).Where(HasNonNullValue);
-                foreach (var prop in props)
-                {
-                    var value = prop.GetValue(request);
-                    if (value == null)
-                    {
-                        continue;
-                    }
-
-                    var type = value.GetType();
-                    if (type == typeof(List<string>))
-                    {
-                        var asString = string.Join(',', (value as List<string>)!);
-                        content.Add(new StringContent(asString), prop.Name);
-                    }
-                    else if (type == typeof(Dictionary<string, string>))
-                    {
-                        foreach (var (key, val) in (value as Dictionary<string, string>)!)
-                        {
-                            var strVal = prop.Name + "[" + key + "]";
-                            content.Add(new StringContent(val), strVal);
-                        }
-                    }
-                    else
-                    {
-                        var str = value.ToString();
-                        if (!string.IsNullOrEmpty(str))
-                        {
-                            content.Add(new StringContent(str), prop.Name);
-                        }
-                    }
-                }
-
-                return content;
-            }
-
-            bool DoesntHaveJsonIgnoreAttribute(PropertyInfo prop)
-            {
-                return !prop.GetCustomAttributes(typeof(JsonIgnoreAttribute)).Any();
-            }
-
-            bool HasNonNullValue(PropertyInfo x)
-            {
-                return x.GetValue(request) != null;
-            }
+            return SendHttpContent<TResponse>(uri, httpMethod, content, cancellationToken);
         }
 
         public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod,
@@ -189,7 +112,6 @@ namespace Sinch.Core
 #if DEBUG
                 Debug.WriteLine($"Http Method: {httpMethod}");
                 Debug.WriteLine($"Request uri: {uri}");
-                Debug.WriteLine($"Request body: {httpContent?.ReadAsStringAsync(cancellationToken).Result}");
 #endif
 
                 using var msg = new HttpRequestMessage();
