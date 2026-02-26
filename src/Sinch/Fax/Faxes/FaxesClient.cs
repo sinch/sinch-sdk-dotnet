@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using System.Threading;
@@ -19,30 +20,15 @@ namespace Sinch.Fax.Faxes
     public interface ISinchFaxFaxes
     {
         /// <summary>
-        ///     Create and send a fax.<br/><br/>
+        ///     Create and send a fax or multiple faxes.<br/><br/>
         ///     Fax content may be supplied via one or more files or URLs of supported filetypes.<br/><br/>
         ///     If you supply a callbackUrl the callback will be sent as multipart/form-data with the content
         ///     of the fax as an attachment to the body, unless you specify callbackUrlContentType as application/json.
         /// </summary>
-        /// <param name="to">A phone number in [E.164](https://community.sinch.com/t5/Glossary/E-164/ta-p/7537) format, including the leading &#39;+&#39;.</param>
-        /// <param name="request"></param>
+        /// <param name="request">The fax request containing the recipients (To), content, and options. To can be a single phone number or a list of phone numbers in E.164 format.</param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public Task<Fax> Send(string to, SendFaxRequest request, CancellationToken cancellationToken = default);
-
-
-        /// <summary>
-        ///     Create and send a fax to multiple receivers.<br/><br/>
-        ///     Fax content may be supplied via one or more files or URLs of supported filetypes.<br/><br/>
-        ///     If you supply a callbackUrl the callback will be sent as multipart/form-data with the content
-        ///     of the fax as an attachment to the body, unless you specify callbackUrlContentType as application/json.
-        /// </summary>
-        /// <param name="to">A list of phone numbers in [E.164](https://community.sinch.com/t5/Glossary/E-164/ta-p/7537) format, including the leading &#39;+&#39;.</param>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public Task<List<Fax>> Send(List<string> to, SendFaxRequest request,
-            CancellationToken cancellationToken = default);
+        /// <returns>A list of fax objects. Single recipient requests return one element; multiple recipients return multiple elements.</returns>
+        public Task<List<Fax>> Send(SendFaxRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     List faxes sent (OUTBOUND) or received (INBOUND), set parameters to filter the list. 
@@ -99,19 +85,6 @@ namespace Sinch.Fax.Faxes
             _uri = new Uri(uri, $"/v3/projects/{projectId}/faxes");
         }
 
-        /// <inheritdoc />
-        public async Task<Fax> Send(string to, SendFaxRequest request, CancellationToken cancellationToken = default)
-        {
-            if (string.IsNullOrEmpty(to))
-            {
-                throw new ArgumentNullException(nameof(to), "Should have a value");
-            }
-
-            var faxes = await Send(new List<string>() { to }, request, cancellationToken);
-            return faxes.First();
-        }
-
-
         // the fax will return a PLAIN fax if there is ONE TO number, but an array if there  is > 1 
         private sealed class SendFaxResponse
         {
@@ -120,49 +93,103 @@ namespace Sinch.Fax.Faxes
         }
 
         /// <inheritdoc />
-        public async Task<List<Fax>> Send(List<string> to, SendFaxRequest request,
-            CancellationToken cancellationToken = default)
+        public async Task<List<Fax>> Send(SendFaxRequest request, CancellationToken cancellationToken = default)
         {
-            request.SetTo(to);
-            if (request.FileContent is not null)
+            var isMultipleRecipients = request.To?.Count() > 1;
+
+            if (request.Files is not null && request.Files.Any())
             {
-                _loggerAdapter?.LogInformation("Sending fax with file content...");
-                if (request.To!.Count > 1)
+                // Base64 files → JSON
+                if (isMultipleRecipients)
                 {
-                    var faxResponse = await _http.SendMultipart<SendFaxRequest, SendFaxResponse>(_uri, request,
-                        request.FileContent,
-                        request.FileName!, cancellationToken: cancellationToken);
-                    return faxResponse.Faxes;
+                    var faxList = await _http.Send<SendFaxRequest, SendFaxResponse>(_uri, HttpMethod.Post,
+                        request, cancellationToken: cancellationToken);
+                    return faxList.Faxes;
                 }
 
-                var fax = await _http.SendMultipart<SendFaxRequest, Fax>(_uri, request, request.FileContent,
-                    request.FileName!, cancellationToken: cancellationToken);
-                return new List<Fax>() { fax };
+                return [await _http.Send<SendFaxRequest, Fax>(_uri, HttpMethod.Post,
+                    request, cancellationToken: cancellationToken)];
             }
 
-            var sendingContentUrls = request.ContentUrl?.Any() == true;
-            var sendingBase64Files = request.Files?.Any() == true;
-            if (!sendingBase64Files && !sendingContentUrls)
+            // File upload or content URLs → multipart/form-data
+            var multipartContent = BuildMultipartContent(request);
+            if (isMultipleRecipients)
             {
-                throw new InvalidOperationException(
-                    "Neither content urls or file content or base64 files provided for a create fax request.");
+                var faxList = await _http.Send<SendFaxResponse>(_uri, HttpMethod.Post, multipartContent,
+                    cancellationToken);
+                return faxList.Faxes;
             }
 
-            _loggerAdapter?.LogInformation(
-                "Sending fax with content urls - {isContentUrls}; with base64 files - {isBase64Files}",
-                sendingContentUrls, sendingBase64Files);
+            return [await _http.Send<Fax>(_uri, HttpMethod.Post, multipartContent, cancellationToken)];
+        }
 
+        private static MultipartFormDataContent BuildMultipartContent(SendFaxRequest request)
+        {
+            var content = new MultipartFormDataContent();
 
-            if (request.To!.Count > 1)
+            if (request.To != null)
             {
-                var faxResponseList = await _http.Send<SendFaxRequest, SendFaxResponse>(_uri, HttpMethod.Post, request,
-                    cancellationToken: cancellationToken);
-                return faxResponseList.Faxes;
+                foreach (var to in request.To)
+                    content.Add(new StringContent(to), "to");
             }
 
-            var faxJson = await _http.Send<SendFaxRequest, Fax>(_uri, HttpMethod.Post, request,
-                cancellationToken: cancellationToken);
-            return new List<Fax>() { faxJson };
+            if (request.From != null)
+                content.Add(new StringContent(request.From), "from");
+
+            if (request.FileContent is { Length: > 0 })
+            {
+                request.FileContent.Position = 0;
+
+                var streamContent = new StreamContent(request.FileContent);
+                var fileName = request.FileName ?? "file";
+
+                if (new FileExtensionContentTypeProvider().TryGetContentType(fileName, out var contentType) &&
+                    contentType is not null)
+                    streamContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+
+                content.Add(streamContent, "file", fileName);
+            }
+
+            if (request.ContentUrl != null)
+            {
+                foreach (var url in request.ContentUrl)
+                    content.Add(new StringContent(url), "contentUrl");
+            }
+
+            if (request.HeaderText != null)
+                content.Add(new StringContent(request.HeaderText), "headerText");
+
+            if (request.HeaderPageNumbers.HasValue)
+                content.Add(new StringContent(request.HeaderPageNumbers.Value.ToString()), "headerPageNumbers");
+
+            if (request.HeaderTimeZone != null)
+                content.Add(new StringContent(request.HeaderTimeZone), "headerTimeZone");
+
+            if (request.RetryDelaySeconds.HasValue)
+                content.Add(new StringContent(request.RetryDelaySeconds.Value.ToString()), "retryDelaySeconds");
+
+            if (request.Labels != null)
+            {
+                foreach (var (key, value) in request.Labels)
+                    content.Add(new StringContent(value), $"labels[{key}]");
+            }
+
+            if (request.CallbackUrl != null)
+                content.Add(new StringContent(request.CallbackUrl), "callbackUrl");
+
+            if (request.CallbackUrlContentType != null)
+                content.Add(new StringContent(request.CallbackUrlContentType.ToString()), "callbackUrlContentType");
+
+            if (request.ImageConversionMethod != null)
+                content.Add(new StringContent(request.ImageConversionMethod.ToString()), "imageConversionMethod");
+
+            if (request.ServiceId != null)
+                content.Add(new StringContent(request.ServiceId), "serviceId");
+
+            if (request.MaxRetries.HasValue)
+                content.Add(new StringContent(request.MaxRetries.Value.ToString()), "maxRetries");
+
+            return content;
         }
 
         /// <inheritdoc />
@@ -184,15 +211,20 @@ namespace Sinch.Fax.Faxes
         {
             _loggerAdapter?.LogDebug("Auto Listing faxes");
 
-            var response = await List(listFaxesRequest, cancellationToken);
-            while (!Utils.IsLastPage(response.PageNumber, response.PageSize, response.TotalItems, PageStart.One))
+            ListFaxResponse response = new();
+            do
             {
+                response = await List(listFaxesRequest, cancellationToken);
+
                 if (response.Faxes != null)
+                {
                     foreach (var contact in response.Faxes)
                         yield return contact;
-                listFaxesRequest.Page = (response.PageNumber + 1);
-                response = await List(listFaxesRequest, cancellationToken);
+                }
+
+                listFaxesRequest.Page = response.Page + 1;
             }
+            while (Utils.IsNotLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One));
         }
 
         /// <inheritdoc />
@@ -236,5 +268,6 @@ namespace Sinch.Fax.Faxes
             uriBuilder.Path += $"/{id}/file.pdf"; // only pdf is supported for now
             return _http.Send<ContentResult>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
+
     }
 }

@@ -1,0 +1,5 @@
+Sample Text Document
+=====================
+
+This is page 1 content.
+This demonstrates sending text files as base64 to fax recipients.

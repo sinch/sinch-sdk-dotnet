@@ -1,13 +1,9 @@
-using System.Text.Json;
 using Sinch;
 using Sinch.Conversation;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Transcoding;
 using Sinch.Core;
 using Sinch.Snippets.Shared;
-
-// Your conversation application id
-const string applicationId = "APPLICATION_ID";
 
 var sinch = new SinchClient(new SinchClientConfiguration
 {
@@ -18,6 +14,9 @@ var sinch = new SinchClient(new SinchClientConfiguration
         KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
     }
 });
+
+// The ID of the Conversation App where the recipient channel is configured
+const string applicationId = "CONVERSATION_APP_ID";
 
 var request = new TranscodeRequest
 {
