@@ -4,11 +4,6 @@ using Sinch.Conversation.Common;
 using Sinch.Core;
 using Sinch.Snippets.Shared;
 
-// Your conversation application id
-const string applicationId = "MY_APPLICATION_ID";
-// Your conversation contact id
-const string contactId = "MY_CONTACT_ID";
-
 var sinch = new SinchClient(new SinchClientConfiguration
 {
     SinchUnifiedCredentials = new SinchUnifiedCredentials
@@ -18,6 +13,11 @@ var sinch = new SinchClient(new SinchClientConfiguration
         KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
     }
 });
+
+// The ID of the Conversation App where the recipient channel is configured
+const string applicationId = "CONVERSATION_APP_ID";
+// The contact ID of the recipient to look up the capabilities for
+const string contactId = "RECIPIENT_CONTACT_ID";
 
 // Lookup capability for a contact that already exists in the Conversation API.
 var response = await sinch.Conversation.Capabilities.Lookup(new LookupCapabilityRequest
