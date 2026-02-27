@@ -1,4 +1,3 @@
-using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -32,7 +31,6 @@ namespace Sinch.Core
                 catch (JsonException)
                 {
                     apiErrorResponse = JsonSerializer.Deserialize<ApiSmsErrorResponse>(content, options);
-                    throw;
                 }
                 
                 if (apiErrorResponse?.Error == null && apiErrorResponse?.Text == null)
