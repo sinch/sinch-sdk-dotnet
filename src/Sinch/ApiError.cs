@@ -1,18 +1,35 @@
 using System.Collections.Generic;
 using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
-using Sinch.Core;
 
 namespace Sinch
 {
-    internal sealed class ApiErrorResponse
+    internal abstract class ApiErrorResponseBase
     {
         public ApiError? Error { get; set; }
 
-        [JsonConverter(typeof(IntOrStringConverter))]
-        public string? Code { get; set; }
-
         public string? Text { get; set; }
+
+        public abstract string GetErrorCode();
+    }
+    
+    internal sealed class ApiErrorResponse : ApiErrorResponseBase
+    {
+        public int? Code { get; init; }
+
+        public override string GetErrorCode()
+        {
+            return Code?.ToString() ?? string.Empty;
+        }
+    }
+
+    internal sealed class ApiSmsErrorResponse : ApiErrorResponseBase
+    {
+        public string? Code { get; init; }
+
+        public override string GetErrorCode()
+        {
+            return Code ?? string.Empty;
+        }
     }
 
     internal sealed class ApiError

@@ -17,11 +17,22 @@ namespace Sinch.Core
             JsonSerializerOptions options)
         {
             if (httpResponseMessage.IsSuccessStatusCode) return;
-            ApiErrorResponse? apiErrorResponse = null;
+            
+            ApiErrorResponseBase? apiErrorResponse = null;
+            
             if (httpResponseMessage.IsJson())
             {
                 var content = await httpResponseMessage.Content.ReadAsStringAsync();
-                apiErrorResponse = JsonSerializer.Deserialize<ApiErrorResponse>(content, options);
+
+                try
+                {
+                    apiErrorResponse = JsonSerializer.Deserialize<ApiErrorResponse>(content, options);
+                }
+                catch (JsonException)
+                {
+                    apiErrorResponse = JsonSerializer.Deserialize<ApiSmsErrorResponse>(content, options);
+                }
+                
                 if (apiErrorResponse?.Error == null && apiErrorResponse?.Text == null)
                 {
                     var anotherError = JsonSerializer.Deserialize<ApiError>(content, options);
