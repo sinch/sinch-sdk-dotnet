@@ -324,10 +324,6 @@ namespace Sinch.Tests.Core
         [Fact]
         public async Task SmsApiStringErrorCodeThrowsSinchApiException()
         {
-            // The SMS API returns { "code": "...", "text": "..." } where code is a string, not an int.
-            // When code is a non-numeric string (e.g. "Forbidden"), JsonNumberHandling.AllowReadingFromString
-            // (set by JsonSerializerDefaults.Web) cannot coerce it to int?, causing a JsonException that
-            // escapes all catch (SinchApiException) blocks. The fix uses IntOrStringConverter on Code.
             _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
                 .Returns("first_token");
 
@@ -346,6 +342,30 @@ namespace Sinch.Tests.Core
             ex.Which.StatusCode.Should().Be(HttpStatusCode.Forbidden);
             ex.Which.DetailedMessage.Should().Be("Account blocked");
             ex.Which.Status.Should().Be("Forbidden");
+            _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
+        public async Task ApiIntegerErrorCodeThrowsSinchApiException()
+        {
+            _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
+                .Returns("first_token");
+
+            var uri = new Uri("http://sinch.com/batches");
+
+            _httpMessageHandlerMock.Expect(HttpMethod.Post, uri.ToString())
+                .Respond(HttpStatusCode.Unauthorized, "application/json",
+                    "{\"code\":401,\"text\":\"Unauthorized\"}");
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+
+            var ex =
+                await ((Func<Task<EmptyResponse>>)(() => http.Send<EmptyResponse>(uri, HttpMethod.Post)))
+                .Should().ThrowAsync<SinchApiException>();
+            ex.Which.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+            ex.Which.DetailedMessage.Should().Be("Unauthorized");
+            ex.Which.Status.Should().Be("401");
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 
