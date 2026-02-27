@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
+using Sinch.Core;
 
 namespace Sinch
 {
@@ -7,7 +9,8 @@ namespace Sinch
     {
         public ApiError? Error { get; set; }
 
-        public int? Code { get; set; }
+        [JsonConverter(typeof(IntOrStringConverter))]
+        public string? Code { get; set; }
 
         public string? Text { get; set; }
     }
