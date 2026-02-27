@@ -11,7 +11,7 @@ namespace Sinch
 
         public abstract string GetErrorCode();
     }
-    
+
     internal sealed class ApiErrorResponse : ApiErrorResponseBase
     {
         public int? Code { get; init; }
