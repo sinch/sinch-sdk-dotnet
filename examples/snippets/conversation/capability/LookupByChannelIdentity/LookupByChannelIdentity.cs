@@ -13,6 +13,10 @@ var sinch = new SinchClient(new SinchClientConfiguration
         ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
         KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
         KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
+    },
+    ConversationConfiguration = new SinchConversationConfiguration
+    {
+        ConversationRegion = ConversationRegion.Us
     }
 });
 
