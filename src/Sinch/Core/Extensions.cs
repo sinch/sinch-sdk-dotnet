@@ -17,9 +17,9 @@ namespace Sinch.Core
             JsonSerializerOptions options)
         {
             if (httpResponseMessage.IsSuccessStatusCode) return;
-            
+
             ApiErrorResponseBase? apiErrorResponse = null;
-            
+
             if (httpResponseMessage.IsJson())
             {
                 var content = await httpResponseMessage.Content.ReadAsStringAsync();
@@ -32,7 +32,7 @@ namespace Sinch.Core
                 {
                     apiErrorResponse = JsonSerializer.Deserialize<ApiSmsErrorResponse>(content, options);
                 }
-                
+
                 if (apiErrorResponse?.Error == null && apiErrorResponse?.Text == null)
                 {
                     var anotherError = JsonSerializer.Deserialize<ApiError>(content, options);
