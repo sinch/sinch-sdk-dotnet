@@ -70,11 +70,11 @@ public class FaxesSteps
     {
         var fileBytes = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 };
         await using var stream = new MemoryStream(fileBytes);
-        
+
         using var request = SendFaxRequest.FromStream(stream, "sinch-logo.png");
         request.To = new List<string> { "+12015555555" };
         request.ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" };
-        
+
         _sendFaxResponse = await _faxesApi.Send(request);
     }
 
@@ -90,11 +90,11 @@ public class FaxesSteps
     {
         var fileBytes = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 };
         await using var stream = new MemoryStream(fileBytes);
-        
+
         using var request = SendFaxRequest.FromStream(stream, "sinch-logo.png");
         request.To = new List<string> { "+12015555555", "+12016666666" };
         request.ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" };
-        
+
         _sendFaxResponse = await _faxesApi.Send(request);
     }
 

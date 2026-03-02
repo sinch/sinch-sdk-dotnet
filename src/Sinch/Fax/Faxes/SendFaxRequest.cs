@@ -121,8 +121,8 @@ namespace Sinch.Fax.Faxes
         public static SendFaxRequest FromStream(Stream fileContent, string fileName)
         {
             ArgumentNullException.ThrowIfNull(fileContent);
-            
-            if (string.IsNullOrWhiteSpace(fileName)) 
+
+            if (string.IsNullOrWhiteSpace(fileName))
                 throw new ArgumentException("File name cannot be empty.", nameof(fileName));
 
             return new SendFaxRequest
@@ -140,7 +140,7 @@ namespace Sinch.Fax.Faxes
         /// <returns>A new SendFaxRequest configured with file path content.</returns>
         public static SendFaxRequest FromFile(string filePath)
         {
-            if (string.IsNullOrWhiteSpace(filePath)) 
+            if (string.IsNullOrWhiteSpace(filePath))
                 throw new ArgumentException("File path cannot be empty.", nameof(filePath));
 
             return new SendFaxRequest
@@ -158,8 +158,8 @@ namespace Sinch.Fax.Faxes
         public static SendFaxRequest WithFiles(List<Base64File> base64Files)
         {
             ArgumentNullException.ThrowIfNull(base64Files);
-            
-            if (base64Files.Count == 0) 
+
+            if (base64Files.Count == 0)
                 throw new ArgumentException("Must contain at least one file.", nameof(base64Files));
 
             return new SendFaxRequest
@@ -167,7 +167,7 @@ namespace Sinch.Fax.Faxes
                 Files = base64Files
             };
         }
-        
+
         public void Dispose()
         {
             FileContent?.Dispose();

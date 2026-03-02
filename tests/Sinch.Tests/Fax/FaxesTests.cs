@@ -107,7 +107,7 @@ namespace Sinch.Tests.Fax
         {
             var fileBytes = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 };
             await using var stream = new MemoryStream(fileBytes);
-            
+
             using var request = SendFaxRequest.FromStream(stream, "sinch-logo.png");
             request.To = new List<string> { "+12015555555" };
 
@@ -139,7 +139,7 @@ namespace Sinch.Tests.Fax
         {
             var fileBytes = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 };
             await using var stream = new MemoryStream(fileBytes);
-            
+
             using var request = SendFaxRequest.FromStream(stream, "sinch-logo.png");
             request.To = new List<string> { "+12015555555", "+12016666666" };
 
@@ -202,7 +202,7 @@ namespace Sinch.Tests.Fax
                     FileType = FileType.PDF
                 }
             };
-            
+
             var request = SendFaxRequest.WithFiles(files);
             request.To = new List<string> { "+12015555555" };
 
@@ -243,7 +243,7 @@ namespace Sinch.Tests.Fax
                     FileType = FileType.PDF
                 }
             };
-            
+
             var request = SendFaxRequest.WithFiles(files);
             request.To = new List<string> { "+12015555555", "+12016666666" };
 
