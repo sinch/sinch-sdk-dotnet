@@ -20,17 +20,22 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
     }
 });
 
-Console.WriteLine("Sending a fax with contentUrl to a single recipient");
+// Recipient phone numbers
+const string recipient1PhoneNumber = "RECIPIENT1_PHONE_NUMBER";
+const string recipient2PhoneNumber = "RECIPIENT2_PHONE_NUMBER";
 
-const string recipient = "RECIPIENT_PHONE_NUMBER";
+Console.WriteLine("Sending a fax with contentUrl");
 
 var response = await sinchClient.Fax.Faxes.Send(
     new SendFaxRequest
     {
-        To = [recipient],
+        To = [recipient1PhoneNumber, recipient2PhoneNumber],
         ContentUrl = ["https://developers.sinch.com/fax/fax.pdf"]
     }
 );
 
-Console.WriteLine($"Response: {response.ToPrettyString()}");
+foreach (var fax in response)
+{
+    Console.WriteLine($"Response: {fax.ToPrettyString()}");
+}
 
