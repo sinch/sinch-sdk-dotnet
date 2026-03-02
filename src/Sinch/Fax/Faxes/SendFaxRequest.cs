@@ -11,49 +11,13 @@ namespace Sinch.Fax.Faxes
     {
         public SendFaxRequest()
         {
-
         }
 
         [JsonIgnore]
-        internal Stream? FileContent { get; }
+        internal Stream? FileContent { get; private init; }
 
         [JsonIgnore]
-        internal string? FileName { get; }
-
-        /// <summary>
-        ///     Creates a fax with attached content
-        /// </summary>
-        /// <param name="fileContent"></param>
-        /// <param name="fileName"></param>
-        public SendFaxRequest(Stream fileContent, string fileName)
-        {
-            FileContent = fileContent;
-            FileName = fileName;
-        }
-
-        /// <summary>
-        ///     Creates a fax with attached content from a path
-        /// </summary>
-        /// <param name="filePath"></param>
-        public SendFaxRequest(string filePath)
-        {
-            FileContent = File.OpenRead(filePath);
-            FileName = Path.GetFileName(filePath);
-        }
-
-        /// <summary>
-        ///     Creates a fax with base64 files
-        /// </summary>
-        /// <param name="base64Files"></param>
-        public SendFaxRequest(List<Base64File> base64Files)
-        {
-            if (base64Files.Count == 0)
-            {
-                throw new ArgumentException("Should have at least one element", nameof(base64Files));
-            }
-
-            Files = base64Files;
-        }
+        internal string? FileName { get; private init; }
 
         /// <summary>
         ///     An array of base64 encoded files
@@ -147,6 +111,63 @@ namespace Sinch.Fax.Faxes
         [JsonPropertyName("maxRetries")]
         public int? MaxRetries { get; set; }
 
+        /// <summary>
+        /// Creates a fax request with a file stream and name.
+        /// The stream will be disposed of when the request is disposed of.
+        /// </summary>
+        /// <param name="fileContent">Stream containing the file content.</param>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns>A new SendFaxRequest configured with file stream content.</returns>
+        public static SendFaxRequest FromStream(Stream fileContent, string fileName)
+        {
+            ArgumentNullException.ThrowIfNull(fileContent);
+            
+            if (string.IsNullOrWhiteSpace(fileName)) 
+                throw new ArgumentException("File name cannot be empty.", nameof(fileName));
+
+            return new SendFaxRequest
+            {
+                FileContent = fileContent,
+                FileName = fileName
+            };
+        }
+
+        /// <summary>
+        /// Creates a fax request with a file path.
+        /// The file will be opened and its stream disposed when the request is disposed.
+        /// </summary>
+        /// <param name="filePath">Path to the file to send as a fax.</param>
+        /// <returns>A new SendFaxRequest configured with file path content.</returns>
+        public static SendFaxRequest FromFile(string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath)) 
+                throw new ArgumentException("File path cannot be empty.", nameof(filePath));
+
+            return new SendFaxRequest
+            {
+                FileContent = File.OpenRead(filePath),
+                FileName = Path.GetFileName(filePath)
+            };
+        }
+
+        /// <summary>
+        /// Creates a fax request with base64-encoded files.
+        /// </summary>
+        /// <param name="base64Files">List of base64-encoded files to send. Must contain at least one file.</param>
+        /// <returns>A new SendFaxRequest configured with base64 file content.</returns>
+        public static SendFaxRequest WithFiles(List<Base64File> base64Files)
+        {
+            ArgumentNullException.ThrowIfNull(base64Files);
+            
+            if (base64Files.Count == 0) 
+                throw new ArgumentException("Must contain at least one file.", nameof(base64Files));
+
+            return new SendFaxRequest
+            {
+                Files = base64Files
+            };
+        }
+        
         public void Dispose()
         {
             FileContent?.Dispose();

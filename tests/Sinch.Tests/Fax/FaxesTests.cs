@@ -107,10 +107,9 @@ namespace Sinch.Tests.Fax
         {
             var fileBytes = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 };
             await using var stream = new MemoryStream(fileBytes);
-            using var request = new SendFaxRequest(stream, "sinch-logo.png")
-            {
-                To = new List<string> { "+12015555555" }
-            };
+            
+            using var request = SendFaxRequest.FromStream(stream, "sinch-logo.png");
+            request.To = new List<string> { "+12015555555" };
 
             HttpMessageHandlerMock
                 .When(HttpMethod.Post, $"https://fax.api.sinch.com{BaseFaxesPath}")
@@ -140,10 +139,9 @@ namespace Sinch.Tests.Fax
         {
             var fileBytes = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 };
             await using var stream = new MemoryStream(fileBytes);
-            using var request = new SendFaxRequest(stream, "sinch-logo.png")
-            {
-                To = new List<string> { "+12015555555", "+12016666666" }
-            };
+            
+            using var request = SendFaxRequest.FromStream(stream, "sinch-logo.png");
+            request.To = new List<string> { "+12015555555", "+12016666666" };
 
             HttpMessageHandlerMock
                 .When(HttpMethod.Post, $"https://fax.api.sinch.com{BaseFaxesPath}")
@@ -189,22 +187,24 @@ namespace Sinch.Tests.Fax
         [Fact]
         public async Task Send_WithBase64FileAndSingleRecipient_ReturnsListWithSingleFaxObject()
         {
-            var request = new SendFaxRequest(new List<Base64File>
+            var files = new List<Base64File>
             {
                 new()
                 {
-                    File = "WSdhIGRlcyBqb3VycywgZmF1dCBwYXMgbSdjaGVyY2hlciAhIEV0IHknYSBkZXMgam91cnMgdG91cyBsZXMgam91cnMgIQ==",
+                    File =
+                        "WSdhIGRlcyBqb3VycywgZmF1dCBwYXMgbSdjaGVyY2hlciAhIEV0IHknYSBkZXMgam91cnMgdG91cyBsZXMgam91cnMgIQ==",
                     FileType = FileType.PDF
                 },
+
                 new()
                 {
                     File = "UXVhbmQgbGUgdHJvbGwgcGFybGUsIGwnaG9tbWUgYXZpc8OpIGwnw6ljb3V0ZQ==",
                     FileType = FileType.PDF
                 }
-            })
-            {
-                To = new List<string> { "+12015555555" }
             };
+            
+            var request = SendFaxRequest.WithFiles(files);
+            request.To = new List<string> { "+12015555555" };
 
             HttpMessageHandlerMock
                 .When(HttpMethod.Post, $"https://fax.api.sinch.com{BaseFaxesPath}")
@@ -230,7 +230,7 @@ namespace Sinch.Tests.Fax
         [Fact]
         public async Task Send_WithBase64FileAndMultipleRecipients_ReturnsListWithMultipleFaxObjects()
         {
-            var request = new SendFaxRequest(new List<Base64File>
+            var files = new List<Base64File>
             {
                 new()
                 {
@@ -242,10 +242,10 @@ namespace Sinch.Tests.Fax
                     File = "UXVhbmQgbGUgdHJvbGwgcGFybGUsIGwnaG9tbWUgYXZpc8OpIGwnw6ljb3V0ZQ==",
                     FileType = FileType.PDF
                 }
-            })
-            {
-                To = new List<string> { "+12015555555", "+12016666666" }
             };
+            
+            var request = SendFaxRequest.WithFiles(files);
+            request.To = new List<string> { "+12015555555", "+12016666666" };
 
             HttpMessageHandlerMock
                 .When(HttpMethod.Post, $"https://fax.api.sinch.com{BaseFaxesPath}")

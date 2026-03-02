@@ -70,11 +70,11 @@ public class FaxesSteps
     {
         var fileBytes = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 };
         await using var stream = new MemoryStream(fileBytes);
-        using var request = new SendFaxRequest(stream, "sinch-logo.png")
-        {
-            To = new List<string> { "+12015555555" },
-            ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
-        };
+        
+        using var request = SendFaxRequest.FromStream(stream, "sinch-logo.png");
+        request.To = new List<string> { "+12015555555" };
+        request.ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" };
+        
         _sendFaxResponse = await _faxesApi.Send(request);
     }
 
@@ -90,11 +90,11 @@ public class FaxesSteps
     {
         var fileBytes = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 };
         await using var stream = new MemoryStream(fileBytes);
-        using var request = new SendFaxRequest(stream, "sinch-logo.png")
-        {
-            To = new List<string> { "+12015555555", "+12016666666" },
-            ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" }
-        };
+        
+        using var request = SendFaxRequest.FromStream(stream, "sinch-logo.png");
+        request.To = new List<string> { "+12015555555", "+12016666666" };
+        request.ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" };
+        
         _sendFaxResponse = await _faxesApi.Send(request);
     }
 
@@ -109,7 +109,7 @@ public class FaxesSteps
     [When("I send a fax with a contentUrl and a base64 file encoded to a single recipient")]
     public async Task WhenISendAFaxWithAContentUrlAndABase64FileEncodedToASingleRecipient()
     {
-        var request = new SendFaxRequest(new List<Base64File>
+        var request = SendFaxRequest.WithFiles(new List<Base64File>
         {
             new()
             {
@@ -121,17 +121,15 @@ public class FaxesSteps
                 File = "UXVhbmQgbGUgdHJvbGwgcGFybGUsIGwnaG9tbWUgYXZpc8OpIGwnw6ljb3V0ZQ==",
                 FileType = FileType.PDF
             }
-        })
-        {
-            To = new List<string> { "+12015555555" },
-            ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" },
-            HeaderText = string.Empty,
-            HeaderPageNumbers = true,
-            HeaderTimeZone = "America/New_York",
-            RetryDelaySeconds = 60,
-            CallbackUrlContentType = CallbackUrlContentType.MultipartFormData,
-            ImageConversionMethod = ImageConversionMethod.Halftone
-        };
+        });
+        request.To = new List<string> { "+12015555555" };
+        request.ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" };
+        request.HeaderText = string.Empty;
+        request.HeaderPageNumbers = true;
+        request.HeaderTimeZone = "America/New_York";
+        request.RetryDelaySeconds = 60;
+        request.CallbackUrlContentType = CallbackUrlContentType.MultipartFormData;
+        request.ImageConversionMethod = ImageConversionMethod.Halftone;
         _sendFaxResponse = await _faxesApi.Send(request);
     }
 
@@ -145,7 +143,7 @@ public class FaxesSteps
     [When("I send a fax with a contentUrl and a base64 file encoded to multiple recipients")]
     public async Task WhenISendAFaxWithAContentUrlAndABase64FileEncodedToMultipleRecipients()
     {
-        var request = new SendFaxRequest(new List<Base64File>
+        var files = new List<Base64File>
         {
             new()
             {
@@ -157,17 +155,16 @@ public class FaxesSteps
                 File = "UXVhbmQgbGUgdHJvbGwgcGFybGUsIGwnaG9tbWUgYXZpc8OpIGwnw6ljb3V0ZQ==",
                 FileType = FileType.PDF
             }
-        })
-        {
-            To = new List<string> { "+12015555555", "+12016666666" },
-            ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" },
-            HeaderText = string.Empty,
-            HeaderPageNumbers = true,
-            HeaderTimeZone = "America/New_York",
-            RetryDelaySeconds = 60,
-            CallbackUrlContentType = CallbackUrlContentType.MultipartFormData,
-            ImageConversionMethod = ImageConversionMethod.Halftone
         };
+        var request = SendFaxRequest.WithFiles(files);
+        request.To = new List<string> { "+12015555555", "+12016666666" };
+        request.ContentUrl = new List<string> { "https://developers.sinch.com/fax/fax.pdf" };
+        request.HeaderText = string.Empty;
+        request.HeaderPageNumbers = true;
+        request.HeaderTimeZone = "America/New_York";
+        request.RetryDelaySeconds = 60;
+        request.CallbackUrlContentType = CallbackUrlContentType.MultipartFormData;
+        request.ImageConversionMethod = ImageConversionMethod.Halftone;
         _sendFaxResponse = await _faxesApi.Send(request);
     }
 

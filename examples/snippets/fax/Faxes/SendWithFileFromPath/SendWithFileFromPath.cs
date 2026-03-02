@@ -25,10 +25,8 @@ const string recipient = "RECIPIENT_PHONE_NUMBER";
 
 Console.WriteLine("Sending a fax with file from path");
 
-using var request = new SendFaxRequest(filePath)
-{
-    To = [recipient]
-};
+using var request = SendFaxRequest.FromFile(filePath);
+request.To = [recipient];
 
 var response = await sinchClient.Fax.Faxes.Send(request);
 
