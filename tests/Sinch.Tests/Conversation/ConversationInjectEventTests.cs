@@ -45,11 +45,11 @@ namespace Sinch.Tests.Conversation
 
             var injectEventRequest = new InjectEventRequest(
                 new AppEvent(new ComposingEvent()))
-                {
-                    ConversationId = ConversationId,
-                    AcceptTime = acceptTime
-                };
-            
+            {
+                ConversationId = ConversationId,
+                AcceptTime = acceptTime
+            };
+
             var response = await Conversation.Conversations.InjectEvent(injectEventRequest);
 
             response.Should().NotBeNull();
