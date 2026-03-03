@@ -185,10 +185,10 @@ namespace Sinch.Tests.Fax
 
         #endregion
 
-        #region ListEmailsForNumber Tests
+        #region ListForNumber Tests
 
         [Fact]
-        public async Task ListEmailsForNumber_WithValidParams_ReturnsEmailsResponse()
+        public async Task ListForNumber_WithValidParams_ReturnsEmailsResponse()
         {
             HttpMessageHandlerMock
                 .When(HttpMethod.Get, $"https://fax.api.sinch.com{BaseServicesPath}/{ServiceId}/numbers/{PhoneNumber}/emails")
@@ -202,7 +202,7 @@ namespace Sinch.Tests.Fax
                     totalPages = 1
                 }));
 
-            var response = await Fax.Emails.ListEmailsForNumber(ServiceId, PhoneNumber);
+            var response = await Fax.Emails.ListForNumber(ServiceId, PhoneNumber);
 
             response.Should().NotBeNull();
             response.EmailAddresses.Should().HaveCount(2);
@@ -211,7 +211,7 @@ namespace Sinch.Tests.Fax
         }
 
         [Fact]
-        public async Task ListEmailsForNumber_WithPageAndPageSize_ReturnsPagedResponse()
+        public async Task ListForNumber_WithPageAndPageSize_ReturnsPagedResponse()
         {
             HttpMessageHandlerMock
                 .When(HttpMethod.Get,
@@ -226,7 +226,7 @@ namespace Sinch.Tests.Fax
                     totalPages = 3
                 }));
 
-            var response = await Fax.Emails.ListEmailsForNumber(ServiceId, PhoneNumber, page: 3, pageSize: 10);
+            var response = await Fax.Emails.ListForNumber(ServiceId, PhoneNumber, page: 3, pageSize: 10);
 
             response.Should().NotBeNull();
             response.Page.Should().Be(3);
@@ -239,16 +239,16 @@ namespace Sinch.Tests.Fax
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        public async Task ListEmailsForNumber_WithNullOrEmptyServiceId_ThrowsException(string invalidServiceId)
+        public async Task ListForNumber_WithNullOrEmptyServiceId_ThrowsException(string invalidServiceId)
         {
             var exception = await Assert.ThrowsAsync<ArgumentNullException>(
-                async () => await Fax.Emails.ListEmailsForNumber(invalidServiceId, PhoneNumber));
+                async () => await Fax.Emails.ListForNumber(invalidServiceId, PhoneNumber));
 
             exception.ParamName.Should().Be("serviceId");
         }
 
         [Fact]
-        public async Task ListEmailsForNumberAuto_WithMultiplePages_IteratesThroughAllPages()
+        public async Task ListForNumberAuto_WithMultiplePages_IteratesThroughAllPages()
         {
             var baseUri = $"https://fax.api.sinch.com{BaseServicesPath}/{ServiceId}/numbers/{PhoneNumber}/emails";
             HttpMessageHandlerMock
@@ -273,7 +273,7 @@ namespace Sinch.Tests.Fax
                 }));
 
             var emails = new List<string>();
-            await foreach (var email in Fax.Emails.ListEmailsForNumberAuto(ServiceId, PhoneNumber, pageSize: 1))
+            await foreach (var email in Fax.Emails.ListForNumberAuto(ServiceId, PhoneNumber, pageSize: 1))
             {
                 emails.Add(email);
             }
