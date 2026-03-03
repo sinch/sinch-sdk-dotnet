@@ -24,6 +24,7 @@
 - [Verification API: Callout renamed to PhoneCall and Seamless renamed to Data](#verification-api-callout-renamed-to-phonecall-and-seamless-renamed-to-data)
 - [Fax API: ListEmailsResponse replaced with concrete response types](#fax-api-listemailsresponse-replaced-with-concrete-response-types)
 - [Conversation API: Coordinates properties changed from float to double](#conversation-api-coordinates-properties-changed-from-float-to-double)
+- [Conversation API: InjectEventRequest now supports only AppEvent](#conversation-api-injecteventrequest-now-supports-only-appevent)
 
 ## .NET Framework Support
 
@@ -608,4 +609,27 @@ public record Coordinates(double Latitude, double Longitude);
 
 // Usage
 new Coordinates(47.7981899, -4.3727685)
+```
+
+## Conversation API: InjectEventRequest now supports only AppEvent
+
+The `InjectEventRequest` class in the Conversation API has been restricted to support injecting only `AppEvent`. Support for `ContactEvent` and `ContactMessageEvent` has been removed.
+
+
+Version 1.*:
+```csharp
+// Previously could inject ContactEvent, ContactMessageEvent, or AppEvent
+var request = new InjectEventRequest
+{
+    Event = new ContactEvent { /* ... */ }
+};
+```
+
+Version 2.*:
+```csharp
+// Only AppEvent is now supported
+var request = new InjectEventRequest
+{
+    Event = new AppEvent { /* ... */ }
+};
 ```
