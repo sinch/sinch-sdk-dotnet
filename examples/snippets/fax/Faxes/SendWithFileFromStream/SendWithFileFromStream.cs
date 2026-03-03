@@ -27,10 +27,8 @@ Console.WriteLine("Sending a fax with file from stream to a recipient");
 
 var fileContent = File.ReadAllBytes("./sample.txt");
 await using var singleRecipientStream = new MemoryStream(fileContent);
-using var singleRecipientRequest = new SendFaxRequest(singleRecipientStream, fileName)
-{
-    To = [recipient],
-};
+using var singleRecipientRequest = SendFaxRequest.FromStream(singleRecipientStream, fileName);
+singleRecipientRequest.To = [recipient];
 
 var response = await sinchClient.Fax.Faxes.Send(singleRecipientRequest);
 
