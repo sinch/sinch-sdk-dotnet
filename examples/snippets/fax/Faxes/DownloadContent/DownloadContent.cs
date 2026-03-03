@@ -20,7 +20,7 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 
 Console.WriteLine("Downloading fax content as PDF");
 
-// The Fax ID you want to download
+// The Fax ID whose content you want to download
 const string faxId = "FAX_ID";
 
 var contentResult = await sinchClient.Fax.Faxes.DownloadContent(faxId);

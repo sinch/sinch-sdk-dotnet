@@ -27,16 +27,18 @@ var base64FileContent = Convert.ToBase64String(fileContent);
 
 Console.WriteLine("Sending a fax with base64-encoded text files");
 
-var recipientRequest = new SendFaxRequest([
+// Create a list of base64-encoded files
+var base64Files = new List<Base64File>
+{
     new()
     {
         File = base64FileContent,
         FileType = FileType.TXT
     }
-])
-{
-    To = [recipient]
 };
+
+var recipientRequest = SendFaxRequest.WithFiles(base64Files);
+recipientRequest.To = [recipient];
 
 var response = await sinchClient.Fax.Faxes.Send(recipientRequest);
 

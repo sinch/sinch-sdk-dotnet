@@ -56,4 +56,9 @@ public static class ConfigurationHelper
     /// Gets the Sinch Service Plan ID from configuration.
     /// </summary>
     public static string? GetServicePlanId() => GetValue("SINCH_SERVICE_PLAN_ID");
+
+    /// <summary>
+    /// Gets the Sinch Conversation region from configuration.
+    /// </summary>
+    public static string? GetConversationRegion() => GetValue("SINCH_CONVERSATION_REGION");
 }
