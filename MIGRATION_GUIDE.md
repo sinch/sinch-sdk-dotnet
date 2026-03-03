@@ -25,6 +25,7 @@
 - [Fax API: ListEmailsResponse replaced with concrete response types](#fax-api-listemailsresponse-replaced-with-concrete-response-types)
 - [Conversation API: Coordinates properties changed from float to double](#conversation-api-coordinates-properties-changed-from-float-to-double)
 - [Fax API: SendFaxRequest constructors replaced with factory methods](#fax-api-sendfaxrequest-constructors-replaced-with-factory-methods)
+- [Conversation API: InjectEventRequest now supports only AppEvent](#conversation-api-injecteventrequest-now-supports-only-appevent)
 
 ## .NET Framework Support
 
@@ -705,4 +706,27 @@ var request = SendFaxRequest.WithFiles(new List<Base64File>
 request.To = ["+12015555555"];
 
 var response = await sinchClient.Fax.Faxes.Send(request);
+```
+
+## Conversation API: InjectEventRequest now supports only AppEvent
+
+The `InjectEventRequest` class in the Conversation API has been restricted to support injecting only `AppEvent`. Support for `ContactEvent` and `ContactMessageEvent` has been removed.
+
+
+Version 1.*:
+```csharp
+// Previously could inject ContactEvent, ContactMessageEvent, or AppEvent
+var request = new InjectEventRequest
+{
+    Event = new ContactEvent { /* ... */ }
+};
+```
+
+Version 2.*:
+```csharp
+// Only AppEvent is now supported
+var request = new InjectEventRequest
+{
+    Event = new AppEvent { /* ... */ }
+};
 ```
