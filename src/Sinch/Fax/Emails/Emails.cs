@@ -122,7 +122,7 @@ namespace Sinch.Fax.Emails
         IAsyncEnumerable<ServicePhoneNumber> ListNumbersAuto(string serviceId, string email, int? page = null,
             int? pageSize = null,
             CancellationToken cancellationToken = default);
-        
+
         /// <summary>
         ///     List emails for a number.
         /// </summary>
@@ -135,7 +135,7 @@ namespace Sinch.Fax.Emails
         Task<ListEmailAddressesResponse> ListEmailsForNumber(string serviceId, string phoneNumber, int? page = null,
             int? pageSize = null,
             CancellationToken cancellationToken = default);
-        
+
         /// <summary>
         ///     Auto List emails for a number.
         /// </summary>
@@ -342,7 +342,7 @@ namespace Sinch.Fax.Emails
                 page = response.Page + 1;
             } while (Utils.IsNotLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One));
         }
-        
+
         /// <inheritdoc />
         public Task<ListEmailAddressesResponse> ListEmailsForNumber(string serviceId, string phoneNumber, int? page = null,
             int? pageSize = null,

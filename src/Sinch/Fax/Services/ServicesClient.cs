@@ -186,7 +186,7 @@ namespace Sinch.Fax.Services
             while (Utils.IsNotLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One));
         }
 
-        
+
 
         public async Task<ListNumbersResponse> ListNumbers(string serviceId, int? page = null, int? pageSize = null,
             CancellationToken cancellationToken = default)
