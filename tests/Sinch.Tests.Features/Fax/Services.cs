@@ -12,6 +12,7 @@ namespace Sinch.Tests.Features.Fax;
 public class Services
 {
     private ISinchFaxServices _servicesApi;
+    private ISinchFaxEmails _emailsApi;
     private Service _createServiceResponse;
     private ListFaxServicesResponse _listFaxResponse;
     private readonly List<Service> _servicesList = new();
@@ -26,6 +27,7 @@ public class Services
     {
         var faxClient = Utils.SinchFaxClient();
         _servicesApi = faxClient.Services;
+        _emailsApi = faxClient.Emails;
     }
 
     [When(@"I send a request to create a new service")]
@@ -185,7 +187,7 @@ public class Services
     [When(@"I send a request to list the emails associated to a phone number")]
     public async Task WhenISendARequestToListTheEmailsAssociatedToAPhoneNumber()
     {
-        _listEmailsResponse = await _servicesApi.ListEmailsForNumber("01W4FFL35P4NC4K35FAXSERVICE", "+12014444444");
+        _listEmailsResponse = await _emailsApi.ListEmailsForNumber("01W4FFL35P4NC4K35FAXSERVICE", "+12014444444");
     }
 
     [Then("the response contains {string} emails associated to the phone number")]
@@ -198,7 +200,7 @@ public class Services
     [When(@"I send a request to list all the emails associated to a phone number")]
     public async Task WhenISendARequestToListAllTheEmailsAssociatedToAPhoneNumber()
     {
-        await foreach (var email in _servicesApi.ListEmailsForNumberAuto("01W4FFL35P4NC4K35FAXSERVICE", "+12014444444"))
+        await foreach (var email in _emailsApi.ListEmailsForNumberAuto("01W4FFL35P4NC4K35FAXSERVICE", "+12014444444"))
         {
             _emailsList.Add(email);
         }

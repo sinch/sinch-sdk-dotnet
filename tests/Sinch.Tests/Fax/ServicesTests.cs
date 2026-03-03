@@ -202,7 +202,7 @@ namespace Sinch.Tests.Fax
                     totalPages = 1
                 }));
 
-            var response = await Fax.Services.ListEmailsForNumber(ServiceId, PhoneNumber);
+            var response = await Fax.Emails.ListEmailsForNumber(ServiceId, PhoneNumber);
 
             response.Should().NotBeNull();
             response.EmailAddresses.Should().HaveCount(2);
@@ -226,7 +226,7 @@ namespace Sinch.Tests.Fax
                     totalPages = 3
                 }));
 
-            var response = await Fax.Services.ListEmailsForNumber(ServiceId, PhoneNumber, page: 3, pageSize: 10);
+            var response = await Fax.Emails.ListEmailsForNumber(ServiceId, PhoneNumber, page: 3, pageSize: 10);
 
             response.Should().NotBeNull();
             response.Page.Should().Be(3);
@@ -242,7 +242,7 @@ namespace Sinch.Tests.Fax
         public async Task ListEmailsForNumber_WithNullOrEmptyServiceId_ThrowsException(string invalidServiceId)
         {
             var exception = await Assert.ThrowsAsync<ArgumentNullException>(
-                async () => await Fax.Services.ListEmailsForNumber(invalidServiceId, PhoneNumber));
+                async () => await Fax.Emails.ListEmailsForNumber(invalidServiceId, PhoneNumber));
 
             exception.ParamName.Should().Be("serviceId");
         }
@@ -273,7 +273,7 @@ namespace Sinch.Tests.Fax
                 }));
 
             var emails = new List<string>();
-            await foreach (var email in Fax.Services.ListEmailsForNumberAuto(ServiceId, PhoneNumber, pageSize: 1))
+            await foreach (var email in Fax.Emails.ListEmailsForNumberAuto(ServiceId, PhoneNumber, pageSize: 1))
             {
                 emails.Add(email);
             }
