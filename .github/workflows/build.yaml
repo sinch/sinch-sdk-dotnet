@@ -74,7 +74,7 @@ jobs:
         run: dotnet build -p:Version=${{ steps.gitversion.outputs.semVer }} --configuration Release --no-restore
 
       - name: Build Snippets
-        run: dotnet build examples/snippets/Snippets.sln --configuration Release
+        run: dotnet build examples/snippets/Snippets.sln
 
       - name: Test 
         run: dotnet test tests/Sinch.Tests --no-restore --verbosity normal
