@@ -31,8 +31,7 @@ var client = new SinchClient(new SinchClientConfiguration
         KeyId = keyId,
         KeySecret = keySecret
     }
-});await using var singleRecipientRequest = SendFaxRequest.FromStream(singleRecipientStream, fileName);
-singleRecipientRequest.To = [recipient];
+});
 
 Console.WriteLine("Sending a fax with file from stream to a recipient");
 
