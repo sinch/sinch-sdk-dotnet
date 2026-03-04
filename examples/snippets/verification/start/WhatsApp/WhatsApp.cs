@@ -1,22 +1,26 @@
 using Sinch;
+using Sinch.Snippets.Shared;
 using Sinch.Verification;
 using Sinch.Verification.Common;
 using Sinch.Verification.Start.Request;
 using System.Text.Json;
 
+var applicationKey = ConfigurationHelper.GetApplicationKey() ?? "MY_APPLICATION_KEY";
+var applicationSecret = ConfigurationHelper.GetApplicationSecret() ?? "MY_APPLICATION_SECRET";
+
 // The phone number you want to verify, in E.164 format (e.g. +46701234567).
 var phoneNumber = "PHONE_NUMBER";
 
-var sinch = new SinchClient(new SinchClientConfiguration()
+var client = new SinchClient(new SinchClientConfiguration()
 {
     VerificationConfiguration = new SinchVerificationConfiguration()
     {
-        AppKey = Environment.GetEnvironmentVariable("SINCH_APPLICATION_KEY") ?? "MY_APPLICATION_KEY",
-        AppSecret = Environment.GetEnvironmentVariable("SINCH_APPLICATION_SECRET") ?? "MY_APPLICATION_SECRET"
+        AppKey = applicationKey,
+        AppSecret = applicationSecret
     }
 });
 
-var sinchVerificationClient = sinch.Verification;
+var sinchVerificationClient = client.Verification;
 
 Console.WriteLine($"Start a verification by WhatsApp onto phone number {phoneNumber}");
 

@@ -10,22 +10,26 @@ using Sinch;
 using Sinch.Core;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration()
-{
-    SinchUnifiedCredentials = new SinchUnifiedCredentials()
-    {
-        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
-        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
-        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
-    }
-});
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
 const string serviceId = "FAX_SERVICE_ID";
 const string emailAddress = "my-email";
 
+var client = new SinchClient(new SinchClientConfiguration()
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials()
+    {
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
+    }
+});
+
 Console.WriteLine($"Listing all phone numbers for email {emailAddress}");
 
-await foreach (var number in sinchClient.Fax.Emails.ListNumbersAuto(serviceId, emailAddress))
+await foreach (var number in client.Fax.Emails.ListNumbersAuto(serviceId, emailAddress))
 {
     Console.WriteLine(number.ToPrettyString());
 }

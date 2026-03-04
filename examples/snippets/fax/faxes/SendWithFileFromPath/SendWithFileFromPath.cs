@@ -10,24 +10,28 @@ using Sinch.Core;
 using Sinch.Fax.Faxes;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration
-{
-    SinchUnifiedCredentials = new SinchUnifiedCredentials
-    {
-        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
-        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
-        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
-    }
-});
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
 const string filePath = "./fax.pdf";
 const string recipient = "RECIPIENT_PHONE_NUMBER";
+
+var client = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials
+    {
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
+    }
+});
 
 Console.WriteLine("Sending a fax with file from path");
 
 using var request = SendFaxRequest.FromFile(filePath);
 request.To = [recipient];
 
-var response = await sinchClient.Fax.Faxes.Send(request);
+var response = await client.Fax.Faxes.Send(request);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

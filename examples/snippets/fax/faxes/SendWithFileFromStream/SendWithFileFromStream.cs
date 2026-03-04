@@ -10,26 +10,32 @@ using Sinch.Core;
 using Sinch.Fax.Faxes;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration
-{
-    SinchUnifiedCredentials = new SinchUnifiedCredentials
-    {
-        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
-        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
-        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
-    }
-});
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
 const string recipient = "RECIPIENT_PHONE_NUMBER";
 const string fileName = "sample.txt";
 
-Console.WriteLine("Sending a fax with file from stream to a recipient");
-
 var fileContent = File.ReadAllBytes("./sample.txt");
 await using var singleRecipientStream = new MemoryStream(fileContent);
-using var singleRecipientRequest = SendFaxRequest.FromStream(singleRecipientStream, fileName);
+
+await using var singleRecipientRequest = SendFaxRequest.FromStream(singleRecipientStream, fileName);
 singleRecipientRequest.To = [recipient];
 
-var response = await sinchClient.Fax.Faxes.Send(singleRecipientRequest);
+var client = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials
+    {
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
+    }
+});await using var singleRecipientRequest = SendFaxRequest.FromStream(singleRecipientStream, fileName);
+singleRecipientRequest.To = [recipient];
+
+Console.WriteLine("Sending a fax with file from stream to a recipient");
+
+var response = await client.Fax.Faxes.Send(singleRecipientRequest);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

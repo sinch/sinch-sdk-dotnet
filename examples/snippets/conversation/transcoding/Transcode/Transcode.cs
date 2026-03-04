@@ -5,18 +5,22 @@ using Sinch.Conversation.Transcoding;
 using Sinch.Core;
 using Sinch.Snippets.Shared;
 
-var sinch = new SinchClient(new SinchClientConfiguration
-{
-    SinchUnifiedCredentials = new SinchUnifiedCredentials
-    {
-        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
-        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
-        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
-    }
-});
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
 // The ID of the Conversation App where the recipient channel is configured
 const string applicationId = "CONVERSATION_APP_ID";
+
+var client = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials
+    {
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
+    }
+});
 
 var request = new TranscodeRequest
 {
@@ -31,6 +35,6 @@ var request = new TranscodeRequest
 
 Console.WriteLine("Transcoding a location message");
 
-var response = await sinch.Conversation.Transcoding.Transcode(request);
+var response = await client.Conversation.Transcoding.Transcode(request);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

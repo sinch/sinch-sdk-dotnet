@@ -1,37 +1,42 @@
-using System.Text.Json;
 using Sinch;
 using Sinch.Conversation;
 using Sinch.Conversation.Messages.List;
+using Sinch.Core;
+using Sinch.Snippets.Shared;
 
-var sinch = new SinchClient(new SinchClientConfiguration()
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
+var conversationRegion = ConfigurationHelper.GetConversationRegion() ?? "MY_CONVERSATION_REGION";
+
+// The ID of the Conversation Application to list messages for
+var conversationApplicationId = "APPLICATION_ID";
+
+var client = new SinchClient(new SinchClientConfiguration
 {
-    SinchUnifiedCredentials = new SinchUnifiedCredentials()
+    SinchUnifiedCredentials = new SinchUnifiedCredentials
     {
-        ProjectId = Environment.GetEnvironmentVariable("SINCH_PROJECT_ID") ?? "MY_PROJECT_ID",
-        KeyId = Environment.GetEnvironmentVariable("SINCH_KEY_ID") ?? "MY_KEY_ID",
-        KeySecret = Environment.GetEnvironmentVariable("SINCH_KEY_SECRET") ?? "MY_KEY_SECRET",
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
     },
     ConversationConfiguration = new SinchConversationConfiguration
     {
-        ConversationRegion = new ConversationRegion(Environment.GetEnvironmentVariable("SINCH_CONVERSATION_REGION") ?? "MY_CONVERSATION_REGION")
+        ConversationRegion = new ConversationRegion(conversationRegion)
     }
 });
 
-var sinchConversationClient = sinch.Conversation;
-var conversationMessages = sinchConversationClient.Messages;
+var conversationMessages = client.Conversation.Messages;
 
 var request = new ListMessagesRequest
 {
+    AppId = conversationApplicationId,
     MessagesSource = MessageSource.ConversationSource
 };
 
-Console.WriteLine("Get messages list");
+Console.WriteLine($"List messages for application with ID '{conversationApplicationId}'");
 
 var response = await conversationMessages.List(request);
 
-var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions()
-{
-    WriteIndented = true
-});
+Console.WriteLine($"Response: {response.ToPrettyString()}");
 
-Console.WriteLine($"Response: {jsonResponse}");
