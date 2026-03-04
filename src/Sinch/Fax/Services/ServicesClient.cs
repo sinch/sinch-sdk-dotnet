@@ -72,32 +72,6 @@ namespace Sinch.Fax.Services
         IAsyncEnumerable<Service> ListAuto(int? page = null, int? pageSize = null, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     List emails for a number.
-        /// </summary>
-        /// <param name="serviceId">The serviceId containing the numbers you want to list.</param>
-        /// <param name="phoneNumber">The phone number you want to get emails for.</param>
-        /// <param name="page">The page number to fetch. If not specified, the first page will be returned.</param>
-        /// <param name="pageSize">Number of items to return on each page.</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns>An object of page with a list of email addresses</returns>
-        Task<ListEmailAddressesResponse> ListEmailsForNumber(string serviceId, string phoneNumber, int? page = null,
-            int? pageSize = null,
-            CancellationToken cancellationToken = default);
-
-        /// <summary>
-        ///     Auto List emails for a number.
-        /// </summary>
-        /// <param name="serviceId">The serviceId containing the numbers you want to list.</param>
-        /// <param name="phoneNumber">The phone number you want to get emails for.</param>
-        /// <param name="page">The page number to fetch. If not specified, the first page will be returned.</param>
-        /// <param name="pageSize">Number of items to return on each page.</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns>A list of emails addresses</returns>
-        IAsyncEnumerable<string> ListEmailsForNumberAuto(string serviceId, string phoneNumber, int? page = null,
-            int? pageSize = null,
-            CancellationToken cancellationToken = default);
-
-        /// <summary>
         ///     List numbers for a service.
         /// </summary>
         /// <param name="serviceId"></param>
@@ -212,51 +186,7 @@ namespace Sinch.Fax.Services
             while (Utils.IsNotLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One));
         }
 
-        /// <inheritdoc />
-        public Task<ListEmailAddressesResponse> ListEmailsForNumber(string serviceId, string phoneNumber, int? page = null,
-            int? pageSize = null,
-            CancellationToken cancellationToken = default)
-        {
-            _logger?.LogInformation("Listing emails for {serviceId} and {number}", serviceId, phoneNumber);
-            ExceptionUtils.CheckEmptyString(nameof(serviceId), serviceId);
-            ExceptionUtils.CheckEmptyString(nameof(phoneNumber), phoneNumber);
 
-            var uriBuilder = new UriBuilder(_apiBasePath);
-            uriBuilder.Path += $"/{serviceId}/numbers/{phoneNumber}/emails";
-            var queryString = HttpUtility.ParseQueryString(string.Empty);
-
-            if (page.HasValue)
-            {
-                queryString.Add("page", page.Value.ToString());
-            }
-
-            if (pageSize.HasValue)
-            {
-                queryString.Add("pageSize", pageSize.Value.ToString());
-            }
-
-            uriBuilder.Query = queryString.ToString();
-            return _http.Send<ListEmailAddressesResponse>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
-        }
-
-        public async IAsyncEnumerable<string> ListEmailsForNumberAuto(string serviceId, string phoneNumber, int? page = null,
-            int? pageSize = null,
-            [EnumeratorCancellation] CancellationToken cancellationToken = default)
-        {
-            _logger?.LogDebug("Auto Listing emails for number...");
-
-            ListEmailAddressesResponse response;
-            do
-            {
-                response = await ListEmailsForNumber(serviceId, phoneNumber, page, pageSize, cancellationToken);
-
-                foreach (var contact in response.EmailAddresses)
-                    yield return contact;
-
-                page = response.Page + 1;
-            }
-            while (Utils.IsNotLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One));
-        }
 
         public async Task<ListNumbersResponse> ListNumbers(string serviceId, int? page = null, int? pageSize = null,
             CancellationToken cancellationToken = default)
