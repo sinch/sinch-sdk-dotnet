@@ -122,6 +122,7 @@ namespace Sinch.Fax.Emails
         IAsyncEnumerable<ServicePhoneNumber> ListNumbersAuto(string serviceId, string email, int? page = null,
             int? pageSize = null,
             CancellationToken cancellationToken = default);
+
     }
 
     internal sealed class EmailsClient : ISinchFaxEmails
@@ -129,16 +130,14 @@ namespace Sinch.Fax.Emails
         private readonly string _projectId;
         private readonly Uri _apiBasePath;
         private readonly IHttp _http;
-        private readonly ISinchFaxServices _services;
         private readonly ILoggerAdapter<ISinchFaxEmails>? _logger;
 
 
         internal EmailsClient(string projectId, Uri baseAddress, ILoggerAdapter<ISinchFaxEmails>? loggerAdapter,
-            IHttp httpClient, ISinchFaxServices services)
+            IHttp httpClient)
         {
             _logger = loggerAdapter;
             _http = httpClient;
-            _services = services;
             _projectId = projectId;
             _apiBasePath = new Uri(baseAddress, $"/v3/projects/{projectId}/services");
         }
@@ -147,7 +146,26 @@ namespace Sinch.Fax.Emails
         public Task<ListEmailAddressesResponse> ListForNumber(string serviceId, string phoneNumber, int? page = null, int? pageSize = null,
             CancellationToken cancellationToken = default)
         {
-            return _services.ListEmailsForNumber(serviceId, phoneNumber, page, pageSize, cancellationToken);
+            _logger?.LogInformation("Listing emails for {serviceId} and {number}", serviceId, phoneNumber);
+            ExceptionUtils.CheckEmptyString(nameof(serviceId), serviceId);
+            ExceptionUtils.CheckEmptyString(nameof(phoneNumber), phoneNumber);
+
+            var uriBuilder = new UriBuilder(_apiBasePath);
+            uriBuilder.Path += $"/{serviceId}/numbers/{phoneNumber}/emails";
+            var queryString = HttpUtility.ParseQueryString(string.Empty);
+
+            if (page.HasValue)
+            {
+                queryString.Add("page", page.Value.ToString());
+            }
+
+            if (pageSize.HasValue)
+            {
+                queryString.Add("pageSize", pageSize.Value.ToString());
+            }
+
+            uriBuilder.Query = queryString.ToString();
+            return _http.Send<ListEmailAddressesResponse>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
 
         public Task<ListEmailsResponse> List(string serviceId, int? page = null, int? pageSize = null,
@@ -318,5 +336,6 @@ namespace Sinch.Fax.Emails
                 page = response.Page + 1;
             } while (Utils.IsNotLastPage(response.Page, response.PageSize, response.TotalItems, PageStart.One));
         }
+
     }
 }
