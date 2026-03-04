@@ -24,6 +24,8 @@
 - [Verification API: Callout renamed to PhoneCall and Seamless renamed to Data](#verification-api-callout-renamed-to-phonecall-and-seamless-renamed-to-data)
 - [Fax API: ListEmailsResponse replaced with concrete response types](#fax-api-listemailsresponse-replaced-with-concrete-response-types)
 - [Conversation API: Coordinates properties changed from float to double](#conversation-api-coordinates-properties-changed-from-float-to-double)
+- [Fax API: SendFaxRequest constructors replaced with factory methods](#fax-api-sendfaxrequest-constructors-replaced-with-factory-methods)
+- [Conversation API: InjectEventRequest now supports only AppEvent](#conversation-api-injecteventrequest-now-supports-only-appevent)
 
 ## .NET Framework Support
 
@@ -608,4 +610,123 @@ public record Coordinates(double Latitude, double Longitude);
 
 // Usage
 new Coordinates(47.7981899, -4.3727685)
+```
+
+## Fax API: SendFaxRequest constructors replaced with factory methods
+
+The `SendFaxRequest` class previously provided multiple constructors for different content sources. This has been refactored to use static factory methods.
+
+### Removed Constructors
+
+- `public SendFaxRequest(Stream fileContent, string fileName)` — use `FromStream()` instead
+- `public SendFaxRequest(string filePath)` — use `FromFile()` instead
+- `public SendFaxRequest(List<Base64File> base64Files)` — use `WithFiles()` instead
+
+### Added Factory Methods
+
+- `public static SendFaxRequest FromStream(Stream fileContent, string fileName)` — for sending fax content from a stream
+- `public static SendFaxRequest FromFile(string filePath)` — for sending fax content from a file path
+- `public static SendFaxRequest WithFiles(List<Base64File> base64Files)` — for sending base64-encoded file content
+
+### Migration Examples
+
+**Sending from a file path:**
+
+Version 1.*:
+```csharp
+using var request = new SendFaxRequest("./fax.pdf")
+{
+    To = ["+12015555555"]
+};
+
+var response = await sinchClient.Fax.Faxes.Send(request);
+```
+
+Version 2.*:
+```csharp
+using var request = SendFaxRequest.FromFile("./fax.pdf");
+request.To = ["+12015555555"];
+
+var response = await sinchClient.Fax.Faxes.Send(request);
+```
+
+**Sending from a stream:**
+
+Version 1.*:
+```csharp
+var fileContent = File.ReadAllBytes("./sample.txt");
+await using var stream = new MemoryStream(fileContent);
+using var request = new SendFaxRequest(stream, "sample.txt")
+{
+    To = ["+12015555555"]
+};
+
+var response = await sinchClient.Fax.Faxes.Send(request);
+```
+
+Version 2.*:
+```csharp
+var fileContent = File.ReadAllBytes("./sample.txt");
+await using var stream = new MemoryStream(fileContent);
+using var request = SendFaxRequest.FromStream(stream, "sample.txt");
+request.To = ["+12015555555"];
+
+var response = await sinchClient.Fax.Faxes.Send(request);
+```
+
+**Sending base64-encoded files:**
+
+Version 1.*:
+```csharp
+var request = new SendFaxRequest(new List<Base64File>
+{
+    new()
+    {
+        File = base64FileContent,
+        FileType = FileType.PDF
+    }
+})
+{
+    To = ["+12015555555"]
+};
+
+var response = await sinchClient.Fax.Faxes.Send(request);
+```
+
+Version 2.*:
+```csharp
+var request = SendFaxRequest.WithFiles(new List<Base64File>
+{
+    new()
+    {
+        File = base64FileContent,
+        FileType = FileType.PDF
+    }
+});
+request.To = ["+12015555555"];
+
+var response = await sinchClient.Fax.Faxes.Send(request);
+```
+
+## Conversation API: InjectEventRequest now supports only AppEvent
+
+The `InjectEventRequest` class in the Conversation API has been restricted to support injecting only `AppEvent`. Support for `ContactEvent` and `ContactMessageEvent` has been removed.
+
+
+Version 1.*:
+```csharp
+// Previously could inject ContactEvent, ContactMessageEvent, or AppEvent
+var request = new InjectEventRequest
+{
+    Event = new ContactEvent { /* ... */ }
+};
+```
+
+Version 2.*:
+```csharp
+// Only AppEvent is now supported
+var request = new InjectEventRequest
+{
+    Event = new AppEvent { /* ... */ }
+};
 ```
