@@ -14,7 +14,8 @@ var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
 var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
 var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
-const string recipient = "RECIPIENT_PHONE_NUMBER";
+// The phone number of the recipient you want to send a fax to
+const string recipientPhoneNumber = "RECIPIENT_PHONE_NUMBER";
 
 var fileContent = File.ReadAllBytes("./sample.txt");
 var base64FileContent = Convert.ToBase64String(fileContent);
@@ -30,7 +31,7 @@ var base64Files = new List<Base64File>
 };
 
 var recipientRequest = SendFaxRequest.WithFiles(base64Files);
-recipientRequest.To = [recipient];
+recipientRequest.To = [recipientPhoneNumber];
 
 var client = new SinchClient(new SinchClientConfiguration
 {

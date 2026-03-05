@@ -14,8 +14,9 @@ var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
 var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
 var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
+// The ID of the Fax Service for which you want to list the emails for a specific phone number
 const string serviceId = "FAX_SERVICE_ID";
-const string phoneNumber = "my-virtual-number";
+const string phoneNumber = "MY_PHONE_NUMBER";
 
 var client = new SinchClient(new SinchClientConfiguration()
 {

@@ -21,6 +21,12 @@ var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 var regionCode = "MY_REGION_CODE";
 var type = Types.Local;
 
+var request = new ListAvailableNumbersRequest
+{
+    RegionCode = regionCode,
+    Type = type
+};
+
 var client = new SinchClient(new SinchClientConfiguration()
 {
     SinchUnifiedCredentials = new SinchUnifiedCredentials()
@@ -30,12 +36,6 @@ var client = new SinchClient(new SinchClientConfiguration()
         KeySecret = keySecret
     }
 });
-
-var request = new ListAvailableNumbersRequest
-{
-    RegionCode = regionCode,
-    Type = type
-};
 
 Console.WriteLine("Looking for available numbers");
 

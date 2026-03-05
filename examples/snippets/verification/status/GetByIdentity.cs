@@ -2,14 +2,14 @@ using Sinch;
 using Sinch.Snippets.Shared;
 using Sinch.Verification;
 using Sinch.Verification.Common;
-using System.Text.Json;
+using Sinch.Core;
 
 var applicationKey = ConfigurationHelper.GetApplicationKey() ?? "MY_APPLICATION_KEY";
 var applicationSecret = ConfigurationHelper.GetApplicationSecret() ?? "MY_APPLICATION_SECRET";
 
 // The phone number you are verifying, in E.164 format (e.g. +46701234567).
 // This should be the same number you used when starting the verification.
-var phoneNumber = "PHONE_NUMBER";
+const string phoneNumber = "PHONE_NUMBER";
 
 // The verification method you used when starting the verification.
 var verificationMethod = VerificationMethod.Sms;
@@ -29,9 +29,4 @@ Console.WriteLine($"Verification status for phone number {phoneNumber}");
 
 var response = await verificationStatus.GetByIdentity(phoneNumber, verificationMethod);
 
-var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions()
-{
-    WriteIndented = true
-});
-
-Console.WriteLine($"Response: {jsonResponse}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");

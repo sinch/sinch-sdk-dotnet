@@ -14,14 +14,15 @@ var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
 var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
 var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
-const string recipient = "RECIPIENT_PHONE_NUMBER";
+// The phone number of the recipient you want to send a fax to
+const string recipientPhoneNumber = "RECIPIENT_PHONE_NUMBER";
 const string fileName = "sample.txt";
 
 var fileContent = File.ReadAllBytes("./sample.txt");
 await using var singleRecipientStream = new MemoryStream(fileContent);
 
 await using var singleRecipientRequest = SendFaxRequest.FromStream(singleRecipientStream, fileName);
-singleRecipientRequest.To = [recipient];
+singleRecipientRequest.To = [recipientPhoneNumber];
 
 var client = new SinchClient(new SinchClientConfiguration
 {

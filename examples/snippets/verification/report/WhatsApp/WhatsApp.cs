@@ -8,10 +8,10 @@ var applicationKey = ConfigurationHelper.GetApplicationKey() ?? "MY_APPLICATION_
 var applicationSecret = ConfigurationHelper.GetApplicationSecret() ?? "MY_APPLICATION_SECRET";
 
 // The phone number being verified via Whatsapp.
-var phoneNumber = "PHONE_NUMBER";
+const string phoneNumber = "PHONE_NUMBER";
 
 // The OTP is the code the user received via Whatsapp as part of the verification process.
-var code = "OTP_CODE";
+const string code = "OTP_CODE";
 
 var client = new SinchClient(new SinchClientConfiguration()
 {
@@ -24,8 +24,6 @@ var client = new SinchClient(new SinchClientConfiguration()
 
 var verificationClient = client.Verification;
 
-Console.WriteLine($"Report Whatsapp verification code for phone number {phoneNumber}");
-
 var request = new ReportWhatsAppVerificationRequest()
 {
     WhatsApp = new WhatsApp()
@@ -33,6 +31,8 @@ var request = new ReportWhatsAppVerificationRequest()
         Code = code
     }
 };
+
+Console.WriteLine($"Report Whatsapp verification code for phone number {phoneNumber}");
 
 var response = await verificationClient.Verification.ReportWhatsAppByIdentity(phoneNumber, request);
 

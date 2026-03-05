@@ -14,8 +14,9 @@ var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
 var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
 var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
+// The phone number of the recipient you want to send a fax to
+const string recipientPhoneNumber = "RECIPIENT_PHONE_NUMBER";
 const string filePath = "./fax.pdf";
-const string recipient = "RECIPIENT_PHONE_NUMBER";
 
 var client = new SinchClient(new SinchClientConfiguration
 {
@@ -30,7 +31,7 @@ var client = new SinchClient(new SinchClientConfiguration
 Console.WriteLine("Sending a fax with file from path");
 
 using var request = SendFaxRequest.FromFile(filePath);
-request.To = [recipient];
+request.To = [recipientPhoneNumber];
 
 var response = await client.Fax.Faxes.Send(request);
 

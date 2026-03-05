@@ -14,7 +14,8 @@ var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
 var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
 var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
-const string recipient = "RECIPIENT_PHONE_NUMBER";
+// The phone number of the recipient you want to send a fax to
+const string recipientPhoneNumber = "RECIPIENT_PHONE_NUMBER";
 const string faxContentUrl = "https://developers.sinch.com/fax/fax.pdf";
 
 var client = new SinchClient(new SinchClientConfiguration
@@ -32,7 +33,7 @@ Console.WriteLine("Sending a fax with contentUrl to a recipient");
 var response = await client.Fax.Faxes.Send(
     new SendFaxRequest
     {
-        To = [recipient],
+        To = [recipientPhoneNumber],
         ContentUrl = [faxContentUrl]
     }
 );

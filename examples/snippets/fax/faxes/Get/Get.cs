@@ -13,7 +13,7 @@ var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
 var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
 var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
-// The Fax ID to retrieve
+// The ID of the Fax for which you want to get details
 const string faxId = "FAX_ID";
 
 var client = new SinchClient(new SinchClientConfiguration()

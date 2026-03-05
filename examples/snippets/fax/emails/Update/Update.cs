@@ -15,8 +15,9 @@ var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
 var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
 var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
+// The ID of the Fax Service for which you want to update the phone numbers for a specific email address
 const string serviceId = "FAX_SERVICE_ID";
-const string emailAddress = "my-email";
+const string emailAddress = "MY_EMAIL_ADDRESS";
 
 var client = new SinchClient(new SinchClientConfiguration
 {

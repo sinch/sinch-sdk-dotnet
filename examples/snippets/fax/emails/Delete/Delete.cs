@@ -13,8 +13,9 @@ var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
 var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
 var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
+// The ID of the Fax Service from which you want to delete the email
 const string serviceId = "FAX_SERVICE_ID";
-const string emailAddress = "my-email";
+const string emailAddress = "MY_EMAIL_ADDRESS";
 
 var client = new SinchClient(new SinchClientConfiguration()
 {

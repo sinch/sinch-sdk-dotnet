@@ -9,7 +9,7 @@ var applicationKey = ConfigurationHelper.GetApplicationKey() ?? "MY_APPLICATION_
 var applicationSecret = ConfigurationHelper.GetApplicationSecret() ?? "MY_APPLICATION_SECRET";
 
 // The phone number you want to verify, in E.164 format (e.g. +46701234567).
-var phoneNumber = "PHONE_NUMBER";
+const string phoneNumber = "PHONE_NUMBER";
 
 var client = new SinchClient(new SinchClientConfiguration()
 {
@@ -22,12 +22,12 @@ var client = new SinchClient(new SinchClientConfiguration()
 
 var sinchVerificationClient = client.Verification;
 
-Console.WriteLine($"Start a verification by WhatsApp onto phone number {phoneNumber}");
-
 var request = new StartWhatsAppVerificationRequest()
 {
     Identity = Identity.Number(phoneNumber)
 };
+
+Console.WriteLine($"Start a verification by WhatsApp onto phone number {phoneNumber}");
 
 var response = await sinchVerificationClient.Verification.StartWhatsApp(request);
 
