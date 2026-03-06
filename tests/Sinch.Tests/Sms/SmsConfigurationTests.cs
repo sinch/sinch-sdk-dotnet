@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
@@ -45,7 +46,7 @@ namespace Sinch.Tests.Sms
 
         public record SmsUrlTestCase(
             string TestName,
-            SmsRegion Region,
+            SmsRegion? Region,
             string UrlOverride,
             string ExpectedUrl)
         {
@@ -72,6 +73,23 @@ namespace Sinch.Tests.Sms
                 UrlOverride = testCase.UrlOverride,
             };
             smsConfig.ResolveUrl().ToString().Should().BeEquivalentTo(testCase.ExpectedUrl);
+        }
+
+        [Fact]
+        public void ResolveSmsUrl_ThrowsWhenRegionNotSet()
+        {
+            var smsConfig = new SinchSmsConfiguration();
+            var act = () => smsConfig.Validate();
+            act.Should().Throw<InvalidOperationException>()
+                .WithMessage("*Region*required*");
+        }
+
+        [Fact]
+        public void Validate_DoesNotThrow_WhenRegionIsSet()
+        {
+            var smsConfig = new SinchSmsConfiguration { Region = SmsRegion.Us };
+            var act = () => smsConfig.Validate();
+            act.Should().NotThrow();
         }
     }
 }

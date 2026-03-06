@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
@@ -44,6 +45,23 @@ namespace Sinch.Tests.Conversation
             };
 
             config.ResolveConversationUrl().ToString().Should().Be(testCase.Expected);
+        }
+
+        [Fact]
+        public void Validate_ThrowsWhenRegionNotSet()
+        {
+            var config = new SinchConversationConfiguration();
+            var act = () => config.Validate();
+            act.Should().Throw<InvalidOperationException>()
+                .WithMessage("*ConversationRegion*required*");
+        }
+
+        [Fact]
+        public void Validate_DoesNotThrow_WhenRegionIsSet()
+        {
+            var config = new SinchConversationConfiguration { ConversationRegion = ConversationRegion.Us };
+            var act = () => config.Validate();
+            act.Should().NotThrow();
         }
     }
 }

@@ -1296,7 +1296,13 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public async Task DeserializeWebhookWithoutProvidingSinchUnifiedCredentials()
         {
-            var sinchClient = new SinchClient(new SinchClientConfiguration());
+            var sinchClient = new SinchClient(new SinchClientConfiguration()
+            {
+                ConversationConfiguration = new SinchConversationConfiguration()
+                {
+                    ConversationRegion = ConversationRegion.Us
+                }
+            });
 
             string json =
                 Helpers.LoadResources("Conversation/Hooks/CapabilityEvent.json");

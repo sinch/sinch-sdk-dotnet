@@ -19,7 +19,6 @@ namespace Sinch.Tests.Fax
             {
                 new("Default Europe Fax region", FaxRegion.Europe, null, "https://eu1.fax.api.sinch.com/"),
                 new("Default US East Coast Fax region", FaxRegion.UsEastCost, null, "https://use1.fax.api.sinch.com/"),
-                new("No region specified", null, null, "https://fax.api.sinch.com/"),
                 new("Europe region with null override", FaxRegion.Europe, null, "https://eu1.fax.api.sinch.com/"),
                 new("Europe region with custom override", FaxRegion.Europe, "https://new-fax.url", "https://new-fax.url/")
             };
@@ -44,7 +43,6 @@ namespace Sinch.Tests.Fax
 
         public static TheoryData<FaxRegion, string> RegionUrlTestData => new()
         {
-            { null, "https://fax.api.sinch.com/" },
             { FaxRegion.Europe, "https://eu1.fax.api.sinch.com/" },
             { FaxRegion.UsEastCost, "https://use1.fax.api.sinch.com/" },
             { FaxRegion.SouthAmerica, "https://sae1.fax.api.sinch.com/" },
@@ -80,6 +78,23 @@ namespace Sinch.Tests.Fax
             };
             var faxUrl = config.FaxConfiguration.ResolveUrl();
             faxUrl.Should().BeEquivalentTo(new Uri("https://custom.fax.api.sinch.com/"));
+        }
+
+        [Fact]
+        public void Validate_ThrowsWhenRegionNotSet()
+        {
+            var config = new SinchFaxConfiguration();
+            var act = () => config.Validate();
+            act.Should().Throw<InvalidOperationException>()
+                .WithMessage("*Region*required*");
+        }
+
+        [Fact]
+        public void Validate_DoesNotThrow_WhenRegionIsSet()
+        {
+            var config = new SinchFaxConfiguration { Region = FaxRegion.Europe };
+            var act = () => config.Validate();
+            act.Should().NotThrow();
         }
     }
 }

@@ -3,6 +3,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
+using Sinch.Conversation;
+using Sinch.SMS;
 using Xunit;
 
 namespace Sinch.Tests
@@ -53,7 +55,9 @@ namespace Sinch.Tests
                     ProjectId = projectId,
                     KeyId = keyId,
                     KeySecret = keySecret,
-                }
+                },
+                SmsConfiguration = new SinchSmsConfiguration() { Region = SmsRegion.Us },
+                ConversationConfiguration = new SinchConversationConfiguration() { ConversationRegion = ConversationRegion.Us }
             });
             var smsOp = () => sinch.Sms.Batches.Get("1");
             var aggregateExceptionSms = (await smsOp.Should().ThrowAsync<AggregateException>()).Which;
@@ -82,7 +86,9 @@ namespace Sinch.Tests
                     ProjectId = "projectid",
                     KeyId = "keyid",
                     KeySecret = "keysecret",
-                }
+                },
+                SmsConfiguration = new SinchSmsConfiguration() { Region = SmsRegion.Us },
+                ConversationConfiguration = new SinchConversationConfiguration() { ConversationRegion = ConversationRegion.Us }
             });
             sinch.Conversation.Should().NotBeNull();
             sinch.Sms.Should().NotBeNull();
