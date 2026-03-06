@@ -68,7 +68,6 @@ jobs:
 
           cp sinch-sdk-mockserver/features/conversation/apps.feature tests/Sinch.Tests.Features/features/conversation/
           cp sinch-sdk-mockserver/features/fax/services.feature tests/Sinch.Tests.Features/features/fax/
-
       - name: Run mockserver docker-compose
         run: docker compose up -d
         working-directory: sinch-sdk-mockserver
@@ -82,8 +81,8 @@ jobs:
       - name: Build
         run: dotnet build --framework ${{ matrix.tfm }} -p:Version=${{ steps.gitversion.outputs.semVer }} --configuration Release --no-restore
 
-      - name: Build Snippets
-        run: dotnet build examples/snippets/Snippets.sln
+      - name: Build Examples
+        run: dotnet build examples/dirs.proj
 
       - name: Test
         run: dotnet test tests/Sinch.Tests --framework ${{ matrix.tfm }} --no-restore --verbosity normal

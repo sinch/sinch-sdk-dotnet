@@ -87,21 +87,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListNumbersAuto", "fax\emai
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "faxes", "faxes", "{8CD4B6E4-67BB-4C12-912A-FCFDD552302F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "List", "fax\Faxes\List\List.csproj", "{BB29980D-225C-454B-9737-147E4564A44C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "List", "fax\faxes\List\List.csproj", "{BB29980D-225C-454B-9737-147E4564A44C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListAuto", "fax\Faxes\ListAuto\ListAuto.csproj", "{DFF779B9-A97E-4B65-B60D-22E69E387A09}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListAuto", "fax\faxes\ListAuto\ListAuto.csproj", "{DFF779B9-A97E-4B65-B60D-22E69E387A09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeleteContent", "fax\Faxes\DeleteContent\DeleteContent.csproj", "{0F37B171-7A3C-4C79-AA95-15939A14F7DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeleteContent", "fax\faxes\DeleteContent\DeleteContent.csproj", "{0F37B171-7A3C-4C79-AA95-15939A14F7DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DownloadContent", "fax\Faxes\DownloadContent\DownloadContent.csproj", "{3F20F098-F456-4F87-A47C-A8D22CE2E260}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DownloadContent", "fax\faxes\DownloadContent\DownloadContent.csproj", "{3F20F098-F456-4F87-A47C-A8D22CE2E260}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Get", "fax\Faxes\Get\Get.csproj", "{80B8C0D8-F576-42F0-8D79-07F0058EA351}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Get", "fax\faxes\Get\Get.csproj", "{80B8C0D8-F576-42F0-8D79-07F0058EA351}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendWithBase64Files", "fax\Faxes\SendWithBase64Files\SendWithBase64Files.csproj", "{4C045A21-ED76-42C7-B876-96EC104BB611}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendWithBase64Files", "fax\faxes\SendWithBase64Files\SendWithBase64Files.csproj", "{4C045A21-ED76-42C7-B876-96EC104BB611}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendWithContentUrl", "fax\Faxes\SendWithContentUrl\SendWithContentUrl.csproj", "{ABBBF4EE-B7FE-403A-B4C5-C0A093834904}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendWithContentUrl", "fax\faxes\SendWithContentUrl\SendWithContentUrl.csproj", "{ABBBF4EE-B7FE-403A-B4C5-C0A093834904}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendWithFileFromPath", "fax\Faxes\SendWithFileFromPath\SendWithFileFromPath.csproj", "{29977324-E645-46EB-9BB8-5643D92AEA34}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendWithFileFromPath", "fax\faxes\SendWithFileFromPath\SendWithFileFromPath.csproj", "{29977324-E645-46EB-9BB8-5643D92AEA34}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendWithFileFromStream", "fax\Faxes\SendWithFileFromStream\SendWithFileFromStream.csproj", "{F807E6F0-21D7-415E-A64E-B278F3AB5DFB}"
 EndProject

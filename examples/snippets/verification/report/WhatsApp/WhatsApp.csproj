@@ -7,10 +7,6 @@
     <Nullable>enable</Nullable>
 </PropertyGroup>
 
-  <ItemGroup Condition="'$(Configuration)'!='Debug'">
-    <PackageReference Include="Sinch" Version="1.3.0" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\src\Sinch\Sinch.csproj" />
   </ItemGroup>
