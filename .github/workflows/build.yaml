@@ -59,7 +59,13 @@ jobs:
           cp sinch-sdk-mockserver/features/verification/*.feature tests/Sinch.Tests.Features/features/verification/
 
           cp sinch-sdk-mockserver/features/conversation/apps.feature tests/Sinch.Tests.Features/features/conversation/
+          cp sinch-sdk-mockserver/features/conversation/capability.feature tests/Sinch.Tests.Features/features/conversation/
+          cp sinch-sdk-mockserver/features/conversation/transcoding.feature tests/Sinch.Tests.Features/features/conversation/
+
           cp sinch-sdk-mockserver/features/fax/services.feature tests/Sinch.Tests.Features/features/fax/
+          cp sinch-sdk-mockserver/features/fax/emails.feature tests/Sinch.Tests.Features/features/fax/
+          cp sinch-sdk-mockserver/features/fax/faxes.feature tests/Sinch.Tests.Features/features/fax/
+
       - name: Run mockserver docker-compose
         run: docker compose up -d
         working-directory: sinch-sdk-mockserver
