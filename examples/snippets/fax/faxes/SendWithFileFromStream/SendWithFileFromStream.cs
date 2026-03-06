@@ -18,7 +18,7 @@ var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 const string recipientPhoneNumber = "RECIPIENT_PHONE_NUMBER";
 const string fileName = "sample.txt";
 
-var fileContent = File.ReadAllBytes("./sample.txt");
+var fileContent = File.ReadAllBytes(fileName);
 await using var singleRecipientStream = new MemoryStream(fileContent);
 
 await using var singleRecipientRequest = SendFaxRequest.FromStream(singleRecipientStream, fileName);
