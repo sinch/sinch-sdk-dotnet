@@ -45,6 +45,6 @@ var request = new EmailRequest
     ]
 };
 
-var response = await client.Fax.Emails.Add(serviceId, request);
+var response = await client.Fax.Emails.AddToNumbers(serviceId, request);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

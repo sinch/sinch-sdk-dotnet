@@ -195,7 +195,7 @@ namespace Sinch.Tests.Fax
                     projectId = ProjectId
                 }));
 
-            var response = await Fax.Emails.Add(ServiceId, emailRequest);
+            var response = await Fax.Emails.AddToNumbers(ServiceId, emailRequest);
 
             response.Should().NotBeNull();
             response.EmailAddress.Should().Be(Email);
@@ -218,13 +218,13 @@ namespace Sinch.Tests.Fax
             if (invalidServiceId == null)
             {
                 exception = await Assert.ThrowsAsync<ArgumentNullException>(
-                    async () => await Fax.Emails.Add(invalidServiceId, emailRequest));
+                    async () => await Fax.Emails.AddToNumbers(invalidServiceId, emailRequest));
 
             }
             else
             {
                 exception = await Assert.ThrowsAsync<ArgumentException>(
-                    async () => await Fax.Emails.Add(invalidServiceId, emailRequest));
+                    async () => await Fax.Emails.AddToNumbers(invalidServiceId, emailRequest));
             }
 
             exception.ParamName.Should().Be("serviceId");
@@ -246,13 +246,13 @@ namespace Sinch.Tests.Fax
             if (invalidEmail == null)
             {
                 exception = await Assert.ThrowsAsync<ArgumentNullException>(
-                    async () => await Fax.Emails.Add(ServiceId, emailRequest));
+                    async () => await Fax.Emails.AddToNumbers(ServiceId, emailRequest));
 
             }
             else
             {
                 exception = await Assert.ThrowsAsync<ArgumentException>(
-                    async () => await Fax.Emails.Add(ServiceId, emailRequest));
+                    async () => await Fax.Emails.AddToNumbers(ServiceId, emailRequest));
             }
 
             exception.ParamName.Should().Contain("Email");
@@ -262,7 +262,7 @@ namespace Sinch.Tests.Fax
         public async Task Add_WithNullEmailRequest_ThrowsArgumentNullException()
         {
             var exception = await Assert.ThrowsAsync<ArgumentNullException>(
-                async () => await Fax.Emails.Add(ServiceId, null!));
+                async () => await Fax.Emails.AddToNumbers(ServiceId, null!));
 
             exception.ParamName.Should().Be("emailRequest");
         }

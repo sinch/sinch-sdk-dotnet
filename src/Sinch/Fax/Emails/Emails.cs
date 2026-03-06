@@ -75,7 +75,7 @@ namespace Sinch.Fax.Emails
         /// <param name="emailRequest"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Email> Add(string serviceId, EmailRequest emailRequest,
+        Task<Email> AddToNumbers(string serviceId, EmailRequest emailRequest,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace Sinch.Fax.Emails
         }
 
         /// <inheritdoc />
-        public Task<Email> Add(string serviceId, EmailRequest emailRequest,
+        public Task<Email> AddToNumbers(string serviceId, EmailRequest emailRequest,
             CancellationToken cancellationToken = default)
         {
             if (emailRequest == null)
