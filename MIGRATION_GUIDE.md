@@ -26,6 +26,7 @@
 - [Conversation API: Coordinates properties changed from float to double](#conversation-api-coordinates-properties-changed-from-float-to-double)
 - [Fax API: SendFaxRequest constructors replaced with factory methods](#fax-api-sendfaxrequest-constructors-replaced-with-factory-methods)
 - [Conversation API: InjectEventRequest now supports only AppEvent](#conversation-api-injecteventrequest-now-supports-only-appevent)
+- [Region configuration is now required for SMS, Conversation, and Fax](#region-configuration-is-now-required-for-sms-conversation-and-fax)
 
 ## .NET Framework Support
 
@@ -729,4 +730,76 @@ var request = new InjectEventRequest
 {
     Event = new AppEvent { /* ... */ }
 };
+```
+
+---
+
+## Region configuration is now required for SMS, Conversation, and Fax
+
+The `Region` property in `SinchSmsConfiguration`, `SinchFaxConfiguration` and `ConversationRegion` in `SinchConversationConfiguration` are  now **required**. Validation is performed at runtime when the Sinch client is first accessed and an `InvalidOperationException` is thrown if the region is not provided.
+
+**SMS:**
+
+Version 1.*:
+```csharp
+var sinch = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ }
+});
+```
+
+Version 2.*:
+```csharp
+var sinch = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ },
+    SmsConfiguration = new SinchSmsConfiguration
+    {
+        Region = SmsRegion.Us
+    }
+});
+```
+
+**Conversation:**
+
+Version 1.*:
+```csharp
+var sinch = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ }
+});
+```
+
+Version 2.*:
+```csharp
+var sinch = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ },
+    ConversationConfiguration = new SinchConversationConfiguration
+    {
+        ConversationRegion = ConversationRegion.Us
+    }
+});
+```
+
+**Fax:**
+
+Version 1.*:
+```csharp
+var sinch = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ }
+});
+```
+
+Version 2.*:
+```csharp
+var sinch = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ },
+    FaxConfiguration = new SinchFaxConfiguration
+    {
+        Region = FaxRegion.UsEastCost
+    }
+});
 ```
