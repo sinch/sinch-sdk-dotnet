@@ -15,6 +15,10 @@ namespace Sinch.Tests.Features.Conversation
                         KeyId = "keyId",
                         KeySecret = "keySecret"
                     },
+                    ConversationConfiguration = new SinchConversationConfiguration
+                    {
+                        ConversationRegion = ConversationRegion.Us
+                    },
                     SinchOptions = new SinchOptions
                     {
                         ApiUrlOverrides = new ApiUrlOverrides()

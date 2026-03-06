@@ -13,6 +13,10 @@ namespace Sinch.Tests.Features.Sms
                         KeyId = "keyId",
                         KeySecret = "keySecret"
                     },
+                    SmsConfiguration = new SinchSmsConfiguration
+                    {
+                        Region = SmsRegion.Us
+                    },
                     SinchOptions = new SinchOptions
                     {
                         ApiUrlOverrides = new ApiUrlOverrides()
