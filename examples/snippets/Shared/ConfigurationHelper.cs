@@ -61,4 +61,9 @@ public static class ConfigurationHelper
     /// Gets the Sinch Conversation region from configuration.
     /// </summary>
     public static string? GetConversationRegion() => GetValue("SINCH_CONVERSATION_REGION");
+
+    /// <summary>
+    /// Gets the Sinch Fax region from configuration.
+    /// </summary>
+    public static string? GetFaxRegion() => GetValue("SINCH_FAX_REGION");
 }

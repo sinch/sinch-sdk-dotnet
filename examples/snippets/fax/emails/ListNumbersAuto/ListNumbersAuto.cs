@@ -8,6 +8,7 @@
 
 using Sinch;
 using Sinch.Core;
+using Sinch.Fax;
 using Sinch.Snippets.Shared;
 
 var sinchClient = new SinchClient(new SinchClientConfiguration()
@@ -17,6 +18,10 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
         ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
         KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
         KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
+    },
+    FaxConfiguration = new SinchFaxConfiguration
+    {
+        Region = new FaxRegion(ConfigurationHelper.GetFaxRegion() ?? "MY_FAX_REGION")
     }
 });
 
