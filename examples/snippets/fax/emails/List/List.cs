@@ -25,7 +25,7 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
     }
 });
 
-const string serviceId = "01KCPYAGE8PNJTT9KSC5SW4CSS";
+const string serviceId = "FAX_SERVICE_ID";
 
 Console.WriteLine($"Listing emails for service: {serviceId}");
 
