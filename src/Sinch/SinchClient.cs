@@ -183,14 +183,16 @@ namespace Sinch
 
             _sms = new Lazy<ISinchSms>(() =>
                 InitSms(_sinchClientConfiguration.SmsConfiguration), isThreadSafe: true);
-
-
+            
             _conversation = new Lazy<ISinchConversation>(() =>
             {
                 var conversationConfig = _sinchClientConfiguration.ConversationConfiguration;
+                conversationConfig.Validate();
+                
                 var conversationBaseAddress = ResolveUrl(
                     _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.ConversationUrl,
                     conversationConfig.ResolveConversationUrl);
+                
                 var templatesBaseAddress = ResolveUrl(
                     _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.TemplatesUrl,
                     conversationConfig.ResolveTemplateUrl);
@@ -207,15 +209,19 @@ namespace Sinch
                     _httpSnakeCase);
             }, isThreadSafe: true);
 
-
             _fax = new Lazy<ISinchFax>(() =>
             {
                 var validateUnifiedCredentials = ValidateUnifiedCredentials();
+
+                var faxConfig = _sinchClientConfiguration.FaxConfiguration;
+                faxConfig.Validate();
+                
                 var faxUrl = ResolveUrl(
                     _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.FaxUrl,
-                    _sinchClientConfiguration.FaxConfiguration.ResolveUrl);
+                    faxConfig.ResolveUrl);
                 return new FaxClient(validateUnifiedCredentials.ProjectId, faxUrl, _loggerFactory, httpCamelCase.Value);
             }, isThreadSafe: true);
+            
             _verification = new Lazy<ISinchVerificationClient>(() =>
             {
                 var config = _sinchClientConfiguration.VerificationConfiguration?.Validate();
@@ -229,8 +235,7 @@ namespace Sinch
                     auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
                 else
                     auth = new BasicAuth(config.AppKey, config.AppSecret);
-
-
+                
                 var http = new Http(new Lazy<ISinchAuth>(auth), _httpClientAccessor, _loggerFactory?.Create<IHttp>(),
                     JsonNamingPolicy.CamelCase);
 
@@ -329,6 +334,8 @@ namespace Sinch
             }
 
             var unifiedCredentials = ValidateUnifiedCredentials();
+            sinchSmsConfiguration.Validate();
+            
             _logger?.LogInformation("Initializing SMS client with {project_id} in {region}",
                 unifiedCredentials.ProjectId,
                 sinchSmsConfiguration.Region);
@@ -338,14 +345,11 @@ namespace Sinch
                 sinchSmsConfiguration.ResolveUrl);
 
             return new SmsClient(
-                new ProjectId(
-                    unifiedCredentials
-                        .ProjectId),
+                new ProjectId(unifiedCredentials.ProjectId),
                 smsResolvedUrl,
                 _loggerFactory,
                 _httpSnakeCase.Value);
         }
-
 
         /// <summary>
         /// Resolves URL by preferring ApiUrlOverrides, then falling back to the configuration default.

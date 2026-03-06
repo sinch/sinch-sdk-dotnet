@@ -4,25 +4,28 @@ namespace Sinch.Fax
 {
     public sealed class SinchFaxConfiguration
     {
+        /// <summary>
+        ///     Sets the region for the Fax API.
+        ///     Required. See <see cref="FaxRegion" /> for available values.
+        /// </summary>
         public FaxRegion? Region { get; init; }
 
         public string? UrlOverride { get; init; }
 
         internal Uri ResolveUrl()
         {
-            const string faxApiUrl = "https://fax.api.sinch.com/";
             const string faxApiUrlTemplate = "https://{0}.fax.api.sinch.com/";
-            if (UrlOverride != null)
-            {
-                return new Uri(UrlOverride);
-            }
+            return new Uri(UrlOverride ?? string.Format(faxApiUrlTemplate, Region!.Value));
+        }
 
-            if (!string.IsNullOrEmpty(Region?.Value))
+        internal void Validate()
+        {
+            if (Region == null)
             {
-                return new Uri(string.Format(faxApiUrlTemplate, Region?.Value));
+                throw new InvalidOperationException(
+                    $"{nameof(SinchFaxConfiguration)}.{nameof(Region)} is required. " +
+                    $"Set it to one of the values in {nameof(FaxRegion)}, e.g. {nameof(FaxRegion)}.{nameof(FaxRegion.UsEastCost)}.");
             }
-
-            return new Uri(faxApiUrl);
         }
     }
 }

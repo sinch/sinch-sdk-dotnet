@@ -7,16 +7,14 @@ namespace Sinch.SMS
         public string? UrlOverride { get; init; }
 
         /// <summary>
-        ///     Set's the region for the SMS service.
-        ///     <br/><br/>
+        ///     Set the region for the SMS service.
         ///     The difference between this option and
         ///     <see href="https://developers.sinch.com/docs/sms/api-reference/#base-url">SMS base URL</see>
         ///     is that your account is NOT region locked because SDK utilizes `project_id` API set instead of `service_plan_id`,
-        ///     and utilizes region to store the data.
-        ///     <br /><br />
-        ///     Defaults to "us"
+        ///     and uses a region to store the data.
+        ///     Required. See <see cref="SmsRegion" /> for available values.
         /// </summary>
-        public SmsRegion Region { get; init; } = SmsRegion.Us;
+        public SmsRegion? Region { get; init; }
 
         internal ServicePlanIdConfiguration? ServicePlanIdConfiguration { get; set; }
 
@@ -38,12 +36,18 @@ namespace Sinch.SMS
 
         internal Uri ResolveUrl()
         {
-            // General SMS rest api uses service_plan_id to performs calls
-            // But SDK is based on single-account model which uses project_id
-            // Thus, baseAddress for sms api is using a special endpoint where service_plan_id is replaced with projectId
-            // for each provided endpoint
             const string smsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
-            return new Uri(UrlOverride ?? string.Format(smsApiUrlTemplate, Region.Value));
+            return new Uri(UrlOverride ?? string.Format(smsApiUrlTemplate, Region!.Value));
+        }
+
+        internal void Validate()
+        {
+            if (Region == null)
+            {
+                throw new InvalidOperationException(
+                    $"{nameof(SinchSmsConfiguration)}.{nameof(Region)} is required. " +
+                    $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.");
+            }
         }
     }
 
