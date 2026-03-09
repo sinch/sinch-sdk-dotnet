@@ -799,7 +799,7 @@ var sinch = new SinchClient(new SinchClientConfiguration
     SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ },
     FaxConfiguration = new SinchFaxConfiguration
     {
-        Region = FaxRegion.UsEastCost
+        Region = FaxRegion.UsEastCoast
     }
 });
 ```

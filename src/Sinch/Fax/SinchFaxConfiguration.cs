@@ -24,7 +24,7 @@ namespace Sinch.Fax
             {
                 throw new InvalidOperationException(
                     $"{nameof(SinchFaxConfiguration)}.{nameof(Region)} is required. " +
-                    $"Set it to one of the values in {nameof(FaxRegion)}, e.g. {nameof(FaxRegion)}.{nameof(FaxRegion.UsEastCost)}.");
+                    $"Set it to one of the values in {nameof(FaxRegion)}, e.g. {nameof(FaxRegion)}.{nameof(FaxRegion.UsEastCoast)}.");
             }
         }
     }

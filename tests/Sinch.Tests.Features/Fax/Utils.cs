@@ -17,7 +17,7 @@ public class Utils
                 },
                 FaxConfiguration = new SinchFaxConfiguration
                 {
-                    Region = FaxRegion.UsEastCost
+                    Region = FaxRegion.UsEastCoast
                 },
                 SinchOptions = new SinchOptions
                 {
