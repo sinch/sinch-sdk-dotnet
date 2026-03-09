@@ -13,7 +13,7 @@ namespace Sinch.Conversation
         public string? ConversationUrlOverride { get; init; }
 
         public string? TemplateUrlOverride { get; init; }
-        
+
         private static string ConversationRegionRequiredMessage =>
             $"{nameof(SinchConversationConfiguration)}.{nameof(Region)} is required. " +
             $"Set it to one of the values in {nameof(Region)}, e.g. {nameof(Region)}.{nameof(ConversationRegion.Us)}.";
