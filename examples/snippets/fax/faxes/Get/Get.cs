@@ -10,13 +10,20 @@ using Sinch.Core;
 using Sinch.Fax;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration()
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
+
+// The ID of the Fax for which you want to get details
+const string faxId = "FAX_ID";
+
+var client = new SinchClient(new SinchClientConfiguration()
 {
     SinchUnifiedCredentials = new SinchUnifiedCredentials()
     {
-        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
-        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
-        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
     },
     FaxConfiguration = new SinchFaxConfiguration
     {
@@ -26,9 +33,6 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 
 Console.WriteLine("Getting a fax by ID");
 
-// The Fax ID to retrieve
-const string faxId = "FAX_ID";
-
-var response = await sinchClient.Fax.Faxes.Get(faxId);
+var response = await client.Fax.Faxes.Get(faxId);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

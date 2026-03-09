@@ -61,6 +61,16 @@ public static class ConfigurationHelper
     /// Gets the Sinch Conversation region from configuration.
     /// </summary>
     public static string? GetConversationRegion() => GetValue("SINCH_CONVERSATION_REGION");
+    
+    /// <summary>
+    /// Gets the Sinch Application Key from configuration.
+    /// </summary>
+    public static string? GetApplicationKey() => GetValue("SINCH_APPLICATION_KEY");
+
+    /// <summary>
+    /// Gets the Sinch Application Secret from configuration.
+    /// </summary>
+    public static string? GetApplicationSecret() => GetValue("SINCH_APPLICATION_SECRET");
 
     /// <summary>
     /// Gets the Sinch Fax region from configuration.

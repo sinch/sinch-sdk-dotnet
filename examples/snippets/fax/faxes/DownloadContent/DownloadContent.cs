@@ -9,13 +9,20 @@ using Sinch;
 using Sinch.Fax;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration()
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
+
+// The Fax ID whose content you want to download
+const string faxId = "FAX_ID";
+
+var client = new SinchClient(new SinchClientConfiguration()
 {
     SinchUnifiedCredentials = new SinchUnifiedCredentials()
     {
-        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
-        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
-        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
     },
     FaxConfiguration = new SinchFaxConfiguration
     {
@@ -25,10 +32,7 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 
 Console.WriteLine("Downloading fax content as PDF");
 
-// The Fax ID whose content you want to download
-const string faxId = "FAX_ID";
-
-var contentResult = await sinchClient.Fax.Faxes.DownloadContent(faxId);
+var contentResult = await client.Fax.Faxes.DownloadContent(faxId);
 
 var outputPath = Path.Combine(Directory.GetCurrentDirectory(), contentResult.FileName ?? $"fax_{faxId}.pdf");
 await using var fileStream = File.Create(outputPath);

@@ -12,15 +12,9 @@ using Sinch.Numbers;
 using Sinch.Numbers.Available.RentAny;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration()
-{
-    SinchUnifiedCredentials = new SinchUnifiedCredentials()
-    {
-        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
-        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
-        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
-    }
-});
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
 var servicePlanId = ConfigurationHelper.GetServicePlanId() ?? "MY_SERVICE_PLAN_ID";
 
@@ -29,6 +23,16 @@ var servicePlanId = ConfigurationHelper.GetServicePlanId() ?? "MY_SERVICE_PLAN_I
 var regionCode = "MY_REGION_CODE";
 
 var numberType = Types.Local;
+
+var client = new SinchClient(new SinchClientConfiguration()
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials()
+    {
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
+    }
+});
 
 Console.WriteLine("RentAny number");
 
@@ -42,6 +46,6 @@ var request = new RentAnyNumberRequest
     }
 };
 
-var response = await sinchClient.Numbers.RentAny(request);
+var response = await client.Numbers.RentAny(request);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

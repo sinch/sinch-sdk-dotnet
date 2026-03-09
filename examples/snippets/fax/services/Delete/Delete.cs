@@ -11,13 +11,20 @@ using Sinch.Core;
 using Sinch.Fax;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
+
+// The ID of the Fax Service you want to delete
+const string serviceId = "FAX_SERVICE_ID";
+
+var client = new SinchClient(new SinchClientConfiguration
 {
     SinchUnifiedCredentials = new SinchUnifiedCredentials
     {
-        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
-        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
-        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
     },
     FaxConfiguration = new SinchFaxConfiguration
     {
@@ -25,11 +32,8 @@ var sinchClient = new SinchClient(new SinchClientConfiguration
     }
 });
 
-// The Fax Service ID you want to delete
-const string serviceId = "FAX_SERVICE_ID";
-
 Console.WriteLine($"Deleting fax service: {serviceId}");
 
-await sinchClient.Fax.Services.Delete(serviceId);
+await client.Fax.Services.Delete(serviceId);
 
 Console.WriteLine("Delete completed.");

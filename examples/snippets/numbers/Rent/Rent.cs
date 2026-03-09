@@ -12,15 +12,9 @@ using Sinch.Numbers;
 using Sinch.Numbers.Available.Rent;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration()
-{
-    SinchUnifiedCredentials = new SinchUnifiedCredentials()
-    {
-        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
-        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
-        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
-    }
-});
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
 var servicePlanId = ConfigurationHelper.GetServicePlanId() ?? "MY_SERVICE_PLAN_ID";
 
@@ -28,6 +22,16 @@ var servicePlanId = ConfigurationHelper.GetServicePlanId() ?? "MY_SERVICE_PLAN_I
 // the SearchForAvailableNumbers snippet or
 // https://developers.sinch.com/docs/numbers/getting-started/dotnet-sdk/searchavailable
 var phoneNumberToBeRented = "AVAILABLE_PHONE_NUMBER_TO_BE_RENTED";
+
+var client = new SinchClient(new SinchClientConfiguration()
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials()
+    {
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
+    }
+});
 
 Console.WriteLine($"Rent for: {phoneNumberToBeRented}");
 
@@ -39,6 +43,6 @@ var request = new RentActiveNumberRequest
     }
 };
 
-var response = await sinchClient.Numbers.Rent(phoneNumberToBeRented, request);
+var response = await client.Numbers.Rent(phoneNumberToBeRented, request);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

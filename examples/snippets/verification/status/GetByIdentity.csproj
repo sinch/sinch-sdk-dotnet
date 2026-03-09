@@ -9,5 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\src\Sinch\Sinch.csproj" />
+    <ProjectReference Include="..\..\Shared\SnippetsConfig.Shared.csproj" />
   </ItemGroup>
 </Project>

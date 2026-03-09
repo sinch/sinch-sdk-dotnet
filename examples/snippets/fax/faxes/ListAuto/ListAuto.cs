@@ -11,13 +11,17 @@ using Sinch.Fax;
 using Sinch.Fax.Faxes;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration()
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
+
+var client = new SinchClient(new SinchClientConfiguration()
 {
     SinchUnifiedCredentials = new SinchUnifiedCredentials()
     {
-        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
-        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
-        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
     },
     FaxConfiguration = new SinchFaxConfiguration
     {
@@ -27,7 +31,7 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 
 Console.WriteLine("Listing all faxes");
 
-await foreach (var fax in sinchClient.Fax.Faxes.ListAuto(new ListFaxesRequest()))
+await foreach (var fax in client.Fax.Faxes.ListAuto(new ListFaxesRequest()))
 {
     Console.WriteLine(fax.ToPrettyString());
 }
