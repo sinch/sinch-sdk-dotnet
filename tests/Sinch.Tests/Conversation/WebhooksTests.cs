@@ -1300,7 +1300,7 @@ namespace Sinch.Tests.Conversation
             {
                 ConversationConfiguration = new SinchConversationConfiguration()
                 {
-                    ConversationRegion = ConversationRegion.Us
+                    Region = ConversationRegion.Us
                 }
             });
 

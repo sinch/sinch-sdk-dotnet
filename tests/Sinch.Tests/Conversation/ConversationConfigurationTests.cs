@@ -40,7 +40,7 @@ namespace Sinch.Tests.Conversation
         {
             var config = new SinchConversationConfiguration()
             {
-                ConversationRegion = testCase.Region,
+                Region = testCase.Region,
                 ConversationUrlOverride = testCase.UrlOverride,
             };
 
@@ -59,7 +59,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void Validate_DoesNotThrow_WhenRegionIsSet()
         {
-            var config = new SinchConversationConfiguration { ConversationRegion = ConversationRegion.Us };
+            var config = new SinchConversationConfiguration { Region = ConversationRegion.Us };
             var act = () => config.Validate();
             act.Should().NotThrow();
         }

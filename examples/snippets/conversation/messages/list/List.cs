@@ -22,7 +22,7 @@ var client = new SinchClient(new SinchClientConfiguration
     },
     ConversationConfiguration = new SinchConversationConfiguration
     {
-        ConversationRegion = new ConversationRegion(conversationRegion)
+        Region = new ConversationRegion(conversationRegion)
     }
 });
 

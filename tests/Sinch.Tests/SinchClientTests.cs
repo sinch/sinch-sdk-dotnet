@@ -57,7 +57,7 @@ namespace Sinch.Tests
                     KeySecret = keySecret,
                 },
                 SmsConfiguration = new SinchSmsConfiguration() { Region = SmsRegion.Us },
-                ConversationConfiguration = new SinchConversationConfiguration() { ConversationRegion = ConversationRegion.Us }
+                ConversationConfiguration = new SinchConversationConfiguration() { Region = ConversationRegion.Us }
             });
             var smsOp = () => sinch.Sms.Batches.Get("1");
             var aggregateExceptionSms = (await smsOp.Should().ThrowAsync<AggregateException>()).Which;
@@ -88,7 +88,7 @@ namespace Sinch.Tests
                     KeySecret = "keysecret",
                 },
                 SmsConfiguration = new SinchSmsConfiguration() { Region = SmsRegion.Us },
-                ConversationConfiguration = new SinchConversationConfiguration() { ConversationRegion = ConversationRegion.Us }
+                ConversationConfiguration = new SinchConversationConfiguration() { Region = ConversationRegion.Us }
             });
             sinch.Conversation.Should().NotBeNull();
             sinch.Sms.Should().NotBeNull();
