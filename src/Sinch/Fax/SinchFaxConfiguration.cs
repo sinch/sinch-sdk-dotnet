@@ -24,7 +24,7 @@ namespace Sinch.Fax
             if (Region is null)
                 throw new InvalidOperationException(RegionRequiredMessage);
 
-            return new Uri(string.Format("https://{0}.fax.api.sinch.com/", Region.Value));
+            return new Uri($"https://{Region.Value}.fax.api.sinch.com/");
         }
 
         internal void Validate()

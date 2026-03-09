@@ -13,11 +13,10 @@ namespace Sinch.Conversation
         public string? ConversationUrlOverride { get; init; }
 
         public string? TemplateUrlOverride { get; init; }
-
-
+        
         private static string ConversationRegionRequiredMessage =>
             $"{nameof(SinchConversationConfiguration)}.{nameof(ConversationRegion)} is required. " +
-            $"Set it to one of the values in {nameof(ConversationRegion)}, e.g. {nameof(ConversationRegion)}.{nameof(Sinch.Conversation.ConversationRegion.Us)}.";
+            $"Set it to one of the values in {nameof(ConversationRegion)}, e.g. {nameof(ConversationRegion)}.{nameof(ConversationRegion.Us)}.";
 
         internal Uri ResolveUrl()
         {
@@ -27,7 +26,7 @@ namespace Sinch.Conversation
             if (ConversationRegion is null)
                 throw new InvalidOperationException(ConversationRegionRequiredMessage);
 
-            return new Uri(string.Format("https://{0}.conversation.api.sinch.com/", ConversationRegion.Value));
+            return new Uri($"https://{ConversationRegion.Value}.conversation.api.sinch.com/");
         }
 
         internal Uri ResolveTemplateUrl()
@@ -38,7 +37,7 @@ namespace Sinch.Conversation
             if (ConversationRegion is null)
                 throw new InvalidOperationException(ConversationRegionRequiredMessage);
 
-            return new Uri(string.Format("https://{0}.template.api.sinch.com/", ConversationRegion.Value));
+            return new Uri($"https://{ConversationRegion.Value}.template.api.sinch.com/");
         }
 
         internal void Validate()
