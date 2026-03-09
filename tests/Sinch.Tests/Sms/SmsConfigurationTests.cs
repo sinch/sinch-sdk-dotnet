@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Sinch.Tests.Sms
         public record SmsServicePlanIdTestCase(
             string TestName,
             SmsServicePlanIdRegion Region,
-            string UrlOverride,
+            string? UrlOverride,
             string ExpectedUrl)
         {
             private static readonly SmsServicePlanIdTestCase[] TestCases =
@@ -47,7 +48,7 @@ namespace Sinch.Tests.Sms
         public record SmsUrlTestCase(
             string TestName,
             SmsRegion? Region,
-            string UrlOverride,
+            string? UrlOverride,
             string ExpectedUrl)
         {
             private static readonly SmsUrlTestCase[] TestCases =
