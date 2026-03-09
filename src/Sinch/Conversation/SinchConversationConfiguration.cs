@@ -6,37 +6,44 @@ namespace Sinch.Conversation
     {
         /// <summary>
         ///     Sets the region for the Conversation API.
-        ///     Required. See <see cref="ConversationRegion" /> for available values.
+        ///     Required. See <see cref="Region" /> for available values.
         /// </summary>
-        public ConversationRegion? ConversationRegion { get; init; }
+        public ConversationRegion? Region { get; init; }
 
         public string? ConversationUrlOverride { get; init; }
 
         public string? TemplateUrlOverride { get; init; }
+        
+        private static string ConversationRegionRequiredMessage =>
+            $"{nameof(SinchConversationConfiguration)}.{nameof(Region)} is required. " +
+            $"Set it to one of the values in {nameof(Region)}, e.g. {nameof(Region)}.{nameof(ConversationRegion.Us)}.";
 
-
-        internal Uri ResolveConversationUrl()
+        internal Uri ResolveUrl()
         {
-            const string conversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
-            return new Uri(ConversationUrlOverride ??
-                           string.Format(conversationApiUrlTemplate, ConversationRegion!.Value));
+            if (ConversationUrlOverride is not null)
+                return new Uri(ConversationUrlOverride);
+
+            if (Region is null)
+                throw new InvalidOperationException(ConversationRegionRequiredMessage);
+
+            return new Uri($"https://{Region.Value}.conversation.api.sinch.com/");
         }
 
         internal Uri ResolveTemplateUrl()
         {
-            const string templatesApiUrlTemplate = "https://{0}.template.api.sinch.com/";
-            return new Uri(TemplateUrlOverride ??
-                           string.Format(templatesApiUrlTemplate, ConversationRegion!.Value));
+            if (TemplateUrlOverride is not null)
+                return new Uri(TemplateUrlOverride);
+
+            if (Region is null)
+                throw new InvalidOperationException(ConversationRegionRequiredMessage);
+
+            return new Uri($"https://{Region.Value}.template.api.sinch.com/");
         }
 
         internal void Validate()
         {
-            if (ConversationRegion == null)
-            {
-                throw new InvalidOperationException(
-                    $"{nameof(SinchConversationConfiguration)}.{nameof(ConversationRegion)} is required. " +
-                    $"Set it to one of the values in {nameof(ConversationRegion)}, e.g. {nameof(ConversationRegion)}.{nameof(Sinch.Conversation.ConversationRegion.Us)}.");
-            }
+            if (Region == null)
+                throw new InvalidOperationException(ConversationRegionRequiredMessage);
         }
     }
 }

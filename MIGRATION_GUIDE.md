@@ -736,7 +736,7 @@ var request = new InjectEventRequest
 
 ## Region configuration is now required for SMS, Conversation, and Fax
 
-The `Region` property in `SinchSmsConfiguration`, `SinchFaxConfiguration` and `ConversationRegion` in `SinchConversationConfiguration` are  now **required**. Validation is performed at runtime when the Sinch client is first accessed and an `InvalidOperationException` is thrown if the region is not provided.
+The `Region` property in `SinchSmsConfiguration`, `SinchFaxConfiguration` and `ConversationRegion` in `SinchConversationConfiguration` are now **required**. Validation is performed at runtime when the Sinch client is first accessed and an `InvalidOperationException` is thrown if the region is not provided.
 
 **SMS:**
 
@@ -799,7 +799,7 @@ var sinch = new SinchClient(new SinchClientConfiguration
     SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ },
     FaxConfiguration = new SinchFaxConfiguration
     {
-        Region = FaxRegion.UsEastCost
+        Region = FaxRegion.UsEastCoast
     }
 });
 ```

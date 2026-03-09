@@ -17,7 +17,7 @@ namespace Sinch.Tests.Features.Conversation
                     },
                     ConversationConfiguration = new SinchConversationConfiguration
                     {
-                        ConversationRegion = ConversationRegion.Us
+                        Region = ConversationRegion.Us
                     },
                     SinchOptions = new SinchOptions
                     {

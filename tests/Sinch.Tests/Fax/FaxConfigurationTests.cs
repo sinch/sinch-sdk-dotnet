@@ -18,7 +18,7 @@ namespace Sinch.Tests.Fax
             private static readonly FaxUrlTestCase[] TestCases =
             {
                 new("Default Europe Fax region", FaxRegion.Europe, null, "https://eu1.fax.api.sinch.com/"),
-                new("Default US East Coast Fax region", FaxRegion.UsEastCost, null, "https://use1.fax.api.sinch.com/"),
+                new("Default US East Coast Fax region", FaxRegion.UsEastCoast, null, "https://use1.fax.api.sinch.com/"),
                 new("Europe region with null override", FaxRegion.Europe, null, "https://eu1.fax.api.sinch.com/"),
                 new("Europe region with custom override", FaxRegion.Europe, "https://new-fax.url", "https://new-fax.url/")
             };
@@ -44,7 +44,7 @@ namespace Sinch.Tests.Fax
         public static TheoryData<FaxRegion, string> RegionUrlTestData => new()
         {
             { FaxRegion.Europe, "https://eu1.fax.api.sinch.com/" },
-            { FaxRegion.UsEastCost, "https://use1.fax.api.sinch.com/" },
+            { FaxRegion.UsEastCoast, "https://use1.fax.api.sinch.com/" },
             { FaxRegion.SouthAmerica, "https://sae1.fax.api.sinch.com/" },
             { FaxRegion.SouthEastAsia1, "https://apse1.fax.api.sinch.com/" },
             { FaxRegion.SouthEastAsia2, "https://apse2.fax.api.sinch.com/" },

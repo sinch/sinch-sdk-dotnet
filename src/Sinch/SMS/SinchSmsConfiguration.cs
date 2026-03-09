@@ -16,6 +16,10 @@ namespace Sinch.SMS
         /// </summary>
         public SmsRegion? Region { get; init; }
 
+         private static string RegionRequiredMessage =>
+            $"{nameof(SinchSmsConfiguration)}.{nameof(Region)} is required. " +
+            $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.";
+
         internal ServicePlanIdConfiguration? ServicePlanIdConfiguration { get; set; }
 
         public static SinchSmsConfiguration WithServicePlanId(string servicePlanId,
@@ -33,21 +37,22 @@ namespace Sinch.SMS
                 }
             };
         }
-
+        
         internal Uri ResolveUrl()
         {
-            const string smsApiUrlTemplate = "https://zt.{0}.sms.api.sinch.com";
-            return new Uri(UrlOverride ?? string.Format(smsApiUrlTemplate, Region!.Value));
+            if (UrlOverride is not null)
+                return new Uri(UrlOverride);
+
+            if (Region is null)
+                throw new InvalidOperationException(RegionRequiredMessage);
+
+            return new Uri($"https://zt.{Region.Value}.sms.api.sinch.com");
         }
 
         internal void Validate()
         {
             if (Region == null)
-            {
-                throw new InvalidOperationException(
-                    $"{nameof(SinchSmsConfiguration)}.{nameof(Region)} is required. " +
-                    $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.");
-            }
+                throw new InvalidOperationException(RegionRequiredMessage);
         }
     }
 
