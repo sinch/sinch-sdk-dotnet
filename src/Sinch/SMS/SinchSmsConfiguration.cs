@@ -37,8 +37,7 @@ namespace Sinch.SMS
                 }
             };
         }
-
-
+        
         internal Uri ResolveUrl()
         {
             if (UrlOverride is not null)
