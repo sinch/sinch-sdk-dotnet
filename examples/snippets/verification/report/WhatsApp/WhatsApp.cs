@@ -1,8 +1,15 @@
+/// <summary>
+/// Sinch .NET SDK Snippet
+/// 
+/// This snippet is available at https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets
+/// 
+/// See https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets/README.md for details
+/// </summary>
 using Sinch;
 using Sinch.Snippets.Shared;
 using Sinch.Verification;
 using Sinch.Verification.Report.Request;
-using System.Text.Json;
+using Sinch.Core;
 
 var applicationKey = ConfigurationHelper.GetApplicationKey() ?? "MY_APPLICATION_KEY";
 var applicationSecret = ConfigurationHelper.GetApplicationSecret() ?? "MY_APPLICATION_SECRET";
@@ -24,6 +31,8 @@ var client = new SinchClient(new SinchClientConfiguration()
 
 var verificationClient = client.Verification;
 
+Console.WriteLine($"Report Whatsapp verification code for phone number {phoneNumber}");
+
 var request = new ReportWhatsAppVerificationRequest()
 {
     WhatsApp = new WhatsApp()
@@ -32,13 +41,6 @@ var request = new ReportWhatsAppVerificationRequest()
     }
 };
 
-Console.WriteLine($"Report Whatsapp verification code for phone number {phoneNumber}");
-
 var response = await verificationClient.Verification.ReportWhatsAppByIdentity(phoneNumber, request);
 
-var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions()
-{
-    WriteIndented = true
-});
-
-Console.WriteLine($"Response: {jsonResponse}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");
