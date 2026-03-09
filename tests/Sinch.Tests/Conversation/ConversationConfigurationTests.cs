@@ -44,7 +44,7 @@ namespace Sinch.Tests.Conversation
                 ConversationUrlOverride = testCase.UrlOverride,
             };
 
-            config.ResolveConversationUrl().ToString().Should().Be(testCase.Expected);
+            config.ResolveUrl().ToString().Should().Be(testCase.Expected);
         }
 
         [Fact]

@@ -15,28 +15,36 @@ namespace Sinch.Conversation
         public string? TemplateUrlOverride { get; init; }
 
 
-        internal Uri ResolveConversationUrl()
+        private static string ConversationRegionRequiredMessage =>
+            $"{nameof(SinchConversationConfiguration)}.{nameof(ConversationRegion)} is required. " +
+            $"Set it to one of the values in {nameof(ConversationRegion)}, e.g. {nameof(ConversationRegion)}.{nameof(Sinch.Conversation.ConversationRegion.Us)}.";
+
+        internal Uri ResolveUrl()
         {
-            const string conversationApiUrlTemplate = "https://{0}.conversation.api.sinch.com/";
-            return new Uri(ConversationUrlOverride ??
-                           string.Format(conversationApiUrlTemplate, ConversationRegion!.Value));
+            if (ConversationUrlOverride is not null)
+                return new Uri(ConversationUrlOverride);
+
+            if (ConversationRegion is null)
+                throw new InvalidOperationException(ConversationRegionRequiredMessage);
+
+            return new Uri(string.Format("https://{0}.conversation.api.sinch.com/", ConversationRegion.Value));
         }
 
         internal Uri ResolveTemplateUrl()
         {
-            const string templatesApiUrlTemplate = "https://{0}.template.api.sinch.com/";
-            return new Uri(TemplateUrlOverride ??
-                           string.Format(templatesApiUrlTemplate, ConversationRegion!.Value));
+            if (TemplateUrlOverride is not null)
+                return new Uri(TemplateUrlOverride);
+
+            if (ConversationRegion is null)
+                throw new InvalidOperationException(ConversationRegionRequiredMessage);
+
+            return new Uri(string.Format("https://{0}.template.api.sinch.com/", ConversationRegion.Value));
         }
 
         internal void Validate()
         {
             if (ConversationRegion == null)
-            {
-                throw new InvalidOperationException(
-                    $"{nameof(SinchConversationConfiguration)}.{nameof(ConversationRegion)} is required. " +
-                    $"Set it to one of the values in {nameof(ConversationRegion)}, e.g. {nameof(ConversationRegion)}.{nameof(Sinch.Conversation.ConversationRegion.Us)}.");
-            }
+                throw new InvalidOperationException(ConversationRegionRequiredMessage);
         }
     }
 }

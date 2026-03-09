@@ -12,20 +12,25 @@ namespace Sinch.Fax
 
         public string? UrlOverride { get; init; }
 
+        private static string RegionRequiredMessage =>
+            $"{nameof(SinchFaxConfiguration)}.{nameof(Region)} is required. " +
+            $"Set it to one of the values in {nameof(FaxRegion)}, e.g. {nameof(FaxRegion)}.{nameof(FaxRegion.UsEastCoast)}.";
+
         internal Uri ResolveUrl()
         {
-            const string faxApiUrlTemplate = "https://{0}.fax.api.sinch.com/";
-            return new Uri(UrlOverride ?? string.Format(faxApiUrlTemplate, Region!.Value));
+            if (UrlOverride is not null)
+                return new Uri(UrlOverride);
+
+            if (Region is null)
+                throw new InvalidOperationException(RegionRequiredMessage);
+
+            return new Uri(string.Format("https://{0}.fax.api.sinch.com/", Region.Value));
         }
 
         internal void Validate()
         {
             if (Region == null)
-            {
-                throw new InvalidOperationException(
-                    $"{nameof(SinchFaxConfiguration)}.{nameof(Region)} is required. " +
-                    $"Set it to one of the values in {nameof(FaxRegion)}, e.g. {nameof(FaxRegion)}.{nameof(FaxRegion.UsEastCoast)}.");
-            }
+                throw new InvalidOperationException(RegionRequiredMessage);
         }
     }
 }

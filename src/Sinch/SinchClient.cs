@@ -191,7 +191,7 @@ namespace Sinch
 
                 var conversationBaseAddress = ResolveUrl(
                     _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.ConversationUrl,
-                    conversationConfig.ResolveConversationUrl);
+                    conversationConfig.ResolveUrl);
 
                 var templatesBaseAddress = ResolveUrl(
                     _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.TemplatesUrl,
