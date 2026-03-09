@@ -53,7 +53,7 @@ namespace Sinch.Tests.Conversation
             var config = new SinchConversationConfiguration();
             var act = () => config.Validate();
             act.Should().Throw<InvalidOperationException>()
-                .WithMessage("*ConversationRegion*required*");
+                .WithMessage("*Region*required*");
         }
 
         [Fact]

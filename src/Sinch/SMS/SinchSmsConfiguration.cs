@@ -16,9 +16,9 @@ namespace Sinch.SMS
         /// </summary>
         public SmsRegion? Region { get; init; }
 
-         private static string RegionRequiredMessage =>
-            $"{nameof(SinchSmsConfiguration)}.{nameof(Region)} is required. " +
-            $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.";
+        private static string RegionRequiredMessage =>
+           $"{nameof(SinchSmsConfiguration)}.{nameof(Region)} is required. " +
+           $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.";
 
         internal ServicePlanIdConfiguration? ServicePlanIdConfiguration { get; set; }
 
@@ -37,7 +37,7 @@ namespace Sinch.SMS
                 }
             };
         }
-        
+
         internal Uri ResolveUrl()
         {
             if (UrlOverride is not null)
