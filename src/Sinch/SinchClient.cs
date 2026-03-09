@@ -247,7 +247,7 @@ namespace Sinch
 
         private ISinchFax InitFax()
         {  
-            var validateUnifiedCredentials = ValidateUnifiedCredentials();
+            var unifiedCredentials = ValidateUnifiedCredentials();
 
             var faxConfig = _sinchClientConfiguration.FaxConfiguration;
             faxConfig.Validate();
@@ -256,7 +256,7 @@ namespace Sinch
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.FaxUrl,
                 faxConfig.ResolveUrl);
 
-            return new FaxClient(validateUnifiedCredentials.ProjectId, faxUrl, _loggerFactory, _httpCamelCase.Value);
+            return new FaxClient(unifiedCredentials.ProjectId, faxUrl, _loggerFactory, _httpCamelCase.Value);
         }
 
         private ISinchConversation InitConversation()
