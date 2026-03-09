@@ -10,7 +10,7 @@ var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 var conversationRegion = ConfigurationHelper.GetConversationRegion() ?? "MY_CONVERSATION_REGION";
 
 // The ID of the Conversation Application to list messages for
-var conversationApplicationId = "APPLICATION_ID";
+const string conversationApplicationId = "APPLICATION_ID";
 
 var client = new SinchClient(new SinchClientConfiguration
 {
