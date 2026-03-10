@@ -155,7 +155,7 @@ var sinch = new SinchClient(new SinchClientConfiguration()
     },
     ConversationConfiguration = new SinchConversationConfiguration()
     {
-       ConversationRegion = ConversationRegion.Us
+       Region = ConversationRegion.Us
     },
 });
 ```
@@ -777,7 +777,7 @@ var sinch = new SinchClient(new SinchClientConfiguration
     SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ },
     ConversationConfiguration = new SinchConversationConfiguration
     {
-        ConversationRegion = ConversationRegion.Us
+        Region = ConversationRegion.Us
     }
 });
 ```
