@@ -11,22 +11,26 @@ using Sinch.Core;
 using Sinch.Numbers.Active.Update;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration()
-{
-    SinchUnifiedCredentials = new SinchUnifiedCredentials()
-    {
-        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
-        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
-        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
-    }
-});
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
 var phoneNumber = ConfigurationHelper.GetPhoneNumber() ?? "MY_SINCH_PHONE_NUMBER";
 const string displayName = "Updated with Sinch C# SDK";
 
+var client = new SinchClient(new SinchClientConfiguration()
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials()
+    {
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
+    }
+});
+
 Console.WriteLine($"Updating number: {phoneNumber}");
 
-var response = await sinchClient.Numbers.Update(phoneNumber, new UpdateActiveNumberRequest
+var response = await client.Numbers.Update(phoneNumber, new UpdateActiveNumberRequest
 {
     DisplayName = displayName
 });

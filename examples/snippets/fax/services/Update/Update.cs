@@ -11,18 +11,22 @@ using Sinch.Core;
 using Sinch.Fax.Services;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
+
+// The ID of the Fax Service you want to update
+const string serviceId = "FAX_SERVICE_ID";
+
+var client = new SinchClient(new SinchClientConfiguration
 {
     SinchUnifiedCredentials = new SinchUnifiedCredentials
     {
-        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
-        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
-        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
     }
 });
-
-// The Fax Service ID you want to update
-const string serviceId = "FAX_SERVICE_ID";
 
 Console.WriteLine($"Updating fax service: {serviceId}");
 
@@ -32,6 +36,6 @@ var request = new UpdateFaxServiceRequest
     Name = "Updated Fax Service Name"
 };
 
-var response = await sinchClient.Fax.Services.Update(request);
+var response = await client.Fax.Services.Update(request);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

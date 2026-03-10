@@ -95,7 +95,7 @@ public class EmailsSteps
     [When("I send a request to add a new email to the project")]
     public async Task WhenISendARequestToAddANewEmailToTheProject()
     {
-        _email = await _emailsApi.Add(
+        _email = await _emailsApi.AddToNumbers(
             "01W4FFL35P4NC4K35FAXSERVICE",
             new EmailRequest
             {

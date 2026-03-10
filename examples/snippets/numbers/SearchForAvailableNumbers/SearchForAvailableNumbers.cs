@@ -12,15 +12,9 @@ using Sinch.Numbers;
 using Sinch.Numbers.Available.List;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration()
-{
-    SinchUnifiedCredentials = new SinchUnifiedCredentials()
-    {
-        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
-        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
-        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
-    }
-});
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
 // ISO 3166-1 alpha-2 country code of the phone number. e.g. "US", "GB", "SE"...
 // See https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 for details
@@ -33,8 +27,18 @@ var request = new ListAvailableNumbersRequest
     Type = type
 };
 
+var client = new SinchClient(new SinchClientConfiguration()
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials()
+    {
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
+    }
+});
+
 Console.WriteLine("Looking for available numbers");
 
-var response = await sinchClient.Numbers.SearchForAvailableNumbers(request);
+var response = await client.Numbers.SearchForAvailableNumbers(request);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

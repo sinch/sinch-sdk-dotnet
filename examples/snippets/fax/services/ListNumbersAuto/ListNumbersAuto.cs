@@ -10,23 +10,27 @@ using Sinch;
 using Sinch.Core;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration
-{
-    SinchUnifiedCredentials = new SinchUnifiedCredentials
-    {
-        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
-        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
-        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
-    }
-});
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
 // The Fax Service ID for which you want to list numbers for
 const string serviceId = "FAX_SERVICE_ID";
 
+var client = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials
+    {
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
+    }
+});
+
 Console.WriteLine($"Listing all numbers for fax service: {serviceId}");
 
 // ListNumbersAuto handles pagination automatically, but you can control the page size
-await foreach (var number in sinchClient.Fax.Services.ListNumbersAuto(serviceId))
+await foreach (var number in client.Fax.Services.ListNumbersAuto(serviceId))
 {
     Console.WriteLine(number.ToPrettyString());
 }
