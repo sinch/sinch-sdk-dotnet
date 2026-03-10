@@ -125,7 +125,7 @@ namespace Sinch
         private readonly Lazy<ISinchVerificationClient> _verification;
         private readonly Lazy<ISinchConversation> _conversation;
         private readonly Lazy<ISinchVoiceClient> _voice;
-        
+
         /// <inheritdoc />
         public ISinchNumbers Numbers => _numbers.Value;
 
@@ -156,10 +156,10 @@ namespace Sinch
 
             _logger = _loggerFactory?.Create<ISinchClient>();
             _logger?.LogInformation("Initializing SinchClient...");
-            
+
             _httpClientFactory = _sinchClientConfiguration.SinchOptions?.HttpClientFactory
                 ?? new DefaultHttpClientFactory(_sinchClientConfiguration.SinchOptions?.HttpClientHandlerConfiguration);
-            
+
             _httpClientAccessor = () => _httpClientFactory.CreateClient("SinchClient");
 
             _httpCamelCase = new Lazy<IHttp>(InitHttpCamelCase, isThreadSafe: true);
@@ -201,7 +201,7 @@ namespace Sinch
 
         private ISinchVoiceClient InitVoice()
         {
-            var config = _sinchClientConfiguration.VoiceConfiguration ?? 
+            var config = _sinchClientConfiguration.VoiceConfiguration ??
                 throw new InvalidOperationException($"{nameof(SinchVoiceConfiguration)} is not set.");
             config.Validate();
 
@@ -226,9 +226,9 @@ namespace Sinch
 
         private ISinchVerificationClient InitVerification()
         {
-            var config = (_sinchClientConfiguration.VerificationConfiguration?.Validate()) ?? 
+            var config = (_sinchClientConfiguration.VerificationConfiguration?.Validate()) ??
                 throw new InvalidOperationException($"{nameof(SinchVerificationConfiguration)} is not set.");
-            
+
             ISinchAuth auth;
             if (config.AuthStrategy == AuthStrategy.ApplicationSign)
                 auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
@@ -246,7 +246,7 @@ namespace Sinch
         }
 
         private ISinchFax InitFax()
-        {  
+        {
             var unifiedCredentials = ValidateUnifiedCredentials();
 
             var faxConfig = _sinchClientConfiguration.FaxConfiguration;
@@ -274,10 +274,10 @@ namespace Sinch
 
             return new SinchConversationClient(
                 _sinchClientConfiguration.SinchUnifiedCredentials
-                    ?.ProjectId!, 
-                    // unified credentials, alongside projectId, will be validated as part of lazy call to http
-                    // this is needed for working of Conversation.Webhooks.ParseEvent() to be accessible, without providing
-                    // SinchUnifiedCredentials, the design regarding just a static method for this is still in discussion.
+                    ?.ProjectId!,
+                // unified credentials, alongside projectId, will be validated as part of lazy call to http
+                // this is needed for working of Conversation.Webhooks.ParseEvent() to be accessible, without providing
+                // SinchUnifiedCredentials, the design regarding just a static method for this is still in discussion.
                 conversationBaseAddress,
                 templatesBaseAddress,
                 _loggerFactory,
@@ -296,11 +296,11 @@ namespace Sinch
                 numbersBaseUrl,
                 _loggerFactory, _httpCamelCase.Value);
         }
-        
+
         private SmsClient InitSms()
         {
             var sinchSmsConfiguration = _sinchClientConfiguration.SmsConfiguration;
-            
+
             if (sinchSmsConfiguration.ServicePlanIdConfiguration != null)
             {
                 var servicePlanIdConfig = sinchSmsConfiguration.ServicePlanIdConfiguration;
@@ -338,7 +338,7 @@ namespace Sinch
                 _loggerFactory,
                 _httpSnakeCase.Value);
         }
-        
+
         private IHttp InitHttpSnakeCase()
         {
             return new Http(_sinchOauth, _httpClientAccessor,
