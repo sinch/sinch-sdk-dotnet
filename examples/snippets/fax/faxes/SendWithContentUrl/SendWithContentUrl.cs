@@ -36,12 +36,12 @@ var client = new SinchClient(new SinchClientConfiguration
 
 Console.WriteLine("Sending a fax with contentUrl to a recipient");
 
-var response = await client.Fax.Faxes.Send(
-    new SendFaxRequest
-    {
-        To = [recipientPhoneNumber],
-        ContentUrl = [faxContentUrl]
-    }
-);
+var faxRequest = new SendFaxRequest
+{
+    To = [recipientPhoneNumber],
+    ContentUrl = [faxContentUrl]
+};
+
+var response = await client.Fax.Faxes.Send(faxRequest);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");
