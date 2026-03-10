@@ -1,22 +1,33 @@
+/// <summary>
+/// Sinch .NET SDK Snippet
+/// 
+/// This snippet is available at https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets
+/// 
+/// See https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets/README.md for details
+/// </summary>
 using Sinch;
+using Sinch.Snippets.Shared;
 using Sinch.Verification;
 using Sinch.Verification.Common;
 using Sinch.Verification.Start.Request;
-using System.Text.Json;
+using Sinch.Core;
+
+var applicationKey = ConfigurationHelper.GetApplicationKey() ?? "MY_APPLICATION_KEY";
+var applicationSecret = ConfigurationHelper.GetApplicationSecret() ?? "MY_APPLICATION_SECRET";
 
 // The phone number you want to verify, in E.164 format (e.g. +46701234567).
-var phoneNumber = "PHONE_NUMBER";
+const string phoneNumber = "PHONE_NUMBER";
 
-var sinch = new SinchClient(new SinchClientConfiguration()
+var client = new SinchClient(new SinchClientConfiguration()
 {
     VerificationConfiguration = new SinchVerificationConfiguration()
     {
-        AppKey = Environment.GetEnvironmentVariable("SINCH_APPLICATION_KEY") ?? "MY_APPLICATION_KEY",
-        AppSecret = Environment.GetEnvironmentVariable("SINCH_APPLICATION_SECRET") ?? "MY_APPLICATION_SECRET"
+        AppKey = applicationKey,
+        AppSecret = applicationSecret
     }
 });
 
-var sinchVerificationClient = sinch.Verification;
+var sinchVerificationClient = client.Verification;
 
 Console.WriteLine($"Start a verification by WhatsApp onto phone number {phoneNumber}");
 
@@ -27,9 +38,4 @@ var request = new StartWhatsAppVerificationRequest()
 
 var response = await sinchVerificationClient.Verification.StartWhatsApp(request);
 
-var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions()
-{
-    WriteIndented = true
-});
-
-Console.WriteLine($"Response: {jsonResponse}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");

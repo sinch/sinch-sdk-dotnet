@@ -10,22 +10,27 @@ using Sinch;
 using Sinch.Core;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration()
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
+
+// The ID of the Fax Service for which you want to list the phone numbers for a specific email address
+const string serviceId = "FAX_SERVICE_ID";
+const string emailAddress = "MY_EMAIL_ADDRESS";
+
+var client = new SinchClient(new SinchClientConfiguration()
 {
     SinchUnifiedCredentials = new SinchUnifiedCredentials()
     {
-        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
-        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
-        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
     }
 });
 
-const string serviceId = "FAX_SERVICE_ID";
-const string emailAddress = "my-email";
-
 Console.WriteLine($"Listing all phone numbers for email {emailAddress}");
 
-await foreach (var number in sinchClient.Fax.Emails.ListNumbersAuto(serviceId, emailAddress))
+await foreach (var number in client.Fax.Emails.ListNumbersAuto(serviceId, emailAddress))
 {
     Console.WriteLine(number.ToPrettyString());
 }

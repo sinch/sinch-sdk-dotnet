@@ -10,19 +10,23 @@ using Sinch;
 using Sinch.Numbers;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration()
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
+
+var client = new SinchClient(new SinchClientConfiguration()
 {
     SinchUnifiedCredentials = new SinchUnifiedCredentials()
     {
-        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
-        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
-        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
     }
 });
 
 Console.WriteLine("List available regions");
 
-var response = await sinchClient.Numbers.Regions.List();
+var response = await client.Numbers.Regions.List();
 
 Console.WriteLine("Available regions:");
 

@@ -10,20 +10,24 @@ using Sinch;
 using Sinch.Core;
 using Sinch.Snippets.Shared;
 
-var sinchClient = new SinchClient(new SinchClientConfiguration()
-{
-    SinchUnifiedCredentials = new SinchUnifiedCredentials()
-    {
-        ProjectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID",
-        KeyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID",
-        KeySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET"
-    }
-});
+var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
+var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
+var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
 var phoneNumber = "A_PHONE_NUMBER_TO_CHECK";
 
+var client = new SinchClient(new SinchClientConfiguration()
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials()
+    {
+        ProjectId = projectId,
+        KeyId = keyId,
+        KeySecret = keySecret
+    }
+});
+
 Console.WriteLine($"CheckAvailability for: {phoneNumber}");
 
-var response = await sinchClient.Numbers.CheckAvailability(phoneNumber);
+var response = await client.Numbers.CheckAvailability(phoneNumber);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");
