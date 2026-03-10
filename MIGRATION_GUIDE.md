@@ -29,7 +29,7 @@
 
 ## .NET Framework Support
 
-Version 2.0 of the Sinch .NET SDK drops support for .NET 6 and .NET 7. The SDK now requires either **.NET 8.0** or **.NET 9.0**.
+Version 2.0 of the Sinch .NET SDK drops support for .NET 6 and .NET 7. The SDK now requires **.NET 8.0**, **.NET 9.0**, or **.NET 10.0**.
 
 If you are currently targeting .NET 6 or 7, you must upgrade your project's target framework before using version 2.0 of the SDK. You can do this by updating the `<TargetFramework>` element in your `.csproj` file:
 
@@ -38,6 +38,8 @@ If you are currently targeting .NET 6 or 7, you must upgrade your project's targ
 <TargetFramework>net8.0</TargetFramework>
 <!-- or -->
 <TargetFramework>net9.0</TargetFramework>
+<!-- or -->
+<TargetFramework>net10.0</TargetFramework>
 ```
 
 ## Initialize `SinchClient` with unified credentials:
