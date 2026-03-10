@@ -103,7 +103,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendWithContentUrl", "fax\f
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendWithFileFromPath", "fax\faxes\SendWithFileFromPath\SendWithFileFromPath.csproj", "{29977324-E645-46EB-9BB8-5643D92AEA34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendWithFileFromStream", "fax\Faxes\SendWithFileFromStream\SendWithFileFromStream.csproj", "{F807E6F0-21D7-415E-A64E-B278F3AB5DFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendWithFileFromStream", "fax\faxes\SendWithFileFromStream\SendWithFileFromStream.csproj", "{F807E6F0-21D7-415E-A64E-B278F3AB5DFB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "capability", "capability", "{12668139-EB4F-40DC-A6EE-2A0D98587808}"
 EndProject
