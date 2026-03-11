@@ -151,7 +151,7 @@ namespace Sinch.Conversation.Messages.Message
 
         public override void Write(Utf8JsonWriter writer, IChannelSpecificMessage value, JsonSerializerOptions options)
         {
-            JsonSerializer.Serialize(writer, value, options);
+            JsonSerializer.Serialize(writer, value, value.GetType(), options);
         }
     }
 
