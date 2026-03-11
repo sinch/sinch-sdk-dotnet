@@ -1,13 +1,11 @@
 using System.Text;
 using System.Text.Json.Serialization;
-using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
 {
     /// <summary>
     ///     The payment link payment settings button.
     /// </summary>
-    // ref name: WhatsAppPaymentSettingsButtonPaymentLink
     public sealed class WhatsAppPaymentSettingsButtonPaymentLink : IWhatsAppPaymentButton
     {
         /// <inheritdoc />

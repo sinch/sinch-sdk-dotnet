@@ -7,7 +7,6 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     /// <summary>
     ///     The dynamic Pix payment settings button.
     /// </summary>
-    // ref name: WhatsAppPaymentSettingsButtonPix
     public sealed class WhatsAppPaymentSettingsButtonPix : IWhatsAppPaymentButton
     {
         /// <summary>

@@ -6,7 +6,6 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     /// <summary>
     ///     The Boleto payment settings button.
     /// </summary>
-    // ref name: WhatsAppPaymentSettingsButtonBoleto
     public sealed class WhatsAppPaymentSettingsButtonBoleto : IWhatsAppPaymentButton
     {
         /// <inheritdoc />
