@@ -25,8 +25,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
 
         /// <inheritdoc />
         [JsonPropertyName("type")]
-        public WhatsAppPaymentButtonType Type { get; private set; } =
-            WhatsAppPaymentButtonType.PixDynamicCode;
+        public WhatsAppPaymentButtonType Type => WhatsAppPaymentButtonType.PixDynamicCode;
 
         /// <summary>The dynamic Pix code to be used by the buyer to pay.</summary>
         [JsonPropertyName("code")]

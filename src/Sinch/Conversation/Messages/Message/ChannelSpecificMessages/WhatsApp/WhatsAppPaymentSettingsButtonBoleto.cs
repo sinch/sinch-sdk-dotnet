@@ -11,8 +11,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     {
         /// <inheritdoc />
         [JsonPropertyName("type")]
-        public WhatsAppPaymentButtonType Type { get; private set; } =
-            WhatsAppPaymentButtonType.Boleto;
+        public WhatsAppPaymentButtonType Type => WhatsAppPaymentButtonType.Boleto;
 
         /// <summary>
         ///     The Boleto digitable line which will be copied to the clipboard when the user taps the Boleto button.

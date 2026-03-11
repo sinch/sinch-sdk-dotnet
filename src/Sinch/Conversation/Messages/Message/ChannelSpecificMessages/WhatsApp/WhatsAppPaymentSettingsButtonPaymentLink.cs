@@ -12,8 +12,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     {
         /// <inheritdoc />
         [JsonPropertyName("type")]
-        public WhatsAppPaymentButtonType Type { get; private set; } =
-            WhatsAppPaymentButtonType.PaymentLink;
+        public WhatsAppPaymentButtonType Type => WhatsAppPaymentButtonType.PaymentLink;
 
         /// <summary>The payment link to be used by the buyer to pay.</summary>
         [JsonPropertyName("uri")]
