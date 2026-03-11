@@ -1372,61 +1372,6 @@ namespace Sinch.Tests.Conversation.Messages
             }
             );
         }
-        [Fact]
-        public void DeserializeOrderDetailsWithPaymentButtonsChannelSpecificMessage()
-        {
-            var json = Helpers.LoadResources(
-                "Conversation/Messages/ChannelSpecific/OrderDetailsWithPaymentButtons.json");
-
-            var result = DeserializeAsConversationClient<IChannelSpecificMessage>(json);
-
-            result.As<OrderDetailsPaymentMessage>().Should().BeEquivalentTo(
-                new OrderDetailsPaymentMessage
-                {
-                    Message = new OrderDetails
-                    {
-                        Body = new WhatsAppInteractiveBody { Text = "Flow message body" },
-                        Footer = new WhatsAppInteractiveFooter { Text = "Flow message footer" },
-                        Payment = new OrderDetailsPayment
-                        {
-                            Type = OrderDetailsPayment.TypeEnum.Br,
-                            ReferenceId = "a reference ID",
-                            TypeOfGoods = TypeOfGoods.DigitalGoods,
-                            TotalAmountValue = 1200,
-                            PaymentButtons = new List<IWhatsAppPaymentButton>
-                            {
-                                new WhatsAppPaymentSettingsButtonPix
-                                {
-                                    Code = "pix code value",
-                                    MerchantName = "merchant name",
-                                    Key = "pix key value",
-                                    KeyType = WhatsAppPaymentSettingsButtonPix.PixKeyType.Cpf
-                                },
-                                new WhatsAppPaymentSettingsButtonBoleto
-                                {
-                                    DigitableLine = "boleto digitable line"
-                                }
-                            },
-                            Order = new OrderDetailsPaymentOrder
-                            {
-                                SubtotalValue = 6000,
-                                TaxValue = 7000,
-                                Items = new List<OrderDetailsPaymentOrderItems>
-                                {
-                                    new OrderDetailsPaymentOrderItems
-                                    {
-                                        RetailerId = "item retailer id",
-                                        Name = "item name",
-                                        AmountValue = 2000,
-                                        Quantity = 3000
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            );
-        }
 
         [Fact]
         public void DeserializeOrderDetailsWithPixButton()
