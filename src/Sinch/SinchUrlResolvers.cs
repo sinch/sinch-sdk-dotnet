@@ -19,26 +19,26 @@ namespace Sinch
 
         internal static Uri ResolveConversationUrl(SinchConversationConfiguration config)
         {
-            return config.ConversationUrlOverride is not null ? 
-                new Uri(config.ConversationUrlOverride) : 
+            return config.ConversationUrlOverride is not null ?
+                new Uri(config.ConversationUrlOverride) :
                 new Uri($"https://{config.Region!.Value}.conversation.api.sinch.com/");
         }
 
         internal static Uri ResolveConversationTemplateUrl(SinchConversationConfiguration config)
         {
-            return config.TemplateUrlOverride is not null ? 
-                new Uri(config.TemplateUrlOverride) : 
+            return config.TemplateUrlOverride is not null ?
+                new Uri(config.TemplateUrlOverride) :
                 new Uri($"https://{config.Region!.Value}.template.api.sinch.com/");
         }
 
         internal static Uri ResolveFaxUrl(SinchFaxConfiguration config)
         {
-            return config.UrlOverride is not null ? 
-                new Uri(config.UrlOverride) : 
+            return config.UrlOverride is not null ?
+                new Uri(config.UrlOverride) :
                 new Uri($"https://{config.Region!.Value}.fax.api.sinch.com/");
         }
 
-        internal static Uri ResolveVerificationUrl(SinchVerificationConfiguration config) 
+        internal static Uri ResolveVerificationUrl(SinchVerificationConfiguration config)
             => new Uri(config.UrlOverride ?? "https://verification.api.sinch.com/");
 
         internal static Uri ResolveVoiceUrl(SinchVoiceConfiguration config)
@@ -55,8 +55,8 @@ namespace Sinch
 
         internal static Uri ResolveSmsUrl(SinchSmsConfiguration config)
         {
-            return config.UrlOverride is not null ? 
-                new Uri(config.UrlOverride) : 
+            return config.UrlOverride is not null ?
+                new Uri(config.UrlOverride) :
                 new Uri($"https://zt.{config.Region!.Value}.sms.api.sinch.com");
         }
 
