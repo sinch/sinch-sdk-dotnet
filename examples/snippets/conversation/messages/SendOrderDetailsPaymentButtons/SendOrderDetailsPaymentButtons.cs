@@ -1,11 +1,9 @@
-using System.Collections.Generic;
 using Sinch;
 using Sinch.Conversation;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
 using Sinch.Conversation.Messages.Send;
-using Sinch.Core;
 using Sinch.Snippets.Shared;
 
 var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
