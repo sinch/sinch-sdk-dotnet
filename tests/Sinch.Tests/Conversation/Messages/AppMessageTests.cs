@@ -1238,19 +1238,6 @@ namespace Sinch.Tests.Conversation.Messages
                             Type = OrderDetailsPayment.TypeEnum.Br,
                             ReferenceId = "a reference ID",
                             TypeOfGoods = TypeOfGoods.DigitalGoods,
-                            PaymentSettings = new OrderDetailsPaymentSettings()
-                            {
-                                DynamicPix =
-                                    new OrderDetailsPaymentSettingsDynamicPix()
-                                    {
-                                        Code = "code value",
-                                        MerchantName = "merchant name",
-                                        Key = "key value",
-                                        KeyType =
-                                            OrderDetailsPaymentSettingsDynamicPix
-                                                .KeyTypeEnum.Cnpj
-                                    }
-                            },
                             TotalAmountValue = 1200,
                             Order = new OrderDetailsPaymentOrder()
                             {
@@ -1355,19 +1342,6 @@ namespace Sinch.Tests.Conversation.Messages
                     Type = OrderDetailsPayment.TypeEnum.Br,
                     ReferenceId = "a reference ID",
                     TypeOfGoods = TypeOfGoods.DigitalGoods,
-                    PaymentSettings = new OrderDetailsPaymentSettings
-                    {
-                        DynamicPix =
-                                new OrderDetailsPaymentSettingsDynamicPix
-                                {
-                                    Code = "code value",
-                                    MerchantName = "merchant name",
-                                    Key = "key value",
-                                    KeyType =
-                                        OrderDetailsPaymentSettingsDynamicPix
-                                            .KeyTypeEnum.Cnpj
-                                }
-                    },
                     TotalAmountValue = 1200,
                     Order = new OrderDetailsPaymentOrder
                     {
@@ -1396,6 +1370,208 @@ namespace Sinch.Tests.Conversation.Messages
                     }
                 }
             }
+            );
+        }
+        [Fact]
+        public void DeserializeOrderDetailsWithPaymentButtonsChannelSpecificMessage()
+        {
+            var json = Helpers.LoadResources(
+                "Conversation/Messages/ChannelSpecific/OrderDetailsWithPaymentButtons.json");
+
+            var result = DeserializeAsConversationClient<IChannelSpecificMessage>(json);
+
+            result.As<OrderDetailsPaymentMessage>().Should().BeEquivalentTo(
+                new OrderDetailsPaymentMessage
+                {
+                    Message = new OrderDetails
+                    {
+                        Body = new WhatsAppInteractiveBody { Text = "Flow message body" },
+                        Footer = new WhatsAppInteractiveFooter { Text = "Flow message footer" },
+                        Payment = new OrderDetailsPayment
+                        {
+                            Type = OrderDetailsPayment.TypeEnum.Br,
+                            ReferenceId = "a reference ID",
+                            TypeOfGoods = TypeOfGoods.DigitalGoods,
+                            TotalAmountValue = 1200,
+                            PaymentButtons = new List<IWhatsAppPaymentButton>
+                            {
+                                new WhatsAppPaymentSettingsButtonPix
+                                {
+                                    Code = "pix code value",
+                                    MerchantName = "merchant name",
+                                    Key = "pix key value",
+                                    KeyType = WhatsAppPaymentSettingsButtonPix.PixKeyType.Cpf
+                                },
+                                new WhatsAppPaymentSettingsButtonBoleto
+                                {
+                                    DigitableLine = "boleto digitable line"
+                                }
+                            },
+                            Order = new OrderDetailsPaymentOrder
+                            {
+                                SubtotalValue = 6000,
+                                TaxValue = 7000,
+                                Items = new List<OrderDetailsPaymentOrderItems>
+                                {
+                                    new OrderDetailsPaymentOrderItems
+                                    {
+                                        RetailerId = "item retailer id",
+                                        Name = "item name",
+                                        AmountValue = 2000,
+                                        Quantity = 3000
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void DeserializeOrderDetailsWithPixButton()
+        {
+            var json = Helpers.LoadResources(
+                "Conversation/Messages/ChannelSpecific/OrderDetailsWithPixButton.json");
+
+            var result = DeserializeAsConversationClient<IChannelSpecificMessage>(json);
+
+            result.As<OrderDetailsPaymentMessage>().Should().BeEquivalentTo(
+                new OrderDetailsPaymentMessage
+                {
+                    Message = new OrderDetails
+                    {
+                        Body = new WhatsAppInteractiveBody { Text = "Order body" },
+                        Payment = new OrderDetailsPayment
+                        {
+                            Type = OrderDetailsPayment.TypeEnum.Br,
+                            ReferenceId = "ref-pix",
+                            TypeOfGoods = TypeOfGoods.DigitalGoods,
+                            TotalAmountValue = 500,
+                            PaymentButtons = new List<IWhatsAppPaymentButton>
+                            {
+                                new WhatsAppPaymentSettingsButtonPix
+                                {
+                                    Code = "dynamic-pix-code",
+                                    MerchantName = "Merchant",
+                                    Key = "pix-key",
+                                    KeyType = WhatsAppPaymentSettingsButtonPix.PixKeyType.Email
+                                }
+                            },
+                            Order = new OrderDetailsPaymentOrder
+                            {
+                                SubtotalValue = 500,
+                                TaxValue = 0,
+                                Items = new List<OrderDetailsPaymentOrderItems>
+                                {
+                                    new OrderDetailsPaymentOrderItems
+                                    {
+                                        RetailerId = "sku-1",
+                                        Name = "Item",
+                                        AmountValue = 500,
+                                        Quantity = 1
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void DeserializeOrderDetailsWithPaymentLinkButton()
+        {
+            var json = Helpers.LoadResources(
+                "Conversation/Messages/ChannelSpecific/OrderDetailsWithPaymentLinkButton.json");
+
+            var result = DeserializeAsConversationClient<IChannelSpecificMessage>(json);
+
+            result.As<OrderDetailsPaymentMessage>().Should().BeEquivalentTo(
+                new OrderDetailsPaymentMessage
+                {
+                    Message = new OrderDetails
+                    {
+                        Body = new WhatsAppInteractiveBody { Text = "Order body" },
+                        Payment = new OrderDetailsPayment
+                        {
+                            Type = OrderDetailsPayment.TypeEnum.Sg,
+                            ReferenceId = "ref-link",
+                            TypeOfGoods = TypeOfGoods.PhysicalGoods,
+                            TotalAmountValue = 300,
+                            PaymentButtons = new List<IWhatsAppPaymentButton>
+                            {
+                                new WhatsAppPaymentSettingsButtonPaymentLink
+                                {
+                                    Uri = "https://pay.example.com/checkout/abc123"
+                                }
+                            },
+                            Order = new OrderDetailsPaymentOrder
+                            {
+                                SubtotalValue = 300,
+                                TaxValue = 0,
+                                Items = new List<OrderDetailsPaymentOrderItems>
+                                {
+                                    new OrderDetailsPaymentOrderItems
+                                    {
+                                        RetailerId = "sku-2",
+                                        Name = "Physical Item",
+                                        AmountValue = 300,
+                                        Quantity = 1
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void DeserializeOrderDetailsWithBoletoButton()
+        {
+            var json = Helpers.LoadResources(
+                "Conversation/Messages/ChannelSpecific/OrderDetailsWithBoletoButton.json");
+
+            var result = DeserializeAsConversationClient<IChannelSpecificMessage>(json);
+
+            result.As<OrderDetailsPaymentMessage>().Should().BeEquivalentTo(
+                new OrderDetailsPaymentMessage
+                {
+                    Message = new OrderDetails
+                    {
+                        Body = new WhatsAppInteractiveBody { Text = "Order body" },
+                        Payment = new OrderDetailsPayment
+                        {
+                            Type = OrderDetailsPayment.TypeEnum.Br,
+                            ReferenceId = "ref-boleto",
+                            TypeOfGoods = TypeOfGoods.DigitalGoods,
+                            TotalAmountValue = 750,
+                            PaymentButtons = new List<IWhatsAppPaymentButton>
+                            {
+                                new WhatsAppPaymentSettingsButtonBoleto
+                                {
+                                    DigitableLine = "23790.12345 60000.100045 58000.100047 8 12340000075000"
+                                }
+                            },
+                            Order = new OrderDetailsPaymentOrder
+                            {
+                                SubtotalValue = 750,
+                                TaxValue = 0,
+                                Items = new List<OrderDetailsPaymentOrderItems>
+                                {
+                                    new OrderDetailsPaymentOrderItems
+                                    {
+                                        RetailerId = "sku-3",
+                                        Name = "Service",
+                                        AmountValue = 750,
+                                        Quantity = 1
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             );
         }
     }

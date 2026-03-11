@@ -1,0 +1,35 @@
+{
+  "message_type": "ORDER_DETAILS",
+  "message": {
+    "body": {
+      "text": "Order body"
+    },
+    "payment": {
+      "type": "br",
+      "reference_id": "ref-pix",
+      "type_of_goods": "digital-goods",
+      "total_amount_value": 500,
+      "payment_buttons": [
+        {
+          "type": "pix_dynamic_code",
+          "code": "dynamic-pix-code",
+          "merchant_name": "Merchant",
+          "key": "pix-key",
+          "key_type": "EMAIL"
+        }
+      ],
+      "order": {
+        "subtotal_value": 500,
+        "tax_value": 0,
+        "items": [
+          {
+            "retailer_id": "sku-1",
+            "name": "Item",
+            "amount_value": 500,
+            "quantity": 1
+          }
+        ]
+      }
+    }
+  }
+}
