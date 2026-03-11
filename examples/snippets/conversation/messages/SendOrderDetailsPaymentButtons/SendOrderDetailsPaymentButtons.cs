@@ -4,6 +4,7 @@ using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
 using Sinch.Conversation.Messages.Send;
+using Sinch.Core;
 using Sinch.Snippets.Shared;
 
 var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
@@ -12,9 +13,9 @@ var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 var conversationRegion = ConfigurationHelper.GetConversationRegion() ?? "MY_CONVERSATION_REGION";
 
 // The ID of the Conversation Application to send the message from
-var appId = "CONVERSATION_APP_ID";
-// The recipient's WhatsApp phone number in E.164 format (e.g. "+15551234567")
-var whatsAppPhoneNumber = "RECIPIENT_CONTACT_ID";
+const string conversationAppId = "CONVERSATION_APP_ID";
+// The recipient's WhatsApp phone number
+const string whatsAppPhoneNumber = "RECIPIENT_CONTACT_ID";
 
 var client = new SinchClient(new SinchClientConfiguration
 {
@@ -38,8 +39,6 @@ var appMessage = new AppMessage(new TextMessage("Please complete your payment.")
         {
             Message = new OrderDetails
             {
-                Body = new WhatsAppInteractiveBody { Text = "Here is your order summary." },
-                Footer = new WhatsAppInteractiveFooter { Text = "Thank you for your purchase!" },
                 Payment = new OrderDetailsPayment
                 {
                     Type = OrderDetailsPayment.TypeEnum.Br,
@@ -76,7 +75,7 @@ var appMessage = new AppMessage(new TextMessage("Please complete your payment.")
 
 var request = new SendMessageRequest
 {
-    AppId = appId,
+    AppId = conversationAppId,
     Recipient = new Identified
     {
         IdentifiedBy = new IdentifiedBy
@@ -94,8 +93,8 @@ var request = new SendMessageRequest
     Message = appMessage
 };
 
-Console.WriteLine($"Sending ORDER_DETAILS payment message to '{whatsAppPhoneNumber}'");
+Console.WriteLine($"Sending payment message to '{whatsAppPhoneNumber}'");
 
 var response = await client.Conversation.Messages.Send(request);
 
-Console.WriteLine($"Message sent. Message ID: {response.MessageId}");
+Console.WriteLine($"Response: {response.ToPrettyString()}");
