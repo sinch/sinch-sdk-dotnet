@@ -50,7 +50,7 @@ namespace Sinch.Tests.Voice
                 VoiceUrlOverride = testCase.UrlOverride,
                 Region = testCase.Region
             };
-            var actual = voiceConfig.ResolveUrl().ToString();
+            var actual = SinchUrlResolvers.ResolveVoiceUrl(voiceConfig).ToString();
             actual.Should().BeEquivalentTo(testCase.ExpectedUrl);
         }
 
@@ -65,7 +65,7 @@ namespace Sinch.Tests.Voice
                 AppSecret = "secret",
                 ApplicationManagementUrlOverride = apiUrlOverride,
             };
-            var actual = voiceConfig.ResolveApplicationManagementUrl().ToString();
+            var actual = SinchUrlResolvers.ResolveVoiceApplicationManagementUrl(voiceConfig).ToString();
             actual.Should().BeEquivalentTo(expected);
         }
     }

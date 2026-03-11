@@ -33,7 +33,7 @@ namespace Sinch.Tests
             {
                 UrlOverride = testCase.UrlOverride
             };
-            authConfig.ResolveUrl().ToString().Should().BeEquivalentTo(testCase.ExpectedUrl);
+            SinchUrlResolvers.ResolveAuthUrl(authConfig).ToString().Should().BeEquivalentTo(testCase.ExpectedUrl);
         }
     }
 }

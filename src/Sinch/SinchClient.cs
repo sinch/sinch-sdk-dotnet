@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using Sinch.Auth;
@@ -189,7 +191,7 @@ namespace Sinch
 
             var oauthBaseUrl = ResolveUrl(
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.AuthUrl,
-                _sinchClientConfiguration.SinchOAuthConfiguration.ResolveUrl);
+                () => SinchUrlResolvers.ResolveAuthUrl(_sinchClientConfiguration.SinchOAuthConfiguration));
 
             var auth = new OAuth(unifiedCredentials.KeyId, unifiedCredentials.KeySecret, _httpClientAccessor,
                 _loggerFactory?.Create<OAuth>(),
@@ -203,7 +205,12 @@ namespace Sinch
         {
             var config = _sinchClientConfiguration.VoiceConfiguration ??
                 throw new InvalidOperationException($"{nameof(SinchVoiceConfiguration)} is not set.");
-            config.Validate();
+
+            if (string.IsNullOrEmpty(config.AppKey))
+                throw new ArgumentNullException(nameof(config.AppKey), "The value should be present");
+
+            if (string.IsNullOrEmpty(config.AppSecret))
+                throw new ArgumentNullException(nameof(config.AppSecret), "The value should be present");
 
             ISinchAuth auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
 
@@ -212,11 +219,11 @@ namespace Sinch
 
             var voiceUrl = ResolveUrl(
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VoiceUrl,
-                config.ResolveUrl);
+                () => SinchUrlResolvers.ResolveVoiceUrl(config));
 
             var voiceAppMgmtUrl = ResolveUrl(
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VoiceApplicationManagementUrl,
-                config.ResolveApplicationManagementUrl);
+                () => SinchUrlResolvers.ResolveVoiceApplicationManagementUrl(config));
 
             return new SinchVoiceClient(
                 voiceUrl,
@@ -226,8 +233,14 @@ namespace Sinch
 
         private ISinchVerificationClient InitVerification()
         {
-            var config = (_sinchClientConfiguration.VerificationConfiguration?.Validate()) ??
+            var config = _sinchClientConfiguration.VerificationConfiguration ??
                 throw new InvalidOperationException($"{nameof(SinchVerificationConfiguration)} is not set.");
+
+            if (string.IsNullOrEmpty(config.AppKey))
+                throw new ArgumentNullException(nameof(config.AppKey), "The value should be present");
+
+            if (string.IsNullOrEmpty(config.AppSecret))
+                throw new ArgumentNullException(nameof(config.AppSecret), "The value should be present");
 
             ISinchAuth auth;
             if (config.AuthStrategy == AuthStrategy.ApplicationSign)
@@ -240,7 +253,7 @@ namespace Sinch
 
             var verificationUrl = ResolveUrl(
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VerificationUrl,
-                config.ResolveUrl);
+                () => SinchUrlResolvers.ResolveVerificationUrl(config));
 
             return new SinchVerificationClient(verificationUrl, _loggerFactory, http, (auth as ApplicationSignedAuth)!);
         }
@@ -250,11 +263,15 @@ namespace Sinch
             var unifiedCredentials = ValidateUnifiedCredentials();
 
             var faxConfig = _sinchClientConfiguration.FaxConfiguration;
-            faxConfig.Validate();
+
+            if (faxConfig.Region == null)
+                throw new InvalidOperationException(
+                    $"{nameof(SinchFaxConfiguration)}.{nameof(SinchFaxConfiguration.Region)} is required. " +
+                    $"Set it to one of the values in {nameof(FaxRegion)}, e.g. {nameof(FaxRegion)}.{nameof(FaxRegion.UsEastCoast)}.");
 
             var faxUrl = ResolveUrl(
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.FaxUrl,
-                faxConfig.ResolveUrl);
+                () => SinchUrlResolvers.ResolveFaxUrl(faxConfig));
 
             return new FaxClient(unifiedCredentials.ProjectId, faxUrl, _loggerFactory, _httpCamelCase.Value);
         }
@@ -262,15 +279,19 @@ namespace Sinch
         private ISinchConversation InitConversation()
         {
             var conversationConfig = _sinchClientConfiguration.ConversationConfiguration;
-            conversationConfig.Validate();
+
+            if (conversationConfig.Region == null)
+                throw new InvalidOperationException(
+                    $"{nameof(SinchConversationConfiguration)}.{nameof(SinchConversationConfiguration.Region)} is required. " +
+                    $"Set it to one of the values in {nameof(ConversationRegion)}, e.g. {nameof(ConversationRegion)}.{nameof(ConversationRegion.Us)}.");
 
             var conversationBaseAddress = ResolveUrl(
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.ConversationUrl,
-                conversationConfig.ResolveUrl);
+                () => SinchUrlResolvers.ResolveConversationUrl(conversationConfig));
 
             var templatesBaseAddress = ResolveUrl(
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.TemplatesUrl,
-                conversationConfig.ResolveTemplateUrl);
+                () => SinchUrlResolvers.ResolveConversationTemplateUrl(conversationConfig));
 
             return new SinchConversationClient(
                 _sinchClientConfiguration.SinchUnifiedCredentials
@@ -290,7 +311,7 @@ namespace Sinch
 
             var numbersBaseUrl = ResolveUrl(
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.NumbersUrl,
-                _sinchClientConfiguration.NumbersConfiguration.ResolveUrl);
+                () => SinchUrlResolvers.ResolveNumbersUrl(_sinchClientConfiguration.NumbersConfiguration));
 
             return new Numbers.Numbers(unifiedCredentials.ProjectId,
                 numbersBaseUrl,
@@ -310,7 +331,7 @@ namespace Sinch
 
                 var smsBaseUrl = ResolveUrl(
                     _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.SmsUrl,
-                    sinchSmsConfiguration.ServicePlanIdConfiguration.ResolveUrl);
+                    () => SinchUrlResolvers.ResolveSmsServicePlanIdUrl(sinchSmsConfiguration.ServicePlanIdConfiguration));
 
                 var bearerSnakeHttp = new Http(new Lazy<ISinchAuth>(new BearerAuth(servicePlanIdConfig.ApiToken)),
                     _httpClientAccessor,
@@ -322,7 +343,11 @@ namespace Sinch
             }
 
             var unifiedCredentials = ValidateUnifiedCredentials();
-            sinchSmsConfiguration.Validate();
+
+            if (sinchSmsConfiguration.Region == null)
+                throw new InvalidOperationException(
+                    $"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)} is required. " +
+                    $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.");
 
             _logger?.LogInformation("Initializing SMS client with {project_id} in {region}",
                 unifiedCredentials.ProjectId,
@@ -330,7 +355,7 @@ namespace Sinch
 
             var smsResolvedUrl = ResolveUrl(
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.SmsUrl,
-                sinchSmsConfiguration.ResolveUrl);
+                () => SinchUrlResolvers.ResolveSmsUrl(sinchSmsConfiguration));
 
             return new SmsClient(
                 new ProjectId(unifiedCredentials.ProjectId),
@@ -360,8 +385,21 @@ namespace Sinch
                 throw new ArgumentNullException($"{nameof(SinchClientConfiguration.SinchUnifiedCredentials)} is null.");
             }
 
-            _sinchClientConfiguration.SinchUnifiedCredentials.Validate();
-            return _sinchClientConfiguration.SinchUnifiedCredentials;
+            var credentials = _sinchClientConfiguration.SinchUnifiedCredentials;
+            var exceptions = new List<Exception>();
+
+            if (string.IsNullOrEmpty(credentials.ProjectId))
+                exceptions.Add(new InvalidOperationException($"{nameof(credentials.ProjectId)} should have a value"));
+
+            if (string.IsNullOrEmpty(credentials.KeyId))
+                exceptions.Add(new InvalidOperationException($"{nameof(credentials.KeyId)} should have a value"));
+
+            if (string.IsNullOrEmpty(credentials.KeySecret))
+                exceptions.Add(new InvalidOperationException($"{nameof(credentials.KeySecret)} should have a value"));
+
+            if (exceptions.Any()) throw new AggregateException("Credentials are missing", exceptions);
+
+            return credentials;
         }
 
         /// <summary>

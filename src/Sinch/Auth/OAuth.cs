@@ -14,11 +14,6 @@ namespace Sinch.Auth
     public sealed class SinchOAuthConfiguration
     {
         public string? UrlOverride { get; init; }
-
-        internal Uri ResolveUrl()
-        {
-            return new Uri(UrlOverride ?? "https://auth.sinch.com");
-        }
     }
 
     internal sealed class OAuth : ISinchAuth

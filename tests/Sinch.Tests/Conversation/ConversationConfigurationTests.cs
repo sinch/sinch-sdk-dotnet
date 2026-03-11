@@ -44,14 +44,14 @@ namespace Sinch.Tests.Conversation
                 ConversationUrlOverride = testCase.UrlOverride,
             };
 
-            config.ResolveUrl().ToString().Should().Be(testCase.Expected);
+            SinchUrlResolvers.ResolveConversationUrl(config).ToString().Should().Be(testCase.Expected);
         }
 
         [Fact]
         public void Validate_ThrowsWhenRegionNotSet()
         {
-            var config = new SinchConversationConfiguration();
-            var act = () => config.Validate();
+            var client = new SinchClient(new SinchClientConfiguration());
+            var act = () => client.Conversation;
             act.Should().Throw<InvalidOperationException>()
                 .WithMessage("*Region*required*");
         }
@@ -59,9 +59,12 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void Validate_DoesNotThrow_WhenRegionIsSet()
         {
-            var config = new SinchConversationConfiguration { Region = ConversationRegion.Us };
-            var act = () => config.Validate();
-            act.Should().NotThrow();
+            var client = new SinchClient(new SinchClientConfiguration
+            {
+                ConversationConfiguration = new SinchConversationConfiguration { Region = ConversationRegion.Us }
+            });
+            var act = () => client.Conversation;
+            act.Should().NotThrow<InvalidOperationException>();
         }
     }
 }

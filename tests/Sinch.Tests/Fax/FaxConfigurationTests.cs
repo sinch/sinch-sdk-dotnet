@@ -38,7 +38,7 @@ namespace Sinch.Tests.Fax
                 Region = testCase.Region,
                 UrlOverride = testCase.UrlOverride,
             };
-            faxConfig.ResolveUrl().ToString().Should().BeEquivalentTo(testCase.ExpectedUrl);
+            SinchUrlResolvers.ResolveFaxUrl(faxConfig).ToString().Should().BeEquivalentTo(testCase.ExpectedUrl);
         }
 
         public static TheoryData<FaxRegion, string> RegionUrlTestData => new()
@@ -54,37 +54,36 @@ namespace Sinch.Tests.Fax
         [MemberData(nameof(RegionUrlTestData))]
         public void FaxConfiguration_ShouldResolveCorrectUrl_WhenRegionSpecified(FaxRegion region, string expectedUrl)
         {
-            var config = new SinchClientConfiguration()
-            {
-                FaxConfiguration = new SinchFaxConfiguration()
-                {
-                    Region = region
-                }
-            };
-            var faxUrl = config.FaxConfiguration.ResolveUrl();
+            var config = new SinchFaxConfiguration() { Region = region };
+            var faxUrl = SinchUrlResolvers.ResolveFaxUrl(config);
             faxUrl.Should().BeEquivalentTo(new Uri(expectedUrl));
         }
 
         [Fact]
         public void FaxConfiguration_ShouldUseUrlOverride_WhenUrlOverrideSpecified()
         {
-            var config = new SinchClientConfiguration()
+            var config = new SinchFaxConfiguration()
             {
-                FaxConfiguration = new SinchFaxConfiguration()
-                {
-                    Region = FaxRegion.Europe, // This should be ignored when UrlOverride is set
-                    UrlOverride = "https://custom.fax.api.sinch.com/"
-                }
+                Region = FaxRegion.Europe,
+                UrlOverride = "https://custom.fax.api.sinch.com/"
             };
-            var faxUrl = config.FaxConfiguration.ResolveUrl();
+            var faxUrl = SinchUrlResolvers.ResolveFaxUrl(config);
             faxUrl.Should().BeEquivalentTo(new Uri("https://custom.fax.api.sinch.com/"));
         }
 
         [Fact]
         public void Validate_ThrowsWhenRegionNotSet()
         {
-            var config = new SinchFaxConfiguration();
-            var act = () => config.Validate();
+            var client = new SinchClient(new SinchClientConfiguration()
+            {
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
+                {
+                    KeyId = "key-id",
+                    KeySecret = "key-secret",
+                    ProjectId = "project-id"
+                }
+            });
+            var act = () => client.Fax;
             act.Should().Throw<InvalidOperationException>()
                 .WithMessage("*Region*required*");
         }
@@ -92,9 +91,18 @@ namespace Sinch.Tests.Fax
         [Fact]
         public void Validate_DoesNotThrow_WhenRegionIsSet()
         {
-            var config = new SinchFaxConfiguration { Region = FaxRegion.Europe };
-            var act = () => config.Validate();
-            act.Should().NotThrow();
+            var client = new SinchClient(new SinchClientConfiguration()
+            {
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
+                {
+                    KeyId = "key-id",
+                    KeySecret = "key-secret",
+                    ProjectId = "project-id"
+                },
+                FaxConfiguration = new SinchFaxConfiguration { Region = FaxRegion.Europe }
+            });
+            var act = () => client.Fax;
+            act.Should().NotThrow<InvalidOperationException>();
         }
     }
 }

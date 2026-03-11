@@ -41,8 +41,8 @@ namespace Sinch.Tests.Sms
             var smsServicePlanIdConfig =
                 SinchSmsConfiguration.WithServicePlanId("service-plan-id", "token", testCase.Region,
                     testCase.UrlOverride);
-            smsServicePlanIdConfig.ServicePlanIdConfiguration!.ResolveUrl().ToString().Should()
-                .BeEquivalentTo(testCase.ExpectedUrl);
+            SinchUrlResolvers.ResolveSmsServicePlanIdUrl(smsServicePlanIdConfig.ServicePlanIdConfiguration!)
+                .ToString().Should().BeEquivalentTo(testCase.ExpectedUrl);
         }
 
         public record SmsUrlTestCase(
@@ -73,14 +73,22 @@ namespace Sinch.Tests.Sms
                 Region = testCase.Region,
                 UrlOverride = testCase.UrlOverride,
             };
-            smsConfig.ResolveUrl().ToString().Should().BeEquivalentTo(testCase.ExpectedUrl);
+            SinchUrlResolvers.ResolveSmsUrl(smsConfig).ToString().Should().BeEquivalentTo(testCase.ExpectedUrl);
         }
 
         [Fact]
         public void ResolveSmsUrl_ThrowsWhenRegionNotSet()
         {
-            var smsConfig = new SinchSmsConfiguration();
-            var act = () => smsConfig.Validate();
+            var client = new SinchClient(new SinchClientConfiguration()
+            {
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
+                {
+                    KeyId = "key-id",
+                    KeySecret = "key-secret",
+                    ProjectId = "project-id"
+                }
+            });
+            var act = () => client.Sms;
             act.Should().Throw<InvalidOperationException>()
                 .WithMessage("*Region*required*");
         }
@@ -88,9 +96,18 @@ namespace Sinch.Tests.Sms
         [Fact]
         public void Validate_DoesNotThrow_WhenRegionIsSet()
         {
-            var smsConfig = new SinchSmsConfiguration { Region = SmsRegion.Us };
-            var act = () => smsConfig.Validate();
-            act.Should().NotThrow();
+            var client = new SinchClient(new SinchClientConfiguration()
+            {
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
+                {
+                    KeyId = "key-id",
+                    KeySecret = "key-secret",
+                    ProjectId = "project-id"
+                },
+                SmsConfiguration = new SinchSmsConfiguration { Region = SmsRegion.Us }
+            });
+            var act = () => client.Sms;
+            act.Should().NotThrow<InvalidOperationException>();
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Sinch.Tests.Numbers
             {
                 UrlOverride = testCase.UrlOverride,
             };
-            numbersConfig.ResolveUrl().ToString().Should().BeEquivalentTo(testCase.ExpectedUrl);
+            SinchUrlResolvers.ResolveNumbersUrl(numbersConfig).ToString().Should().BeEquivalentTo(testCase.ExpectedUrl);
         }
     }
 }

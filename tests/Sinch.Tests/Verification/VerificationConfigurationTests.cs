@@ -20,7 +20,7 @@ namespace Sinch.Tests.Verification
                 AppSecret = "secret",
                 UrlOverride = urlOverride,
             };
-            config.ResolveUrl().ToString().Should().Be(expectedUrl);
+            SinchUrlResolvers.ResolveVerificationUrl(config).ToString().Should().Be(expectedUrl);
         }
 
         public record VerificationCredentialsMissingTestCaseData(

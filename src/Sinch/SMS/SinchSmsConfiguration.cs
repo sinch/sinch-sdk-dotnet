@@ -1,5 +1,3 @@
-using System;
-
 namespace Sinch.SMS
 {
     public sealed class SinchSmsConfiguration
@@ -15,10 +13,6 @@ namespace Sinch.SMS
         ///     Required. See <see cref="SmsRegion" /> for available values.
         /// </summary>
         public SmsRegion? Region { get; init; }
-
-        private static string RegionRequiredMessage =>
-           $"{nameof(SinchSmsConfiguration)}.{nameof(Region)} is required. " +
-           $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.";
 
         internal ServicePlanIdConfiguration? ServicePlanIdConfiguration { get; set; }
 
@@ -37,23 +31,6 @@ namespace Sinch.SMS
                 }
             };
         }
-
-        internal Uri ResolveUrl()
-        {
-            if (UrlOverride is not null)
-                return new Uri(UrlOverride);
-
-            if (Region is null)
-                throw new InvalidOperationException(RegionRequiredMessage);
-
-            return new Uri($"https://zt.{Region.Value}.sms.api.sinch.com");
-        }
-
-        internal void Validate()
-        {
-            if (Region == null)
-                throw new InvalidOperationException(RegionRequiredMessage);
-        }
     }
 
     internal sealed class ServicePlanIdConfiguration
@@ -65,12 +42,5 @@ namespace Sinch.SMS
         internal required SmsServicePlanIdRegion ServicePlanIdRegion { get; init; }
 
         internal required string ApiToken { get; init; }
-
-        internal Uri ResolveUrl()
-        {
-            const string smsApiServicePlanIdUrlTemplate = "https://{0}.sms.api.sinch.com";
-            return new Uri(UrlOverride ?? string.Format(smsApiServicePlanIdUrlTemplate,
-                ServicePlanIdRegion.Value.ToLowerInvariant()));
-        }
     }
 }
