@@ -32,51 +32,44 @@ var client = new SinchClient(new SinchClientConfiguration
     }
 });
 
-// Build the ORDER_DETAILS payment message with a Pix button and a Boleto button.
-// channel_specific_message overrides the fallback text for WhatsApp.
-var appMessage = new AppMessage(new TextMessage("Please complete your payment."));
-appMessage.ChannelSpecificMessage = new Dictionary<ConversationChannel, IChannelSpecificMessage>
+var appMessage = new AppMessage(new TextMessage("Please complete your payment."))
 {
-    [ConversationChannel.WhatsApp] = new OrderDetailsPaymentMessage
+    ChannelSpecificMessage = new Dictionary<ConversationChannel, IChannelSpecificMessage>
     {
-        Message = new OrderDetails
+        [ConversationChannel.WhatsApp] = new OrderDetailsPaymentMessage
         {
-            Body = new WhatsAppInteractiveBody { Text = "Here is your order summary." },
-            Footer = new WhatsAppInteractiveFooter { Text = "Thank you for your purchase!" },
-            Payment = new OrderDetailsPayment
+            Message = new OrderDetails
             {
-                Type = OrderDetailsPayment.TypeEnum.Br,
-                ReferenceId = "order-ref-001",
-                TypeOfGoods = TypeOfGoods.DigitalGoods,
-                TotalAmountValue = 1200,
-                PaymentButtons =
-                [
-                    new WhatsAppPaymentSettingsButtonPix
-                    {
-                        Code = "MY_PIX_DYNAMIC_CODE",
-                        MerchantName = "My Store",
-                        Key = "MY_PIX_KEY",
-                        KeyType = WhatsAppPaymentSettingsButtonPix.PixKeyType.Cpf
-                    },
-                    new WhatsAppPaymentSettingsButtonBoleto
-                    {
-                        DigitableLine = "MY_BOLETO_DIGITABLE_LINE"
-                    }
-                ],
-                Order = new OrderDetailsPaymentOrder
+                Body = new WhatsAppInteractiveBody { Text = "Here is your order summary." },
+                Footer = new WhatsAppInteractiveFooter { Text = "Thank you for your purchase!" },
+                Payment = new OrderDetailsPayment
                 {
-                    SubtotalValue = 1000,
-                    TaxValue = 200,
-                    Items =
+                    Type = OrderDetailsPayment.TypeEnum.Br,
+                    ReferenceId = "order-ref-001",
+                    TypeOfGoods = TypeOfGoods.DigitalGoods,
+                    TotalAmountValue = 1200,
+                    PaymentButtons =
                     [
-                        new OrderDetailsPaymentOrderItems
+                        new WhatsAppPaymentSettingsButtonPaymentLink
                         {
-                            RetailerId = "sku-001",
-                            Name = "My Product",
-                            AmountValue = 1000,
-                            Quantity = 1
+                            Uri = "https://www.my-payment-link.com"
                         }
-                    ]
+                    ],
+                    Order = new OrderDetailsPaymentOrder
+                    {
+                        SubtotalValue = 1000,
+                        TaxValue = 200,
+                        Items =
+                        [
+                            new OrderDetailsPaymentOrderItems
+                            {
+                                RetailerId = "sku-001",
+                                Name = "My Product",
+                                AmountValue = 1000,
+                                Quantity = 1
+                            }
+                        ]
+                    }
                 }
             }
         }
@@ -90,14 +83,14 @@ var request = new SendMessageRequest
     {
         IdentifiedBy = new IdentifiedBy
         {
-            ChannelIdentities = new List<ChannelIdentity>
-            {
+            ChannelIdentities =
+            [
                 new ChannelIdentity
                 {
                     Channel = ConversationChannel.WhatsApp,
                     Identity = whatsAppPhoneNumber
                 }
-            }
+            ]
         }
     },
     Message = appMessage
