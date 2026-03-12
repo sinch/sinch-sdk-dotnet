@@ -27,6 +27,7 @@
 - [Fax API: SendFaxRequest constructors replaced with factory methods](#fax-api-sendfaxrequest-constructors-replaced-with-factory-methods)
 - [Conversation API: InjectEventRequest now supports only AppEvent](#conversation-api-injecteventrequest-now-supports-only-appevent)
 - [Conversation API: WhatsApp payment_settings replaced by payment_buttons](#conversation-api-whatsapp-payment_settings-replaced-by-payment_buttons)
+- [Conversation API: ConversationDirection.UndefinedDirection removed](#conversation-api-conversationdirectionundefineddirection-removed)
 
 ## .NET Framework Support
 
@@ -778,4 +779,21 @@ Other available button types:
 new WhatsAppPaymentSettingsButtonPaymentLink { Uri = "https://pay.example.com/order123" }
 
 new WhatsAppPaymentSettingsButtonBoleto { DigitableLine = "12345.67890 12345.678901 12345.678901 1 12340000012300" }
+```
+
+## Conversation API: ConversationDirection.UndefinedDirection removed
+
+The `UndefinedDirection` static member has been removed from `ConversationDirection` following its removal from the Conversation API specification.
+The valid values are now `ToApp` and `ToContact` only.
+
+Version 1.*:
+```csharp
+var direction = ConversationDirection.UndefinedDirection;
+```
+
+Version 2.*:
+```csharp
+// Use one of the remaining valid values:
+var direction = ConversationDirection.ToApp;
+var direction = ConversationDirection.ToContact;
 ```
