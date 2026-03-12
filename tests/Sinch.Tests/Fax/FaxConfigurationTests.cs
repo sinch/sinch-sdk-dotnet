@@ -11,17 +11,13 @@ namespace Sinch.Tests.Fax
     {
         public record FaxUrlTestCase(
             string TestName,
-            FaxRegion Region,
             string UrlOverride,
             string ExpectedUrl)
         {
             private static readonly FaxUrlTestCase[] TestCases =
             {
-                new("No region specified", null, null, "https://fax.api.sinch.com/"),
-                new("Default Europe Fax region", FaxRegion.Europe, null, "https://eu1.fax.api.sinch.com/"),
-                new("Default US East Coast Fax region", FaxRegion.UsEastCoast, null, "https://use1.fax.api.sinch.com/"),
-                new("Europe region with null override", FaxRegion.Europe, null, "https://eu1.fax.api.sinch.com/"),
-                new("Europe region with custom override", FaxRegion.Europe, "https://new-fax.url", "https://new-fax.url/")
+                new("Global url", null, "https://fax.api.sinch.com/"),
+                new("Custom url", "https://custom.fax.api.sinch.com/", "https://custom.fax.api.sinch.com/"),
             };
 
             public static IEnumerable<object[]> TestCasesData =>
