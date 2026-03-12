@@ -7,14 +7,12 @@
 /// </summary>
 using Sinch;
 using Sinch.Core;
-using Sinch.Fax;
 using Sinch.Fax.Faxes;
 using Sinch.Snippets.Shared;
 
 var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
 var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
 var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
-var faxRegion = ConfigurationHelper.GetFaxRegion() ?? "MY_FAX_REGION";
 
 // The phone number of the recipient you want to send a fax to
 const string recipientPhoneNumber = "RECIPIENT_PHONE_NUMBER";
@@ -30,10 +28,6 @@ var client = new SinchClient(new SinchClientConfiguration
         ProjectId = projectId,
         KeyId = keyId,
         KeySecret = keySecret
-    },
-    FaxConfiguration = new SinchFaxConfiguration
-    {
-        Region = new FaxRegion(faxRegion)
     }
 });
 

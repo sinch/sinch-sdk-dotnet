@@ -26,10 +26,6 @@ var client = new SinchClient(new SinchClientConfiguration()
         ProjectId = projectId,
         KeyId = keyId,
         KeySecret = keySecret
-    },
-    FaxConfiguration = new SinchFaxConfiguration
-    {
-        Region = new FaxRegion(faxRegion)
     }
 });
 

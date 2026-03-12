@@ -15,10 +15,6 @@ public class Utils
                     KeyId = "keyId",
                     KeySecret = "keySecret"
                 },
-                FaxConfiguration = new SinchFaxConfiguration
-                {
-                    Region = FaxRegion.UsEastCoast
-                },
                 SinchOptions = new SinchOptions
                 {
                     ApiUrlOverrides = new ApiUrlOverrides()

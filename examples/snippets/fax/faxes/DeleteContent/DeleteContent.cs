@@ -6,13 +6,11 @@
 /// See https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/snippets/README.md for details
 /// </summary>
 using Sinch;
-using Sinch.Fax;
 using Sinch.Snippets.Shared;
 
 var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
 var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
 var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
-var faxRegion = ConfigurationHelper.GetFaxRegion() ?? "MY_FAX_REGION";
 
 // The ID of the Fax you want to delete content for
 const string faxId = "FAX_ID";
@@ -24,10 +22,6 @@ var client = new SinchClient(new SinchClientConfiguration()
         ProjectId = projectId,
         KeyId = keyId,
         KeySecret = keySecret
-    },
-    FaxConfiguration = new SinchFaxConfiguration
-    {
-        Region = new FaxRegion(faxRegion)
     }
 });
 

@@ -264,11 +264,6 @@ namespace Sinch
 
             var faxConfig = _sinchClientConfiguration.FaxConfiguration;
 
-            if (faxConfig.Region == null)
-                throw new InvalidOperationException(
-                    $"{nameof(SinchFaxConfiguration)}.{nameof(SinchFaxConfiguration.Region)} is required. " +
-                    $"Set it to one of the values in {nameof(FaxRegion)}, e.g. {nameof(FaxRegion)}.{nameof(FaxRegion.UsEastCoast)}.");
-
             var faxUrl = ResolveUrl(
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.FaxUrl,
                 () => SinchUrlResolvers.ResolveFaxUrl(faxConfig));

@@ -7,14 +7,12 @@
 /// </summary>
 using Sinch;
 using Sinch.Core;
-using Sinch.Fax;
 using Sinch.Fax.Services;
 using Sinch.Snippets.Shared;
 
 var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
 var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
 var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
-var faxRegion = ConfigurationHelper.GetFaxRegion() ?? "MY_FAX_REGION";
 
 var client = new SinchClient(new SinchClientConfiguration
 {
@@ -23,10 +21,6 @@ var client = new SinchClient(new SinchClientConfiguration
         ProjectId = projectId,
         KeyId = keyId,
         KeySecret = keySecret
-    },
-    FaxConfiguration = new SinchFaxConfiguration
-    {
-        Region = new FaxRegion(faxRegion)
     }
 });
 
