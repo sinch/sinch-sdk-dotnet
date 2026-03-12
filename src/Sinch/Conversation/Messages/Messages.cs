@@ -85,6 +85,19 @@ namespace Sinch.Conversation.Messages
         /// <returns>A <see cref="ListMessagesResponse"/> containing the matched messages and an optional next page token.</returns>
         Task<ListMessagesResponse> ListMessagesByChannelIdentity(ListMessagesByChannelIdentityRequest request,
             CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Automatically iterates over all pages of last messages sent to specified channel identities.<br/><br/>
+        ///     In <c>CONVERSATION_SOURCE</c> mode, you can query either by <c>channel_identities</c> or by <c>contact_ids</c>.<br/>
+        ///     Note: Use either <c>contact_ids</c> OR <c>channel_identities</c> per request, not both.<br/>
+        ///     <c>DISPATCH_SOURCE</c> mode does not support <c>contact_ids</c>.
+        /// </summary>
+        /// <param name="request">The filter parameters. <see cref="ListMessagesByChannelIdentityRequest.PageToken"/> will be managed automatically.</param>
+        /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
+        /// <returns>An async sequence of <see cref="ConversationMessage"/> items across all pages.</returns>
+        IAsyncEnumerable<ConversationMessage> ListMessagesByChannelIdentityAuto(
+            ListMessagesByChannelIdentityRequest request,
+            CancellationToken cancellationToken = default);
     }
 
     /// <inheritdoc />
@@ -156,6 +169,22 @@ namespace Sinch.Conversation.Messages
             _logger?.LogDebug("Fetching messages by channel identity...");
             return _http.Value.Send<ListMessagesByChannelIdentityRequest, ListMessagesResponse>(uri, HttpMethod.Post,
                 request, cancellationToken: cancellationToken);
+        }
+
+        /// <inheritdoc/>  
+        public async IAsyncEnumerable<ConversationMessage> ListMessagesByChannelIdentityAuto(
+            ListMessagesByChannelIdentityRequest request,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            _logger?.LogDebug("Auto fetching messages by channel identity...");
+            do
+            {
+                var response = await ListMessagesByChannelIdentity(request, cancellationToken);
+                request.PageToken = response.NextPageToken;
+                if (response.Messages == null) continue;
+                foreach (var message in response.Messages)
+                    yield return message;
+            } while (!string.IsNullOrEmpty(request.PageToken));
         }
 
         private static string GetMessageSourceQueryParam(MessageSource? messagesSource)
