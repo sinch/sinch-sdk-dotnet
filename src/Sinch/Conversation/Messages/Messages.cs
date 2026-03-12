@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Conversation.Messages.List;
@@ -71,6 +73,18 @@ namespace Sinch.Conversation.Messages
         /// <returns></returns>
         Task Delete(string messageId, MessageSource? messagesSource = default,
             CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Retrieves the last message sent to specified channel identities.<br/><br/>
+        ///     In <c>CONVERSATION_SOURCE</c> mode, you can query either by <c>channel_identities</c> or by <c>contact_ids</c>.<br/>
+        ///     Note: Use either <c>contact_ids</c> OR <c>channel_identities</c> per request, not both.<br/>
+        ///     <c>DISPATCH_SOURCE</c> mode does not support <c>contact_ids</c>.
+        /// </summary>
+        /// <param name="request">The filter parameters, including channel identities or contact IDs, message source, and pagination options.</param>
+        /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
+        /// <returns>A <see cref="ListMessagesResponse"/> containing the matched messages and an optional next page token.</returns>
+        Task<ListMessagesResponse> ListMessagesByChannelIdentity(ListMessagesByChannelIdentityRequest request,
+            CancellationToken cancellationToken = default);
     }
 
     /// <inheritdoc />
@@ -131,6 +145,17 @@ namespace Sinch.Conversation.Messages
             var uri = new Uri(_baseAddress,
                 $"v1/projects/{_projectId}/messages/{messageId}{param}");
             return _http.Value.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
+        }
+
+        /// <inheritdoc/>  
+        public Task<ListMessagesResponse> ListMessagesByChannelIdentity(
+            ListMessagesByChannelIdentityRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/messages:fetch-last-message");
+            _logger?.LogDebug("Fetching messages by channel identity...");
+            return _http.Value.Send<ListMessagesByChannelIdentityRequest, ListMessagesResponse>(uri, HttpMethod.Post,
+                request, cancellationToken: cancellationToken);
         }
 
         private static string GetMessageSourceQueryParam(MessageSource? messagesSource)

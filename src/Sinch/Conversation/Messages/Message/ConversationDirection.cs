@@ -10,11 +10,6 @@ namespace Sinch.Conversation.Messages.Message
     public record ConversationDirection(string Value) : EnumRecord(Value)
     {
         /// <summary>
-        /// Undefined direction.
-        /// </summary>
-        public static readonly ConversationDirection UndefinedDirection = new("UNDEFINED_DIRECTION");
-
-        /// <summary>
         /// To app direction.
         /// </summary>
         public static readonly ConversationDirection ToApp = new("TO_APP");
