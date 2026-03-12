@@ -8,7 +8,6 @@
 
 using Sinch;
 using Sinch.Core;
-using Sinch.Fax;
 using Sinch.Snippets.Shared;
 
 var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";

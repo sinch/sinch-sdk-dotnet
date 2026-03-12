@@ -16,7 +16,7 @@ var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
 var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
 // The ID of the Fax Service for which you want to list the emails
-const string serviceId = "FAX_SERVICE_ID";
+const string serviceId = "01KKHFX71HRE5P495XJMENHKP9";
 
 var client = new SinchClient(new SinchClientConfiguration()
 {

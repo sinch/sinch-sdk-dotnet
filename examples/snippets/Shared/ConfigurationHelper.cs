@@ -71,9 +71,4 @@ public static class ConfigurationHelper
     /// Gets the Sinch Application Secret from configuration.
     /// </summary>
     public static string? GetApplicationSecret() => GetValue("SINCH_APPLICATION_SECRET");
-
-    /// <summary>
-    /// Gets the Sinch Fax region from configuration.
-    /// </summary>
-    public static string? GetFaxRegion() => GetValue("SINCH_FAX_REGION");
 }
