@@ -129,6 +129,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendOrderDetailsPaymentButt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListMessagesByChannelIdentity", "conversation\messages\ListMessagesByChannelIdentity\ListMessagesByChannelIdentity.csproj", "{2FB7178D-65CA-47E4-A09E-E26987408B8A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListMessagesByChannelIdentityAuto", "conversation\messages\ListMessagesByChannelIdentityAuto\ListMessagesByChannelIdentityAuto.csproj", "{FA0DBEC6-BEAA-4293-946A-99873ACE4A46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendSmsTextMessage", "conversation\messages\SendSmsTextMessage\SendSmsTextMessage.csproj", "{A3447A99-9256-4F6F-95FD-1ECF3EBEA6FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -715,6 +719,30 @@ Global
 		{2FB7178D-65CA-47E4-A09E-E26987408B8A}.Release|x64.Build.0 = Release|Any CPU
 		{2FB7178D-65CA-47E4-A09E-E26987408B8A}.Release|x86.ActiveCfg = Release|Any CPU
 		{2FB7178D-65CA-47E4-A09E-E26987408B8A}.Release|x86.Build.0 = Release|Any CPU
+		{FA0DBEC6-BEAA-4293-946A-99873ACE4A46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA0DBEC6-BEAA-4293-946A-99873ACE4A46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA0DBEC6-BEAA-4293-946A-99873ACE4A46}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FA0DBEC6-BEAA-4293-946A-99873ACE4A46}.Debug|x64.Build.0 = Debug|Any CPU
+		{FA0DBEC6-BEAA-4293-946A-99873ACE4A46}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FA0DBEC6-BEAA-4293-946A-99873ACE4A46}.Debug|x86.Build.0 = Debug|Any CPU
+		{FA0DBEC6-BEAA-4293-946A-99873ACE4A46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA0DBEC6-BEAA-4293-946A-99873ACE4A46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA0DBEC6-BEAA-4293-946A-99873ACE4A46}.Release|x64.ActiveCfg = Release|Any CPU
+		{FA0DBEC6-BEAA-4293-946A-99873ACE4A46}.Release|x64.Build.0 = Release|Any CPU
+		{FA0DBEC6-BEAA-4293-946A-99873ACE4A46}.Release|x86.ActiveCfg = Release|Any CPU
+		{FA0DBEC6-BEAA-4293-946A-99873ACE4A46}.Release|x86.Build.0 = Release|Any CPU
+		{A3447A99-9256-4F6F-95FD-1ECF3EBEA6FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3447A99-9256-4F6F-95FD-1ECF3EBEA6FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3447A99-9256-4F6F-95FD-1ECF3EBEA6FD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A3447A99-9256-4F6F-95FD-1ECF3EBEA6FD}.Debug|x64.Build.0 = Debug|Any CPU
+		{A3447A99-9256-4F6F-95FD-1ECF3EBEA6FD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A3447A99-9256-4F6F-95FD-1ECF3EBEA6FD}.Debug|x86.Build.0 = Debug|Any CPU
+		{A3447A99-9256-4F6F-95FD-1ECF3EBEA6FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3447A99-9256-4F6F-95FD-1ECF3EBEA6FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3447A99-9256-4F6F-95FD-1ECF3EBEA6FD}.Release|x64.ActiveCfg = Release|Any CPU
+		{A3447A99-9256-4F6F-95FD-1ECF3EBEA6FD}.Release|x64.Build.0 = Release|Any CPU
+		{A3447A99-9256-4F6F-95FD-1ECF3EBEA6FD}.Release|x86.ActiveCfg = Release|Any CPU
+		{A3447A99-9256-4F6F-95FD-1ECF3EBEA6FD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -779,6 +807,8 @@ Global
 		{2750A256-190C-4A18-89FA-5349BE6E5BDB} = {EAC3562A-E072-404F-806B-BDBD7F8DB06C}
 		{30C715C1-731F-408E-BD6D-31A1C120BF30} = {D14691D8-5D33-4332-8CDB-D0C6A4FAFF20}
 		{2FB7178D-65CA-47E4-A09E-E26987408B8A} = {D14691D8-5D33-4332-8CDB-D0C6A4FAFF20}
+		{FA0DBEC6-BEAA-4293-946A-99873ACE4A46} = {D14691D8-5D33-4332-8CDB-D0C6A4FAFF20}
+		{A3447A99-9256-4F6F-95FD-1ECF3EBEA6FD} = {D14691D8-5D33-4332-8CDB-D0C6A4FAFF20}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4081DB0B-E6B8-47EB-A4AF-C9C20DAB9EE2}
