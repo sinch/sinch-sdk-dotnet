@@ -34,7 +34,7 @@ namespace Sinch
         internal static Uri ResolveFaxUrl(SinchFaxConfiguration config)
         {
             const string faxApiUrl = "https://fax.api.sinch.com/";
-            
+
             return config.UrlOverride != null ? new Uri(config.UrlOverride) : new Uri(faxApiUrl);
         }
 

@@ -36,7 +36,7 @@ namespace Sinch.Tests.Fax
             };
             SinchUrlResolvers.ResolveFaxUrl(faxConfig).ToString().Should().BeEquivalentTo(testCase.ExpectedUrl);
         }
-        
+
 
         [Fact]
         public void FaxConfiguration_ShouldUseUrlOverride_WhenUrlOverrideSpecified()
