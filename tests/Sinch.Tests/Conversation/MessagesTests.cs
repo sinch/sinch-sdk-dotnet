@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RichardSzalay.MockHttp;
 using Sinch.Conversation;
@@ -17,6 +18,7 @@ using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
 using Sinch.Core;
 using Xunit;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Sinch.Tests.Conversation
 {
@@ -341,6 +343,60 @@ namespace Sinch.Tests.Conversation
             response.Should().NotBeNull();
             response.NextPageToken.Should().Be(nextPageToken);
             response.Messages.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public async Task ListMessagesByChannelIdentityAuto_IteratesThroughAllPages()
+        {
+            const string nextPageToken = "next_token_page2";
+
+            HttpMessageHandlerMock
+                .Expect(HttpMethod.Post,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/messages:fetch-last-message")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(JsonConvert.SerializeObject(new
+                {
+                    channel_identities = new[] { "447700900000" },
+                    app_id = "app_id_1",
+                    messages_source = "DISPATCH_SOURCE"
+                }))
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    next_page_token = nextPageToken,
+                    messages = new[] { Message() }
+                }));
+
+            HttpMessageHandlerMock
+                .Expect(HttpMethod.Post,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/messages:fetch-last-message")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(Newtonsoft.Json.JsonConvert.SerializeObject(new
+                {
+                    channel_identities = new[] { "447700900000" },
+                    app_id = "app_id_1",
+                    messages_source = "DISPATCH_SOURCE",
+                    page_token = nextPageToken
+                }))
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    next_page_token = (string?)null,
+                    messages = new[] { Message() }
+                }));
+
+            var messages = new List<ConversationMessage>();
+            await foreach (var message in Conversation.Messages.ListMessagesByChannelIdentityAuto(
+                new ListMessagesByChannelIdentityRequest
+                {
+                   ChannelIdentities = new List<string> { "447700900000" },
+                   AppId = "app_id_1",
+                   MessagesSource = MessageSource.DispatchSource
+                }))
+            {
+                messages.Add(message);
+            }
+
+            messages.Should().HaveCount(2);
+            HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 
         [Fact]
