@@ -320,6 +320,12 @@ namespace Sinch
             if (sinchSmsConfiguration.ServicePlanIdConfiguration != null)
             {
                 var servicePlanIdConfig = sinchSmsConfiguration.ServicePlanIdConfiguration;
+
+                if (servicePlanIdConfig.ServicePlanIdRegion == null)
+                    throw new InvalidOperationException(
+                        $"{nameof(ServicePlanIdConfiguration)}.{nameof(ServicePlanIdConfiguration.ServicePlanIdRegion)} is required. " +
+                        $"Set it to one of the values in {nameof(SmsServicePlanIdRegion)}, e.g. {nameof(SmsServicePlanIdRegion)}.{nameof(SmsServicePlanIdRegion.Us)}.");
+
                 _logger?.LogInformation("Initializing SMS client with {service_plan_id} in {region}",
                     servicePlanIdConfig.ServicePlanId,
                     servicePlanIdConfig.ServicePlanIdRegion.Value);

@@ -17,14 +17,14 @@ namespace Sinch.SMS
         internal ServicePlanIdConfiguration? ServicePlanIdConfiguration { get; set; }
 
         public static SinchSmsConfiguration WithServicePlanId(string servicePlanId,
-            string apiToken, SmsServicePlanIdRegion? servicePlanIdRegion = null,
+            string apiToken, SmsServicePlanIdRegion servicePlanIdRegion,
             string? urlOverride = null)
         {
             return new SinchSmsConfiguration()
             {
                 ServicePlanIdConfiguration = new ServicePlanIdConfiguration()
                 {
-                    ServicePlanIdRegion = servicePlanIdRegion ?? SmsServicePlanIdRegion.Us,
+                    ServicePlanIdRegion = servicePlanIdRegion,
                     ServicePlanId = servicePlanId,
                     UrlOverride = urlOverride,
                     ApiToken = apiToken

@@ -85,5 +85,28 @@ namespace Sinch.Tests.Sms
             var act = () => client.Sms;
             act.Should().NotThrow<InvalidOperationException>();
         }
+
+        [Fact]
+        public void SmsWithServicePlanId_ThrowsWhenRegionNotSet()
+        {
+            var sinch = new SinchClient(new SinchClientConfiguration()
+            {
+                SmsConfiguration = SinchSmsConfiguration.WithServicePlanId("servicePlanId", "apiToken", null!)
+            });
+            var act = () => sinch.Sms;
+            act.Should().Throw<InvalidOperationException>()
+                .WithMessage("*ServicePlanIdRegion*required*");
+        }
+
+        [Fact]
+        public void SmsWithServicePlanId_DoesNotThrow_WhenRegionIsSet()
+        {
+            var sinch = new SinchClient(new SinchClientConfiguration()
+            {
+                SmsConfiguration = SinchSmsConfiguration.WithServicePlanId("servicePlanId", "apiToken", SmsServicePlanIdRegion.Eu)
+            });
+            var act = () => sinch.Sms;
+            act.Should().NotThrow<InvalidOperationException>();
+        }
     }
 }

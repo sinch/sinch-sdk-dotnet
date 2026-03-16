@@ -81,7 +81,7 @@ namespace Sinch.Tests
         {
             var sinch = new SinchClient(new SinchClientConfiguration()
             {
-                SmsConfiguration = SinchSmsConfiguration.WithServicePlanId("servicePlanId", "apiToken")
+                SmsConfiguration = SinchSmsConfiguration.WithServicePlanId("servicePlanId", "apiToken", SmsServicePlanIdRegion.Us)
             });
             sinch.Sms.Should().NotBeNull();
         }

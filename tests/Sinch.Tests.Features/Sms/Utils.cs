@@ -34,6 +34,7 @@ namespace Sinch.Tests.Features.Sms
                     SmsConfiguration = SinchSmsConfiguration.WithServicePlanId(
                         "CappyPremiumPlan",
                         "HappyCappyToken",
+                        SmsServicePlanIdRegion.Us,
                         urlOverride: "http://localhost:3017")
                 }
             );
