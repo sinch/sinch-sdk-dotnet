@@ -275,6 +275,7 @@ namespace Sinch
         {
             var conversationConfig = _sinchClientConfiguration.ConversationConfiguration;
 
+            // TODO! Need to be refactored when the EventsDestination support will be addressed: https://sinchenterprise.atlassian.net/browse/DEVEXP-1311
             if (conversationConfig.Region == null)
                 throw new InvalidOperationException(
                     $"{nameof(SinchConversationConfiguration)}.{nameof(SinchConversationConfiguration.Region)} is required. " +

@@ -1298,6 +1298,7 @@ namespace Sinch.Tests.Conversation
         {
             var sinchClient = new SinchClient(new SinchClientConfiguration()
             {
+                // TODO! It will removed with this ticket: https://sinchenterprise.atlassian.net/browse/DEVEXP-1311
                 ConversationConfiguration = new SinchConversationConfiguration()
                 {
                     Region = ConversationRegion.Us
