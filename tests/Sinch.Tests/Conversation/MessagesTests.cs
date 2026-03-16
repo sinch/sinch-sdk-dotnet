@@ -387,9 +387,9 @@ namespace Sinch.Tests.Conversation
             await foreach (var message in Conversation.Messages.ListMessagesByChannelIdentityAuto(
                 new ListMessagesByChannelIdentityRequest
                 {
-                   ChannelIdentities = new List<string> { "447700900000" },
-                   AppId = "app_id_1",
-                   MessagesSource = MessageSource.DispatchSource
+                    ChannelIdentities = new List<string> { "447700900000" },
+                    AppId = "app_id_1",
+                    MessagesSource = MessageSource.DispatchSource
                 }))
             {
                 messages.Add(message);
