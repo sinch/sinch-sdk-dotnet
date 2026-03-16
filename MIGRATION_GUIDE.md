@@ -783,7 +783,7 @@ new WhatsAppPaymentSettingsButtonBoleto { DigitableLine = "12345.67890 12345.678
 
 ## Conversation API: ConversationDirection.UndefinedDirection removed
 
-The `UndefinedDirection` static member has been removed from `ConversationDirection` following its removal from the Conversation API specification.
+The `UndefinedDirection` static member has been removed from `ConversationDirection`.
 The valid values are now `ToApp` and `ToContact` only.
 
 Version 1.*:
