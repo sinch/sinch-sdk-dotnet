@@ -38,7 +38,7 @@ namespace Sinch.Tests.Conversation
             conversation.GetPropertiesMask().Should().BeEquivalentTo(
                 "app_id");
         }
-        
+
         [Fact]
         public void Validate_ThrowsWhenRegionNotSet()
         {

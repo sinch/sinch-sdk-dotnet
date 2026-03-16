@@ -51,7 +51,7 @@ namespace Sinch.Tests.Sms
             var op = () => sinchClient.Sms.Batches.Cancel(batchId);
             await op.Should().NotThrowAsync();
         }
-        
+
         [Fact]
         public void ResolveSmsUrl_ThrowsWhenRegionNotSet()
         {
