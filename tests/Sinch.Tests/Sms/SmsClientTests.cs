@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -49,6 +50,40 @@ namespace Sinch.Tests.Sms
 
             var op = () => sinchClient.Sms.Batches.Cancel(batchId);
             await op.Should().NotThrowAsync();
+        }
+        
+        [Fact]
+        public void ResolveSmsUrl_ThrowsWhenRegionNotSet()
+        {
+            var client = new SinchClient(new SinchClientConfiguration()
+            {
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
+                {
+                    KeyId = "key-id",
+                    KeySecret = "key-secret",
+                    ProjectId = "project-id"
+                }
+            });
+            var act = () => client.Sms;
+            act.Should().Throw<InvalidOperationException>()
+                .WithMessage("*Region*required*");
+        }
+
+        [Fact]
+        public void Validate_DoesNotThrow_WhenRegionIsSet()
+        {
+            var client = new SinchClient(new SinchClientConfiguration()
+            {
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
+                {
+                    KeyId = "key-id",
+                    KeySecret = "key-secret",
+                    ProjectId = "project-id"
+                },
+                SmsConfiguration = new SinchSmsConfiguration { Region = SmsRegion.Us }
+            });
+            var act = () => client.Sms;
+            act.Should().NotThrow<InvalidOperationException>();
         }
     }
 }

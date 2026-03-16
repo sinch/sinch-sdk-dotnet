@@ -1,5 +1,7 @@
+using System;
 using System.Text.Json.Nodes;
 using FluentAssertions;
+using Sinch.Conversation;
 using Xunit;
 
 namespace Sinch.Tests.Conversation
@@ -35,6 +37,26 @@ namespace Sinch.Tests.Conversation
 
             conversation.GetPropertiesMask().Should().BeEquivalentTo(
                 "app_id");
+        }
+        
+        [Fact]
+        public void Validate_ThrowsWhenRegionNotSet()
+        {
+            var client = new SinchClient(new SinchClientConfiguration());
+            var act = () => client.Conversation;
+            act.Should().Throw<InvalidOperationException>()
+                .WithMessage("*Region*required*");
+        }
+
+        [Fact]
+        public void Validate_DoesNotThrow_WhenRegionIsSet()
+        {
+            var client = new SinchClient(new SinchClientConfiguration
+            {
+                ConversationConfiguration = new SinchConversationConfiguration { Region = ConversationRegion.Us }
+            });
+            var act = () => client.Conversation;
+            act.Should().NotThrow<InvalidOperationException>();
         }
     }
 }
