@@ -1519,5 +1519,50 @@ namespace Sinch.Tests.Conversation.Messages
                 }
             );
         }
+
+        [Fact]
+        public void SerializeWhatsAppPaymentButtonPix_RoundTrips()
+        {
+            IWhatsAppPaymentButton original = new WhatsAppPaymentSettingsButtonPix
+            {
+                Code = "dynamic-pix-code",
+                MerchantName = "Merchant",
+                Key = "pix-key",
+                KeyType = WhatsAppPaymentSettingsButtonPix.PixKeyType.Email
+            };
+
+            var json = SerializeAsConversationClient(original);
+            var result = DeserializeAsConversationClient<IWhatsAppPaymentButton>(json);
+
+            result.Should().BeOfType<WhatsAppPaymentSettingsButtonPix>().Which.Should().BeEquivalentTo(original);
+        }
+
+        [Fact]
+        public void SerializeWhatsAppPaymentButtonPaymentLink_RoundTrips()
+        {
+            IWhatsAppPaymentButton original = new WhatsAppPaymentSettingsButtonPaymentLink
+            {
+                Uri = "https://pay.example.com/checkout/abc123"
+            };
+
+            var json = SerializeAsConversationClient(original);
+            var result = DeserializeAsConversationClient<IWhatsAppPaymentButton>(json);
+
+            result.Should().BeOfType<WhatsAppPaymentSettingsButtonPaymentLink>().Which.Should().BeEquivalentTo(original);
+        }
+
+        [Fact]
+        public void SerializeWhatsAppPaymentButtonBoleto_RoundTrips()
+        {
+            IWhatsAppPaymentButton original = new WhatsAppPaymentSettingsButtonBoleto
+            {
+                DigitableLine = "23790.12345 60000.100045 58000.100047 8 12340000075000"
+            };
+
+            var json = SerializeAsConversationClient(original);
+            var result = DeserializeAsConversationClient<IWhatsAppPaymentButton>(json);
+
+            result.Should().BeOfType<WhatsAppPaymentSettingsButtonBoleto>().Which.Should().BeEquivalentTo(original);
+        }
     }
 }
