@@ -12,59 +12,33 @@ namespace Sinch
     internal static class SinchUrlResolvers
     {
         internal static Uri ResolveAuthUrl(SinchOAuthConfiguration config)
-            => new Uri(config.UrlOverride ?? "https://auth.sinch.com");
+            => new(config.UrlOverride ?? "https://auth.sinch.com");
 
         internal static Uri ResolveNumbersUrl(SinchNumbersConfiguration config)
-            => new Uri(config.UrlOverride ?? "https://numbers.api.sinch.com/");
+            => new(config.UrlOverride ?? "https://numbers.api.sinch.com/");
 
         internal static Uri ResolveConversationUrl(SinchConversationConfiguration config)
-        {
-            return config.ConversationUrlOverride is not null ?
-                new Uri(config.ConversationUrlOverride) :
-                new Uri($"https://{config.Region!.Value}.conversation.api.sinch.com/");
-        }
+            => new(config.ConversationUrlOverride ?? $"https://{config.Region!.Value}.conversation.api.sinch.com/");
 
         internal static Uri ResolveConversationTemplateUrl(SinchConversationConfiguration config)
-        {
-            return config.TemplateUrlOverride is not null ?
-                new Uri(config.TemplateUrlOverride) :
-                new Uri($"https://{config.Region!.Value}.template.api.sinch.com/");
-        }
+            => new(config.TemplateUrlOverride ?? $"https://{config.Region!.Value}.template.api.sinch.com/");
 
         internal static Uri ResolveFaxUrl(SinchFaxConfiguration config)
-        {
-            const string faxApiUrl = "https://fax.api.sinch.com/";
-
-            return config.UrlOverride != null ? new Uri(config.UrlOverride) : new Uri(faxApiUrl);
-        }
+            => new(config.UrlOverride ?? "https://fax.api.sinch.com/");
 
         internal static Uri ResolveVerificationUrl(SinchVerificationConfiguration config)
-            => new Uri(config.UrlOverride ?? "https://verification.api.sinch.com/");
+            => new(config.UrlOverride ?? "https://verification.api.sinch.com/");
 
         internal static Uri ResolveVoiceUrl(SinchVoiceConfiguration config)
-        {
-            const string voiceApiUrlTemplate = "https://{0}.api.sinch.com/";
-            return new Uri(config.VoiceUrlOverride ?? string.Format(voiceApiUrlTemplate, config.Region.Value));
-        }
+            => new(config.VoiceUrlOverride ?? $"https://{config.Region.Value}.api.sinch.com/");
 
         internal static Uri ResolveVoiceApplicationManagementUrl(SinchVoiceConfiguration config)
-        {
-            const string voiceApiApplicationManagementUrl = "https://callingapi.sinch.com/";
-            return new Uri(config.ApplicationManagementUrlOverride ?? voiceApiApplicationManagementUrl);
-        }
+            => new(config.ApplicationManagementUrlOverride ?? "https://callingapi.sinch.com/");
 
         internal static Uri ResolveSmsUrl(SinchSmsConfiguration config)
-        {
-            return config.UrlOverride is not null ?
-                new Uri(config.UrlOverride) :
-                new Uri($"https://zt.{config.Region!.Value}.sms.api.sinch.com");
-        }
+            => new(config.UrlOverride ?? $"https://zt.{config.Region!.Value}.sms.api.sinch.com");
 
         internal static Uri ResolveSmsServicePlanIdUrl(ServicePlanIdConfiguration config)
-        {
-            const string smsApiServicePlanIdUrlTemplate = "https://{0}.sms.api.sinch.com";
-            return new Uri(config.UrlOverride ?? string.Format(smsApiServicePlanIdUrlTemplate,
-                config.ServicePlanIdRegion.Value.ToLowerInvariant()));
-        }
+            => new(config.UrlOverride ?? $"https://{config.ServicePlanIdRegion.Value.ToLowerInvariant()}.sms.api.sinch.com");
     }
 }
