@@ -77,6 +77,16 @@ namespace Sinch.Tests
         }
 
         [Fact]
+        public void SmsWithServicePlanId_DoesNotRequireUnifiedCredentials()
+        {
+            var sinch = new SinchClient(new SinchClientConfiguration()
+            {
+                SmsConfiguration = SinchSmsConfiguration.WithServicePlanId("servicePlanId", "apiToken")
+            });
+            sinch.Sms.Should().NotBeNull();
+        }
+
+        [Fact]
         public void GetServiceWithoutExceptionsIfCredentialsAreSet()
         {
             var sinch = new SinchClient(new SinchClientConfiguration()
