@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Sinch.Auth;
 using Sinch.Conversation;
 using Sinch.Fax;
@@ -20,16 +17,15 @@ namespace Sinch
         /// </summary>
         public SinchOptions? SinchOptions { get; init; }
 
-        public SinchNumbersConfiguration NumbersConfiguration { get; init; } = new SinchNumbersConfiguration();
+        public SinchNumbersConfiguration NumbersConfiguration { get; init; } = new();
 
-        public SinchOAuthConfiguration SinchOAuthConfiguration { get; init; } = new SinchOAuthConfiguration();
+        public SinchOAuthConfiguration SinchOAuthConfiguration { get; init; } = new();
 
-        public SinchSmsConfiguration SmsConfiguration { get; init; } = new SinchSmsConfiguration();
+        public SinchSmsConfiguration SmsConfiguration { get; init; } = new();
 
-        public SinchConversationConfiguration ConversationConfiguration { get; init; } =
-            new SinchConversationConfiguration();
+        public SinchConversationConfiguration ConversationConfiguration { get; init; } = new();
 
-        public SinchFaxConfiguration FaxConfiguration { get; init; } = new SinchFaxConfiguration();
+        public SinchFaxConfiguration FaxConfiguration { get; init; } = new();
 
         public SinchVerificationConfiguration? VerificationConfiguration { get; init; }
         public SinchVoiceConfiguration? VoiceConfiguration { get; init; }
@@ -51,20 +47,5 @@ namespace Sinch
         ///     Your project id.
         /// </summary>
         public required string ProjectId { get; init; }
-
-        internal void Validate()
-        {
-            var exceptions = new List<Exception>();
-            if (string.IsNullOrEmpty(ProjectId))
-                exceptions.Add(new InvalidOperationException($"{nameof(ProjectId)} should have a value"));
-
-            if (string.IsNullOrEmpty(KeyId))
-                exceptions.Add(new InvalidOperationException($"{nameof(KeyId)} should have a value"));
-
-            if (string.IsNullOrEmpty(KeySecret))
-                exceptions.Add(new InvalidOperationException($"{nameof(KeySecret)} should have a value"));
-
-            if (exceptions.Any()) throw new AggregateException("Credentials are missing", exceptions);
-        }
     }
 }
