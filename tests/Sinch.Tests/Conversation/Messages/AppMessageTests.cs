@@ -5,6 +5,7 @@ using FluentAssertions;
 using Sinch.Conversation;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.Message;
+using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.Line;
 using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
 using Xunit;
 
@@ -1397,6 +1398,49 @@ namespace Sinch.Tests.Conversation.Messages
                 }
             }
             );
+        }
+
+        [Fact]
+        public void DeserializeLineNotificationMessageTemplateChannelSpecificMessage()
+        {
+            var json = Helpers.LoadResources(
+                "Conversation/Messages/ChannelSpecific/LineNotificationMessageTemplateChannelSpecificMessage.json");
+
+            var result = DeserializeAsConversationClient<IChannelSpecificMessage>(json);
+
+            var lineNotificationMessageTemplateMessage = new LineNotificationMessageTemplateMessage
+            {
+                Message = new LineNotificationMessageTemplateChannelSpecificMessage
+                {
+                    TemplateKey = "my_template_key",
+                    Body = new LineNotificationMessageTemplateBody
+                    {
+                        EmphasizedItem = new LineNotificationMessageTemplateEmphasizedItem
+                        {
+                            ItemKey = "emphasized_key",
+                            Content = "emphasized"
+                        },
+                        Items =
+                        [
+                            new()
+                            {
+                                ItemKey = "item_key_1",
+                                Content = "item content 1"
+                            }
+                        ],
+                        Buttons =
+                        [
+                            new()
+                            {
+                                ButtonKey = "button_key_1",
+                                Url = "https://example.com"
+                            }
+                        ]
+                    }
+                }
+            };
+
+            result.As<LineNotificationMessageTemplateMessage>().Should().BeEquivalentTo(lineNotificationMessageTemplateMessage);
         }
     }
 }
