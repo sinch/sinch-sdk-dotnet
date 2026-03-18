@@ -379,7 +379,7 @@ namespace Sinch.Tests.Conversation
                 }))
                 .Respond(HttpStatusCode.OK, JsonContent.Create(new
                 {
-                    next_page_token = (string?)null,
+                    next_page_token = (string)null,
                     messages = new[] { Message() }
                 }));
 
