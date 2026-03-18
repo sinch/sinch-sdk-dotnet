@@ -96,7 +96,8 @@ namespace Sinch.Numbers
             CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Fetching active numbers {request}", request);
-            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/activeNumbers?{request.GetQueryString()}");
+            var queryString = request.GetQueryString();
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/activeNumbers{(queryString.Length > 0 ? "?" + queryString : string.Empty)}");
             return _http.Send<ListActiveNumbersResponse>(uri, HttpMethod.Get, cancellationToken);
         }
 
@@ -107,7 +108,8 @@ namespace Sinch.Numbers
             _logger?.LogDebug("Fetching active numbers {request}", request);
             do
             {
-                var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/activeNumbers?{request.GetQueryString()}");
+                var queryString = request.GetQueryString();
+                var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/activeNumbers{(queryString.Length > 0 ? "?" + queryString : string.Empty)}");
                 var response = await _http.Send<ListActiveNumbersResponse>(uri, HttpMethod.Get, cancellationToken);
                 request.PageToken = response.NextPageToken;
                 foreach (var activeNumber in response.ActiveNumbers)
