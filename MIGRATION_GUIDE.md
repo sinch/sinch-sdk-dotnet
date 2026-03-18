@@ -27,6 +27,7 @@
 - [Fax API: SendFaxRequest constructors replaced with factory methods](#fax-api-sendfaxrequest-constructors-replaced-with-factory-methods)
 - [Conversation API: InjectEventRequest now supports only AppEvent](#conversation-api-injecteventrequest-now-supports-only-appevent)
 - [Region configuration is now required for SMS and Conversation](#region-configuration-is-now-required-for-sms-and-conversation)
+- [Conversation API: WhatsApp payment_settings replaced by payment_buttons](#conversation-api-whatsapp-payment_settings-replaced-by-payment_buttons)
 
 ## .NET Framework Support
 
@@ -713,8 +714,7 @@ var response = await sinchClient.Fax.Faxes.Send(request);
 
 ## Conversation API: InjectEventRequest now supports only AppEvent
 
-The `InjectEventRequest` class in the Conversation API has been restricted to support injecting only `AppEvent`. Support for `ContactEvent` and `ContactMessageEvent` has been removed.
-
+The `InjectEventRequest` class now supports injecting only `AppEvent`. Support for `ContactEvent` and `ContactMessageEvent` has been removed.
 
 Version 1.*:
 ```csharp
@@ -782,4 +782,51 @@ var sinch = new SinchClient(new SinchClientConfiguration
         Region = ConversationRegion.Us
     }
 });
+```
+
+## Conversation API: WhatsApp payment_settings replaced by payment_buttons
+
+The `PaymentSettings` property on `OrderDetailsPayment` has been removed. Use `PaymentButtons` instead, which accepts a list of 1–2 `IWhatsAppPaymentButton` items.
+
+Version 1.*:
+```csharp
+var payment = new OrderDetailsPayment
+{
+    // ...
+    PaymentSettings = new OrderDetailsPaymentSettings
+    {
+        DynamicPix = new OrderDetailsPaymentSettingsDynamicPix
+        {
+            Code = "MY_PIX_CODE",
+            MerchantName = "My Store",
+            Key = "MY_PIX_KEY",
+            KeyType = "CPF"
+        }
+    }
+};
+```
+
+Version 2.*:
+```csharp
+var payment = new OrderDetailsPayment
+{
+    // ...
+    PaymentButtons = new List<IWhatsAppPaymentButton>
+    {
+        new WhatsAppPaymentSettingsButtonPix
+        {
+            Code = "MY_PIX_CODE",
+            MerchantName = "My Store",
+            Key = "MY_PIX_KEY",
+            KeyType = WhatsAppPaymentSettingsButtonPix.PixKeyType.Cpf
+        }
+    }
+};
+```
+
+Other available button types:
+```csharp
+new WhatsAppPaymentSettingsButtonPaymentLink { Uri = "https://pay.example.com/order123" }
+
+new WhatsAppPaymentSettingsButtonBoleto { DigitableLine = "12345.67890 12345.678901 12345.678901 1 12340000012300" }
 ```

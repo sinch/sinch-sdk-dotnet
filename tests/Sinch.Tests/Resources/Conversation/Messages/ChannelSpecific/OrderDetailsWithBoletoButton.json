@@ -1,0 +1,32 @@
+{
+  "message_type": "ORDER_DETAILS",
+  "message": {
+    "body": {
+      "text": "Order body"
+    },
+    "payment": {
+      "type": "br",
+      "reference_id": "ref-boleto",
+      "type_of_goods": "digital-goods",
+      "total_amount_value": 750,
+      "payment_buttons": [
+        {
+          "type": "boleto",
+          "digitable_line": "23790.12345 60000.100045 58000.100047 8 12340000075000"
+        }
+      ],
+      "order": {
+        "subtotal_value": 750,
+        "tax_value": 0,
+        "items": [
+          {
+            "retailer_id": "sku-3",
+            "name": "Service",
+            "amount_value": 750,
+            "quantity": 1
+          }
+        ]
+      }
+    }
+  }
+}

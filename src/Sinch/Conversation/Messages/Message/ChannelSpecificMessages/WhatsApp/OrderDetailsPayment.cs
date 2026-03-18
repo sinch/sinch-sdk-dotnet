@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Core;
@@ -47,10 +48,10 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
         public required string ReferenceId { get; set; }
 
         /// <summary>
-        ///     Gets or Sets PaymentSettings
+        ///     Array of payment buttons (1 to 2 items).
         /// </summary>
-        [JsonPropertyName("payment_settings")]
-        public OrderDetailsPaymentSettings? PaymentSettings { get; set; }
+        [JsonPropertyName("payment_buttons")]
+        public List<IWhatsAppPaymentButton>? PaymentButtons { get; set; }
 
         /// <summary>
         ///     Integer representing the total amount of the transaction.
@@ -75,7 +76,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
             sb.Append($"  {nameof(Type)}: ").Append(Type).Append('\n');
             sb.Append($"  {nameof(ReferenceId)}: ").Append(ReferenceId).Append('\n');
             sb.Append($"  {nameof(TypeOfGoods)}: ").Append(TypeOfGoods).Append('\n');
-            sb.Append($"  {nameof(PaymentSettings)}: ").Append(PaymentSettings).Append('\n');
+            sb.Append($"  {nameof(PaymentButtons)}: ").Append(PaymentButtons).Append('\n');
             sb.Append($"  {nameof(TotalAmountValue)}: ").Append(TotalAmountValue).Append('\n');
             sb.Append($"  {nameof(Order)}: ").Append(Order).Append('\n');
             sb.Append("}\n");

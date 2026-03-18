@@ -15,14 +15,6 @@
     "type": "br",
     "reference_id": "a reference ID",
     "type_of_goods": "digital-goods",
-    "payment_settings": {
-      "dynamic_pix": {
-        "code": "code value",
-        "merchant_name": "merchant name",
-        "key": "key value",
-        "key_type": "CNPJ"
-      }
-    },
     "total_amount_value": 1200,
     "order": {
       "catalog_id": "catalog id",

@@ -1,0 +1,32 @@
+{
+  "message_type": "ORDER_DETAILS",
+  "message": {
+    "body": {
+      "text": "Order body"
+    },
+    "payment": {
+      "type": "sg",
+      "reference_id": "ref-link",
+      "type_of_goods": "physical-goods",
+      "total_amount_value": 300,
+      "payment_buttons": [
+        {
+          "type": "payment_link",
+          "uri": "https://pay.example.com/checkout/abc123"
+        }
+      ],
+      "order": {
+        "subtotal_value": 300,
+        "tax_value": 0,
+        "items": [
+          {
+            "retailer_id": "sku-2",
+            "name": "Physical Item",
+            "amount_value": 300,
+            "quantity": 1
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "type": "pix_dynamic_code",
+  "code": "dynamic-pix-code",
+  "merchant_name": "Merchant",
+  "key": "pix-key",
+  "key_type": "EMAIL"
+}
