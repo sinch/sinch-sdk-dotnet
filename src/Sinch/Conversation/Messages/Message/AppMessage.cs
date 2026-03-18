@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
+using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.Line;
 using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
 using Sinch.Core;
 
@@ -105,11 +106,12 @@ namespace Sinch.Conversation.Messages.Message
     [JsonDerivedType(typeof(FlowMessage))]
     [JsonDerivedType(typeof(OrderDetailsPaymentMessage))]
     [JsonDerivedType(typeof(OrderStatusPaymentMessage))]
+    [JsonDerivedType(typeof(LineNotificationMessageTemplateMessage))]
     [JsonConverter(typeof(ChannelSpecificMessageJsonInterfaceConverter))]
     public interface IChannelSpecificMessage
     {
         /// <summary>
-        ///     Gets or Sets MessageType
+        ///     The type of the channel specific message
         /// </summary>
         public MessageType MessageType { get; }
     }
@@ -128,7 +130,6 @@ namespace Sinch.Conversation.Messages.Message
         public override IChannelSpecificMessage Read(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)
         {
-            // not optimal but straightforward
             var elem = JsonElement.ParseValue(ref reader);
             var descriptor = elem.EnumerateObject().FirstOrDefault(x => x.Name == "message_type");
             var method = descriptor.Value.GetString();
@@ -144,6 +145,10 @@ namespace Sinch.Conversation.Messages.Message
                 return elem.Deserialize<OrderStatusPaymentMessage>(options) ??
                        throw new InvalidOperationException(
                            $"{nameof(OrderStatusPaymentMessage)} deserialization result is null.");
+            if (MessageType.LineNotificationMessageTemplate.Value == method)
+                return elem.Deserialize<LineNotificationMessageTemplateMessage>(options) ??
+                       throw new InvalidOperationException(
+                           $"{nameof(LineNotificationMessageTemplateMessage)} deserialization result is null.");
 
             throw new JsonException(
                 $"Failed to match {nameof(IChannelSpecificMessage)}, got prop `{descriptor.Name}` with value `{method}`");
@@ -151,7 +156,7 @@ namespace Sinch.Conversation.Messages.Message
 
         public override void Write(Utf8JsonWriter writer, IChannelSpecificMessage value, JsonSerializerOptions options)
         {
-            JsonSerializer.Serialize(writer, value, options);
+            JsonSerializer.Serialize(writer, value, value.GetType(), options);
         }
     }
 
@@ -185,14 +190,37 @@ namespace Sinch.Conversation.Messages.Message
         public OrderStatus? Message { get; set; }
     }
 
+    public sealed class LineNotificationMessageTemplateMessage : IChannelSpecificMessage
+    {
+        [JsonPropertyName("message_type")]
+        [JsonInclude]
+        public MessageType MessageType { get; private set; } = MessageType.LineNotificationMessageTemplate;
+
+        [JsonPropertyName("message")]
+        public LineNotificationMessageTemplateChannelSpecificMessage? Message { get; set; }
+    }
+
     /// <summary>
     ///     Defines MessageType
     /// </summary>
     [JsonConverter(typeof(EnumRecordJsonConverter<MessageType>))]
     public record MessageType(string Value) : EnumRecord(Value)
     {
+        /// <summary>
+        /// The WhatsApp Flows message type.
+        /// </summary>
         public static readonly MessageType Flows = new("FLOWS");
+        /// <summary>
+        /// The WhatsApp order details message type.
+        /// </summary>
         public static readonly MessageType OrderDetails = new("ORDER_DETAILS");
+        /// <summary>
+        /// The WhatsApp order status message type.
+        /// </summary>
         public static readonly MessageType OrderStatus = new("ORDER_STATUS");
+        /// <summary>
+        /// LINE notification message template type
+        /// </summary>
+        public static readonly MessageType LineNotificationMessageTemplate = new("NOTIFICATION_MESSAGE_TEMPLATE");
     }
 }

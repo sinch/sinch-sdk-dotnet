@@ -1,0 +1,24 @@
+{
+  "message_type": "NOTIFICATION_MESSAGE_TEMPLATE",
+  "message": {
+    "template_key": "my_template_key",
+    "body": {
+      "emphasized_item": {
+        "item_key": "emphasized_key",
+        "content": "emphasized"
+      },
+      "items": [
+        {
+          "item_key": "item_key_1",
+          "content": "item content 1"
+        }
+      ],
+      "buttons": [
+        {
+          "button_key": "button_key_1",
+          "url": "https://example.com"
+        }
+      ]
+    }
+  }
+}
