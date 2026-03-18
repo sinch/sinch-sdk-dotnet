@@ -3,9 +3,9 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
-using FluentAssertions.Json; // If using plain FluentAssertion, json comparison below can give false positives.
 using FluentAssertions;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace Sinch.Tests
 {
@@ -35,9 +35,9 @@ namespace Sinch.Tests
 
         public static void AssertJsonEqual(string expected, string actual)
         {
-            var actualJObject = JObject.Parse(actual);
-            var expectedJObject = JObject.Parse(expected);
-            expectedJObject.Should().BeEquivalentTo(actualJObject);
+            var actualJsonNode = JsonNode.Parse(actual);
+            var expectedJsonNode = JsonNode.Parse(expected);
+            JsonNode.DeepEquals(expectedJsonNode, actualJsonNode).Should().BeTrue();
         }
 
         public static void BeEquivalentToWithJsonElement<T>(this T subject, T expectation)
