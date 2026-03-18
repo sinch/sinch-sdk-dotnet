@@ -13,7 +13,7 @@
 - [VoiceConfiguration and ScheduledVoiceProvisioning classes moved to new namespace](#voiceconfiguration-and-scheduledvoiceprovisioning-classes-moved-to-new-namespace)
 - [VoiceConfiguration Type property is now internal](#voiceconfiguration-type-property-is-now-internal)
 - [Removed obsolete UrlMessage and CallMessage constructors](#removed-obsolete-urlmessage-and-callmessage-constructors)
-- [FaxRegion moved from SinchOptions to SinchFaxConfiguration](#faxregion-moved-from-sinchoptions-to-sinchfaxconfiguration)
+- [Fax API: Region is no longer supported](#fax-api-region-is-no-longer-supported)
 - [Numbers API: Callbacks renamed to CallbackConfiguration](#callbacks-renamed-to-callbackconfiguration)
 - [Numbers API: ScheduledProvisioning.ErrorCodes type changed to IList\<FailureCode\>](#scheduledprovisioningerrorcodes-type-changed-to-ilistfailurecode)
 - [Removed obsolete MessageSource property from ListMessagesRequest](#removed-obsolete-messagesource-property-from-listmessagesrequest)
@@ -26,6 +26,7 @@
 - [Conversation API: Coordinates properties changed from float to double](#conversation-api-coordinates-properties-changed-from-float-to-double)
 - [Fax API: SendFaxRequest constructors replaced with factory methods](#fax-api-sendfaxrequest-constructors-replaced-with-factory-methods)
 - [Conversation API: InjectEventRequest now supports only AppEvent](#conversation-api-injecteventrequest-now-supports-only-appevent)
+- [Region configuration is now required for SMS and Conversation](#region-configuration-is-now-required-for-sms-and-conversation)
 - [Conversation API: WhatsApp payment_settings replaced by payment_buttons](#conversation-api-whatsapp-payment_settings-replaced-by-payment_buttons)
 
 ## .NET Framework Support
@@ -157,7 +158,7 @@ var sinch = new SinchClient(new SinchClientConfiguration()
     },
     ConversationConfiguration = new SinchConversationConfiguration()
     {
-       ConversationRegion = ConversationRegion.Us
+       Region = ConversationRegion.Us
     },
 });
 ```
@@ -327,15 +328,18 @@ var callMessage = new CallMessage
 };
 ```
 
-## FaxRegion moved from SinchOptions to SinchFaxConfiguration
+## Fax API: Region is no longer supported
 
-The `FaxRegion` property has been removed from `SinchOptions`. Use the `Region` property on `SinchFaxConfiguration` instead.
+The `Region` property on `SinchFaxConfiguration` has been removed. The Fax API now uses a single global endpoint regardless of region.
 
 Version 1.*:
 ```csharp
-var sinchClient = new SinchClient("PROJECT_ID", "KEY_ID", "KEY_SECRET", options =>
+var sinchClient = new SinchClient(new SinchClientConfiguration()
 {
-    options.FaxRegion = FaxRegion.Europe;
+    FaxConfiguration = new SinchFaxConfiguration()
+    {
+        Region = FaxRegion.Europe // remove this
+    }
 });
 ```
 
@@ -344,9 +348,6 @@ Version 2.*:
 var sinchClient = new SinchClient(new SinchClientConfiguration()
 {
     FaxConfiguration = new SinchFaxConfiguration()
-    {
-        Region = FaxRegion.Europe
-    }
 });
 ```
 
@@ -731,6 +732,56 @@ var request = new InjectEventRequest
 {
     Event = new AppEvent { /* ... */ }
 };
+```
+
+---
+
+## Region configuration is now required for SMS and Conversation
+
+The `Region` property in `SinchSmsConfiguration` and `ConversationRegion` in `SinchConversationConfiguration` are now **required**. Validation is performed at runtime when the Sinch client is first accessed and an `InvalidOperationException` is thrown if the region is not provided.
+
+**SMS:**
+
+Version 1.*:
+```csharp
+var sinch = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ }
+});
+```
+
+Version 2.*:
+```csharp
+var sinch = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ },
+    SmsConfiguration = new SinchSmsConfiguration
+    {
+        Region = SmsRegion.Us
+    }
+});
+```
+
+**Conversation:**
+
+Version 1.*:
+```csharp
+var sinch = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ }
+});
+```
+
+Version 2.*:
+```csharp
+var sinch = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ },
+    ConversationConfiguration = new SinchConversationConfiguration
+    {
+        Region = ConversationRegion.Us
+    }
+});
 ```
 
 ## Conversation API: WhatsApp payment_settings replaced by payment_buttons
