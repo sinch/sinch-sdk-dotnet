@@ -40,7 +40,6 @@ namespace Sinch.Tests
             expectedJObject.Should().BeEquivalentTo(actualJObject);
         }
 
-
         public static void BeEquivalentToWithJsonElement<T>(this T subject, T expectation)
         {
             subject.Should().BeEquivalentTo(expectation, options =>

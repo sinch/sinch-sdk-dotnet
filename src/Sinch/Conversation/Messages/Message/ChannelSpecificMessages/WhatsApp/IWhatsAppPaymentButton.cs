@@ -14,7 +14,5 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
     [JsonDerivedType(typeof(WhatsAppPaymentSettingsButtonBoleto))]
     public interface IWhatsAppPaymentButton
     {
-        /// <summary>The button type discriminator.</summary>
-        public WhatsAppPaymentButtonType Type { get; }
     }
 }

@@ -1374,7 +1374,7 @@ namespace Sinch.Tests.Conversation.Messages
         }
 
         [Fact]
-        public void DeserializeOrderDetailsWithPixButton()
+        public void DeserializeOrderDetailsChannelSpecificMessageWithPaymentButton()
         {
             var json = Helpers.LoadResources(
                 "Conversation/Messages/ChannelSpecific/OrderDetailsWithPixButton.json");
@@ -1425,105 +1425,9 @@ namespace Sinch.Tests.Conversation.Messages
         }
 
         [Fact]
-        public void DeserializeOrderDetailsWithPaymentLinkButton()
+        public void SerializePaymentButtonPix()
         {
-            var json = Helpers.LoadResources(
-                "Conversation/Messages/ChannelSpecific/OrderDetailsWithPaymentLinkButton.json");
-
-            var result = DeserializeAsConversationClient<IChannelSpecificMessage>(json);
-
-            result.As<OrderDetailsPaymentMessage>().Should().BeEquivalentTo(
-                new OrderDetailsPaymentMessage
-                {
-                    Message = new OrderDetails
-                    {
-                        Body = new WhatsAppInteractiveBody { Text = "Order body" },
-                        Payment = new OrderDetailsPayment
-                        {
-                            Type = OrderDetailsPayment.TypeEnum.Sg,
-                            ReferenceId = "ref-link",
-                            TypeOfGoods = TypeOfGoods.PhysicalGoods,
-                            TotalAmountValue = 300,
-                            PaymentButtons = new List<IWhatsAppPaymentButton>
-                            {
-                                new WhatsAppPaymentSettingsButtonPaymentLink
-                                {
-                                    Uri = "https://pay.example.com/checkout/abc123"
-                                }
-                            },
-                            Order = new OrderDetailsPaymentOrder
-                            {
-                                SubtotalValue = 300,
-                                TaxValue = 0,
-                                Items = new List<OrderDetailsPaymentOrderItems>
-                                {
-                                    new OrderDetailsPaymentOrderItems
-                                    {
-                                        RetailerId = "sku-2",
-                                        Name = "Physical Item",
-                                        AmountValue = 300,
-                                        Quantity = 1
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            );
-        }
-
-        [Fact]
-        public void DeserializeOrderDetailsWithBoletoButton()
-        {
-            var json = Helpers.LoadResources(
-                "Conversation/Messages/ChannelSpecific/OrderDetailsWithBoletoButton.json");
-
-            var result = DeserializeAsConversationClient<IChannelSpecificMessage>(json);
-
-            result.As<OrderDetailsPaymentMessage>().Should().BeEquivalentTo(
-                new OrderDetailsPaymentMessage
-                {
-                    Message = new OrderDetails
-                    {
-                        Body = new WhatsAppInteractiveBody { Text = "Order body" },
-                        Payment = new OrderDetailsPayment
-                        {
-                            Type = OrderDetailsPayment.TypeEnum.Br,
-                            ReferenceId = "ref-boleto",
-                            TypeOfGoods = TypeOfGoods.DigitalGoods,
-                            TotalAmountValue = 750,
-                            PaymentButtons = new List<IWhatsAppPaymentButton>
-                            {
-                                new WhatsAppPaymentSettingsButtonBoleto
-                                {
-                                    DigitableLine = "23790.12345 60000.100045 58000.100047 8 12340000075000"
-                                }
-                            },
-                            Order = new OrderDetailsPaymentOrder
-                            {
-                                SubtotalValue = 750,
-                                TaxValue = 0,
-                                Items = new List<OrderDetailsPaymentOrderItems>
-                                {
-                                    new OrderDetailsPaymentOrderItems
-                                    {
-                                        RetailerId = "sku-3",
-                                        Name = "Service",
-                                        AmountValue = 750,
-                                        Quantity = 1
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            );
-        }
-
-        [Fact]
-        public void SerializeWhatsAppPaymentButtonPix_RoundTrips()
-        {
-            IWhatsAppPaymentButton original = new WhatsAppPaymentSettingsButtonPix
+            var button = new WhatsAppPaymentSettingsButtonPix
             {
                 Code = "dynamic-pix-code",
                 MerchantName = "Merchant",
@@ -1531,38 +1435,86 @@ namespace Sinch.Tests.Conversation.Messages
                 KeyType = WhatsAppPaymentSettingsButtonPix.PixKeyType.Email
             };
 
-            var json = SerializeAsConversationClient(original);
-            var result = DeserializeAsConversationClient<IWhatsAppPaymentButton>(json);
+            var actual = SerializeAsConversationClient<IWhatsAppPaymentButton>(button);
+            var expected = Helpers.LoadResources("Conversation/Messages/ChannelSpecific/WhatsAppPaymentButton/Pix.json");
 
-            result.Should().BeOfType<WhatsAppPaymentSettingsButtonPix>().Which.Should().BeEquivalentTo(original);
+            Helpers.AssertJsonEqual(expected, actual);
         }
 
         [Fact]
-        public void SerializeWhatsAppPaymentButtonPaymentLink_RoundTrips()
+        public void DeserializePaymentButtonPix()
         {
-            IWhatsAppPaymentButton original = new WhatsAppPaymentSettingsButtonPaymentLink
+            var json = Helpers.LoadResources(
+                "Conversation/Messages/ChannelSpecific/WhatsAppPaymentButton/Pix.json");
+
+            var actual = DeserializeAsConversationClient<IWhatsAppPaymentButton>(json);
+            var expected = new WhatsAppPaymentSettingsButtonPix
+            {
+                Code = "dynamic-pix-code",
+                MerchantName = "Merchant",
+                Key = "pix-key",
+                KeyType = WhatsAppPaymentSettingsButtonPix.PixKeyType.Email
+            };
+
+            actual.Should().BeOfType<WhatsAppPaymentSettingsButtonPix>().Which.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public void SerializePaymentButtonPaymentLink()
+        {
+            var button = new WhatsAppPaymentSettingsButtonPaymentLink
             {
                 Uri = "https://pay.example.com/checkout/abc123"
             };
 
-            var json = SerializeAsConversationClient(original);
-            var result = DeserializeAsConversationClient<IWhatsAppPaymentButton>(json);
+            var actual = SerializeAsConversationClient<IWhatsAppPaymentButton>(button);
+            var expected = Helpers.LoadResources("Conversation/Messages/ChannelSpecific/WhatsAppPaymentButton/PaymentLink.json");
 
-            result.Should().BeOfType<WhatsAppPaymentSettingsButtonPaymentLink>().Which.Should().BeEquivalentTo(original);
+            Helpers.AssertJsonEqual(expected, actual);
         }
 
         [Fact]
-        public void SerializeWhatsAppPaymentButtonBoleto_RoundTrips()
+        public void DeserializePaymentButtonPaymentLink()
         {
-            IWhatsAppPaymentButton original = new WhatsAppPaymentSettingsButtonBoleto
+            var json = Helpers.LoadResources(
+                "Conversation/Messages/ChannelSpecific/WhatsAppPaymentButton/PaymentLink.json");
+
+            var actual = DeserializeAsConversationClient<IWhatsAppPaymentButton>(json);
+            var expected = new WhatsAppPaymentSettingsButtonPaymentLink
+            {
+                Uri = "https://pay.example.com/checkout/abc123"
+            };
+
+            actual.Should().BeOfType<WhatsAppPaymentSettingsButtonPaymentLink>().Which.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public void SerializePaymentButtonBoleto()
+        {
+            var button = new WhatsAppPaymentSettingsButtonBoleto
             {
                 DigitableLine = "23790.12345 60000.100045 58000.100047 8 12340000075000"
             };
 
-            var json = SerializeAsConversationClient(original);
-            var result = DeserializeAsConversationClient<IWhatsAppPaymentButton>(json);
+            var actual = SerializeAsConversationClient<IWhatsAppPaymentButton>(button);
+            var expected = Helpers.LoadResources("Conversation/Messages/ChannelSpecific/WhatsAppPaymentButton/Boleto.json");
 
-            result.Should().BeOfType<WhatsAppPaymentSettingsButtonBoleto>().Which.Should().BeEquivalentTo(original);
+            Helpers.AssertJsonEqual(expected, actual);
+        }
+
+        [Fact]
+        public void DeserializePaymentButtonBoleto()
+        {
+            var json = Helpers.LoadResources(
+                "Conversation/Messages/ChannelSpecific/WhatsAppPaymentButton/Boleto.json");
+
+            var actual = DeserializeAsConversationClient<IWhatsAppPaymentButton>(json);
+            var expected = new WhatsAppPaymentSettingsButtonBoleto
+            {
+                DigitableLine = "23790.12345 60000.100045 58000.100047 8 12340000075000"
+            };
+
+            actual.Should().BeOfType<WhatsAppPaymentSettingsButtonBoleto>().Which.Should().BeEquivalentTo(expected);
         }
     }
 }
