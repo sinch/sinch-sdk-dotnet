@@ -2,7 +2,6 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
-using Newtonsoft.Json.Linq;
 using FluentAssertions;
 using System.Text.Json;
 using System.Text.Json.Nodes;
