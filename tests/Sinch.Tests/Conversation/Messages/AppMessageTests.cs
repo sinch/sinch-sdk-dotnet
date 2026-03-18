@@ -5,6 +5,7 @@ using FluentAssertions;
 using Sinch.Conversation;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Messages.Message;
+using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.Line;
 using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
 using Xunit;
 
