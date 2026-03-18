@@ -97,7 +97,7 @@ namespace Sinch.Numbers
         {
             _logger?.LogDebug("Fetching active numbers {request}", request);
             var queryString = request.GetQueryString();
-            var query = queryString.Length > 0 ? "?" + queryString : string.Empty;
+            var query = queryString.Length > 0 ? $"?{queryString}" : string.Empty;
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/activeNumbers{query}");
             return _http.Send<ListActiveNumbersResponse>(uri, HttpMethod.Get, cancellationToken);
         }
@@ -110,7 +110,7 @@ namespace Sinch.Numbers
             do
             {
                 var queryString = request.GetQueryString();
-                var query = queryString.Length > 0 ? "?" + queryString : string.Empty;
+                var query = queryString.Length > 0 ? $"?{queryString}" : string.Empty;
                 var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/activeNumbers{query}");
                 var response = await _http.Send<ListActiveNumbersResponse>(uri, HttpMethod.Get, cancellationToken);
                 request.PageToken = response.NextPageToken;
