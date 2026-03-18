@@ -145,7 +145,7 @@ namespace Sinch.Conversation.Messages.Message
                 return elem.Deserialize<OrderStatusPaymentMessage>(options) ??
                        throw new InvalidOperationException(
                            $"{nameof(OrderStatusPaymentMessage)} deserialization result is null.");
-            if (MessageType.NotificationMessageTemplate.Value == method)
+            if (MessageType.LineNotificationMessageTemplate.Value == method)
                 return elem.Deserialize<LineNotificationMessageTemplateMessage>(options) ??
                        throw new InvalidOperationException(
                            $"{nameof(LineNotificationMessageTemplateMessage)} deserialization result is null.");
@@ -194,7 +194,7 @@ namespace Sinch.Conversation.Messages.Message
     {
         [JsonPropertyName("message_type")]
         [JsonInclude]
-        public MessageType MessageType { get; private set; } = MessageType.NotificationMessageTemplate;
+        public MessageType MessageType { get; private set; } = MessageType.LineNotificationMessageTemplate;
 
         [JsonPropertyName("message")]
         public LineNotificationMessageTemplateChannelSpecificMessage? Message { get; set; }
@@ -221,6 +221,6 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         /// LINE notification message template type
         /// </summary>
-        public static readonly MessageType NotificationMessageTemplate = new("NOTIFICATION_MESSAGE_TEMPLATE");
+        public static readonly MessageType LineNotificationMessageTemplate = new("NOTIFICATION_MESSAGE_TEMPLATE");
     }
 }
