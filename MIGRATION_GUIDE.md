@@ -735,6 +735,54 @@ var request = new InjectEventRequest
 };
 ```
 
+## Region configuration is now required for SMS and Conversation
+
+The `Region` property in `SinchSmsConfiguration` and `ConversationRegion` in `SinchConversationConfiguration` are now **required**. Validation is performed at runtime when the Sinch client is first accessed and an `InvalidOperationException` is thrown if the region is not provided.
+
+**SMS:**
+
+Version 1.*:
+```csharp
+var sinch = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ }
+});
+```
+
+Version 2.*:
+```csharp
+var sinch = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ },
+    SmsConfiguration = new SinchSmsConfiguration
+    {
+        Region = SmsRegion.Us
+    }
+});
+```
+
+**Conversation:**
+
+Version 1.*:
+```csharp
+var sinch = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ }
+});
+```
+
+Version 2.*:
+```csharp
+var sinch = new SinchClient(new SinchClientConfiguration
+{
+    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ },
+    ConversationConfiguration = new SinchConversationConfiguration
+    {
+        Region = ConversationRegion.Us
+    }
+});
+```
+
 ## Conversation API: WhatsApp payment_settings replaced by payment_buttons
 
 The `PaymentSettings` property on `OrderDetailsPayment` has been removed. Use `PaymentButtons` instead, which accepts a list of 1–2 `IWhatsAppPaymentButton` items.
@@ -797,54 +845,4 @@ Version 2.*:
 // Use one of the remaining valid values:
 var direction = ConversationDirection.ToApp;
 var direction = ConversationDirection.ToContact;
-```
-
----
-
-## Region configuration is now required for SMS and Conversation
-
-The `Region` property in `SinchSmsConfiguration` and `ConversationRegion` in `SinchConversationConfiguration` are now **required**. Validation is performed at runtime when the Sinch client is first accessed and an `InvalidOperationException` is thrown if the region is not provided.
-
-**SMS:**
-
-Version 1.*:
-```csharp
-var sinch = new SinchClient(new SinchClientConfiguration
-{
-    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ }
-});
-```
-
-Version 2.*:
-```csharp
-var sinch = new SinchClient(new SinchClientConfiguration
-{
-    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ },
-    SmsConfiguration = new SinchSmsConfiguration
-    {
-        Region = SmsRegion.Us
-    }
-});
-```
-
-**Conversation:**
-
-Version 1.*:
-```csharp
-var sinch = new SinchClient(new SinchClientConfiguration
-{
-    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ }
-});
-```
-
-Version 2.*:
-```csharp
-var sinch = new SinchClient(new SinchClientConfiguration
-{
-    SinchUnifiedCredentials = new SinchUnifiedCredentials { /* ... */ },
-    ConversationConfiguration = new SinchConversationConfiguration
-    {
-        Region = ConversationRegion.Us
-    }
-});
 ```
