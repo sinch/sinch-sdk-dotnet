@@ -10,15 +10,12 @@ namespace Sinch.Numbers.Active.List
         ///     Region code to filter by. ISO 3166-1 alpha-2 country code of the phone number. <br /><br />
         ///     <example>US, GB or SE.</example>
         /// </summary>
-
-        public required string RegionCode { get; set; }
-
+        public string? RegionCode { get; set; }
 
         /// <summary>
         ///     Number type to filter by.
         /// </summary>
-
-        public required Types Type { get; set; }
+        public Types? Type { get; set; }
 
 
 
@@ -49,11 +46,13 @@ namespace Sinch.Numbers.Active.List
 
         internal string GetQueryString()
         {
-            var dict = new List<KeyValuePair<string, string>>
-            {
-                new("regionCode", RegionCode),
-                new("type", Type.Value)
-            };
+            var dict = new List<KeyValuePair<string, string>>();
+
+            if (RegionCode != null)
+                dict.Add(new KeyValuePair<string, string>("regionCode", RegionCode));
+
+            if (Type != null)
+                dict.Add(new KeyValuePair<string, string>("type", Type.Value));
 
             if (NumberPattern != null)
             {
