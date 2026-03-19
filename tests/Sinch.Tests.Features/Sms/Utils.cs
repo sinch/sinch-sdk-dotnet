@@ -13,6 +13,10 @@ namespace Sinch.Tests.Features.Sms
                         KeyId = "keyId",
                         KeySecret = "keySecret"
                     },
+                    SmsConfiguration = new SinchSmsConfiguration
+                    {
+                        Region = SmsRegion.Us
+                    },
                     SinchOptions = new SinchOptions
                     {
                         ApiUrlOverrides = new ApiUrlOverrides()
@@ -30,6 +34,7 @@ namespace Sinch.Tests.Features.Sms
                     SmsConfiguration = SinchSmsConfiguration.WithServicePlanId(
                         "CappyPremiumPlan",
                         "HappyCappyToken",
+                        SmsServicePlanIdRegion.Us,
                         urlOverride: "http://localhost:3017")
                 }
             );

@@ -36,15 +36,7 @@ namespace Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp
 
         public override void Write(Utf8JsonWriter writer, IWhatsAppPaymentButton value, JsonSerializerOptions options)
         {
-            if (value is WhatsAppPaymentSettingsButtonPix pix)
-                JsonSerializer.Serialize(writer, pix, options);
-            else if (value is WhatsAppPaymentSettingsButtonPaymentLink link)
-                JsonSerializer.Serialize(writer, link, options);
-            else if (value is WhatsAppPaymentSettingsButtonBoleto boleto)
-                JsonSerializer.Serialize(writer, boleto, options);
-            else
-                throw new InvalidOperationException(
-                    $"Cannot serialize unknown type of {nameof(IWhatsAppPaymentButton)}");
+            JsonSerializer.Serialize(writer, value, value.GetType(), options);
         }
     }
 }

@@ -1,0 +1,4 @@
+{
+  "type": "payment_link",
+  "uri": "https://pay.example.com/checkout/abc123"
+}

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using Sinch.Auth;
@@ -111,167 +113,20 @@ namespace Sinch
     public sealed class SinchClient : ISinchClient
     {
         private bool _disposed;
-        private readonly Lazy<ISinchConversation> _conversation;
+        private readonly LoggerFactory? _loggerFactory;
         private readonly Func<HttpClient> _httpClientAccessor;
         private readonly IHttpClientFactory _httpClientFactory;
-
+        private readonly Lazy<IHttp> _httpCamelCase;
+        private readonly Lazy<IHttp> _httpSnakeCase;
         private readonly SinchClientConfiguration _sinchClientConfiguration;
-
-        private readonly LoggerFactory? _loggerFactory;
-
+        private readonly Lazy<ISinchAuth> _sinchOauth;
         private readonly Lazy<ISinchNumbers> _numbers;
-
         private readonly Lazy<ISinchSms> _sms;
         private readonly ILoggerAdapter<ISinchClient>? _logger;
-
         private readonly Lazy<ISinchFax> _fax;
-
-        private readonly Lazy<ISinchAuth> _sinchOauth;
-        private readonly Lazy<IHttp> _httpSnakeCase;
         private readonly Lazy<ISinchVerificationClient> _verification;
+        private readonly Lazy<ISinchConversation> _conversation;
         private readonly Lazy<ISinchVoiceClient> _voice;
-
-        public SinchClient(SinchClientConfiguration clientConfiguration)
-        {
-            _sinchClientConfiguration = clientConfiguration;
-
-            if (clientConfiguration.SinchOptions?.LoggerFactory is not null)
-                _loggerFactory = new LoggerFactory(clientConfiguration.SinchOptions.LoggerFactory);
-            _logger = _loggerFactory?.Create<ISinchClient>();
-            _logger?.LogInformation("Initializing SinchClient...");
-
-            // Setup HttpClient accessor using IHttpClientFactory
-            _httpClientFactory = _sinchClientConfiguration.SinchOptions?.HttpClientFactory
-                ?? new DefaultHttpClientFactory(_sinchClientConfiguration.SinchOptions?.HttpClientHandlerConfiguration);
-            _httpClientAccessor = () => _httpClientFactory.CreateClient("SinchClient");
-
-            _sinchOauth = new Lazy<ISinchAuth>(() =>
-                {
-                    var unifiedCredentials = ValidateUnifiedCredentials();
-
-                    var oauthBaseUrl = ResolveUrl(
-                       _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.AuthUrl,
-                       _sinchClientConfiguration.SinchOAuthConfiguration.ResolveUrl);
-
-                    var auth = new OAuth(unifiedCredentials.KeyId, unifiedCredentials.KeySecret, _httpClientAccessor,
-                        _loggerFactory?.Create<OAuth>(),
-                        oauthBaseUrl
-                    );
-                    return auth;
-                }, isThreadSafe: true
-            );
-            var httpCamelCase = new Lazy<Http>(() => new Http(_sinchOauth, _httpClientAccessor,
-                _loggerFactory?.Create<IHttp>(),
-                JsonNamingPolicy.CamelCase), isThreadSafe: true);
-
-            _httpSnakeCase = new Lazy<IHttp>(() => new Http(_sinchOauth, _httpClientAccessor,
-                _loggerFactory?.Create<IHttp>(),
-                SnakeCaseNamingPolicy.Instance), isThreadSafe: true);
-
-            _numbers = new Lazy<ISinchNumbers>(() =>
-            {
-                var unifiedCredentials = ValidateUnifiedCredentials();
-
-                var numbersBaseUrl = ResolveUrl(
-                    _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.NumbersUrl,
-                    _sinchClientConfiguration.NumbersConfiguration.ResolveUrl);
-
-                return new Numbers.Numbers(unifiedCredentials.ProjectId,
-                    numbersBaseUrl,
-                    _loggerFactory, httpCamelCase.Value);
-            }, isThreadSafe: true);
-
-            _sms = new Lazy<ISinchSms>(() =>
-                InitSms(_sinchClientConfiguration.SmsConfiguration), isThreadSafe: true);
-
-
-            _conversation = new Lazy<ISinchConversation>(() =>
-            {
-                var conversationConfig = _sinchClientConfiguration.ConversationConfiguration;
-                var conversationBaseAddress = ResolveUrl(
-                    _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.ConversationUrl,
-                    conversationConfig.ResolveConversationUrl);
-                var templatesBaseAddress = ResolveUrl(
-                    _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.TemplatesUrl,
-                    conversationConfig.ResolveTemplateUrl);
-
-                return new SinchConversationClient(
-                    _sinchClientConfiguration.SinchUnifiedCredentials
-                        ?.ProjectId
-                    !, // unified credentials, alongside projectId, will be validated as part of lazy call to http
-                       // this is needed for working of Conversation.Webhooks.ParseEvent() to be accessible, without providing
-                       // SinchUnifiedCredentials, the design regarding just a static method for this is still in discussion.
-                    conversationBaseAddress,
-                    templatesBaseAddress,
-                    _loggerFactory,
-                    _httpSnakeCase);
-            }, isThreadSafe: true);
-
-
-            _fax = new Lazy<ISinchFax>(() =>
-            {
-                var validateUnifiedCredentials = ValidateUnifiedCredentials();
-                var faxUrl = ResolveUrl(
-                    _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.FaxUrl,
-                    _sinchClientConfiguration.FaxConfiguration.ResolveUrl);
-                return new FaxClient(validateUnifiedCredentials.ProjectId, faxUrl, _loggerFactory, httpCamelCase.Value);
-            }, isThreadSafe: true);
-            _verification = new Lazy<ISinchVerificationClient>(() =>
-            {
-                var config = _sinchClientConfiguration.VerificationConfiguration?.Validate();
-                if (config == null)
-                {
-                    throw new InvalidOperationException($"{nameof(SinchVerificationConfiguration)} is not set.");
-                }
-
-                ISinchAuth auth;
-                if (config.AuthStrategy == AuthStrategy.ApplicationSign)
-                    auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
-                else
-                    auth = new BasicAuth(config.AppKey, config.AppSecret);
-
-
-                var http = new Http(new Lazy<ISinchAuth>(auth), _httpClientAccessor, _loggerFactory?.Create<IHttp>(),
-                    JsonNamingPolicy.CamelCase);
-
-                var verificationUrl = ResolveUrl(
-                    _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VerificationUrl,
-                    config.ResolveUrl);
-
-                return new SinchVerificationClient(verificationUrl, _loggerFactory, http, (auth as ApplicationSignedAuth)!);
-            }, isThreadSafe: true);
-
-            _voice = new Lazy<ISinchVoiceClient>(() =>
-            {
-                var config = _sinchClientConfiguration.VoiceConfiguration;
-
-                if (config == null)
-                {
-                    throw new InvalidOperationException($"{nameof(SinchVoiceConfiguration)} is not set.");
-                }
-
-                config.Validate();
-
-                ISinchAuth auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
-
-                var http = new Http(new Lazy<ISinchAuth>(auth), _httpClientAccessor, _loggerFactory?.Create<IHttp>(),
-                    JsonNamingPolicy.CamelCase);
-
-                var voiceUrl = ResolveUrl(
-                    _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VoiceUrl,
-                    config.ResolveUrl);
-
-                var voiceAppMgmtUrl = ResolveUrl(
-                    _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VoiceApplicationManagementUrl,
-                    config.ResolveApplicationManagementUrl);
-
-                return new SinchVoiceClient(
-                    voiceUrl,
-                    _loggerFactory, http, (auth as ApplicationSignedAuth)!,
-                    voiceAppMgmtUrl);
-            }, isThreadSafe: true);
-            _logger?.LogInformation("SinchClient initialized.");
-        }
 
         /// <inheritdoc />
         public ISinchNumbers Numbers => _numbers.Value;
@@ -282,11 +137,10 @@ namespace Sinch
         /// <inheritdoc />
         public ISinchConversation Conversation => _conversation.Value;
 
-
         /// <inheritdoc />
         public ISinchAuth Auth => _sinchOauth.Value;
 
-        /// <inheritdoc cref="ISinchFax"/>
+        /// <inheritdoc />
         public ISinchFax Fax => _fax.Value;
 
         /// <inheritdoc/>
@@ -295,29 +149,191 @@ namespace Sinch
         /// <inheritdoc />
         public ISinchVoiceClient Voice => _voice.Value;
 
-        private SinchUnifiedCredentials ValidateUnifiedCredentials()
+        public SinchClient(SinchClientConfiguration clientConfiguration)
         {
-            if (_sinchClientConfiguration.SinchUnifiedCredentials == null)
-            {
-                throw new ArgumentNullException($"{nameof(SinchClientConfiguration.SinchUnifiedCredentials)} is null.");
-            }
+            _sinchClientConfiguration = clientConfiguration;
 
-            _sinchClientConfiguration.SinchUnifiedCredentials.Validate();
-            return _sinchClientConfiguration.SinchUnifiedCredentials;
+            if (clientConfiguration.SinchOptions?.LoggerFactory is not null)
+                _loggerFactory = new LoggerFactory(clientConfiguration.SinchOptions.LoggerFactory);
+
+            _logger = _loggerFactory?.Create<ISinchClient>();
+            _logger?.LogInformation("Initializing SinchClient...");
+
+            _httpClientFactory = _sinchClientConfiguration.SinchOptions?.HttpClientFactory
+                ?? new DefaultHttpClientFactory(_sinchClientConfiguration.SinchOptions?.HttpClientHandlerConfiguration);
+
+            _httpClientAccessor = () => _httpClientFactory.CreateClient("SinchClient");
+
+            _httpCamelCase = new Lazy<IHttp>(InitHttpCamelCase, isThreadSafe: true);
+
+            _httpSnakeCase = new Lazy<IHttp>(InitHttpSnakeCase, isThreadSafe: true);
+
+            _sinchOauth = new Lazy<ISinchAuth>(InitOauth, isThreadSafe: true);
+
+            _numbers = new Lazy<ISinchNumbers>(InitNumbers, isThreadSafe: true);
+
+            _sms = new Lazy<ISinchSms>(InitSms, isThreadSafe: true);
+
+            _conversation = new Lazy<ISinchConversation>(InitConversation, isThreadSafe: true);
+
+            _fax = new Lazy<ISinchFax>(InitFax, isThreadSafe: true);
+
+            _verification = new Lazy<ISinchVerificationClient>(InitVerification, isThreadSafe: true);
+
+            _voice = new Lazy<ISinchVoiceClient>(InitVoice, isThreadSafe: true);
+
+            _logger?.LogInformation("SinchClient initialized.");
         }
 
-        private SmsClient InitSms(SinchSmsConfiguration sinchSmsConfiguration)
+        private ISinchAuth InitOauth()
         {
+            var unifiedCredentials = ValidateUnifiedCredentials();
+
+            var oauthBaseUrl = ResolveUrl(
+                _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.AuthUrl,
+                () => SinchUrlResolvers.ResolveAuthUrl(_sinchClientConfiguration.SinchOAuthConfiguration));
+
+            var auth = new OAuth(unifiedCredentials.KeyId, unifiedCredentials.KeySecret, _httpClientAccessor,
+                _loggerFactory?.Create<OAuth>(),
+                oauthBaseUrl
+            );
+
+            return auth;
+        }
+
+        private ISinchVoiceClient InitVoice()
+        {
+            var config = _sinchClientConfiguration.VoiceConfiguration ??
+                throw new InvalidOperationException($"{nameof(SinchVoiceConfiguration)} is not set.");
+
+            if (string.IsNullOrEmpty(config.AppKey))
+                throw new ArgumentNullException(nameof(config.AppKey), "The value should be present");
+
+            if (string.IsNullOrEmpty(config.AppSecret))
+                throw new ArgumentNullException(nameof(config.AppSecret), "The value should be present");
+
+            ISinchAuth auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
+
+            var http = new Http(new Lazy<ISinchAuth>(auth), _httpClientAccessor, _loggerFactory?.Create<IHttp>(),
+                JsonNamingPolicy.CamelCase);
+
+            var voiceUrl = ResolveUrl(
+                _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VoiceUrl,
+                () => SinchUrlResolvers.ResolveVoiceUrl(config));
+
+            var voiceAppMgmtUrl = ResolveUrl(
+                _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VoiceApplicationManagementUrl,
+                () => SinchUrlResolvers.ResolveVoiceApplicationManagementUrl(config));
+
+            return new SinchVoiceClient(
+                voiceUrl,
+                _loggerFactory, http, (auth as ApplicationSignedAuth)!,
+                voiceAppMgmtUrl);
+        }
+
+        private ISinchVerificationClient InitVerification()
+        {
+            var config = _sinchClientConfiguration.VerificationConfiguration ??
+                throw new InvalidOperationException($"{nameof(SinchVerificationConfiguration)} is not set.");
+
+            if (string.IsNullOrEmpty(config.AppKey))
+                throw new ArgumentNullException(nameof(config.AppKey), "The value should be present");
+
+            if (string.IsNullOrEmpty(config.AppSecret))
+                throw new ArgumentNullException(nameof(config.AppSecret), "The value should be present");
+
+            ISinchAuth auth;
+            if (config.AuthStrategy == AuthStrategy.ApplicationSign)
+                auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
+            else
+                auth = new BasicAuth(config.AppKey, config.AppSecret);
+
+            var http = new Http(new Lazy<ISinchAuth>(auth), _httpClientAccessor, _loggerFactory?.Create<IHttp>(),
+                JsonNamingPolicy.CamelCase);
+
+            var verificationUrl = ResolveUrl(
+                _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VerificationUrl,
+                () => SinchUrlResolvers.ResolveVerificationUrl(config));
+
+            return new SinchVerificationClient(verificationUrl, _loggerFactory, http, (auth as ApplicationSignedAuth)!);
+        }
+
+        private ISinchFax InitFax()
+        {
+            var unifiedCredentials = ValidateUnifiedCredentials();
+
+            var faxConfig = _sinchClientConfiguration.FaxConfiguration;
+
+            var faxUrl = ResolveUrl(
+                _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.FaxUrl,
+                () => SinchUrlResolvers.ResolveFaxUrl(faxConfig));
+
+            return new FaxClient(unifiedCredentials.ProjectId, faxUrl, _loggerFactory, _httpCamelCase.Value);
+        }
+
+        private ISinchConversation InitConversation()
+        {
+            var conversationConfig = _sinchClientConfiguration.ConversationConfiguration;
+
+            // TODO! Need to be refactored when the EventsDestination support will be addressed: https://sinchenterprise.atlassian.net/browse/DEVEXP-1311
+            if (conversationConfig.Region == null)
+                throw new InvalidOperationException(
+                    $"{nameof(SinchConversationConfiguration)}.{nameof(SinchConversationConfiguration.Region)} is required. " +
+                    $"Set it to one of the values in {nameof(ConversationRegion)}, e.g. {nameof(ConversationRegion)}.{nameof(ConversationRegion.Us)}.");
+
+            var conversationBaseAddress = ResolveUrl(
+                _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.ConversationUrl,
+                () => SinchUrlResolvers.ResolveConversationUrl(conversationConfig));
+
+            var templatesBaseAddress = ResolveUrl(
+                _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.TemplatesUrl,
+                () => SinchUrlResolvers.ResolveConversationTemplateUrl(conversationConfig));
+
+            return new SinchConversationClient(
+                _sinchClientConfiguration.SinchUnifiedCredentials
+                    ?.ProjectId!,
+                // unified credentials, alongside projectId, will be validated as part of lazy call to http
+                // this is needed for working of Conversation.Webhooks.ParseEvent() to be accessible, without providing
+                // SinchUnifiedCredentials, the design regarding just a static method for this is still in discussion.
+                conversationBaseAddress,
+                templatesBaseAddress,
+                _loggerFactory,
+                _httpSnakeCase);
+        }
+
+        private ISinchNumbers InitNumbers()
+        {
+            var unifiedCredentials = ValidateUnifiedCredentials();
+
+            var numbersBaseUrl = ResolveUrl(
+                _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.NumbersUrl,
+                () => SinchUrlResolvers.ResolveNumbersUrl(_sinchClientConfiguration.NumbersConfiguration));
+
+            return new Numbers.Numbers(unifiedCredentials.ProjectId,
+                numbersBaseUrl,
+                _loggerFactory, _httpCamelCase.Value);
+        }
+
+        private SmsClient InitSms()
+        {
+            var sinchSmsConfiguration = _sinchClientConfiguration.SmsConfiguration;
+
             if (sinchSmsConfiguration.ServicePlanIdConfiguration != null)
             {
                 var servicePlanIdConfig = sinchSmsConfiguration.ServicePlanIdConfiguration;
+
+                if (servicePlanIdConfig.ServicePlanIdRegion == null)
+                    throw new InvalidOperationException(
+                        $"{nameof(ServicePlanIdConfiguration)}.{nameof(ServicePlanIdConfiguration.ServicePlanIdRegion)} is required. " +
+                        $"Set it to one of the values in {nameof(SmsServicePlanIdRegion)}, e.g. {nameof(SmsServicePlanIdRegion)}.{nameof(SmsServicePlanIdRegion.Us)}.");
+
                 _logger?.LogInformation("Initializing SMS client with {service_plan_id} in {region}",
                     servicePlanIdConfig.ServicePlanId,
                     servicePlanIdConfig.ServicePlanIdRegion.Value);
 
                 var smsBaseUrl = ResolveUrl(
                     _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.SmsUrl,
-                    sinchSmsConfiguration.ServicePlanIdConfiguration.ResolveUrl);
+                    () => SinchUrlResolvers.ResolveSmsServicePlanIdUrl(sinchSmsConfiguration.ServicePlanIdConfiguration));
 
                 var bearerSnakeHttp = new Http(new Lazy<ISinchAuth>(new BearerAuth(servicePlanIdConfig.ApiToken)),
                     _httpClientAccessor,
@@ -329,28 +345,69 @@ namespace Sinch
             }
 
             var unifiedCredentials = ValidateUnifiedCredentials();
+
+            if (sinchSmsConfiguration.Region == null)
+                throw new InvalidOperationException(
+                    $"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)} is required. " +
+                    $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.");
+
             _logger?.LogInformation("Initializing SMS client with {project_id} in {region}",
                 unifiedCredentials.ProjectId,
                 sinchSmsConfiguration.Region);
 
             var smsResolvedUrl = ResolveUrl(
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.SmsUrl,
-                sinchSmsConfiguration.ResolveUrl);
+                () => SinchUrlResolvers.ResolveSmsUrl(sinchSmsConfiguration));
 
             return new SmsClient(
-                new ProjectId(
-                    unifiedCredentials
-                        .ProjectId),
+                new ProjectId(unifiedCredentials.ProjectId),
                 smsResolvedUrl,
                 _loggerFactory,
                 _httpSnakeCase.Value);
         }
 
+        private IHttp InitHttpSnakeCase()
+        {
+            return new Http(_sinchOauth, _httpClientAccessor,
+                _loggerFactory?.Create<IHttp>(),
+                SnakeCaseNamingPolicy.Instance);
+        }
+
+        private Http InitHttpCamelCase()
+        {
+            return new Http(_sinchOauth, _httpClientAccessor,
+                _loggerFactory?.Create<IHttp>(),
+                JsonNamingPolicy.CamelCase);
+        }
+
+        private SinchUnifiedCredentials ValidateUnifiedCredentials()
+        {
+            if (_sinchClientConfiguration.SinchUnifiedCredentials == null)
+            {
+                throw new ArgumentNullException($"{nameof(SinchClientConfiguration.SinchUnifiedCredentials)} is null.");
+            }
+
+            var credentials = _sinchClientConfiguration.SinchUnifiedCredentials;
+            var exceptions = new List<Exception>();
+
+            if (string.IsNullOrEmpty(credentials.ProjectId))
+                exceptions.Add(new InvalidOperationException($"{nameof(credentials.ProjectId)} should have a value"));
+
+            if (string.IsNullOrEmpty(credentials.KeyId))
+                exceptions.Add(new InvalidOperationException($"{nameof(credentials.KeyId)} should have a value"));
+
+            if (string.IsNullOrEmpty(credentials.KeySecret))
+                exceptions.Add(new InvalidOperationException($"{nameof(credentials.KeySecret)} should have a value"));
+
+            if (exceptions.Any()) throw new AggregateException("Credentials are missing", exceptions);
+
+            return credentials;
+        }
 
         /// <summary>
         /// Resolves URL by preferring ApiUrlOverrides, then falling back to the configuration default.
         /// </summary>
-        private Uri ResolveUrl(string? urlOverride, Func<Uri> defaultResolver)
+        private static Uri ResolveUrl(string? urlOverride, Func<Uri> defaultResolver)
         {
             return !string.IsNullOrEmpty(urlOverride)
                 ? new Uri(urlOverride)
