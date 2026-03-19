@@ -59,13 +59,19 @@ namespace Sinch.Numbers
         Task<ActiveNumber> Update(string phoneNumber,
             UpdateActiveNumberRequest request, CancellationToken cancellationToken = default);
 
-        /// <inheritdoc cref="ISinchNumbersActive.List" />
+        /// <inheritdoc cref="ISinchNumbersActive.List(ListActiveNumbersRequest, CancellationToken)" />
         Task<ListActiveNumbersResponse> List(ListActiveNumbersRequest request,
             CancellationToken cancellationToken = default);
 
-        /// <inheritdoc cref="ISinchNumbersActive.ListAuto" />
+        /// <inheritdoc cref="ISinchNumbersActive.List(CancellationToken)" />
+        Task<ListActiveNumbersResponse> List(CancellationToken cancellationToken = default);
+
+        /// <inheritdoc cref="ISinchNumbersActive.ListAuto(ListActiveNumbersRequest, CancellationToken)" />
         IAsyncEnumerable<ActiveNumber> ListAuto(ListActiveNumbersRequest request,
             CancellationToken cancellationToken = default);
+
+        /// <inheritdoc cref="ISinchNumbersActive.ListAuto(CancellationToken)" />
+        IAsyncEnumerable<ActiveNumber> ListAuto(CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     For internal use, JsonSerializerOption to be utilized for serialization and deserialization of all Numbers models
@@ -167,10 +173,22 @@ namespace Sinch.Numbers
         }
 
         /// <inheritdoc />
+        public Task<ListActiveNumbersResponse> List(CancellationToken cancellationToken = default)
+        {
+            return _activeNumbers.List(cancellationToken);
+        }
+
+        /// <inheritdoc />
         public IAsyncEnumerable<ActiveNumber> ListAuto(ListActiveNumbersRequest request,
             CancellationToken cancellationToken = default)
         {
             return _activeNumbers.ListAuto(request, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public IAsyncEnumerable<ActiveNumber> ListAuto(CancellationToken cancellationToken = default)
+        {
+            return _activeNumbers.ListAuto(cancellationToken);
         }
 
         public JsonSerializerOptions JsonSerializerOptions { get; }

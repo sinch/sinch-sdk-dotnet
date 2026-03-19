@@ -91,6 +91,29 @@ namespace Sinch.Tests.Numbers
         }
 
         [Fact]
+        public async Task ListParameterless()
+        {
+            HttpMessageHandlerMock
+                .When(HttpMethod.Get,
+                    $"https://numbers.api.sinch.com/v1/projects/{ProjectId}/activeNumbers")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    activeNumbers = new[]
+                    {
+                        TestData.ActiveNumber
+                    },
+                    nextPageToken = string.Empty,
+                    totalSize = 1
+                }));
+
+            var response = await Numbers.List();
+
+            response.Should().NotBeNull();
+            response.ActiveNumbers.Should().HaveCount(1);
+        }
+
+        [Fact]
         public async Task ListWithFullParams()
         {
             var url = $"https://numbers.api.sinch.com/v1/projects/{ProjectId}/activeNumbers?regionCode=US&type=LOCAL";

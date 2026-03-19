@@ -28,6 +28,9 @@ namespace Sinch.Numbers
         Task<ListActiveNumbersResponse> List(ListActiveNumbersRequest request,
             CancellationToken cancellationToken = default);
 
+        /// <inheritdoc cref="List(ListActiveNumbersRequest, CancellationToken)" />
+        Task<ListActiveNumbersResponse> List(CancellationToken cancellationToken = default);
+
         /// <summary>
         ///     Update a virtual phone number.
         ///     For example: you can move a number between different SMS services and give it a new, friendly name.
@@ -73,6 +76,9 @@ namespace Sinch.Numbers
 
         IAsyncEnumerable<ActiveNumber> ListAuto(ListActiveNumbersRequest request,
             CancellationToken cancellationToken = default);
+
+        /// <inheritdoc cref="ListAuto(ListActiveNumbersRequest, CancellationToken)" />
+        IAsyncEnumerable<ActiveNumber> ListAuto(CancellationToken cancellationToken = default);
     }
 
     internal sealed class ActiveNumbers : ISinchNumbersActive
@@ -103,6 +109,12 @@ namespace Sinch.Numbers
         }
 
         /// <inheritdoc />
+        public Task<ListActiveNumbersResponse> List(CancellationToken cancellationToken = default)
+        {
+            return List(new ListActiveNumbersRequest(), cancellationToken);
+        }
+
+        /// <inheritdoc />
         public async IAsyncEnumerable<ActiveNumber> ListAuto(ListActiveNumbersRequest request,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
@@ -119,6 +131,12 @@ namespace Sinch.Numbers
                     yield return activeNumber;
                 }
             } while (!string.IsNullOrEmpty(request.PageToken));
+        }
+
+        /// <inheritdoc />
+        public IAsyncEnumerable<ActiveNumber> ListAuto(CancellationToken cancellationToken = default)
+        {
+            return ListAuto(new ListActiveNumbersRequest(), cancellationToken);
         }
 
         /// <inheritdoc />
