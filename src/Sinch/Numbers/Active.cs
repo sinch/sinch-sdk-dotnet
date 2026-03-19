@@ -15,20 +15,29 @@ namespace Sinch.Numbers
     internal interface ISinchNumbersActive
     {
         /// <summary>
-        ///     Lists all virtual numbers for a project.<br /><br />
+        ///     Lists all virtual numbers for a project with optional filtering.
         ///     For additional info, see:
         ///     <see
         ///         href="https://developers.sinch.com/docs/numbers/api-reference/numbers/tag/Active-Number/#tag/Active-Number/operation/NumberService_ListActiveNumbers">
         ///         Documentation
         ///     </see>
         /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="request">Optional filter parameters such as region code, number type, capability, etc.</param>
+        /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
+        /// <returns>A <see cref="ListActiveNumbersResponse"/> containing the matching active numbers.</returns>
         Task<ListActiveNumbersResponse> List(ListActiveNumbersRequest request,
             CancellationToken cancellationToken = default);
 
-        /// <inheritdoc cref="List(ListActiveNumbersRequest, CancellationToken)" />
+        /// <summary>
+        ///     Lists all virtual numbers for a project without any filters.
+        ///     For additional info, see:
+        ///     <see
+        ///         href="https://developers.sinch.com/docs/numbers/api-reference/numbers/tag/Active-Number/#tag/Active-Number/operation/NumberService_ListActiveNumbers">
+        ///         Documentation
+        ///     </see>
+        /// </summary>
+        /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
+        /// <returns>A <see cref="ListActiveNumbersResponse"/> containing all active numbers.</returns>
         Task<ListActiveNumbersResponse> List(CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -47,8 +56,8 @@ namespace Sinch.Numbers
         ///     <see href="https://community.sinch.com/t5/Glossary/E-164/ta-p/7537">E.164</see> format with leading +.
         /// </param>
         /// <param name="request">A request object</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
+        /// <returns>The updated <see cref="ActiveNumber"/>.</returns>
         Task<ActiveNumber> Update(string phoneNumber,
             UpdateActiveNumberRequest request, CancellationToken cancellationToken = default);
 
@@ -56,8 +65,8 @@ namespace Sinch.Numbers
         ///     Get an information about a number
         /// </summary>
         /// <param name="phoneNumber">Number to get info about</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
+        /// <returns>The <see cref="ActiveNumber"/> details.</returns>
         Task<ActiveNumber> Get(string phoneNumber,
             CancellationToken cancellationToken = default);
 
@@ -69,15 +78,35 @@ namespace Sinch.Numbers
         ///     format with leading +.
         ///     <example>+12025550134</example>
         /// </param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
+        /// <returns>The released <see cref="ActiveNumber"/>.</returns>
         Task<ActiveNumber> Release(
             string phoneNumber, CancellationToken cancellationToken = default);
 
+        /// <summary>
+        ///     Lists all virtual numbers for a project with optional filtering, automatically iterating over all pages.<br /><br />
+        ///     For additional info, see:
+        ///     <see
+        ///         href="https://developers.sinch.com/docs/numbers/api-reference/numbers/tag/Active-Number/#tag/Active-Number/operation/NumberService_ListActiveNumbers">
+        ///         Documentation
+        ///     </see>
+        /// </summary>
+        /// <param name="request">Optional filter parameters such as region code, number type, capability, etc.</param>
+        /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
+        /// <returns>An async sequence of <see cref="ActiveNumber"/> items across all pages.</returns>
         IAsyncEnumerable<ActiveNumber> ListAuto(ListActiveNumbersRequest request,
             CancellationToken cancellationToken = default);
 
-        /// <inheritdoc cref="ListAuto(ListActiveNumbersRequest, CancellationToken)" />
+        /// <summary>
+        ///     Lists all virtual numbers for a project without any filters, automatically iterating over all pages.<br /><br />
+        ///     For additional info, see:
+        ///     <see
+        ///         href="https://developers.sinch.com/docs/numbers/api-reference/numbers/tag/Active-Number/#tag/Active-Number/operation/NumberService_ListActiveNumbers">
+        ///         Documentation
+        ///     </see>
+        /// </summary>
+        /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
+        /// <returns>An async sequence of <see cref="ActiveNumber"/> items across all pages.</returns>
         IAsyncEnumerable<ActiveNumber> ListAuto(CancellationToken cancellationToken = default);
     }
 
