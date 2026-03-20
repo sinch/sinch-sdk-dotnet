@@ -38,7 +38,7 @@ var request = new ListMessagesByChannelIdentityRequest
 
 Console.WriteLine($"Listing last SMS message per identity in application '{conversationApplicationId}'");
 
-await foreach (var message in client.Conversation.Messages.ListMessagesByChannelIdentityAuto(request))
+await foreach (var message in client.Conversation.Messages.ListLastMessagesByChannelIdentityAuto(request))
 {
     Console.WriteLine(message.ToPrettyString());
 }

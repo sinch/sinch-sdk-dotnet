@@ -295,7 +295,7 @@ namespace Sinch.Tests.Conversation
                 }));
 
             var dateTime = new DateTime(2026, 1, 1, 8, 30, 0);
-            var response = await Conversation.Messages.ListMessagesByChannelIdentity(new ListMessagesByChannelIdentityRequest
+            var response = await Conversation.Messages.ListLastMessagesByChannelIdentity(new ListMessagesByChannelIdentityRequest
             {
                 ChannelIdentities = new List<string> { "447700900000", "447700900001" },
                 AppId = "app_id_1",
@@ -334,7 +334,7 @@ namespace Sinch.Tests.Conversation
                     messages = new[] { Message() }
                 }));
 
-            var response = await Conversation.Messages.ListMessagesByChannelIdentity(new ListMessagesByChannelIdentityRequest
+            var response = await Conversation.Messages.ListLastMessagesByChannelIdentity(new ListMessagesByChannelIdentityRequest
             {
                 ContactIds = new List<string> { "01H5XXXXXXXXXXXXXXXXXXX1", "01H5XXXXXXXXXXXXXXXXXXX2" },
                 MessagesSource = MessageSource.ConversationSource
@@ -384,7 +384,7 @@ namespace Sinch.Tests.Conversation
                 }));
 
             var messages = new List<ConversationMessage>();
-            await foreach (var message in Conversation.Messages.ListMessagesByChannelIdentityAuto(
+            await foreach (var message in Conversation.Messages.ListLastMessagesByChannelIdentityAuto(
                 new ListMessagesByChannelIdentityRequest
                 {
                     ChannelIdentities = new List<string> { "447700900000" },

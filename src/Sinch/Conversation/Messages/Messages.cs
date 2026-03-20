@@ -83,7 +83,7 @@ namespace Sinch.Conversation.Messages
         /// <param name="request">The filter parameters, including channel identities or contact IDs, message source, and pagination options.</param>
         /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
         /// <returns>A <see cref="ListMessagesResponse"/> containing the matched messages and an optional next page token.</returns>
-        Task<ListMessagesResponse> ListMessagesByChannelIdentity(ListMessagesByChannelIdentityRequest request,
+        Task<ListMessagesResponse> ListLastMessagesByChannelIdentity(ListMessagesByChannelIdentityRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Sinch.Conversation.Messages
         /// <param name="request">The filter parameters. <see cref="ListMessagesByChannelIdentityRequest.PageToken"/> will be managed automatically.</param>
         /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
         /// <returns>An async sequence of <see cref="ConversationMessage"/> items across all pages.</returns>
-        IAsyncEnumerable<ConversationMessage> ListMessagesByChannelIdentityAuto(
+        IAsyncEnumerable<ConversationMessage> ListLastMessagesByChannelIdentityAuto(
             ListMessagesByChannelIdentityRequest request,
             CancellationToken cancellationToken = default);
     }
@@ -161,7 +161,7 @@ namespace Sinch.Conversation.Messages
         }
 
         /// <inheritdoc/>  
-        public Task<ListMessagesResponse> ListMessagesByChannelIdentity(
+        public Task<ListMessagesResponse> ListLastMessagesByChannelIdentity(
             ListMessagesByChannelIdentityRequest request,
             CancellationToken cancellationToken = default)
         {
@@ -172,14 +172,14 @@ namespace Sinch.Conversation.Messages
         }
 
         /// <inheritdoc/>  
-        public async IAsyncEnumerable<ConversationMessage> ListMessagesByChannelIdentityAuto(
+        public async IAsyncEnumerable<ConversationMessage> ListLastMessagesByChannelIdentityAuto(
             ListMessagesByChannelIdentityRequest request,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Auto fetching messages by channel identity...");
             do
             {
-                var response = await ListMessagesByChannelIdentity(request, cancellationToken);
+                var response = await ListLastMessagesByChannelIdentity(request, cancellationToken);
                 request.PageToken = response.NextPageToken;
                 if (response.Messages == null) continue;
                 foreach (var message in response.Messages)

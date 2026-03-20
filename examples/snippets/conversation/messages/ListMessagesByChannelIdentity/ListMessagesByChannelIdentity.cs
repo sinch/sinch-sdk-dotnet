@@ -38,6 +38,6 @@ var request = new ListMessagesByChannelIdentityRequest
 
 Console.WriteLine($"Listing SMS messages for '{string.Join(",", channelIdentities)}' in application '{conversationApplicationId}'");
 
-var response = await client.Conversation.Messages.ListMessagesByChannelIdentity(request);
+var response = await client.Conversation.Messages.ListLastMessagesByChannelIdentity(request);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");
