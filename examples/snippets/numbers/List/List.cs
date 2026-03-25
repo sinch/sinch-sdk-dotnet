@@ -8,19 +8,11 @@
 
 using Sinch;
 using Sinch.Core;
-using Sinch.Numbers;
-using Sinch.Numbers.Active.List;
 using Sinch.Snippets.Shared;
 
 var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
 var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
 var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
-
-var request = new ListActiveNumbersRequest
-{
-    RegionCode = "US",
-    Type = Types.Local
-};
 
 var client = new SinchClient(new SinchClientConfiguration()
 {
@@ -34,6 +26,6 @@ var client = new SinchClient(new SinchClientConfiguration()
 
 Console.WriteLine("Listing active numbers");
 
-var response = await client.Numbers.List(request);
+var response = await client.Numbers.List();
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");
