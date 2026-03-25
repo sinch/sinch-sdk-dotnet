@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RichardSzalay.MockHttp;
 using Sinch.Conversation;
@@ -17,6 +18,7 @@ using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
 using Sinch.Core;
 using Xunit;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Sinch.Tests.Conversation
 {
@@ -73,7 +75,7 @@ namespace Sinch.Tests.Conversation
                     }
                 }
             });
-            response.Direction.Should().Be(ConversationDirection.UndefinedDirection);
+            response.Direction.Should().Be(ConversationDirection.ToApp);
             response.ChannelIdentity.Should().BeEquivalentTo(new ChannelIdentity()
             {
                 AppId = "string",
@@ -106,6 +108,7 @@ namespace Sinch.Tests.Conversation
                 .WithQueryString("view", "WITH_METADATA")
                 .WithQueryString("messages_source", "DISPATCH_SOURCE")
                 .WithQueryString("only_recipient_originated", "true")
+                .WithQueryString("direction", "TO_CONTACT")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(new
                 {
                     next_page_token = nextPageToken,
@@ -129,7 +132,8 @@ namespace Sinch.Tests.Conversation
                 PageToken = "3",
                 View = View.WithMetadata,
                 MessagesSource = MessageSource.DispatchSource,
-                OnlyRecipientOriginated = true
+                OnlyRecipientOriginated = true,
+                Direction = ConversationDirection.ToContact
             });
 
             response.Should().NotBeNull();
@@ -253,12 +257,146 @@ namespace Sinch.Tests.Conversation
                 },
                 contact_id = "string",
                 conversation_id = "string",
-                direction = "UNDEFINED_DIRECTION",
+                direction = "TO_APP",
                 id = "string",
                 metadata = "string",
                 injected = true
             };
             return responseObj;
+        }
+
+        [Fact]
+        public async Task ListMessagesByChannelIdentity()
+        {
+            const string nextPageToken = "next_token_123";
+            const string time = "2026-01-01T08:30:00.0000000";
+
+            HttpMessageHandlerMock
+                .When(HttpMethod.Post,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/messages:fetch-last-message")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(Newtonsoft.Json.JsonConvert.SerializeObject(new
+                {
+                    channel_identities = new[] { "447700900000", "447700900001" },
+                    app_id = "app_id_1",
+                    messages_source = "DISPATCH_SOURCE",
+                    page_size = 5,
+                    page_token = "prev_token",
+                    view = "WITHOUT_METADATA",
+                    start_time = time,
+                    end_time = time,
+                    channel = "WHATSAPP",
+                    direction = "TO_CONTACT"
+                }))
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    next_page_token = nextPageToken,
+                    messages = new[] { Message() }
+                }));
+
+            var dateTime = new DateTime(2026, 1, 1, 8, 30, 0);
+            var response = await Conversation.Messages.ListLastMessagesByChannelIdentity(new ListMessagesByChannelIdentityRequest
+            {
+                ChannelIdentities = new List<string> { "447700900000", "447700900001" },
+                AppId = "app_id_1",
+                MessagesSource = MessageSource.DispatchSource,
+                PageSize = 5,
+                PageToken = "prev_token",
+                View = View.WithoutMetadata,
+                StartTime = dateTime,
+                EndTime = dateTime,
+                Channel = ConversationChannel.WhatsApp,
+                Direction = ConversationDirection.ToContact
+            });
+
+            response.Should().NotBeNull();
+            response.NextPageToken.Should().Be(nextPageToken);
+            response.Messages.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public async Task ListMessagesByContactIds()
+        {
+            const string nextPageToken = "next_page_456";
+
+            HttpMessageHandlerMock
+                .When(HttpMethod.Post,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/messages:fetch-last-message")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(Newtonsoft.Json.JsonConvert.SerializeObject(new
+                {
+                    contact_ids = new[] { "01H5XXXXXXXXXXXXXXXXXXX1", "01H5XXXXXXXXXXXXXXXXXXX2" },
+                    messages_source = "CONVERSATION_SOURCE"
+                }))
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    next_page_token = nextPageToken,
+                    messages = new[] { Message() }
+                }));
+
+            var response = await Conversation.Messages.ListLastMessagesByChannelIdentity(new ListMessagesByChannelIdentityRequest
+            {
+                ContactIds = new List<string> { "01H5XXXXXXXXXXXXXXXXXXX1", "01H5XXXXXXXXXXXXXXXXXXX2" },
+                MessagesSource = MessageSource.ConversationSource
+            });
+
+            response.Should().NotBeNull();
+            response.NextPageToken.Should().Be(nextPageToken);
+            response.Messages.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public async Task ListMessagesByChannelIdentityAuto_IteratesThroughAllPages()
+        {
+            const string nextPageToken = "next_token_page2";
+
+            HttpMessageHandlerMock
+                .Expect(HttpMethod.Post,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/messages:fetch-last-message")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(JsonConvert.SerializeObject(new
+                {
+                    channel_identities = new[] { "447700900000" },
+                    app_id = "app_id_1",
+                    messages_source = "DISPATCH_SOURCE"
+                }))
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    next_page_token = nextPageToken,
+                    messages = new[] { Message() }
+                }));
+
+            HttpMessageHandlerMock
+                .Expect(HttpMethod.Post,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/messages:fetch-last-message")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(Newtonsoft.Json.JsonConvert.SerializeObject(new
+                {
+                    channel_identities = new[] { "447700900000" },
+                    app_id = "app_id_1",
+                    messages_source = "DISPATCH_SOURCE",
+                    page_token = nextPageToken
+                }))
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    next_page_token = (string)null,
+                    messages = new[] { Message() }
+                }));
+
+            var messages = new List<ConversationMessage>();
+            await foreach (var message in Conversation.Messages.ListLastMessagesByChannelIdentityAuto(
+                new ListMessagesByChannelIdentityRequest
+                {
+                    ChannelIdentities = new List<string> { "447700900000" },
+                    AppId = "app_id_1",
+                    MessagesSource = MessageSource.DispatchSource
+                }))
+            {
+                messages.Add(message);
+            }
+
+            messages.Should().HaveCount(2);
+            HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 
         [Fact]

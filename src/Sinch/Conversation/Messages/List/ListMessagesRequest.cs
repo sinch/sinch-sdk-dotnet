@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json.Serialization;
+using Sinch.Conversation.Messages.Message;
 using Sinch.Core;
 
 namespace Sinch.Conversation.Messages.List
@@ -62,6 +63,12 @@ namespace Sinch.Conversation.Messages.List
         ///     Available only when messages_source is DISPATCH_SOURCE.
         /// </summary>
         public bool? OnlyRecipientOriginated { get; set; }
+
+        /// <summary>
+        ///     Only fetch messages with the specified direction.
+        ///     If direction is not specified, it will list both TO_APP and TO_CONTACT messages.
+        /// </summary>
+        public ConversationDirection? Direction { get; set; }
     }
 
 
