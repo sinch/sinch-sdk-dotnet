@@ -125,11 +125,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "status", "status", "{EAC356
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetByIdentity", "verification\status\GetByIdentity.csproj", "{2750A256-190C-4A18-89FA-5349BE6E5BDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendOrderDetailsPaymentButtons", "conversation\messages\SendOrderDetailsPaymentButtons\SendOrderDetailsPaymentButtons.csproj", "{30C715C1-731F-408E-BD6D-31A1C120BF30}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListMessagesByChannelIdentity", "conversation\messages\ListMessagesByChannelIdentity\ListMessagesByChannelIdentity.csproj", "{2FB7178D-65CA-47E4-A09E-E26987408B8A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListMessagesByChannelIdentityAuto", "conversation\messages\ListMessagesByChannelIdentityAuto\ListMessagesByChannelIdentityAuto.csproj", "{FA0DBEC6-BEAA-4293-946A-99873ACE4A46}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "contacts", "contacts", "{48C5B664-4750-4396-9471-AABA4B218474}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetContact", "conversation\contacts\GetContact\GetContact.csproj", "{67D1F5ED-13BA-46B9-8F57-6C23860B2268}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListContacts", "conversation\contacts\ListContacts\ListContacts.csproj", "{AC9FC637-AD36-4745-8D1C-6F27831DC579}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateContact", "conversation\contacts\UpdateContact\UpdateContact.csproj", "{3ABCAE06-EC81-4684-ADF1-1EF9C8981643}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeleteContact", "conversation\contacts\DeleteContact\DeleteContact.csproj", "{95817720-813A-415E-8127-4B9D779DE394}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MergeContacts", "conversation\contacts\MergeContacts\MergeContacts.csproj", "{CCEDDA99-4431-409F-9A5D-3F224FF57B45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetChannelProfile", "conversation\contacts\GetChannelProfile\GetChannelProfile.csproj", "{BA6A92BA-9ACD-4734-A555-305697EEAFEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateContact", "conversation\contacts\CreateContact\CreateContact.csproj", "{CAAD513F-DBB2-4301-A9A6-FBEADDC3ADC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -717,6 +731,30 @@ Global
 		{FA0DBEC6-BEAA-4293-946A-99873ACE4A46}.Release|x64.Build.0 = Release|Any CPU
 		{FA0DBEC6-BEAA-4293-946A-99873ACE4A46}.Release|x86.ActiveCfg = Release|Any CPU
 		{FA0DBEC6-BEAA-4293-946A-99873ACE4A46}.Release|x86.Build.0 = Release|Any CPU
+		{CAAD513F-DBB2-4301-A9A6-FBEADDC3ADC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAAD513F-DBB2-4301-A9A6-FBEADDC3ADC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAAD513F-DBB2-4301-A9A6-FBEADDC3ADC2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CAAD513F-DBB2-4301-A9A6-FBEADDC3ADC2}.Debug|x64.Build.0 = Debug|Any CPU
+		{CAAD513F-DBB2-4301-A9A6-FBEADDC3ADC2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CAAD513F-DBB2-4301-A9A6-FBEADDC3ADC2}.Debug|x86.Build.0 = Debug|Any CPU
+		{CAAD513F-DBB2-4301-A9A6-FBEADDC3ADC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAAD513F-DBB2-4301-A9A6-FBEADDC3ADC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAAD513F-DBB2-4301-A9A6-FBEADDC3ADC2}.Release|x64.ActiveCfg = Release|Any CPU
+		{CAAD513F-DBB2-4301-A9A6-FBEADDC3ADC2}.Release|x64.Build.0 = Release|Any CPU
+		{CAAD513F-DBB2-4301-A9A6-FBEADDC3ADC2}.Release|x86.ActiveCfg = Release|Any CPU
+		{CAAD513F-DBB2-4301-A9A6-FBEADDC3ADC2}.Release|x86.Build.0 = Release|Any CPU
+		{95817720-813A-415E-8127-4B9D779DE394}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95817720-813A-415E-8127-4B9D779DE394}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA6A92BA-9ACD-4734-A555-305697EEAFEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA6A92BA-9ACD-4734-A555-305697EEAFEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67D1F5ED-13BA-46B9-8F57-6C23860B2268}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67D1F5ED-13BA-46B9-8F57-6C23860B2268}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC9FC637-AD36-4745-8D1C-6F27831DC579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC9FC637-AD36-4745-8D1C-6F27831DC579}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCEDDA99-4431-409F-9A5D-3F224FF57B45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCEDDA99-4431-409F-9A5D-3F224FF57B45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ABCAE06-EC81-4684-ADF1-1EF9C8981643}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ABCAE06-EC81-4684-ADF1-1EF9C8981643}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -781,6 +819,14 @@ Global
 		{2750A256-190C-4A18-89FA-5349BE6E5BDB} = {EAC3562A-E072-404F-806B-BDBD7F8DB06C}
 		{2FB7178D-65CA-47E4-A09E-E26987408B8A} = {D14691D8-5D33-4332-8CDB-D0C6A4FAFF20}
 		{FA0DBEC6-BEAA-4293-946A-99873ACE4A46} = {D14691D8-5D33-4332-8CDB-D0C6A4FAFF20}
+		{95817720-813A-415E-8127-4B9D779DE394} = {48C5B664-4750-4396-9471-AABA4B218474}
+		{BA6A92BA-9ACD-4734-A555-305697EEAFEC} = {48C5B664-4750-4396-9471-AABA4B218474}
+		{67D1F5ED-13BA-46B9-8F57-6C23860B2268} = {48C5B664-4750-4396-9471-AABA4B218474}
+		{AC9FC637-AD36-4745-8D1C-6F27831DC579} = {48C5B664-4750-4396-9471-AABA4B218474}
+		{CCEDDA99-4431-409F-9A5D-3F224FF57B45} = {48C5B664-4750-4396-9471-AABA4B218474}
+		{3ABCAE06-EC81-4684-ADF1-1EF9C8981643} = {48C5B664-4750-4396-9471-AABA4B218474}
+		{CAAD513F-DBB2-4301-A9A6-FBEADDC3ADC2} = {48C5B664-4750-4396-9471-AABA4B218474}
+		{48C5B664-4750-4396-9471-AABA4B218474} = {1C0BBA4E-C8D0-4033-A7F5-659EB3E0FFD8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4081DB0B-E6B8-47EB-A4AF-C9C20DAB9EE2}
