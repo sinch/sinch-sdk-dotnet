@@ -281,9 +281,9 @@ namespace Sinch.Conversation.Contacts
         {
             var query = Utils.ToSnakeCaseQueryString(request);
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts:identityConflicts?{query}");
-            
+
             _logger?.LogDebug("Listing identity conflicts for {projectId}", _projectId);
-            
+
             return _http.Value.Send<ListIdentityConflictsResponse>(uri, HttpMethod.Get, cancellationToken);
         }
 
@@ -292,21 +292,21 @@ namespace Sinch.Conversation.Contacts
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Auto listing identity conflicts for {projectId}", _projectId);
-            
+
             do
             {
                 var query = Utils.ToSnakeCaseQueryString(request);
                 var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts:identityConflicts?{query}");
                 var response = await _http.Value.Send<ListIdentityConflictsResponse>(uri, HttpMethod.Get, cancellationToken);
-                
+
                 request.PageToken = response.NextPageToken;
-                
+
                 if (response.Conflicts == null)
                     continue;
-                    
+
                 foreach (var conflict in response.Conflicts)
                     yield return conflict;
-                    
+
             } while (!string.IsNullOrEmpty(request.PageToken));
         }
     }
