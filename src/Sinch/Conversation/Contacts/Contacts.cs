@@ -77,13 +77,22 @@ namespace Sinch.Conversation.Contacts
         ///     contact may be populated with the WhatsApp display name (if the name is already stored on the server and the
         ///     display_name field has not been overwritten by the user).
         /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ListContactsResponse> List(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     List all contacts in the project. Note that, if a WhatsApp contact is returned, the display_name field of that
+        ///     contact may be populated with the WhatsApp display name (if the name is already stored on the server and the
+        ///     display_name field has not been overwritten by the user).
+        /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<ListContactsResponse> List(ListContactsRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     See <see cref="List" />, but lists all contacts automatically.
+        ///     See <see cref="List(ListContactsRequest, CancellationToken)" />, but lists all contacts automatically.
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
@@ -169,6 +178,10 @@ namespace Sinch.Conversation.Contacts
         }
 
         /// <inheritdoc />
+        public Task<ListContactsResponse> List(CancellationToken cancellationToken = default)
+            => List(new ListContactsRequest(), cancellationToken);
+
+        /// <inheritdoc />
         public Task<ListContactsResponse> List(ListContactsRequest request,
             CancellationToken cancellationToken = default)
         {
@@ -232,12 +245,7 @@ namespace Sinch.Conversation.Contacts
             _logger?.LogDebug("Merging contacts from {sourceId} to {destinationId} for {projectId}", sourceId,
                 destinationId, _projectId);
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{destinationId}:merge");
-            return _http.Value.Send<object, Contact>(uri, HttpMethod.Post, new
-            {
-                source_id = sourceId,
-                // NOTE: keep in mind while this enum has only one value, it can change in the future.
-                strategy = "MERGE"
-            },
+            return _http.Value.Send<object, Contact>(uri, HttpMethod.Post, new { source_id = sourceId },
                 cancellationToken);
         }
     }
