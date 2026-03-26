@@ -150,8 +150,20 @@ namespace Sinch.Conversation.Contacts
         Task<Contact> Merge(string destinationId, string sourceId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     List all identity conflicts for the project. An identity conflict occurs when the same channel identity is linked
-        ///     to multiple contacts, which may lead to ambiguous message delivery.
+        ///     Lists identity conflicts for the project using server-default pagination. An identity conflict occurs when the same
+        ///     channel identity is linked to multiple contacts, which may lead to ambiguous message delivery.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>
+        ///     A page of identity conflicts using server-default pagination. Use
+        ///     <see cref="ListIdentityConflictsResponse.NextPageToken" /> to retrieve subsequent pages, or use
+        ///     <see cref="ListIdentityConflictsAuto(ListIdentityConflictsRequest, CancellationToken)" /> to iterate all pages automatically.
+        /// </returns>
+        Task<ListIdentityConflictsResponse> ListIdentityConflicts(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Lists identity conflicts for the project with optional pagination. An identity conflict occurs when the same
+        ///     channel identity is linked to multiple contacts, which may lead to ambiguous message delivery.
         /// </summary>
         /// <param name="request">Pagination options: page size (max 20) and optional page token for subsequent pages.</param>
         /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
@@ -274,6 +286,10 @@ namespace Sinch.Conversation.Contacts
             return _http.Value.Send<object, Contact>(uri, HttpMethod.Post, new { source_id = sourceId },
                 cancellationToken);
         }
+
+        /// <inheritdoc />
+        public Task<ListIdentityConflictsResponse> ListIdentityConflicts(CancellationToken cancellationToken = default)
+            => ListIdentityConflicts(new ListIdentityConflictsRequest(), cancellationToken);
 
         /// <inheritdoc />
         public Task<ListIdentityConflictsResponse> ListIdentityConflicts(ListIdentityConflictsRequest request,
