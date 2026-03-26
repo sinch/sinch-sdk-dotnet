@@ -141,6 +141,25 @@ namespace Sinch.Conversation.Contacts
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<Contact> Merge(string destinationId, string sourceId, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     List all identity conflicts for the project. An identity conflict occurs when the same channel identity is linked
+        ///     to multiple contacts, which may lead to ambiguous message delivery.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ListIdentityConflictsResponse> ListIdentityConflicts(ListIdentityConflictsRequest request,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     See <see cref="ListIdentityConflicts" />, but lists all identity conflicts automatically.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        IAsyncEnumerable<IdentityConflict> ListIdentityConflictsAuto(ListIdentityConflictsRequest request,
+            CancellationToken cancellationToken = default);
     }
 
     internal sealed class Contacts : ISinchConversationContacts
@@ -247,6 +266,41 @@ namespace Sinch.Conversation.Contacts
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{destinationId}:merge");
             return _http.Value.Send<object, Contact>(uri, HttpMethod.Post, new { source_id = sourceId },
                 cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<ListIdentityConflictsResponse> ListIdentityConflicts(ListIdentityConflictsRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var query = Utils.ToSnakeCaseQueryString(request);
+            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts:identityConflicts?{query}");
+            
+            _logger?.LogDebug("Listing identity conflicts for {projectId}", _projectId);
+            
+            return _http.Value.Send<ListIdentityConflictsResponse>(uri, HttpMethod.Get, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public async IAsyncEnumerable<IdentityConflict> ListIdentityConflictsAuto(ListIdentityConflictsRequest request,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            _logger?.LogDebug("Auto listing identity conflicts for {projectId}", _projectId);
+            
+            do
+            {
+                var query = Utils.ToSnakeCaseQueryString(request);
+                var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts:identityConflicts?{query}");
+                var response = await _http.Value.Send<ListIdentityConflictsResponse>(uri, HttpMethod.Get, cancellationToken);
+                
+                request.PageToken = response.NextPageToken;
+                
+                if (response.Conflicts == null)
+                    continue;
+                    
+                foreach (var conflict in response.Conflicts)
+                    yield return conflict;
+                    
+            } while (!string.IsNullOrEmpty(request.PageToken));
         }
     }
 }

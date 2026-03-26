@@ -25,6 +25,9 @@ public class Contacts
     private int _totalContactsPages;
     private ChannelProfile _channelProfile;
     private bool _deleteCompleted;
+    private ListIdentityConflictsResponse _listConflictsResponse;
+    private List<IdentityConflict> _allConflicts;
+    private int _totalConflictsPages;
 
     [Given(@"the Conversation service ""Contacts"" is available")]
     public void GivenTheConversationServiceContactsIsAvailable()
@@ -224,39 +227,55 @@ public class Contacts
     [When(@"I send a request to list the existing identity conflicts")]
     public async Task WhenISendARequestToListTheExistingIdentityConflicts()
     {
-        // TODO! Will be added as part of DEVEXP-1254
-        await Task.CompletedTask;
+        _listConflictsResponse = await _contacts.ListIdentityConflicts(new ListIdentityConflictsRequest { PageSize = 2 });
     }
 
     [Then(@"the response contains ""(.*)"" identity conflicts")]
     public void ThenTheResponseContainsIdentityConflicts(int count)
     {
-        // TODO! Will be added as part of DEVEXP-1254
+        _listConflictsResponse.Conflicts.Should().HaveCount(count);
+        _listConflictsResponse.NextPageToken.Should().NotBeNullOrEmpty();
     }
 
     [When(@"I send a request to list all the identity conflicts")]
     public async Task WhenISendARequestToListAllTheIdentityConflicts()
     {
-        // TODO! Will be added as part of DEVEXP-1254
-        await Task.CompletedTask;
+        _allConflicts = new List<IdentityConflict>();
+        await foreach (var conflict in _contacts.ListIdentityConflictsAuto(new ListIdentityConflictsRequest { PageSize = 2 }))
+        {
+            _allConflicts.Add(conflict);
+        }
     }
 
     [Then(@"the identity conflicts list contains ""(.*)"" identity conflicts")]
     public void ThenTheIdentityConflictsListContainsIdentityConflicts(int count)
     {
-        // TODO! Will be added as part of DEVEXP-1254
+        _allConflicts.Should().HaveCount(count);
     }
 
     [When(@"I iterate manually over the identity conflicts pages")]
     public async Task WhenIIterateManuallyOverTheIdentityConflictsPages()
     {
-        // TODO! Will be added as part of DEVEXP-1254
-        await Task.CompletedTask;
+        _allConflicts = new List<IdentityConflict>();
+        _totalConflictsPages = 0;
+        ListIdentityConflictsResponse response = null;
+        while (true)
+        {
+            response = await _contacts.ListIdentityConflicts(new ListIdentityConflictsRequest
+            {
+                PageSize = 2,
+                PageToken = response?.NextPageToken
+            });
+            if (response.Conflicts == null || response.Conflicts.Count == 0) break;
+            _allConflicts.AddRange(response.Conflicts);
+            _totalConflictsPages++;
+            if (string.IsNullOrEmpty(response.NextPageToken)) break;
+        }
     }
 
     [Then(@"the identity conflicts iteration result contains the data from ""(.*)"" pages")]
     public void ThenTheIdentityConflictsIterationResultContainsTheDataFromPages(int count)
     {
-        // TODO! Will be added as part of DEVEXP-1254
+        _totalConflictsPages.Should().Be(count);
     }
 }
