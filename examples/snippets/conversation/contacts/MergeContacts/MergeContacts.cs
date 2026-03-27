@@ -1,5 +1,6 @@
 using Sinch;
 using Sinch.Conversation;
+using Sinch.Conversation.Contacts.Merge;
 using Sinch.Core;
 using Sinch.Snippets.Shared;
 
@@ -29,6 +30,8 @@ var client = new SinchClient(new SinchClientConfiguration
 
 Console.WriteLine($"Merging contact '{sourceContactId}' into '{destinationContactId}'");
 
-var response = await client.Conversation.Contacts.Merge(destinationContactId, sourceContactId);
+var response = await client.Conversation.Contacts.MergeContact(destinationContactId,
+    new MergeContactRequest { SourceId = sourceContactId });
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");
+
