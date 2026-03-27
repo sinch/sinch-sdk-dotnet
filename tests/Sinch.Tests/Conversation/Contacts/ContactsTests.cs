@@ -15,7 +15,7 @@ using Sinch.Conversation.Contacts.List;
 using Sinch.Conversation.Contacts.Merge;
 using Xunit;
 
-namespace Sinch.Tests.Conversation
+namespace Sinch.Tests.Conversation.Contacts
 {
     public class ContactsTests : ConversationTestBase
     {
