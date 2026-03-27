@@ -281,6 +281,64 @@ namespace Sinch.Tests.Conversation
             channelProfile.Should().NotBeNull();
             channelProfile.ProfileName.Should().Be("Marty McFly FB");
         }
+
+        [Fact]
+        public async Task GetChannelProfileByContactId_SendsCorrectRequest_ReturnsProfile()
+        {
+            var request = new
+            {
+                app_id = AppId,
+                recipient = new { contact_id = ContactId001 },
+                channel = "MESSENGER"
+            };
+
+            HttpMessageHandlerMock
+                .When(HttpMethod.Post, $"{_contactsUrl}:getChannelProfile")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(JsonConvert.SerializeObject(request))
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new { profile_name = "Marty McFly FB" }));
+
+            var channelProfile = await Conversation.Contacts.GetChannelProfileByContactId(
+                AppId, ChannelProfileConversationChannel.Messenger, ContactId001);
+
+            channelProfile.Should().NotBeNull();
+            channelProfile.ProfileName.Should().Be("Marty McFly FB");
+        }
+
+        [Fact]
+        public async Task GetChannelProfileByChannelIdentity_SendsCorrectRequest_ReturnsProfile()
+        {
+            var messengerIdentity = "7968425018576406";
+            var request = new
+            {
+                app_id = AppId,
+                recipient = new
+                {
+                    identified_by = new
+                    {
+                        channel_identities = new[]
+                        {
+                            new { channel = "MESSENGER", identity = messengerIdentity }
+                        }
+                    }
+                },
+                channel = "MESSENGER"
+            };
+
+            HttpMessageHandlerMock
+                .When(HttpMethod.Post, $"{_contactsUrl}:getChannelProfile")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(JsonConvert.SerializeObject(request))
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new { profile_name = "Marty McFly FB" }));
+
+            var channelProfile = await Conversation.Contacts.GetChannelProfileByChannelIdentity(
+                AppId,
+                ChannelProfileConversationChannel.Messenger,
+                new ChannelIdentity { Channel = ConversationChannel.Messenger, Identity = messengerIdentity });
+
+            channelProfile.Should().NotBeNull();
+            channelProfile.ProfileName.Should().Be("Marty McFly FB");
+        }
     }
 }
 

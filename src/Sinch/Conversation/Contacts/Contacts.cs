@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Sinch.Conversation.Common;
 using Sinch.Conversation.Contacts.Create;
 using Sinch.Conversation.Contacts.GetChannelProfile;
 using Sinch.Conversation.Contacts.List;
@@ -128,6 +129,30 @@ namespace Sinch.Conversation.Contacts
             CancellationToken cancellationToken = default);
 
         /// <summary>
+        ///     Get user profile from a specific channel by contact ID.
+        ///     Convenience helper for <see cref="GetChannelProfile(GetChannelProfileRequest, CancellationToken)" />.
+        /// </summary>
+        /// <param name="appId">The ID of the app.</param>
+        /// <param name="channel">The channel to get the profile from.</param>
+        /// <param name="contactId">The ID of the contact.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ChannelProfile> GetChannelProfileByContactId(string appId, ChannelProfileConversationChannel channel,
+            string contactId, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Get user profile from a specific channel by channel identity.
+        ///     Convenience helper for <see cref="GetChannelProfile(GetChannelProfileRequest, CancellationToken)" />.
+        /// </summary>
+        /// <param name="appId">The ID of the app.</param>
+        /// <param name="channel">The channel to get the profile from.</param>
+        /// <param name="channelIdentity">The channel identity to look up.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ChannelProfile> GetChannelProfileByChannelIdentity(string appId, ChannelProfileConversationChannel channel,
+            ChannelIdentity channelIdentity, CancellationToken cancellationToken = default);
+
+        /// <summary>
         ///     Updates a contact as specified by the contact ID.
         /// </summary>
         /// <param name="contact"></param>
@@ -238,6 +263,31 @@ namespace Sinch.Conversation.Contacts
             return _http.Value.Send<GetChannelProfileRequest, ChannelProfile>(uri, HttpMethod.Post, request,
                 cancellationToken);
         }
+
+        /// <inheritdoc />
+        public Task<ChannelProfile> GetChannelProfileByContactId(string appId,
+            ChannelProfileConversationChannel channel, string contactId,
+            CancellationToken cancellationToken = default)
+            => GetChannelProfile(new GetChannelProfileRequest
+            {
+                AppId = appId,
+                Channel = channel,
+                Recipient = new ContactRecipient { ContactId = contactId }
+            }, cancellationToken);
+
+        /// <inheritdoc />
+        public Task<ChannelProfile> GetChannelProfileByChannelIdentity(string appId,
+            ChannelProfileConversationChannel channel, ChannelIdentity channelIdentity,
+            CancellationToken cancellationToken = default)
+            => GetChannelProfile(new GetChannelProfileRequest
+            {
+                AppId = appId,
+                Channel = channel,
+                Recipient = new Identified
+                {
+                    IdentifiedBy = new IdentifiedBy { ChannelIdentities = [channelIdentity] }
+                }
+            }, cancellationToken);
 
         /// <inheritdoc />
         public Task<Contact> Update(Contact contact, CancellationToken cancellationToken = default)
