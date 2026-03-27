@@ -2,6 +2,7 @@ using Sinch;
 using Sinch.Conversation;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Contacts.GetChannelProfile;
+using Sinch.Core;
 using Sinch.Snippets.Shared;
 
 var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
@@ -11,8 +12,9 @@ var conversationRegion = ConfigurationHelper.GetConversationRegion() ?? "MY_CONV
 
 // Conversation app ID used to look up the channel profile
 const string appId = "CONVERSATION_APP_ID";
-// The Messenger user ID of the contact
-const string messengerUserId = "MESSENGER_USER_ID";
+// The Messenger user IDs to look up
+const string messengerUserId1 = "MESSENGER_USER_ID_1";
+const string messengerUserId2 = "MESSENGER_USER_ID_2";
 
 var client = new SinchClient(new SinchClientConfiguration
 {
@@ -28,11 +30,15 @@ var client = new SinchClient(new SinchClientConfiguration
     }
 });
 
-Console.WriteLine($"Getting Messenger channel profile for identity '{messengerUserId}'");
+Console.WriteLine("Getting Messenger channel profile by channel identities");
 
 var response = await client.Conversation.Contacts.GetChannelProfileByChannelIdentity(
     appId,
     ChannelProfileConversationChannel.Messenger,
-    new ChannelIdentity { Channel = ConversationChannel.Messenger, Identity = messengerUserId });
+    [
+        new ChannelIdentity { Channel = ConversationChannel.Messenger, Identity = messengerUserId1 },
+        new ChannelIdentity { Channel = ConversationChannel.Messenger, Identity = messengerUserId2 }
+    ]);
 
 Console.WriteLine($"Profile name: {response.ProfileName}");
+
