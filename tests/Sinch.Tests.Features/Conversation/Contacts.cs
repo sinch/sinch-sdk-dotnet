@@ -8,6 +8,7 @@ using Sinch.Conversation.Contacts;
 using Sinch.Conversation.Contacts.Create;
 using Sinch.Conversation.Contacts.GetChannelProfile;
 using Sinch.Conversation.Contacts.List;
+using Sinch.Conversation.Contacts.Merge;
 
 namespace Sinch.Tests.Features.Conversation;
 
@@ -180,7 +181,7 @@ public class Contacts
     [When(@"I send a request to merge a source contact to a destination contact")]
     public async Task WhenISendARequestToMergeASourceContactToADestinationContact()
     {
-        _contact = await _contacts.Merge(ContactId002, ContactId001);
+        _contact = await _contacts.MergeContact(ContactId002, new MergeContactRequest { SourceId = ContactId001 });
     }
 
     [Then(@"the response contains data from the destination contact and from the source contact")]

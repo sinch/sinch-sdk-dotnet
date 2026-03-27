@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Sinch.Conversation.Contacts.Create;
 using Sinch.Conversation.Contacts.GetChannelProfile;
 using Sinch.Conversation.Contacts.List;
+using Sinch.Conversation.Contacts.Merge;
 using Sinch.Core;
 using Sinch.Logger;
 
@@ -144,10 +145,10 @@ namespace Sinch.Conversation.Contacts
         ///     call.
         /// </summary>
         /// <param name="destinationId">The unique ID of the contact that should be kept when merging two contacts.</param>
-        /// <param name="sourceId">The ID of the contact that should be removed.</param>
+        /// <param name="request">The merge request containing the source contact ID and optional merge strategy.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Contact> Merge(string destinationId, string sourceId, CancellationToken cancellationToken = default);
+        Task<Contact> MergeContact(string destinationId, MergeContactRequest request, CancellationToken cancellationToken = default);
     }
 
     internal sealed class Contacts : ISinchConversationContacts
@@ -251,13 +252,13 @@ namespace Sinch.Conversation.Contacts
         }
 
         /// <inheritdoc />
-        public Task<Contact> Merge(string destinationId, string sourceId, CancellationToken cancellationToken = default)
+        public Task<Contact> MergeContact(string destinationId, MergeContactRequest request,
+            CancellationToken cancellationToken = default)
         {
-            _logger?.LogDebug("Merging contacts from {sourceId} to {destinationId} for {projectId}", sourceId,
+            _logger?.LogDebug("Merging contacts from {sourceId} to {destinationId} for {projectId}", request.SourceId,
                 destinationId, _projectId);
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{destinationId}:merge");
-            return _http.Value.Send<object, Contact>(uri, HttpMethod.Post, new { source_id = sourceId },
-                cancellationToken);
+            return _http.Value.Send<MergeContactRequest, Contact>(uri, HttpMethod.Post, request, cancellationToken);
         }
     }
 }

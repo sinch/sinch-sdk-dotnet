@@ -12,6 +12,7 @@ using Sinch.Conversation.Contacts;
 using Sinch.Conversation.Contacts.Create;
 using Sinch.Conversation.Contacts.GetChannelProfile;
 using Sinch.Conversation.Contacts.List;
+using Sinch.Conversation.Contacts.Merge;
 using Xunit;
 
 namespace Sinch.Tests.Conversation
@@ -222,13 +223,36 @@ namespace Sinch.Tests.Conversation
                     language = "EN_US"
                 }));
 
-            var response = await Conversation.Contacts.Merge(ContactId002, ContactId001);
+            var response = await Conversation.Contacts.MergeContact(ContactId002,
+                new MergeContactRequest { SourceId = ContactId001 });
 
             response.Should().NotBeNull();
             response.Id.Should().Be(ContactId002);
             response.DisplayName.Should().Be("Pika pika");
             response.ChannelIdentities.Should().HaveCount(3);
             response.ChannelPriority.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public async Task Merge_WithStrategy_SendsStrategyInBody()
+        {
+            var request = new { source_id = ContactId001, strategy = "MERGE" };
+
+            HttpMessageHandlerMock
+                .When(HttpMethod.Post, $"{_contactsUrl}/{ContactId002}:merge")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(JsonConvert.SerializeObject(request))
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    id = ContactId002,
+                    display_name = "Pika pika"
+                }));
+
+            var response = await Conversation.Contacts.MergeContact(ContactId002,
+                new MergeContactRequest { SourceId = ContactId001, Strategy = ContactMergeStrategy.Merge });
+
+            response.Should().NotBeNull();
+            response.Id.Should().Be(ContactId002);
         }
 
         [Fact]
