@@ -15,7 +15,7 @@ const string recipientPhoneNumber = "RECIPIENT_PHONE_NUMBER";
 // Language of the contact
 const string contactLanguage = "CONTACT_LANGUAGE";
 // Display name of the contact
-const string contactDisplayName = "CONTACT_DISPLAY_NAME";
+const string contactDisplayName = "Created from .NET SDK snippet";
 
 var client = new SinchClient(new SinchClientConfiguration
 {
