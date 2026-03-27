@@ -96,18 +96,17 @@ public class Contacts
         _allContacts = new List<Contact>();
         _totalContactsPages = 0;
         ListContactsResponse response = null;
-        while (true)
+        do
         {
             response = await _contacts.List(new ListContactsRequest
             {
                 PageSize = 2,
                 PageToken = response?.NextPageToken
             });
-            if (response.Contacts == null || response.Contacts.Count == 0) break;
-            _allContacts.AddRange(response.Contacts);
+            if (response.Contacts != null)
+                _allContacts.AddRange(response.Contacts);
             _totalContactsPages++;
-            if (string.IsNullOrEmpty(response.NextPageToken)) break;
-        }
+        } while (!string.IsNullOrEmpty(response.NextPageToken));
     }
 
     [Then(@"the contacts iteration result contains the data from ""(.*)"" pages")]
