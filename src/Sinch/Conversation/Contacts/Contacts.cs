@@ -92,6 +92,13 @@ namespace Sinch.Conversation.Contacts
         Task<ListContactsResponse> List(ListContactsRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
+        ///     See <see cref="List(CancellationToken)" />, but lists all contacts automatically.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        IAsyncEnumerable<Contact> ListAuto(CancellationToken cancellationToken = default);
+
+        /// <summary>
         ///     See <see cref="List(ListContactsRequest, CancellationToken)" />, but lists all contacts automatically.
         /// </summary>
         /// <param name="request"></param>
@@ -190,6 +197,10 @@ namespace Sinch.Conversation.Contacts
             _logger?.LogDebug("Listing contacts for {projectId}", _projectId);
             return _http.Value.Send<ListContactsResponse>(uri, HttpMethod.Get, cancellationToken);
         }
+
+        /// <inheritdoc />
+        public IAsyncEnumerable<Contact> ListAuto(CancellationToken cancellationToken = default)
+            => ListAuto(new ListContactsRequest(), cancellationToken);
 
         /// <inheritdoc />
         public async IAsyncEnumerable<Contact> ListAuto(ListContactsRequest request,
