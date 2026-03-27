@@ -1,6 +1,5 @@
 using Sinch;
 using Sinch.Conversation;
-using Sinch.Conversation.Common;
 using Sinch.Conversation.Contacts.GetChannelProfile;
 using Sinch.Snippets.Shared;
 
@@ -28,15 +27,9 @@ var client = new SinchClient(new SinchClientConfiguration
     }
 });
 
-Console.WriteLine($"Getting channel profile for contact '{contactId}' on Messenger");
+Console.WriteLine($"Getting Messenger channel profile for contact '{contactId}'");
 
-var request = new GetChannelProfileRequest
-{
-    AppId = appId,
-    Recipient = new ContactRecipient { ContactId = contactId },
-    Channel = ChannelProfileConversationChannel.Messenger
-};
-
-var response = await client.Conversation.Contacts.GetChannelProfile(request);
+var response = await client.Conversation.Contacts.GetChannelProfileByContactId(
+    appId, ChannelProfileConversationChannel.Messenger, contactId);
 
 Console.WriteLine($"Profile name: {response.ProfileName}");

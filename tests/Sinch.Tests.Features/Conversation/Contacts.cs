@@ -8,6 +8,7 @@ using Sinch.Conversation.Contacts;
 using Sinch.Conversation.Contacts.Create;
 using Sinch.Conversation.Contacts.GetChannelProfile;
 using Sinch.Conversation.Contacts.List;
+using Sinch.Conversation.Contacts.Merge;
 
 namespace Sinch.Tests.Features.Conversation;
 
@@ -98,18 +99,17 @@ public class Contacts
         _allContacts = new List<Contact>();
         _totalContactsPages = 0;
         ListContactsResponse response = null;
-        while (true)
+        do
         {
             response = await _contacts.List(new ListContactsRequest
             {
                 PageSize = 2,
                 PageToken = response?.NextPageToken
             });
-            if (response.Contacts == null || response.Contacts.Count == 0) break;
-            _allContacts.AddRange(response.Contacts);
+            if (response.Contacts != null)
+                _allContacts.AddRange(response.Contacts);
             _totalContactsPages++;
-            if (string.IsNullOrEmpty(response.NextPageToken)) break;
-        }
+        } while (!string.IsNullOrEmpty(response.NextPageToken));
     }
 
     [Then(@"the contacts iteration result contains the data from ""(.*)"" pages")]
@@ -183,7 +183,7 @@ public class Contacts
     [When(@"I send a request to merge a source contact to a destination contact")]
     public async Task WhenISendARequestToMergeASourceContactToADestinationContact()
     {
-        _contact = await _contacts.Merge(ContactId002, ContactId001);
+        _contact = await _contacts.MergeContact(ContactId002, new MergeContactRequest { SourceId = ContactId001 });
     }
 
     [Then(@"the response contains data from the destination contact and from the source contact")]

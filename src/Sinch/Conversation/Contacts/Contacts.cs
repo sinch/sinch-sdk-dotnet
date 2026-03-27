@@ -4,9 +4,11 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Sinch.Conversation.Common;
 using Sinch.Conversation.Contacts.Create;
 using Sinch.Conversation.Contacts.GetChannelProfile;
 using Sinch.Conversation.Contacts.List;
+using Sinch.Conversation.Contacts.Merge;
 using Sinch.Core;
 using Sinch.Logger;
 
@@ -105,6 +107,13 @@ namespace Sinch.Conversation.Contacts
         IAsyncEnumerable<Contact> ListAuto(ListContactsRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
+        ///     See <see cref="List(CancellationToken)" />, but lists all contacts automatically.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>An async stream of all <see cref="Contact" /> items across all pages.</returns>
+        IAsyncEnumerable<Contact> ListAuto(CancellationToken cancellationToken = default);
+
+        /// <summary>
         ///     Delete a contact as specified by the contact ID.
         /// </summary>
         /// <param name="contactId">The unique ID of the contact to delete.</param>
@@ -122,6 +131,30 @@ namespace Sinch.Conversation.Contacts
         /// <returns>The channel profile, including the user's display name on that channel.</returns>
         Task<ChannelProfile> GetChannelProfile(GetChannelProfileRequest request,
             CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Get user profile from a specific channel by contact ID.
+        ///     Convenience helper for <see cref="GetChannelProfile(GetChannelProfileRequest, CancellationToken)" />.
+        /// </summary>
+        /// <param name="appId">The ID of the app.</param>
+        /// <param name="channel">The channel to get the profile from.</param>
+        /// <param name="contactId">The ID of the contact.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ChannelProfile> GetChannelProfileByContactId(string appId, ChannelProfileConversationChannel channel,
+            string contactId, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Get user profile from a specific channel by channel identity.
+        ///     Convenience helper for <see cref="GetChannelProfile(GetChannelProfileRequest, CancellationToken)" />.
+        /// </summary>
+        /// <param name="appId">The ID of the app.</param>
+        /// <param name="channel">The channel to get the profile from.</param>
+        /// <param name="channelIdentity">The channel identity to look up.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ChannelProfile> GetChannelProfileByChannelIdentity(string appId, ChannelProfileConversationChannel channel,
+            ChannelIdentity channelIdentity, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Updates a contact as specified by the contact ID.
@@ -144,10 +177,10 @@ namespace Sinch.Conversation.Contacts
         ///     call.
         /// </summary>
         /// <param name="destinationId">The unique ID of the contact that should be kept when merging two contacts.</param>
-        /// <param name="sourceId">The unique ID of the contact that should be removed after merging.</param>
+        /// <param name="request">The merge request containing the source contact ID and optional merge strategy.</param>
         /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
         /// <returns>The merged destination contact with all combined identities and conversations.</returns>
-        Task<Contact> Merge(string destinationId, string sourceId, CancellationToken cancellationToken = default);
+        Task<Contact> MergeContact(string destinationId, MergeContactRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Lists identity conflicts for the project using server-default pagination. An identity conflict occurs when the same
@@ -230,6 +263,10 @@ namespace Sinch.Conversation.Contacts
         }
 
         /// <inheritdoc />
+        public IAsyncEnumerable<Contact> ListAuto(CancellationToken cancellationToken = default)
+            => ListAuto(new ListContactsRequest(), cancellationToken);
+
+        /// <inheritdoc />
         public async IAsyncEnumerable<Contact> ListAuto(ListContactsRequest request,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
@@ -266,6 +303,31 @@ namespace Sinch.Conversation.Contacts
         }
 
         /// <inheritdoc />
+        public Task<ChannelProfile> GetChannelProfileByContactId(string appId,
+            ChannelProfileConversationChannel channel, string contactId,
+            CancellationToken cancellationToken = default)
+            => GetChannelProfile(new GetChannelProfileRequest
+            {
+                AppId = appId,
+                Channel = channel,
+                Recipient = new ContactRecipient { ContactId = contactId }
+            }, cancellationToken);
+
+        /// <inheritdoc />
+        public Task<ChannelProfile> GetChannelProfileByChannelIdentity(string appId,
+            ChannelProfileConversationChannel channel, ChannelIdentity channelIdentity,
+            CancellationToken cancellationToken = default)
+            => GetChannelProfile(new GetChannelProfileRequest
+            {
+                AppId = appId,
+                Channel = channel,
+                Recipient = new Identified
+                {
+                    IdentifiedBy = new IdentifiedBy { ChannelIdentities = [channelIdentity] }
+                }
+            }, cancellationToken);
+
+        /// <inheritdoc />
         public Task<Contact> Update(Contact contact, CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Updating a {contactId} of {projectId}", contact.Id, _projectId);
@@ -278,13 +340,13 @@ namespace Sinch.Conversation.Contacts
         }
 
         /// <inheritdoc />
-        public Task<Contact> Merge(string destinationId, string sourceId, CancellationToken cancellationToken = default)
+        public Task<Contact> MergeContact(string destinationId, MergeContactRequest request,
+            CancellationToken cancellationToken = default)
         {
-            _logger?.LogDebug("Merging contacts from {sourceId} to {destinationId} for {projectId}", sourceId,
+            _logger?.LogDebug("Merging contacts from {sourceId} to {destinationId} for {projectId}", request.SourceId,
                 destinationId, _projectId);
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{destinationId}:merge");
-            return _http.Value.Send<object, Contact>(uri, HttpMethod.Post, new { source_id = sourceId },
-                cancellationToken);
+            return _http.Value.Send<MergeContactRequest, Contact>(uri, HttpMethod.Post, request, cancellationToken);
         }
 
         /// <inheritdoc />

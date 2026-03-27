@@ -11,8 +11,8 @@ var conversationRegion = ConfigurationHelper.GetConversationRegion() ?? "MY_CONV
 
 // Conversation app ID used to look up the channel profile
 const string appId = "CONVERSATION_APP_ID";
-// Contact ID whose channel profile to retrieve
-const string contactId = "CONTACT_ID";
+// The Messenger user ID of the contact
+const string messengerUserId = "MESSENGER_USER_ID";
 
 var client = new SinchClient(new SinchClientConfiguration
 {
@@ -28,15 +28,11 @@ var client = new SinchClient(new SinchClientConfiguration
     }
 });
 
-Console.WriteLine($"Getting channel profile for contact '{contactId}' on Messenger");
+Console.WriteLine($"Getting Messenger channel profile for identity '{messengerUserId}'");
 
-var request = new GetChannelProfileRequest
-{
-    AppId = appId,
-    Recipient = new ContactRecipient { ContactId = contactId },
-    Channel = ChannelProfileConversationChannel.Messenger
-};
-
-var response = await client.Conversation.Contacts.GetChannelProfile(request);
+var response = await client.Conversation.Contacts.GetChannelProfileByChannelIdentity(
+    appId,
+    ChannelProfileConversationChannel.Messenger,
+    new ChannelIdentity { Channel = ConversationChannel.Messenger, Identity = messengerUserId });
 
 Console.WriteLine($"Profile name: {response.ProfileName}");

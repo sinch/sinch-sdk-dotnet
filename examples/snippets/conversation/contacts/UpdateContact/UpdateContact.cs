@@ -1,6 +1,5 @@
 using Sinch;
 using Sinch.Conversation;
-using Sinch.Conversation.Common;
 using Sinch.Conversation.Contacts;
 using Sinch.Core;
 using Sinch.Snippets.Shared;
@@ -12,8 +11,6 @@ var conversationRegion = ConfigurationHelper.GetConversationRegion() ?? "MY_CONV
 
 // Contact ID to update
 const string contactId = "CONTACT_ID";
-// Recipient phone number in E.164 format
-const string recipientPhoneNumber = "RECIPIENT_PHONE_NUMBER";
 
 var client = new SinchClient(new SinchClientConfiguration
 {
@@ -29,17 +26,13 @@ var client = new SinchClient(new SinchClientConfiguration
     }
 });
 
-// Update the channel identities and priority on an existing contact
 Console.WriteLine($"Updating conversation contact '{contactId}'");
 
 var contact = new Contact
 {
     Id = contactId,
-    ChannelIdentities =
-    [
-        new() { Channel = ConversationChannel.Sms, Identity = recipientPhoneNumber }
-    ],
-    ChannelPriority = [ConversationChannel.Sms]
+    DisplayName = "Updated name with the .NET SDK",
+    ChannelPriority = [ConversationChannel.Messenger]
 };
 
 var response = await client.Conversation.Contacts.Update(contact);
