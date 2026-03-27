@@ -339,6 +339,47 @@ namespace Sinch.Tests.Conversation.Contacts
             channelProfile.Should().NotBeNull();
             channelProfile.ProfileName.Should().Be("Marty McFly FB");
         }
+
+        [Fact]
+        public async Task GetChannelProfileByChannelIdentities_SendsCorrectRequest_ReturnsProfile()
+        {
+            var messengerIdentity1 = "7968425018576406";
+            var messengerIdentity2 = "1234567890123456";
+            var request = new
+            {
+                app_id = AppId,
+                recipient = new
+                {
+                    identified_by = new
+                    {
+                        channel_identities = new[]
+                        {
+                            new { channel = "MESSENGER", identity = messengerIdentity1 },
+                            new { channel = "MESSENGER", identity = messengerIdentity2 }
+                        }
+                    }
+                },
+                channel = "MESSENGER"
+            };
+
+            HttpMessageHandlerMock
+                .When(HttpMethod.Post, $"{_contactsUrl}:getChannelProfile")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(JsonConvert.SerializeObject(request))
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new { profile_name = "Marty McFly FB" }));
+
+            var channelProfile = await Conversation.Contacts.GetChannelProfileByChannelIdentity(
+                AppId,
+                ChannelProfileConversationChannel.Messenger,
+                new List<ChannelIdentity>
+                {
+                    new() { Channel = ConversationChannel.Messenger, Identity = messengerIdentity1 },
+                    new() { Channel = ConversationChannel.Messenger, Identity = messengerIdentity2 }
+                });
+
+            channelProfile.Should().NotBeNull();
+            channelProfile.ProfileName.Should().Be("Marty McFly FB");
+        }
     }
 }
 
