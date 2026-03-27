@@ -8,7 +8,7 @@ public class MergeContactRequest
     ///     The ID of the contact to be removed and merged into the destination contact.
     /// </summary>
     [JsonPropertyName("source_id")]
-    public string? SourceId { get; set; }
+    public required string SourceId { get; set; }
 
     /// <summary>
     ///     Strategy to use when merging the two contacts.
