@@ -151,6 +151,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetChannelProfileByChannelI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateContact", "conversation\contacts\CreateContact\CreateContact.csproj", "{CAAD513F-DBB2-4301-A9A6-FBEADDC3ADC2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendOrderDetailsPaymentButtons", "conversation\messages\SendOrderDetailsPaymentButtons\SendOrderDetailsPaymentButtons.csproj", "{81B58831-47C9-47D9-9D2F-7BA40E6F1B96}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -767,6 +769,18 @@ Global
 		{CCEDDA99-4431-409F-9A5D-3F224FF57B45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3ABCAE06-EC81-4684-ADF1-1EF9C8981643}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3ABCAE06-EC81-4684-ADF1-1EF9C8981643}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81B58831-47C9-47D9-9D2F-7BA40E6F1B96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81B58831-47C9-47D9-9D2F-7BA40E6F1B96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81B58831-47C9-47D9-9D2F-7BA40E6F1B96}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{81B58831-47C9-47D9-9D2F-7BA40E6F1B96}.Debug|x64.Build.0 = Debug|Any CPU
+		{81B58831-47C9-47D9-9D2F-7BA40E6F1B96}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{81B58831-47C9-47D9-9D2F-7BA40E6F1B96}.Debug|x86.Build.0 = Debug|Any CPU
+		{81B58831-47C9-47D9-9D2F-7BA40E6F1B96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81B58831-47C9-47D9-9D2F-7BA40E6F1B96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81B58831-47C9-47D9-9D2F-7BA40E6F1B96}.Release|x64.ActiveCfg = Release|Any CPU
+		{81B58831-47C9-47D9-9D2F-7BA40E6F1B96}.Release|x64.Build.0 = Release|Any CPU
+		{81B58831-47C9-47D9-9D2F-7BA40E6F1B96}.Release|x86.ActiveCfg = Release|Any CPU
+		{81B58831-47C9-47D9-9D2F-7BA40E6F1B96}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -842,6 +856,7 @@ Global
 		{3ABCAE06-EC81-4684-ADF1-1EF9C8981643} = {48C5B664-4750-4396-9471-AABA4B218474}
 		{CAAD513F-DBB2-4301-A9A6-FBEADDC3ADC2} = {48C5B664-4750-4396-9471-AABA4B218474}
 		{48C5B664-4750-4396-9471-AABA4B218474} = {1C0BBA4E-C8D0-4033-A7F5-659EB3E0FFD8}
+		{81B58831-47C9-47D9-9D2F-7BA40E6F1B96} = {D14691D8-5D33-4332-8CDB-D0C6A4FAFF20}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4081DB0B-E6B8-47EB-A4AF-C9C20DAB9EE2}

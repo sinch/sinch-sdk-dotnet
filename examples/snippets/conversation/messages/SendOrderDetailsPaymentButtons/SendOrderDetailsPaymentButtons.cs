@@ -82,7 +82,7 @@ var request = new SendMessageRequest
         {
             ChannelIdentities =
             [
-                new ChannelIdentity
+                new ChannelRecipientIdentity
                 {
                     Channel = ConversationChannel.WhatsApp,
                     Identity = whatsAppPhoneNumber
