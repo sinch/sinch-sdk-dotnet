@@ -334,7 +334,7 @@ namespace Sinch.Tests.Conversation.Contacts
             var channelProfile = await Conversation.Contacts.GetChannelProfileByChannelIdentity(
                 AppId,
                 ChannelProfileConversationChannel.Messenger,
-                new ChannelIdentity { Channel = ConversationChannel.Messenger, Identity = messengerIdentity });
+                new ChannelRecipientIdentity { Channel = ConversationChannel.Messenger, Identity = messengerIdentity });
 
             channelProfile.Should().NotBeNull();
             channelProfile.ProfileName.Should().Be("Marty McFly FB");
@@ -371,7 +371,7 @@ namespace Sinch.Tests.Conversation.Contacts
             var channelProfile = await Conversation.Contacts.GetChannelProfileByChannelIdentity(
                 AppId,
                 ChannelProfileConversationChannel.Messenger,
-                new List<ChannelIdentity>
+                new List<ChannelRecipientIdentity>
                 {
                     new() { Channel = ConversationChannel.Messenger, Identity = messengerIdentity1 },
                     new() { Channel = ConversationChannel.Messenger, Identity = messengerIdentity2 }

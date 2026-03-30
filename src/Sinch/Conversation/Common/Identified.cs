@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Common
 {
@@ -9,6 +10,7 @@ namespace Sinch.Conversation.Common
 
     public sealed class IdentifiedBy
     {
-        public List<ChannelIdentity>? ChannelIdentities { get; set; }
+        [JsonPropertyName("channel_identities")]
+        public List<ChannelRecipientIdentity>? ChannelIdentities { get; set; }
     }
 }

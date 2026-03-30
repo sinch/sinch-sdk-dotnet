@@ -147,23 +147,23 @@ namespace Sinch.Conversation.Contacts
         /// </summary>
         /// <param name="appId">The ID of the app.</param>
         /// <param name="channel">The channel to get the profile from.</param>
-        /// <param name="channelIdentities">One or more channel identities to look up.</param>
+        /// <param name="channelIdentities">One or more channel recipient identities to look up.</param>
         /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
         /// <returns></returns>
         Task<ChannelProfile> GetChannelProfileByChannelIdentity(string appId, ChannelProfileConversationChannel channel,
-            IEnumerable<ChannelIdentity> channelIdentities, CancellationToken cancellationToken = default);
+            IEnumerable<ChannelRecipientIdentity> channelIdentities, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Get user profile from a specific channel by a single channel identity.
-        ///     Convenience helper for <see cref="GetChannelProfileByChannelIdentity(string, ChannelProfileConversationChannel, IEnumerable{ChannelIdentity}, CancellationToken)" />.
+        ///     Convenience helper for <see cref="GetChannelProfileByChannelIdentity(string, ChannelProfileConversationChannel, IEnumerable{ChannelRecipientIdentity}, CancellationToken)" />.
         /// </summary>
         /// <param name="appId">The ID of the app.</param>
         /// <param name="channel">The channel to get the profile from.</param>
-        /// <param name="channelIdentity">The channel identity to look up.</param>
+        /// <param name="channelIdentity">The channel recipient identity to look up.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<ChannelProfile> GetChannelProfileByChannelIdentity(string appId, ChannelProfileConversationChannel channel,
-            ChannelIdentity channelIdentity, CancellationToken cancellationToken = default);
+            ChannelRecipientIdentity channelIdentity, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Updates a contact as specified by the contact ID.
@@ -289,9 +289,8 @@ namespace Sinch.Conversation.Contacts
             }, cancellationToken);
 
         /// <inheritdoc />
-        /// <inheritdoc />
         public Task<ChannelProfile> GetChannelProfileByChannelIdentity(string appId,
-            ChannelProfileConversationChannel channel, IEnumerable<ChannelIdentity> channelIdentities,
+            ChannelProfileConversationChannel channel, IEnumerable<ChannelRecipientIdentity> channelIdentities,
             CancellationToken cancellationToken = default)
             => GetChannelProfile(new GetChannelProfileRequest
             {
@@ -305,7 +304,7 @@ namespace Sinch.Conversation.Contacts
 
         /// <inheritdoc />
         public Task<ChannelProfile> GetChannelProfileByChannelIdentity(string appId,
-            ChannelProfileConversationChannel channel, ChannelIdentity channelIdentity,
+            ChannelProfileConversationChannel channel, ChannelRecipientIdentity channelIdentity,
             CancellationToken cancellationToken = default)
             => GetChannelProfileByChannelIdentity(appId, channel, [channelIdentity], cancellationToken);
 
