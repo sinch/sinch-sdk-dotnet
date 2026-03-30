@@ -36,8 +36,8 @@ var response = await client.Conversation.Contacts.GetChannelProfileByChannelIden
     appId,
     ChannelProfileConversationChannel.Messenger,
     [
-        new ChannelIdentity { Channel = ConversationChannel.Messenger, Identity = messengerUserId1 },
-        new ChannelIdentity { Channel = ConversationChannel.Messenger, Identity = messengerUserId2 }
+        new ChannelRecipientIdentity { Channel = ConversationChannel.Messenger, Identity = messengerUserId1 },
+        new ChannelRecipientIdentity { Channel = ConversationChannel.Messenger, Identity = messengerUserId2 }
     ]);
 
 Console.WriteLine($"Profile name: {response.ProfileName}");

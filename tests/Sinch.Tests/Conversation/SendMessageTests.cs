@@ -468,9 +468,9 @@ namespace Sinch.Tests.Conversation
             {
                 IdentifiedBy = new IdentifiedBy()
                 {
-                    ChannelIdentities = new List<ChannelIdentity>()
+                    ChannelIdentities = new List<ChannelRecipientIdentity>()
                     {
-                        new ChannelIdentity
+                        new ChannelRecipientIdentity
                         {
                             Identity = "identity",
                             Channel = ConversationChannel.Mms
