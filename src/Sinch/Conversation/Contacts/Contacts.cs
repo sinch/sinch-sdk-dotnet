@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Sinch.Conversation.Common;
 using Sinch.Conversation.Contacts.Create;
 using Sinch.Conversation.Contacts.GetChannelProfile;
 using Sinch.Conversation.Contacts.List;
+using Sinch.Conversation.Contacts.Merge;
 using Sinch.Core;
 using Sinch.Logger;
 
@@ -60,42 +63,62 @@ namespace Sinch.Conversation.Contacts
         ///     on the server and the display_name field has not been overwritten by the user).
         /// </summary>
         /// <param name="contactId">The unique ID of the contact.</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>The contact matching the given ID.</returns>
         Task<Contact> Get(string contactId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Most Conversation API contacts are [created
-        ///     automatically](https://developers.sinch.com/docs/conversation/contact-management/) when a message is sent to a new
+        ///     Most Conversation API contacts are <a href="https://developers.sinch.com/docs/conversation/contact-management/">created
+        ///     automatically</a> when a message is sent to a new
         ///     recipient. You can also create a new contact manually using this API call.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="request">Contact details including at least one channel identity and the preferred language.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>The newly created contact.</returns>
         Task<Contact> Create(CreateContactRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     List all contacts in the project. Note that, if a WhatsApp contact is returned, the display_name field of that
-        ///     contact may be populated with the WhatsApp display name (if the name is already stored on the server and the
-        ///     display_name field has not been overwritten by the user).
+        ///     Lists contacts in the project using server-default pagination (page size 10). Note that, if a WhatsApp contact is
+        ///     returned, the display_name field of that contact may be populated with the WhatsApp display name (if the name is
+        ///     already stored on the server and the display_name field has not been overwritten by the user).
         /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>
+        ///     A page of contacts using server-default pagination. Use <see cref="ListContactsResponse.NextPageToken" /> to retrieve
+        ///     subsequent pages, or use <see cref="ListAuto(ListContactsRequest, CancellationToken)" /> to iterate all pages automatically.
+        /// </returns>
+        Task<ListContactsResponse> List(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Lists contacts in the project with optional filters and pagination. Note that, if a WhatsApp contact is returned,
+        ///     the display_name field of that contact may be populated with the WhatsApp display name (if the name is already
+        ///     stored on the server and the display_name field has not been overwritten by the user).
+        /// </summary>
+        /// <param name="request">Filters and pagination options, including channel, identity, and external ID.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>A page of contacts matching the given filters.</returns>
         Task<ListContactsResponse> List(ListContactsRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     See <see cref="List" />, but lists all contacts automatically.
+        ///     See <see cref="List(ListContactsRequest, CancellationToken)" />, but lists all contacts automatically.
         /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="request">Filters and pagination options used as the initial request; page tokens are managed automatically.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>An async stream of all <see cref="Contact" /> items across all pages.</returns>
         IAsyncEnumerable<Contact> ListAuto(ListContactsRequest request, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     See <see cref="List(CancellationToken)" />, but lists all contacts automatically.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>An async stream of all <see cref="Contact" /> items across all pages.</returns>
+        IAsyncEnumerable<Contact> ListAuto(CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Delete a contact as specified by the contact ID.
         /// </summary>
-        /// <param name="contactId">The unique ID of the contact.</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="contactId">The unique ID of the contact to delete.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
         Task Delete(string contactId, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -104,18 +127,57 @@ namespace Sinch.Conversation.Contacts
         ///     which will populate the display_name field of each returned contact with the WhatsApp display name (if the name is
         ///     already stored on the server and the display_name field has not been overwritten by the user).
         /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="request">The app ID, recipient, and target channel for the profile lookup.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>The channel profile, including the user's display name on that channel.</returns>
         Task<ChannelProfile> GetChannelProfile(GetChannelProfileRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Updates a contact as specified by the contact ID.
+        ///     Get user profile from a specific channel by contact ID.
+        ///     Convenience helper for <see cref="GetChannelProfile(GetChannelProfileRequest, CancellationToken)" />.
         /// </summary>
-        /// <param name="contact"></param>
+        /// <param name="appId">The ID of the app.</param>
+        /// <param name="channel">The channel to get the profile from.</param>
+        /// <param name="contactId">The ID of the contact.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        Task<ChannelProfile> GetChannelProfileByContactId(string appId, ChannelProfileConversationChannel channel,
+            string contactId, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Get user profile from a specific channel by channel identities.
+        ///     Convenience helper for <see cref="GetChannelProfile(GetChannelProfileRequest, CancellationToken)" />.
+        /// </summary>
+        /// <param name="appId">The ID of the app.</param>
+        /// <param name="channel">The channel to get the profile from.</param>
+        /// <param name="channelIdentities">One or more channel recipient identities to look up.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns></returns>
+        Task<ChannelProfile> GetChannelProfileByChannelIdentity(string appId, ChannelProfileConversationChannel channel,
+            IEnumerable<ChannelRecipientIdentity> channelIdentities, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Get user profile from a specific channel by a single channel identity.
+        ///     Convenience helper for <see cref="GetChannelProfileByChannelIdentity(string, ChannelProfileConversationChannel, IEnumerable{ChannelRecipientIdentity}, CancellationToken)" />.
+        /// </summary>
+        /// <param name="appId">The ID of the app.</param>
+        /// <param name="channel">The channel to get the profile from.</param>
+        /// <param name="channelIdentity">The channel recipient identity to look up.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<ChannelProfile> GetChannelProfileByChannelIdentity(string appId, ChannelProfileConversationChannel channel,
+            ChannelRecipientIdentity channelIdentity, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Updates a contact as specified by the contact ID.
+        /// </summary>
+        /// <param name="contact">
+        ///     The contact to update. Only fields that are set (non-null) are sent to the server;
+        ///     unset fields are left unchanged.
+        /// </param>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>The updated contact.</returns>
         Task<Contact> Update(Contact contact, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -128,10 +190,48 @@ namespace Sinch.Conversation.Contacts
         ///     call.
         /// </summary>
         /// <param name="destinationId">The unique ID of the contact that should be kept when merging two contacts.</param>
-        /// <param name="sourceId">The ID of the contact that should be removed.</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<Contact> Merge(string destinationId, string sourceId, CancellationToken cancellationToken = default);
+        /// <param name="request">The merge request containing the source contact ID and optional merge strategy.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>The merged destination contact with all combined identities and conversations.</returns>
+        Task<Contact> MergeContact(string destinationId, MergeContactRequest request, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Lists identity conflicts for the project using server-default pagination. An identity conflict occurs when the same
+        ///     channel identity is linked to multiple contacts, which may lead to ambiguous message delivery.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>
+        ///     A page of identity conflicts using server-default pagination. Use
+        ///     <see cref="ListIdentityConflictsResponse.NextPageToken" /> to retrieve subsequent pages, or use
+        ///     <see cref="ListIdentityConflictsAuto(ListIdentityConflictsRequest, CancellationToken)" /> to iterate all pages automatically.
+        /// </returns>
+        Task<ListIdentityConflictsResponse> ListIdentityConflicts(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Lists identity conflicts for the project with optional pagination. An identity conflict occurs when the same
+        ///     channel identity is linked to multiple contacts, which may lead to ambiguous message delivery.
+        /// </summary>
+        /// <param name="request">Pagination options: page size (max 20) and optional page token for subsequent pages.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>A page of identity conflicts, plus a token for the next page when more results are available.</returns>
+        Task<ListIdentityConflictsResponse> ListIdentityConflicts(ListIdentityConflictsRequest request,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     See <see cref="ListIdentityConflicts(ListIdentityConflictsRequest, CancellationToken)" />, but lists all identity conflicts automatically.
+        /// </summary>
+        /// <param name="request">Pagination options used as the initial request; page tokens are managed automatically.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>An async stream of all <see cref="IdentityConflict" /> items across all pages.</returns>
+        IAsyncEnumerable<IdentityConflict> ListIdentityConflictsAuto(ListIdentityConflictsRequest request,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     See <see cref="ListIdentityConflicts(CancellationToken)" />, but lists all identity conflicts automatically.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>An async stream of all <see cref="IdentityConflict" /> items across all pages.</returns>
+        IAsyncEnumerable<IdentityConflict> ListIdentityConflictsAuto(CancellationToken cancellationToken = default);
     }
 
     internal sealed class Contacts : ISinchConversationContacts
@@ -169,6 +269,10 @@ namespace Sinch.Conversation.Contacts
         }
 
         /// <inheritdoc />
+        public Task<ListContactsResponse> List(CancellationToken cancellationToken = default)
+            => List(new ListContactsRequest(), cancellationToken);
+
+        /// <inheritdoc />
         public Task<ListContactsResponse> List(ListContactsRequest request,
             CancellationToken cancellationToken = default)
         {
@@ -177,6 +281,10 @@ namespace Sinch.Conversation.Contacts
             _logger?.LogDebug("Listing contacts for {projectId}", _projectId);
             return _http.Value.Send<ListContactsResponse>(uri, HttpMethod.Get, cancellationToken);
         }
+
+        /// <inheritdoc />
+        public IAsyncEnumerable<Contact> ListAuto(CancellationToken cancellationToken = default)
+            => ListAuto(new ListContactsRequest(), cancellationToken);
 
         /// <inheritdoc />
         public async IAsyncEnumerable<Contact> ListAuto(ListContactsRequest request,
@@ -215,6 +323,37 @@ namespace Sinch.Conversation.Contacts
         }
 
         /// <inheritdoc />
+        public Task<ChannelProfile> GetChannelProfileByContactId(string appId,
+            ChannelProfileConversationChannel channel, string contactId,
+            CancellationToken cancellationToken = default)
+            => GetChannelProfile(new GetChannelProfileRequest
+            {
+                AppId = appId,
+                Channel = channel,
+                Recipient = new ContactRecipient { ContactId = contactId }
+            }, cancellationToken);
+
+        /// <inheritdoc />
+        public Task<ChannelProfile> GetChannelProfileByChannelIdentity(string appId,
+            ChannelProfileConversationChannel channel, IEnumerable<ChannelRecipientIdentity> channelIdentities,
+            CancellationToken cancellationToken = default)
+            => GetChannelProfile(new GetChannelProfileRequest
+            {
+                AppId = appId,
+                Channel = channel,
+                Recipient = new Identified
+                {
+                    IdentifiedBy = new IdentifiedBy { ChannelIdentities = channelIdentities.ToList() }
+                }
+            }, cancellationToken);
+
+        /// <inheritdoc />
+        public Task<ChannelProfile> GetChannelProfileByChannelIdentity(string appId,
+            ChannelProfileConversationChannel channel, ChannelRecipientIdentity channelIdentity,
+            CancellationToken cancellationToken = default)
+            => GetChannelProfileByChannelIdentity(appId, channel, [channelIdentity], cancellationToken);
+
+        /// <inheritdoc />
         public Task<Contact> Update(Contact contact, CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Updating a {contactId} of {projectId}", contact.Id, _projectId);
@@ -227,18 +366,57 @@ namespace Sinch.Conversation.Contacts
         }
 
         /// <inheritdoc />
-        public Task<Contact> Merge(string destinationId, string sourceId, CancellationToken cancellationToken = default)
+        public Task<Contact> MergeContact(string destinationId, MergeContactRequest request,
+            CancellationToken cancellationToken = default)
         {
-            _logger?.LogDebug("Merging contacts from {sourceId} to {destinationId} for {projectId}", sourceId,
+            _logger?.LogDebug("Merging contacts from {sourceId} to {destinationId} for {projectId}", request.SourceId,
                 destinationId, _projectId);
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{destinationId}:merge");
-            return _http.Value.Send<object, Contact>(uri, HttpMethod.Post, new
+            return _http.Value.Send<MergeContactRequest, Contact>(uri, HttpMethod.Post, request, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<ListIdentityConflictsResponse> ListIdentityConflicts(CancellationToken cancellationToken = default)
+            => ListIdentityConflicts(new ListIdentityConflictsRequest(), cancellationToken);
+
+        /// <inheritdoc />
+        public Task<ListIdentityConflictsResponse> ListIdentityConflicts(ListIdentityConflictsRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var query = Utils.ToSnakeCaseQueryString(request);
+            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts:identityConflicts?{query}");
+
+            _logger?.LogDebug("Listing identity conflicts for {projectId}", _projectId);
+
+            return _http.Value.Send<ListIdentityConflictsResponse>(uri, HttpMethod.Get, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public IAsyncEnumerable<IdentityConflict> ListIdentityConflictsAuto(
+            CancellationToken cancellationToken = default)
+            => ListIdentityConflictsAuto(new ListIdentityConflictsRequest(), cancellationToken);
+
+        /// <inheritdoc />
+        public async IAsyncEnumerable<IdentityConflict> ListIdentityConflictsAuto(ListIdentityConflictsRequest request,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            _logger?.LogDebug("Auto listing identity conflicts for {projectId}", _projectId);
+
+            do
             {
-                source_id = sourceId,
-                // NOTE: keep in mind while this enum has only one value, it can change in the future.
-                strategy = "MERGE"
-            },
-                cancellationToken);
+                var query = Utils.ToSnakeCaseQueryString(request);
+                var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts:identityConflicts?{query}");
+                var response = await _http.Value.Send<ListIdentityConflictsResponse>(uri, HttpMethod.Get, cancellationToken);
+
+                request.PageToken = response.NextPageToken;
+
+                if (response.Conflicts == null)
+                    continue;
+
+                foreach (var conflict in response.Conflicts)
+                    yield return conflict;
+
+            } while (!string.IsNullOrEmpty(request.PageToken));
         }
     }
 }
