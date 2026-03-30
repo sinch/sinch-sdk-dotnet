@@ -24,6 +24,7 @@ var client = new SinchClient(new SinchClientConfiguration
 
 Console.WriteLine("Listing conversation contact identity conflicts");
 
-var response = await client.Conversation.Contacts.ListIdentityConflicts();
-
-Console.WriteLine($"Response: {response.ToPrettyString()}");
+await foreach (var conflict in client.Conversation.Contacts.ListIdentityConflictsAuto())
+{
+    Console.WriteLine($"Conflict: {conflict.ToPrettyString()}");
+}
