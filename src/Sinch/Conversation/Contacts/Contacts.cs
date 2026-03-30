@@ -225,6 +225,13 @@ namespace Sinch.Conversation.Contacts
         /// <returns>An async stream of all <see cref="IdentityConflict" /> items across all pages.</returns>
         IAsyncEnumerable<IdentityConflict> ListIdentityConflictsAuto(ListIdentityConflictsRequest request,
             CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     See <see cref="ListIdentityConflicts(CancellationToken)" />, but lists all identity conflicts automatically.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
+        /// <returns>An async stream of all <see cref="IdentityConflict" /> items across all pages.</returns>
+        IAsyncEnumerable<IdentityConflict> ListIdentityConflictsAuto(CancellationToken cancellationToken = default);
     }
 
     internal sealed class Contacts : ISinchConversationContacts
@@ -383,6 +390,11 @@ namespace Sinch.Conversation.Contacts
 
             return _http.Value.Send<ListIdentityConflictsResponse>(uri, HttpMethod.Get, cancellationToken);
         }
+
+        /// <inheritdoc />
+        public IAsyncEnumerable<IdentityConflict> ListIdentityConflictsAuto(
+            CancellationToken cancellationToken = default)
+            => ListIdentityConflictsAuto(new ListIdentityConflictsRequest(), cancellationToken);
 
         /// <inheritdoc />
         public async IAsyncEnumerable<IdentityConflict> ListIdentityConflictsAuto(ListIdentityConflictsRequest request,
