@@ -380,6 +380,42 @@ namespace Sinch.Tests.Conversation.Contacts
             channelProfile.Should().NotBeNull();
             channelProfile.ProfileName.Should().Be("Marty McFly FB");
         }
+
+        [Fact]
+        public async Task ListIdentityConflicts_ReturnsPagedConflicts()
+        {
+            HttpMessageHandlerMock
+                .When(HttpMethod.Get, $"{_contactsUrl}:identityConflicts*")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    conflicts = new[]
+                    {
+                        new
+                        {
+                            identity = "12015555555",
+                            channels = new[] { "RCS", "SMS" },
+                            contact_ids = new[] { ContactId001, ContactId002 }
+                        },
+                        new
+                        {
+                            identity = "12016666666",
+                            channels = new[] { "MMS", "RCS", "SMS" },
+                            contact_ids = new[] { "01W4FFL35P4NC4K35CONTACT003", "01W4FFL35P4NC4K35CONTACT004" }
+                        }
+                    },
+                    next_page_token = "MTIwMTY2NjY2NjY="
+                }));
+
+            var response = await Conversation.Contacts.ListIdentityConflicts(new ListIdentityConflictsRequest { PageSize = 2 });
+
+            response.Should().NotBeNull();
+            response.Conflicts.Should().HaveCount(2);
+            response.NextPageToken.Should().NotBeNullOrEmpty();
+            response.Conflicts![0].Identity.Should().Be("12015555555");
+            response.Conflicts![0].Channels.Should().Contain(ConversationChannel.Sms);
+            response.Conflicts![0].ContactIds.Should().Contain(ContactId001);
+        }
     }
 }
 
