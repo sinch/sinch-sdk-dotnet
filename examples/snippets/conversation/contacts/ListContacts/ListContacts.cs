@@ -25,7 +25,7 @@ var client = new SinchClient(new SinchClientConfiguration
 
 Console.WriteLine("Listing all conversation contacts (page by page)");
 
-ListContactsResponse response = null;
+ListContactsResponse? response = null;
 do
 {
     response = await client.Conversation.Contacts.List(new ListContactsRequest
