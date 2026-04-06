@@ -400,6 +400,71 @@ namespace Sinch.Tests.Conversation
         }
 
         [Fact]
+        public async Task UpdateMessage_SetsMetadata_ReturnsUpdatedMessage()
+        {
+            const string messageId = "msg_001";
+            const string newMetadata = "Updated metadata";
+
+            HttpMessageHandlerMock
+                .When(HttpMethod.Patch,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/messages/{messageId}")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithJson(JsonConvert.SerializeObject(new { metadata = newMetadata }))
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    id = messageId,
+                    direction = "TO_CONTACT",
+                    metadata = newMetadata,
+                    contact_id = "contact_01",
+                    injected = false
+                }));
+
+            var response = await Conversation.Messages.Update(messageId, newMetadata);
+
+            response.Should().NotBeNull();
+            response.Id.Should().Be(messageId);
+            response.Metadata.Should().Be(newMetadata);
+        }
+
+        [Fact]
+        public async Task ListAuto_IteratesThroughAllPages()
+        {
+            const string nextPageToken = "page2_token";
+
+            HttpMessageHandlerMock
+                .Expect(HttpMethod.Get,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/messages")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithQueryString("page_size", "2")
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    next_page_token = nextPageToken,
+                    messages = new[] { Message(), Message() }
+                }));
+
+            HttpMessageHandlerMock
+                .Expect(HttpMethod.Get,
+                    $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/messages")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .WithQueryString("page_size", "2")
+                .WithQueryString("page_token", nextPageToken)
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                {
+                    next_page_token = (string)null,
+                    messages = new[] { Message() }
+                }));
+
+            var messages = new List<ConversationMessage>();
+            await foreach (var message in Conversation.Messages.ListAuto(new ListMessagesRequest { PageSize = 2 }))
+            {
+                messages.Add(message);
+            }
+
+            messages.Should().HaveCount(3);
+            HttpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
         public void SerializeBirthDate()
         {
             // the birthday format is YYYY-MM-DD
