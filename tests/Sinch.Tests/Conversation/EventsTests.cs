@@ -18,7 +18,7 @@ namespace Sinch.Tests.Conversation
     {
         private const string EventId1 = "CONTACT_EVENT1";
         private const string EventId2 = "CONTACT_EVENT2";
-        
+
         private readonly string _baseEventsUrl =
             $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/events";
 
@@ -124,7 +124,7 @@ namespace Sinch.Tests.Conversation
         public async Task ListAuto_WithMultiplePages_IteratesThroughAllEvents()
         {
             const string eventId3 = "CONTACT_EVENT2";
-            
+
             HttpMessageHandlerMock
                 .Expect(HttpMethod.Get, _baseEventsUrl)
                 .WithHeaders("Authorization", $"Bearer {Token}")

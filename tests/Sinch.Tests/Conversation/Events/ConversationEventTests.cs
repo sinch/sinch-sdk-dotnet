@@ -43,7 +43,7 @@ namespace Sinch.Tests.Conversation.Events
             var result = JsonSerializer.Deserialize<ConversationEvent>(json, Conversation.JsonSerializerOptions);
 
             var expectedContactEvent = new ContactEvent(new ComposingEndEvent());
-            
+
             result.ContactEvent.Should().BeEquivalentTo(expectedContactEvent);
             result.AppEvent.Should().BeNull();
             result.ContactMessageEvent.Should().BeNull();
@@ -64,7 +64,7 @@ namespace Sinch.Tests.Conversation.Events
                     PaymentTransactionStatus = PaymentTransactionStatus.PaymentStatusTransactionFailed,
                     PaymentTransactionId = "transaction_id"
                 });
-            
+
             result.Should().NotBeNull();
             result!.Id.Should().Be("01W4FFL35P4NC4K35CONVEVENT3");
             result.ContactMessageEvent.Should().BeEquivalentTo(expectedContactEvent);
