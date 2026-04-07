@@ -28,13 +28,12 @@ namespace Sinch.Tests.Conversation
         public async Task GetMessage()
         {
             const string messageId = "123_abc";
-            var responseObj = Message();
             HttpMessageHandlerMock
                 .When(HttpMethod.Get,
                     $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/messages/{messageId}")
                 .WithQueryString("messages_source", "CONVERSATION_SOURCE")
                 .WithHeaders("Authorization", $"Bearer {Token}")
-                .Respond(HttpStatusCode.OK, JsonContent.Create(responseObj));
+                .Respond(HttpStatusCode.OK, JsonContent.Create(Message(), options: SinchConversationClient.JsonSerializerOptionsInner));
 
             var response = await Conversation.Messages.Get(messageId, MessageSource.ConversationSource);
 
@@ -109,15 +108,11 @@ namespace Sinch.Tests.Conversation
                 .WithQueryString("messages_source", "DISPATCH_SOURCE")
                 .WithQueryString("only_recipient_originated", "true")
                 .WithQueryString("direction", "TO_CONTACT")
-                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new ListMessagesResponse
                 {
-                    next_page_token = nextPageToken,
-                    messages = new[]
-                    {
-                        Message(),
-                        Message()
-                    }
-                }));
+                    NextPageToken = nextPageToken,
+                    Messages = new List<ConversationMessage> { Message(), Message() }
+                }, options: SinchConversationClient.JsonSerializerOptionsInner));
 
             var dateTime = new DateTime(2022, 7, 12);
             var response = await Conversation.Messages.List(new ListMessagesRequest
@@ -193,77 +188,52 @@ namespace Sinch.Tests.Conversation
                 .Where(x => x.DetailedMessage == "Invalid argument");
         }
 
-        // I'm sorry, but it's really that complex object...
-        private static object Message()
+        // Represents a ConversationMessage returned by the Conversation API.
+        private static ConversationMessage Message() => new ConversationMessage
         {
-            var responseObj = new
+            AcceptTime = new DateTime(2019, 8, 24, 14, 15, 22, DateTimeKind.Utc),
+            AppMessage = new AppMessage(new ListMessage
             {
-                accept_time = "2019-08-24T14:15:22Z",
-                app_message = new
+                Title = "title",
+                Sections = new List<ListSection>
                 {
-                    list_message = new
+                    new ListSection
                     {
-                        title = "title",
-                        sections = new dynamic[]
+                        Title = "sec1",
+                        Items = new List<IListItem>
                         {
-                            new
+                            new ChoiceItem
                             {
-                                title = "sec1",
-                                items = new[]
-                                {
-                                    new
-                                    {
-                                        choice = new
-                                        {
-                                            title = "title",
-                                            description = "desc",
-                                            media = new
-                                            {
-                                                url = "http://localhost",
-                                            },
-                                            postback_data = "postback"
-                                        }
-                                    }
-                                }
-                            },
-                            new
-                            {
-                                title = "sec2",
-                                items = new[]
-                                {
-                                    new
-                                    {
-                                        product = new
-                                        {
-                                            id = "id",
-                                            marketplace = "amazon"
-                                        }
-                                    }
-                                }
+                                Title = "title",
+                                Description = "desc",
+                                Media = new MediaMessage { Url = "http://localhost" },
+                                PostbackData = "postback"
                             }
                         }
                     },
-                    explicit_channel_message = new { },
-                    additionalProperties = new
+                    new ListSection
                     {
-                        contact_name = "string"
+                        Title = "sec2",
+                        Items = new List<IListItem>
+                        {
+                            new ProductItem { Id = "id", Marketplace = "amazon" }
+                        }
                     }
-                },
-                channel_identity = new
-                {
-                    app_id = "string",
-                    channel = "WHATSAPP",
-                    identity = "string"
-                },
-                contact_id = "string",
-                conversation_id = "string",
-                direction = "TO_APP",
-                id = "string",
-                metadata = "string",
-                injected = true
-            };
-            return responseObj;
-        }
+                }
+            }),
+            ChannelIdentity = new ChannelIdentity
+            {
+                AppId = "string",
+                Channel = ConversationChannel.WhatsApp,
+                Identity = "string"
+            },
+            ContactId = "string",
+            ConversationId = "string",
+            Direction = ConversationDirection.ToApp,
+            Id = "string",
+            Metadata = "string",
+            Injected = true
+        };
 
         [Fact]
         public async Task ListMessagesByChannelIdentity()
@@ -288,11 +258,11 @@ namespace Sinch.Tests.Conversation
                     channel = "WHATSAPP",
                     direction = "TO_CONTACT"
                 }))
-                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new ListMessagesResponse
                 {
-                    next_page_token = nextPageToken,
-                    messages = new[] { Message() }
-                }));
+                    NextPageToken = nextPageToken,
+                    Messages = new List<ConversationMessage> { Message() }
+                }, options: SinchConversationClient.JsonSerializerOptionsInner));
 
             var dateTime = new DateTime(2026, 1, 1, 8, 30, 0);
             var response = await Conversation.Messages.ListLastMessagesByChannelIdentity(new ListMessagesByChannelIdentityRequest
@@ -328,11 +298,11 @@ namespace Sinch.Tests.Conversation
                     contact_ids = new[] { "01H5XXXXXXXXXXXXXXXXXXX1", "01H5XXXXXXXXXXXXXXXXXXX2" },
                     messages_source = "CONVERSATION_SOURCE"
                 }))
-                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new ListMessagesResponse
                 {
-                    next_page_token = nextPageToken,
-                    messages = new[] { Message() }
-                }));
+                    NextPageToken = nextPageToken,
+                    Messages = new List<ConversationMessage> { Message() }
+                }, options: SinchConversationClient.JsonSerializerOptionsInner));
 
             var response = await Conversation.Messages.ListLastMessagesByChannelIdentity(new ListMessagesByChannelIdentityRequest
             {
@@ -360,11 +330,11 @@ namespace Sinch.Tests.Conversation
                     app_id = "app_id_1",
                     messages_source = "DISPATCH_SOURCE"
                 }))
-                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new ListMessagesResponse
                 {
-                    next_page_token = nextPageToken,
-                    messages = new[] { Message() }
-                }));
+                    NextPageToken = nextPageToken,
+                    Messages = new List<ConversationMessage> { Message() }
+                }, options: SinchConversationClient.JsonSerializerOptionsInner));
 
             HttpMessageHandlerMock
                 .Expect(HttpMethod.Post,
@@ -377,11 +347,11 @@ namespace Sinch.Tests.Conversation
                     messages_source = "DISPATCH_SOURCE",
                     page_token = nextPageToken
                 }))
-                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new ListMessagesResponse
                 {
-                    next_page_token = (string)null,
-                    messages = new[] { Message() }
-                }));
+                    NextPageToken = null,
+                    Messages = new List<ConversationMessage> { Message() }
+                }, options: SinchConversationClient.JsonSerializerOptionsInner));
 
             var messages = new List<ConversationMessage>();
             await foreach (var message in Conversation.Messages.ListLastMessagesByChannelIdentityAuto(
@@ -436,11 +406,11 @@ namespace Sinch.Tests.Conversation
                     $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/messages")
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .WithQueryString("page_size", "2")
-                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new ListMessagesResponse
                 {
-                    next_page_token = nextPageToken,
-                    messages = new[] { Message(), Message() }
-                }));
+                    NextPageToken = nextPageToken,
+                    Messages = new List<ConversationMessage> { Message(), Message() }
+                }, options: SinchConversationClient.JsonSerializerOptionsInner));
 
             HttpMessageHandlerMock
                 .Expect(HttpMethod.Get,
@@ -448,11 +418,11 @@ namespace Sinch.Tests.Conversation
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .WithQueryString("page_size", "2")
                 .WithQueryString("page_token", nextPageToken)
-                .Respond(HttpStatusCode.OK, JsonContent.Create(new
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new ListMessagesResponse
                 {
-                    next_page_token = (string)null,
-                    messages = new[] { Message() }
-                }));
+                    NextPageToken = null,
+                    Messages = new List<ConversationMessage> { Message() }
+                }, options: SinchConversationClient.JsonSerializerOptionsInner));
 
             var messages = new List<ConversationMessage>();
             await foreach (var message in Conversation.Messages.ListAuto(new ListMessagesRequest { PageSize = 2 }))
