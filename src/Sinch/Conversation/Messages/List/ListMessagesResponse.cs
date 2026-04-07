@@ -8,7 +8,7 @@ namespace Sinch.Conversation.Messages.List
         /// <summary>
         ///     List of messages associated to the referenced conversation.
         /// </summary>
-        public IEnumerable<ConversationMessage>? Messages { get; set; }
+        public List<ConversationMessage>? Messages { get; set; }
 
         /// <summary>
         ///     Token that should be included in the next request to fetch the next page.
