@@ -30,6 +30,8 @@
 - [Conversation API: WhatsApp payment_settings replaced by payment_buttons](#conversation-api-whatsapp-payment_settings-replaced-by-payment_buttons)
 - [Conversation API: ConversationDirection.UndefinedDirection removed](#conversation-api-conversationdirectionundefineddirection-removed)
 - [Conversation API: ConversationEvent.Event and ConversationEventEvent removed](#conversation-api-conversationeventevent-and-conversationeventevent-removed)
+- [Conversation API: ListConversationsRequest.OnlyActive is no longer required](#conversation-api-listconversationsrequestonlyactive-is-no-longer-required)
+- [Conversation API: InjectMessageRequest fields are now required](#conversation-api-injectmessagerequest-fields-are-now-required)
 
 ## .NET Framework Support
 
@@ -864,4 +866,47 @@ Version 2.*:
 var appEvent = conversationEvent.AppEvent;
 var contactEvent = conversationEvent.ContactEvent;
 var contactMessageEvent = conversationEvent.ContactMessageEvent;
+```
+
+## Conversation API: ListConversationsRequest.OnlyActive is no longer required
+
+`OnlyActive` has been changed from `required bool` to `bool?`.
+
+Version 1.*:
+```csharp
+var request = new ListConversationsRequest { OnlyActive = false, AppId = "app-id" };
+```
+
+Version 2.*:
+```csharp
+// OnlyActive can be omitted — the server uses its default behavior
+var request = new ListConversationsRequest { AppId = "app-id" };
+// Or explicitly set it
+var request = new ListConversationsRequest { OnlyActive = true, AppId = "app-id" };
+```
+
+## Conversation API: InjectMessageRequest fields are now required
+
+`Direction`, `ChannelIdentity`, and `ContactId` are now `required` on `InjectMessageRequest`.
+
+Version 1.*:
+```csharp
+var request = new InjectMessageRequest
+{
+    AcceptTime = DateTime.UtcNow,
+    AppMessage = appMessage
+    // Direction, ChannelIdentity, ContactId were optional
+};
+```
+
+Version 2.*:
+```csharp
+var request = new InjectMessageRequest
+{
+    AcceptTime = DateTime.UtcNow,
+    Direction = ConversationDirection.ToContact,
+    ChannelIdentity = new ChannelIdentity { Channel = ConversationChannel.Sms, Identity = "+1234567890" },
+    ContactId = "contact-id",
+    AppMessage = appMessage
+};
 ```
