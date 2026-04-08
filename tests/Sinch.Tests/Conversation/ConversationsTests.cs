@@ -12,6 +12,7 @@ using Sinch.Conversation;
 using Sinch.Conversation.Conversations.Create;
 using Sinch.Conversation.Conversations.InjectEvent;
 using Sinch.Conversation.Conversations.List;
+using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Events;
 using Sinch.Conversation.Events.EventTypes;
 using Xunit;
@@ -345,6 +346,48 @@ namespace Sinch.Tests.Conversation
 
             response.Should().NotBeNull();
             response.EventId.Should().Be("01W4FFL35P4NC4K35CONVEVENT1");
+        }
+
+        #endregion
+
+        #region Deserialization Tests
+
+        [Fact]
+        public void DeserializeListRecentConversationsResponse()
+        {
+            var json = Helpers.LoadResources("Conversation/Conversations/ListRecentConversationsResponse.json");
+
+            var result = JsonSerializer.Deserialize<ListRecentConversationsResponse>(json,
+                Conversation.JsonSerializerOptions);
+
+            result.Should().NotBeNull();
+            result!.Conversations.Should().HaveCount(2);
+            result.NextPageToken.Should().Be("next_token_abc");
+            result.TotalSize.Should().Be(5);
+
+            var first = result.Conversations![0];
+            first.Conversation.Should().NotBeNull();
+            first.Conversation!.Id.Should().Be("01W4FFL35P4NC4K35CONVERS001");
+            first.Conversation.AppId.Should().Be("01W4FFL35P4NC4K35CONVAPP001");
+            first.Conversation.ContactId.Should().Be("01W4FFL35P4NC4K35CONTACT001");
+            first.Conversation.Active.Should().BeTrue();
+            first.Conversation.ActiveChannel.Should().Be(ConversationChannel.Messenger);
+            first.Conversation.Metadata.Should().Be("e2e tests");
+            first.Conversation.CorrelationId.Should().Be("my-correlator");
+
+            first.LastMessage.Should().NotBeNull();
+            first.LastMessage!.Direction.Should().Be(ConversationDirection.ToContact);
+            first.LastMessage.ContactId.Should().Be("01W4FFL35P4NC4K35CONTACT001");
+            first.LastMessage.AppMessage.Should().NotBeNull();
+            first.LastMessage.AppMessage!.TextMessage.Should().NotBeNull();
+            first.LastMessage.AppMessage.TextMessage!.Text.Should().Be("Hello from recent");
+
+            var second = result.Conversations[1];
+            second.Conversation.Should().NotBeNull();
+            second.Conversation!.Id.Should().Be("01W4FFL35P4NC4K35CONVERS002");
+            second.Conversation.Active.Should().BeFalse();
+            second.LastMessage.Should().NotBeNull();
+            second.LastMessage!.Direction.Should().Be(ConversationDirection.ToApp);
         }
 
         #endregion
