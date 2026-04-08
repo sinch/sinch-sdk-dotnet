@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using System.Text.Json.Serialization;
 using Sinch.Conversation.Common;
 
 namespace Sinch.Conversation.Messages.Message
@@ -15,8 +14,7 @@ namespace Sinch.Conversation.Messages.Message
         /// <summary>
         ///     The time Conversation API processed the message.
         /// </summary>
-        [JsonInclude]
-        public DateTime AcceptTime { get; private set; }
+        public DateTime AcceptTime { get; init; }
 
 
         /// <summary>

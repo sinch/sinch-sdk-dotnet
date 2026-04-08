@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Sinch.Conversation.Messages.List;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Messages.Send;
+using Sinch.Conversation.Messages.Update;
 using Sinch.Core;
 using Sinch.Logger;
 
@@ -47,6 +48,14 @@ namespace Sinch.Conversation.Messages
             CancellationToken cancellationToken = default);
 
         /// <summary>
+        ///     This operation lists all messages using server-default settings.
+        ///     See <see cref="List(ListMessagesRequest, CancellationToken)" /> to apply filters.
+        /// </summary>
+        /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
+        /// <returns>A <see cref="ListMessagesResponse"/> containing the first page of messages.</returns>
+        Task<ListMessagesResponse> List(CancellationToken cancellationToken = default);
+
+        /// <summary>
         ///     This operation lists all messages sent or received via particular Processing Modes<br/><br/>
         ///     Setting the &#x60;messages_source&#x60; parameter to &#x60;CONVERSATION_SOURCE&#x60; allows
         ///     for querying messages in &#x60;CONVERSATION&#x60; mode, and setting it to &#x60;DISPATCH_SOURCE&#x60;
@@ -84,6 +93,32 @@ namespace Sinch.Conversation.Messages
         /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
         /// <returns>A <see cref="ListMessagesResponse"/> containing the matched messages and an optional next page token.</returns>
         Task<ListMessagesResponse> ListLastMessagesByChannelIdentity(ListMessagesByChannelIdentityRequest request,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     See <see cref="List(CancellationToken)" />, but lists all messages automatically.
+        /// </summary>
+        /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
+        /// <returns>An async sequence of all <see cref="ConversationMessage"/> items across all pages.</returns>
+        IAsyncEnumerable<ConversationMessage> ListAuto(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     See <see cref="List(ListMessagesRequest, CancellationToken)" />, but lists all messages automatically.
+        /// </summary>
+        /// <param name="request">Filters and pagination options used as the initial request; page tokens are managed automatically.</param>
+        /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
+        /// <returns>An async sequence of <see cref="ConversationMessage"/> items across all pages.</returns>
+        IAsyncEnumerable<ConversationMessage> ListAuto(ListMessagesRequest request,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Updates the metadata of a specific message.
+        /// </summary>
+        /// <param name="messageId">The unique ID of the message to update.</param>
+        /// <param name="metadata">The new metadata value to set on the message. Up to 1024 characters long.</param>
+        /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
+        /// <returns>The updated <see cref="ConversationMessage"/>.</returns>
+        Task<ConversationMessage> Update(string messageId, string metadata,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -139,6 +174,10 @@ namespace Sinch.Conversation.Messages
             return _http.Value.Send<ConversationMessage>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
         }
 
+        /// <inheritdoc/>
+        public Task<ListMessagesResponse> List(CancellationToken cancellationToken = default)
+            => List(new ListMessagesRequest(), cancellationToken);
+
         /// <inheritdoc/>  
         public Task<ListMessagesResponse> List(ListMessagesRequest request,
             CancellationToken cancellationToken = default)
@@ -185,6 +224,35 @@ namespace Sinch.Conversation.Messages
                 foreach (var message in response.Messages)
                     yield return message;
             } while (!string.IsNullOrEmpty(request.PageToken));
+        }
+
+        /// <inheritdoc/>
+        public IAsyncEnumerable<ConversationMessage> ListAuto(CancellationToken cancellationToken = default)
+            => ListAuto(new ListMessagesRequest(), cancellationToken);
+
+        /// <inheritdoc/>
+        public async IAsyncEnumerable<ConversationMessage> ListAuto(ListMessagesRequest request,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            _logger?.LogDebug("Auto fetching list of messages...");
+            do
+            {
+                var response = await List(request, cancellationToken);
+                request.PageToken = response.NextPageToken;
+                if (response.Messages == null) continue;
+                foreach (var message in response.Messages)
+                    yield return message;
+            } while (!string.IsNullOrEmpty(request.PageToken));
+        }
+
+        /// <inheritdoc/>
+        public Task<ConversationMessage> Update(string messageId, string metadata,
+            CancellationToken cancellationToken = default)
+        {
+            _logger?.LogDebug("Updating message {messageId}...", messageId);
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/messages/{messageId}");
+            return _http.Value.Send<UpdateMessageRequest, ConversationMessage>(uri, HttpMethod.Patch,
+                new UpdateMessageRequest { Metadata = metadata }, cancellationToken);
         }
 
         private static string GetMessageSourceQueryParam(MessageSource? messagesSource)

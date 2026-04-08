@@ -70,6 +70,7 @@ jobs:
           cp sinch-sdk-mockserver/features/conversation/capability.feature tests/Sinch.Tests.Features/features/conversation/
           cp sinch-sdk-mockserver/features/conversation/transcoding.feature tests/Sinch.Tests.Features/features/conversation/
           cp sinch-sdk-mockserver/features/conversation/contacts.feature tests/Sinch.Tests.Features/features/conversation/
+          cp sinch-sdk-mockserver/features/conversation/messages.feature tests/Sinch.Tests.Features/features/conversation/
           cp sinch-sdk-mockserver/features/conversation/events.feature tests/Sinch.Tests.Features/features/conversation/
 
           cp sinch-sdk-mockserver/features/fax/services.feature tests/Sinch.Tests.Features/features/fax/
