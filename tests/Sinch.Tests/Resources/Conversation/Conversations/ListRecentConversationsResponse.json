@@ -1,0 +1,40 @@
+{
+  "conversations": [
+    {
+      "conversation": {
+        "id": "01W4FFL35P4NC4K35CONVERS001",
+        "app_id": "01W4FFL35P4NC4K35CONVAPP001",
+        "contact_id": "01W4FFL35P4NC4K35CONTACT001",
+        "active": true,
+        "active_channel": "MESSENGER",
+        "metadata": "e2e tests",
+        "correlation_id": "my-correlator"
+      },
+      "last_message": {
+        "accept_time": "2024-06-06T15:15:15Z",
+        "direction": "TO_CONTACT",
+        "contact_id": "01W4FFL35P4NC4K35CONTACT001",
+        "app_message": {
+          "text_message": {
+            "text": "Hello from recent"
+          }
+        }
+      }
+    },
+    {
+      "conversation": {
+        "id": "01W4FFL35P4NC4K35CONVERS002",
+        "app_id": "01W4FFL35P4NC4K35CONVAPP001",
+        "contact_id": "01W4FFL35P4NC4K35CONTACT002",
+        "active": false
+      },
+      "last_message": {
+        "accept_time": "2024-06-05T10:00:00Z",
+        "direction": "TO_APP",
+        "contact_id": "01W4FFL35P4NC4K35CONTACT002"
+      }
+    }
+  ],
+  "next_page_token": "next_token_abc",
+  "total_size": 5
+}
