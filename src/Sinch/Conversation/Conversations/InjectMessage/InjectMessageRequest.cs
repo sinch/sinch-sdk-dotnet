@@ -17,44 +17,48 @@ namespace Sinch.Conversation.Conversations.InjectMessage
         /// <summary>
         ///     Gets or Sets Direction
         /// </summary>
-        public ConversationDirection? Direction { get; set; }
+        public required ConversationDirection Direction { get; set; }
 
         /// <summary>
         ///     The processed time of the message in UTC timezone. Must be less than current_time and greater than (current_time -
         ///     30 days)
         /// </summary>
-
         public required DateTime AcceptTime { get; set; }
-
 
         /// <summary>
         ///     Gets or Sets AppMessage
         /// </summary>
         public AppMessage? AppMessage { get; set; }
 
-
         /// <summary>
         ///     Gets or Sets ChannelIdentity
         /// </summary>
-        public ChannelIdentity? ChannelIdentity { get; set; }
-
+        public required ChannelIdentity ChannelIdentity { get; set; }
 
         /// <summary>
         ///     The ID of the contact registered in the conversation provided.
         /// </summary>
-        public string? ContactId { get; set; }
-
+        public required string ContactId { get; set; }
 
         /// <summary>
         ///     Gets or Sets ContactMessage
         /// </summary>
         public ContactMessage? ContactMessage { get; set; }
 
-
         /// <summary>
         ///     Optional. Metadata associated with the contact. Up to 1024 characters long.
         /// </summary>
         public string? Metadata { get; set; }
+
+        /// <summary>
+        ///     The sender ID to use for the injected message.
+        /// </summary>
+        public string? SenderId { get; set; }
+
+        /// <summary>
+        ///     Whether or not Conversation API should store contacts and conversations for the app.
+        /// </summary>
+        public ProcessingMode? ProcessingMode { get; set; }
 
 
         /// <summary>
@@ -72,6 +76,8 @@ namespace Sinch.Conversation.Conversations.InjectMessage
             sb.Append("  ContactMessage: ").Append(ContactMessage).Append("\n");
             sb.Append("  Direction: ").Append(Direction).Append("\n");
             sb.Append("  Metadata: ").Append(Metadata).Append("\n");
+            sb.Append("  SenderId: ").Append(SenderId).Append("\n");
+            sb.Append("  ProcessingMode: ").Append(ProcessingMode).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

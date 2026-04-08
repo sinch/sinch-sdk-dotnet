@@ -3,10 +3,9 @@ namespace Sinch.Conversation.Conversations.List
     public sealed class ListConversationsRequest
     {
         /// <summary>
-        ///     Required. True if only active conversations should be listed.
+        ///     True if only active conversations should be listed.
         /// </summary>
-
-        public required bool OnlyActive { get; set; }
+        public bool? OnlyActive { get; set; }
 
 
         /// <summary>
