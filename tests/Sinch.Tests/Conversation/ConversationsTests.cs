@@ -294,7 +294,9 @@ namespace Sinch.Tests.Conversation
             HttpMessageHandlerMock
                 .When(HttpMethod.Delete, $"{_baseConversationsUrl}/{ConversationId}")
                 .WithHeaders("Authorization", $"Bearer {Token}")
-                .Respond(HttpStatusCode.OK, JsonContent.Create(new { }));
+                .Respond(HttpStatusCode.OK,
+                    JsonContent.Create(new ConversationModel(),
+                        options: SinchConversationClient.JsonSerializerOptionsInner));
 
             await Conversation.Conversations.Delete(ConversationId);
         }
@@ -309,7 +311,9 @@ namespace Sinch.Tests.Conversation
             HttpMessageHandlerMock
                 .When(HttpMethod.Post, $"{_baseConversationsUrl}/{ConversationId}:stop")
                 .WithHeaders("Authorization", $"Bearer {Token}")
-                .Respond(HttpStatusCode.OK, JsonContent.Create(new { }));
+                .Respond(HttpStatusCode.OK,
+                    JsonContent.Create(new ConversationModel(),
+                        options: SinchConversationClient.JsonSerializerOptionsInner));
 
             await Conversation.Conversations.Stop(ConversationId);
         }
