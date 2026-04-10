@@ -29,10 +29,10 @@
 - [Region configuration is now required for SMS and Conversation](#region-configuration-is-now-required-for-sms-and-conversation)
 - [Conversation API: WhatsApp payment_settings replaced by payment_buttons](#conversation-api-whatsapp-payment_settings-replaced-by-payment_buttons)
 - [Conversation API: ConversationDirection.UndefinedDirection removed](#conversation-api-conversationdirectionundefineddirection-removed)
-- [Conversation API: ConversationEvent.Event and ConversationEventEvent removed](#conversation-api-conversationeventevent-and-conversationeventevent-removed)
 - [Conversation API: ListConversationsRequest.OnlyActive is no longer required](#conversation-api-listconversationsrequestonlyactive-is-no-longer-required)
 - [Conversation API: InjectMessageRequest fields are now required](#conversation-api-injectmessagerequest-fields-are-now-required)
 - [Conversation API: InjectMessageRequest requires a constructor for the message payload](#conversation-api-injectmessagerequest-requires-a-constructor-for-the-message-payload)
+- [Conversation API: ConversationEvent.Event and ConversationEventEvent removed](#conversation-api-conversationeventevent-and-conversationeventevent-removed)
 
 ## .NET Framework Support
 
@@ -934,4 +934,25 @@ var request = new InjectMessageRequest(new ContactMessage(new TextMessage("Hello
 {
     // ...other properties
 };
+```
+
+## Conversation API: ConversationEvent.Event and ConversationEventEvent removed
+
+`ConversationEvent.Event` (of type `ConversationEventEvent`) has been removed. `ConversationEvent` (returned by the List/Get Events API) now exposes only `AppEvent` as a top-level property. `ContactEvent` and `ContactMessageEvent` are available on `EventInboundAllOfEvent`, which is the model used for inbound webhook callbacks.
+
+Version 1.*:
+```csharp
+var appEvent = conversationEvent.Event?.AppEvent;
+var contactEvent = conversationEvent.Event?.ContactEvent;
+var contactMessageEvent = conversationEvent.Event?.ContactMessageEvent;
+```
+
+Version 2.*:
+```csharp
+// API (List/Get Events)
+var appEvent = conversationEvent.AppEvent;
+
+// Webhook callback (EventInbound)
+var contactEvent = inboundEvent.Event?.ContactEvent;
+var contactMessageEvent = inboundEvent.Event?.ContactMessageEvent;
 ```
