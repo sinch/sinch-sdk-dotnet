@@ -277,7 +277,7 @@ public class Conversations
     public async Task WhenISendARequestToInjectAMessageIntoAConversation()
     {
         var appMessage = new AppMessage(new TextMessage("Injected text message"));
-        
+
         await _conversations.InjectMessage(new InjectMessageRequest(appMessage)
         {
             ConversationId = ConversationId001,
