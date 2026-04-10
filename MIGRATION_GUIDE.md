@@ -29,7 +29,7 @@
 - [Region configuration is now required for SMS and Conversation](#region-configuration-is-now-required-for-sms-and-conversation)
 - [Conversation API: WhatsApp payment_settings replaced by payment_buttons](#conversation-api-whatsapp-payment_settings-replaced-by-payment_buttons)
 - [Conversation API: ConversationDirection.UndefinedDirection removed](#conversation-api-conversationdirectionundefineddirection-removed)
-- [Conversation API: ConversationEvent.Event and ConversationEventEvent removed](#conversation-api-conversationeventevent-and-conversationeventevent-removed)
+- [Conversation API: ConversationEvent.Event and ConversationEventEvent removed](#conversation-api-conversationevent-event-and-conversationeventevent-removed)
 
 ## .NET Framework Support
 
@@ -848,9 +848,9 @@ var direction = ConversationDirection.ToApp;
 var direction = ConversationDirection.ToContact;
 ```
 
-## Conversation API: ConversationEventEvent and ConversationEventEvent removed
+## Conversation API: ConversationEvent.Event and ConversationEventEvent removed
 
-`ConversationEvent.Event` (of type `ConversationEventEvent`) has been removed. `AppEvent`, `ContactEvent`, and `ContactMessageEvent` are now top-level properties directly on `ConversationEvent`.
+`ConversationEvent.Event` (of type `ConversationEventEvent`) has been removed. `ConversationEvent` (returned by the List/Get Events API) now exposes only `AppEvent` as a top-level property. `ContactEvent` and `ContactMessageEvent` are available on `EventInboundAllOfEvent`, which is the model used for inbound webhook callbacks.
 
 Version 1.*:
 ```csharp
@@ -861,7 +861,10 @@ var contactMessageEvent = conversationEvent.Event?.ContactMessageEvent;
 
 Version 2.*:
 ```csharp
+// API (List/Get Events)
 var appEvent = conversationEvent.AppEvent;
-var contactEvent = conversationEvent.ContactEvent;
-var contactMessageEvent = conversationEvent.ContactMessageEvent;
+
+// Webhook callback (EventInbound)
+var contactEvent = inboundEvent.Event?.ContactEvent;
+var contactMessageEvent = inboundEvent.Event?.ContactMessageEvent;
 ```

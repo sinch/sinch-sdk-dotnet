@@ -51,16 +51,6 @@ namespace Sinch.Conversation.Events
         public AppEvent? AppEvent { get; set; }
 
         /// <summary>
-        ///     Event originating from a contact.
-        /// </summary>
-        public ContactEvent? ContactEvent { get; set; }
-
-        /// <summary>
-        ///     Event originating from a contact message.
-        /// </summary>
-        public ContactMessageEvent? ContactMessageEvent { get; set; }
-
-        /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -76,8 +66,6 @@ namespace Sinch.Conversation.Events
             sb.Append("  AcceptTime: ").Append(AcceptTime).Append("\n");
             sb.Append("  ProcessingMode: ").Append(ProcessingMode).Append("\n");
             sb.Append("  AppEvent: ").Append(AppEvent).Append("\n");
-            sb.Append("  ContactEvent: ").Append(ContactEvent).Append("\n");
-            sb.Append("  ContactMessageEvent: ").Append(ContactMessageEvent).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
