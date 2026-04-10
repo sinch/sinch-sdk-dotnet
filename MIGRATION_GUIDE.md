@@ -880,10 +880,7 @@ var request = new ListConversationsRequest { OnlyActive = false, AppId = "app-id
 
 Version 2.*:
 ```csharp
-// OnlyActive can be omitted — the server uses its default behavior
 var request = new ListConversationsRequest { AppId = "app-id" };
-// Or explicitly set it
-var request = new ListConversationsRequest { OnlyActive = true, AppId = "app-id" };
 ```
 
 ## Conversation API: InjectMessageRequest fields are now required
