@@ -276,7 +276,9 @@ public class Conversations
     [When(@"I send a request to inject a message into a conversation")]
     public async Task WhenISendARequestToInjectAMessageIntoAConversation()
     {
-        await _conversations.InjectMessage(new InjectMessageRequest
+        var appMessage = new AppMessage(new TextMessage("Injected text message"));
+        
+        await _conversations.InjectMessage(new InjectMessageRequest(appMessage)
         {
             ConversationId = ConversationId001,
             ContactId = ContactId002,
@@ -286,7 +288,6 @@ public class Conversations
                 Identity = "7968425018576406",
                 AppId = AppId001
             },
-            AppMessage = new AppMessage(new TextMessage("Injected text message")),
             Direction = ConversationDirection.ToContact,
             AcceptTime = DateTime.UtcNow
         });

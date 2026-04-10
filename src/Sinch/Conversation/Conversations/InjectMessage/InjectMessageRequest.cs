@@ -11,7 +11,25 @@ namespace Sinch.Conversation.Conversations.InjectMessage
     /// </summary>
     public sealed class InjectMessageRequest
     {
-        [JsonIgnore]
+        /// <summary>
+        ///     Creates a request to inject an app message (sent TO_CONTACT).
+        /// </summary>
+        public InjectMessageRequest(AppMessage appMessage)
+        {
+            AppMessage = appMessage;
+        }
+
+        /// <summary>
+        ///     Creates a request to inject a contact message (sent TO_APP).
+        /// </summary>
+        public InjectMessageRequest(ContactMessage contactMessage)
+        {
+            ContactMessage = contactMessage;
+        }
+
+        /// <summary>
+        ///     The ID of the conversation.
+        /// </summary>
         public string? ConversationId { get; set; }
 
         /// <summary>
@@ -28,7 +46,8 @@ namespace Sinch.Conversation.Conversations.InjectMessage
         /// <summary>
         ///     Gets or Sets AppMessage
         /// </summary>
-        public AppMessage? AppMessage { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public AppMessage? AppMessage { get; private set; }
 
         /// <summary>
         ///     Gets or Sets ChannelIdentity
@@ -43,7 +62,8 @@ namespace Sinch.Conversation.Conversations.InjectMessage
         /// <summary>
         ///     Gets or Sets ContactMessage
         /// </summary>
-        public ContactMessage? ContactMessage { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public ContactMessage? ContactMessage { get; private set; }
 
         /// <summary>
         ///     Optional. Metadata associated with the contact. Up to 1024 characters long.
@@ -59,7 +79,6 @@ namespace Sinch.Conversation.Conversations.InjectMessage
         ///     Whether or not Conversation API should store contacts and conversations for the app.
         /// </summary>
         public ProcessingMode? ProcessingMode { get; set; }
-
 
         /// <summary>
         ///     Returns the string presentation of the object

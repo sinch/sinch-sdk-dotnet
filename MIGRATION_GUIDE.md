@@ -32,6 +32,7 @@
 - [Conversation API: ConversationEvent.Event and ConversationEventEvent removed](#conversation-api-conversationeventevent-and-conversationeventevent-removed)
 - [Conversation API: ListConversationsRequest.OnlyActive is no longer required](#conversation-api-listconversationsrequestonlyactive-is-no-longer-required)
 - [Conversation API: InjectMessageRequest fields are now required](#conversation-api-injectmessagerequest-fields-are-now-required)
+- [Conversation API: InjectMessageRequest requires a constructor for the message payload](#conversation-api-injectmessagerequest-requires-a-constructor-for-the-message-payload)
 
 ## .NET Framework Support
 
@@ -901,12 +902,39 @@ var request = new InjectMessageRequest
 
 Version 2.*:
 ```csharp
-var request = new InjectMessageRequest
+var request = new InjectMessageRequest(appMessage)
 {
     AcceptTime = DateTime.UtcNow,
     Direction = ConversationDirection.ToContact,
     ChannelIdentity = new ChannelIdentity { Channel = ConversationChannel.Sms, Identity = "+1234567890" },
-    ContactId = "contact-id",
-    AppMessage = appMessage
+    ContactId = "contact-id"
+};
+```
+
+## Conversation API: InjectMessageRequest requires a constructor for the message payload
+
+`AppMessage` and `ContactMessage` are no longer settable via object initializer.
+
+Version 1.*:
+```csharp
+var request = new InjectMessageRequest
+{
+    AppMessage = new AppMessage(new TextMessage("Hello")),
+    // ...other properties
+};
+```
+
+Version 2.*:
+```csharp
+// App message (TO_CONTACT)
+var request = new InjectMessageRequest(new AppMessage(new TextMessage("Hello")))
+{
+    // ...other properties
+};
+
+// Contact message (TO_APP)
+var request = new InjectMessageRequest(new ContactMessage(new TextMessage("Hello")))
+{
+    // ...other properties
 };
 ```
