@@ -107,7 +107,7 @@ namespace Sinch.Core
             {
                 var pt = property.PropertyType;
                 if (!pt.IsGenericType || pt.GetGenericTypeDefinition() != typeof(Optional<>)) continue;
-                property.ShouldSerialize = static (_, val) => val is not IOptional opt || !opt.IsUnset;
+                property.ShouldSerialize = static (_, val) => val is IOptional opt && !opt.IsUnset;
             }
         }
 
