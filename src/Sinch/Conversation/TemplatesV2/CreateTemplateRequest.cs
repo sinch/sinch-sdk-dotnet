@@ -7,6 +7,12 @@ namespace Sinch.Conversation.TemplatesV2
     public sealed class CreateTemplateRequest
     {
         /// <summary>
+        ///     The id of the template. Specify this yourself during creation.
+        ///     Otherwise, we will generate an ID for you. This must be unique for a given project.
+        /// </summary>
+        public string? Id { get; set; }
+
+        /// <summary>
         ///     The default translation to use if translation not specified. Specified as a BCP-47 &#x60;language_code&#x60; and the &#x60;language_code&#x60; must exist in the translations list.
         /// </summary>
 
