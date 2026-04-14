@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Specialized;
 using Reqnroll;
+using Sinch.Core;
 using Sinch.Numbers;
 using Sinch.Numbers.Active;
 using Sinch.Numbers.Active.List;
@@ -45,16 +46,16 @@ namespace Sinch.Tests.Features.Numbers
         {
             _updateNumberResponse = await _sinchNumbers.Update(number, new UpdateActiveNumberRequest()
             {
-                DisplayName = "Updated description during E2E tests",
-                SmsConfiguration = new SmsConfiguration()
+                DisplayName = Optional<string>.CreateValue("Updated description during E2E tests"),
+                SmsConfiguration = Optional<SmsConfiguration>.CreateValue(new SmsConfiguration()
                 {
                     ServicePlanId = "SingingMooseSociety"
-                },
-                VoiceConfiguration = new VoiceFaxConfiguration()
+                }),
+                VoiceConfiguration = Optional<VoiceConfiguration>.CreateValue(new VoiceFaxConfiguration()
                 {
                     ServiceId = "01W4FFL35P4NC4K35FAXSERVICE"
-                },
-                CallbackUrl = "https://my-callback-server.com/numbers"
+                }),
+                CallbackUrl = Optional<string>.CreateValue("https://my-callback-server.com/numbers")
             });
         }
 

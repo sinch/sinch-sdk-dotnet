@@ -1,0 +1,7 @@
+{
+  "displayName": "My DID",
+  "smsConfiguration": {
+    "servicePlanId": "svc-plan-1"
+  },
+  "callbackUrl": "https://example.com/callback"
+}

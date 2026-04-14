@@ -1,14 +1,23 @@
+using Sinch.Core;
 using Sinch.Numbers.VoiceConfigurations;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Numbers.Active.Update
 {
+    /// <summary>
+    ///     Request to update an active number (partial update — RFC 7396 JSON Merge Patch).
+    ///     <para>
+    ///         Use <see cref="Optional{T}.CreateValue" /> to set a field,
+    ///         <see cref="Optional{T}.CreateNull" /> to explicitly clear a field on the server,
+    ///         or leave the default <see cref="Optional{T}.Unset" /> to leave the field unchanged.
+    ///     </para>
+    /// </summary>
     public sealed class UpdateActiveNumberRequest
     {
         /// <summary>
         ///     User supplied name for the phone number.
         /// </summary>
-        public string? DisplayName { get; set; }
+        public Optional<string> DisplayName { get; set; } = Optional<string>.CreateUnset();
 
         /// <summary>
         ///     The current SMS configuration for this number.<br /><br />
@@ -17,7 +26,8 @@ namespace Sinch.Numbers.Active.Update
         ///     processed successfully,
         ///     the servicePlanId sent will appear directly under the smsConfiguration object.
         /// </summary>
-        public SmsConfiguration? SmsConfiguration { get; set; }
+        public Optional<SmsConfiguration> SmsConfiguration { get; set; } =
+            Optional<SmsConfiguration>.CreateUnset();
 
         /// <summary>
         ///     The current voice configuration for this number.
@@ -26,12 +36,13 @@ namespace Sinch.Numbers.Active.Update
         ///     The status of scheduled provisioning will show under a scheduledVoiceProvisioning object if it's still running.
         ///     Once processed successfully, the appId sent will appear directly under the voiceConfiguration object.
         /// </summary>
-        [JsonConverter(typeof(VoiceConfigurationConverter))]
-        public VoiceConfiguration? VoiceConfiguration { get; set; }
+        [JsonConverter(typeof(OptionalVoiceConfigurationConverter))]
+        public Optional<VoiceConfiguration> VoiceConfiguration { get; set; } =
+            Optional<VoiceConfiguration>.CreateUnset();
 
         /// <summary>
         ///     The callback URL to be called for a rented number's provisioning / deprovisioning operations.
         /// </summary>
-        public string? CallbackUrl { get; set; }
+        public Optional<string> CallbackUrl { get; set; } = Optional<string>.CreateUnset();
     }
 }

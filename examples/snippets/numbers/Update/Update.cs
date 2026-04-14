@@ -32,7 +32,7 @@ Console.WriteLine($"Updating number: {phoneNumber}");
 
 var response = await client.Numbers.Update(phoneNumber, new UpdateActiveNumberRequest
 {
-    DisplayName = displayName
+    DisplayName = Optional<string>.CreateValue(displayName)
 });
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

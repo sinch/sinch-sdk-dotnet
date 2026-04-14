@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Auth;
@@ -84,8 +85,30 @@ namespace Sinch.Core
             _jsonSerializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web)
             {
                 PropertyNamingPolicy = jsonNamingPolicy,
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                TypeInfoResolver = new DefaultJsonTypeInfoResolver
+                {
+                    Modifiers = { SkipUnsetOptionalProperties }
+                }
             };
+        }
+
+        /// <summary>
+        ///     <see cref="DefaultJsonTypeInfoResolver" /> modifier that prevents STJ from writing the
+        ///     JSON property name for any <see cref="Optional{T}" /> property that is in the
+        ///     <see cref="Optional{T}.Unset" /> state.  Without this, STJ writes the property name
+        ///     before calling the converter's <c>Write</c> method, producing malformed JSON
+        ///     (<c>"field":</c> with no value) when the converter writes nothing.
+        /// </summary>
+        private static void SkipUnsetOptionalProperties(JsonTypeInfo typeInfo)
+        {
+            if (typeInfo.Kind != JsonTypeInfoKind.Object) return;
+            foreach (var property in typeInfo.Properties)
+            {
+                var pt = property.PropertyType;
+                if (!pt.IsGenericType || pt.GetGenericTypeDefinition() != typeof(Optional<>)) continue;
+                property.ShouldSerialize = static (_, val) => val is not IOptional opt || !opt.IsUnset;
+            }
         }
 
         public Task<TResponse> Send<TResponse>(Uri uri, HttpMethod httpMethod, HttpContent content,

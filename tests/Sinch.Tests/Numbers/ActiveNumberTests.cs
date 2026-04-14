@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using RichardSzalay.MockHttp;
+using Sinch.Core;
 using Sinch.Numbers;
 using Sinch.Numbers.Active;
 using Sinch.Numbers.Active.List;
@@ -182,11 +183,11 @@ namespace Sinch.Tests.Numbers
             var response = await Numbers.Update("+12025550134",
                 new UpdateActiveNumberRequest
                 {
-                    DisplayName = "Name",
-                    SmsConfiguration = new SmsConfiguration
+                    DisplayName = Optional<string>.CreateValue("Name"),
+                    SmsConfiguration = Optional<SmsConfiguration>.CreateValue(new SmsConfiguration
                     {
                         ServicePlanId = "SERVICEPLAN"
-                    }
+                    })
                 });
 
             response.Should().NotBeNull();
@@ -382,18 +383,18 @@ namespace Sinch.Tests.Numbers
             var response = await Numbers.Update("+12025550134",
                 new UpdateActiveNumberRequest
                 {
-                    DisplayName = "a display",
-                    SmsConfiguration = new SmsConfiguration()
+                    DisplayName = Optional<string>.CreateValue("a display"),
+                    SmsConfiguration = Optional<SmsConfiguration>.CreateValue(new SmsConfiguration()
                     {
                         ServicePlanId = "service plan id",
                         CampaignId = "campaign id"
-                    },
-                    VoiceConfiguration = new VoiceRtcConfiguration()
+                    }),
+                    VoiceConfiguration = Optional<VoiceConfiguration>.CreateValue(new VoiceRtcConfiguration()
                     {
                         AppId = "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEE",
                         Type = VoiceApplicationType.Rtc
-                    },
-                    CallbackUrl = "foo callback"
+                    }),
+                    CallbackUrl = Optional<string>.CreateValue("foo callback")
                 });
 
             response.Should().BeEquivalentTo(expectedActiveNumber);
@@ -452,17 +453,17 @@ namespace Sinch.Tests.Numbers
             var response = await Numbers.Update("+12025550134",
                 new UpdateActiveNumberRequest
                 {
-                    DisplayName = "a display",
-                    SmsConfiguration = new SmsConfiguration()
+                    DisplayName = Optional<string>.CreateValue("a display"),
+                    SmsConfiguration = Optional<SmsConfiguration>.CreateValue(new SmsConfiguration()
                     {
                         ServicePlanId = "service plan id",
                         CampaignId = "campaign id"
-                    },
-                    VoiceConfiguration = new VoiceEstConfiguration()
+                    }),
+                    VoiceConfiguration = Optional<VoiceConfiguration>.CreateValue(new VoiceEstConfiguration()
                     {
                         TrunkId = "trunk-id-12345"
-                    },
-                    CallbackUrl = "foo callback"
+                    }),
+                    CallbackUrl = Optional<string>.CreateValue("foo callback")
                 });
 
             response.Should().BeEquivalentTo(expectedActiveNumber);
@@ -521,17 +522,17 @@ namespace Sinch.Tests.Numbers
             var response = await Numbers.Update("+12025550134",
                 new UpdateActiveNumberRequest
                 {
-                    DisplayName = "a display",
-                    SmsConfiguration = new SmsConfiguration()
+                    DisplayName = Optional<string>.CreateValue("a display"),
+                    SmsConfiguration = Optional<SmsConfiguration>.CreateValue(new SmsConfiguration()
                     {
                         ServicePlanId = "service plan id",
                         CampaignId = "campaign id"
-                    },
-                    VoiceConfiguration = new VoiceFaxConfiguration()
+                    }),
+                    VoiceConfiguration = Optional<VoiceConfiguration>.CreateValue(new VoiceFaxConfiguration()
                     {
                         ServiceId = "fax-service-id-12345"
-                    },
-                    CallbackUrl = "foo callback"
+                    }),
+                    CallbackUrl = Optional<string>.CreateValue("foo callback")
                 });
 
             response.Should().BeEquivalentTo(expectedActiveNumber);
