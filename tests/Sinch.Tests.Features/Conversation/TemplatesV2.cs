@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
-using Sinch.Conversation;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.TemplatesV2;
 

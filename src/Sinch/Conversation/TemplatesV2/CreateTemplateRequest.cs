@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -40,18 +39,6 @@ namespace Sinch.Conversation.TemplatesV2
 
 
         /// <summary>
-        ///     Timestamp when the template was created.
-        /// </summary>
-        public DateTime? CreateTime { get; set; }
-
-
-        /// <summary>
-        ///     Timestamp when the template was updated.
-        /// </summary>
-        public DateTime? UpdateTime { get; set; }
-
-
-        /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -63,8 +50,6 @@ namespace Sinch.Conversation.TemplatesV2
             sb.Append("  Version: ").Append(Version).Append("\n");
             sb.Append("  DefaultTranslation: ").Append(DefaultTranslation).Append("\n");
             sb.Append("  Translations: ").Append(Translations).Append("\n");
-            sb.Append("  CreateTime: ").Append(CreateTime).Append("\n");
-            sb.Append("  UpdateTime: ").Append(UpdateTime).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

@@ -11,7 +11,7 @@ namespace Sinch.Conversation.TemplatesV2
         ///     be unique for a given project.
         /// </summary>
 
-        public required string Id { get; set; }
+        public string? Id { get; set; }
 
 
 

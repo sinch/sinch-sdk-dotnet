@@ -27,6 +27,8 @@ namespace Sinch.Conversation.TemplatesV2
 
         public TemplateTranslation(CarouselMessage carouselMessage) => CarouselMessage = carouselMessage;
 
+        public TemplateTranslation(ContactInfoMessage contactInfoMessage) => ContactInfoMessage = contactInfoMessage;
+
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public TextMessage? TextMessage { get; init; }
 
@@ -51,6 +53,9 @@ namespace Sinch.Conversation.TemplatesV2
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ListMessage? ListMessage { get; init; }
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public ContactInfoMessage? ContactInfoMessage { get; init; }
+
         /// <summary>
         ///     The BCP-47 language code, such as &#x60;en-US&#x60; or &#x60;sr-Latn&#x60;. For more information, see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
         /// </summary>
@@ -65,9 +70,10 @@ namespace Sinch.Conversation.TemplatesV2
 
 
         /// <summary>
-        ///     Gets or Sets ChannelTemplateOverrides
+        ///     Field to override the omnichannel template by referring to a channel-specific template.
+        ///     The key in the map must point to a valid conversation channel.
         /// </summary>
-        public ChannelTemplateOverride? ChannelTemplateOverrides { get; set; }
+        public Dictionary<string, ChannelTemplateOverride>? ChannelTemplateOverrides { get; set; }
 
 
         /// <summary>
@@ -106,6 +112,7 @@ namespace Sinch.Conversation.TemplatesV2
             sb.Append("  MediaMessage: ").Append(MediaMessage).Append("\n");
             sb.Append("  TemplateMessage: ").Append(TemplateMessage).Append("\n");
             sb.Append("  ListMessage: ").Append(ListMessage).Append("\n");
+            sb.Append("  ContactInfoMessage: ").Append(ContactInfoMessage).Append("\n");
             sb.Append("  ChannelTemplateOverrides: ").Append(ChannelTemplateOverrides).Append("\n");
             sb.Append("  Variables: ").Append(Variables).Append("\n");
             sb.Append("  CreateTime: ").Append(CreateTime).Append("\n");
