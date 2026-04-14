@@ -34,7 +34,6 @@ namespace Sinch.Conversation.Conversations.Create
         /// <summary>
         ///     Arbitrary data set by the Conversation API clients. Up to 1024 characters long.
         /// </summary>
-        [Obsolete]
         public string? Metadata { get; set; }
 
         /// <summary>
