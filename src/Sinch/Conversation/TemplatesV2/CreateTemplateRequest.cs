@@ -19,7 +19,7 @@ namespace Sinch.Conversation.TemplatesV2
 
 
         /// <summary>
-        ///     Gets or Sets Translations
+        ///     The list of translations for this template.
         /// </summary>
 
         public required List<TemplateTranslation> Translations { get; set; }
@@ -45,7 +45,8 @@ namespace Sinch.Conversation.TemplatesV2
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class V2TemplateResponse {\n");
+            sb.Append("class CreateTemplateRequest {\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Description: ").Append(Description).Append("\n");
             sb.Append("  Version: ").Append(Version).Append("\n");
             sb.Append("  DefaultTranslation: ").Append(DefaultTranslation).Append("\n");
