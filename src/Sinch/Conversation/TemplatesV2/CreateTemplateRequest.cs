@@ -17,26 +17,21 @@ namespace Sinch.Conversation.TemplatesV2
 
         public required string DefaultTranslation { get; set; }
 
-
         /// <summary>
         ///     The list of translations for this template.
         /// </summary>
 
         public required List<TemplateTranslation> Translations { get; set; }
 
-
-
         /// <summary>
         ///     The description of the template.
         /// </summary>
         public string? Description { get; set; }
 
-
         /// <summary>
         ///     The version of the template. While creating a template, this will be defaulted to 1. When updating a template, you must supply the latest version of the template in order for the update to be successful.
         /// </summary>
         public int? Version { get; set; }
-
 
         /// <summary>
         ///     Returns the string presentation of the object

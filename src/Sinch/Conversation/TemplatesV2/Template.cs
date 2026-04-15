@@ -60,7 +60,7 @@ namespace Sinch.Conversation.TemplatesV2
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class V2TemplateResponse {\n");
+            sb.Append("class Template {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Description: ").Append(Description).Append("\n");
             sb.Append("  Version: ").Append(Version).Append("\n");

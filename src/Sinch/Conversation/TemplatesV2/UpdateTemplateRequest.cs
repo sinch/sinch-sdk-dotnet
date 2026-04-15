@@ -11,20 +11,16 @@ namespace Sinch.Conversation.TemplatesV2
 
         public required string Id { get; set; }
 
-
-
         /// <summary>
         ///     The version of the template. While creating a template, this will be defaulted to 1. When updating a template, you must supply the latest version of the template in order for the update to be successful.
         /// </summary>
 
         public required int Version { get; set; }
 
-
         /// <summary>
         ///     The default translation to use if translation not specified. Specified as a BCP-47 &#x60;language_code&#x60; and the &#x60;language_code&#x60; must exist in the translations list.
         /// </summary>
         public string? DefaultTranslation { get; set; }
-
 
         /// <summary>
         ///     Gets or Sets Translations
@@ -36,7 +32,6 @@ namespace Sinch.Conversation.TemplatesV2
         /// </summary>
         public string? Description { get; set; }
 
-
         /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>
@@ -44,7 +39,8 @@ namespace Sinch.Conversation.TemplatesV2
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class V2TemplateResponse {\n");
+            sb.Append("class UpdateTemplateRequest {\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Description: ").Append(Description).Append("\n");
             sb.Append("  Version: ").Append(Version).Append("\n");
             sb.Append("  DefaultTranslation: ").Append(DefaultTranslation).Append("\n");
