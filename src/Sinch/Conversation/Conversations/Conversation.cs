@@ -92,20 +92,6 @@ namespace Sinch.Conversation.Conversations
         public DateTime LastReceived { get; set; }
 
         /// <summary>
-        ///     Arbitrary data set by the Conversation API clients. Up to 1024 characters long.
-        /// </summary>
-        [JsonPropertyName("metadata")]
-        public string? Metadata
-        {
-            get => _metadata;
-            set
-            {
-                SetFields.Add(nameof(Metadata));
-                _metadata = value;
-            }
-        }
-
-        /// <summary>
         ///     Arbitrary data set by the Conversation API clients and/or provided in the conversation_metadata field of a
         ///     SendMessageRequest. A valid JSON object.
         /// </summary>
@@ -146,7 +132,6 @@ namespace Sinch.Conversation.Conversations
             sb.Append("  ContactId: ").Append(ContactId).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  LastReceived: ").Append(LastReceived).Append("\n");
-            sb.Append("  Metadata: ").Append(Metadata).Append("\n");
             sb.Append("  MetadataJson: ").Append(MetadataJson).Append("\n");
             sb.Append("  CorrelationId: ").Append(CorrelationId).Append("\n");
             sb.Append("}\n");

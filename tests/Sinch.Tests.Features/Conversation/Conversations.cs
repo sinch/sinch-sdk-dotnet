@@ -13,7 +13,6 @@ using Sinch.Conversation.Conversations.List;
 using Sinch.Conversation.Events;
 using Sinch.Conversation.Events.EventTypes;
 using Sinch.Conversation.Messages.Message;
-using ConversationEntity = Sinch.Conversation.Conversations.Conversation;
 
 namespace Sinch.Tests.Features.Conversation;
 
@@ -28,9 +27,9 @@ public class Conversations
     private const string EventId001 = "01W4FFL35P4NC4K35CONVEVENT1";
 
     private ISinchConversationConversations _conversations;
-    private ConversationEntity _conversation;
+    private Sinch.Conversation.Conversations.Conversation _conversation;
     private ListConversationsResponse _listResponse;
-    private List<ConversationEntity> _allConversations;
+    private List<Sinch.Conversation.Conversations.Conversation> _allConversations;
     private int _totalConversationPages;
     private ListRecentConversationsResponse _listRecentResponse;
     private List<ConversationRecentMessage> _allRecentConversations;
@@ -94,7 +93,7 @@ public class Conversations
     [When(@"I send a request to list all the conversations")]
     public async Task WhenISendARequestToListAllTheConversations()
     {
-        _allConversations = new List<ConversationEntity>();
+        _allConversations = new List<Sinch.Conversation.Conversations.Conversation>();
         await foreach (var conv in _conversations.ListAuto(new ListConversationsRequest
         {
             OnlyActive = false,
@@ -115,7 +114,7 @@ public class Conversations
     [When(@"I iterate manually over the conversations pages")]
     public async Task WhenIIterateManuallyOverTheConversationsPages()
     {
-        _allConversations = new List<ConversationEntity>();
+        _allConversations = new List<Sinch.Conversation.Conversations.Conversation>();
         _totalConversationPages = 0;
         ListConversationsResponse response = null;
         do
@@ -217,13 +216,12 @@ public class Conversations
         _conversation.ContactId.Should().Be(ContactId002);
         _conversation.ActiveChannel.Should().Be(ConversationChannel.Messenger);
         _conversation.Active.Should().BeTrue();
-        _conversation.Metadata.Should().Be("e2e tests");
     }
 
     [When(@"I send a request to update a conversation")]
     public async Task WhenISendARequestToUpdateAConversation()
     {
-        _conversation = await _conversations.Update(new ConversationEntity
+        _conversation = await _conversations.Update(new Sinch.Conversation.Conversations.Conversation
         {
             Id = ConversationId001,
             Active = false,
@@ -239,7 +237,6 @@ public class Conversations
         _conversation.Id.Should().Be(ConversationId001);
         _conversation.AppId.Should().Be(AppId002);
         _conversation.Active.Should().BeFalse();
-        _conversation.Metadata.Should().Be("Transferred conversation");
         _conversation.CorrelationId.Should().Be("my-correlator");
     }
 

@@ -16,7 +16,6 @@ using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Events;
 using Sinch.Conversation.Events.EventTypes;
 using Xunit;
-using ConversationModel = Sinch.Conversation.Conversations.Conversation;
 
 namespace Sinch.Tests.Conversation
 {
@@ -39,7 +38,7 @@ namespace Sinch.Tests.Conversation
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .WithPartialContent(AppId)
                 .Respond(HttpStatusCode.OK,
-                    JsonContent.Create(new ConversationModel
+                    JsonContent.Create(new Sinch.Conversation.Conversations.Conversation
                     {
                         Id = ConversationId,
                         AppId = AppId,
@@ -70,7 +69,7 @@ namespace Sinch.Tests.Conversation
                 .When(HttpMethod.Get, $"{_baseConversationsUrl}/{ConversationId}")
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond(HttpStatusCode.OK,
-                    JsonContent.Create(new ConversationModel
+                    JsonContent.Create(new Sinch.Conversation.Conversations.Conversation
                     {
                         Id = ConversationId,
                         AppId = AppId,
@@ -96,7 +95,7 @@ namespace Sinch.Tests.Conversation
                 .Respond(HttpStatusCode.OK,
                     JsonContent.Create(new ListConversationsResponse
                     {
-                        Conversations = new List<ConversationModel>
+                        Conversations = new List<Sinch.Conversation.Conversations.Conversation>
                         {
                             new() { Id = ConversationId },
                             new() { Id = "01W4FFL35P4NC4K35CONVERS002" }
@@ -121,7 +120,7 @@ namespace Sinch.Tests.Conversation
                 .Respond(HttpStatusCode.OK,
                     JsonContent.Create(new ListConversationsResponse
                     {
-                        Conversations = new List<ConversationModel>
+                        Conversations = new List<Sinch.Conversation.Conversations.Conversation>
                         {
                             new() { Id = ConversationId },
                             new() { Id = "01W4FFL35P4NC4K35CONVERS002" }
@@ -136,7 +135,7 @@ namespace Sinch.Tests.Conversation
                 .Respond(HttpStatusCode.OK,
                     JsonContent.Create(new ListConversationsResponse
                     {
-                        Conversations = new List<ConversationModel>
+                        Conversations = new List<Sinch.Conversation.Conversations.Conversation>
                         {
                             new() { Id = "01W4FFL35P4NC4K35CONVERS003" }
                         },
@@ -144,7 +143,7 @@ namespace Sinch.Tests.Conversation
                         TotalSize = 3
                     }, options: SinchConversationClient.JsonSerializerOptionsInner));
 
-            var results = new List<ConversationModel>();
+            var results = new List<Sinch.Conversation.Conversations.Conversation>();
             await foreach (var conv in Conversation.Conversations.ListAuto())
                 results.Add(conv);
 
@@ -169,13 +168,13 @@ namespace Sinch.Tests.Conversation
                         [
                             new()
                             {
-                                Conversation = new ConversationModel
+                                Conversation = new Sinch.Conversation.Conversations.Conversation
                                     { Id = ConversationId }
                             },
 
                             new()
                             {
-                                Conversation = new ConversationModel
+                                Conversation = new Sinch.Conversation.Conversations.Conversation
                                     { Id = "01W4FFL35P4NC4K35CONVERS002" }
                             }
                         ],
@@ -207,13 +206,13 @@ namespace Sinch.Tests.Conversation
                         [
                             new()
                             {
-                                Conversation = new ConversationModel
+                                Conversation = new Sinch.Conversation.Conversations.Conversation
                                     { Id = ConversationId }
                             },
 
                             new()
                             {
-                                Conversation = new ConversationModel
+                                Conversation = new Sinch.Conversation.Conversations.Conversation
                                     { Id = "01W4FFL35P4NC4K35CONVERS002" }
                             }
                         ],
@@ -231,7 +230,7 @@ namespace Sinch.Tests.Conversation
                         {
                             new()
                             {
-                                Conversation = new ConversationModel
+                                Conversation = new Sinch.Conversation.Conversations.Conversation
                                     { Id = "01W4FFL35P4NC4K35CONVERS003" }
                             }
                         },
@@ -263,7 +262,7 @@ namespace Sinch.Tests.Conversation
                 .When(HttpMethod.Patch, $"{_baseConversationsUrl}/{ConversationId}*")
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond(HttpStatusCode.OK,
-                    JsonContent.Create(new ConversationModel
+                    JsonContent.Create(new Sinch.Conversation.Conversations.Conversation
                     {
                         Id = ConversationId,
                         AppId = "01W4FFL35P4NC4K35CONVAPP002",
@@ -272,7 +271,7 @@ namespace Sinch.Tests.Conversation
                     }, options: SinchConversationClient.JsonSerializerOptionsInner));
 
             var response = await Conversation.Conversations.Update(
-                new ConversationModel
+                new Sinch.Conversation.Conversations.Conversation
                 {
                     Id = ConversationId,
                     Active = false,
@@ -295,7 +294,7 @@ namespace Sinch.Tests.Conversation
                 .When(HttpMethod.Delete, $"{_baseConversationsUrl}/{ConversationId}")
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond(HttpStatusCode.OK,
-                    JsonContent.Create(new ConversationModel(),
+                    JsonContent.Create(new Sinch.Conversation.Conversations.Conversation(),
                         options: SinchConversationClient.JsonSerializerOptionsInner));
 
             await Conversation.Conversations.Delete(ConversationId);
@@ -312,7 +311,7 @@ namespace Sinch.Tests.Conversation
                 .When(HttpMethod.Post, $"{_baseConversationsUrl}/{ConversationId}:stop")
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond(HttpStatusCode.OK,
-                    JsonContent.Create(new ConversationModel(),
+                    JsonContent.Create(new Sinch.Conversation.Conversations.Conversation(),
                         options: SinchConversationClient.JsonSerializerOptionsInner));
 
             await Conversation.Conversations.Stop(ConversationId);
@@ -376,7 +375,6 @@ namespace Sinch.Tests.Conversation
             first.Conversation.ContactId.Should().Be("01W4FFL35P4NC4K35CONTACT001");
             first.Conversation.Active.Should().BeTrue();
             first.Conversation.ActiveChannel.Should().Be(ConversationChannel.Messenger);
-            first.Conversation.Metadata.Should().Be("e2e tests");
             first.Conversation.CorrelationId.Should().Be("my-correlator");
 
             first.LastMessage.Should().NotBeNull();
@@ -401,14 +399,13 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void UpdateMaskConversation()
         {
-            var conversation = new ConversationModel
+            var conversation = new Sinch.Conversation.Conversations.Conversation
             {
                 ActiveChannel = null,
                 Active = true,
                 AppId = "null",
                 ContactId = "id",
                 Id = "1",
-                Metadata = "n",
                 MetadataJson = new JsonObject(),
                 CorrelationId = string.Empty
             };
@@ -420,7 +417,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void UpdateMaskConversationOnlyOneField()
         {
-            var conversation = new ConversationModel
+            var conversation = new Sinch.Conversation.Conversations.Conversation
             {
                 AppId = "AppId",
             };
