@@ -29,7 +29,7 @@ namespace Sinch.Conversation.Conversations.Create
         ///     An arbitrary identifier that can be used to correlate this conversation with resources in external systems.
         /// </summary>
         public string? CorrelationId { get; set; }
-        
+
 
         /// <summary>
         ///     Arbitrary data set by the Conversation API clients and/or provided in the &#x60;conversation_metadata&#x60; field
