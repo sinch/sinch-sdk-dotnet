@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -35,7 +36,7 @@ namespace Sinch.Conversation.TemplatesV2
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IEnumerable<Template>> List(CancellationToken cancellationToken = default);
+        Task<ListTemplatesResponse> List(CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Creates a template
@@ -72,6 +73,14 @@ namespace Sinch.Conversation.TemplatesV2
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task Delete(string templateId, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Lists all templates, automatically yielding each one.
+        ///     Note: the TemplatesV2 API does not yet support pagination; this method returns all templates in a single request.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        IAsyncEnumerable<Template> ListAuto(CancellationToken cancellationToken = default);
     }
 
     internal sealed class TemplatesV2 : ISinchConversationTemplatesV2
@@ -104,19 +113,27 @@ namespace Sinch.Conversation.TemplatesV2
             return _http.Value.Send<Template>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
         }
 
-        public async Task<IEnumerable<Template>> List(CancellationToken cancellationToken = default)
+        public async Task<ListTemplatesResponse> List(CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"v2/projects/{_projectId}/templates");
 
             _logger?.LogDebug("Listing all template of {projectId}", _projectId);
-            var response =
-                await _http.Value.Send<ListTemplatesResponse>(uri, HttpMethod.Get, cancellationToken: cancellationToken);
-            return response.Templates ?? new List<Template>();
+            var response = await _http.Value.Send<ListTemplatesResponse>(uri, HttpMethod.Get,
+                cancellationToken: cancellationToken);
+
+            return response;
         }
 
-        private sealed class ListTemplatesResponse
+        public async IAsyncEnumerable<Template> ListAuto([EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            public List<Template>? Templates { get; set; }
+            _logger?.LogDebug("Auto fetching list of templates for {projectId}", _projectId);
+            var response = await List(cancellationToken);
+
+            if (response.Templates == null)
+                yield break;
+
+            foreach (var template in response.Templates)
+                yield return template;
         }
 
         /// <inheritdoc />

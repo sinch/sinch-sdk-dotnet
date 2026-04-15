@@ -16,7 +16,7 @@ public class TemplatesV2
 
     private ISinchConversationTemplatesV2 _templatesV2;
     private Template _template;
-    private IEnumerable<Template> _templatesList;
+    private ListTemplatesResponse _templatesList;
     private IEnumerable<TemplateTranslation> _translationsList;
     private bool _deleteCompleted;
 
@@ -69,13 +69,13 @@ public class TemplatesV2
     public void ThenTheResponseContainsTheListOfConversationTemplatesWithTheV2Structure()
     {
         _templatesList.Should().NotBeNull();
-        _templatesList.Should().HaveCount(2);
+        _templatesList.Templates.Should().HaveCount(2);
     }
 
     [Then(@"for each templateV2 in the templateV2 list response, it defines a translation with version ""latest"" on top of each current translation version")]
     public void ThenForEachTemplateV2InTheTemplateV2ListResponseItDefinesATranslationWithVersionLatestOnTopOfEachCurrentTranslationVersion()
     {
-        foreach (var template in _templatesList)
+        foreach (var template in _templatesList.Templates!)
         {
             var translations = template.Translations!;
             var latestVersionCount = translations.Count(t => t.Version == "latest");

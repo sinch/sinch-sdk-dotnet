@@ -85,7 +85,31 @@ namespace Sinch.Tests.Conversation.TemplatesV2
             var response = await Conversation.TemplatesV2.List();
 
             response.Should().NotBeNull();
-            response.Should().HaveCount(2);
+            response.Templates.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public async Task ListAuto_WithTemplates_YieldsAllTemplates()
+        {
+            var templates = new List<Template>
+            {
+                new Template { Id = TemplateId001, Version = 1 },
+                new Template { Id = TemplateId002, Version = 2 }
+            };
+            var responseWrapper = new { templates };
+
+            HttpMessageHandlerMock
+                .When(HttpMethod.Get, _templatesUrl)
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .Respond(HttpStatusCode.OK, JsonContent.Create(
+                    responseWrapper,
+                    options: SinchConversationClient.JsonSerializerOptionsInner));
+
+            var result = new List<Template>();
+            await foreach (var template in Conversation.TemplatesV2.ListAuto())
+                result.Add(template);
+
+            result.Should().HaveCount(2);
         }
 
         #endregion
