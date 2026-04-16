@@ -1,10 +1,26 @@
+using Sinch.Core;
 using Sinch.Numbers.VoiceConfigurations;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Numbers.Active.Update
 {
-    public sealed class UpdateActiveNumberRequest
+    /// <summary>
+    ///     Request to update an active number (partial update — RFC 7396 JSON Merge Patch).
+    ///     <para>
+    ///         Three states per field:
+    ///         <list type="bullet">
+    ///             <item>Assign a value — sent with that value.</item>
+    ///             <item>Assign <c>null</c> — field cleared on server.</item>
+    ///             <item>Leave unassigned (default) — field omitted from the request entirely.</item>
+    ///         </list>
+    ///         Fields that support null-as-clear use the Stripe-style <see cref="SetTracker" /> pattern
+    ///         internally; callers see only plain nullable types.
+    ///     </para>
+    /// </summary>
+    public sealed class UpdateActiveNumberRequest : IHasSetTracker
     {
+        private readonly SetTracker _setTracker = new();
+        SetTracker IHasSetTracker.SetTracker => _setTracker;
         /// <summary>
         ///     User supplied name for the phone number.
         /// </summary>
@@ -17,7 +33,17 @@ namespace Sinch.Numbers.Active.Update
         ///     processed successfully,
         ///     the servicePlanId sent will appear directly under the smsConfiguration object.
         /// </summary>
-        public SmsConfiguration? SmsConfiguration { get; set; }
+        private SmsConfiguration? _smsConfiguration;
+
+        public SmsConfiguration? SmsConfiguration
+        {
+            get => _smsConfiguration;
+            set
+            {
+                _setTracker.Track();
+                _smsConfiguration = value;
+            }
+        }
 
         /// <summary>
         ///     The current voice configuration for this number.

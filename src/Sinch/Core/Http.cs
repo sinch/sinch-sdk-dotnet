@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Auth;
@@ -84,7 +85,11 @@ namespace Sinch.Core
             _jsonSerializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web)
             {
                 PropertyNamingPolicy = jsonNamingPolicy,
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                TypeInfoResolver = new DefaultJsonTypeInfoResolver
+                {
+                    Modifiers = { ApplyMergePatchShouldSerialize }
+                }
             };
         }
 
@@ -283,6 +288,54 @@ namespace Sinch.Core
 
             return await SendHttpContent<TResponse>(uri: uri, httpMethod: httpMethod, httpContent,
                 cancellationToken: cancellationToken, headers: headers);
+        }
+
+        /// <summary>
+        ///     STJ <see cref="JsonTypeInfo" /> modifier that applies <see cref="SetTracker" /> semantics
+        ///     to request types that implement <see cref="IHasSetTracker" />.
+        ///     <list type="bullet">
+        ///         <item>
+        ///             Tracked property set to a value → included normally.
+        ///         </item>
+        ///         <item>
+        ///             Tracked property set to <c>null</c> → serialized as <c>null</c> (clears field on server).
+        ///         </item>
+        ///         <item>
+        ///             Untracked property (never assigned) → omitted from the payload entirely.
+        ///         </item>
+        ///         <item>All other types: the existing <c>WhenWritingNull</c> behaviour is preserved.</item>
+        ///     </list>
+        /// </summary>
+        private static void ApplyMergePatchShouldSerialize(JsonTypeInfo typeInfo)
+        {
+            if (typeInfo.Kind != JsonTypeInfoKind.Object)
+                return;
+
+            if (!typeof(IHasSetTracker).IsAssignableFrom(typeInfo.Type))
+                return;
+
+            foreach (var property in typeInfo.Properties)
+            {
+                // Skip properties that are unconditionally ignored — our modifier must not
+                // resurrect them by installing a ShouldSerialize predicate that could return true.
+                var ignoreAttr = (property.AttributeProvider as MemberInfo)
+                    ?.GetCustomAttribute<JsonIgnoreAttribute>();
+                if (ignoreAttr?.Condition == JsonIgnoreCondition.Always)
+                    continue;
+
+                // Capture the C# member name for SetTracker lookup.
+                // property.Name is the JSON name (after naming policy / [JsonPropertyName]),
+                // so we need the original CLR member name.
+                var memberName = (property.AttributeProvider as MemberInfo)?.Name ?? property.Name;
+
+                property.ShouldSerialize = (obj, val) =>
+                {
+                    if (obj is IHasSetTracker tracked)
+                        return val != null || tracked.SetTracker.IsSet(memberName);
+
+                    return val != null;
+                };
+            }
         }
 
         private static string BuildUserAgent()
