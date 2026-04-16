@@ -7,17 +7,30 @@ namespace Sinch.Numbers.Active.Update
     /// <summary>
     ///     Request to update an active number (partial update — RFC 7396 JSON Merge Patch).
     ///     <para>
-    ///         Use <see cref="Optional{T}.CreateValue" /> to set a field,
-    ///         <see cref="Optional{T}.CreateNull" /> to explicitly clear a field on the server,
-    ///         or leave the default <see cref="Optional{T}.Unset" /> to leave the field unchanged.
+    ///         Three states per field:
+    ///         <list type="bullet">
+    ///             <item><c>DisplayName = "name"</c> — sent with that value; <c>DisplayName = null</c> — cleared on server.</item>
+    ///             <item>Assign an <see cref="Optional{T}.Value" /> to other fields to send a value,
+    ///                 <see cref="Optional{T}.CreateNull" /> to clear on server.</item>
+    ///             <item>Leave unassigned (default <c>null</c>) — field omitted from the request entirely.</item>
+    ///         </list>
     ///     </para>
     /// </summary>
     public sealed class UpdateActiveNumberRequest
     {
+        [JsonInclude]
+        [JsonPropertyName("displayName")]
+        private Optional<string> _displayName = Optional<string>.CreateUnset();
+
         /// <summary>
         ///     User supplied name for the phone number.
         /// </summary>
-        public Optional<string> DisplayName { get; set; }
+        [JsonIgnore]
+        public string? DisplayName
+        {
+            get => (_displayName as Optional<string>.Value)?.Data;
+            set => _displayName = value == null ? Optional<string>.CreateNull() : Optional<string>.CreateValue(value);
+        }
 
         /// <summary>
         ///     The current SMS configuration for this number.<br /><br />
@@ -26,7 +39,7 @@ namespace Sinch.Numbers.Active.Update
         ///     processed successfully,
         ///     the servicePlanId sent will appear directly under the smsConfiguration object.
         /// </summary>
-        public Optional<SmsConfiguration> SmsConfiguration { get; set; }
+        public Optional<SmsConfiguration> SmsConfiguration { get; set; } = default!;
 
         /// <summary>
         ///     The current voice configuration for this number.
@@ -36,11 +49,11 @@ namespace Sinch.Numbers.Active.Update
         ///     Once processed successfully, the appId sent will appear directly under the voiceConfiguration object.
         /// </summary>
         [JsonConverter(typeof(OptionalVoiceConfigurationConverter))]
-        public Optional<VoiceConfiguration> VoiceConfiguration { get; set; }
+        public Optional<VoiceConfiguration> VoiceConfiguration { get; set; } = default!;
 
         /// <summary>
         ///     The callback URL to be called for a rented number's provisioning / deprovisioning operations.
         /// </summary>
-        public Optional<string> CallbackUrl { get; set; }
+        public Optional<string> CallbackUrl { get; set; } = default!;
     }
 }

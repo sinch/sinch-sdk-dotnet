@@ -7,7 +7,6 @@
 /// </summary>
 
 using Sinch;
-using Sinch.Core;
 using Sinch.Numbers.Active.Update;
 using Sinch.Snippets.Shared;
 
@@ -32,7 +31,7 @@ Console.WriteLine($"Updating number: {phoneNumber}");
 
 var response = await client.Numbers.Update(phoneNumber, new UpdateActiveNumberRequest
 {
-    DisplayName = Optional<string>.CreateValue(displayName)
+    DisplayName = displayName
 });
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

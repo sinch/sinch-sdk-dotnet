@@ -1,7 +1,6 @@
 using System.Text.Json;
 using FluentAssertions;
 using Sinch.Core;
-using Sinch.Numbers;
 using Sinch.Numbers.Active.Update;
 using Xunit;
 
@@ -50,10 +49,9 @@ namespace Sinch.Tests.Numbers
         {
             var request = new UpdateActiveNumberRequest
             {
-                DisplayName = Optional<string>.CreateValue("My DID"),
-                SmsConfiguration = Optional<Sinch.Numbers.SmsConfiguration>.CreateValue(
-                    new Sinch.Numbers.SmsConfiguration { ServicePlanId = "svc-plan-1" }),
-                CallbackUrl = Optional<string>.CreateValue("https://example.com/callback")
+                DisplayName = "My DID",
+                SmsConfiguration = new Sinch.Numbers.SmsConfiguration { ServicePlanId = "svc-plan-1" },
+                CallbackUrl = "https://example.com/callback"
             };
 
             var json = JsonSerializer.Serialize(request, Numbers.JsonSerializerOptions);
@@ -69,7 +67,7 @@ namespace Sinch.Tests.Numbers
         {
             var request = new UpdateActiveNumberRequest
             {
-                DisplayName = Optional<string>.CreateNull(),
+                DisplayName = null,
                 CallbackUrl = Optional<string>.CreateNull()
             };
 

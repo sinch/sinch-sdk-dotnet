@@ -63,6 +63,13 @@ namespace Sinch.Core
 
         /// <summary>Creates an instance representing "field set to a value".</summary>
         public static Optional<T> CreateValue(T data) => new Value(data);
+
+        /// <summary>
+        ///     Implicitly converts a value of <typeparamref name="T" /> to <see cref="Optional{T}.Value" />,
+        ///     allowing natural object-initializer syntax:
+        ///     <code>new UpdateActiveNumberRequest { DisplayName = "MyName" }</code>
+        /// </summary>
+        public static implicit operator Optional<T>(T value) => new Value(value);
     }
 
     /// <summary>
