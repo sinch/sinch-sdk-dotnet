@@ -10,6 +10,7 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Primitives;
 using Sinch.Conversation.Hooks;
 using Sinch.Core;
@@ -47,7 +48,9 @@ namespace Sinch.Conversation.Webhooks
         /// </param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IEnumerable<Webhook>> List(string appId, CancellationToken cancellationToken = default);
+        Task<ListWebhooksResponse> List(string appId, CancellationToken cancellationToken = default);
+
+        IAsyncEnumerable<Webhook> ListAuto(string appId, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Updates an existing webhook as specified by the webhook ID.
@@ -129,7 +132,7 @@ namespace Sinch.Conversation.Webhooks
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<Webhook>> List(string appId, CancellationToken cancellationToken = default)
+        public Task<ListWebhooksResponse> List(string appId, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(appId))
             {
@@ -138,9 +141,23 @@ namespace Sinch.Conversation.Webhooks
 
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/apps/{appId}/webhooks");
             _logger?.LogDebug("Listing webhooks for an {appId}...", appId);
-            var response = await _http.Value.Send<ListWebhooksResponse>(uri, HttpMethod.Get,
-                cancellationToken);
-            return response.Webhooks ?? new List<Webhook>();
+            return _http.Value.Send<ListWebhooksResponse>(uri, HttpMethod.Get, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public async IAsyncEnumerable<Webhook> ListAuto(string appId,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            var response = await List(appId, cancellationToken);
+            if (response.Webhooks == null)
+            {
+                yield break;
+            }
+
+            foreach (var webhook in response.Webhooks)
+            {
+                yield return webhook;
+            }
         }
 
         /// <inheritdoc />
@@ -169,7 +186,6 @@ namespace Sinch.Conversation.Webhooks
             return _http.Value.Send<UpdateWebhookRequest, Webhook>(builder.Uri, HttpMethod.Patch, request,
                 cancellationToken);
         }
-
 
         /// <inheritdoc />
         public Task Delete(string webhookId, CancellationToken cancellationToken = default)
@@ -271,11 +287,5 @@ namespace Sinch.Conversation.Webhooks
 
             return jsonResult;
         }
-    }
-
-    internal sealed class ListWebhooksResponse
-    {
-        // ReSharper disable once CollectionNeverUpdated.Global
-        public List<Webhook>? Webhooks { get; set; }
     }
 }

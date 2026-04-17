@@ -33,6 +33,7 @@
 - [Conversation API: InjectMessageRequest fields are now required](#conversation-api-injectmessagerequest-fields-are-now-required)
 - [Conversation API: InjectMessageRequest requires a constructor for the message payload](#conversation-api-injectmessagerequest-requires-a-constructor-for-the-message-payload)
 - [Conversation API: ConversationEvent.Event and ConversationEventEvent removed](#conversation-api-conversationeventevent-and-conversationeventevent-removed)
+- [Conversation API: Webhooks List now returns ListWebhooksResponse](#conversation-api-webhooks-list-now-returns-listwebhooksresponse)
 
 ## .NET Framework Support
 
@@ -955,4 +956,18 @@ var appEvent = conversationEvent.AppEvent;
 // Webhook callback (EventInbound)
 var contactEvent = inboundEvent.Event?.ContactEvent;
 var contactMessageEvent = inboundEvent.Event?.ContactMessageEvent;
+```
+
+## Conversation API: Webhooks List now returns ListWebhooksResponse
+
+`ISinchConversationWebhooks.List` now returns a response wrapper type instead of returning an enumerable directly.
+
+Version 1.*:
+```csharp
+IEnumerable<Webhook> webhooks = await sinch.Conversation.Webhooks.List(appId);
+```
+
+Version 2.*:
+```csharp
+ListWebhooksResponse response = await sinch.Conversation.Webhooks.List(appId);
 ```
