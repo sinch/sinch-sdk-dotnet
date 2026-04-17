@@ -21,7 +21,7 @@ namespace Sinch.Conversation.Conversations
         private JsonObject? _metadataJson;
 
         /// <summary>
-        ///     Gets or Sets ActiveChannel
+        ///     The active channel for this conversation.
         /// </summary>
         [JsonPropertyName("active_channel")]
         public ConversationChannel? ActiveChannel
@@ -84,6 +84,7 @@ namespace Sinch.Conversation.Conversations
 
         /// <summary>
         ///     The timestamp of the latest message in the conversation.
+        ///     The timestamp is Thursday January 01, 1970 00:00:00 UTC if the conversation contains no messages.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("last_received")]
@@ -104,6 +105,9 @@ namespace Sinch.Conversation.Conversations
             }
         }
 
+        /// <summary>
+        ///     Arbitrary correlation ID related to the MT message set by the Conversation API user.
+        /// </summary>
         [JsonPropertyName("correlation_id")]
         public string? CorrelationId
         {
