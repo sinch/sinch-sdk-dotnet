@@ -18,7 +18,6 @@ namespace Sinch.Conversation.Conversations
         private string? _appId;
         private string? _contactId;
         private string? _correlationId;
-        private string? _metadata;
         private JsonObject? _metadataJson;
 
         /// <summary>
@@ -34,7 +33,6 @@ namespace Sinch.Conversation.Conversations
                 _activeChannel = value;
             }
         }
-
 
         /// <summary>
         ///     Flag for whether this conversation is active.
