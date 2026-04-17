@@ -139,6 +139,30 @@ namespace Sinch.Tests.Conversation.TemplatesV2
             response.Should().HaveCount(2);
         }
 
+        [Fact]
+        public async Task ListTranslationsAuto_WithTemplateId_YieldsAllTranslations()
+        {
+            var translations = new List<TemplateTranslation>
+            {
+                new (new TextMessage("Message from a template.")) { LanguageCode = "en-US", Version = "1" },
+                new (new TextMessage("Message fr")) { LanguageCode = "fr-FR", Version = "1" }
+            };
+            var responseWrapper = new { translations };
+
+            HttpMessageHandlerMock
+                .When(HttpMethod.Get, $"{_templatesUrl}/{TemplateId002}/translations")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .Respond(HttpStatusCode.OK, JsonContent.Create(
+                    responseWrapper,
+                    options: SinchConversationClient.JsonSerializerOptionsInner));
+
+            var result = new List<TemplateTranslation>();
+            await foreach (var translation in Conversation.Templates.ListTranslationsAuto(TemplateId002))
+                result.Add(translation);
+
+            result.Should().HaveCount(2);
+        }
+
         #endregion
 
         #region Get Tests

@@ -26,60 +26,68 @@ namespace Sinch.Conversation.TemplatesV2
         /// <summary>
         ///     Get a template
         /// </summary>
-        /// <param name="templateId"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="templateId">The ID of the template to fetch.</param>
+        /// <param name="cancellationToken">A token to cancel the operation.</param>
+        /// <returns>The requested <see cref="Template"/>.</returns>
         Task<Template> Get(string templateId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     List all templates
+        ///     List all templates.
         /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">A token to cancel the operation.</param>
+        /// <returns>A <see cref="ListTemplatesResponse"/> containing all templates.</returns>
         Task<ListTemplatesResponse> List(CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Creates a template
         /// </summary>
-        /// <param name="template">Template to create</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="template">Template to create.</param>
+        /// <param name="cancellationToken">A token to cancel the operation.</param>
+        /// <returns>The created <see cref="Template"/>.</returns>
         Task<Template> Create(CreateTemplateRequest template, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///    
+        ///     List translations for a template.
         /// </summary>
-        /// <param name="templateId"></param>
-        /// <param name="languageCode">Optional. The translation's language code.</param>
-        /// <param name="translationVersion">Optional. The translation's version.</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<IEnumerable<TemplateTranslation>> ListTranslations(string templateId, string languageCode,
-            string translationVersion,
-            CancellationToken cancellationToken = default);
+        /// <param name="templateId">The ID of the template to fetch.</param>
+        /// <param name="languageCode">The translation's language code.</param>
+        /// <param name="translationVersion">The translation's version.</param>
+        /// <param name="cancellationToken">A token to cancel the operation.</param>
+        /// <returns>A collection of <see cref="TemplateTranslation"/> matching the filter.</returns>
+        Task<IEnumerable<TemplateTranslation>> ListTranslations(string templateId, string? languageCode = null,
+            string? translationVersion = null, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Lists all template translations.
+        /// </summary>
+        /// <param name="templateId">The ID of the template to fetch.</param>
+        /// <param name="languageCode">The translation's language code.</param>
+        /// <param name="translationVersion">The translation's version.</param>
+        /// <param name="cancellationToken">A token to cancel the operation.</param>
+        /// <returns>An async stream of <see cref="TemplateTranslation"/>.</returns>
+        IAsyncEnumerable<TemplateTranslation> ListTranslationsAuto(string templateId, string? languageCode = null,
+            string? translationVersion = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Update the template
         /// </summary>
-        /// <param name="template"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="template">The template update request containing the updated fields.</param>
+        /// <param name="cancellationToken">A token to cancel the operation.</param>
+        /// <returns>The updated <see cref="Template"/>.</returns>
         Task<Template> Update(UpdateTemplateRequest template, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Deletes a template
         /// </summary>
-        /// <param name="templateId"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="templateId">The ID of the template to delete.</param>
+        /// <param name="cancellationToken">A token to cancel the operation.</param>
         Task Delete(string templateId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Lists all templates, automatically yielding each one.
-        ///     Note: the TemplatesV2 API does not yet support pagination; this method returns all templates in a single request.
+        ///     Lists all templates.
         /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">A token to cancel the operation.</param>
+        /// <returns>An async stream of all <see cref="Template"/>.</returns>
         IAsyncEnumerable<Template> ListAuto(CancellationToken cancellationToken = default);
     }
 
@@ -147,8 +155,8 @@ namespace Sinch.Conversation.TemplatesV2
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<TemplateTranslation>> ListTranslations(string templateId, string languageCode,
-            string translationVersion, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<TemplateTranslation>> ListTranslations(string templateId, string? languageCode = null,
+            string? translationVersion = null, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"v2/projects/{_projectId}/templates/{templateId}/translations");
 
@@ -171,6 +179,16 @@ namespace Sinch.Conversation.TemplatesV2
                 await _http.Value.Send<ListTranslationsResponse>(builder.Uri, HttpMethod.Get,
                     cancellationToken: cancellationToken);
             return response.Translations ?? new List<TemplateTranslation>();
+        }
+
+        public async IAsyncEnumerable<TemplateTranslation> ListTranslationsAuto(string templateId, string? languageCode = null,
+            string? translationVersion = null, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            _logger?.LogDebug("Auto fetching list of translations for {templateId}", templateId);
+            var response = await ListTranslations(templateId, languageCode, translationVersion, cancellationToken);
+
+            foreach (var translation in response)
+                yield return translation;
         }
 
         public Task<Template> Update(UpdateTemplateRequest template, CancellationToken cancellationToken = default)
