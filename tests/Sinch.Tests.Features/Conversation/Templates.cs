@@ -9,7 +9,7 @@ using Sinch.Conversation.TemplatesV2;
 namespace Sinch.Tests.Features.Conversation;
 
 [Binding]
-public class TemplatesV2
+public class Templates
 {
     private const string TemplateId001 = "01HVN010MG3B9N6X323JAFN59P";
     private const string TemplateId002 = "01W4FFL35P4NC4K35TEMPLATEV2";
