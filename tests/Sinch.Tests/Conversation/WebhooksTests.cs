@@ -456,7 +456,6 @@ namespace Sinch.Tests.Conversation
                             ContactId = "contact ID",
                             Id = "a conversation id",
                             LastReceived = Helpers.ParseUtc("2020-11-17T15:00:00Z"),
-                            Metadata = "metadata value",
                             MetadataJson = new JsonObject()
                                 {
                                     { "metadata_json_key", "metadata json value" }
@@ -505,7 +504,6 @@ namespace Sinch.Tests.Conversation
                                 ContactId = "contact ID",
                                 Id = "a conversation id",
                                 LastReceived = Helpers.ParseUtc("2020-11-17T15:00:00Z"),
-                                Metadata = "metadata value",
                                 MetadataJson = new JsonObject()
                                 {
                                     { "metadata_json_key", "metadata json value" }
@@ -554,7 +552,6 @@ namespace Sinch.Tests.Conversation
                                 ContactId = "contact ID",
                                 Id = "a conversation id",
                                 LastReceived = Helpers.ParseUtc("2020-11-17T15:00:00Z"),
-                                Metadata = "metadata value",
                                 MetadataJson = new JsonObject()
                                 {
                                     { "metadata_json_key", "metadata json value" }

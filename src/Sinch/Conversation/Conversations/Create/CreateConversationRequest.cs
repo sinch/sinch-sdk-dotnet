@@ -15,27 +15,20 @@ namespace Sinch.Conversation.Conversations.Create
         /// </summary>
         public bool? Active { get; set; }
 
-
         /// <summary>
         ///     The ID of the participating app.
         /// </summary>
-
         public required string AppId { get; set; }
-
-
 
         /// <summary>
         ///     The ID of the participating contact.
         /// </summary>
-
         public required string ContactId { get; set; }
 
-
-
         /// <summary>
-        ///     Arbitrary data set by the Conversation API clients. Up to 1024 characters long.
+        ///     An arbitrary identifier that can be used to correlate this conversation with resources in external systems.
         /// </summary>
-        public string? Metadata { get; set; }
+        public string? CorrelationId { get; set; }
 
 
         /// <summary>
@@ -43,7 +36,6 @@ namespace Sinch.Conversation.Conversations.Create
         ///     of a SendMessageRequest. A valid JSON object.
         /// </summary>
         public JsonObject? MetadataJson { get; set; }
-
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -57,7 +49,7 @@ namespace Sinch.Conversation.Conversations.Create
             sb.Append("  ActiveChannel: ").Append(ActiveChannel).Append("\n");
             sb.Append("  AppId: ").Append(AppId).Append("\n");
             sb.Append("  ContactId: ").Append(ContactId).Append("\n");
-            sb.Append("  Metadata: ").Append(Metadata).Append("\n");
+            sb.Append("  CorrelationId: ").Append(CorrelationId).Append("\n");
             sb.Append("  MetadataJson: ").Append(MetadataJson).Append("\n");
             sb.Append("}\n");
             return sb.ToString();

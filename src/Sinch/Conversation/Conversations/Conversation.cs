@@ -18,11 +18,10 @@ namespace Sinch.Conversation.Conversations
         private string? _appId;
         private string? _contactId;
         private string? _correlationId;
-        private string? _metadata;
         private JsonObject? _metadataJson;
 
         /// <summary>
-        ///     Gets or Sets ActiveChannel
+        ///     The active channel for this conversation.
         /// </summary>
         [JsonPropertyName("active_channel")]
         public ConversationChannel? ActiveChannel
@@ -34,7 +33,6 @@ namespace Sinch.Conversation.Conversations
                 _activeChannel = value;
             }
         }
-
 
         /// <summary>
         ///     Flag for whether this conversation is active.
@@ -86,24 +84,11 @@ namespace Sinch.Conversation.Conversations
 
         /// <summary>
         ///     The timestamp of the latest message in the conversation.
+        ///     The timestamp is Thursday January 01, 1970 00:00:00 UTC if the conversation contains no messages.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("last_received")]
         public DateTime LastReceived { get; set; }
-
-        /// <summary>
-        ///     Arbitrary data set by the Conversation API clients. Up to 1024 characters long.
-        /// </summary>
-        [JsonPropertyName("metadata")]
-        public string? Metadata
-        {
-            get => _metadata;
-            set
-            {
-                SetFields.Add(nameof(Metadata));
-                _metadata = value;
-            }
-        }
 
         /// <summary>
         ///     Arbitrary data set by the Conversation API clients and/or provided in the conversation_metadata field of a
@@ -120,6 +105,9 @@ namespace Sinch.Conversation.Conversations
             }
         }
 
+        /// <summary>
+        ///     Arbitrary correlation ID related to the MT message set by the Conversation API user.
+        /// </summary>
         [JsonPropertyName("correlation_id")]
         public string? CorrelationId
         {
@@ -146,7 +134,6 @@ namespace Sinch.Conversation.Conversations
             sb.Append("  ContactId: ").Append(ContactId).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  LastReceived: ").Append(LastReceived).Append("\n");
-            sb.Append("  Metadata: ").Append(Metadata).Append("\n");
             sb.Append("  MetadataJson: ").Append(MetadataJson).Append("\n");
             sb.Append("  CorrelationId: ").Append(CorrelationId).Append("\n");
             sb.Append("}\n");
