@@ -30,7 +30,7 @@
 - [Conversation API: WhatsApp payment_settings replaced by payment_buttons](#conversation-api-whatsapp-payment_settings-replaced-by-payment_buttons)
 - [Conversation API: ConversationDirection.UndefinedDirection removed](#conversation-api-conversationdirectionundefineddirection-removed)
 - [Conversation API: ConversationEvent.Event and ConversationEventEvent removed](#conversation-api-conversationevent-event-and-conversationeventevent-removed)
-- [Conversation API: TemplatesV2 ChannelTemplateOverrides type changed to Dictionary](#conversation-api-templatesv2-channeltemplateoverrides-type-changed-to-dictionary)
+- [Conversation API: TemplatesV2 ChannelTemplateOverrides type changed to Dictionary with ConversationChannel keys](#conversation-api-templatesv2-channeltemplateoverrides-type-changed-to-dictionary-with-conversationchannel-keys)
 - [Conversation API: TemplatesV2 ParameterMappings type changed to Dictionary](#conversation-api-templatesv2-parametermappings-type-changed-to-dictionary)
 - [Conversation API: Template.Id is now nullable](#conversation-api-templateid-is-now-nullable)
 - [Conversation API: CreateTemplateRequest and UpdateTemplateRequest no longer expose create\_time and update\_time](#conversation-api-createtemplaterequest-and-updatetemplaterequest-no-longer-expose-create_time-and-update_time)
@@ -852,9 +852,9 @@ var direction = ConversationDirection.ToApp;
 var direction = ConversationDirection.ToContact;
 ```
 
-## Conversation API: TemplatesV2 ChannelTemplateOverrides type changed to Dictionary
+## Conversation API: TemplatesV2 ChannelTemplateOverrides type changed to Dictionary with ConversationChannel keys
 
-`TemplateTranslation.ChannelTemplateOverrides` type changed from `ChannelTemplateOverride` to `Dictionary<string, ChannelTemplateOverride>`. The old `ChannelTemplateOverride` class (with fixed `WhatsApp`/`KakaoTalk` properties) has been replaced by a new `ChannelTemplateOverride` class that represents a single channel entry (previously named `OverrideTemplateReference`).
+`TemplateTranslation.ChannelTemplateOverrides` type changed from `ChannelTemplateOverride` to `Dictionary<ConversationChannel, ChannelTemplateOverride>`. The old `ChannelTemplateOverride` class (with fixed `WhatsApp`/`KakaoTalk` properties) has been replaced by a new `ChannelTemplateOverride` class that represents a single channel entry (previously named `OverrideTemplateReference`).
 
 Version 1.*:
 ```csharp
@@ -874,10 +874,10 @@ Version 2.*:
 var translation = new TemplateTranslation(new TextMessage("Hi"))
 {
     LanguageCode = "en-US",
-    ChannelTemplateOverrides = new Dictionary<string, ChannelTemplateOverride>
+    ChannelTemplateOverrides = new Dictionary<ConversationChannel, ChannelTemplateOverride>
     {
-        ["WHATSAPP"] = new ChannelTemplateOverride { TemplateReference = new TemplateReference { TemplateId = "my-whatsapp-template" } },
-        ["KAKAOTALK"] = new ChannelTemplateOverride { TemplateReference = new TemplateReference { TemplateId = "my-kakaotalk-template" } }
+        [ConversationChannel.WhatsApp] = new ChannelTemplateOverride { TemplateReference = new TemplateReference { TemplateId = "my-whatsapp-template" } },
+        [ConversationChannel.KakaoTalk] = new ChannelTemplateOverride { TemplateReference = new TemplateReference { TemplateId = "my-kakaotalk-template" } }
     }
 };
 ```

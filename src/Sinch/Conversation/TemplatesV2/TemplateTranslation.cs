@@ -71,7 +71,7 @@ namespace Sinch.Conversation.TemplatesV2
         ///     Field to override the omnichannel template by referring to a channel-specific template.
         ///     The key in the map must point to a valid conversation channel.
         /// </summary>
-        public Dictionary<string, ChannelTemplateOverride>? ChannelTemplateOverrides { get; set; }
+        public Dictionary<ConversationChannel, ChannelTemplateOverride>? ChannelTemplateOverrides { get; set; }
 
         /// <summary>
         ///     List of expected variables. Can be used for request validation.
