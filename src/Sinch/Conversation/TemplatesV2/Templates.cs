@@ -21,7 +21,7 @@ namespace Sinch.Conversation.TemplatesV2
     ///     translations to different languages when creating a template to make it possible to reuse one template for
     ///     different languages.
     /// </summary>
-    public interface ISinchConversationTemplatesV2
+    public interface ISinchConversationTemplates
     {
         /// <summary>
         ///     Get a template
@@ -83,14 +83,14 @@ namespace Sinch.Conversation.TemplatesV2
         IAsyncEnumerable<Template> ListAuto(CancellationToken cancellationToken = default);
     }
 
-    internal sealed class TemplatesV2 : ISinchConversationTemplatesV2
+    internal sealed class Templates : ISinchConversationTemplates
     {
         private readonly Uri _baseAddress;
         private readonly Lazy<IHttp> _http;
-        private readonly ILoggerAdapter<ISinchConversationTemplatesV2>? _logger;
+        private readonly ILoggerAdapter<ISinchConversationTemplates>? _logger;
         private readonly string _projectId;
 
-        public TemplatesV2(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationTemplatesV2>? logger,
+        public Templates(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationTemplates>? logger,
             Lazy<IHttp> http)
         {
             _projectId = projectId;

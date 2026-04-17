@@ -13,7 +13,7 @@ using Xunit;
 
 namespace Sinch.Tests.Conversation.TemplatesV2
 {
-    public class TemplatesV2Tests : ConversationTestBase
+    public class TemplatesTests : ConversationTestBase
     {
         private const string TemplateId001 = "01HVN010MG3B9N6X323JAFN59P";
         private const string TemplateId002 = "01W4FFL35P4NC4K35TEMPLATEV2";
@@ -55,7 +55,7 @@ namespace Sinch.Tests.Conversation.TemplatesV2
                     expectedResponse,
                     options: SinchConversationClient.JsonSerializerOptionsInner));
 
-            var response = await Conversation.TemplatesV2.Create(expectedRequest);
+            var response = await Conversation.Templates.Create(expectedRequest);
 
             response.Should().NotBeNull();
             response.Id.Should().Be(TemplateId001);
@@ -82,7 +82,7 @@ namespace Sinch.Tests.Conversation.TemplatesV2
                     responseWrapper,
                     options: SinchConversationClient.JsonSerializerOptionsInner));
 
-            var response = await Conversation.TemplatesV2.List();
+            var response = await Conversation.Templates.List();
 
             response.Should().NotBeNull();
             response.Templates.Should().HaveCount(2);
@@ -106,7 +106,7 @@ namespace Sinch.Tests.Conversation.TemplatesV2
                     options: SinchConversationClient.JsonSerializerOptionsInner));
 
             var result = new List<Template>();
-            await foreach (var template in Conversation.TemplatesV2.ListAuto())
+            await foreach (var template in Conversation.Templates.ListAuto())
                 result.Add(template);
 
             result.Should().HaveCount(2);
@@ -133,7 +133,7 @@ namespace Sinch.Tests.Conversation.TemplatesV2
                     responseWrapper,
                     options: SinchConversationClient.JsonSerializerOptionsInner));
 
-            var response = await Conversation.TemplatesV2.ListTranslations(TemplateId002, string.Empty, string.Empty);
+            var response = await Conversation.Templates.ListTranslations(TemplateId002, string.Empty, string.Empty);
 
             response.Should().NotBeNull();
             response.Should().HaveCount(2);
@@ -155,7 +155,7 @@ namespace Sinch.Tests.Conversation.TemplatesV2
                     expectedResponse,
                     options: SinchConversationClient.JsonSerializerOptionsInner));
 
-            var response = await Conversation.TemplatesV2.Get(TemplateId001);
+            var response = await Conversation.Templates.Get(TemplateId001);
 
             response.Should().NotBeNull();
             response.Id.Should().Be(TemplateId001);
@@ -219,7 +219,7 @@ namespace Sinch.Tests.Conversation.TemplatesV2
                     expectedResponse,
                     options: SinchConversationClient.JsonSerializerOptionsInner));
 
-            var response = await Conversation.TemplatesV2.Update(expectedRequest);
+            var response = await Conversation.Templates.Update(expectedRequest);
 
             response.Should().NotBeNull();
             response.Id.Should().Be(TemplateId001);
@@ -238,7 +238,7 @@ namespace Sinch.Tests.Conversation.TemplatesV2
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond(HttpStatusCode.OK, new StringContent(string.Empty));
 
-            await Conversation.TemplatesV2.Delete(TemplateId002);
+            await Conversation.Templates.Delete(TemplateId002);
         }
 
         #endregion

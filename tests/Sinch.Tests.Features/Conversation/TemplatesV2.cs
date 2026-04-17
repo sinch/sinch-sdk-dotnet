@@ -14,7 +14,7 @@ public class TemplatesV2
     private const string TemplateId001 = "01HVN010MG3B9N6X323JAFN59P";
     private const string TemplateId002 = "01W4FFL35P4NC4K35TEMPLATEV2";
 
-    private ISinchConversationTemplatesV2 _templatesV2;
+    private ISinchConversationTemplates _templates;
     private Template _template;
     private ListTemplatesResponse _templatesList;
     private IEnumerable<TemplateTranslation> _translationsList;
@@ -23,13 +23,13 @@ public class TemplatesV2
     [Given(@"the Conversation service ""TemplatesV2"" is available")]
     public void GivenTheConversationServiceTemplatesV2IsAvailable()
     {
-        _templatesV2 = Utils.SinchConversationClient().TemplatesV2;
+        _templates = Utils.SinchConversationClient().Templates;
     }
 
     [When(@"I send a request to create a conversation template with the V2 API")]
     public async Task WhenISendARequestToCreateAConversationTemplateWithTheV2Api()
     {
-        _template = await _templatesV2.Create(new CreateTemplateRequest
+        _template = await _templates.Create(new CreateTemplateRequest
         {
             Id = TemplateId001,
             DefaultTranslation = "en-US",
@@ -62,7 +62,7 @@ public class TemplatesV2
     [When(@"I send a request to list the conversation templates with the V2 API")]
     public async Task WhenISendARequestToListTheConversationTemplatesWithTheV2Api()
     {
-        _templatesList = await _templatesV2.List();
+        _templatesList = await _templates.List();
     }
 
     [Then(@"the response contains the list of conversation templates with the V2 structure")]
@@ -87,7 +87,7 @@ public class TemplatesV2
     [When(@"I send a request to list the translations for a template with the V2 API")]
     public async Task WhenISendARequestToListTheTranslationsForATemplateWithTheV2Api()
     {
-        _translationsList = await _templatesV2.ListTranslations(TemplateId002, string.Empty, string.Empty);
+        _translationsList = await _templates.ListTranslations(TemplateId002, string.Empty, string.Empty);
     }
 
     [Then(@"the response contains the list of translations for a template with the V2 structure")]
@@ -101,7 +101,7 @@ public class TemplatesV2
     [When(@"I send a request to retrieve a conversation template with the V2 API")]
     public async Task WhenISendARequestToRetrieveAConversationTemplateWithTheV2Api()
     {
-        _template = await _templatesV2.Get(TemplateId001);
+        _template = await _templates.Get(TemplateId001);
     }
 
     [Then(@"the response contains the conversation template details with the V2 structure")]
@@ -117,7 +117,7 @@ public class TemplatesV2
     [When(@"I send a request to update a conversation template with the V2 API")]
     public async Task WhenISendARequestToUpdateAConversationTemplateWithTheV2Api()
     {
-        _template = await _templatesV2.Update(new UpdateTemplateRequest
+        _template = await _templates.Update(new UpdateTemplateRequest
         {
             Id = TemplateId001,
             Version = 1,
@@ -171,7 +171,7 @@ public class TemplatesV2
     [When(@"I send a request to delete a conversation template with the V2 API")]
     public async Task WhenISendARequestToDeleteAConversationTemplateWithTheV2Api()
     {
-        await _templatesV2.Delete(TemplateId002);
+        await _templates.Delete(TemplateId002);
         _deleteCompleted = true;
     }
 

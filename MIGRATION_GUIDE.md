@@ -393,7 +393,8 @@ var request = new ListMessagesRequest
 
 ## Removed TemplatesV1 from Conversation API
 
-The `TemplatesV1` property has been removed from the Conversation API client. Use `TemplatesV2` instead.
+The `TemplatesV1` property has been removed from the Conversation API client. Use `Templates` instead.
+The templates client interface has also been renamed from `ISinchConversationTemplatesV2` to `ISinchConversationTemplates`.
 
 Version 1.*:
 ```csharp
@@ -402,7 +403,9 @@ var templates = await sinchClient.Conversation.TemplatesV1.List();
 
 Version 2.*:
 ```csharp
-var templates = await sinchClient.Conversation.TemplatesV2.List();
+var templates = await sinchClient.Conversation.Templates.List();
+
+ISinchConversationTemplates templatesClient = sinchClient.Conversation.Templates;
 ```
 
 ## ScheduledProvisioning.ErrorCodes type changed to IList\<FailureCode\>
