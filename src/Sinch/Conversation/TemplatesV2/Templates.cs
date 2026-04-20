@@ -53,8 +53,8 @@ namespace Sinch.Conversation.TemplatesV2
         /// <param name="languageCode">The translation's language code.</param>
         /// <param name="translationVersion">The translation's version.</param>
         /// <param name="cancellationToken">A token to cancel the operation.</param>
-        /// <returns>A collection of <see cref="TemplateTranslation"/> matching the filter.</returns>
-        Task<IEnumerable<TemplateTranslation>> ListTranslations(string templateId, string? languageCode = null,
+        /// <returns>A <see cref="ListTemplateTranslationResponse"/> containing the translations matching the filter.</returns>
+        Task<ListTemplateTranslationResponse> ListTranslations(string templateId, string? languageCode = null,
             string? translationVersion = null, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace Sinch.Conversation.TemplatesV2
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<TemplateTranslation>> ListTranslations(string templateId, string? languageCode = null,
+        public async Task<ListTemplateTranslationResponse> ListTranslations(string templateId, string? languageCode = null,
             string? translationVersion = null, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"v2/projects/{_projectId}/templates/{templateId}/translations");
@@ -164,21 +164,15 @@ namespace Sinch.Conversation.TemplatesV2
             var parameters = HttpUtility.ParseQueryString(string.Empty);
 
             if (!string.IsNullOrEmpty(languageCode))
-            {
                 parameters["language_code"] = languageCode;
-            }
 
             if (!string.IsNullOrEmpty(translationVersion))
-            {
                 parameters["translation_version"] = translationVersion;
-            }
 
             builder.Query = parameters.ToString()!;
             _logger?.LogDebug("Listing a translations for {templateId}", _projectId);
-            var response =
-                await _http.Value.Send<ListTranslationsResponse>(builder.Uri, HttpMethod.Get,
-                    cancellationToken: cancellationToken);
-            return response.Translations ?? new List<TemplateTranslation>();
+            return await _http.Value.Send<ListTemplateTranslationResponse>(builder.Uri, HttpMethod.Get,
+                cancellationToken: cancellationToken);
         }
 
         public async IAsyncEnumerable<TemplateTranslation> ListTranslationsAuto(string templateId, string? languageCode = null,
@@ -187,7 +181,10 @@ namespace Sinch.Conversation.TemplatesV2
             _logger?.LogDebug("Auto fetching list of translations for {templateId}", templateId);
             var response = await ListTranslations(templateId, languageCode, translationVersion, cancellationToken);
 
-            foreach (var translation in response)
+            if (response.Translations == null)
+                yield break;
+
+            foreach (var translation in response.Translations)
                 yield return translation;
         }
 
@@ -219,9 +216,5 @@ namespace Sinch.Conversation.TemplatesV2
             return _http.Value.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken: cancellationToken);
         }
 
-        private sealed class ListTranslationsResponse
-        {
-            public List<TemplateTranslation>? Translations { get; set; }
-        }
     }
 }

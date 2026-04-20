@@ -136,7 +136,7 @@ namespace Sinch.Tests.Conversation.TemplatesV2
             var response = await Conversation.Templates.ListTranslations(TemplateId002, string.Empty, string.Empty);
 
             response.Should().NotBeNull();
-            response.Should().HaveCount(2);
+            response.Translations.Should().HaveCount(2);
         }
 
         [Fact]

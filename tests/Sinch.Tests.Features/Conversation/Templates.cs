@@ -17,7 +17,7 @@ public class Templates
     private ISinchConversationTemplates _templates;
     private Template _template;
     private ListTemplatesResponse _templatesList;
-    private IEnumerable<TemplateTranslation> _translationsList;
+    private ListTemplateTranslationResponse _translationsList;
     private bool _deleteCompleted;
 
     [Given(@"the Conversation service ""TemplatesV2"" is available")]
@@ -94,8 +94,8 @@ public class Templates
     public void ThenTheResponseContainsTheListOfTranslationsForATemplateWithTheV2Structure()
     {
         _translationsList.Should().NotBeNull();
-        _translationsList.Should().HaveCount(2);
-        _translationsList.Should().NotContain(t => t.Version == "latest");
+        _translationsList.Translations.Should().HaveCount(2);
+        _translationsList.Translations.Should().NotContain(t => t.Version == "latest");
     }
 
     [When(@"I send a request to retrieve a conversation template with the V2 API")]
