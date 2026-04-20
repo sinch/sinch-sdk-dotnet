@@ -34,6 +34,7 @@
 - [Conversation API: InjectMessageRequest requires a constructor for the message payload](#conversation-api-injectmessagerequest-requires-a-constructor-for-the-message-payload)
 - [Conversation API: ConversationEvent.Event and ConversationEventEvent removed](#conversation-api-conversationeventevent-and-conversationeventevent-removed)
 - [Conversation API: Webhooks List now returns ListWebhooksResponse](#conversation-api-webhooks-list-now-returns-listwebhooksresponse)
+- [Conversation API: Webhooks request fields are now optional per OAS spec](#conversation-api-webhooks-request-fields-are-now-optional-per-oas-spec)
 
 ## .NET Framework Support
 
@@ -970,4 +971,40 @@ IEnumerable<Webhook> webhooks = await sinch.Conversation.Webhooks.List(appId);
 Version 2.*:
 ```csharp
 ListWebhooksResponse response = await sinch.Conversation.Webhooks.List(appId);
+```
+
+## Conversation API: Webhooks request fields are now optional per OAS spec
+
+The Webhook, CreateWebhookRequest, and UpdateWebhookRequest classes now have optional fields:
+
+- **Webhook** class: `AppId` and `Triggers` are now optional (`string?` and `List<WebhookTrigger>?`).
+- **CreateWebhookRequest** class: `Triggers` is now optional (`List<WebhookTrigger>?`).
+- **UpdateWebhookRequest** class: `Target`, `AppId`, and `Triggers` are all now optional.
+
+Version 1.*:
+```csharp
+var webhook = new CreateWebhookRequest
+{
+    AppId = appId,
+    Target = "https://example.com/webhook",
+    Triggers = new List<WebhookTrigger> { WebhookTrigger.MessageDelivery }
+};
+```
+
+Version 2.*:
+```csharp
+// All fields remain available, but Triggers is now optional
+var webhook = new CreateWebhookRequest
+{
+    AppId = appId,
+    Target = "https://example.com/webhook"
+    // Triggers can be omitted
+};
+
+// UpdateWebhookRequest now allows partial updates
+var update = new UpdateWebhookRequest
+{
+    Target = "https://new-endpoint.com/webhook"
+    // AppId and Triggers can be omitted for partial updates
+};
 ```
