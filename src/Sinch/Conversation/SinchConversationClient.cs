@@ -47,8 +47,8 @@ namespace Sinch.Conversation
         /// <inheritdoc cref="ISinchConversationCapabilities" />
         ISinchConversationCapabilities Capabilities { get; }
 
-        /// <inheritdoc cref="ISinchConversationTemplatesV2" />
-        ISinchConversationTemplatesV2 TemplatesV2 { get; }
+        /// <inheritdoc cref="ISinchConversationTemplates" />
+        ISinchConversationTemplates Templates { get; }
 
         /// <summary>
         ///     For internal use, JsonSerializerOption to be utilized for serialization and deserialization of all Conversation models
@@ -86,8 +86,8 @@ namespace Sinch.Conversation
                 loggerFactory?.Create<ISinchConversationTranscoding>(), http);
             Capabilities = new Capabilities(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationCapabilities>(), http);
-            TemplatesV2 = new TemplatesV2.TemplatesV2(projectId, templatesBaseAddress,
-                loggerFactory?.Create<ISinchConversationTemplatesV2>(), http);
+            Templates = new TemplatesV2.Templates(projectId, templatesBaseAddress,
+                loggerFactory?.Create<ISinchConversationTemplates>(), http);
         }
 
         /// <inheritdoc />
@@ -115,7 +115,7 @@ namespace Sinch.Conversation
         public ISinchConversationCapabilities Capabilities { get; }
 
         /// <inheritdoc />
-        public ISinchConversationTemplatesV2 TemplatesV2 { get; }
+        public ISinchConversationTemplates Templates { get; }
 
         public JsonSerializerOptions JsonSerializerOptions { get; }
     }

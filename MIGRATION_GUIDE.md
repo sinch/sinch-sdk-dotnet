@@ -33,6 +33,10 @@
 - [Conversation API: InjectMessageRequest fields are now required](#conversation-api-injectmessagerequest-fields-are-now-required)
 - [Conversation API: InjectMessageRequest requires a constructor for the message payload](#conversation-api-injectmessagerequest-requires-a-constructor-for-the-message-payload)
 - [Conversation API: ConversationEvent.Event and ConversationEventEvent removed](#conversation-api-conversationeventevent-and-conversationeventevent-removed)
+- [Conversation API: TemplatesV2 ChannelTemplateOverrides type changed to Dictionary with ConversationChannel keys](#conversation-api-templatesv2-channeltemplateoverrides-type-changed-to-dictionary-with-conversationchannel-keys)
+- [Conversation API: TemplatesV2 ParameterMappings type changed to Dictionary](#conversation-api-templatesv2-parametermappings-type-changed-to-dictionary)
+- [Conversation API: Template.Id is now nullable](#conversation-api-templateid-is-now-nullable)
+- [Conversation API: CreateTemplateRequest and UpdateTemplateRequest no longer expose create\_time and update\_time](#conversation-api-createtemplaterequest-and-updatetemplaterequest-no-longer-expose-create_time-and-update_time)
 - [Conversation API: Webhooks List now returns ListWebhooksResponse](#conversation-api-webhooks-list-now-returns-listwebhooksresponse)
 - [Conversation API: Webhooks request fields are now optional per OAS spec](#conversation-api-webhooks-request-fields-are-now-optional-per-oas-spec)
 
@@ -394,7 +398,8 @@ var request = new ListMessagesRequest
 
 ## Removed TemplatesV1 from Conversation API
 
-The `TemplatesV1` property has been removed from the Conversation API client. Use `TemplatesV2` instead.
+The `TemplatesV1` property has been removed from the Conversation API client. Use `Templates` instead.
+The templates client interface has also been renamed from `ISinchConversationTemplatesV2` to `ISinchConversationTemplates`.
 
 Version 1.*:
 ```csharp
@@ -403,7 +408,9 @@ var templates = await sinchClient.Conversation.TemplatesV1.List();
 
 Version 2.*:
 ```csharp
-var templates = await sinchClient.Conversation.TemplatesV2.List();
+var templates = await sinchClient.Conversation.Templates.List();
+
+ISinchConversationTemplates templatesClient = sinchClient.Conversation.Templates;
 ```
 
 ## ScheduledProvisioning.ErrorCodes type changed to IList\<FailureCode\>
@@ -957,6 +964,118 @@ var appEvent = conversationEvent.AppEvent;
 // Webhook callback (EventInbound)
 var contactEvent = inboundEvent.Event?.ContactEvent;
 var contactMessageEvent = inboundEvent.Event?.ContactMessageEvent;
+```
+
+## Conversation API: TemplatesV2 ChannelTemplateOverrides type changed to Dictionary with ConversationChannel keys
+
+`TemplateTranslation.ChannelTemplateOverrides` type changed from `ChannelTemplateOverride` to `Dictionary<ConversationChannel, ChannelTemplateOverride>`. The old `ChannelTemplateOverride` class (with fixed `WhatsApp`/`KakaoTalk` properties) has been replaced by a new `ChannelTemplateOverride` class that represents a single channel entry (previously named `OverrideTemplateReference`).
+
+Version 1.*:
+```csharp
+var translation = new TemplateTranslation(new TextMessage("Hi"))
+{
+    LanguageCode = "en-US",
+    ChannelTemplateOverrides = new ChannelTemplateOverride
+    {
+        WhatsApp = new OverrideTemplateReference { TemplateReference = new TemplateReference { TemplateId = "my-template" } },
+        KakaoTalk = new OverrideTemplateReference { TemplateReference = new TemplateReference { TemplateId = "my-template" } }
+    }
+};
+```
+
+Version 2.*:
+```csharp
+var translation = new TemplateTranslation(new TextMessage("Hi"))
+{
+    LanguageCode = "en-US",
+    ChannelTemplateOverrides = new Dictionary<ConversationChannel, ChannelTemplateOverride>
+    {
+        [ConversationChannel.WhatsApp] = new ChannelTemplateOverride { TemplateReference = new TemplateReference { TemplateId = "my-whatsapp-template" } },
+        [ConversationChannel.KakaoTalk] = new ChannelTemplateOverride { TemplateReference = new TemplateReference { TemplateId = "my-kakaotalk-template" } }
+    }
+};
+```
+
+## Conversation API: ConversationEvent.Event and ConversationEventEvent removed
+
+`ConversationEvent.Event` (of type `ConversationEventEvent`) has been removed. `ConversationEvent` (returned by the List/Get Events API) now exposes only `AppEvent` as a top-level property. `ContactEvent` and `ContactMessageEvent` are available on `EventInboundAllOfEvent`, which is the model used for inbound webhook callbacks.
+
+Version 1.*:
+```csharp
+var appEvent = conversationEvent.Event?.AppEvent;
+var contactEvent = conversationEvent.Event?.ContactEvent;
+var contactMessageEvent = conversationEvent.Event?.ContactMessageEvent;
+```
+
+Version 2.*:
+```csharp
+// API (List/Get Events)
+var appEvent = conversationEvent.AppEvent;
+
+// Webhook callback (EventInbound)
+var contactEvent = inboundEvent.Event?.ContactEvent;
+var contactMessageEvent = inboundEvent.Event?.ContactMessageEvent;
+```
+
+
+## Conversation API: TemplatesV2 ParameterMappings type changed to Dictionary
+
+`ChannelTemplateOverride.ParameterMappings` type changed from `TemplateReferenceParameterMappings` to `Dictionary<string, string>`. The `TemplateReferenceParameterMappings` class has been removed.
+
+Version 1.*:
+```csharp
+var overrideRef = new ChannelTemplateOverride
+{
+    ParameterMappings = new TemplateReferenceParameterMappings { Name = "name" }
+};
+```
+
+Version 2.*:
+```csharp
+var overrideRef = new ChannelTemplateOverride
+{
+    ParameterMappings = new Dictionary<string, string>
+    {
+        ["bodytext"] = "name"
+    }
+};
+```
+
+## Conversation API: Template.Id is now nullable
+
+`Template.Id` changed from `required string` to `string?`.
+
+Version 1.*:
+```csharp
+var template = new Template { Id = "my-id" };
+```
+
+Version 2.*:
+```csharp
+var template = new Template();
+```
+
+## Conversation API: CreateTemplateRequest and UpdateTemplateRequest no longer expose create\_time and update\_time
+
+`CreateTime` and `UpdateTime` have been removed from `CreateTemplateRequest` and `UpdateTemplateRequest`.
+
+Version 1.*:
+```csharp
+var request = new CreateTemplateRequest
+{
+    DefaultTranslation = "en-US",
+    Translations = [ /* ... */ ],
+    CreateTime = DateTime.UtcNow
+};
+```
+
+Version 2.*:
+```csharp
+var request = new CreateTemplateRequest
+{
+    DefaultTranslation = "en-US",
+    Translations = [ /* ... */ ]
+};
 ```
 
 ## Conversation API: Webhooks List now returns ListWebhooksResponse

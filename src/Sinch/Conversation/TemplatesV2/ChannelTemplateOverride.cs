@@ -1,40 +1,29 @@
+using System.Collections.Generic;
 using System.Text;
-using System.Text.Json.Serialization;
+using Sinch.Conversation.Messages.Message;
 
 namespace Sinch.Conversation.TemplatesV2
 {
-    /// <summary>
-    ///     Optional field to override the omnichannel template by referring to a channel-specific template.
-    /// </summary>
     public sealed class ChannelTemplateOverride
     {
         /// <summary>
-        ///     Gets or Sets Whatsapp
+        ///     The referenced template can be an omnichannel template stored in Conversation API Template Store as AppMessage or it can reference external channel-specific template such as WhatsApp Business Template.
         /// </summary>
-        [JsonPropertyName("WHATSAPP")]
-        public OverrideTemplateReference? WhatsApp { get; set; }
-
+        public TemplateReference? TemplateReference { get; set; }
 
         /// <summary>
-        ///     Gets or Sets Kakaotalk
+        ///     A mapping between omni-template variables and the channel-specific parameters.
         /// </summary>
-        [JsonPropertyName("KAKAOTALK")]
-        public OverrideTemplateReference? KakaoTalk { get; set; }
+        public Dictionary<string, string>? ParameterMappings { get; set; }
 
-
-        /// <summary>
-        ///     Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class ChannelTemplateOverride {\n");
-            sb.Append("  WhatsApp: ").Append(WhatsApp).Append("\n");
-            sb.Append("  KakaotTalk: ").Append(KakaoTalk).Append("\n");
+            sb.Append("class TemplateReference {\n");
+            sb.Append("  TemplateReference: ").Append(TemplateReference).Append("\n");
+            sb.Append("  ParameterMappings: ").Append(ParameterMappings).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
-
     }
 }
