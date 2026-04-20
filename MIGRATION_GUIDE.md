@@ -29,7 +29,10 @@
 - [Region configuration is now required for SMS and Conversation](#region-configuration-is-now-required-for-sms-and-conversation)
 - [Conversation API: WhatsApp payment_settings replaced by payment_buttons](#conversation-api-whatsapp-payment_settings-replaced-by-payment_buttons)
 - [Conversation API: ConversationDirection.UndefinedDirection removed](#conversation-api-conversationdirectionundefineddirection-removed)
-- [Conversation API: ConversationEvent.Event and ConversationEventEvent removed](#conversation-api-conversationevent-event-and-conversationeventevent-removed)
+- [Conversation API: ListConversationsRequest.OnlyActive is no longer required](#conversation-api-listconversationsrequestonlyactive-is-no-longer-required)
+- [Conversation API: InjectMessageRequest fields are now required](#conversation-api-injectmessagerequest-fields-are-now-required)
+- [Conversation API: InjectMessageRequest requires a constructor for the message payload](#conversation-api-injectmessagerequest-requires-a-constructor-for-the-message-payload)
+- [Conversation API: ConversationEvent.Event and ConversationEventEvent removed](#conversation-api-conversationeventevent-and-conversationeventevent-removed)
 - [Conversation API: TemplatesV2 ChannelTemplateOverrides type changed to Dictionary with ConversationChannel keys](#conversation-api-templatesv2-channeltemplateoverrides-type-changed-to-dictionary-with-conversationchannel-keys)
 - [Conversation API: TemplatesV2 ParameterMappings type changed to Dictionary](#conversation-api-templatesv2-parametermappings-type-changed-to-dictionary)
 - [Conversation API: Template.Id is now nullable](#conversation-api-templateid-is-now-nullable)
@@ -855,6 +858,91 @@ var direction = ConversationDirection.ToApp;
 var direction = ConversationDirection.ToContact;
 ```
 
+## Conversation API: ConversationEventEvent and ConversationEventEvent removed
+
+`ConversationEvent.Event` (of type `ConversationEventEvent`) has been removed. `AppEvent`, `ContactEvent`, and `ContactMessageEvent` are now top-level properties directly on `ConversationEvent`.
+
+Version 1.*:
+```csharp
+var appEvent = conversationEvent.Event?.AppEvent;
+var contactEvent = conversationEvent.Event?.ContactEvent;
+var contactMessageEvent = conversationEvent.Event?.ContactMessageEvent;
+```
+
+Version 2.*:
+```csharp
+var appEvent = conversationEvent.AppEvent;
+var contactEvent = conversationEvent.ContactEvent;
+var contactMessageEvent = conversationEvent.ContactMessageEvent;
+```
+
+## Conversation API: ListConversationsRequest.OnlyActive is no longer required
+
+`OnlyActive` has been changed from `required bool` to `bool?`.
+
+Version 1.*:
+```csharp
+var request = new ListConversationsRequest { OnlyActive = false, AppId = "app-id" };
+```
+
+Version 2.*:
+```csharp
+var request = new ListConversationsRequest { AppId = "app-id" };
+```
+
+## Conversation API: InjectMessageRequest fields are now required
+
+`Direction`, `ChannelIdentity`, and `ContactId` are now `required` on `InjectMessageRequest`.
+
+Version 1.*:
+```csharp
+var request = new InjectMessageRequest
+{
+    AcceptTime = DateTime.UtcNow,
+    AppMessage = appMessage
+    // Direction, ChannelIdentity, ContactId were optional
+};
+```
+
+Version 2.*:
+```csharp
+var request = new InjectMessageRequest(appMessage)
+{
+    AcceptTime = DateTime.UtcNow,
+    Direction = ConversationDirection.ToContact,
+    ChannelIdentity = new ChannelIdentity { Channel = ConversationChannel.Sms, Identity = "+1234567890" },
+    ContactId = "contact-id"
+};
+```
+
+## Conversation API: InjectMessageRequest requires a constructor for the message payload
+
+`AppMessage` and `ContactMessage` are no longer settable via object initializer.
+
+Version 1.*:
+```csharp
+var request = new InjectMessageRequest
+{
+    AppMessage = new AppMessage(new TextMessage("Hello")),
+    // ...other properties
+};
+```
+
+Version 2.*:
+```csharp
+// App message (TO_CONTACT)
+var request = new InjectMessageRequest(new AppMessage(new TextMessage("Hello")))
+{
+    // ...other properties
+};
+
+// Contact message (TO_APP)
+var request = new InjectMessageRequest(new ContactMessage(new TextMessage("Hello")))
+{
+    // ...other properties
+};
+```
+
 ## Conversation API: TemplatesV2 ChannelTemplateOverrides type changed to Dictionary with ConversationChannel keys
 
 `TemplateTranslation.ChannelTemplateOverrides` type changed from `ChannelTemplateOverride` to `Dictionary<ConversationChannel, ChannelTemplateOverride>`. The old `ChannelTemplateOverride` class (with fixed `WhatsApp`/`KakaoTalk` properties) has been replaced by a new `ChannelTemplateOverride` class that represents a single channel entry (previously named `OverrideTemplateReference`).
@@ -945,21 +1033,3 @@ var request = new CreateTemplateRequest
 };
 ```
 
-`ConversationEvent.Event` (of type `ConversationEventEvent`) has been removed. `ConversationEvent` (returned by the List/Get Events API) now exposes only `AppEvent` as a top-level property. `ContactEvent` and `ContactMessageEvent` are available on `EventInboundAllOfEvent`, which is the model used for inbound webhook callbacks.
-
-Version 1.*:
-```csharp
-var appEvent = conversationEvent.Event?.AppEvent;
-var contactEvent = conversationEvent.Event?.ContactEvent;
-var contactMessageEvent = conversationEvent.Event?.ContactMessageEvent;
-```
-
-Version 2.*:
-```csharp
-// API (List/Get Events)
-var appEvent = conversationEvent.AppEvent;
-
-// Webhook callback (EventInbound)
-var contactEvent = inboundEvent.Event?.ContactEvent;
-var contactMessageEvent = inboundEvent.Event?.ContactMessageEvent;
-```
