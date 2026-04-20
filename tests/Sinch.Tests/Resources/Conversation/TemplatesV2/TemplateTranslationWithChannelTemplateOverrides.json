@@ -1,0 +1,26 @@
+{
+  "language_code": "en-US",
+  "text_message": {
+    "text": "Template text"
+  },
+  "channel_template_overrides": {
+    "WHATSAPP": {
+      "template_reference": {
+        "template_id": "my-whatsapp-template",
+        "language_code": "en-US"
+      },
+      "parameter_mappings": {
+        "bodytext": "name"
+      }
+    },
+    "KAKAOTALK": {
+      "template_reference": {
+        "template_id": "my-kakaotalk-template",
+        "language_code": "ko-KR"
+      },
+      "parameter_mappings": {
+        "bodytext": "name"
+      }
+    }
+  }
+}
