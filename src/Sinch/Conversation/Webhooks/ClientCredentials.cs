@@ -25,17 +25,17 @@ namespace Sinch.Conversation.Webhooks
         public required string Endpoint { get; init; }
 
         /// <summary>
-        ///     Optional. The scope for the OAuth2 token.
+        ///     The scope for the OAuth2 token.
         /// </summary>
         public string? Scope { get; init; }
 
         /// <summary>
-        ///     Optional. The response type for the OAuth2 token request.
+        ///     The response type for the OAuth2 token request.
         /// </summary>
         public string? ResponseType { get; init; }
 
         /// <summary>
-        ///     Optional. The token request type for the OAuth2 flow.
+        ///     The token request type for the OAuth2 flow.
         /// </summary>
         public string? TokenRequestType { get; init; }
 

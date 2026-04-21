@@ -860,7 +860,7 @@ var direction = ConversationDirection.ToApp;
 var direction = ConversationDirection.ToContact;
 ```
 
-## Conversation API: ConversationEventEvent and ConversationEventEvent removed
+## Conversation API: ConversationEvent.Event and ConversationEventEvent removed
 
 `ConversationEvent.Event` (of type `ConversationEventEvent`) has been removed. `AppEvent`, `ContactEvent`, and `ContactMessageEvent` are now top-level properties directly on `ConversationEvent`.
 
@@ -945,27 +945,6 @@ var request = new InjectMessageRequest(new ContactMessage(new TextMessage("Hello
 };
 ```
 
-## Conversation API: ConversationEvent.Event and ConversationEventEvent removed
-
-`ConversationEvent.Event` (of type `ConversationEventEvent`) has been removed. `ConversationEvent` (returned by the List/Get Events API) now exposes only `AppEvent` as a top-level property. `ContactEvent` and `ContactMessageEvent` are available on `EventInboundAllOfEvent`, which is the model used for inbound webhook callbacks.
-
-Version 1.*:
-```csharp
-var appEvent = conversationEvent.Event?.AppEvent;
-var contactEvent = conversationEvent.Event?.ContactEvent;
-var contactMessageEvent = conversationEvent.Event?.ContactMessageEvent;
-```
-
-Version 2.*:
-```csharp
-// API (List/Get Events)
-var appEvent = conversationEvent.AppEvent;
-
-// Webhook callback (EventInbound)
-var contactEvent = inboundEvent.Event?.ContactEvent;
-var contactMessageEvent = inboundEvent.Event?.ContactMessageEvent;
-```
-
 ## Conversation API: TemplatesV2 ChannelTemplateOverrides type changed to Dictionary with ConversationChannel keys
 
 `TemplateTranslation.ChannelTemplateOverrides` type changed from `ChannelTemplateOverride` to `Dictionary<ConversationChannel, ChannelTemplateOverride>`. The old `ChannelTemplateOverride` class (with fixed `WhatsApp`/`KakaoTalk` properties) has been replaced by a new `ChannelTemplateOverride` class that represents a single channel entry (previously named `OverrideTemplateReference`).
@@ -995,28 +974,6 @@ var translation = new TemplateTranslation(new TextMessage("Hi"))
     }
 };
 ```
-
-## Conversation API: ConversationEvent.Event and ConversationEventEvent removed
-
-`ConversationEvent.Event` (of type `ConversationEventEvent`) has been removed. `ConversationEvent` (returned by the List/Get Events API) now exposes only `AppEvent` as a top-level property. `ContactEvent` and `ContactMessageEvent` are available on `EventInboundAllOfEvent`, which is the model used for inbound webhook callbacks.
-
-Version 1.*:
-```csharp
-var appEvent = conversationEvent.Event?.AppEvent;
-var contactEvent = conversationEvent.Event?.ContactEvent;
-var contactMessageEvent = conversationEvent.Event?.ContactMessageEvent;
-```
-
-Version 2.*:
-```csharp
-// API (List/Get Events)
-var appEvent = conversationEvent.AppEvent;
-
-// Webhook callback (EventInbound)
-var contactEvent = inboundEvent.Event?.ContactEvent;
-var contactMessageEvent = inboundEvent.Event?.ContactMessageEvent;
-```
-
 
 ## Conversation API: TemplatesV2 ParameterMappings type changed to Dictionary
 
