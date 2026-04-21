@@ -6,12 +6,10 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Runtime.CompilerServices;
-using Microsoft.Extensions.Primitives;
 using Sinch.Conversation.Hooks;
 using Sinch.Core;
 using Sinch.Logger;
@@ -73,26 +71,26 @@ namespace Sinch.Conversation.Webhooks
         /// <summary>
         ///     Validates callback request.
         /// </summary>
-        /// <param name="headers"></param>
-        /// <param name="body"></param>
-        /// <param name="secret"></param>
+        /// <param name="headers">The callback request headers.</param>
+        /// <param name="body">The callback raw body, as received from the HTTP request.</param>
+        /// <param name="secret">The webhook secret used to generate the HMAC signature.</param>
         /// <returns>True, if produced signature match with that of a header.</returns>
-        bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonNode body, string secret);
-
-        /// <summary>
-        ///     Validates callback request.
-        /// </summary>
-        /// <param name="headers"></param>
-        /// <param name="body"></param>
-        /// <param name="secret"></param>
-        /// <returns>True, if produced signature match with that of a header.</returns>
-        bool ValidateAuthenticationHeader(Dictionary<string, IEnumerable<string>> headers, JsonNode body,
+        bool ValidateAuthenticationHeader(IReadOnlyDictionary<string, IEnumerable<string>> headers, string body,
             string secret);
 
+        /// <summary>
+        ///     Parses a callback payload from a raw JSON string.
+        /// </summary>
+        /// <param name="json">The raw callback payload.</param>
+        /// <returns>The parsed callback event.</returns>
         ICallbackEvent ParseEvent(string json);
 
-        ICallbackEvent ParseEvent(JsonNode json);
-
+        /// <summary>
+        ///     Parses a callback payload from a JSON stream.
+        /// </summary>
+        /// <param name="json">The callback payload stream.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The parsed callback event.</returns>
         Task<ICallbackEvent> ParseEventAsync(Stream json, CancellationToken cancellationToken = default);
     }
 
@@ -201,11 +199,11 @@ namespace Sinch.Conversation.Webhooks
                 cancellationToken);
         }
 
-        public bool ValidateAuthenticationHeader(Dictionary<string, StringValues> headers, JsonNode body,
+        public bool ValidateAuthenticationHeader(IReadOnlyDictionary<string, IEnumerable<string>> headers, string body,
             string secret)
         {
             var headersCaseInsensitive =
-                new Dictionary<string, StringValues>(headers, StringComparer.InvariantCultureIgnoreCase);
+                new Dictionary<string, IEnumerable<string>>(headers, StringComparer.InvariantCultureIgnoreCase);
 
             var nonce = headersCaseInsensitive["x-sinch-webhook-signature-nonce"].FirstOrDefault();
             if (string.IsNullOrEmpty(nonce))
@@ -229,7 +227,7 @@ namespace Sinch.Conversation.Webhooks
                 return false;
             }
 
-            var signedData = new StringBuilder().AppendJoin('.', body.ToString(), nonce, timestamp).ToString();
+            var signedData = new StringBuilder().AppendJoin('.', body, nonce, timestamp).ToString();
 
             using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(secret));
             var hmacSha256 = hmac.ComputeHash(Encoding.UTF8.GetBytes(signedData));
@@ -241,31 +239,12 @@ namespace Sinch.Conversation.Webhooks
             return isValidSignature;
         }
 
-        public bool ValidateAuthenticationHeader(Dictionary<string, IEnumerable<string>> headers, JsonNode body,
-            string secret)
-        {
-            return ValidateAuthenticationHeader(headers.ToDictionary(x => x.Key,
-                x => new StringValues(x.Value.ToArray())), body, secret);
-        }
-
         public ICallbackEvent ParseEvent(string json)
         {
             var jsonResult = JsonSerializer.Deserialize<ICallbackEvent>(json, _http.Value.JsonSerializerOptions);
             if (jsonResult == null)
             {
                 _logger?.LogError("Failed to deserialize callback event. No matching event type found for payload: {json}", json);
-                throw new InvalidOperationException("Deserialization of callback event failed");
-            }
-
-            return jsonResult;
-        }
-
-        public ICallbackEvent ParseEvent(JsonNode json)
-        {
-            var jsonResult = json.Deserialize<ICallbackEvent>(SinchConversationClient.JsonSerializerOptionsInner);
-            if (jsonResult == null)
-            {
-                _logger?.LogError("Failed to deserialize callback event. No matching event type found for payload: {json}", json.ToJsonString());
                 throw new InvalidOperationException("Deserialization of callback event failed");
             }
 
