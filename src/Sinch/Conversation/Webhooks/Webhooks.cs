@@ -68,6 +68,15 @@ namespace Sinch.Conversation.Webhooks
         /// <summary>
         ///     Validates callback request.
         /// </summary>
+        /// <param name="headers">The callback request headers as single-value entries.</param>
+        /// <param name="body">The callback raw body, as received from the HTTP request.</param>
+        /// <param name="secret">The webhook secret used to generate the HMAC signature.</param>
+        /// <returns>True, if produced signature match with that of a header.</returns>
+        bool ValidateAuthenticationHeader(IDictionary<string, string> headers, string body, string secret);
+
+        /// <summary>
+        ///     Validates callback request.
+        /// </summary>
         /// <param name="headers">The callback request headers.</param>
         /// <param name="body">The callback raw body, as received from the HTTP request.</param>
         /// <param name="secret">The webhook secret used to generate the HMAC signature.</param>
@@ -194,6 +203,12 @@ namespace Sinch.Conversation.Webhooks
             _logger?.LogDebug("Deleting a webhook with {id}...", webhookId);
             return _http.Value.Send<object>(uri, HttpMethod.Delete,
                 cancellationToken);
+        }
+
+        public bool ValidateAuthenticationHeader(IDictionary<string, string> headers, string body,
+            string secret)
+        {
+            return HmacAuthenticationValidation.ValidateAuthenticationHeader(secret, headers, body);
         }
 
         public bool ValidateAuthenticationHeader(IReadOnlyDictionary<string, IEnumerable<string>> headers, string body,

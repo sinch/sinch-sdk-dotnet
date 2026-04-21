@@ -42,6 +42,33 @@ namespace Sinch.Tests.Conversation.Webhooks
         }
 
         [Fact]
+        public void ValidateAuthenticationHeader_WithSingleValueHeaders_ReturnsTrue()
+        {
+            const string secret = "my_secret_key";
+            const string jsonPayload = "{\"event\":\"test\"}";
+            const string timestamp = "1736760161";
+            const string nonce = "01JHFFHWYY7HSS4FWTMDTQEK8V";
+            const string algorithm = "HmacSHA256";
+
+            const string toBeSigned = $"{jsonPayload}.{nonce}.{timestamp}";
+            using var hmac = new System.Security.Cryptography.HMACSHA256(Encoding.UTF8.GetBytes(secret));
+            var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(toBeSigned));
+            var signature = Convert.ToBase64String(hash);
+
+            IDictionary<string, string> headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                [TimestampHeader] = timestamp,
+                [NonceHeader] = nonce,
+                [AlgorithmHeader] = algorithm,
+                [SignatureHeader] = signature
+            };
+
+            var result = HmacAuthenticationValidation.ValidateAuthenticationHeader(secret, headers, jsonPayload);
+
+            result.Should().BeTrue();
+        }
+
+        [Fact]
         public void ValidateAuthenticationHeader_WithCaseInsensitiveHeaders_ReturnsTrue()
         {
             const string secret = "my_secret_key";

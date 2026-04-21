@@ -38,6 +38,21 @@ namespace Sinch.Tests.Conversation
         }
 
         [Fact]
+        public void ValidateRequest_WithSingleValueHeaders()
+        {
+            var json = Helpers.LoadResources("Conversation/Hooks/WebhooksAuthValidationSingleLine.json");
+
+            var isValid = Conversation.Webhooks.ValidateAuthenticationHeader(new Dictionary<string, string>()
+            {
+                { NonceHeader, "01FJA8B4A7BM43YGWSG9GBV067" },
+                { TimestampHeader, "1634579353" },
+                { AlgorithmHeader, "HmacSHA256" },
+                { SignatureHeader, "6bpJoRmFoXVjfJIVglMoJzYXxnoxRujzR4k2GOXewOE=" },
+            }, json, "foo_secret1234");
+            isValid.Should().BeTrue();
+        }
+
+        [Fact]
         public void ValidateMultiLinePayloadRequest()
         {
             var json = Helpers.LoadResources("Conversation/Hooks/WebhooksAuthValidation.json");
