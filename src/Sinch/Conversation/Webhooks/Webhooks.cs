@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Security.Cryptography;
-using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -202,41 +199,7 @@ namespace Sinch.Conversation.Webhooks
         public bool ValidateAuthenticationHeader(IReadOnlyDictionary<string, IEnumerable<string>> headers, string body,
             string secret)
         {
-            var headersCaseInsensitive =
-                new Dictionary<string, IEnumerable<string>>(headers, StringComparer.InvariantCultureIgnoreCase);
-
-            var nonce = headersCaseInsensitive["x-sinch-webhook-signature-nonce"].FirstOrDefault();
-            if (string.IsNullOrEmpty(nonce))
-            {
-                _logger?.LogDebug("Failed to validate request. \"x-sinch-webhook-signature-nonce\" header is missing");
-                return false;
-            }
-
-            var timestamp = headersCaseInsensitive["x-sinch-webhook-signature-timestamp"].FirstOrDefault();
-            if (string.IsNullOrEmpty(timestamp))
-            {
-                _logger?.LogDebug(
-                    "Failed to validate request. \"x-sinch-webhook-signature-timestamp\" header is missing");
-                return false;
-            }
-
-            var signature = headersCaseInsensitive["x-sinch-webhook-signature"].FirstOrDefault();
-            if (string.IsNullOrEmpty(signature))
-            {
-                _logger?.LogDebug("Failed to validate request. \"x-sinch-webhook-signature\" header is missing");
-                return false;
-            }
-
-            var signedData = new StringBuilder().AppendJoin('.', body, nonce, timestamp).ToString();
-
-            using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(secret));
-            var hmacSha256 = hmac.ComputeHash(Encoding.UTF8.GetBytes(signedData));
-            var calculatedSignature = Convert.ToBase64String(hmacSha256);
-            _logger?.LogDebug("{CalculatedSignature}", calculatedSignature);
-            _logger?.LogDebug("{x-sinch-webhook-signature}", signature);
-            var isValidSignature = string.Equals(calculatedSignature, signature, StringComparison.Ordinal);
-            _logger?.LogInformation("The signature was validated with {success}", isValidSignature);
-            return isValidSignature;
+            return HmacAuthenticationValidation.ValidateAuthenticationHeader(secret, headers, body);
         }
 
         public ICallbackEvent ParseEvent(string json)

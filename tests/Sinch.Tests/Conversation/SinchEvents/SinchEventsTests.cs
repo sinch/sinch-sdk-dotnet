@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -21,12 +22,32 @@ namespace Sinch.Tests.Conversation.SinchEvents
             {
                 { "x-sinch-webhook-signature-nonce", new[] { "01FJA8B4A7BM43YGWSG9GBV067" } },
                 { "x-sinch-webhook-signature-timestamp", new[] { "1634579353" } },
+                { "x-sinch-webhook-signature-algorithm", new[] { "HmacSHA256" } },
                 { "x-sinch-webhook-signature", new[] { "wKmZBGo4Cf+y9cZoPHhiVw6ziKeubLGqN4OdG8jlaPo=" } },
             };
 
             var result = Conversation.Webhooks.ValidateAuthenticationHeader(headers, payload, CallbackSecret);
 
             result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void ValidateAuthenticationHeader_WithUnsupportedAlgorithm_ThrowsNotSupportedException()
+        {
+            var payload = Helpers.LoadResources("Conversation/Hooks/WebhooksAuthValidation.json");
+
+            var headers = new Dictionary<string, IEnumerable<string>>
+            {
+                { "x-sinch-webhook-signature-nonce", new[] { "01FJA8B4A7BM43YGWSG9GBV067" } },
+                { "x-sinch-webhook-signature-timestamp", new[] { "1634579353" } },
+                { "x-sinch-webhook-signature-algorithm", new[] { "HmacSHA512" } },
+                { "x-sinch-webhook-signature", new[] { "wKmZBGo4Cf+y9cZoPHhiVw6ziKeubLGqN4OdG8jlaPo=" } },
+            };
+
+            var act = () => Conversation.Webhooks.ValidateAuthenticationHeader(headers, payload, CallbackSecret);
+
+            act.Should().Throw<NotSupportedException>()
+                .WithMessage("Unsupported HMAC algorithm: HmacSHA512");
         }
 
         [Fact]
