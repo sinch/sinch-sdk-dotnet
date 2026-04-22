@@ -72,6 +72,7 @@ jobs:
           cp sinch-sdk-mockserver/features/conversation/contacts.feature tests/Sinch.Tests.Features/features/conversation/
           cp sinch-sdk-mockserver/features/conversation/messages.feature tests/Sinch.Tests.Features/features/conversation/
           cp sinch-sdk-mockserver/features/conversation/events.feature tests/Sinch.Tests.Features/features/conversation/
+          cp sinch-sdk-mockserver/features/conversation/webhooks.feature tests/Sinch.Tests.Features/features/conversation/
 
           cp sinch-sdk-mockserver/features/fax/services.feature tests/Sinch.Tests.Features/features/fax/
           cp sinch-sdk-mockserver/features/fax/emails.feature tests/Sinch.Tests.Features/features/fax/

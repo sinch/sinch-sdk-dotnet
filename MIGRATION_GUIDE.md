@@ -37,6 +37,8 @@
 - [Conversation API: TemplatesV2 ParameterMappings type changed to Dictionary](#conversation-api-templatesv2-parametermappings-type-changed-to-dictionary)
 - [Conversation API: Template.Id is now nullable](#conversation-api-templateid-is-now-nullable)
 - [Conversation API: CreateTemplateRequest and UpdateTemplateRequest no longer expose create\_time and update\_time](#conversation-api-createtemplaterequest-and-updatetemplaterequest-no-longer-expose-create_time-and-update_time)
+- [Conversation API: Webhooks List now returns ListWebhooksResponse](#conversation-api-webhooks-list-now-returns-listwebhooksresponse)
+- [Conversation API: Webhooks request fields are now optional per OAS spec](#conversation-api-webhooks-request-fields-are-now-optional-per-oas-spec)
 
 ## .NET Framework Support
 
@@ -858,7 +860,7 @@ var direction = ConversationDirection.ToApp;
 var direction = ConversationDirection.ToContact;
 ```
 
-## Conversation API: ConversationEventEvent and ConversationEventEvent removed
+## Conversation API: ConversationEvent.Event and ConversationEventEvent removed
 
 `ConversationEvent.Event` (of type `ConversationEventEvent`) has been removed. `AppEvent`, `ContactEvent`, and `ContactMessageEvent` are now top-level properties directly on `ConversationEvent`.
 
@@ -1033,3 +1035,53 @@ var request = new CreateTemplateRequest
 };
 ```
 
+## Conversation API: Webhooks List now returns ListWebhooksResponse
+
+`ISinchConversationWebhooks.List` now returns a response wrapper type instead of returning an enumerable directly.
+
+Version 1.*:
+```csharp
+IEnumerable<Webhook> webhooks = await sinch.Conversation.Webhooks.List(appId);
+```
+
+Version 2.*:
+```csharp
+ListWebhooksResponse response = await sinch.Conversation.Webhooks.List(appId);
+IEnumerable<Webhook> webhooks = response.Webhooks ?? Enumerable.Empty<Webhook>();
+```
+
+## Conversation API: Webhooks request fields are now optional per OAS spec
+
+The Webhook, CreateWebhookRequest, and UpdateWebhookRequest classes now have optional fields:
+
+- **Webhook** class: `AppId` and `Triggers` are now optional (`string?` and `List<WebhookTrigger>?`).
+- **CreateWebhookRequest** class: `Triggers` is now optional (`List<WebhookTrigger>?`).
+- **UpdateWebhookRequest** class: `Target`, `AppId`, and `Triggers` are all now optional.
+
+Version 1.*:
+```csharp
+var webhook = new CreateWebhookRequest
+{
+    AppId = appId,
+    Target = "https://example.com/webhook",
+    Triggers = new List<WebhookTrigger> { WebhookTrigger.MessageDelivery }
+};
+```
+
+Version 2.*:
+```csharp
+// All fields remain available, but Triggers is now optional
+var webhook = new CreateWebhookRequest
+{
+    AppId = appId,
+    Target = "https://example.com/webhook"
+    // Triggers can be omitted
+};
+
+// UpdateWebhookRequest now allows partial updates
+var update = new UpdateWebhookRequest
+{
+    Target = "https://new-endpoint.com/webhook"
+    // AppId and Triggers can be omitted for partial updates
+};
+```

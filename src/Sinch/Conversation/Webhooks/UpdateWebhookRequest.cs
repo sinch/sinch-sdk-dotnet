@@ -7,11 +7,11 @@ namespace Sinch.Conversation.Webhooks
     public sealed class UpdateWebhookRequest : PropertyMaskQuery
     {
         private WebhookTargetType? _targetType;
-        private string _appId = null!;
+        private string? _appId;
         private ClientCredentials? _clientCredentials;
         private string? _secret;
-        private string _target = null!;
-        private List<WebhookTrigger> _triggers = null!;
+        private string? _target;
+        private List<WebhookTrigger>? _triggers;
 
         /// <summary>
         ///     Gets or sets the target type.
@@ -29,10 +29,10 @@ namespace Sinch.Conversation.Webhooks
         /// <summary>
         ///     The app that this webhook belongs to.
         /// </summary>
-        public required string AppId
+        public string? AppId
         {
             get => _appId;
-            set
+            init
             {
                 SetFields.Add(nameof(AppId));
                 _appId = value;
@@ -45,7 +45,7 @@ namespace Sinch.Conversation.Webhooks
         public ClientCredentials? ClientCredentials
         {
             get => _clientCredentials;
-            set
+            init
             {
                 SetFields.Add(nameof(ClientCredentials));
                 _clientCredentials = value;
@@ -59,7 +59,7 @@ namespace Sinch.Conversation.Webhooks
         public string? Secret
         {
             get => _secret;
-            set
+            init
             {
                 SetFields.Add(nameof(Secret));
                 _secret = value;
@@ -70,10 +70,10 @@ namespace Sinch.Conversation.Webhooks
         ///     Gets or sets the target URL where events should be sent to.
         ///     Maximum URL length is 742. The conversation-api.*.sinch.com subdomains are forbidden.
         /// </summary>
-        public required string Target
+        public string? Target
         {
             get => _target;
-            set
+            init
             {
                 SetFields.Add(nameof(Target));
                 _target = value;
@@ -85,10 +85,10 @@ namespace Sinch.Conversation.Webhooks
         ///     Refer to the list of [Webhook Triggers](https://developers.sinch.com/docs/conversation/callbacks#webhook-triggers)
         ///     for a complete list.
         /// </summary>
-        public required List<WebhookTrigger> Triggers
+        public List<WebhookTrigger>? Triggers
         {
             get => _triggers;
-            set
+            init
             {
                 SetFields.Add(nameof(Triggers));
                 _triggers = value;
