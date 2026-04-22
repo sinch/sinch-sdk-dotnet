@@ -37,7 +37,7 @@ namespace Sinch.Conversation.EventDestinations
         ///     Refer to the list of [Webhook Triggers](https://developers.sinch.com/docs/conversation/callbacks#webhook-triggers)
         ///     for a complete list.
         /// </summary>
-        public List<WebhookTrigger>? Triggers { get; init; }
+        public List<EventDestinationTrigger>? Triggers { get; init; }
 
         /// <summary>
         ///     Returns the string presentation of the object.

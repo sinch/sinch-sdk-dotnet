@@ -24,33 +24,33 @@ namespace Sinch.Conversation.EventDestinations
     ///     &#x60;CONTACT_IDENTITIES_DUPLICATION&#x60;: Subscribe to get an event when contact identity duplications are found
     ///     during message or event processing. - &#x60;SMART_CONVERSATIONS&#x60;: Subscribe to smart conversations callback
     /// </summary>
-    [JsonConverter(typeof(EnumRecordJsonConverter<WebhookTrigger>))]
-    public record WebhookTrigger(string Value) : EnumRecord(Value)
+    [JsonConverter(typeof(EnumRecordJsonConverter<EventDestinationTrigger>))]
+    public record EventDestinationTrigger(string Value) : EnumRecord(Value)
     {
-        public static readonly WebhookTrigger UnspecifiedTrigger = new("UNSPECIFIED_TRIGGER");
-        public static readonly WebhookTrigger MessageDelivery = new("MESSAGE_DELIVERY");
-        public static readonly WebhookTrigger MessageSubmit = new("MESSAGE_SUBMIT");
-        public static readonly WebhookTrigger EventDelivery = new("EVENT_DELIVERY");
-        public static readonly WebhookTrigger MessageInbound = new("MESSAGE_INBOUND");
-        public static readonly WebhookTrigger SmartConversation = new("SMART_CONVERSATION");
+        public static readonly EventDestinationTrigger UnspecifiedTrigger = new("UNSPECIFIED_TRIGGER");
+        public static readonly EventDestinationTrigger MessageDelivery = new("MESSAGE_DELIVERY");
+        public static readonly EventDestinationTrigger MessageSubmit = new("MESSAGE_SUBMIT");
+        public static readonly EventDestinationTrigger EventDelivery = new("EVENT_DELIVERY");
+        public static readonly EventDestinationTrigger MessageInbound = new("MESSAGE_INBOUND");
+        public static readonly EventDestinationTrigger SmartConversation = new("SMART_CONVERSATION");
 
-        public static readonly WebhookTrigger MessageInboundSmartConversationRedaction =
+        public static readonly EventDestinationTrigger MessageInboundSmartConversationRedaction =
             new("MESSAGE_INBOUND_SMART_CONVERSATION_REDACTION");
 
-        public static readonly WebhookTrigger EventInbound = new("EVENT_INBOUND");
-        public static readonly WebhookTrigger ConversationStart = new("CONVERSATION_START");
-        public static readonly WebhookTrigger ConversationStop = new("CONVERSATION_STOP");
-        public static readonly WebhookTrigger ContactCreate = new("CONTACT_CREATE");
-        public static readonly WebhookTrigger ContactDelete = new("CONTACT_DELETE");
-        public static readonly WebhookTrigger ContactMerge = new("CONTACT_MERGE");
-        public static readonly WebhookTrigger ContactUpdate = new("CONTACT_UPDATE");
-        public static readonly WebhookTrigger Unsupported = new("UNSUPPORTED");
-        public static readonly WebhookTrigger OptIn = new("OPT_IN");
-        public static readonly WebhookTrigger OptOut = new("OPT_OUT");
-        public static readonly WebhookTrigger Capability = new("CAPABILITY");
-        public static readonly WebhookTrigger ChannelEvent = new("CHANNEL_EVENT");
-        public static readonly WebhookTrigger ConversationDelete = new("CONVERSATION_DELETE");
-        public static readonly WebhookTrigger ContactIdentitiesDuplication = new("CONTACT_IDENTITIES_DUPLICATION");
-        public static readonly WebhookTrigger RecordNotification = new("RECORD_NOTIFICATION");
+        public static readonly EventDestinationTrigger EventInbound = new("EVENT_INBOUND");
+        public static readonly EventDestinationTrigger ConversationStart = new("CONVERSATION_START");
+        public static readonly EventDestinationTrigger ConversationStop = new("CONVERSATION_STOP");
+        public static readonly EventDestinationTrigger ContactCreate = new("CONTACT_CREATE");
+        public static readonly EventDestinationTrigger ContactDelete = new("CONTACT_DELETE");
+        public static readonly EventDestinationTrigger ContactMerge = new("CONTACT_MERGE");
+        public static readonly EventDestinationTrigger ContactUpdate = new("CONTACT_UPDATE");
+        public static readonly EventDestinationTrigger Unsupported = new("UNSUPPORTED");
+        public static readonly EventDestinationTrigger OptIn = new("OPT_IN");
+        public static readonly EventDestinationTrigger OptOut = new("OPT_OUT");
+        public static readonly EventDestinationTrigger Capability = new("CAPABILITY");
+        public static readonly EventDestinationTrigger ChannelEvent = new("CHANNEL_EVENT");
+        public static readonly EventDestinationTrigger ConversationDelete = new("CONVERSATION_DELETE");
+        public static readonly EventDestinationTrigger ContactIdentitiesDuplication = new("CONTACT_IDENTITIES_DUPLICATION");
+        public static readonly EventDestinationTrigger RecordNotification = new("RECORD_NOTIFICATION");
     }
 }

@@ -33,7 +33,7 @@ public class Webhooks
         {
             AppId = AppId001,
             Target = "https://my-callback-server.com/capability",
-            Triggers = [WebhookTrigger.Capability],
+            Triggers = [EventDestinationTrigger.Capability],
             Secret = "CactusKnight_SurfsWaves",
             TargetType = EventDestinationTargetType.Http
         });
@@ -48,7 +48,7 @@ public class Webhooks
         _eventDestination.Target.Should().Be("https://my-callback-server.com/capability");
         _eventDestination.TargetType.Should().Be(EventDestinationTargetType.Http);
         _eventDestination.Secret.Should().Be("CactusKnight_SurfsWaves");
-        _eventDestination.Triggers.Should().ContainSingle().Which.Should().Be(WebhookTrigger.Capability);
+        _eventDestination.Triggers.Should().ContainSingle().Which.Should().Be(EventDestinationTrigger.Capability);
         _eventDestination.ClientCredentials.Should().BeNull();
     }
 
@@ -82,7 +82,7 @@ public class Webhooks
         _eventDestination.Target.Should().Be("https://my-callback-server.com/unsupported");
         _eventDestination.TargetType.Should().Be(EventDestinationTargetType.Http);
         _eventDestination.Secret.Should().Be("VeganVampire_SipsTea");
-        _eventDestination.Triggers.Should().ContainSingle().Which.Should().Be(WebhookTrigger.Unsupported);
+        _eventDestination.Triggers.Should().ContainSingle().Which.Should().Be(EventDestinationTrigger.Unsupported);
         _eventDestination.ClientCredentials.Should().NotBeNull();
         _eventDestination.ClientCredentials!.ClientId.Should().Be("webhook-username");
     }
@@ -94,7 +94,7 @@ public class Webhooks
         {
             AppId = AppId002,
             Target = "https://my-callback-server.com/capability-optin-optout",
-            Triggers = [WebhookTrigger.Capability, WebhookTrigger.OptIn, WebhookTrigger.OptOut],
+            Triggers = [EventDestinationTrigger.Capability, EventDestinationTrigger.OptIn, EventDestinationTrigger.OptOut],
             Secret = "SpacePanda_RidesUnicycle"
         });
     }
@@ -109,7 +109,7 @@ public class Webhooks
         _eventDestination.TargetType.Should().Be(EventDestinationTargetType.Http);
         _eventDestination.Secret.Should().Be("SpacePanda_RidesUnicycle");
         _eventDestination.Triggers.Should().BeEquivalentTo(
-            [WebhookTrigger.Capability, WebhookTrigger.OptIn, WebhookTrigger.OptOut]);
+            [EventDestinationTrigger.Capability, EventDestinationTrigger.OptIn, EventDestinationTrigger.OptOut]);
     }
 
     [When(@"I send a request to delete a conversation webhook")]

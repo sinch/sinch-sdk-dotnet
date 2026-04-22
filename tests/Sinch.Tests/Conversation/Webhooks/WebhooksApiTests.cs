@@ -31,7 +31,7 @@ namespace Sinch.Tests.Conversation.Webhooks
             {
                 AppId = AppId001,
                 Target = "https://my-callback-server.com/capability",
-                Triggers = [WebhookTrigger.Capability],
+                Triggers = [EventDestinationTrigger.Capability],
                 Secret = "CactusKnight_SurfsWaves",
                 TargetType = EventDestinationTargetType.Http
             };
@@ -43,7 +43,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                 Target = "https://my-callback-server.com/capability",
                 TargetType = EventDestinationTargetType.Http,
                 Secret = "CactusKnight_SurfsWaves",
-                Triggers = [WebhookTrigger.Capability]
+                Triggers = [EventDestinationTrigger.Capability]
             };
 
             HttpMessageHandlerMock
@@ -75,7 +75,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                         Target = "https://my-callback-server.com/unsupported",
                         TargetType = EventDestinationTargetType.Http,
                         Secret = "VeganVampire_SipsTea",
-                        Triggers = [WebhookTrigger.Unsupported],
+                        Triggers = [EventDestinationTrigger.Unsupported],
                         ClientCredentials = new ClientCredentials
                         {
                             Endpoint = "https://my-auth-server.com/oauth2/token",
@@ -90,7 +90,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                         Target = "https://my-callback-server.com/capability",
                         TargetType = EventDestinationTargetType.Http,
                         Secret = "CactusKnight_SurfsWaves",
-                        Triggers = [WebhookTrigger.Capability]
+                        Triggers = [EventDestinationTrigger.Capability]
                     }
                 }
             };
@@ -124,7 +124,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                         Target = "https://my-callback-server.com/unsupported",
                         TargetType = EventDestinationTargetType.Http,
                         Secret = "VeganVampire_SipsTea",
-                        Triggers = [WebhookTrigger.Unsupported]
+                        Triggers = [EventDestinationTrigger.Unsupported]
                     },
                     new EventDestination
                     {
@@ -133,7 +133,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                         Target = "https://my-callback-server.com/capability",
                         TargetType = EventDestinationTargetType.Http,
                         Secret = "CactusKnight_SurfsWaves",
-                        Triggers = [WebhookTrigger.Capability]
+                        Triggers = [EventDestinationTrigger.Capability]
                     }
                 }
             };
@@ -165,7 +165,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                 Target = "https://my-callback-server.com/unsupported",
                 TargetType = EventDestinationTargetType.Http,
                 Secret = "VeganVampire_SipsTea",
-                Triggers = [WebhookTrigger.Unsupported],
+                Triggers = [EventDestinationTrigger.Unsupported],
                 ClientCredentials = new ClientCredentials
                 {
                     Endpoint = "https://my-auth-server.com/oauth2/token",
@@ -194,7 +194,7 @@ namespace Sinch.Tests.Conversation.Webhooks
             {
                 AppId = AppId002,
                 Target = "https://my-callback-server.com/capability-optin-optout",
-                Triggers = [WebhookTrigger.Capability, WebhookTrigger.OptIn, WebhookTrigger.OptOut],
+                Triggers = [EventDestinationTrigger.Capability, EventDestinationTrigger.OptIn, EventDestinationTrigger.OptOut],
                 Secret = "SpacePanda_RidesUnicycle"
             };
 
@@ -205,7 +205,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                 Target = "https://my-callback-server.com/capability-optin-optout",
                 TargetType = EventDestinationTargetType.Http,
                 Secret = "SpacePanda_RidesUnicycle",
-                Triggers = [WebhookTrigger.Capability, WebhookTrigger.OptIn, WebhookTrigger.OptOut]
+                Triggers = [EventDestinationTrigger.Capability, EventDestinationTrigger.OptIn, EventDestinationTrigger.OptOut]
             };
 
             HttpMessageHandlerMock

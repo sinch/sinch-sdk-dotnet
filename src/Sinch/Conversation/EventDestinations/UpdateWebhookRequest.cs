@@ -11,7 +11,7 @@ namespace Sinch.Conversation.EventDestinations
         private ClientCredentials? _clientCredentials;
         private string? _secret;
         private string? _target;
-        private List<WebhookTrigger>? _triggers;
+        private List<EventDestinationTrigger>? _triggers;
 
         /// <summary>
         ///     Gets or sets the target type.
@@ -85,7 +85,7 @@ namespace Sinch.Conversation.EventDestinations
         ///     Refer to the list of [Webhook Triggers](https://developers.sinch.com/docs/conversation/callbacks#webhook-triggers)
         ///     for a complete list.
         /// </summary>
-        public List<WebhookTrigger>? Triggers
+        public List<EventDestinationTrigger>? Triggers
         {
             get => _triggers;
             init
