@@ -1047,6 +1047,7 @@ IEnumerable<Webhook> webhooks = await sinch.Conversation.Webhooks.List(appId);
 Version 2.*:
 ```csharp
 ListWebhooksResponse response = await sinch.Conversation.Webhooks.List(appId);
+IEnumerable<Webhook> webhooks = response.Webhooks ?? Enumerable.Empty<Webhook>();
 ```
 
 ## Conversation API: Webhooks request fields are now optional per OAS spec
