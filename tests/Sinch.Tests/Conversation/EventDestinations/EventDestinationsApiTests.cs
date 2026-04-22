@@ -14,7 +14,7 @@ using Xunit;
 
 namespace Sinch.Tests.Conversation.EventDestinations
 {
-    public class WebhooksApiTests : ConversationTestBase
+    public class EventDestinationsApiTests : ConversationTestBase
     {
         private const string AppId001 = "01W4FFL35P4NC4K35CONVAPP001";
         private const string AppId002 = "01W4FFL35P4NC4K35CONVAPP002";
