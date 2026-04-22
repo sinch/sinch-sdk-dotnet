@@ -1321,6 +1321,23 @@ namespace Sinch.Tests.Conversation
             result.Should().BeNull();
         }
 
+        [Fact]
+        public void ParseEvent_WithUnknownPayload_ThrowsInvalidOperationException()
+        {
+            const string json = @"{
+                ""app_id"": ""test_app_id"",
+                ""project_id"": ""test_project_id"",
+                ""unknown_notification"": {
+                    ""some_field"": ""some_value""
+                }
+            }";
+
+            Action act = () => Conversation.Webhooks.ParseEvent(json);
+
+            act.Should().Throw<InvalidOperationException>()
+                .WithMessage("Deserialization of callback event failed");
+        }
+
         /// <summary>
         /// A test implementation of ICallbackEvent that is not handled by CallbackEventConverter.
         /// </summary>
