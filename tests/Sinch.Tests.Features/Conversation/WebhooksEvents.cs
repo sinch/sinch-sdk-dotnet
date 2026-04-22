@@ -119,7 +119,7 @@ public class WebhooksEvents
     {
         var deliveryEvent = _parsedEvent.Should().BeOfType<DeliveryEvent>().Subject;
         deliveryEvent.EventDeliveryReport.Should().NotBeNull();
-        deliveryEvent.EventDeliveryReport!.Status.Should().Be(DeliveryStatus.Failed);
+        deliveryEvent.EventDeliveryReport.Status.Should().Be(DeliveryStatus.Failed);
         deliveryEvent.EventDeliveryReport.Reason.Should().NotBeNull();
     }
 
