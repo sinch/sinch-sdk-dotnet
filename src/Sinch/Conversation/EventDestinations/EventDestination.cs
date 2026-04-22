@@ -6,7 +6,7 @@ namespace Sinch.Conversation.EventDestinations
     /// <summary>
     ///     Represents a destination for receiving callbacks from the Conversation API.
     /// </summary>
-    public sealed class Webhook
+    public sealed class EventDestination
     {
         /// <summary>
         ///     Gets or sets the target type.

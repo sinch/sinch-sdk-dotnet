@@ -36,7 +36,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                 TargetType = WebhookTargetType.Http
             };
 
-            var expectedResponse = new Webhook
+            var expectedResponse = new EventDestination
             {
                 Id = WebhookId004,
                 AppId = AppId001,
@@ -65,10 +65,10 @@ namespace Sinch.Tests.Conversation.Webhooks
         {
             var expectedResponse = new ListWebhooksResponse
             {
-                Webhooks =
-                new List<Webhook>
+                EventDestinations =
+                new List<EventDestination>
                 {
-                    new Webhook
+                    new EventDestination
                     {
                         Id = WebhookId001,
                         AppId = AppId001,
@@ -83,7 +83,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                             ClientSecret = "webhook-password"
                         }
                     },
-                    new Webhook
+                    new EventDestination
                     {
                         Id = WebhookId004,
                         AppId = AppId001,
@@ -105,8 +105,8 @@ namespace Sinch.Tests.Conversation.Webhooks
             var response = await Conversation.Webhooks.List(AppId001);
 
             response.Should().NotBeNull();
-            response.Webhooks.Should().HaveCount(2);
-            response.Webhooks!.First().Id.Should().Be(WebhookId001);
+            response.EventDestinations.Should().HaveCount(2);
+            response.EventDestinations!.First().Id.Should().Be(WebhookId001);
         }
 
         [Fact]
@@ -114,10 +114,10 @@ namespace Sinch.Tests.Conversation.Webhooks
         {
             var expectedResponse = new ListWebhooksResponse
             {
-                Webhooks =
-                new List<Webhook>
+                EventDestinations =
+                new List<EventDestination>
                 {
-                    new Webhook
+                    new EventDestination
                     {
                         Id = WebhookId001,
                         AppId = AppId001,
@@ -126,7 +126,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                         Secret = "VeganVampire_SipsTea",
                         Triggers = [WebhookTrigger.Unsupported]
                     },
-                    new Webhook
+                    new EventDestination
                     {
                         Id = WebhookId004,
                         AppId = AppId001,
@@ -145,7 +145,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                     expectedResponse,
                     options: SinchConversationClient.JsonSerializerOptionsInner));
 
-            var response = new List<Webhook>();
+            var response = new List<EventDestination>();
             await foreach (var webhook in Conversation.Webhooks.ListAuto(AppId001))
             {
                 response.Add(webhook);
@@ -158,7 +158,7 @@ namespace Sinch.Tests.Conversation.Webhooks
         [Fact]
         public async Task Get_WithValidWebhookId_ReturnsWebhook()
         {
-            var expectedResponse = new Webhook
+            var expectedResponse = new EventDestination
             {
                 Id = WebhookId001,
                 AppId = AppId001,
@@ -198,7 +198,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                 Secret = "SpacePanda_RidesUnicycle"
             };
 
-            var expectedResponse = new Webhook
+            var expectedResponse = new EventDestination
             {
                 Id = WebhookId004,
                 AppId = AppId002,

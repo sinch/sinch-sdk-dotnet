@@ -7,6 +7,6 @@ namespace Sinch.Conversation.EventDestinations
         /// <summary>
         ///     List of webhooks belonging to a specific project ID and app ID.
         /// </summary>
-        public IEnumerable<Webhook>? Webhooks { get; init; }
+        public IEnumerable<EventDestination>? EventDestinations { get; init; }
     }
 }

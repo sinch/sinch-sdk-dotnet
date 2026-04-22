@@ -24,7 +24,7 @@ namespace Sinch.Conversation.EventDestinations
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Webhook> Create(CreateWebhookRequest request, CancellationToken cancellationToken = default);
+        Task<EventDestination> Create(CreateWebhookRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Get a webhook as specified by the webhook ID.
@@ -32,7 +32,7 @@ namespace Sinch.Conversation.EventDestinations
         /// <param name="webhookId">The unique ID of the webhook.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Webhook> Get(string webhookId, CancellationToken cancellationToken = default);
+        Task<EventDestination> Get(string webhookId, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     List all webhooks for a given app as specified by the App ID.
@@ -45,7 +45,7 @@ namespace Sinch.Conversation.EventDestinations
         /// <returns></returns>
         Task<ListWebhooksResponse> List(string appId, CancellationToken cancellationToken = default);
 
-        IAsyncEnumerable<Webhook> ListAuto(string appId, CancellationToken cancellationToken = default);
+        IAsyncEnumerable<EventDestination> ListAuto(string appId, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Updates an existing webhook as specified by the webhook ID.
@@ -54,7 +54,7 @@ namespace Sinch.Conversation.EventDestinations
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Webhook> Update(string webhookId, UpdateWebhookRequest request,
+        Task<EventDestination> Update(string webhookId, UpdateWebhookRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -118,20 +118,20 @@ namespace Sinch.Conversation.EventDestinations
         }
 
         /// <inheritdoc />
-        public Task<Webhook> Create(CreateWebhookRequest request, CancellationToken cancellationToken = default)
+        public Task<EventDestination> Create(CreateWebhookRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks");
             _logger?.LogDebug("Creating a webhook...");
-            return _http.Value.Send<CreateWebhookRequest, Webhook>(uri, HttpMethod.Post, request,
+            return _http.Value.Send<CreateWebhookRequest, EventDestination>(uri, HttpMethod.Post, request,
                 cancellationToken);
         }
 
         /// <inheritdoc />
-        public Task<Webhook> Get(string webhookId, CancellationToken cancellationToken = default)
+        public Task<EventDestination> Get(string webhookId, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{webhookId}");
             _logger?.LogDebug("Getting a webhook with {id}...", webhookId);
-            return _http.Value.Send<Webhook>(uri, HttpMethod.Get,
+            return _http.Value.Send<EventDestination>(uri, HttpMethod.Get,
                 cancellationToken);
         }
 
@@ -149,23 +149,23 @@ namespace Sinch.Conversation.EventDestinations
         }
 
         /// <inheritdoc />
-        public async IAsyncEnumerable<Webhook> ListAuto(string appId,
+        public async IAsyncEnumerable<EventDestination> ListAuto(string appId,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             var response = await List(appId, cancellationToken);
-            if (response.Webhooks == null)
+            if (response.EventDestinations == null)
             {
                 yield break;
             }
 
-            foreach (var webhook in response.Webhooks)
+            foreach (var webhook in response.EventDestinations)
             {
                 yield return webhook;
             }
         }
 
         /// <inheritdoc />
-        public Task<Webhook> Update(string webhookId, UpdateWebhookRequest request,
+        public Task<EventDestination> Update(string webhookId, UpdateWebhookRequest request,
             CancellationToken cancellationToken = default)
         {
             if (request is null)
@@ -187,7 +187,7 @@ namespace Sinch.Conversation.EventDestinations
             builder.Query = queryString.ToString()!;
 
             _logger?.LogDebug("Updating a webhook with {id}...", webhookId);
-            return _http.Value.Send<UpdateWebhookRequest, Webhook>(builder.Uri, HttpMethod.Patch, request,
+            return _http.Value.Send<UpdateWebhookRequest, EventDestination>(builder.Uri, HttpMethod.Patch, request,
                 cancellationToken);
         }
 
