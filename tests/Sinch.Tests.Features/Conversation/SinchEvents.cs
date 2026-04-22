@@ -10,7 +10,7 @@ using Sinch.Conversation.Hooks.Models;
 namespace Sinch.Tests.Features.Conversation;
 
 [Binding]
-[Scope(Feature = "[Conversation][Sinch events]")]
+[Scope(Feature = "[Conversation][Webhooks events]")]
 public class SinchEvents
 {
     private const string CallbackSecret = "CactusKnight_SurfsWaves";
