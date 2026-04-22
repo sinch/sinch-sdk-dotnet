@@ -14,12 +14,12 @@ using Sinch.Logger;
 namespace Sinch.Conversation.EventDestinations
 {
     /// <summary>
-    ///     Manage your webhooks with this set of methods.
+    ///     Manage your event destinations with this set of methods.
     /// </summary>
     public interface ISinchConversationEventDestinations
     {
         /// <summary>
-        ///     Creates a webhook for receiving callbacks on specific triggers. You can create up to 5 webhooks per app.
+        ///     Creates a event destination for receiving callbacks on specific triggers. You can create up to 5 event destinations per app.
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
@@ -27,15 +27,15 @@ namespace Sinch.Conversation.EventDestinations
         Task<EventDestination> Create(CreateEventDestinationRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Get a webhook as specified by the webhook ID.
+        ///     Get an event destination as specified by the event destination ID.
         /// </summary>
-        /// <param name="webhookId">The unique ID of the webhook.</param>
+        /// <param name="eventDestinationId">The unique ID of the event destination.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<EventDestination> Get(string webhookId, CancellationToken cancellationToken = default);
+        Task<EventDestination> Get(string eventDestinationId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     List all webhooks for a given app as specified by the App ID.
+        ///     List all event destinations for a given app as specified by the App ID.
         /// </summary>
         /// <param name="appId">
         ///     The unique ID of the app. You can find this on the [Sinch
@@ -48,29 +48,29 @@ namespace Sinch.Conversation.EventDestinations
         IAsyncEnumerable<EventDestination> ListAuto(string appId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Updates an existing webhook as specified by the webhook ID.
+        ///     Updates an existing event destination as specified by the event destination ID.
         /// </summary>
-        /// <param name="webhookId">The id of the webhook to update</param>
+        /// <param name="eventDestinationId">The id of the event destination to update</param>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<EventDestination> Update(string webhookId, UpdateEventDestinationRequest request,
+        Task<EventDestination> Update(string eventDestinationId, UpdateEventDestinationRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Deletes a webhook as specified by the webhook ID.
+        ///     Deletes an event destination as specified by the event destination ID.
         /// </summary>
-        /// <param name="webhookId">The unique ID of the webhook.</param>
+        /// <param name="eventDestinationId">The unique ID of the event destination.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task Delete(string webhookId, CancellationToken cancellationToken = default);
+        Task Delete(string eventDestinationId, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Validates callback request.
         /// </summary>
         /// <param name="headers">The callback request headers as single-value entries.</param>
         /// <param name="body">The callback raw body, as received from the HTTP request.</param>
-        /// <param name="secret">The webhook secret used to generate the HMAC signature.</param>
+        /// <param name="secret">The event destination secret used to generate the HMAC signature.</param>
         /// <returns>True, if produced signature match with that of a header.</returns>
         bool ValidateAuthenticationHeader(IDictionary<string, string> headers, string body, string secret);
 
@@ -79,7 +79,7 @@ namespace Sinch.Conversation.EventDestinations
         /// </summary>
         /// <param name="headers">The callback request headers.</param>
         /// <param name="body">The callback raw body, as received from the HTTP request.</param>
-        /// <param name="secret">The webhook secret used to generate the HMAC signature.</param>
+        /// <param name="secret">The event destination secret used to generate the HMAC signature.</param>
         /// <returns>True, if produced signature match with that of a header.</returns>
         bool ValidateAuthenticationHeader(IReadOnlyDictionary<string, IEnumerable<string>> headers, string body,
             string secret);
@@ -121,16 +121,16 @@ namespace Sinch.Conversation.EventDestinations
         public Task<EventDestination> Create(CreateEventDestinationRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks");
-            _logger?.LogDebug("Creating a webhook...");
+            _logger?.LogDebug("Creating a event destination...");
             return _http.Value.Send<CreateEventDestinationRequest, EventDestination>(uri, HttpMethod.Post, request,
                 cancellationToken);
         }
 
         /// <inheritdoc />
-        public Task<EventDestination> Get(string webhookId, CancellationToken cancellationToken = default)
+        public Task<EventDestination> Get(string eventDestinationId, CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{webhookId}");
-            _logger?.LogDebug("Getting a webhook with {id}...", webhookId);
+            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{eventDestinationId}");
+            _logger?.LogDebug("Getting a event destination with {id}...", eventDestinationId);
             return _http.Value.Send<EventDestination>(uri, HttpMethod.Get,
                 cancellationToken);
         }
@@ -144,7 +144,7 @@ namespace Sinch.Conversation.EventDestinations
             }
 
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/apps/{appId}/webhooks");
-            _logger?.LogDebug("Listing webhooks for an {appId}...", appId);
+            _logger?.LogDebug("Listing event destination for an {appId}...", appId);
             return _http.Value.Send<ListEventDestinationsResponse>(uri, HttpMethod.Get, cancellationToken);
         }
 
@@ -158,14 +158,14 @@ namespace Sinch.Conversation.EventDestinations
                 yield break;
             }
 
-            foreach (var webhook in response.EventDestinations)
+            foreach (var eventDestination in response.EventDestinations)
             {
-                yield return webhook;
+                yield return eventDestination;
             }
         }
 
         /// <inheritdoc />
-        public Task<EventDestination> Update(string webhookId, UpdateEventDestinationRequest request,
+        public Task<EventDestination> Update(string eventDestinationId, UpdateEventDestinationRequest request,
             CancellationToken cancellationToken = default)
         {
             if (request is null)
@@ -173,12 +173,12 @@ namespace Sinch.Conversation.EventDestinations
                 throw new ArgumentNullException(nameof(request), "Should have a value");
             }
 
-            if (string.IsNullOrEmpty(webhookId))
+            if (string.IsNullOrEmpty(eventDestinationId))
             {
-                throw new NullReferenceException($"{nameof(request)}.{nameof(webhookId)} shouldn't be null");
+                throw new NullReferenceException($"{nameof(request)}.{nameof(eventDestinationId)} shouldn't be null");
             }
 
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{webhookId}");
+            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{eventDestinationId}");
 
             var builder = new UriBuilder(uri);
             var queryString = HttpUtility.ParseQueryString(string.Empty);
@@ -186,21 +186,21 @@ namespace Sinch.Conversation.EventDestinations
             if (!string.IsNullOrEmpty(propMask)) queryString.Add("update_mask", propMask);
             builder.Query = queryString.ToString()!;
 
-            _logger?.LogDebug("Updating a webhook with {id}...", webhookId);
+            _logger?.LogDebug("Updating a event destination with {id}...", eventDestinationId);
             return _http.Value.Send<UpdateEventDestinationRequest, EventDestination>(builder.Uri, HttpMethod.Patch, request,
                 cancellationToken);
         }
 
         /// <inheritdoc />
-        public Task Delete(string webhookId, CancellationToken cancellationToken = default)
+        public Task Delete(string eventDestinationId, CancellationToken cancellationToken = default)
         {
-            if (string.IsNullOrEmpty(webhookId))
+            if (string.IsNullOrEmpty(eventDestinationId))
             {
-                throw new ArgumentNullException(nameof(webhookId), "Should have a value");
+                throw new ArgumentNullException(nameof(eventDestinationId), "Should have a value");
             }
 
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{webhookId}");
-            _logger?.LogDebug("Deleting a webhook with {id}...", webhookId);
+            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{eventDestinationId}");
+            _logger?.LogDebug("Deleting a event destination with {id}...", eventDestinationId);
             return _http.Value.Send<object>(uri, HttpMethod.Delete,
                 cancellationToken);
         }

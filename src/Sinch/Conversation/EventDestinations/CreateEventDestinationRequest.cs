@@ -11,7 +11,7 @@ namespace Sinch.Conversation.EventDestinations
         public EventDestinationTargetType? TargetType { get; init; }
 
         /// <summary>
-        ///     The app that this webhook belongs to.
+        ///     The app that this event destination belongs to.
         /// </summary>
         public required string AppId { get; init; }
 
@@ -21,7 +21,7 @@ namespace Sinch.Conversation.EventDestinations
         public ClientCredentials? ClientCredentials { get; init; }
 
         /// <summary>
-        ///     Optional secret to be used to sign contents of webhooks sent by the Conversation API.
+        ///     Optional secret to be used to sign contents of event destinations sent by the Conversation API.
         ///     You can then use the secret to verify the signature.
         /// </summary>
         public string? Secret { get; init; }
@@ -33,8 +33,8 @@ namespace Sinch.Conversation.EventDestinations
         public required string Target { get; init; }
 
         /// <summary>
-        ///     An array of triggers that should trigger the webhook and result in an event being sent to the target URL.
-        ///     Refer to the list of [Webhook Triggers](https://developers.sinch.com/docs/conversation/callbacks#webhook-triggers)
+        ///     An array of triggers that should trigger the event destination and result in an event being sent to the target URL.
+        ///     Refer to the list of [EventDestination Triggers](https://developers.sinch.com/docs/conversation/callbacks#webhook-triggers)
         ///     for a complete list.
         /// </summary>
         public List<EventDestinationTrigger>? Triggers { get; init; }
@@ -46,7 +46,7 @@ namespace Sinch.Conversation.EventDestinations
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class Webhook {\n");
+            sb.Append("class CreateEventDestinationRequest {\n");
             sb.Append("  AppId: ").Append(AppId).Append("\n");
             sb.Append("  ClientCredentials: ").Append(ClientCredentials).Append("\n");
             sb.Append("  Target: ").Append(Target).Append("\n");

@@ -7,7 +7,7 @@ using System.Text;
 namespace Sinch.Conversation.EventDestinations;
 
 /// <summary>
-///     Validates HMAC authentication headers for Conversation webhook requests.
+///     Validates HMAC authentication headers for Conversation event destination requests.
 /// </summary>
 internal sealed class HmacAuthenticationValidation
 {
@@ -17,9 +17,9 @@ internal sealed class HmacAuthenticationValidation
     private const string SignatureHeader = "x-sinch-webhook-signature";
 
     /// <summary>
-    ///     Validates the HMAC authentication header from a Conversation webhook request.
+    ///     Validates the HMAC authentication header from a Conversation event destination request.
     /// </summary>
-    /// <param name="secret">The webhook secret.</param>
+    /// <param name="secret">The event destination secret.</param>
     /// <param name="headers">HTTP headers from the request as single-value entries.</param>
     /// <param name="jsonPayload">The raw JSON payload body.</param>
     /// <returns>True if the signature is valid, false otherwise.</returns>
@@ -39,9 +39,9 @@ internal sealed class HmacAuthenticationValidation
     }
 
     /// <summary>
-    ///     Validates the HMAC authentication header from a Conversation webhook request.
+    ///     Validates the HMAC authentication header from a Conversation event destination request.
     /// </summary>
-    /// <param name="secret">The webhook secret.</param>
+    /// <param name="secret">The event destination secret.</param>
     /// <param name="headers">HTTP headers from the request (case-insensitive lookup will be performed).</param>
     /// <param name="jsonPayload">The raw JSON payload body.</param>
     /// <returns>True if the signature is valid, false otherwise.</returns>
