@@ -10,7 +10,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
         [Fact]
         public void DeserializeClientCredentialsWithAllFields()
         {
-            var json = Helpers.LoadResources("Conversation/Webhooks/ClientCredentialsWithAllFields.json");
+            var json = Helpers.LoadResources("Conversation/EventDestinations/ClientCredentialsWithAllFields.json");
             var result = JsonSerializer.Deserialize<ClientCredentials>(json, Conversation.JsonSerializerOptions);
 
             result.Should().NotBeNull();
@@ -25,7 +25,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
         [Fact]
         public void DeserializeClientCredentialsWithRequiredFieldsOnly()
         {
-            var json = Helpers.LoadResources("Conversation/Webhooks/ClientCredentialsWithRequiredFieldsOnly.json");
+            var json = Helpers.LoadResources("Conversation/EventDestinations/ClientCredentialsWithRequiredFieldsOnly.json");
             var result = JsonSerializer.Deserialize<ClientCredentials>(json, Conversation.JsonSerializerOptions);
 
             result.Should().NotBeNull();
@@ -40,7 +40,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
         [Fact]
         public void DeserializeClientCredentialsWithPartialOptionalFields()
         {
-            var json = Helpers.LoadResources("Conversation/Webhooks/ClientCredentialsWithScope.json");
+            var json = Helpers.LoadResources("Conversation/EventDestinations/ClientCredentialsWithScope.json");
             var result = JsonSerializer.Deserialize<ClientCredentials>(json, Conversation.JsonSerializerOptions);
 
             result.Should().NotBeNull();

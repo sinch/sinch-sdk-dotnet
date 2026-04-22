@@ -10,11 +10,11 @@ using Sinch.Conversation.Hooks.Models;
 namespace Sinch.Tests.Features.Conversation;
 
 [Binding]
-[Scope(Feature = "[Conversation][Webhooks events]")]
-public class WebhooksEvents
+[Scope(Feature = "[Conversation][Sinch events]")]
+public class SinchEvents
 {
     private const string CallbackSecret = "CactusKnight_SurfsWaves";
-    private const string BaseWebhookUrl = "http://localhost:3014/webhooks/conversation";
+    private const string BaseEventDestinationsUrl = "http://localhost:3014/webhooks/conversation";
 
     private readonly HttpClient _httpClient = new();
     private ISinchConversationEventDestinations _eventDestinations;
@@ -23,7 +23,7 @@ public class WebhooksEvents
     private ICallbackEvent _parsedEvent;
 
     [Given(@"the Conversation Webhooks handler is available")]
-    public void GivenTheConversationWebhooksHandlerIsAvailable()
+    public void GivenTheConversationEventDestinationsHandlerIsAvailable()
     {
         _eventDestinations = Utils.SinchConversationClient().EventDestinations;
     }
@@ -134,7 +134,7 @@ public class WebhooksEvents
 
     private async Task TriggerEvent(string route)
     {
-        _eventResponse = await _httpClient.GetAsync($"{BaseWebhookUrl}/{route}");
+        _eventResponse = await _httpClient.GetAsync($"{BaseEventDestinationsUrl}/{route}");
         _eventResponse.EnsureSuccessStatusCode();
 
         _rawEvent = await _eventResponse.Content.ReadAsStringAsync();

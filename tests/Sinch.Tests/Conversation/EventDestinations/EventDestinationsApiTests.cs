@@ -18,14 +18,12 @@ namespace Sinch.Tests.Conversation.EventDestinations
     {
         private const string AppId001 = "01W4FFL35P4NC4K35CONVAPP001";
         private const string AppId002 = "01W4FFL35P4NC4K35CONVAPP002";
-        private const string WebhookId001 = "01W4FFL35P4NC4K35WEBHOOK001";
-        private const string WebhookId004 = "01W4FFL35P4NC4K35WEBHOOK004";
-
-        private readonly string _webhooksBaseUrl =
-            $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/webhooks";
+        private const string EventDestinationId001 = "01W4FFL35P4NC4K35EVENTDESTINATION001";
+        private const string EventDestinationId004 = "01W4FFL35P4NC4K35EVENTDESTINATION004";
+        private const string EventDestinationsBaseUrl = $"https://us.conversation.api.sinch.com/v1/projects/{ProjectId}/webhooks";
 
         [Fact]
-        public async Task Create_WithValidRequest_ReturnsWebhook()
+        public async Task Create_WithValidRequest_ReturnsEventDestination()
         {
             var expectedRequest = new CreateEventDestinationRequest
             {
@@ -38,7 +36,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
 
             var expectedResponse = new EventDestination
             {
-                Id = WebhookId004,
+                Id = EventDestinationId004,
                 AppId = AppId001,
                 Target = "https://my-callback-server.com/capability",
                 TargetType = EventDestinationTargetType.Http,
@@ -47,7 +45,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
             };
 
             HttpMessageHandlerMock
-                .When(HttpMethod.Post, _webhooksBaseUrl)
+                .When(HttpMethod.Post, EventDestinationsBaseUrl)
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .WithJson(JsonSerializer.Serialize(expectedRequest, SinchConversationClient.JsonSerializerOptionsInner))
                 .Respond(HttpStatusCode.OK, JsonContent.Create(
@@ -57,11 +55,11 @@ namespace Sinch.Tests.Conversation.EventDestinations
             var response = await Conversation.EventDestinations.Create(expectedRequest);
 
             response.Should().NotBeNull();
-            response.Id.Should().Be(WebhookId004);
+            response.Id.Should().Be(EventDestinationId004);
         }
 
         [Fact]
-        public async Task List_WithValidAppId_ReturnsWebhooks()
+        public async Task List_WithValidAppId_ReturnsEventDestinations()
         {
             var expectedResponse = new ListEventDestinationsResponse
             {
@@ -70,7 +68,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
                 {
                     new EventDestination
                     {
-                        Id = WebhookId001,
+                        Id = EventDestinationId001,
                         AppId = AppId001,
                         Target = "https://my-callback-server.com/unsupported",
                         TargetType = EventDestinationTargetType.Http,
@@ -85,7 +83,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
                     },
                     new EventDestination
                     {
-                        Id = WebhookId004,
+                        Id = EventDestinationId004,
                         AppId = AppId001,
                         Target = "https://my-callback-server.com/capability",
                         TargetType = EventDestinationTargetType.Http,
@@ -106,11 +104,11 @@ namespace Sinch.Tests.Conversation.EventDestinations
 
             response.Should().NotBeNull();
             response.EventDestinations.Should().HaveCount(2);
-            response.EventDestinations!.First().Id.Should().Be(WebhookId001);
+            response.EventDestinations!.First().Id.Should().Be(EventDestinationId001);
         }
 
         [Fact]
-        public async Task ListAuto_WithValidAppId_IteratesThroughAllWebhooks()
+        public async Task ListAuto_WithValidAppId_IteratesThroughAllEventDestinations()
         {
             var expectedResponse = new ListEventDestinationsResponse
             {
@@ -119,7 +117,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
                 {
                     new EventDestination
                     {
-                        Id = WebhookId001,
+                        Id = EventDestinationId001,
                         AppId = AppId001,
                         Target = "https://my-callback-server.com/unsupported",
                         TargetType = EventDestinationTargetType.Http,
@@ -128,7 +126,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
                     },
                     new EventDestination
                     {
-                        Id = WebhookId004,
+                        Id = EventDestinationId004,
                         AppId = AppId001,
                         Target = "https://my-callback-server.com/capability",
                         TargetType = EventDestinationTargetType.Http,
@@ -146,21 +144,21 @@ namespace Sinch.Tests.Conversation.EventDestinations
                     options: SinchConversationClient.JsonSerializerOptionsInner));
 
             var response = new List<EventDestination>();
-            await foreach (var webhook in Conversation.EventDestinations.ListAuto(AppId001))
+            await foreach (var eventDestination in Conversation.EventDestinations.ListAuto(AppId001))
             {
-                response.Add(webhook);
+                response.Add(eventDestination);
             }
 
             response.Should().HaveCount(2);
-            response[0].Id.Should().Be(WebhookId001);
+            response[0].Id.Should().Be(EventDestinationId001);
         }
 
         [Fact]
-        public async Task Get_WithValidWebhookId_ReturnsWebhook()
+        public async Task Get_WithValidEventDestinationId_ReturnsEventDestination()
         {
             var expectedResponse = new EventDestination
             {
-                Id = WebhookId001,
+                Id = EventDestinationId001,
                 AppId = AppId001,
                 Target = "https://my-callback-server.com/unsupported",
                 TargetType = EventDestinationTargetType.Http,
@@ -175,20 +173,20 @@ namespace Sinch.Tests.Conversation.EventDestinations
             };
 
             HttpMessageHandlerMock
-                .When(HttpMethod.Get, $"{_webhooksBaseUrl}/{WebhookId001}")
+                .When(HttpMethod.Get, $"{EventDestinationsBaseUrl}/{EventDestinationId001}")
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(
                     expectedResponse,
                     options: SinchConversationClient.JsonSerializerOptionsInner));
 
-            var response = await Conversation.EventDestinations.Get(WebhookId001);
+            var response = await Conversation.EventDestinations.Get(EventDestinationId001);
 
             response.Should().NotBeNull();
-            response.Id.Should().Be(WebhookId001);
+            response.Id.Should().Be(EventDestinationId001);
         }
 
         [Fact]
-        public async Task Update_WithValidRequest_ReturnsUpdatedWebhook()
+        public async Task Update_WithValidRequest_ReturnsUpdatedEventDestination()
         {
             var expectedRequest = new UpdateEventDestinationRequest
             {
@@ -200,7 +198,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
 
             var expectedResponse = new EventDestination
             {
-                Id = WebhookId004,
+                Id = EventDestinationId004,
                 AppId = AppId002,
                 Target = "https://my-callback-server.com/capability-optin-optout",
                 TargetType = EventDestinationTargetType.Http,
@@ -209,47 +207,47 @@ namespace Sinch.Tests.Conversation.EventDestinations
             };
 
             HttpMessageHandlerMock
-                .When(HttpMethod.Patch, $"{_webhooksBaseUrl}/{WebhookId004}*")
+                .When(HttpMethod.Patch, $"{EventDestinationsBaseUrl}/{EventDestinationId004}*")
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .WithJson(JsonSerializer.Serialize(expectedRequest, SinchConversationClient.JsonSerializerOptionsInner))
                 .Respond(HttpStatusCode.OK, JsonContent.Create(
                     expectedResponse,
                     options: SinchConversationClient.JsonSerializerOptionsInner));
 
-            var response = await Conversation.EventDestinations.Update(WebhookId004, expectedRequest);
+            var response = await Conversation.EventDestinations.Update(EventDestinationId004, expectedRequest);
 
             response.Should().NotBeNull();
-            response.Id.Should().Be(WebhookId004);
+            response.Id.Should().Be(EventDestinationId004);
         }
 
         [Fact]
-        public async Task Delete_WithValidWebhookId_DeletesWebhookSuccessfully()
+        public async Task Delete_WithValidEventDestinationId_DeletesEventDestinationSuccessfully()
         {
             HttpMessageHandlerMock
-                .When(HttpMethod.Delete, $"{_webhooksBaseUrl}/{WebhookId004}")
+                .When(HttpMethod.Delete, $"{EventDestinationsBaseUrl}/{EventDestinationId004}")
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(new { }));
 
-            await Conversation.EventDestinations.Delete(WebhookId004);
+            await Conversation.EventDestinations.Delete(EventDestinationId004);
         }
 
         [Fact]
         public async Task Get_WhenApiReturnsError_ThrowsSinchApiException()
         {
             HttpMessageHandlerMock
-                .When(HttpMethod.Get, $"{_webhooksBaseUrl}/{WebhookId001}")
+                .When(HttpMethod.Get, $"{EventDestinationsBaseUrl}/{EventDestinationId001}")
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond(HttpStatusCode.NotFound, JsonContent.Create(new
                 {
                     error = new
                     {
                         code = 404,
-                        message = "Webhook not found",
+                        message = "EventDestination not found",
                         status = "NOT_FOUND"
                     }
                 }));
 
-            Func<Task> act = () => Conversation.EventDestinations.Get(WebhookId001);
+            Func<Task> act = () => Conversation.EventDestinations.Get(EventDestinationId001);
 
             await act.Should().ThrowAsync<SinchApiException>();
         }
