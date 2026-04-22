@@ -54,7 +54,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                     expectedResponse,
                     options: SinchConversationClient.JsonSerializerOptionsInner));
 
-            var response = await Conversation.Webhooks.Create(expectedRequest);
+            var response = await Conversation.EventDestinations.Create(expectedRequest);
 
             response.Should().NotBeNull();
             response.Id.Should().Be(WebhookId004);
@@ -102,7 +102,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                     expectedResponse,
                     options: SinchConversationClient.JsonSerializerOptionsInner));
 
-            var response = await Conversation.Webhooks.List(AppId001);
+            var response = await Conversation.EventDestinations.List(AppId001);
 
             response.Should().NotBeNull();
             response.EventDestinations.Should().HaveCount(2);
@@ -146,7 +146,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                     options: SinchConversationClient.JsonSerializerOptionsInner));
 
             var response = new List<EventDestination>();
-            await foreach (var webhook in Conversation.Webhooks.ListAuto(AppId001))
+            await foreach (var webhook in Conversation.EventDestinations.ListAuto(AppId001))
             {
                 response.Add(webhook);
             }
@@ -181,7 +181,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                     expectedResponse,
                     options: SinchConversationClient.JsonSerializerOptionsInner));
 
-            var response = await Conversation.Webhooks.Get(WebhookId001);
+            var response = await Conversation.EventDestinations.Get(WebhookId001);
 
             response.Should().NotBeNull();
             response.Id.Should().Be(WebhookId001);
@@ -216,7 +216,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                     expectedResponse,
                     options: SinchConversationClient.JsonSerializerOptionsInner));
 
-            var response = await Conversation.Webhooks.Update(WebhookId004, expectedRequest);
+            var response = await Conversation.EventDestinations.Update(WebhookId004, expectedRequest);
 
             response.Should().NotBeNull();
             response.Id.Should().Be(WebhookId004);
@@ -230,7 +230,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond(HttpStatusCode.OK, JsonContent.Create(new { }));
 
-            await Conversation.Webhooks.Delete(WebhookId004);
+            await Conversation.EventDestinations.Delete(WebhookId004);
         }
 
         [Fact]
@@ -249,7 +249,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                     }
                 }));
 
-            Func<Task> act = () => Conversation.Webhooks.Get(WebhookId001);
+            Func<Task> act = () => Conversation.EventDestinations.Get(WebhookId001);
 
             await act.Should().ThrowAsync<SinchApiException>();
         }

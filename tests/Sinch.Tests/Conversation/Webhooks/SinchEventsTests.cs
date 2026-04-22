@@ -21,7 +21,7 @@ namespace Sinch.Tests.Conversation.Webhooks
         {
             var json = Helpers.LoadResources("Conversation/Hooks/WebhooksAuthValidation.json");
 
-            var isValid = Conversation.Webhooks.ValidateAuthenticationHeader(new Dictionary<string, string>()
+            var isValid = Conversation.EventDestinations.ValidateAuthenticationHeader(new Dictionary<string, string>()
             {
                 { NonceHeader, "01FJA8B4A7BM43YGWSG9GBV067" },
                 { TimestampHeader, "1634579353" },
@@ -37,7 +37,7 @@ namespace Sinch.Tests.Conversation.Webhooks
         {
             var json = Helpers.LoadResources("Conversation/Hooks/WebhooksAuthValidation.json");
 
-            var isValid = Conversation.Webhooks.ValidateAuthenticationHeader(new Dictionary<string, IEnumerable<string>>()
+            var isValid = Conversation.EventDestinations.ValidateAuthenticationHeader(new Dictionary<string, IEnumerable<string>>()
             {
                 { NonceHeader, ["01FJA8B4A7BM43YGWSG9GBV067"] },
                 { TimestampHeader, ["1634579353"] },
@@ -53,7 +53,7 @@ namespace Sinch.Tests.Conversation.Webhooks
         {
             var json = Helpers.LoadResources("Conversation/Hooks/CapabilityEvent.json");
 
-            var result = Conversation.Webhooks.ParseEvent(json);
+            var result = Conversation.EventDestinations.ParseEvent(json);
 
             result.Should().BeOfType<CapabilityEvent>();
             result.As<CapabilityEvent>().CapabilityNotification.Should().NotBeNull();
@@ -65,7 +65,7 @@ namespace Sinch.Tests.Conversation.Webhooks
             var json = Helpers.LoadResources("Conversation/Hooks/CapabilityEvent.json");
             await using var stream = new MemoryStream(Encoding.UTF8.GetBytes(json));
 
-            var result = await Conversation.Webhooks.ParseEventAsync(stream);
+            var result = await Conversation.EventDestinations.ParseEventAsync(stream);
 
             result.Should().BeOfType<CapabilityEvent>();
             result.As<CapabilityEvent>().CapabilityNotification.Should().NotBeNull();

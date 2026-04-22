@@ -15,7 +15,7 @@ public class Webhooks
     private const string WebhookId001 = "01W4FFL35P4NC4K35WEBHOOK001";
     private const string WebhookId004 = "01W4FFL35P4NC4K35WEBHOOK004";
 
-    private ISinchConversationWebhooks _webhooks;
+    private ISinchConversationEventDestinations _eventDestinations;
     private EventDestination _eventDestination;
     private List<EventDestination> _eventDestinationsList;
     private bool _deleteCompleted;
@@ -23,13 +23,13 @@ public class Webhooks
     [Given(@"the Conversation service ""Webhooks"" is available")]
     public void GivenTheConversationServiceWebhooksIsAvailable()
     {
-        _webhooks = Utils.SinchConversationClient().Webhooks;
+        _eventDestinations = Utils.SinchConversationClient().EventDestinations;
     }
 
     [When(@"I send a request to create a conversation webhook")]
     public async Task WhenISendARequestToCreateAConversationWebhook()
     {
-        _eventDestination = await _webhooks.Create(new CreateEventDestinationRequest
+        _eventDestination = await _eventDestinations.Create(new CreateEventDestinationRequest
         {
             AppId = AppId001,
             Target = "https://my-callback-server.com/capability",
@@ -55,7 +55,7 @@ public class Webhooks
     [When(@"I send a request to list the conversation webhooks for an app")]
     public async Task WhenISendARequestToListTheConversationWebhooksForAnApp()
     {
-        var response = await _webhooks.List(AppId001);
+        var response = await _eventDestinations.List(AppId001);
         _eventDestinationsList = response.EventDestinations?.ToList() ?? new List<EventDestination>();
     }
 
@@ -70,7 +70,7 @@ public class Webhooks
     [When(@"I send a request to retrieve a conversation webhook")]
     public async Task WhenISendARequestToRetrieveAConversationWebhook()
     {
-        _eventDestination = await _webhooks.Get(WebhookId001);
+        _eventDestination = await _eventDestinations.Get(WebhookId001);
     }
 
     [Then(@"the response contains the conversation webhook details")]
@@ -90,7 +90,7 @@ public class Webhooks
     [When(@"I send a request to update a conversation webhook")]
     public async Task WhenISendARequestToUpdateAConversationWebhook()
     {
-        _eventDestination = await _webhooks.Update(WebhookId004, new UpdateEventDestinationRequest
+        _eventDestination = await _eventDestinations.Update(WebhookId004, new UpdateEventDestinationRequest
         {
             AppId = AppId002,
             Target = "https://my-callback-server.com/capability-optin-optout",
@@ -115,7 +115,7 @@ public class Webhooks
     [When(@"I send a request to delete a conversation webhook")]
     public async Task WhenISendARequestToDeleteAConversationWebhook()
     {
-        await _webhooks.Delete(WebhookId004);
+        await _eventDestinations.Delete(WebhookId004);
         _deleteCompleted = true;
     }
 

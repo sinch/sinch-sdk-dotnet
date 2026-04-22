@@ -16,7 +16,7 @@ namespace Sinch.Conversation.EventDestinations
     /// <summary>
     ///     Manage your webhooks with this set of methods.
     /// </summary>
-    public interface ISinchConversationWebhooks
+    public interface ISinchConversationEventDestinations
     {
         /// <summary>
         ///     Creates a webhook for receiving callbacks on specific triggers. You can create up to 5 webhooks per app.
@@ -101,14 +101,14 @@ namespace Sinch.Conversation.EventDestinations
     }
 
     /// <inheritdoc />
-    internal sealed class EventDestinations : ISinchConversationWebhooks
+    internal sealed class EventDestinations : ISinchConversationEventDestinations
     {
         private readonly Uri _baseAddress;
         private readonly Lazy<IHttp> _http;
-        private readonly ILoggerAdapter<ISinchConversationWebhooks>? _logger;
+        private readonly ILoggerAdapter<ISinchConversationEventDestinations>? _logger;
         private readonly string _projectId;
 
-        public EventDestinations(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationWebhooks>? logger,
+        public EventDestinations(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationEventDestinations>? logger,
             Lazy<IHttp> http)
         {
             _projectId = projectId;

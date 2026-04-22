@@ -17,7 +17,7 @@ public class WebhooksEvents
     private const string BaseWebhookUrl = "http://localhost:3014/webhooks/conversation";
 
     private readonly HttpClient _httpClient = new();
-    private ISinchConversationWebhooks _webhooks;
+    private ISinchConversationEventDestinations _eventDestinations;
     private HttpResponseMessage _eventResponse;
     private string _rawEvent;
     private ICallbackEvent _parsedEvent;
@@ -25,7 +25,7 @@ public class WebhooksEvents
     [Given(@"the Conversation Webhooks handler is available")]
     public void GivenTheConversationWebhooksHandlerIsAvailable()
     {
-        _webhooks = Utils.SinchConversationClient().Webhooks;
+        _eventDestinations = Utils.SinchConversationClient().EventDestinations;
     }
 
     [When(@"I send a request to trigger a ""(.*)"" event")]
@@ -138,12 +138,12 @@ public class WebhooksEvents
         _eventResponse.EnsureSuccessStatusCode();
 
         _rawEvent = await _eventResponse.Content.ReadAsStringAsync();
-        _parsedEvent = _webhooks.ParseEvent(_rawEvent);
+        _parsedEvent = _eventDestinations.ParseEvent(_rawEvent);
     }
 
     private void ValidateAuthenticationHeader()
     {
-        _webhooks.ValidateAuthenticationHeader(_eventResponse.GetAllHeaders(), _rawEvent, CallbackSecret)
+        _eventDestinations.ValidateAuthenticationHeader(_eventResponse.GetAllHeaders(), _rawEvent, CallbackSecret)
             .Should()
             .BeTrue();
     }

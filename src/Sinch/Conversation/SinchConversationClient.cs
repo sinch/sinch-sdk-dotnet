@@ -35,8 +35,8 @@ namespace Sinch.Conversation
         /// <inheritdoc cref="ISinchConversationConversations" />
         ISinchConversationConversations Conversations { get; }
 
-        /// <inheritdoc cref="ISinchConversationWebhooks" />
-        ISinchConversationWebhooks Webhooks { get; }
+        /// <inheritdoc cref="ISinchConversationEventDestinations" />
+        ISinchConversationEventDestinations EventDestinations { get; }
 
         /// <inheritdoc cref="ISinchConversationEvents" />
         ISinchConversationEvents Events { get; }
@@ -78,8 +78,8 @@ namespace Sinch.Conversation
                 loggerFactory?.Create<ISinchConversationContacts>(), http);
             Conversations = new ConversationsClient(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationConversations>(), http);
-            Webhooks = new EventDestinations.EventDestinations(projectId, conversationBaseAddress,
-                loggerFactory?.Create<ISinchConversationWebhooks>(), http);
+            EventDestinations = new EventDestinations.EventDestinations(projectId, conversationBaseAddress,
+                loggerFactory?.Create<ISinchConversationEventDestinations>(), http);
             Events = new Events.Events(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationEvents>(), http);
             Transcoding = new Transcoding.Transcoding(projectId, conversationBaseAddress,
@@ -103,7 +103,7 @@ namespace Sinch.Conversation
         public ISinchConversationConversations Conversations { get; }
 
         /// <inheritdoc />
-        public ISinchConversationWebhooks Webhooks { get; }
+        public ISinchConversationEventDestinations EventDestinations { get; }
 
         /// <inheritdoc />
         public ISinchConversationEvents Events { get; }
