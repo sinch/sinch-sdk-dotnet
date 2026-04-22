@@ -101,14 +101,14 @@ namespace Sinch.Conversation.EventDestinations
     }
 
     /// <inheritdoc />
-    internal sealed class Webhooks : ISinchConversationWebhooks
+    internal sealed class EventDestinations : ISinchConversationWebhooks
     {
         private readonly Uri _baseAddress;
         private readonly Lazy<IHttp> _http;
         private readonly ILoggerAdapter<ISinchConversationWebhooks>? _logger;
         private readonly string _projectId;
 
-        public Webhooks(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationWebhooks>? logger,
+        public EventDestinations(string projectId, Uri baseAddress, ILoggerAdapter<ISinchConversationWebhooks>? logger,
             Lazy<IHttp> http)
         {
             _projectId = projectId;

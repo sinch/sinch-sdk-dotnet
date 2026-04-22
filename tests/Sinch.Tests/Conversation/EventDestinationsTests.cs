@@ -15,7 +15,7 @@ using Xunit;
 
 namespace Sinch.Tests.Conversation
 {
-    public class WebhooksTests : ConversationTestBase
+    public class EventDestinationsTests : ConversationTestBase
     {
         [Fact]
         public void DeserializeCapabilityEvent()

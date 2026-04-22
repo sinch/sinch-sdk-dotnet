@@ -78,7 +78,7 @@ namespace Sinch.Conversation
                 loggerFactory?.Create<ISinchConversationContacts>(), http);
             Conversations = new ConversationsClient(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationConversations>(), http);
-            Webhooks = new Webhooks(projectId, conversationBaseAddress,
+            Webhooks = new EventDestinations.EventDestinations(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationWebhooks>(), http);
             Events = new Events.Events(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationEvents>(), http);
