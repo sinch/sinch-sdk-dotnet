@@ -36,7 +36,7 @@ namespace Sinch.Tests.Conversation.Webhooks
         }
         
         [Fact]
-        public void ValidateAuthenticationHeader_WithHeadersAndInvalidSecret_ReturnsFalse()
+        public void ValidateAuthenticationHeader_WithHeadersAndInvalidSignature_ReturnsFalse()
         {
             var json = Helpers.LoadResources("Conversation/Hooks/WebhooksAuthValidation.json");
 
