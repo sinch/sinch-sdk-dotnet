@@ -29,7 +29,7 @@ public class Webhooks
     [When(@"I send a request to create a conversation webhook")]
     public async Task WhenISendARequestToCreateAConversationWebhook()
     {
-        _eventDestination = await _webhooks.Create(new CreateWebhookRequest
+        _eventDestination = await _webhooks.Create(new CreateEventDestinationRequest
         {
             AppId = AppId001,
             Target = "https://my-callback-server.com/capability",

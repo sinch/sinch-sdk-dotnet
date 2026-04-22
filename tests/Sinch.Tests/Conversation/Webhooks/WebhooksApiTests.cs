@@ -27,7 +27,7 @@ namespace Sinch.Tests.Conversation.Webhooks
         [Fact]
         public async Task Create_WithValidRequest_ReturnsWebhook()
         {
-            var expectedRequest = new CreateWebhookRequest
+            var expectedRequest = new CreateEventDestinationRequest
             {
                 AppId = AppId001,
                 Target = "https://my-callback-server.com/capability",

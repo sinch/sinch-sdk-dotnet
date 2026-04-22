@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Sinch.Conversation.EventDestinations
 {
-    public sealed class CreateWebhookRequest
+    public sealed class CreateEventDestinationRequest
     {
         /// <summary>
         ///     Gets or sets the target type.

@@ -24,7 +24,7 @@ namespace Sinch.Conversation.EventDestinations
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<EventDestination> Create(CreateWebhookRequest request, CancellationToken cancellationToken = default);
+        Task<EventDestination> Create(CreateEventDestinationRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Get a webhook as specified by the webhook ID.
@@ -118,11 +118,11 @@ namespace Sinch.Conversation.EventDestinations
         }
 
         /// <inheritdoc />
-        public Task<EventDestination> Create(CreateWebhookRequest request, CancellationToken cancellationToken = default)
+        public Task<EventDestination> Create(CreateEventDestinationRequest request, CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks");
             _logger?.LogDebug("Creating a webhook...");
-            return _http.Value.Send<CreateWebhookRequest, EventDestination>(uri, HttpMethod.Post, request,
+            return _http.Value.Send<CreateEventDestinationRequest, EventDestination>(uri, HttpMethod.Post, request,
                 cancellationToken);
         }
 
