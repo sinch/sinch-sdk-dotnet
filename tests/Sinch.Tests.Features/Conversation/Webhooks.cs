@@ -90,7 +90,7 @@ public class Webhooks
     [When(@"I send a request to update a conversation webhook")]
     public async Task WhenISendARequestToUpdateAConversationWebhook()
     {
-        _eventDestination = await _webhooks.Update(WebhookId004, new UpdateWebhookRequest
+        _eventDestination = await _webhooks.Update(WebhookId004, new UpdateEventDestinationRequest
         {
             AppId = AppId002,
             Target = "https://my-callback-server.com/capability-optin-optout",

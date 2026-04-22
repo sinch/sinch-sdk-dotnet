@@ -54,7 +54,7 @@ namespace Sinch.Conversation.EventDestinations
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<EventDestination> Update(string webhookId, UpdateWebhookRequest request,
+        Task<EventDestination> Update(string webhookId, UpdateEventDestinationRequest request,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace Sinch.Conversation.EventDestinations
         }
 
         /// <inheritdoc />
-        public Task<EventDestination> Update(string webhookId, UpdateWebhookRequest request,
+        public Task<EventDestination> Update(string webhookId, UpdateEventDestinationRequest request,
             CancellationToken cancellationToken = default)
         {
             if (request is null)
@@ -187,7 +187,7 @@ namespace Sinch.Conversation.EventDestinations
             builder.Query = queryString.ToString()!;
 
             _logger?.LogDebug("Updating a webhook with {id}...", webhookId);
-            return _http.Value.Send<UpdateWebhookRequest, EventDestination>(builder.Uri, HttpMethod.Patch, request,
+            return _http.Value.Send<UpdateEventDestinationRequest, EventDestination>(builder.Uri, HttpMethod.Patch, request,
                 cancellationToken);
         }
 

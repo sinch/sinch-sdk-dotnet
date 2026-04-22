@@ -190,7 +190,7 @@ namespace Sinch.Tests.Conversation.Webhooks
         [Fact]
         public async Task Update_WithValidRequest_ReturnsUpdatedWebhook()
         {
-            var expectedRequest = new UpdateWebhookRequest
+            var expectedRequest = new UpdateEventDestinationRequest
             {
                 AppId = AppId002,
                 Target = "https://my-callback-server.com/capability-optin-optout",

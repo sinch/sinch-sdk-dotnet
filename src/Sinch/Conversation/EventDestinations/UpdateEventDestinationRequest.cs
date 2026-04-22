@@ -4,7 +4,7 @@ using Sinch.Core;
 
 namespace Sinch.Conversation.EventDestinations
 {
-    public sealed class UpdateWebhookRequest : PropertyMaskQuery
+    public sealed class UpdateEventDestinationRequest : PropertyMaskQuery
     {
         private EventDestinationTargetType? _targetType;
         private string? _appId;
