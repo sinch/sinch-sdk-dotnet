@@ -63,7 +63,7 @@ namespace Sinch.Tests.Conversation.Webhooks
         [Fact]
         public async Task List_WithValidAppId_ReturnsWebhooks()
         {
-            var expectedResponse = new ListWebhooksResponse
+            var expectedResponse = new ListEventDestinationsResponse
             {
                 EventDestinations =
                 new List<EventDestination>
@@ -112,7 +112,7 @@ namespace Sinch.Tests.Conversation.Webhooks
         [Fact]
         public async Task ListAuto_WithValidAppId_IteratesThroughAllWebhooks()
         {
-            var expectedResponse = new ListWebhooksResponse
+            var expectedResponse = new ListEventDestinationsResponse
             {
                 EventDestinations =
                 new List<EventDestination>

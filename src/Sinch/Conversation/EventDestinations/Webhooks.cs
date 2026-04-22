@@ -43,7 +43,7 @@ namespace Sinch.Conversation.EventDestinations
         /// </param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<ListWebhooksResponse> List(string appId, CancellationToken cancellationToken = default);
+        Task<ListEventDestinationsResponse> List(string appId, CancellationToken cancellationToken = default);
 
         IAsyncEnumerable<EventDestination> ListAuto(string appId, CancellationToken cancellationToken = default);
 
@@ -136,7 +136,7 @@ namespace Sinch.Conversation.EventDestinations
         }
 
         /// <inheritdoc />
-        public Task<ListWebhooksResponse> List(string appId, CancellationToken cancellationToken = default)
+        public Task<ListEventDestinationsResponse> List(string appId, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(appId))
             {
@@ -145,7 +145,7 @@ namespace Sinch.Conversation.EventDestinations
 
             var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/apps/{appId}/webhooks");
             _logger?.LogDebug("Listing webhooks for an {appId}...", appId);
-            return _http.Value.Send<ListWebhooksResponse>(uri, HttpMethod.Get, cancellationToken);
+            return _http.Value.Send<ListEventDestinationsResponse>(uri, HttpMethod.Get, cancellationToken);
         }
 
         /// <inheritdoc />
