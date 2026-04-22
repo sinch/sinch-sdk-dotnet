@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
-using Sinch.Conversation.Webhooks;
+using Sinch.Conversation.EventDestinations;
 
 namespace Sinch.Tests.Features.Conversation;
 

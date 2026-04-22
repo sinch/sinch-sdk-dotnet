@@ -3,9 +3,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
+using Sinch.Conversation.EventDestinations;
 using Sinch.Conversation.Hooks;
 using Sinch.Conversation.Hooks.Models;
-using Sinch.Conversation.Webhooks;
 
 namespace Sinch.Tests.Features.Conversation;
 

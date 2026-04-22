@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using Sinch.Core;
 
-namespace Sinch.Conversation.Webhooks
+namespace Sinch.Conversation.EventDestinations
 {
     public sealed class UpdateWebhookRequest : PropertyMaskQuery
     {

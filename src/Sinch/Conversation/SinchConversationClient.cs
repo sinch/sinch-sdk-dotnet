@@ -5,11 +5,11 @@ using Sinch.Conversation.Apps;
 using Sinch.Conversation.Capability;
 using Sinch.Conversation.Contacts;
 using Sinch.Conversation.Conversations;
+using Sinch.Conversation.EventDestinations;
 using Sinch.Conversation.Events;
 using Sinch.Conversation.Messages;
 using Sinch.Conversation.Transcoding;
 using Sinch.Conversation.TemplatesV2;
-using Sinch.Conversation.Webhooks;
 using Sinch.Core;
 using Sinch.Logger;
 
@@ -78,7 +78,7 @@ namespace Sinch.Conversation
                 loggerFactory?.Create<ISinchConversationContacts>(), http);
             Conversations = new ConversationsClient(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationConversations>(), http);
-            Webhooks = new Webhooks.Webhooks(projectId, conversationBaseAddress,
+            Webhooks = new Webhooks(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationWebhooks>(), http);
             Events = new Events.Events(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationEvents>(), http);

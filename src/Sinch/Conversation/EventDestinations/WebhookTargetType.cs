@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Conversation.Webhooks
+namespace Sinch.Conversation.EventDestinations
 {
     /// <summary>
     ///     Defines WebhookTargetType

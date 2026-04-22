@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Sinch.Conversation.Webhooks
+namespace Sinch.Conversation.EventDestinations
 {
     public sealed class ListWebhooksResponse
     {

@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Sinch.Conversation.Webhooks
+namespace Sinch.Conversation.EventDestinations
 {
     /// <summary>
     ///     Optional. Used for OAuth2 authentication.

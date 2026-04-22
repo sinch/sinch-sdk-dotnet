@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using Sinch.Conversation.Webhooks;
+using Sinch.Conversation.EventDestinations;
 using Xunit;
 
 namespace Sinch.Tests.Conversation.Webhooks

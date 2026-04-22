@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using System.Runtime.CompilerServices;
 using Sinch.Conversation.Hooks;
 using Sinch.Core;
 using Sinch.Logger;
 
-namespace Sinch.Conversation.Webhooks
+namespace Sinch.Conversation.EventDestinations
 {
     /// <summary>
     ///     Manage your webhooks with this set of methods.

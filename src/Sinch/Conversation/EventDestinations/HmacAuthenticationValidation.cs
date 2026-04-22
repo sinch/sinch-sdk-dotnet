@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Sinch.Conversation.Webhooks;
+namespace Sinch.Conversation.EventDestinations;
 
 /// <summary>
 ///     Validates HMAC authentication headers for Conversation webhook requests.

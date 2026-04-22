@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Sinch.Conversation.Webhooks
+namespace Sinch.Conversation.EventDestinations
 {
-    public sealed class CreateWebhookRequest
+    /// <summary>
+    ///     Represents a destination for receiving callbacks from the Conversation API.
+    /// </summary>
+    public sealed class Webhook
     {
         /// <summary>
         ///     Gets or sets the target type.
@@ -13,12 +16,17 @@ namespace Sinch.Conversation.Webhooks
         /// <summary>
         ///     The app that this webhook belongs to.
         /// </summary>
-        public required string AppId { get; init; }
+        public string? AppId { get; init; }
 
         /// <summary>
         ///     Gets or sets the client credentials.
         /// </summary>
         public ClientCredentials? ClientCredentials { get; init; }
+
+        /// <summary>
+        ///     Gets or sets the ID of the webhook.
+        /// </summary>
+        public string? Id { get; init; }
 
         /// <summary>
         ///     Optional secret to be used to sign contents of webhooks sent by the Conversation API.
@@ -49,6 +57,7 @@ namespace Sinch.Conversation.Webhooks
             sb.Append("class Webhook {\n");
             sb.Append("  AppId: ").Append(AppId).Append("\n");
             sb.Append("  ClientCredentials: ").Append(ClientCredentials).Append("\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Target: ").Append(Target).Append("\n");
             sb.Append("  TargetType: ").Append(TargetType).Append("\n");
             sb.Append("  Triggers: ").Append(Triggers).Append("\n");

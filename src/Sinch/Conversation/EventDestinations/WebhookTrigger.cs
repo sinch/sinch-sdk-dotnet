@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Conversation.Webhooks
+namespace Sinch.Conversation.EventDestinations
 {
     /// <summary>
     ///     - &#x60;UNSPECIFIED_TRIGGER&#x60;: Using this value will cause errors. - &#x60;MESSAGE_DELIVERY&#x60;: Subscribe to

@@ -1,6 +1,6 @@
 using System.Text.Json;
 using FluentAssertions;
-using Sinch.Conversation.Webhooks;
+using Sinch.Conversation.EventDestinations;
 using Xunit;
 
 namespace Sinch.Tests.Conversation.Webhooks

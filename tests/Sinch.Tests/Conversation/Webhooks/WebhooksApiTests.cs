@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using RichardSzalay.MockHttp;
 using Sinch.Conversation;
-using Sinch.Conversation.Webhooks;
+using Sinch.Conversation.EventDestinations;
 using Xunit;
 
 namespace Sinch.Tests.Conversation.Webhooks
