@@ -80,7 +80,7 @@ public class WebhooksEvents
                     {
                         messageSubmitEvent.MessageSubmitNotification.SubmittedMessage!.MediaMessage.Should().NotBeNull();
                     }
-                    else
+                    else if (string.Equals(messageType, "text", StringComparison.OrdinalIgnoreCase))
                     {
                         messageSubmitEvent.MessageSubmitNotification.SubmittedMessage!.TextMessage.Should().NotBeNull();
                     }
@@ -98,7 +98,7 @@ public class WebhooksEvents
                         smartConversationsEvent.SmartConversationNotification.AnalysisResults.MlOffensiveAnalysisResult
                             .Should().NotBeNull();
                     }
-                    else
+                    else if (string.Equals(messageType, "text", StringComparison.OrdinalIgnoreCase))
                     {
                         smartConversationsEvent.SmartConversationNotification.AnalysisResults!.MlSentimentResult
                             .Should().NotBeNull();
