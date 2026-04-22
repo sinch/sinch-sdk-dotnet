@@ -34,7 +34,7 @@ namespace Sinch.Tests.Conversation.Webhooks
 
             result.Should().BeTrue();
         }
-        
+
         [Fact]
         public void ValidateAuthenticationHeader_WithHeadersAndInvalidSignature_ReturnsFalse()
         {
@@ -47,7 +47,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                 { AlgorithmHeader, "HmacSHA256" },
                 { SignatureHeader, "wKmZBGo4Cf+y9cZoPHhiVw6ziKeubLGqN4OdG8jlaPo=" },
             }, json, "wrong_secret");
-            
+
             isValid.Should().BeFalse();
         }
 
@@ -70,8 +70,8 @@ namespace Sinch.Tests.Conversation.Webhooks
             act.Should().Throw<NotSupportedException>()
                 .WithMessage("Unsupported HMAC algorithm: HmacSHA512");
         }
-        
-         [Fact]
+
+        [Fact]
         public void ValidateAuthenticationHeader_WithSingleValueHeaders_ReturnsTrue()
         {
             var json = Helpers.LoadResources("Conversation/Hooks/WebhooksAuthValidation.json");
@@ -131,7 +131,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                 { AlgorithmHeader, "HmacSHA256" },
                 { SignatureHeader, "wKmZBGo4Cf+y9cZoPHhiVw6ziKeubLGqN4OdG8jlaPo=" },
             }, json, "foo_secret1234");
-            
+
             isValid.Should().BeTrue();
         }
 
