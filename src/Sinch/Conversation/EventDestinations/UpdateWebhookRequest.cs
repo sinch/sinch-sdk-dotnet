@@ -6,7 +6,7 @@ namespace Sinch.Conversation.EventDestinations
 {
     public sealed class UpdateWebhookRequest : PropertyMaskQuery
     {
-        private WebhookTargetType? _targetType;
+        private EventDestinationTargetType? _targetType;
         private string? _appId;
         private ClientCredentials? _clientCredentials;
         private string? _secret;
@@ -16,7 +16,7 @@ namespace Sinch.Conversation.EventDestinations
         /// <summary>
         ///     Gets or sets the target type.
         /// </summary>
-        public WebhookTargetType? TargetType
+        public EventDestinationTargetType? TargetType
         {
             get => _targetType;
             set

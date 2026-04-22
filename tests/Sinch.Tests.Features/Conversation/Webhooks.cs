@@ -35,7 +35,7 @@ public class Webhooks
             Target = "https://my-callback-server.com/capability",
             Triggers = [WebhookTrigger.Capability],
             Secret = "CactusKnight_SurfsWaves",
-            TargetType = WebhookTargetType.Http
+            TargetType = EventDestinationTargetType.Http
         });
     }
 
@@ -46,7 +46,7 @@ public class Webhooks
         _eventDestination.Id.Should().Be(WebhookId004);
         _eventDestination.AppId.Should().Be(AppId001);
         _eventDestination.Target.Should().Be("https://my-callback-server.com/capability");
-        _eventDestination.TargetType.Should().Be(WebhookTargetType.Http);
+        _eventDestination.TargetType.Should().Be(EventDestinationTargetType.Http);
         _eventDestination.Secret.Should().Be("CactusKnight_SurfsWaves");
         _eventDestination.Triggers.Should().ContainSingle().Which.Should().Be(WebhookTrigger.Capability);
         _eventDestination.ClientCredentials.Should().BeNull();
@@ -80,7 +80,7 @@ public class Webhooks
         _eventDestination.Id.Should().Be(WebhookId001);
         _eventDestination.AppId.Should().Be(AppId001);
         _eventDestination.Target.Should().Be("https://my-callback-server.com/unsupported");
-        _eventDestination.TargetType.Should().Be(WebhookTargetType.Http);
+        _eventDestination.TargetType.Should().Be(EventDestinationTargetType.Http);
         _eventDestination.Secret.Should().Be("VeganVampire_SipsTea");
         _eventDestination.Triggers.Should().ContainSingle().Which.Should().Be(WebhookTrigger.Unsupported);
         _eventDestination.ClientCredentials.Should().NotBeNull();
@@ -106,7 +106,7 @@ public class Webhooks
         _eventDestination.Id.Should().Be(WebhookId004);
         _eventDestination.AppId.Should().Be(AppId002);
         _eventDestination.Target.Should().Be("https://my-callback-server.com/capability-optin-optout");
-        _eventDestination.TargetType.Should().Be(WebhookTargetType.Http);
+        _eventDestination.TargetType.Should().Be(EventDestinationTargetType.Http);
         _eventDestination.Secret.Should().Be("SpacePanda_RidesUnicycle");
         _eventDestination.Triggers.Should().BeEquivalentTo(
             [WebhookTrigger.Capability, WebhookTrigger.OptIn, WebhookTrigger.OptOut]);

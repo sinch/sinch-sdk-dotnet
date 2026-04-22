@@ -8,7 +8,7 @@ namespace Sinch.Conversation.EventDestinations
         /// <summary>
         ///     Gets or sets the target type.
         /// </summary>
-        public WebhookTargetType? TargetType { get; init; }
+        public EventDestinationTargetType? TargetType { get; init; }
 
         /// <summary>
         ///     The app that this webhook belongs to.

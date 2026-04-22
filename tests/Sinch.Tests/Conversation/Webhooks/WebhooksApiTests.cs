@@ -33,7 +33,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                 Target = "https://my-callback-server.com/capability",
                 Triggers = [WebhookTrigger.Capability],
                 Secret = "CactusKnight_SurfsWaves",
-                TargetType = WebhookTargetType.Http
+                TargetType = EventDestinationTargetType.Http
             };
 
             var expectedResponse = new EventDestination
@@ -41,7 +41,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                 Id = WebhookId004,
                 AppId = AppId001,
                 Target = "https://my-callback-server.com/capability",
-                TargetType = WebhookTargetType.Http,
+                TargetType = EventDestinationTargetType.Http,
                 Secret = "CactusKnight_SurfsWaves",
                 Triggers = [WebhookTrigger.Capability]
             };
@@ -73,7 +73,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                         Id = WebhookId001,
                         AppId = AppId001,
                         Target = "https://my-callback-server.com/unsupported",
-                        TargetType = WebhookTargetType.Http,
+                        TargetType = EventDestinationTargetType.Http,
                         Secret = "VeganVampire_SipsTea",
                         Triggers = [WebhookTrigger.Unsupported],
                         ClientCredentials = new ClientCredentials
@@ -88,7 +88,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                         Id = WebhookId004,
                         AppId = AppId001,
                         Target = "https://my-callback-server.com/capability",
-                        TargetType = WebhookTargetType.Http,
+                        TargetType = EventDestinationTargetType.Http,
                         Secret = "CactusKnight_SurfsWaves",
                         Triggers = [WebhookTrigger.Capability]
                     }
@@ -122,7 +122,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                         Id = WebhookId001,
                         AppId = AppId001,
                         Target = "https://my-callback-server.com/unsupported",
-                        TargetType = WebhookTargetType.Http,
+                        TargetType = EventDestinationTargetType.Http,
                         Secret = "VeganVampire_SipsTea",
                         Triggers = [WebhookTrigger.Unsupported]
                     },
@@ -131,7 +131,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                         Id = WebhookId004,
                         AppId = AppId001,
                         Target = "https://my-callback-server.com/capability",
-                        TargetType = WebhookTargetType.Http,
+                        TargetType = EventDestinationTargetType.Http,
                         Secret = "CactusKnight_SurfsWaves",
                         Triggers = [WebhookTrigger.Capability]
                     }
@@ -163,7 +163,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                 Id = WebhookId001,
                 AppId = AppId001,
                 Target = "https://my-callback-server.com/unsupported",
-                TargetType = WebhookTargetType.Http,
+                TargetType = EventDestinationTargetType.Http,
                 Secret = "VeganVampire_SipsTea",
                 Triggers = [WebhookTrigger.Unsupported],
                 ClientCredentials = new ClientCredentials
@@ -203,7 +203,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                 Id = WebhookId004,
                 AppId = AppId002,
                 Target = "https://my-callback-server.com/capability-optin-optout",
-                TargetType = WebhookTargetType.Http,
+                TargetType = EventDestinationTargetType.Http,
                 Secret = "SpacePanda_RidesUnicycle",
                 Triggers = [WebhookTrigger.Capability, WebhookTrigger.OptIn, WebhookTrigger.OptOut]
             };
