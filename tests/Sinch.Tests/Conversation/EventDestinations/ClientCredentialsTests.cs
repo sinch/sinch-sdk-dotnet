@@ -3,7 +3,7 @@ using FluentAssertions;
 using Sinch.Conversation.EventDestinations;
 using Xunit;
 
-namespace Sinch.Tests.Conversation.Webhooks
+namespace Sinch.Tests.Conversation.EventDestinations
 {
     public class ClientCredentialsTests : ConversationTestBase
     {

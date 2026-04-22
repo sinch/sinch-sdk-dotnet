@@ -12,7 +12,7 @@ using Sinch.Conversation;
 using Sinch.Conversation.EventDestinations;
 using Xunit;
 
-namespace Sinch.Tests.Conversation.Webhooks
+namespace Sinch.Tests.Conversation.EventDestinations
 {
     public class WebhooksApiTests : ConversationTestBase
     {

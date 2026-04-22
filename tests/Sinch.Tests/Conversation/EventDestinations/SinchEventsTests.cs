@@ -6,7 +6,7 @@ using FluentAssertions;
 using Sinch.Conversation.Hooks;
 using Xunit;
 
-namespace Sinch.Tests.Conversation.Webhooks
+namespace Sinch.Tests.Conversation.EventDestinations
 {
     public class SinchEventsTests : ConversationTestBase
     {
