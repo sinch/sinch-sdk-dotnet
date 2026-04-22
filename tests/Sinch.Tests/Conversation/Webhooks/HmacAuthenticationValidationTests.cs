@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using FluentAssertions;
 using Sinch.Conversation.Webhooks;
 using Xunit;
@@ -22,11 +21,7 @@ namespace Sinch.Tests.Conversation.Webhooks
             const string timestamp = "1736760161";
             const string nonce = "01JHFFHWYY7HSS4FWTMDTQEK8V";
             const string algorithm = "HmacSHA256";
-
-            const string toBeSigned = $"{jsonPayload}.{nonce}.{timestamp}";
-            using var hmac = new System.Security.Cryptography.HMACSHA256(Encoding.UTF8.GetBytes(secret));
-            var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(toBeSigned));
-            var signature = Convert.ToBase64String(hash);
+            const string signature = "ehhrg9MUuhpJUCo2drsI3zoqWViaojp8d6RahfBY3cg=";
 
             IReadOnlyDictionary<string, IEnumerable<string>> headers = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
             {
@@ -49,11 +44,7 @@ namespace Sinch.Tests.Conversation.Webhooks
             const string timestamp = "1736760161";
             const string nonce = "01JHFFHWYY7HSS4FWTMDTQEK8V";
             const string algorithm = "HmacSHA256";
-
-            const string toBeSigned = $"{jsonPayload}.{nonce}.{timestamp}";
-            using var hmac = new System.Security.Cryptography.HMACSHA256(Encoding.UTF8.GetBytes(secret));
-            var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(toBeSigned));
-            var signature = Convert.ToBase64String(hash);
+            const string signature = "ehhrg9MUuhpJUCo2drsI3zoqWViaojp8d6RahfBY3cg=";
 
             IDictionary<string, string> headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
@@ -76,11 +67,7 @@ namespace Sinch.Tests.Conversation.Webhooks
             const string timestamp = "1736760161";
             const string nonce = "01JHFFHWYY7HSS4FWTMDTQEK8V";
             const string algorithm = "HmacSHA256";
-
-            const string toBeSigned = $"{jsonPayload}.{nonce}.{timestamp}";
-            using var hmac = new System.Security.Cryptography.HMACSHA256(Encoding.UTF8.GetBytes(secret));
-            var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(toBeSigned));
-            var signature = Convert.ToBase64String(hash);
+            const string signature = "ehhrg9MUuhpJUCo2drsI3zoqWViaojp8d6RahfBY3cg=";
 
             IReadOnlyDictionary<string, IEnumerable<string>> headers = new Dictionary<string, IEnumerable<string>>
             {
