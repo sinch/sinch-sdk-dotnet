@@ -53,20 +53,20 @@ namespace Sinch.Tests.Conversation.Webhooks
             result.Should().BeTrue();
         }
 
-         [Fact]
-        public void ValidateAuthenticationHeader_WithSupportedAlgorithm_ReturnsTrue()
+        [Fact]
+        public void ValidateAuthenticationHeader_WithInvalidSignature_ReturnsFalse()
         {
             var headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
                 [TimestampHeader] = ValidTimestamp,
                 [NonceHeader] = ValidNonce,
                 [AlgorithmHeader] = ValidAlgorithm,
-                [SignatureHeader] = ValidSignature
+                [SignatureHeader] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
             };
 
             var result = HmacAuthenticationValidation.ValidateAuthenticationHeader(ValidSecret, headers, ValidJsonPayload);
 
-            result.Should().BeTrue();
+            result.Should().BeFalse();
         }
 
         [Fact]
