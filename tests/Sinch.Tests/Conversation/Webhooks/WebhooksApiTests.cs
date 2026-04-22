@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -230,6 +231,27 @@ namespace Sinch.Tests.Conversation.Webhooks
                 .Respond(HttpStatusCode.OK, JsonContent.Create(new { }));
 
             await Conversation.Webhooks.Delete(WebhookId004);
+        }
+
+        [Fact]
+        public async Task Get_WhenApiReturnsError_ThrowsSinchApiException()
+        {
+            HttpMessageHandlerMock
+                .When(HttpMethod.Get, $"{_webhooksBaseUrl}/{WebhookId001}")
+                .WithHeaders("Authorization", $"Bearer {Token}")
+                .Respond(HttpStatusCode.NotFound, JsonContent.Create(new
+                {
+                    error = new
+                    {
+                        code = 404,
+                        message = "Webhook not found",
+                        status = "NOT_FOUND"
+                    }
+                }));
+
+            Func<Task> act = () => Conversation.Webhooks.Get(WebhookId001);
+
+            await act.Should().ThrowAsync<SinchApiException>();
         }
     }
 }
