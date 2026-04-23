@@ -46,6 +46,7 @@
 - [Conversation API: Sinch.Conversation.Hooks namespace renamed to Sinch.Conversation.SinchEvents](#conversation-api-sinchconversationhooks-namespace-renamed-to-sinchconversationsinchevents)
 - [Conversation API: CallbackSettings renamed to EventDestinationSettings](#conversation-api-callbacksettings-renamed-to-eventdestinationsettings)
 - [Conversation API: SendEventRequest and SendMessageRequest CallbackUrl renamed to EventDestinationTarget](#conversation-api-sendeventrequest-and-sendmessagerequest-callbackurl-renamed-to-eventdestinationtarget)
+- [Conversation API: ICallbackEvent and related types renamed](#conversation-api-icallbackevent-and-related-types-renamed)
 
 ## .NET Framework Support
 
@@ -1270,4 +1271,25 @@ var request = new SendMessageRequest
     Recipient = new ContactRecipient { ContactId = contactId },
     EventDestinationTarget = new Uri("https://example.com/delivery")
 };
+```
+
+## Conversation API: ICallbackEvent and related types renamed
+
+Renamed types:
+
+- `ICallbackEvent` → `IConversationSinchEvent`
+- `CallbackEventBase` → `ConversationSinchEventBase`
+- `CallbackEventConverter` → `ConversationSinchEventConverter`
+- `UnsupportedCallbackEvent` → `UnsupportedConversationSinchEvent`
+
+Version 1.*:
+```csharp
+ICallbackEvent sinchEvent = sinch.Conversation.EventDestinations.ParseEvent(rawBody);
+if (sinchEvent is UnsupportedCallbackEvent unsupported) { /* ... */ }
+```
+
+Version 2.*:
+```csharp
+IConversationSinchEvent sinchEvent = sinch.Conversation.EventDestinations.ParseEvent(rawBody);
+if (sinchEvent is UnsupportedConversationSinchEvent unsupported) { /* ... */ }
 ```
