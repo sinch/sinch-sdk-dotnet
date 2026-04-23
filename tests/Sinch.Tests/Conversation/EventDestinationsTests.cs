@@ -21,7 +21,7 @@ namespace Sinch.Tests.Conversation
         public void DeserializeCapabilityEvent()
         {
             string json =
-                Helpers.LoadResources("Conversation/Hooks/CapabilityEvent.json");
+                Helpers.LoadResources("Conversation/SinchEvents/CapabilityEvent.json");
 
             var resultParse = Conversation.EventDestinations.ParseEvent(json).As<CapabilityEvent>();
             AssertEvent(resultParse);
@@ -62,7 +62,7 @@ namespace Sinch.Tests.Conversation
         public void DeserializeChannelEvent()
         {
             string json =
-                Helpers.LoadResources("Conversation/Hooks/ChannelEvent.json");
+                Helpers.LoadResources("Conversation/SinchEvents/ChannelEvent.json");
 
             var resultParse = Conversation.EventDestinations.ParseEvent(json).As<ChannelEvent>();
             AssertEvent(resultParse);
@@ -105,7 +105,7 @@ namespace Sinch.Tests.Conversation
         public void DeserializeContactCreateEvent()
         {
             string json =
-                Helpers.LoadResources("Conversation/Hooks/ContactCreateEvent.json");
+                Helpers.LoadResources("Conversation/SinchEvents/ContactCreateEvent.json");
 
             var parseResult = Conversation.EventDestinations.ParseEvent(json).As<ContactCreateEvent>();
             AssertEvent(parseResult);
@@ -162,7 +162,7 @@ namespace Sinch.Tests.Conversation
         public void DeserializeContactDeleteEvent()
         {
             string json =
-                Helpers.LoadResources("Conversation/Hooks/ContactDeleteEvent.json");
+                Helpers.LoadResources("Conversation/SinchEvents/ContactDeleteEvent.json");
 
             var parseResult = Conversation.EventDestinations.ParseEvent(json).As<ContactDeleteEvent>();
             AssertEvent(parseResult);
@@ -221,7 +221,7 @@ namespace Sinch.Tests.Conversation
         public void DeserializeContactIdentitiesDuplicationEvent()
         {
             string json =
-                Helpers.LoadResources("Conversation/Hooks/ContactIdentitiesDuplicationEvent.json");
+                Helpers.LoadResources("Conversation/SinchEvents/ContactIdentitiesDuplicationEvent.json");
 
             var parseResult = Conversation.EventDestinations.ParseEvent(json).As<ContactIdentitiesDuplicationEvent>();
             AssertEvent(parseResult);
@@ -262,7 +262,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeContactMergeEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/ContactMergeEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/ContactMergeEvent.json");
 
             var parseResult = Conversation.EventDestinations.ParseEvent(json).As<ContactMergeEvent>();
             AssertEvent(parseResult);
@@ -329,7 +329,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeContactUpdateEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/ContactUpdateEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/ContactUpdateEvent.json");
 
             var resultParse = Conversation.EventDestinations.ParseEvent(json).As<ContactUpdateEvent>();
             AssertEvent(resultParse);
@@ -381,7 +381,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeConversationDeleteEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/ConversationDeleteEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/ConversationDeleteEvent.json");
 
             var resultParse = Conversation.EventDestinations.ParseEvent(json).As<ConversationDeleteEvent>();
             AssertEvent(resultParse);
@@ -428,7 +428,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeConversationStartEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/ConversationStartEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/ConversationStartEvent.json");
 
             var resultParse = Conversation.EventDestinations.ParseEvent(json).As<ConversationStartEvent>();
             AssertEvent(resultParse);
@@ -476,7 +476,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeConversationStopEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/ConversationStopEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/ConversationStopEvent.json");
 
             var resultParse = Conversation.EventDestinations.ParseEvent(json).As<ConversationStopEvent>();
             AssertEvent(resultParse);
@@ -524,7 +524,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeEventDeliveryReportEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/EventDeliveryReportEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/EventDeliveryReportEvent.json");
 
             var resultParse = Conversation.EventDestinations.ParseEvent(json).As<DeliveryEvent>();
             AssertEvent(resultParse);
@@ -570,7 +570,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeMessageDeliveryReportEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/MessageDeliveryReceiptEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/MessageDeliveryReceiptEvent.json");
 
             var resultParse = Conversation.EventDestinations.ParseEvent(json).As<MessageDeliveryReceiptEvent>();
             AssertEvent(resultParse);
@@ -618,7 +618,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeInboundContactEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/InboundContactEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/InboundContactEvent.json");
 
             var resultParse = Conversation.EventDestinations.ParseEvent(json).As<InboundEvent>();
             AssertEvent(resultParse);
@@ -664,7 +664,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeInboundContactMessageEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/InboundContactMessageEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/InboundContactMessageEvent.json");
 
             var resultParse = Conversation.EventDestinations.ParseEvent(json).As<InboundEvent>();
             AssertEvent(resultParse);
@@ -714,7 +714,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeMessageInboundEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/MessageInboundEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/MessageInboundEvent.json");
 
             var resultParse = Conversation.EventDestinations.ParseEvent(json).As<MessageInboundEvent>();
             AssertEvent(resultParse);
@@ -761,7 +761,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeMessageSubmitNotificationEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/MessageSubmitEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/MessageSubmitEvent.json");
 
             var resultParse = Conversation.EventDestinations.ParseEvent(json).As<MessageSubmitEvent>();
             AssertEvent(resultParse);
@@ -902,7 +902,7 @@ namespace Sinch.Tests.Conversation
         public void DeserializeMessageRedactionEvent()
         {
             string json =
-                Helpers.LoadResources("Conversation/Hooks/MessageInboundSmartConversationRedactionEvent.json");
+                Helpers.LoadResources("Conversation/SinchEvents/MessageInboundSmartConversationRedactionEvent.json");
 
             var resultParse = Conversation.EventDestinations.ParseEvent(json)
                 .As<MessageInboundSmartConversationRedactionEvent>();
@@ -956,7 +956,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeSmartConversationNotificationEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/SmartConversationsEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/SmartConversationsEvent.json");
 
             var resultParse = Conversation.EventDestinations.ParseEvent(json).As<SmartConversationsEvent>();
             AssertEvent(resultParse);
@@ -1084,7 +1084,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeUnsupportedCallbackEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/UnsupportedCallbackEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/UnsupportedCallbackEvent.json");
 
             var resultParse = Conversation.EventDestinations.ParseEvent(json).As<UnsupportedCallbackEvent>();
             AssertEvent(resultParse);
@@ -1124,7 +1124,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeOptInNotificationEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/OptInEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/OptInEvent.json");
 
             var resultParse = Conversation.EventDestinations.ParseEvent(json).As<OptInEvent>();
             AssertEvent(resultParse);
@@ -1161,7 +1161,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeOptOutNotificationEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/OptOutEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/OptOutEvent.json");
 
             var resultParse = Conversation.EventDestinations.ParseEvent(json).As<OptOutEvent>();
             AssertEvent(resultParse);
@@ -1198,7 +1198,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeCommentEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/CommentEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/CommentEvent.json");
 
             var result = Deserialize<ContactEvent>(json);
 
@@ -1215,7 +1215,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializePaymentStatusUpdateEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/PaymentStatusUpdateEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/PaymentStatusUpdateEvent.json");
 
             var result = Deserialize<ContactMessageEvent>(json);
 
@@ -1231,7 +1231,7 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeShortlinkActivatedEvent()
         {
-            string json = Helpers.LoadResources("Conversation/Hooks/ShortlinkActivatedEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/ShortlinkActivatedEvent.json");
 
             var result = Deserialize<ContactMessageEvent>(json);
 
@@ -1259,7 +1259,7 @@ namespace Sinch.Tests.Conversation
             });
 
             string json =
-                Helpers.LoadResources("Conversation/Hooks/CapabilityEvent.json");
+                Helpers.LoadResources("Conversation/SinchEvents/CapabilityEvent.json");
             var actual = sinchClient.Conversation.EventDestinations.ParseEvent(json).As<CapabilityEvent>();
 
             actual.Should().BeEquivalentTo(new CapabilityEvent()

@@ -19,7 +19,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
         [Fact]
         public void ValidateAuthenticationHeader_WithSingleValueHeaders_ReturnsTrue()
         {
-            var json = Helpers.LoadResources("Conversation/Hooks/WebhooksAuthValidation.json");
+            var json = Helpers.LoadResources("Conversation/SinchEvents/SinchEventsAuthValidation.json");
 
             var isValid = Conversation.EventDestinations.ValidateAuthenticationHeader(new Dictionary<string, string>()
             {
@@ -35,7 +35,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
         [Fact]
         public void ValidateAuthenticationHeader_WithMultiValueHeaders_ReturnsTrue()
         {
-            var json = Helpers.LoadResources("Conversation/Hooks/WebhooksAuthValidation.json");
+            var json = Helpers.LoadResources("Conversation/SinchEvents/SinchEventsAuthValidation.json");
 
             var isValid = Conversation.EventDestinations.ValidateAuthenticationHeader(new Dictionary<string, IEnumerable<string>>()
             {
@@ -51,7 +51,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
         [Fact]
         public void ParseEvent_WithJsonString_ReturnsCapabilityEvent()
         {
-            var json = Helpers.LoadResources("Conversation/Hooks/CapabilityEvent.json");
+            var json = Helpers.LoadResources("Conversation/SinchEvents/CapabilityEvent.json");
 
             var result = Conversation.EventDestinations.ParseEvent(json);
 
@@ -62,7 +62,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
         [Fact]
         public async Task ParseEventAsync_WithJsonStream_ReturnsCapabilityEvent()
         {
-            var json = Helpers.LoadResources("Conversation/Hooks/CapabilityEvent.json");
+            var json = Helpers.LoadResources("Conversation/SinchEvents/CapabilityEvent.json");
             await using var stream = new MemoryStream(Encoding.UTF8.GetBytes(json));
 
             var result = await Conversation.EventDestinations.ParseEventAsync(stream);
