@@ -1247,7 +1247,7 @@ namespace Sinch.Tests.Conversation
         }
 
         [Fact]
-        public async Task DeserializeWebhookWithoutProvidingSinchUnifiedCredentials()
+        public async Task DeserializeEventDestinationWithoutProvidingSinchUnifiedCredentials()
         {
             var sinchClient = new SinchClient(new SinchClientConfiguration()
             {
