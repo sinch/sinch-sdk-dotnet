@@ -1371,7 +1371,7 @@ if (sinchEvent is UnsupportedConversationSinchEvent unsupported) { /* ... */ }
 
 ## SMS API: Sinch.SMS.Hooks namespace renamed to Sinch.SMS.SinchEvents
 
-All SMS sinch event types have moved from the `Sinch.SMS.Hooks` namespace to `Sinch.SMS.SinchEvents`. The subdomain property `sinch.Sms.Webhooks` has been renamed to `sinch.Sms.SinchEvents`.
+All SMS sinch event types have moved from the `Sinch.SMS.Hooks` namespace to `Sinch.SMS.SinchEvents`. The subdomain property `sinch.Sms.Webhooks` has been renamed to `sinch.Sms.SinchEvents`, and the interface `ISmsWebhooks` has been renamed to `ISinchSmsSinchEvents`.
 
 Version 1.*:
 ```csharp
