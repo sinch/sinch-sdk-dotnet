@@ -7,7 +7,7 @@ namespace Sinch.Conversation.SinchEvents
     /// <summary>
     ///     This callback provides a notification to the API clients that the corresponding app message was submitted to a channel. This notification is created before any confirmation from Delivery Receipts.
     /// </summary>
-    public sealed class MessageSubmitEvent : CallbackEventBase
+    public sealed class MessageSubmitEvent : ConversationSinchEventBase
     {
         /// <summary>
         ///     Gets or Sets MessageSubmitNotification

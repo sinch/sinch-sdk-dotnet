@@ -7,7 +7,7 @@ namespace Sinch.Conversation.SinchEvents
     /// <summary>
     ///     This callback is sent when a conversation between the subscribed app and a contact is stopped.
     /// </summary>
-    public sealed class ConversationStopEvent : CallbackEventBase
+    public sealed class ConversationStopEvent : ConversationSinchEventBase
     {
         /// <summary>
         ///     Gets or Sets ConversationStopNotification

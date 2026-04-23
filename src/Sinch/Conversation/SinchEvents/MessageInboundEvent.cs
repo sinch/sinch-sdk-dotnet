@@ -7,7 +7,7 @@ namespace Sinch.Conversation.SinchEvents
     /// <summary>
     ///     This callback delivers contact (end-user) messages to the API clients.
     /// </summary>
-    public sealed class MessageInboundEvent : CallbackEventBase
+    public sealed class MessageInboundEvent : ConversationSinchEventBase
     {
         /// <summary>
         ///     Gets or Sets Message

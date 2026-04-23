@@ -7,7 +7,7 @@ namespace Sinch.Conversation.SinchEvents
     /// <summary>
     ///     This callback is used to deliver the results of the asynchronous capability checks.
     /// </summary>
-    public sealed class CapabilityEvent : CallbackEventBase
+    public sealed class CapabilityEvent : ConversationSinchEventBase
     {
         /// <summary>
         ///     Gets or Sets CapabilityNotification

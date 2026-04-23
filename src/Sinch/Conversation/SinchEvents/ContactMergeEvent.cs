@@ -7,7 +7,7 @@ namespace Sinch.Conversation.SinchEvents
     /// <summary>
     ///     This callback is sent when two contacts are merged.
     /// </summary>
-    public sealed class ContactMergeEvent : CallbackEventBase
+    public sealed class ContactMergeEvent : ConversationSinchEventBase
     {
         /// <summary>
         ///     Gets or Sets ContactMergeNotification

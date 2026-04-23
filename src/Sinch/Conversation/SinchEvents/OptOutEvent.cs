@@ -7,7 +7,7 @@ namespace Sinch.Conversation.SinchEvents
     /// <summary>
     ///     This callback is used to deliver opt-out notifications from the channels.
     /// </summary>
-    public sealed class OptOutEvent : CallbackEventBase
+    public sealed class OptOutEvent : ConversationSinchEventBase
     {
         /// <summary>
         ///     Gets or Sets OptOutNotification

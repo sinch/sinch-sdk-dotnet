@@ -7,7 +7,7 @@ namespace Sinch.Conversation.SinchEvents
     /// <summary>
     ///     This callback is sent when a new contact is created.
     /// </summary>
-    public sealed class ContactCreateEvent : CallbackEventBase
+    public sealed class ContactCreateEvent : ConversationSinchEventBase
     {
         /// <summary>
         ///     Gets or Sets ContactCreateNotification

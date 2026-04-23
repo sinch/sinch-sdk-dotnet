@@ -5,8 +5,8 @@ namespace Sinch.Conversation.SinchEvents
     /// <summary>
     ///     Marker interface for all callback events
     /// </summary>
-    [JsonConverter(typeof(CallbackEventConverter))]
-    public interface ICallbackEvent
+    [JsonConverter(typeof(ConversationSinchEventConverter))]
+    public interface IConversationSinchEvent
     {
     }
 }

@@ -7,7 +7,7 @@ namespace Sinch.Conversation.SinchEvents
     /// <summary>
     ///     This callback is sent when duplicates of channel identities are found between multiple contacts in the contact database during message and event processing.
     /// </summary>
-    public sealed class ContactIdentitiesDuplicationEvent : CallbackEventBase
+    public sealed class ContactIdentitiesDuplicationEvent : ConversationSinchEventBase
     {
         /// <summary>
         ///     Gets or Sets DuplicatedContactIdentitiesNotification

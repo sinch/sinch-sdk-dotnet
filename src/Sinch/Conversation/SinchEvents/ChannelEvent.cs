@@ -7,7 +7,7 @@ namespace Sinch.Conversation.SinchEvents
     /// <summary>
     ///     This sinch event is used to deliver notifications regarding channel-specific information and updates. For example, if your are using the WhatsApp channel of the Conversation API, and your quality rating has been changed to GREEN, a POST would be made to the CHANNEL_EVENT event destination.
     /// </summary>
-    public sealed class ChannelEvent : CallbackEventBase
+    public sealed class ChannelEvent : ConversationSinchEventBase
     {
         /// <summary>
         ///     Gets or Sets ChannelEventNotification

@@ -7,7 +7,7 @@ namespace Sinch.Conversation.SinchEvents
     /// <summary>
     ///     This callback is sent when a new conversation between the subscribed app and a contact is started.
     /// </summary>
-    public sealed class ConversationStartEvent : CallbackEventBase
+    public sealed class ConversationStartEvent : ConversationSinchEventBase
     {
         /// <summary>
         ///     Gets or Sets ConversationStartNotification

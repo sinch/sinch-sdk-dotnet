@@ -7,7 +7,7 @@ namespace Sinch.Conversation.SinchEvents
     /// <summary>
     ///     This callback delivers contact (end-user) messages to the API clients. The content of the message goes through an A.I. analysis and is redacted if required.
     /// </summary>
-    public sealed class MessageInboundSmartConversationRedactionEvent : CallbackEventBase
+    public sealed class MessageInboundSmartConversationRedactionEvent : ConversationSinchEventBase
     {
         /// <summary>
         ///     Gets or Sets MessageRedaction

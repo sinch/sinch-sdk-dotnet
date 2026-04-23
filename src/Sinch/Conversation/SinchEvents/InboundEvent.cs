@@ -7,7 +7,7 @@ namespace Sinch.Conversation.SinchEvents
     /// <summary>
     ///     EventInbound
     /// </summary>
-    public sealed class InboundEvent : CallbackEventBase
+    public sealed class InboundEvent : ConversationSinchEventBase
     {
         /// <summary>
         ///     Gets or Sets VarEvent

@@ -7,7 +7,7 @@ namespace Sinch.Conversation.SinchEvents
     /// <summary>
     ///     This callback is sent when a new contact is deleted.
     /// </summary>
-    public sealed class ContactDeleteEvent : CallbackEventBase
+    public sealed class ContactDeleteEvent : ConversationSinchEventBase
     {
         /// <summary>
         ///     Gets or Sets ContactDeleteNotification
