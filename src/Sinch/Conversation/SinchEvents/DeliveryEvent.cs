@@ -7,7 +7,7 @@ namespace Sinch.Conversation.SinchEvents
     /// <summary>
     ///     EventDelivery
     /// </summary>
-    public sealed class DeliveryEvent : CallbackEventBase
+    public sealed class DeliveryEvent : ConversationSinchEventBase
     {
         /// <summary>
         ///     Gets or Sets EventDeliveryReport

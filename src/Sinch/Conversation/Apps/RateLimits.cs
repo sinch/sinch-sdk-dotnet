@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Sinch.Conversation.Apps
 {
@@ -23,11 +24,12 @@ namespace Sinch.Conversation.Apps
 
 
         /// <summary>
-        ///     The rate limit of callbacks sent to the webhooks registered for the app.
-        ///     Note that if you have multiple webhooks with shared triggers,
-        ///     multiple callbacks will be sent out for each triggering event. The default rate limit is 25.
+        ///     The rate limit of sinch events sent to the event destinations registered for the app.
+        ///     Note that if you have multiple event destinations with shared triggers,
+        ///     multiple sinch events will be sent out for each triggering event. The default rate limit is 25.
         /// </summary>
-        public long? Webhooks { get; set; }
+        [JsonPropertyName("webhooks")]
+        public long? EventDestinations { get; set; }
 
 
         /// <summary>
@@ -40,7 +42,7 @@ namespace Sinch.Conversation.Apps
             sb.Append("class RateLimits {\n");
             sb.Append("  Inbound: ").Append(Inbound).Append("\n");
             sb.Append("  Outbound: ").Append(Outbound).Append("\n");
-            sb.Append("  Webhooks: ").Append(Webhooks).Append("\n");
+            sb.Append("  EventDestinations: ").Append(EventDestinations).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

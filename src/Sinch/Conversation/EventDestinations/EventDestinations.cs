@@ -19,7 +19,7 @@ namespace Sinch.Conversation.EventDestinations
     public interface ISinchConversationEventDestinations
     {
         /// <summary>
-        ///     Creates a event destination for receiving callbacks on specific triggers. You can create up to 5 event destinations per app.
+        ///     Creates a event destination for receiving event destinations on specific triggers. You can create up to 5 event destinations per app.
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
@@ -66,38 +66,38 @@ namespace Sinch.Conversation.EventDestinations
         Task Delete(string eventDestinationId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Validates callback request.
+        ///     Validates sinch event request.
         /// </summary>
-        /// <param name="headers">The callback request headers as single-value entries.</param>
-        /// <param name="body">The callback raw body, as received from the HTTP request.</param>
+        /// <param name="headers">The sinch event request headers as single-value entries.</param>
+        /// <param name="body">The sinch event raw body, as received from the HTTP request.</param>
         /// <param name="secret">The event destination secret used to generate the HMAC signature.</param>
         /// <returns>True, if produced signature match with that of a header.</returns>
         bool ValidateAuthenticationHeader(IDictionary<string, string> headers, string body, string secret);
 
         /// <summary>
-        ///     Validates callback request.
+        ///     Validates sinch event request.
         /// </summary>
-        /// <param name="headers">The callback request headers.</param>
-        /// <param name="body">The callback raw body, as received from the HTTP request.</param>
+        /// <param name="headers">The sinch event request headers.</param>
+        /// <param name="body">The sinch event raw body, as received from the HTTP request.</param>
         /// <param name="secret">The event destination secret used to generate the HMAC signature.</param>
         /// <returns>True, if produced signature match with that of a header.</returns>
         bool ValidateAuthenticationHeader(IReadOnlyDictionary<string, IEnumerable<string>> headers, string body,
             string secret);
 
         /// <summary>
-        ///     Parses a callback payload from a raw JSON string.
+        ///     Parses a sinch event payload from a raw JSON string.
         /// </summary>
-        /// <param name="json">The raw callback payload.</param>
-        /// <returns>The parsed callback event.</returns>
-        ICallbackEvent ParseEvent(string json);
+        /// <param name="json">The raw sinch event payload.</param>
+        /// <returns>The parsed sinch event.</returns>
+        IConversationSinchEvent ParseEvent(string json);
 
         /// <summary>
-        ///     Parses a callback payload from a JSON stream.
+        ///     Parses a sinch event payload from a JSON stream.
         /// </summary>
-        /// <param name="json">The callback payload stream.</param>
+        /// <param name="json">The sinch event payload stream.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The parsed callback event.</returns>
-        Task<ICallbackEvent> ParseEventAsync(Stream json, CancellationToken cancellationToken = default);
+        /// <returns>The parsed sinch event.</returns>
+        Task<IConversationSinchEvent> ParseEventAsync(Stream json, CancellationToken cancellationToken = default);
     }
 
     /// <inheritdoc />
@@ -217,29 +217,29 @@ namespace Sinch.Conversation.EventDestinations
             return HmacAuthenticationValidation.ValidateAuthenticationHeader(secret, headers, body);
         }
 
-        public ICallbackEvent ParseEvent(string json)
+        public IConversationSinchEvent ParseEvent(string json)
         {
-            var jsonResult = JsonSerializer.Deserialize<ICallbackEvent>(json, _http.Value.JsonSerializerOptions);
+            var jsonResult = JsonSerializer.Deserialize<IConversationSinchEvent>(json, _http.Value.JsonSerializerOptions);
             if (jsonResult == null)
             {
-                _logger?.LogError("Failed to deserialize callback event. No matching event type found for payload: {json}", json);
-                throw new InvalidOperationException("Deserialization of callback event failed");
+                _logger?.LogError("Failed to deserialize conversation sinch event. No matching event type found for payload: {json}", json);
+                throw new InvalidOperationException("Deserialization of conversation sinch event failed");
             }
 
             return jsonResult;
         }
 
-        public async Task<ICallbackEvent> ParseEventAsync(Stream jsonStream,
+        public async Task<IConversationSinchEvent> ParseEventAsync(Stream jsonStream,
             CancellationToken cancellationToken = default)
         {
             var jsonResult =
-                await JsonSerializer.DeserializeAsync<ICallbackEvent>(jsonStream,
+                await JsonSerializer.DeserializeAsync<IConversationSinchEvent>(jsonStream,
                     SinchConversationClient.JsonSerializerOptionsInner,
                     cancellationToken);
             if (jsonResult == null)
             {
-                _logger?.LogError("Failed to deserialize callback event. No matching event type found.");
-                throw new InvalidOperationException("Deserialization of callback event failed");
+                _logger?.LogError("Failed to deserialize conversation sinch event. No matching event type found.");
+                throw new InvalidOperationException("Deserialization of conversation sinch event failed");
             }
 
             return jsonResult;

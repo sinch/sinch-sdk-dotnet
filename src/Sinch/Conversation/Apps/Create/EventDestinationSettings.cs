@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace Sinch.Conversation.Apps.Create
 {
     /// <summary>
-    ///     This object contains additional settings related to callback processing.
+    ///     This object contains additional settings related to event destination processing.
     /// </summary>
     public sealed class EventDestinationSettings
     {
