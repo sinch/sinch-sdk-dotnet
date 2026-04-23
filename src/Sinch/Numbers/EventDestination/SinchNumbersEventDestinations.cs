@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
 
-namespace Sinch.Numbers.CallbackConfiguration
+namespace Sinch.Numbers.EventDestination
 {
     /// <summary>
-    /// You can set up callback URLs to receive event notifications when your numbers are updated.
+    /// You can set up event destination URLs to receive event notifications when your numbers are updated.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -16,16 +16,16 @@ namespace Sinch.Numbers.CallbackConfiguration
     /// will not block other events that were queued.
     /// </para>
     /// <para>
-    /// The client's callback handler must implement the state machine logic to determine how to handle
+    /// The client's event destination handler must implement the state machine logic to determine how to handle
     /// unexpected events, such as "old" events or invalid state transitions. In these cases, the handler may
     /// use the API to GET the latest state for the resource.
     /// </para>
     /// <para>
-    /// The callback handler is expected to ingest the event and respond with HTTP 200 OK. Domain-specific
-    /// business logic and processes should be executed outside of the callback request as internal asynchronous jobs.
+    /// The event destination handler is expected to ingest the event and respond with HTTP 200 OK. Domain-specific
+    /// business logic and processes should be executed outside of the event destination request as internal asynchronous jobs.
     /// </para>
     /// <para>
-    /// To use callbacks, add the following IP addresses to your allowlist:
+    /// To use event destinations, add the following IP addresses to your allowlist:
     /// </para>
     /// <list type="bullet">
     /// <item>54.76.19.159</item>
@@ -38,7 +38,7 @@ namespace Sinch.Numbers.CallbackConfiguration
     /// integrity of data and prevents tampering during transmission.
     /// </para>
     /// <para>
-    /// We recommend configuring an HMAC secret for your project using the callback configuration. When sending
+    /// We recommend configuring an HMAC secret for your project using the event destinations. When sending
     /// number events, the HTTP POST requests will include the header <c>X-Sinch-Signature</c> with the computed HMAC.
     /// </para>
     /// <para>
@@ -56,32 +56,32 @@ namespace Sinch.Numbers.CallbackConfiguration
     /// <b>Note:</b> Compute the HMAC on the plain text value before parsing the JSON payload.
     /// </para>
     /// </remarks>
-    public interface ISinchNumbersCallbackConfiguration
+    public interface ISinchNumbersEventDestination
     {
         /// <summary>
-        ///     Returns the callbacks configuration for your project
+        ///     Returns the event destinations for your project
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<CallbackConfiguration> Get(CancellationToken cancellationToken = default);
+        Task<EventDestination> Get(CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Updates the callbacks configuration for your project
+        ///     Updates the event destinations configuration for your project
         /// </summary>
         /// <param name="hmacSecret">The HMAC secret to be updated</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<CallbackConfiguration> Update(string hmacSecret, CancellationToken cancellationToken = default);
+        Task<EventDestination> Update(string hmacSecret, CancellationToken cancellationToken = default);
     }
 
-    internal sealed class SinchNumbersCallbackConfiguration : ISinchNumbersCallbackConfiguration
+    internal sealed class SinchNumbersEventDestination : ISinchNumbersEventDestination
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchNumbersCallbackConfiguration>? _logger;
+        private readonly ILoggerAdapter<ISinchNumbersEventDestination>? _logger;
         private readonly string _projectId;
 
-        public SinchNumbersCallbackConfiguration(string projectId, Uri baseAddress, ILoggerAdapter<ISinchNumbersCallbackConfiguration>? logger,
+        public SinchNumbersEventDestination(string projectId, Uri baseAddress, ILoggerAdapter<ISinchNumbersEventDestination>? logger,
             IHttp http)
         {
             _projectId = projectId;
@@ -90,23 +90,23 @@ namespace Sinch.Numbers.CallbackConfiguration
             _http = http;
         }
 
-        public Task<CallbackConfiguration> Get(CancellationToken cancellationToken = default)
+        public Task<EventDestination> Get(CancellationToken cancellationToken = default)
         {
-            _logger?.LogDebug("Fetching callback configuration for {projectId}", _projectId);
+            _logger?.LogDebug("Fetching event destinations for {projectId}", _projectId);
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/callbackConfiguration");
-            return _http.Send<CallbackConfiguration>(uri, HttpMethod.Get, cancellationToken);
+            return _http.Send<EventDestination>(uri, HttpMethod.Get, cancellationToken);
         }
 
-        public Task<CallbackConfiguration> Update(string hmacSecret, CancellationToken cancellationToken = default)
+        public Task<EventDestination> Update(string hmacSecret, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(hmacSecret))
             {
                 throw new ArgumentNullException(nameof(hmacSecret));
             }
 
-            _logger?.LogDebug("Updating callback configuration for {projectId}", _projectId);
+            _logger?.LogDebug("Updating event destinations for {projectId}", _projectId);
             var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/callbackConfiguration");
-            return _http.Send<object, CallbackConfiguration>(uri, HttpMethod.Patch, new
+            return _http.Send<object, EventDestination>(uri, HttpMethod.Patch, new
             {
                 hmacSecret = hmacSecret,
             }, cancellationToken);

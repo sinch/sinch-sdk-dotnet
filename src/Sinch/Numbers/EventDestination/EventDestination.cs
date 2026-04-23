@@ -1,13 +1,13 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Numbers.CallbackConfiguration
+namespace Sinch.Numbers.EventDestination
 {
     /// <summary>
-    ///     Response message containing the callbacks configuration for a specific project
+    ///     Response message containing the event destination for a specific project
     /// </summary>
-    // name ref: CallbackConfiguration
-    public sealed class CallbackConfiguration
+    // name ref: EventDestination
+    public sealed class EventDestination
     {
         /// <summary>
         ///     Gets or Sets ProjectId
@@ -30,7 +30,7 @@ namespace Sinch.Numbers.CallbackConfiguration
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(CallbackConfiguration)} {{\n");
+            sb.Append($"class {nameof(EventDestination)} {{\n");
             sb.Append($"  {nameof(ProjectId)}: ").Append(ProjectId).Append('\n');
             sb.Append($"  {nameof(HmacSecret)}: ").Append(Consts.HiddenString).Append('\n');
             sb.Append("}\n");

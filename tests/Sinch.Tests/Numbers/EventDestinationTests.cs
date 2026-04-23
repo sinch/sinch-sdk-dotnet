@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
-using Sinch.Numbers.CallbackConfiguration;
+using Sinch.Numbers.EventDestination;
 using Xunit;
 
 namespace Sinch.Tests.Numbers
 {
-    public class CallbackConfigurationTests : NumberTestBase
+    public class EventDestinationTests : NumberTestBase
     {
         [Fact]
         public async Task Get()
@@ -19,9 +19,9 @@ namespace Sinch.Tests.Numbers
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond("application/json", Helpers.LoadResources("Numbers/CallbackConfigurationResponse.json"));
 
-            var response = await Numbers.CallbackConfiguration.Get();
+            var response = await Numbers.EventDestination.Get();
 
-            response.Should().BeEquivalentTo(new CallbackConfiguration()
+            response.Should().BeEquivalentTo(new EventDestination()
             {
                 ProjectId = "Project ID value",
                 HmacSecret = "HMAC value"
@@ -40,9 +40,9 @@ namespace Sinch.Tests.Numbers
                 }))
                 .Respond("application/json", Helpers.LoadResources("Numbers/CallbackConfigurationResponse.json"));
 
-            var response = await Numbers.CallbackConfiguration.Update("HMAC value");
+            var response = await Numbers.EventDestination.Update("HMAC value");
 
-            response.Should().BeEquivalentTo(new CallbackConfiguration()
+            response.Should().BeEquivalentTo(new EventDestination()
             {
                 ProjectId = "Project ID value",
                 HmacSecret = "HMAC value"
@@ -63,7 +63,7 @@ namespace Sinch.Tests.Numbers
                 }))
                 .Respond("application/json", Helpers.LoadResources("Numbers/CallbackConfigurationResponse.json"));
 
-            var responseOp = () => Numbers.CallbackConfiguration.Update(hmacSecret);
+            var responseOp = () => Numbers.EventDestination.Update(hmacSecret);
 
             await responseOp.Should().ThrowAsync<ArgumentNullException>();
         }
