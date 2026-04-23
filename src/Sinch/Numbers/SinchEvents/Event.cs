@@ -1,10 +1,10 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Numbers.Hooks
+namespace Sinch.Numbers.SinchEvents
 {
     /// <summary>
-    ///     A notification of an event sent to your configured callback URL.
+    ///     A notification of an event sent to your configured sinch event URL.
     /// </summary>
     public sealed class Event
     {
@@ -15,7 +15,7 @@ namespace Sinch.Numbers.Hooks
         public string? EventId { get; set; }
 
         /// <summary>
-        ///     The date and time when the callback was created and added to the callbacks queue.
+        ///     The date and time when the sinch event was created and added to the sinch events queue.
         /// </summary>
         [JsonPropertyName("timestamp")]
         public DateTime? Timestamp { get; set; }

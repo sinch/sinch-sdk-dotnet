@@ -1,7 +1,7 @@
 using System.Text.Json;
 using FluentAssertions;
 using Sinch.Numbers;
-using Sinch.Numbers.Hooks;
+using Sinch.Numbers.SinchEvents;
 using Xunit;
 
 namespace Sinch.Tests.Numbers

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
 using Sinch.Numbers;
-using Sinch.Numbers.Hooks;
+using Sinch.Numbers.SinchEvents;
 
 namespace Sinch.Tests.Features.Numbers
 {
