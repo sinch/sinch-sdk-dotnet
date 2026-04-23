@@ -49,6 +49,8 @@
 - [Numbers API: CallbackConfiguration renamed to EventDestination](#numbers-api-callbackconfiguration-renamed-to-eventdestination)
 - [Numbers API: Sinch.Numbers.Hooks namespace renamed to Sinch.Numbers.SinchEvents; Event renamed to NumberSinchEvent](#numbers-api-sinchnumbershooks-namespace-renamed-to-sinchnumberssinchevents-event-renamed-to-numbersinchemvent)
 - [Numbers API: CallbackUrl renamed to EventDestinationTarget](#numbers-api-callbackurl-renamed-to-eventdestinationtarget)
+- [SMS API: Sinch.SMS.Hooks namespace renamed to Sinch.SMS.SinchEvents](#sms-api-sinchsmshooks-namespace-renamed-to-sinchsmssinchevents)
+- [SMS API: BatchBase and UpdateBatchBaseRequest CallbackUrl renamed to EventDestinationTarget](#sms-api-batchbase-and-updatebatchbaserequest-callbackurl-renamed-to-eventdestinationtarget)
 
 ## .NET Framework Support
 
@@ -473,8 +475,8 @@ Version 2.*:
 // Deserialize to the new explicit type
 var report = JsonSerializer.Deserialize<BatchDeliveryReportSms>(json);
 
-// or use the SMS webhooks helper which dispatches to the correct type based on the payload
-var report = sinchClient.Sms.Webhooks.ParseEvent(json).As<BatchDeliveryReportSms>();
+// or use the SMS sinch event helper which dispatches to the correct type based on the payload
+var report = sinchClient.Sms.SinchEvents.ParseEvent(json).As<BatchDeliveryReportSms>();
 ```
 
 Example — recipient delivery report
@@ -487,8 +489,8 @@ var recipientReport = JsonSerializer.Deserialize<RecipientDeliveryReport>(json);
 Version 2.*:
 ```csharp
 var recipientReport = JsonSerializer.Deserialize<RecipientDeliveryReportSms>(json);
-// or via the webhooks parser:
-var recipientReport = sinchClient.Sms.Webhooks.ParseEvent(json).As<RecipientDeliveryReportSms>();
+// or via the sinch event parser:
+var recipientReport = sinchClient.Sms.SinchEvents.ParseEvent(json).As<RecipientDeliveryReportSms>();
 ```
 
 Example — incoming text message
@@ -501,8 +503,8 @@ var incoming = JsonSerializer.Deserialize<IncomingTextSms>(json);
 Version 2.*:
 ```csharp
 var incoming = JsonSerializer.Deserialize<TextMessage>(json);
-// or via the webhooks parser:
-var incoming = sinchClient.Sms.Webhooks.ParseEvent(json).As<TextMessage>();
+// or via the sinch event parser:
+var incoming = sinchClient.Sms.SinchEvents.ParseEvent(json).As<TextMessage>();
 ```
 
 Deleted files / types
@@ -514,7 +516,7 @@ The following source files were removed as part of the refactor and should be de
 
 Replacement guidance
 
-- If you previously relied on `IIncomingSms` or `IncomingBinarySms`, switch to the new strongly-typed webhook models (`TextMessage`, `BinaryMessage`, etc.) and prefer the `ISmsWebhooks.ParseEvent(string json)` helper which returns an `ISmsEvent` that you can pattern-match or cast as shown above.
+- If you previously relied on `IIncomingSms` or `IncomingBinarySms`, switch to the new strongly-typed sinch event models (`TextMessage`, `BinaryMessage`, etc.) and prefer the `ISinchSmsSinchEvents.ParseEvent(string json)` helper which returns an `ISmsEvent` that you can pattern-match or cast as shown above.
 
 - Example migrating code that previously deserialized the old incoming binary type:
 
@@ -525,7 +527,7 @@ var bin = JsonSerializer.Deserialize<IncomingBinarySms>(json);
 
 Version 2.*:
 ```csharp
-var bin = sinchClient.Sms.Webhooks.ParseEvent(json).As<BinaryMessage>();
+var bin = sinchClient.Sms.SinchEvents.ParseEvent(json).As<BinaryMessage>();
 // or when using plain deserialization:
 var bin = JsonSerializer.Deserialize<BinaryMessage>(json);
 ```
@@ -1342,5 +1344,51 @@ var request = new RentAnyNumberRequest
     RegionCode = "US",
     Type = Types.Local,
     EventDestinationTarget = "https://example.com/callback"
+};
+```
+
+## SMS API: Sinch.SMS.Hooks namespace renamed to Sinch.SMS.SinchEvents
+
+All SMS sinch event types have moved from the `Sinch.SMS.Hooks` namespace to `Sinch.SMS.SinchEvents`. The subdomain property `sinch.Sms.Webhooks` has been renamed to `sinch.Sms.SinchEvents`.
+
+Version 1.*:
+```csharp
+using Sinch.SMS.Hooks;
+
+var sinchEvent = sinch.Sms.Webhooks.ParseEvent(rawBody);
+bool isValid = sinch.Sms.Webhooks.ValidateAuthenticationHeader(secret, headers, rawBody);
+```
+
+Version 2.*:
+```csharp
+using Sinch.SMS.SinchEvents;
+
+var sinchEvent = sinch.Sms.SinchEvents.ParseEvent(rawBody);
+bool isValid = sinch.Sms.SinchEvents.ValidateAuthenticationHeader(secret, headers, rawBody);
+```
+
+## SMS API: BatchBase and UpdateBatchBaseRequest CallbackUrl renamed to EventDestinationTarget
+
+The `CallbackUrl` property on `BatchBase` (used when sending batches) and `UpdateBatchBaseRequest` (used when updating batches) has been renamed to `EventDestinationTarget`. The JSON wire format `callback_url` is unchanged.
+
+Version 1.*:
+```csharp
+var batch = new SendSmsBatchRequest
+{
+    To = new List<string> { "+1234567890" },
+    From = "+0987654321",
+    Body = "Hello!",
+    CallbackUrl = new Uri("https://example.com/sinch-events")
+};
+```
+
+Version 2.*:
+```csharp
+var batch = new SendSmsBatchRequest
+{
+    To = new List<string> { "+1234567890" },
+    From = "+0987654321",
+    Body = "Hello!",
+    EventDestinationTarget = new Uri("https://example.com/sinch-events")
 };
 ```
