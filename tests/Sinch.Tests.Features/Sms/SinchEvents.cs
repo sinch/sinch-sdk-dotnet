@@ -30,7 +30,7 @@ namespace Sinch.Tests.Features.Sms
         private string _rawRecipientDeliveryReportAbortedContent;
 
         [Given(@"the SMS Webhooks handler is available")]
-        public void GivenTheSmsWebhooksHandlerIsAvailable()
+        public void GivenTheSmsSinchEventsHandlerIsAvailable()
         {
             _sinchEvents = Utils.SinchClient.Sms.SinchEvents;
         }
