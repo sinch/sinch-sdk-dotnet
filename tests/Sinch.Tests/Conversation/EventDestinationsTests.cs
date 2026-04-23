@@ -1335,7 +1335,7 @@ namespace Sinch.Tests.Conversation
             Action act = () => Conversation.EventDestinations.ParseEvent(json);
 
             act.Should().Throw<InvalidOperationException>()
-                .WithMessage("Deserialization of callback event failed");
+                .WithMessage("Deserialization of conversation sinch event failed");
         }
 
         /// <summary>

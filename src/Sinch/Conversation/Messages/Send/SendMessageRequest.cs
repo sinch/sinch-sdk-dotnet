@@ -34,7 +34,7 @@ namespace Sinch.Conversation.Messages.Send
         ///     Note that you may
         ///     [define a `secret_for_overridden_callback_urls` at the app level](https://developers.sinch.com/docs/conversation/api-reference/conversation/tag/App/operation/App_UpdateApp!path=callback_settings/secret_for_overridden_callback_urls&amp;t=request)
         ///     this secret will be used to sign the contents of delivery receipts when the default
-        ///     callback URL is overridden by this property. The REST URL should be of the form: `http://host[:port]/path`
+        ///     event destination target URL is overridden by this property. The REST URL should be of the form: `http://host[:port]/path`
         /// </summary>
         [JsonPropertyName("callback_url")]
         public Uri? EventDestinationTarget { get; set; }
@@ -90,14 +90,14 @@ namespace Sinch.Conversation.Messages.Send
 
         /// <summary>
         ///  Metadata that will be associated with the conversation in `CONVERSATION` mode and with the specified recipient identities in `DISPATCH` mode.
-        ///  This metadata will be propagated on MO callbacks associated
+        ///  This metadata will be propagated on MO sinch events associated
         ///  with the respective conversation or user identity. Up to 2048 characters long.
-        ///  Note that the MO callback will always use the last metadata available.<br /><br />
+        ///  Note that the MO sinch event will always use the last metadata available.<br /><br />
         ///  Important notes:<br />
-        ///     - If you send a message with the `conversation_metadata` field populated, and then send another message without populating the `conversation_metadata` field, the original metadata will continue be propagated on the related MO callbacks.<br />
-        ///     - If you send a message with the `conversation_metadata` field populated, and then send another message with a different value for `conversation_metadata` in the same conversation, the latest metadata value overwrites the existing one. So, future MO callbacks will include the new metadata.<br />
+        ///     - If you send a message with the `conversation_metadata` field populated, and then send another message without populating the `conversation_metadata` field, the original metadata will continue be propagated on the related MO sinch events.<br />
+        ///     - If you send a message with the `conversation_metadata` field populated, and then send another message with a different value for `conversation_metadata` in the same conversation, the latest metadata value overwrites the existing one. So, future MO sinch events will include the new metadata.<br />
         ///     - The `conversation_metadata` only accepts json objects.<br />
-        ///   Currently only returned in the `message_metadata` field of an [Inbound Message](https://developers.sinch.com/docs/conversation/callbacks/#inbound-message) callback.
+        ///   Currently only returned in the `message_metadata` field of an [Inbound Message](https://developers.sinch.com/docs/conversation/callbacks/#inbound-message) sinch event.
         /// </summary>
         public JsonObject? ConversationMetadata { get; set; }
 
@@ -129,7 +129,7 @@ namespace Sinch.Conversation.Messages.Send
 
 
         /// <summary>
-        ///     An arbitrary identifier that will be propagated to callbacks related to this message, including MO messages from the recipient. The &#x60;correlation_id&#x60; is associated with the conversation in &#x60;CONVERSATION&#x60; mode and with the specified recipient identities in &#x60;DISPATCH&#x60; mode. The MO callbacks will always include the last &#x60;correlation_id&#x60; available, (which is similar to how the &#x60;conversation_metadata&#x60; property functions). Up to 128 characters long.
+        ///     An arbitrary identifier that will be propagated to sinch events related to this message, including MO messages from the recipient. The &#x60;correlation_id&#x60; is associated with the conversation in &#x60;CONVERSATION&#x60; mode and with the specified recipient identities in &#x60;DISPATCH&#x60; mode. The MO sinch events will always include the last &#x60;correlation_id&#x60; available, (which is similar to how the &#x60;conversation_metadata&#x60; property functions). Up to 128 characters long.
         /// </summary>
         public string? CorrelationId { get; set; }
 

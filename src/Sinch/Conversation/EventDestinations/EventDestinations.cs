@@ -222,8 +222,8 @@ namespace Sinch.Conversation.EventDestinations
             var jsonResult = JsonSerializer.Deserialize<IConversationSinchEvent>(json, _http.Value.JsonSerializerOptions);
             if (jsonResult == null)
             {
-                _logger?.LogError("Failed to deserialize callback event. No matching event type found for payload: {json}", json);
-                throw new InvalidOperationException("Deserialization of callback event failed");
+                _logger?.LogError("Failed to deserialize conversation sinch event. No matching event type found for payload: {json}", json);
+                throw new InvalidOperationException("Deserialization of conversation sinch event failed");
             }
 
             return jsonResult;
@@ -238,8 +238,8 @@ namespace Sinch.Conversation.EventDestinations
                     cancellationToken);
             if (jsonResult == null)
             {
-                _logger?.LogError("Failed to deserialize callback event. No matching event type found.");
-                throw new InvalidOperationException("Deserialization of callback event failed");
+                _logger?.LogError("Failed to deserialize conversation sinch event. No matching event type found.");
+                throw new InvalidOperationException("Deserialization of conversation sinch event failed");
             }
 
             return jsonResult;
