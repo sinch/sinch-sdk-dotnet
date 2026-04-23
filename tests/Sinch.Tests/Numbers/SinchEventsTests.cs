@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Sinch.Tests.Numbers
 {
-    public class HooksTests
+    public class SinchEventsTests
     {
         [Fact]
         public void DeserializeEvent()
