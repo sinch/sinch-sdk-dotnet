@@ -104,12 +104,13 @@ namespace Sinch.SMS.Batches.Send
         public DateTime? ExpireAt { get; set; }
 
         /// <summary>
-        ///     Override the default callback URL for this batch. Must be a valid URL.
-        ///     Learn how to set a default callback URL
+        ///     Override the default event destination target URL for this batch. Must be a valid URL.
+        ///     Learn how to set a default event destination target URL
         ///     <see href="https://community.sinch.com/t5/SMS/How-do-I-assign-a-callback-URL-to-an-SMS-service-plan/ta-p/8414">here</see>
         ///     .
         /// </summary>
-        public Uri? CallbackUrl { get; set; }
+        [JsonPropertyName("callback_url")]
+        public Uri? EventDestinationTarget { get; set; }
 
         /// <summary>
         ///     The client identifier of a batch message.

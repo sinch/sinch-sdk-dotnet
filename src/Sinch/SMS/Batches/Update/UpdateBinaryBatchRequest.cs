@@ -46,7 +46,7 @@ namespace Sinch.SMS.Batches.Update
             sb.Append($"  {nameof(DeliveryReport)}: ").Append(DeliveryReport).Append('\n');
             sb.Append($"  {nameof(SendAt)}: ").Append(SendAt).Append('\n');
             sb.Append($"  {nameof(ExpireAt)}: ").Append(ExpireAt).Append('\n');
-            sb.Append($"  {nameof(CallbackUrl)}: ").Append(CallbackUrl).Append('\n');
+            sb.Append($"  {nameof(EventDestinationTarget)}: ").Append(EventDestinationTarget).Append('\n');
             sb.Append($"  {nameof(ClientReference)}: ").Append(ClientReference).Append('\n');
             sb.Append($"  {nameof(FeedbackEnabled)}: ").Append(FeedbackEnabled).Append('\n');
             sb.Append($"  {nameof(Body)}: ").Append(Body).Append('\n');

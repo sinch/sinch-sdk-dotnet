@@ -109,8 +109,8 @@ namespace Sinch.SMS.Batches.Update
         ///     <see href="https://community.sinch.com/t5/SMS/How-do-I-assign-a-callback-URL-to-an-SMS-service-plan/ta-p/8414">here</see>
         ///     .
         /// </summary>
-        public Uri? CallbackUrl { get; set; }
-
+        [JsonPropertyName("callback_url")]
+        public Uri? EventDestinationTarget { get; set; }
 
         /// <summary>
         ///     The client identifier of a batch message. If set, the identifier will be added in the delivery report/callback of this batch
