@@ -22,7 +22,7 @@ namespace Sinch.Tests.Numbers
                 ""status"": ""FAILED"",
                 ""failureCode"": ""CAMPAIGN_NOT_AVAILABLE""
             }";
-            var @enum = JsonSerializer.Deserialize<Event>(jsonInput)!;
+            var @enum = JsonSerializer.Deserialize<NumberSinchEvent>(jsonInput)!;
             @enum.Status.Should().Be(EventStatus.Failed);
             @enum.EventType.Should().Be(EventType.ProvisioningToSmsPlatform);
             @enum.FailureCode.Should().Be(FailureCode.CampaignNotAvailable);
@@ -42,7 +42,7 @@ namespace Sinch.Tests.Numbers
                 ""status"": ""FAILED"",
                 ""failureCode"": ""CAMPAIGN_NOT_AVAILABLE""
             }";
-            var @enum = JsonSerializer.Deserialize<Event>(jsonInput)!;
+            var @enum = JsonSerializer.Deserialize<NumberSinchEvent>(jsonInput)!;
             @enum.Status.Should().Be(EventStatus.Failed);
             @enum.EventType.Should().Be(new EventType("UNEXPECTED_ENUM_TYPE"));
             @enum.FailureCode.Should().Be(FailureCode.CampaignNotAvailable);

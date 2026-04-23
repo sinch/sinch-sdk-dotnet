@@ -6,7 +6,7 @@ namespace Sinch.Numbers.SinchEvents
     /// <summary>
     ///     A notification of an event sent to your configured sinch event URL.
     /// </summary>
-    public sealed class Event
+    public sealed class NumberSinchEvent
     {
         /// <summary>
         ///     The ID of the event.
