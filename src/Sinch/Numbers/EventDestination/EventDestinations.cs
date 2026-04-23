@@ -33,8 +33,8 @@ namespace Sinch.Numbers.EventDestination
     /// <item>54.155.83.128</item>
     /// </list>
     /// <para>
-    /// <b>Secure Webhook Endpoints with HMAC</b><br/>
-    /// Implementing HMAC (Hash-based Message Authentication Code) on your webhook endpoints ensures the
+    /// <b>Secure sinch event endpoints with HMAC</b><br/>
+    /// Implementing HMAC (Hash-based Message Authentication Code) on your sinch event endpoints ensures the
     /// integrity of data and prevents tampering during transmission.
     /// </para>
     /// <para>

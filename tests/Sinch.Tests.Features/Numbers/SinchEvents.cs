@@ -9,16 +9,16 @@ using Sinch.Numbers.SinchEvents;
 namespace Sinch.Tests.Features.Numbers
 {
     [Binding]
-    public class Webhooks
+    public class SinchEvents
     {
         private ISinchNumbers _sinchNumbers;
-        private readonly HttpClient _httpClient = new HttpClient();
+        private readonly HttpClient _httpClient = new();
         private HttpResponseMessage _eventResponse;
         private string _rawData;
-        private const string SinchNumbersCallbackSecret = "strongPa$$PhraseWith36CharactersMax";
+        private const string SinchEventSecret = "strongPa$$PhraseWith36CharactersMax";
 
         [Given(@"the Numbers Webhooks handler is available")]
-        public void GivenTheNumbersWebhooksHandlerIsAvailable()
+        public void GivenTheNumbersSinchEventsHandlerIsAvailable()
         {
             _sinchNumbers = Utils.SinchNumbersClient();
         }
@@ -34,7 +34,7 @@ namespace Sinch.Tests.Features.Numbers
         public async Task ThenTheHeaderOfTheForEventContainsAValidSignature(string success, string p1)
         {
             _rawData = await _eventResponse.Content.ReadAsStringAsync();
-            _sinchNumbers.ValidateAuthenticationHeader(SinchNumbersCallbackSecret, _rawData, _eventResponse.Headers)
+            _sinchNumbers.ValidateAuthenticationHeader(SinchEventSecret, _rawData, _eventResponse.Headers)
                 .Should()
                 .BeTrue();
         }

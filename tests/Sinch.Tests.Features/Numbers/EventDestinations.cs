@@ -8,11 +8,11 @@ using Sinch.Numbers.EventDestination;
 namespace Sinch.Tests.Features.Numbers
 {
     [Binding]
-    public class CallbackConfigurations
+    public class EventDestinations
     {
         private ISinchNumbersEventDestination _sinchNumbersEventDestination;
-        private EventDestination _callbackConfig;
-        private Func<Task<EventDestination>> _callbackConfigOp;
+        private EventDestination _eventDestination;
+        private Func<Task<EventDestination>> _eventDestinationOp;
 
         [Given(@"the Numbers service ""Callback Configuration"" is available")]
         public void GivenTheNumbersServiceIsAvailable()
@@ -22,15 +22,15 @@ namespace Sinch.Tests.Features.Numbers
 
 
         [When(@"I send a request to retrieve the callback configuration")]
-        public async Task WhenISendARequestToRetrieveTheCallbackConfiguration()
+        public async Task WhenISendARequestToRetrieveTheEventDestinationConfiguration()
         {
-            _callbackConfig = await _sinchNumbersEventDestination.Get();
+            _eventDestination = await _sinchNumbersEventDestination.Get();
         }
 
         [Then(@"the response contains the project's callback configuration")]
-        public void ThenTheResponseContainsTheProjectsCallbackConfiguration()
+        public void ThenTheResponseContainsTheProjectsEventDestination()
         {
-            _callbackConfig.Should().BeEquivalentTo(new EventDestination()
+            _eventDestination.Should().BeEquivalentTo(new EventDestination()
             {
                 HmacSecret = "0default-pass-word-*max-36characters",
                 ProjectId = "12c0ffee-dada-beef-cafe-baadc0de5678"
@@ -38,16 +38,16 @@ namespace Sinch.Tests.Features.Numbers
         }
 
         [When(@"I send a request to update the callback configuration with the secret ""(.*)""")]
-        public void WhenISendARequestToUpdateTheCallbackConfigurationWithTheSecret(string hmacSecret)
+        public void WhenISendARequestToUpdateTheEventDestinationWithTheSecret(string hmacSecret)
         {
-            _callbackConfigOp = () => _sinchNumbersEventDestination.Update(hmacSecret);
+            _eventDestinationOp = () => _sinchNumbersEventDestination.Update(hmacSecret);
         }
 
         [Then(@"the response contains the updated project's callback configuration")]
-        public async Task ThenTheResponseContainsTheUpdatedProjectsCallbackConfiguration()
+        public async Task ThenTheResponseContainsTheUpdatedProjectsEventDestination()
         {
-            var callbackConfig = await _callbackConfigOp();
-            callbackConfig.Should().BeEquivalentTo(new EventDestination()
+            var eventDestination = await _eventDestinationOp();
+            eventDestination.Should().BeEquivalentTo(new EventDestination()
             {
                 ProjectId = "12c0ffee-dada-beef-cafe-baadc0de5678",
                 HmacSecret = "strongPa$$PhraseWith36CharactersMax"
@@ -57,7 +57,7 @@ namespace Sinch.Tests.Features.Numbers
         [Then(@"the response contains an error")]
         public void ThenTheResponseContainsAnError()
         {
-            _callbackConfigOp.Should().ThrowAsync<SinchApiException>()
+            _eventDestinationOp.Should().ThrowAsync<SinchApiException>()
                 .Where(x => x.StatusCode == HttpStatusCode.NotFound);
         }
     }
