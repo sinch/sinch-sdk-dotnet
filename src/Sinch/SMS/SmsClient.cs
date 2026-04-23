@@ -4,8 +4,8 @@ using Sinch.Logger;
 using Sinch.SMS.Batches;
 using Sinch.SMS.DeliveryReports;
 using Sinch.SMS.Groups;
-using Sinch.SMS.Hooks;
 using Sinch.SMS.Inbounds;
+using Sinch.SMS.SinchEvents;
 
 namespace Sinch.SMS
 {
@@ -60,7 +60,7 @@ namespace Sinch.SMS
         ///     SMS webhooks are configured in the Sinch Dashboard, not via API.
         ///     This service only handles parsing and validation of incoming webhook requests.
         /// </remarks>
-        ISmsWebhooks Webhooks { get; }
+        ISinchSmsSinchEvents SinchEvents { get; }
 
         internal bool IsUsingServicePlanId { get; }
     }
@@ -116,9 +116,9 @@ namespace Sinch.SMS
                 http);
             DeliveryReports = new DeliveryReports.DeliveryReports(projectIdOrServicePlanId, baseAddress,
                 loggerFactory?.Create<ISinchSmsDeliveryReports>(), http);
-            Webhooks = new SmsWebhooks(
+            SinchEvents = new SinchSmsSinchEvents(
                 http.JsonSerializerOptions,
-                loggerFactory?.Create<ISmsWebhooks>());
+                loggerFactory?.Create<ISinchSmsSinchEvents>());
         }
 
         public ISinchSmsBatches Batches { get; }
@@ -129,7 +129,7 @@ namespace Sinch.SMS
 
         public ISinchSmsDeliveryReports DeliveryReports { get; }
 
-        public ISmsWebhooks Webhooks { get; }
+        public ISinchSmsSinchEvents SinchEvents { get; }
 
         public bool IsUsingServicePlanId { get; }
     }

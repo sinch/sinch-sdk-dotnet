@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Sinch.Logger;
 
-namespace Sinch.SMS.Hooks
+namespace Sinch.SMS.SinchEvents
 {
     /// <inheritdoc />
-    internal sealed class SmsWebhooks(
+    internal sealed class SinchSmsSinchEvents(
         JsonSerializerOptions jsonSerializerOptions,
-        ILoggerAdapter<ISmsWebhooks>? logger = null)
-        : ISmsWebhooks
+        ILoggerAdapter<ISinchSmsSinchEvents>? logger = null)
+        : ISinchSmsSinchEvents
     {
         public JsonSerializerOptions JsonSerializerOptions { get; } = jsonSerializerOptions;
 
