@@ -9,10 +9,10 @@ namespace Sinch.Conversation.Apps.Create
     public sealed class EventDestinationSettings
     {
         /// <summary>
-        ///     Optional. Secret can be used to sign contents of delivery receipts for a message that was sent with the default callback URL overridden (using the [&#x60;callback_url&#x60; field](https://developers.sinch.com/docs/conversation/api-reference/conversation/tag/Messages/#tag/Messages/operation/Messages_SendMessage!path&#x3D;callback_url&amp;t&#x3D;request)). You can then use the secret to verify the signature.
+        ///     Secret can be used to sign contents of delivery receipts for a message that was sent with the default event destination target overridden (using the [&#x60;callback_url&#x60; field](https://developers.sinch.com/docs/conversation/api-reference/conversation/tag/Messages/#tag/Messages/operation/Messages_SendMessage!path&#x3D;callback_url&amp;t&#x3D;request)). You can then use the secret to verify the signature.
         /// </summary>
         [JsonPropertyName("secret_for_overridden_callback_urls")]
-        public string? SecretForOverriddenCallbackUrls { get; set; }
+        public string? SecretForOverriddenEventDestinationTarget { get; set; }
 
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Sinch.Conversation.Apps.Create
         {
             var sb = new StringBuilder();
             sb.Append($"class {nameof(EventDestinationSettings)} {{\n");
-            sb.Append($"  {nameof(SecretForOverriddenCallbackUrls)}: ").Append(Consts.HiddenString).Append('\n');
+            sb.Append($"  {nameof(SecretForOverriddenEventDestinationTarget)}: ").Append(Consts.HiddenString).Append('\n');
             sb.Append("}\n");
             return sb.ToString();
         }

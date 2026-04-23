@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
+using Sinch.Conversation.Apps.Create;
 using Sinch.Conversation.Apps.Credentials;
 using Sinch.Conversation.Common;
 
@@ -65,6 +66,12 @@ namespace Sinch.Conversation.Apps.Update
         /// </summary>
         public SmartConversation? SmartConversation { get; set; }
 
+        /// <summary>
+        ///     Gets or Sets EventDestinationSettings
+        /// </summary>
+        [JsonPropertyName("callback_settings")]
+        public EventDestinationSettings? EventDestinationSettings { get; set; }
+
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -73,7 +80,7 @@ namespace Sinch.Conversation.Apps.Update
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class AppCreateRequest {\n");
+            sb.Append($"class {nameof(UpdateAppRequest)} {{\n");
             sb.Append("  UpdateMaskPaths: ").Append(UpdateMaskPaths).Append("\n");
             sb.Append("  ChannelCredentials: ").Append(ChannelCredentials).Append("\n");
             sb.Append("  ConversationMetadataReportView: ").Append(ConversationMetadataReportView).Append("\n");
@@ -82,6 +89,7 @@ namespace Sinch.Conversation.Apps.Update
             sb.Append("  DispatchRetentionPolicy: ").Append(DispatchRetentionPolicy).Append("\n");
             sb.Append("  ProcessingMode: ").Append(ProcessingMode).Append("\n");
             sb.Append("  SmartConversation: ").Append(SmartConversation).Append("\n");
+            sb.Append("  EventDestinationSettings: ").Append(EventDestinationSettings).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
