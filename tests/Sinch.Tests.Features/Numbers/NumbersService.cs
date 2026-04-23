@@ -54,7 +54,7 @@ namespace Sinch.Tests.Features.Numbers
                 {
                     ServiceId = "01W4FFL35P4NC4K35FAXSERVICE"
                 },
-                CallbackUrl = "https://my-callback-server.com/numbers"
+                EventDestinationTarget = "https://my-callback-server.com/numbers"
             });
         }
 
@@ -65,7 +65,7 @@ namespace Sinch.Tests.Features.Numbers
             {
                 ProjectId = "123coffee-dada-beef-cafe-baadc0de5678",
                 DisplayName = "Updated description during E2E tests",
-                CallbackUrl = "https://my-callback-server.com/numbers",
+                EventDestinationTarget = "https://my-callback-server.com/numbers",
                 PhoneNumber = "+12015555555",
                 RegionCode = "US",
                 Type = Types.Local,
@@ -263,7 +263,7 @@ namespace Sinch.Tests.Features.Numbers
                     },
                     LastUpdatedTime = null,
                 },
-                CallbackUrl = ""
+                EventDestinationTarget = ""
             });
         }
 

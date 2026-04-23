@@ -295,7 +295,7 @@ namespace Sinch.Tests.Numbers
                     LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
                 }
             },
-            CallbackUrl = "foo callback"
+            EventDestinationTarget = "foo callback"
         };
 
 
@@ -368,7 +368,7 @@ namespace Sinch.Tests.Numbers
                         LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
                     }
                 },
-                CallbackUrl = "foo callback"
+                EventDestinationTarget = "foo callback"
             };
 
             HttpMessageHandlerMock
@@ -393,7 +393,7 @@ namespace Sinch.Tests.Numbers
                         AppId = "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEE",
                         Type = VoiceApplicationType.Rtc
                     },
-                    CallbackUrl = "foo callback"
+                    EventDestinationTarget = "foo callback"
                 });
 
             response.Should().BeEquivalentTo(expectedActiveNumber);
@@ -438,7 +438,7 @@ namespace Sinch.Tests.Numbers
                         LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
                     }
                 },
-                CallbackUrl = "foo callback"
+                EventDestinationTarget = "foo callback"
             };
 
             HttpMessageHandlerMock
@@ -462,7 +462,7 @@ namespace Sinch.Tests.Numbers
                     {
                         TrunkId = "trunk-id-12345"
                     },
-                    CallbackUrl = "foo callback"
+                    EventDestinationTarget = "foo callback"
                 });
 
             response.Should().BeEquivalentTo(expectedActiveNumber);
@@ -507,7 +507,7 @@ namespace Sinch.Tests.Numbers
                         LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
                     }
                 },
-                CallbackUrl = "foo callback"
+                EventDestinationTarget = "foo callback"
             };
 
             HttpMessageHandlerMock
@@ -531,7 +531,7 @@ namespace Sinch.Tests.Numbers
                     {
                         ServiceId = "fax-service-id-12345"
                     },
-                    CallbackUrl = "foo callback"
+                    EventDestinationTarget = "foo callback"
                 });
 
             response.Should().BeEquivalentTo(expectedActiveNumber);
