@@ -20,7 +20,7 @@ public class SinchEvents
     private ISinchConversationEventDestinations _eventDestinations;
     private HttpResponseMessage _eventResponse;
     private string _rawEvent;
-    private ICallbackEvent _parsedEvent;
+    private IConversationSinchEvent _parsedEvent;
 
     [Given(@"the Conversation Webhooks handler is available")]
     public void GivenTheConversationEventDestinationsHandlerIsAvailable()

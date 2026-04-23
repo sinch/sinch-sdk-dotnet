@@ -49,6 +49,7 @@
 - [Numbers API: CallbackConfiguration renamed to EventDestination](#numbers-api-callbackconfiguration-renamed-to-eventdestination)
 - [Numbers API: Sinch.Numbers.Hooks namespace renamed to Sinch.Numbers.SinchEvents; Event renamed to NumberSinchEvent](#numbers-api-sinchnumbershooks-namespace-renamed-to-sinchnumberssinchevents-event-renamed-to-numbersinchemvent)
 - [Numbers API: CallbackUrl renamed to EventDestinationTarget](#numbers-api-callbackurl-renamed-to-eventdestinationtarget)
+- [Conversation API: ICallbackEvent and related types renamed](#conversation-api-icallbackevent-and-related-types-renamed)
 - [SMS API: Sinch.SMS.Hooks namespace renamed to Sinch.SMS.SinchEvents](#sms-api-sinchsmshooks-namespace-renamed-to-sinchsmssinchevents)
 - [SMS API: BatchBase and UpdateBatchBaseRequest CallbackUrl renamed to EventDestinationTarget](#sms-api-batchbase-and-updatebatchbaserequest-callbackurl-renamed-to-eventdestinationtarget)
 
@@ -1345,6 +1346,27 @@ var request = new RentAnyNumberRequest
     Type = Types.Local,
     EventDestinationTarget = "https://example.com/callback"
 };
+```
+
+## Conversation API: ICallbackEvent and related types renamed
+
+Renamed types:
+
+- `ICallbackEvent` → `IConversationSinchEvent`
+- `CallbackEventBase` → `ConversationSinchEventBase`
+- `CallbackEventConverter` → `ConversationSinchEventConverter`
+- `UnsupportedCallbackEvent` → `UnsupportedConversationSinchEvent`
+
+Version 1.*:
+```csharp
+ICallbackEvent sinchEvent = sinch.Conversation.EventDestinations.ParseEvent(rawBody);
+if (sinchEvent is UnsupportedCallbackEvent unsupported) { /* ... */ }
+```
+
+Version 2.*:
+```csharp
+IConversationSinchEvent sinchEvent = sinch.Conversation.EventDestinations.ParseEvent(rawBody);
+if (sinchEvent is UnsupportedConversationSinchEvent unsupported) { /* ... */ }
 ```
 
 ## SMS API: Sinch.SMS.Hooks namespace renamed to Sinch.SMS.SinchEvents

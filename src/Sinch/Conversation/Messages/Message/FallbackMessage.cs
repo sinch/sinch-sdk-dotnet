@@ -92,7 +92,7 @@ namespace Sinch.Conversation.Messages.Message
         public static readonly ReasonCode Unknown = new("UNKNOWN");
 
         /// <summary>
-        /// An internal error occurred. Please save the entire callback if you want to report an error.
+        /// An internal error occurred. Please save the entire sinch event if you want to report an error.
         /// </summary>
         public static readonly ReasonCode InternalError = new("INTERNAL_ERROR");
 
@@ -188,7 +188,7 @@ namespace Sinch.Conversation.Messages.Message
         public static readonly ReasonCode ContactNotFound = new("CONTACT_NOT_FOUND");
 
         /// <summary>
-        /// Conversation API validates send requests in two different stages. The first stage is right before the message is enqueued. If this first validation fails the API responds with 400 Bad Request and the request is discarded immediately. The second validation kicks in during message processing and it normally contains channel specific validation rules. Failures during second request validation are delivered as callbacks to MESSAGE_DELIVERY (EVENT_DELIVERY) webhooks with ReasonCode BAD_REQUEST.
+        /// Conversation API validates send requests in two different stages. The first stage is right before the message is enqueued. If this first validation fails the API responds with 400 Bad Request and the request is discarded immediately. The second validation kicks in during message processing and it normally contains channel specific validation rules. Failures during second request validation are delivered as sinch events to MESSAGE_DELIVERY (EVENT_DELIVERY) event destinations with ReasonCode BAD_REQUEST.
         /// </summary>
         public static readonly ReasonCode BadRequest = new("BAD_REQUEST");
 

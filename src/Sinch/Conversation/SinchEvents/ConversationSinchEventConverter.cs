@@ -5,13 +5,13 @@ using System.Text.Json.Serialization;
 namespace Sinch.Conversation.SinchEvents
 {
     /// <summary>
-    /// JSON converter for ICallbackEvent that uses discriminator properties to determine the concrete event type.
-    /// Each callback event type has a unique property (e.g., "message" for MessageInboundEvent,
+    /// JSON converter for IConversationSinchEvent that uses discriminator properties to determine the concrete event type.
+    /// Each sinch event type has a unique property (e.g., "message" for MessageInboundEvent,
     /// "capability_notification" for CapabilityEvent) that identifies it.
     /// </summary>
-    public sealed class CallbackEventConverter : JsonConverter<ICallbackEvent>
+    public sealed class ConversationSinchEventConverter : JsonConverter<IConversationSinchEvent>
     {
-        public override ICallbackEvent? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override IConversationSinchEvent? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var elem = JsonElement.ParseValue(ref reader);
 
@@ -112,14 +112,14 @@ namespace Sinch.Conversation.SinchEvents
 
             if (elem.TryGetProperty("unsupported_callback", out _))
             {
-                return elem.Deserialize<UnsupportedCallbackEvent>(options);
+                return elem.Deserialize<UnsupportedConversationSinchEvent>(options);
             }
 
             // No matching event type found
             return null;
         }
 
-        public override void Write(Utf8JsonWriter writer, ICallbackEvent value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, IConversationSinchEvent value, JsonSerializerOptions options)
         {
             switch (value)
             {
@@ -180,12 +180,12 @@ namespace Sinch.Conversation.SinchEvents
                 case OptOutEvent optOutEvent:
                     JsonSerializer.Serialize(writer, optOutEvent, options);
                     break;
-                case UnsupportedCallbackEvent unsupportedEvent:
+                case UnsupportedConversationSinchEvent unsupportedEvent:
                     JsonSerializer.Serialize(writer, unsupportedEvent, options);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value),
-                        $"Cannot find a matching class for the interface {nameof(ICallbackEvent)}");
+                        $"Cannot find a matching class for the interface {nameof(IConversationSinchEvent)}");
             }
         }
     }

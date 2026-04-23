@@ -5,9 +5,9 @@ using Sinch.Conversation.SinchEvents.Models;
 namespace Sinch.Conversation.SinchEvents
 {
     /// <summary>
-    ///     This callback is sent when a conversation between the subscribed app and a contact is deleted.
+    ///     This sinch event is sent when a conversation between the subscribed app and a contact is deleted.
     /// </summary>
-    public sealed class ConversationDeleteEvent : CallbackEventBase
+    public sealed class ConversationDeleteEvent : ConversationSinchEventBase
     {
         /// <summary>
         ///     Gets or Sets ConversationDeleteNotification

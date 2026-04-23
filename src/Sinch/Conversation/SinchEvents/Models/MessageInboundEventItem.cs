@@ -67,7 +67,7 @@ namespace Sinch.Conversation.SinchEvents.Models
 
 
         /// <summary>
-        ///     Timestamp marking when the channel callback was received by the Conversation API.
+        ///     Timestamp marking when the channel sinch event was received by the Conversation API.
         /// </summary>
         [JsonPropertyName("accept_time")]
         public DateTime? AcceptTime { get; set; }
