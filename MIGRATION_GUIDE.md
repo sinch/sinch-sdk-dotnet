@@ -42,6 +42,10 @@
 - [Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts JsonNode](#conversation-api-webhooks-validateauthenticationheader-no-longer-accepts-jsonnode)
 - [Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts StringValues headers](#conversation-api-webhooks-validateauthenticationheader-no-longer-accepts-stringvalues-headers)
 - [Conversation API: Webhooks ParseEvent no longer accepts JsonNode](#conversation-api-webhooks-parseevent-no-longer-accepts-jsonnode)
+- [Conversation API: Webhooks renamed to EventDestinations](#conversation-api-webhooks-renamed-to-eventdestinations)
+- [Conversation API: Sinch.Conversation.Hooks namespace renamed to Sinch.Conversation.SinchEvents](#conversation-api-sinchconversationhooks-namespace-renamed-to-sinchconversationsinchevents)
+- [Conversation API: CallbackSettings renamed to EventDestinationSettings](#conversation-api-callbacksettings-renamed-to-eventdestinationsettings)
+- [Conversation API: SendEventRequest and SendMessageRequest CallbackUrl renamed to EventDestinationTarget](#conversation-api-sendeventrequest-and-sendmessagerequest-callbackurl-renamed-to-eventdestinationtarget)
 
 ## .NET Framework Support
 
@@ -1049,8 +1053,8 @@ IEnumerable<Webhook> webhooks = await sinch.Conversation.Webhooks.List(appId);
 
 Version 2.*:
 ```csharp
-ListWebhooksResponse response = await sinch.Conversation.Webhooks.List(appId);
-IEnumerable<Webhook> webhooks = response.Webhooks ?? Enumerable.Empty<Webhook>();
+ListEventDestinationsResponse response = await sinch.Conversation.EventDestinations.List(appId);
+IEnumerable<EventDestination> destinations = response.EventDestinations ?? Enumerable.Empty<EventDestination>();
 ```
 
 ## Conversation API: Webhooks request fields are now optional per OAS spec
@@ -1074,15 +1078,15 @@ var webhook = new CreateWebhookRequest
 Version 2.*:
 ```csharp
 // All fields remain available, but Triggers is now optional
-var webhook = new CreateWebhookRequest
+var destination = new CreateEventDestinationRequest
 {
     AppId = appId,
     Target = "https://example.com/webhook"
     // Triggers can be omitted
 };
 
-// UpdateWebhookRequest now allows partial updates
-var update = new UpdateWebhookRequest
+// UpdateEventDestinationRequest now allows partial updates
+var update = new UpdateEventDestinationRequest
 {
     Target = "https://new-endpoint.com/webhook"
     // AppId and Triggers can be omitted for partial updates
@@ -1101,7 +1105,7 @@ var isValid = sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, 
 
 Version 2.*:
 ```csharp
-var isValid = sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, rawBody, secret);
+var isValid = sinch.Conversation.SinchEvents.ValidateAuthenticationHeader(headers, rawBody, secret);
 ```
 
 ## Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts StringValues headers
@@ -1126,7 +1130,7 @@ var headers = new Dictionary<string, string>
     ["x-sinch-webhook-signature"] = signature
 };
 
-var isValid = sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, rawBody, secret);
+var isValid = sinch.Conversation.SinchEvents.ValidateAuthenticationHeader(headers, rawBody, secret);
 
 // Option B: multi-value headers (e.g. from HttpContext.Request.Headers)
 IReadOnlyDictionary<string, IEnumerable<string>> headers = new Dictionary<string, IEnumerable<string>>
@@ -1134,7 +1138,7 @@ IReadOnlyDictionary<string, IEnumerable<string>> headers = new Dictionary<string
     ["x-sinch-webhook-signature"] = new[] { signature }
 };
 
-var isValid = sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, rawBody, secret);
+var isValid = sinch.Conversation.SinchEvents.ValidateAuthenticationHeader(headers, rawBody, secret);
 ```
 
 ## Conversation API: Webhooks ParseEvent no longer accepts JsonNode
@@ -1149,5 +1153,121 @@ var callback = sinch.Conversation.Webhooks.ParseEvent(node!);
 
 Version 2.*:
 ```csharp
-var callback = sinch.Conversation.Webhooks.ParseEvent(rawBody);
+var callback = sinch.Conversation.SinchEvents.ParseEvent(rawBody);
+```
+
+## Conversation API: Webhooks renamed to EventDestinations
+
+The `Webhooks` subdomain and all related types have been renamed to use `EventDestinations` terminology.
+
+Renamed types:
+
+- `Webhook` → `EventDestination`
+- `WebhookTargetType` → `EventDestinationTargetType`
+- `WebhookTrigger` → `EventDestinationTrigger`
+- `CreateWebhookRequest` → `CreateEventDestinationRequest`
+- `UpdateWebhookRequest` → `UpdateEventDestinationRequest`
+- `ListWebhooksResponse` → `ListEventDestinationsResponse` (property `.Webhooks` → `.EventDestinations`)
+- `ISinchConversationWebhooks` → `ISinchConversationEventDestinations`
+- `ISinchConversation.Webhooks` → `ISinchConversation.EventDestinations`
+- Namespace `Sinch.Conversation.Webhooks` → `Sinch.Conversation.EventDestinations`
+
+Version 1.*:
+```csharp
+using Sinch.Conversation.Webhooks;
+
+var destination = await sinch.Conversation.Webhooks.Create(new CreateWebhookRequest
+{
+    AppId = appId,
+    Target = "https://example.com/webhook",
+    Triggers = [WebhookTrigger.MessageDelivery]
+});
+
+await sinch.Conversation.Webhooks.Delete(destination.Id!);
+```
+
+Version 2.*:
+```csharp
+using Sinch.Conversation.EventDestinations;
+
+var destination = await sinch.Conversation.EventDestinations.Create(new CreateEventDestinationRequest
+{
+    AppId = appId,
+    Target = "https://example.com/webhook",
+    Triggers = [EventDestinationTrigger.MessageDelivery]
+});
+
+await sinch.Conversation.EventDestinations.Delete(destination.Id!);
+```
+
+## Conversation API: Sinch.Conversation.Hooks namespace renamed to Sinch.Conversation.SinchEvents
+
+All Conversation event model types (`CapabilityEvent`, `ChannelEvent`, `ContactCreateEvent`, `InboundEvent`, etc.) have moved from the `Sinch.Conversation.Hooks` namespace to `Sinch.Conversation.SinchEvents`.
+
+Version 1.*:
+```csharp
+using Sinch.Conversation.Hooks;
+```
+
+Version 2.*:
+```csharp
+using Sinch.Conversation.SinchEvents;
+```
+
+## Conversation API: CallbackSettings renamed to EventDestinationSettings
+
+The `CallbackSettings` class and its `SecretForOverriddenCallbackUrls` property have been renamed. The underlying JSON wire format is unchanged (`callback_settings` / `secret_for_overridden_callback_urls`).
+
+Version 1.*:
+```csharp
+using Sinch.Conversation.Apps.Create;
+
+var request = new CreateAppRequest
+{
+    DisplayName = "My App",
+    CallbackSettings = new CallbackSettings
+    {
+        SecretForOverriddenCallbackUrls = "my-secret"
+    }
+};
+```
+
+Version 2.*:
+```csharp
+using Sinch.Conversation.Apps.Create;
+
+var request = new CreateAppRequest
+{
+    DisplayName = "My App",
+    EventDestinationSettings = new EventDestinationSettings
+    {
+        SecretForOverriddenEventDestinationTarget = "my-secret"
+    }
+};
+```
+
+## Conversation API: SendEventRequest and SendMessageRequest CallbackUrl renamed to EventDestinationTarget
+
+The `CallbackUrl` property on `SendEventRequest` and `SendMessageRequest` has been renamed to `EventDestinationTarget`. The underlying JSON wire format is unchanged (`callback_url`).
+
+Version 1.*:
+```csharp
+var request = new SendMessageRequest
+{
+    AppId = appId,
+    Message = AppMessage.From(new TextMessage("Hello")),
+    Recipient = new ContactRecipient { ContactId = contactId },
+    CallbackUrl = new Uri("https://example.com/delivery")
+};
+```
+
+Version 2.*:
+```csharp
+var request = new SendMessageRequest
+{
+    AppId = appId,
+    Message = AppMessage.From(new TextMessage("Hello")),
+    Recipient = new ContactRecipient { ContactId = contactId },
+    EventDestinationTarget = new Uri("https://example.com/delivery")
+};
 ```
