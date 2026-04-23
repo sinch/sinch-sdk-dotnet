@@ -7,7 +7,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using Sinch.Conversation.Hooks;
+using Sinch.Conversation.SinchEvents;
 using Sinch.Core;
 using Sinch.Logger;
 

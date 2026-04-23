@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Sinch.Conversation.Hooks;
+using Sinch.Conversation.SinchEvents;
 using Xunit;
 
 namespace Sinch.Tests.Conversation.EventDestinations

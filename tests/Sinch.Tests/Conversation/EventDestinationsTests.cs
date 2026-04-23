@@ -7,10 +7,10 @@ using FluentAssertions;
 using Sinch.Conversation;
 using Sinch.Conversation.Common;
 using Sinch.Conversation.Contacts;
-using Sinch.Conversation.Hooks;
-using Sinch.Conversation.Hooks.Models;
 using Sinch.Conversation.Messages.Message;
 using Sinch.Conversation.Messages.Message.ChannelSpecificMessages.WhatsApp;
+using Sinch.Conversation.SinchEvents;
+using Sinch.Conversation.SinchEvents.Models;
 using Xunit;
 
 namespace Sinch.Tests.Conversation
