@@ -46,6 +46,9 @@
 - [Conversation API: Sinch.Conversation.Hooks namespace renamed to Sinch.Conversation.SinchEvents](#conversation-api-sinchconversationhooks-namespace-renamed-to-sinchconversationsinchevents)
 - [Conversation API: CallbackSettings renamed to EventDestinationSettings](#conversation-api-callbacksettings-renamed-to-eventdestinationsettings)
 - [Conversation API: SendEventRequest and SendMessageRequest CallbackUrl renamed to EventDestinationTarget](#conversation-api-sendeventrequest-and-sendmessagerequest-callbackurl-renamed-to-eventdestinationtarget)
+- [Numbers API: CallbackConfiguration renamed to EventDestination](#numbers-api-callbackconfiguration-renamed-to-eventdestination)
+- [Numbers API: Sinch.Numbers.Hooks namespace renamed to Sinch.Numbers.SinchEvents; Event renamed to NumberSinchEvent](#numbers-api-sinchnumbershooks-namespace-renamed-to-sinchnumberssinchevents-event-renamed-to-numbersinchemvent)
+- [Numbers API: CallbackUrl renamed to EventDestinationTarget](#numbers-api-callbackurl-renamed-to-eventdestinationtarget)
 
 ## .NET Framework Support
 
@@ -1269,5 +1272,75 @@ var request = new SendMessageRequest
     Message = AppMessage.From(new TextMessage("Hello")),
     Recipient = new ContactRecipient { ContactId = contactId },
     EventDestinationTarget = new Uri("https://example.com/delivery")
+};
+```
+
+## Numbers API: CallbackConfiguration renamed to EventDestination
+
+The `CallbackConfiguration` subdomain and all related types have been renamed to `EventDestination`.
+
+- `ISinchNumbers.CallbackConfiguration` → `ISinchNumbers.EventDestination`
+- `ISinchNumbersCallbackConfiguration` → `ISinchNumbersEventDestination`
+- Class `CallbackConfiguration` → `EventDestination`
+- Namespace `Sinch.Numbers.CallbackConfiguration` → `Sinch.Numbers.EventDestination`
+
+Version 1.*:
+```csharp
+using Sinch.Numbers.CallbackConfiguration;
+
+CallbackConfiguration config = await sinch.Numbers.CallbackConfiguration.Get();
+```
+
+Version 2.*:
+```csharp
+using Sinch.Numbers.EventDestination;
+
+EventDestination config = await sinch.Numbers.EventDestination.Get();
+```
+
+## Numbers API: Sinch.Numbers.Hooks namespace renamed to Sinch.Numbers.SinchEvents; Event renamed to NumberSinchEvent
+
+All Numbers event model types have moved from `Sinch.Numbers.Hooks` to `Sinch.Numbers.SinchEvents`. The `Event` class has been renamed to `NumberSinchEvent` to avoid ambiguity.
+
+Version 1.*:
+```csharp
+using Sinch.Numbers.Hooks;
+
+Event evt = JsonSerializer.Deserialize<Event>(json)!;
+```
+
+Version 2.*:
+```csharp
+using Sinch.Numbers.SinchEvents;
+
+NumberSinchEvent evt = JsonSerializer.Deserialize<NumberSinchEvent>(json)!;
+```
+
+## Numbers API: CallbackUrl renamed to EventDestinationTarget
+
+The `CallbackUrl` property has been renamed to `EventDestinationTarget` on the following classes. The underlying JSON wire format is unchanged (`callbackUrl`).
+
+- `ActiveNumber`
+- `UpdateActiveNumberRequest`
+- `RentAnyNumberRequest`
+- `RentActiveNumberRequest`
+
+Version 1.*:
+```csharp
+var request = new RentAnyNumberRequest
+{
+    RegionCode = "US",
+    Type = Types.Local,
+    CallbackUrl = "https://example.com/callback"
+};
+```
+
+Version 2.*:
+```csharp
+var request = new RentAnyNumberRequest
+{
+    RegionCode = "US",
+    Type = Types.Local,
+    EventDestinationTarget = "https://example.com/callback"
 };
 ```
