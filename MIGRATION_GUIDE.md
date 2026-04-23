@@ -39,6 +39,9 @@
 - [Conversation API: CreateTemplateRequest and UpdateTemplateRequest no longer expose create\_time and update\_time](#conversation-api-createtemplaterequest-and-updatetemplaterequest-no-longer-expose-create_time-and-update_time)
 - [Conversation API: Webhooks List now returns ListWebhooksResponse](#conversation-api-webhooks-list-now-returns-listwebhooksresponse)
 - [Conversation API: Webhooks request fields are now optional per OAS spec](#conversation-api-webhooks-request-fields-are-now-optional-per-oas-spec)
+- [Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts JsonNode](#conversation-api-webhooks-validateauthenticationheader-no-longer-accepts-jsonnode)
+- [Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts StringValues headers](#conversation-api-webhooks-validateauthenticationheader-no-longer-accepts-stringvalues-headers)
+- [Conversation API: Webhooks ParseEvent no longer accepts JsonNode](#conversation-api-webhooks-parseevent-no-longer-accepts-jsonnode)
 
 ## .NET Framework Support
 
@@ -1084,4 +1087,67 @@ var update = new UpdateWebhookRequest
     Target = "https://new-endpoint.com/webhook"
     // AppId and Triggers can be omitted for partial updates
 };
+```
+
+## Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts JsonNode
+
+`ISinchConversationWebhooks.ValidateAuthenticationHeader` now accepts only raw callback body strings.
+
+Version 1.*:
+```csharp
+var body = JsonNode.Parse(rawBody);
+var isValid = sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, body!, secret);
+```
+
+Version 2.*:
+```csharp
+var isValid = sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, rawBody, secret);
+```
+
+## Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts StringValues headers
+
+`ISinchConversationWebhooks.ValidateAuthenticationHeader` no longer accepts `Dictionary<string, StringValues>`. Use either `IDictionary<string, string>` (single-value headers) or `IReadOnlyDictionary<string, IEnumerable<string>>` (multi-value headers).
+
+Version 1.*:
+```csharp
+var headers = new Dictionary<string, StringValues>
+{
+    ["x-sinch-webhook-signature"] = new StringValues(signature)
+};
+
+var isValid = sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, rawBody, secret);
+```
+
+Version 2.*:
+```csharp
+// Option A: single-value headers (e.g. from a plain dictionary)
+var headers = new Dictionary<string, string>
+{
+    ["x-sinch-webhook-signature"] = signature
+};
+
+var isValid = sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, rawBody, secret);
+
+// Option B: multi-value headers (e.g. from HttpContext.Request.Headers)
+IReadOnlyDictionary<string, IEnumerable<string>> headers = new Dictionary<string, IEnumerable<string>>
+{
+    ["x-sinch-webhook-signature"] = new[] { signature }
+};
+
+var isValid = sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, rawBody, secret);
+```
+
+## Conversation API: Webhooks ParseEvent no longer accepts JsonNode
+
+`ISinchConversationWebhooks.ParseEvent` now accepts raw JSON strings or streams only.
+
+Version 1.*:
+```csharp
+var node = JsonNode.Parse(rawBody);
+var callback = sinch.Conversation.Webhooks.ParseEvent(node!);
+```
+
+Version 2.*:
+```csharp
+var callback = sinch.Conversation.Webhooks.ParseEvent(rawBody);
 ```
