@@ -372,7 +372,7 @@ namespace Sinch.Tests.Conversation.Apps
             {
                 RetryDuration = 360,
             },
-            CallbackSettings = new CallbackSettings()
+            EventDestinationSettings = new EventDestinationSettings()
             {
                 SecretForOverriddenCallbackUrls = "secret",
             },
@@ -620,7 +620,7 @@ namespace Sinch.Tests.Conversation.Apps
                 {
                     RetryDuration = 360
                 },
-                CallbackSettings = new CallbackSettings
+                EventDestinationSettings = new EventDestinationSettings
                 {
                     SecretForOverriddenCallbackUrls = "secret"
                 },

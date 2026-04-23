@@ -65,10 +65,10 @@ namespace Sinch.Conversation.Apps
         public QueueStats? QueueStats { get; set; }
 
         /// <summary>
-        ///     Gets or Sets CallbackSettings
+        ///     Gets or Sets EventDestinationSettings
         /// </summary>
         [JsonPropertyName("callback_settings")]
-        public CallbackSettings? CallbackSettings { get; set; }
+        public EventDestinationSettings? EventDestinationSettings { get; set; }
 
         /// <summary>
         ///     Gets or Sets DeliveryReportBasedFallback
@@ -101,7 +101,7 @@ namespace Sinch.Conversation.Apps
             sb.Append($"  {nameof(ProcessingMode)}: ").Append(ProcessingMode).Append('\n');
             sb.Append($"  {nameof(SmartConversation)}: ").Append(SmartConversation).Append('\n');
             sb.Append($"  {nameof(QueueStats)}: ").Append(QueueStats).Append('\n');
-            sb.Append($"  {nameof(CallbackSettings)}: ").Append(CallbackSettings).Append('\n');
+            sb.Append($"  {nameof(EventDestinationSettings)}: ").Append(EventDestinationSettings).Append('\n');
             sb.Append($"  {nameof(DeliveryReportBasedFallback)}: ").Append(DeliveryReportBasedFallback).Append('\n');
             sb.Append($"  {nameof(MessageRetrySettings)}: ").Append(MessageRetrySettings).Append('\n');
             sb.Append("}\n");

@@ -55,10 +55,10 @@ namespace Sinch.Conversation.Apps.Create
         public SmartConversation? SmartConversation { get; set; }
 
         /// <summary>
-        ///     Gets or Sets CallbackSettings
+        ///     Gets or Sets EventDestinationSettings
         /// </summary>
         [JsonPropertyName("callback_settings")]
-        public CallbackSettings? CallbackSettings { get; set; }
+        public EventDestinationSettings? EventDestinationSettings { get; set; }
 
         /// <summary>
         ///     Gets or Sets MessageRetrySettings
@@ -88,7 +88,7 @@ namespace Sinch.Conversation.Apps.Create
             sb.Append($"  {nameof(DispatchRetentionPolicy)}: ").Append(DispatchRetentionPolicy).Append('\n');
             sb.Append($"  {nameof(ProcessingMode)}: ").Append(ProcessingMode).Append('\n');
             sb.Append($"  {nameof(SmartConversation)}: ").Append(SmartConversation).Append('\n');
-            sb.Append($"  {nameof(CallbackSettings)}: ").Append(CallbackSettings).Append('\n');
+            sb.Append($"  {nameof(EventDestinationSettings)}: ").Append(EventDestinationSettings).Append('\n');
             sb.Append($"  {nameof(MessageRetrySettings)}: ").Append(MessageRetrySettings).Append('\n');
             sb.Append($"  {nameof(DeliveryReportBasedFallback)}: ").Append(DeliveryReportBasedFallback).Append('\n');
             sb.Append("}\n");
