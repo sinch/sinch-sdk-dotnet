@@ -446,7 +446,7 @@ namespace Sinch.Tests.Conversation
                     }
                 }
             };
-            _baseMessageExpected.callback_url = "http://callback";
+            _baseMessageExpected.callback_url = "http://event-destination-target";
             _baseMessageExpected.channel_priority_order = new[] { "INSTAGRAM", "TELEGRAM" };
             _baseMessageExpected.correlation_id = "cor_id";
             _baseMessageExpected.processing_strategy = "DISPATCH_ONLY";
@@ -478,7 +478,7 @@ namespace Sinch.Tests.Conversation
                     }
                 }
             };
-            _baseRequest.CallbackUrl = new Uri("http://callback");
+            _baseRequest.EventDestinationTarget = new Uri("http://event-destination-target");
             _baseRequest.ChannelPriorityOrder = new List<ConversationChannel>()
             {
                 ConversationChannel.Instagram, ConversationChannel.Telegram
