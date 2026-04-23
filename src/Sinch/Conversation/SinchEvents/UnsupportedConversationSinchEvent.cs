@@ -5,7 +5,7 @@ using Sinch.Conversation.SinchEvents.Models;
 namespace Sinch.Conversation.SinchEvents
 {
     /// <summary>
-    ///     Some of the callbacks received from the underlying channels might be specific to a single channel or may not have a proper mapping in Conversation API yet.
+    ///     Some of the sinch events received from the underlying channels might be specific to a single channel or may not have a proper mapping in Conversation API yet.
     /// </summary>
     public sealed class UnsupportedConversationSinchEvent : ConversationSinchEventBase
     {

@@ -5,7 +5,7 @@ using Sinch.Conversation.SinchEvents.Models;
 namespace Sinch.Conversation.SinchEvents
 {
     /// <summary>
-    ///     This callback notifies the API clients about status changes of already sent app message.
+    ///     This sinch event notifies the API clients about status changes of already sent app message.
     /// </summary>
     public sealed class MessageDeliveryReceiptEvent : ConversationSinchEventBase
     {

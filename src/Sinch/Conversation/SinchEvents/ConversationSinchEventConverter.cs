@@ -6,7 +6,7 @@ namespace Sinch.Conversation.SinchEvents
 {
     /// <summary>
     /// JSON converter for IConversationSinchEvent that uses discriminator properties to determine the concrete event type.
-    /// Each callback event type has a unique property (e.g., "message" for MessageInboundEvent,
+    /// Each sinch event type has a unique property (e.g., "message" for MessageInboundEvent,
     /// "capability_notification" for CapabilityEvent) that identifies it.
     /// </summary>
     public sealed class ConversationSinchEventConverter : JsonConverter<IConversationSinchEvent>

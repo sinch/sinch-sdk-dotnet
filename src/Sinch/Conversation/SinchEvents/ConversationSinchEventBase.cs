@@ -12,7 +12,7 @@ namespace Sinch.Conversation.SinchEvents
         public required string AppId { get; set; }
 
         /// <summary>
-        ///     Timestamp marking when the channel callback was accepted/received by the Conversation API.
+        ///     Timestamp marking when the channel sinch event was accepted/received by the Conversation API.
         /// </summary>
         [JsonPropertyName("accepted_time")]
         public DateTime? AcceptedTime { get; set; }
@@ -24,13 +24,13 @@ namespace Sinch.Conversation.SinchEvents
         public DateTime? EventTime { get; set; }
 
         /// <summary>
-        ///     The project ID of the app which has subscribed for the callback.
+        ///     The project ID of the app which has subscribed for the sinch event.
         /// </summary>
         [JsonPropertyName("project_id")]
         public required string ProjectId { get; set; }
 
         /// <summary>
-        ///     Context-dependent metadata. Refer to specific callback&#39;s documentation for exact information provided.
+        ///     Context-dependent metadata. Refer to specific sinch event&#39;s documentation for exact information provided.
         /// </summary>
         [JsonPropertyName("message_metadata")]
         public string? MessageMetadata { get; set; }

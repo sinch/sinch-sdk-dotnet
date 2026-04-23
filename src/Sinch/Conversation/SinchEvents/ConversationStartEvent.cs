@@ -5,7 +5,7 @@ using Sinch.Conversation.SinchEvents.Models;
 namespace Sinch.Conversation.SinchEvents
 {
     /// <summary>
-    ///     This callback is sent when a new conversation between the subscribed app and a contact is started.
+    ///     This sinch event is sent when a new conversation between the subscribed app and a contact is started.
     /// </summary>
     public sealed class ConversationStartEvent : ConversationSinchEventBase
     {

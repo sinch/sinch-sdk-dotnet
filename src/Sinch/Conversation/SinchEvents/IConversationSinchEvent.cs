@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace Sinch.Conversation.SinchEvents
 {
     /// <summary>
-    ///     Marker interface for all callback events
+    ///     Marker interface for all sinch events
     /// </summary>
     [JsonConverter(typeof(ConversationSinchEventConverter))]
     public interface IConversationSinchEvent

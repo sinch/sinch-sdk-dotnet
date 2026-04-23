@@ -5,7 +5,7 @@ using Sinch.Conversation.SinchEvents.Models;
 namespace Sinch.Conversation.SinchEvents
 {
     /// <summary>
-    ///     This callback delivers contact (end-user) messages to the API clients. The content of the message goes through an A.I. analysis and is redacted if required.
+    ///     This sinch event delivers contact (end-user) messages to the API clients. The content of the message goes through an A.I. analysis and is redacted if required.
     /// </summary>
     public sealed class MessageInboundSmartConversationRedactionEvent : ConversationSinchEventBase
     {

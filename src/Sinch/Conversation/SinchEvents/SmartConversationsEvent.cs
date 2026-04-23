@@ -5,7 +5,7 @@ using Sinch.Conversation.SinchEvents.Models;
 namespace Sinch.Conversation.SinchEvents
 {
     /// <summary>
-    ///     When using the Smart Conversations functionality, Machine Learning and Artificial Intelligence analyses are delivered through specific callbacks on the Conversation API.
+    ///     When using the Smart Conversations functionality, Machine Learning and Artificial Intelligence analyses are delivered through specific sinch events on the Conversation API.
     /// </summary>
     public sealed class SmartConversationsEvent : ConversationSinchEventBase
     {

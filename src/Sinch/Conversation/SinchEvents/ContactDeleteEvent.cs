@@ -5,7 +5,7 @@ using Sinch.Conversation.SinchEvents.Models;
 namespace Sinch.Conversation.SinchEvents
 {
     /// <summary>
-    ///     This callback is sent when a new contact is deleted.
+    ///     This sinch event is sent when a new contact is deleted.
     /// </summary>
     public sealed class ContactDeleteEvent : ConversationSinchEventBase
     {

@@ -5,7 +5,7 @@ using Sinch.Conversation.SinchEvents.Models;
 namespace Sinch.Conversation.SinchEvents
 {
     /// <summary>
-    ///     This callback is used to deliver opt-in notifications from the channels.
+    ///     This sinch event is used to deliver opt-in notifications from the channels.
     /// </summary>
     public sealed class OptInEvent : ConversationSinchEventBase
     {

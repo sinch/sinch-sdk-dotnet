@@ -5,7 +5,7 @@ using Sinch.Conversation.SinchEvents.Models;
 namespace Sinch.Conversation.SinchEvents
 {
     /// <summary>
-    ///     This callback delivers contact (end-user) messages to the API clients.
+    ///     This sinch event delivers contact (end-user) messages to the API clients.
     /// </summary>
     public sealed class MessageInboundEvent : ConversationSinchEventBase
     {

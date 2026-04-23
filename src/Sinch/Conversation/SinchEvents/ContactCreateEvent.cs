@@ -5,7 +5,7 @@ using Sinch.Conversation.SinchEvents.Models;
 namespace Sinch.Conversation.SinchEvents
 {
     /// <summary>
-    ///     This callback is sent when a new contact is created.
+    ///     This sinch event is sent when a new contact is created.
     /// </summary>
     public sealed class ContactCreateEvent : ConversationSinchEventBase
     {
