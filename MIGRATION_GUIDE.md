@@ -54,6 +54,8 @@
 - [SMS API: BatchBase and UpdateBatchBaseRequest CallbackUrl renamed to EventDestinationTarget](#sms-api-batchbase-and-updatebatchbaserequest-callbackurl-renamed-to-eventdestinationtarget)
 - [Verification API: Sinch.Verification.Hooks namespace renamed to Sinch.Verification.SinchEvents](#verification-api-sinchverificationhooks-namespace-renamed-to-sinchverificationsinchevents)
 - [Verification API: Verification event types renamed](#verification-api-verification-event-types-renamed)
+- [Voice API: Sinch.Voice.Hooks namespace renamed to Sinch.Voice.SinchEvents](#voice-api-sinchvoicehooks-namespace-renamed-to-sinchvoicesinchevents)
+- [Voice API: Voice event types renamed](#voice-api-voice-event-types-renamed)
 
 ## .NET Framework Support
 
@@ -1454,5 +1456,58 @@ Version 2.*:
 ```csharp
 var requestEvent = JsonSerializer.Deserialize<VerificationSinchEventRequest>(json);
 var resultEvent = JsonSerializer.Deserialize<VerificationSinchEventResult>(json);
+```
+
+## Voice API: Sinch.Voice.Hooks namespace renamed to Sinch.Voice.SinchEvents
+
+All Voice Sinch event types have moved from the `Sinch.Voice.Hooks` namespace to `Sinch.Voice.SinchEvents`.
+
+Version 1.*:
+```csharp
+using Sinch.Voice.Hooks;
+```
+
+Version 2.*:
+```csharp
+using Sinch.Voice.SinchEvents;
+```
+
+## Voice API: Voice event types renamed
+
+Several Voice event model types have been renamed. The JSON wire format is unchanged.
+
+Renamed types:
+
+- `IVoiceEvent` → `VoiceSinchEvent`
+- `AnsweredCallEvent` → `AnsweredCallSinchEvent`
+- `DisconnectedCallEvent` → `DisconnectedCallSinchEvent`
+- `IncomingCallEvent` → `IncomingCallSinchEvent`
+- `NotificationEvent` → `NotificationSinchEvent`
+- `PromtInputEvent` → `PromptInputSinchEvent`
+
+Version 1.*:
+```csharp
+IVoiceEvent sinchEvent = sinch.Voice.ParseEvent(rawBody);
+switch (sinchEvent)
+{
+    case AnsweredCallEvent ace: /* ... */ break;
+    case DisconnectedCallEvent dice: /* ... */ break;
+    case IncomingCallEvent ice: /* ... */ break;
+    case NotificationEvent notify: /* ... */ break;
+    case PromtInputEvent pie: /* ... */ break;
+}
+```
+
+Version 2.*:
+```csharp
+VoiceSinchEvent sinchEvent = sinch.Voice.ParseEvent(rawBody);
+switch (sinchEvent)
+{
+    case AnsweredCallSinchEvent ace: /* ... */ break;
+    case DisconnectedCallSinchEvent dice: /* ... */ break;
+    case IncomingCallSinchEvent ice: /* ... */ break;
+    case NotificationSinchEvent notify: /* ... */ break;
+    case PromptInputSinchEvent pie: /* ... */ break;
+}
 ```
 
