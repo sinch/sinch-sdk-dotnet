@@ -13,7 +13,7 @@ using Sinch.Voice.Applications;
 using Sinch.Voice.Callouts;
 using Sinch.Voice.Calls;
 using Sinch.Voice.Conferences;
-using Sinch.Voice.Hooks;
+using Sinch.Voice.SinchEvents;
 
 namespace Sinch.Voice
 {
@@ -57,14 +57,14 @@ namespace Sinch.Voice
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
-        IVoiceEvent ParseEvent(string json);
+        VoiceSinchEvent ParseEvent(string json);
 
         /// <summary>
         ///     Parses a Voice callback
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
-        IVoiceEvent ParseEvent(JsonNode json);
+        VoiceSinchEvent ParseEvent(JsonNode json);
 
         /// <summary>
         ///     Parses a Voice callback
@@ -72,7 +72,7 @@ namespace Sinch.Voice
         /// <param name="json"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IVoiceEvent> ParseEventAsync(Stream json, CancellationToken cancellationToken = default);
+        Task<VoiceSinchEvent> ParseEventAsync(Stream json, CancellationToken cancellationToken = default);
     }
 
     /// <inheritdoc />
@@ -115,9 +115,9 @@ namespace Sinch.Voice
                 _logger);
         }
 
-        public IVoiceEvent ParseEvent(string json)
+        public VoiceSinchEvent ParseEvent(string json)
         {
-            var jsonResult = JsonSerializer.Deserialize<IVoiceEvent>(json, _jsonSerializerOptions);
+            var jsonResult = JsonSerializer.Deserialize<VoiceSinchEvent>(json, _jsonSerializerOptions);
             if (jsonResult == null)
             {
                 throw new InvalidOperationException("Deserialization of Voice event failed");
@@ -126,9 +126,9 @@ namespace Sinch.Voice
             return jsonResult;
         }
 
-        public IVoiceEvent ParseEvent(JsonNode json)
+        public VoiceSinchEvent ParseEvent(JsonNode json)
         {
-            var jsonResult = json.Deserialize<IVoiceEvent>(_jsonSerializerOptions);
+            var jsonResult = json.Deserialize<VoiceSinchEvent>(_jsonSerializerOptions);
             if (jsonResult == null)
             {
                 throw new InvalidOperationException("Deserialization of Voice event failed");
@@ -137,11 +137,11 @@ namespace Sinch.Voice
             return jsonResult;
         }
 
-        public async Task<IVoiceEvent> ParseEventAsync(Stream jsonStream,
+        public async Task<VoiceSinchEvent> ParseEventAsync(Stream jsonStream,
             CancellationToken cancellationToken = default)
         {
             var jsonResult =
-                await JsonSerializer.DeserializeAsync<IVoiceEvent>(jsonStream, _jsonSerializerOptions,
+                await JsonSerializer.DeserializeAsync<VoiceSinchEvent>(jsonStream, _jsonSerializerOptions,
                     cancellationToken);
             if (jsonResult == null)
             {

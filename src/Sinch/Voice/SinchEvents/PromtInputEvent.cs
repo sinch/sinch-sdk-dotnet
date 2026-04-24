@@ -2,7 +2,7 @@ using System;
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Voice.Hooks
+namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
     ///     This callback is triggered as a result of a
@@ -13,7 +13,7 @@ namespace Sinch.Voice.Hooks
     ///     [SVAML](https://developers.sinch.com/docs/voice/api-reference/svaml/) logic.<br /><br />
     ///     Note: PIE callbacks are not issued for DATA Calls, only PSTN and SIP calls.
     /// </summary>
-    public sealed class PromptInputEvent : IVoiceEvent
+    public sealed class PromptInputSinchEvent : VoiceSinchEvent
     {
         /// <summary>
         ///     Must have the value pie.

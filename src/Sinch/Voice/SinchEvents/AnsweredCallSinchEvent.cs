@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Voice.Hooks
+namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
     ///     This callback is made when the call is picked up by the callee (person receiving the call). It's a POST request to
@@ -13,7 +13,7 @@ namespace Sinch.Voice.Hooks
     ///     enabled, the amd object will also be present on ACE callbacks.
     ///     Note: ACE Callbacks are not issued for InApp Calls (destination: username), only PSTN and SIP calls.
     /// </summary>
-    public sealed class AnsweredCallEvent : IVoiceEvent
+    public sealed class AnsweredCallSinchEvent : VoiceSinchEvent
     {
         /// <summary>
         ///     Must have the value ace.

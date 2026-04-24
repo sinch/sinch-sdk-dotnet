@@ -3,22 +3,22 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Voice.Hooks
+namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
     ///     Marker interface for event types of voice.
     /// </summary>
-    [JsonConverter(typeof(VoiceEventConverter))]
-    public abstract class IVoiceEvent
+    [JsonConverter(typeof(VoiceSinchEventConverter))]
+    public abstract class VoiceSinchEvent
     {
         [JsonPropertyName("event")]
         [JsonInclude]
         internal abstract EventType Event { get; set; }
     }
 
-    public sealed class VoiceEventConverter : JsonConverter<IVoiceEvent>
+    public sealed class VoiceSinchEventConverter : JsonConverter<VoiceSinchEvent>
     {
-        public override IVoiceEvent? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override VoiceSinchEvent? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var elem = JsonElement.ParseValue(ref reader);
             var descriptor = elem.EnumerateObject().FirstOrDefault(x => x.Name == "event");
@@ -26,54 +26,54 @@ namespace Sinch.Voice.Hooks
 
             if (type == EventType.NotificationEvent.Value)
             {
-                return elem.Deserialize<NotificationEvent>(options);
+                return elem.Deserialize<NotificationSinchEvent>(options);
             }
 
             if (type == EventType.IncomingCallEvent.Value)
             {
-                return elem.Deserialize<IncomingCallEvent>(options);
+                return elem.Deserialize<IncomingCallSinchEvent>(options);
             }
 
             if (type == EventType.DisconnectedCallEvent.Value)
             {
-                return elem.Deserialize<DisconnectedCallEvent>(options);
+                return elem.Deserialize<DisconnectedCallSinchEvent>(options);
             }
 
             if (type == EventType.AnsweredCallEvent.Value)
             {
-                return elem.Deserialize<AnsweredCallEvent>(options);
+                return elem.Deserialize<AnsweredCallSinchEvent>(options);
             }
 
             if (type == EventType.PromptInputEvent.Value)
             {
-                return elem.Deserialize<PromptInputEvent>(options);
+                return elem.Deserialize<PromptInputSinchEvent>(options);
             }
 
             throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
         }
 
-        public override void Write(Utf8JsonWriter writer, IVoiceEvent value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, VoiceSinchEvent value, JsonSerializerOptions options)
         {
             switch (value)
             {
-                case AnsweredCallEvent answeredCallEvent:
+                case AnsweredCallSinchEvent answeredCallEvent:
                     JsonSerializer.Serialize(writer, answeredCallEvent, options);
                     break;
-                case DisconnectedCallEvent disconnectedCallEvent:
+                case DisconnectedCallSinchEvent disconnectedCallEvent:
                     JsonSerializer.Serialize(writer, disconnectedCallEvent, options);
                     break;
-                case IncomingCallEvent incomingCallEvent:
+                case IncomingCallSinchEvent incomingCallEvent:
                     JsonSerializer.Serialize(writer, incomingCallEvent, options);
                     break;
-                case NotificationEvent notificationEvent:
+                case NotificationSinchEvent notificationEvent:
                     JsonSerializer.Serialize(writer, notificationEvent, options);
                     break;
-                case PromptInputEvent promptInputEvent:
+                case PromptInputSinchEvent promptInputEvent:
                     JsonSerializer.Serialize(writer, promptInputEvent, options);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value),
-                        $"Cannot find a matching class for the interface {nameof(IVoiceEvent)}");
+                        $"Cannot find a matching class for the interface {nameof(VoiceSinchEvent)}");
             }
         }
     }

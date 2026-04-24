@@ -5,14 +5,14 @@ using System.Text.Json.Serialization;
 using Sinch.Voice.Calls;
 using Sinch.Voice.Calls.Actions;
 
-namespace Sinch.Voice.Hooks
+namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
     ///     This callback is made when the call is disconnected. It's a POST request to the specified calling callback URL.
     ///     This event doesn't support instructions and only supports the
     ///     [hangup](https://developers.sinch.com/docs/voice/api-reference/svaml/actions/#hangup) action.
     /// </summary>
-    public sealed class DisconnectedCallEvent : IVoiceEvent
+    public sealed class DisconnectedCallSinchEvent : VoiceSinchEvent
     {
         /// <summary>
         ///     Must have the value &#x60;dice&#x60;.

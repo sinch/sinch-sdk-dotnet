@@ -1,14 +1,14 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Voice.Hooks
+namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
     ///     This is the general callback used to send notifications. It's a POST request to the specified calling callback URL.
     ///     <br /><br />
     ///     If there is no response to the callback within the timeout period, the notification is discarded.
     /// </summary>
-    public sealed class NotificationEvent : IVoiceEvent
+    public sealed class NotificationSinchEvent : VoiceSinchEvent
     {
         /// <summary>
         ///     Must have the value notify.
@@ -64,7 +64,7 @@ namespace Sinch.Voice.Hooks
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(NotificationEvent)} {{\n");
+            sb.Append($"class {nameof(NotificationSinchEvent)} {{\n");
             sb.Append($"  {nameof(Event)}: ").Append(Event).Append('\n');
             sb.Append($"  {nameof(Type)}: ").Append(Type).Append('\n');
             sb.Append($"  {nameof(Destination)}: ").Append(Destination).Append('\n');

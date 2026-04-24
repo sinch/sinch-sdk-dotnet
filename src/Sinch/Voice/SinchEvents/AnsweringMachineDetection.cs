@@ -2,7 +2,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Voice.Hooks
+namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
     ///     If [Answering Machine Detection](https://developers.sinch.com/docs/voice/api-reference/amd_v2) (AMD) is enabled, this object contains information about whether the call was answered by a machine.

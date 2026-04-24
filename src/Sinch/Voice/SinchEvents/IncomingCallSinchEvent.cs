@@ -6,7 +6,7 @@ using Sinch.Core;
 using Sinch.Voice.Callouts.Callout;
 using Sinch.Voice.Calls.Actions;
 
-namespace Sinch.Voice.Hooks
+namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
     ///     When a call reaches the Sinch platform, the system makes a POST request to the specified calling callback URL.
@@ -15,7 +15,7 @@ namespace Sinch.Voice.Hooks
     ///     If there is no response to the callback within the timeout period, an error message is played, and the call is
     ///     disconnected.
     /// </summary>
-    public sealed class IncomingCallEvent : IVoiceEvent
+    public sealed class IncomingCallSinchEvent : VoiceSinchEvent
     {
         /// <summary>
         ///     Must have the value ice.
