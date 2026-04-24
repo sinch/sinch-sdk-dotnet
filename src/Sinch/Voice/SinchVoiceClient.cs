@@ -41,7 +41,7 @@ namespace Sinch.Voice
         ISinchVoiceApplications Applications { get; }
 
         /// <summary>
-        ///     Validates callback request.
+        ///     Validates the authentication header of an incoming Sinch event request.
         /// </summary>
         /// <param name="method"></param>
         /// <param name="path"></param>
@@ -53,21 +53,21 @@ namespace Sinch.Voice
             string body);
 
         /// <summary>
-        ///     Parses a Voice callback
+        ///     Parses a Voice Sinch event from a JSON string.
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
         VoiceSinchEvent ParseEvent(string json);
 
         /// <summary>
-        ///     Parses a Voice callback
+        ///     Parses a Voice Sinch event from a JSON node.
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
         VoiceSinchEvent ParseEvent(JsonNode json);
 
         /// <summary>
-        ///     Parses a Voice callback
+        ///     Parses a Voice Sinch event from a stream.
         /// </summary>
         /// <param name="json"></param>
         /// <param name="cancellationToken"></param>
