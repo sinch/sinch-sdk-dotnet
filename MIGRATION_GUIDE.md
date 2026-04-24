@@ -52,6 +52,8 @@
 - [Conversation API: ICallbackEvent and related types renamed](#conversation-api-icallbackevent-and-related-types-renamed)
 - [SMS API: Sinch.SMS.Hooks namespace renamed to Sinch.SMS.SinchEvents](#sms-api-sinchsmshooks-namespace-renamed-to-sinchsmssinchevents)
 - [SMS API: BatchBase and UpdateBatchBaseRequest CallbackUrl renamed to EventDestinationTarget](#sms-api-batchbase-and-updatebatchbaserequest-callbackurl-renamed-to-eventdestinationtarget)
+- [Verification API: Sinch.Verification.Hooks namespace renamed to Sinch.Verification.SinchEvents](#verification-api-sinchverificationhooks-namespace-renamed-to-sinchverificationsinchevents)
+- [Verification API: Verification event types renamed](#verification-api-verification-event-types-renamed)
 
 ## .NET Framework Support
 
@@ -1413,3 +1415,44 @@ var batch = new SendSmsBatchRequest
     EventDestinationTarget = new Uri("https://example.com/sinch-events")
 };
 ```
+
+## Verification API: Sinch.Verification.Hooks namespace renamed to Sinch.Verification.SinchEvents
+
+All Verification Sinch event types have moved from the `Sinch.Verification.Hooks` namespace to `Sinch.Verification.SinchEvents`.
+
+Version 1.*:
+```csharp
+using Sinch.Verification.Hooks;
+```
+
+Version 2.*:
+```csharp
+using Sinch.Verification.SinchEvents;
+```
+
+## Verification API: Verification event types renamed
+
+Several Verification event model types have been renamed. The JSON wire format is unchanged.
+
+Renamed types:
+
+- `VerificationRequestEvent` → `VerificationSinchEventRequest`
+- `VerificationResultEvent` → `VerificationSinchEventResult`
+- `RequestEventResponseBase` → `RequestSinchEventResponseBase`
+- `SmsRequestEventResponse` → `SmsRequestSinchEventResponse`
+- `FlashCallRequestEventResponse` → `FlashCallRequestSinchEventResponse`
+- `PhoneCallRequestEventResponse` → `PhoneCallRequestSinchEventResponse`
+- `WhatsAppRequestEventResponse` → `WhatsAppRequestSinchEventResponse`
+
+Version 1.*:
+```csharp
+var requestEvent = JsonSerializer.Deserialize<VerificationRequestEvent>(json);
+var resultEvent = JsonSerializer.Deserialize<VerificationResultEvent>(json);
+```
+
+Version 2.*:
+```csharp
+var requestEvent = JsonSerializer.Deserialize<VerificationSinchEventRequest>(json);
+var resultEvent = JsonSerializer.Deserialize<VerificationSinchEventResult>(json);
+```
+
