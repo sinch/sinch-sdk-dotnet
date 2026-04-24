@@ -23,7 +23,7 @@ namespace Sinch.Verification
         ISinchVerificationStatus VerificationStatus { get; }
 
         /// <summary>
-        ///     Validates callback request.
+        ///     Validates the authentication header of an incoming Sinch event request.
         /// </summary>
         /// <param name="method"></param>
         /// <param name="path"></param>
