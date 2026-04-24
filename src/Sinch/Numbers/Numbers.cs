@@ -79,7 +79,7 @@ namespace Sinch.Numbers
         internal JsonSerializerOptions JsonSerializerOptions { get; }
 
         /// <summary>
-        ///     Validates json of a sinch event with your HMAC secret 
+        ///     Validates json of a Sinch event with your HMAC secret 
         /// </summary>
         /// <param name="hmacSecret">Your HMAC secret</param>
         /// <param name="json">The JSON payload as a raw string to be validated.</param>
@@ -88,11 +88,11 @@ namespace Sinch.Numbers
         bool ValidateAuthenticationHeader(string hmacSecret, string json, string signatureHeaderValue);
 
         /// <summary>
-        ///     Validates json of a sinch event with your HMAC secret 
+        ///     Validates json of a Sinch event with your HMAC secret 
         /// </summary>
         /// <param name="hmacSecret">Your HMAC secret</param>
         /// <param name="json">The JSON payload as a raw string to be validated.</param>
-        /// <param name="headers">Headers of a sinch event message, where method will look up for X-Sinch-Signature header</param>
+        /// <param name="headers">Headers of a Sinch event message, where method will look up for X-Sinch-Signature header</param>
         /// <returns>True if a validation is successful</returns>
         bool ValidateAuthenticationHeader(string hmacSecret, string json, HttpHeaders headers);
     }

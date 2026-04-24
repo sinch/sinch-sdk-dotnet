@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace Sinch.Numbers.SinchEvents
 {
     /// <summary>
-    ///     A notification of an event sent to your configured sinch event URL.
+    ///     A notification of an event sent to your configured Sinch event URL.
     /// </summary>
     public sealed class NumberSinchEvent
     {
@@ -15,7 +15,7 @@ namespace Sinch.Numbers.SinchEvents
         public string? EventId { get; set; }
 
         /// <summary>
-        ///     The date and time when the sinch event was created and added to the sinch events queue.
+        ///     The date and time when the Sinch event was created and added to the Sinch events queue.
         /// </summary>
         [JsonPropertyName("timestamp")]
         public DateTime? Timestamp { get; set; }
