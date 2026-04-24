@@ -1,0 +1,25 @@
+{
+  "event": "dice",
+  "callid": "a call id",
+  "conferenceId": "a conference id",
+  "timestamp": "2024-01-19T12:49:53Z",
+  "reason": "MANAGERHANGUP",
+  "result": "ANSWERED",
+  "version": 1,
+  "custom": "my custom value",
+  "debit": {
+    "currencyId": "EUR",
+    "amount": 0.1758
+  },
+  "userRate": {
+    "currencyId": "USD",
+    "amount": 0.345
+  },
+  "to": {
+    "type": "Number",
+    "endpoint": "123456789"
+  },
+  "applicationKey": "an app key",
+  "duration": 1,
+  "from": "private"
+}

@@ -1,0 +1,13 @@
+{
+  "event": "ace",
+  "callid": "a call id",
+  "timestamp": "2024-01-19T12:49:53Z",
+  "version": 1,
+  "custom": "my custom value",
+  "applicationKey": "my application key",
+  "amd": {
+    "status": "human",
+    "reason": "longgreeting",
+    "duration": 15
+  }
+}

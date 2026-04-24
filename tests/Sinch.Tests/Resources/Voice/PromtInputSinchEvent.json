@@ -1,0 +1,15 @@
+{
+  "event": "pie",
+  "callid": "a call id",
+  "conferenceId": "a conference id",
+  "custom": "my custom value",
+  "timestamp": "2024-01-23T15:04:28Z",
+  "menuResult": {
+    "type": "sequence",
+    "value": "1452",
+    "menuId": "confirm",
+    "inputMethod": "dtmf"
+  },
+  "version": 1,
+  "applicationKey": "my application key"
+}

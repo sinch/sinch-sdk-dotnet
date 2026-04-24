@@ -1,0 +1,28 @@
+{
+  "event": "ice",
+  "callid": "a call id",
+  "conferenceId": "a conference id",
+  "callResourceUrl": "https://calling-euc1.api.sinch.com/calling/v1/calls/id/a call id",
+  "timestamp": "2024-01-16T16:46:36Z",
+  "version": 1,
+  "custom": "my custom",
+  "userRate": {
+    "currencyId": "USD",
+    "amount": 0.0
+  },
+  "cli": "cli number",
+  "to": {
+    "type": "number",
+    "endpoint": "+123456879"
+  },
+  "domain": "mxp",
+  "applicationKey": "an app key",
+  "originationType": "MXP",
+  "rdnis": "rdnis value",
+  "callHeaders": [
+    {
+      "key": "the key",
+      "value": "the value"
+    }
+  ]
+}
