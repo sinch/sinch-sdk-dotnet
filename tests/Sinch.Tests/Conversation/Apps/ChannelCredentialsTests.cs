@@ -144,7 +144,7 @@ namespace Sinch.Tests.Conversation.Apps
             string callbackSecret,
             int credentialOrdinalNumber)
         {
-            credentials.CallbackSecret = callbackSecret;
+            credentials.SinchEventSecret = callbackSecret;
             credentials.CredentialOrdinalNumber = credentialOrdinalNumber;
             return credentials;
         }
@@ -156,7 +156,7 @@ namespace Sinch.Tests.Conversation.Apps
             string channelKnownId,
             ChannelIntegrationState state)
         {
-            credentials.CallbackSecret = callbackSecret;
+            credentials.SinchEventSecret = callbackSecret;
             credentials.CredentialOrdinalNumber = credentialOrdinalNumber;
             credentials.ChannelKnownId = channelKnownId;
             credentials.State = state;

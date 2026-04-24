@@ -99,12 +99,10 @@ namespace Sinch.Conversation.Apps.Credentials
 
 
         /// <summary>
-        ///     The secret used to verify the channel callbacks for channels which support callback verification. The callback verification is not needed for Sinch-managed channels because the callbacks are not leaving Sinch internal networks. Max length is 256 characters. Note: leaving channel_callback_secret empty for channels with callback verification will disable the verification.
+        ///     The secret used to verify the channel Sinch events for channels which support Sinch event verification. The Sinch event verification is not needed for Sinch-managed channels because the callbacks are not leaving Sinch internal networks. Max length is 256 characters. Note: leaving channel_callback_secret empty for channels with Sinch event verification will disable the verification.
         /// </summary>
         [JsonPropertyName("callback_secret")]
-        public string? CallbackSecret { get; set; }
-
-
+        public string? SinchEventSecret { get; set; }
 
         /// <summary>
         ///     Gets or Sets State
@@ -146,7 +144,7 @@ namespace Sinch.Conversation.Apps.Credentials
             sb.Append($"  {nameof(InstagramCredentials)}: ").Append(InstagramCredentials).Append('\n');
             sb.Append($"  {nameof(ApplebcCredentials)}: ").Append(ApplebcCredentials).Append('\n');
             sb.Append($"  {nameof(KakaoTalkChatCredentials)}: ").Append(KakaoTalkChatCredentials).Append('\n');
-            sb.Append($"  {nameof(CallbackSecret)}: ").Append(Consts.HiddenString).Append('\n');
+            sb.Append($"  {nameof(SinchEventSecret)}: ").Append(Consts.HiddenString).Append('\n');
             sb.Append($"  {nameof(Channel)}: ").Append(Channel).Append('\n');
             sb.Append($"  {nameof(State)}: ").Append(State).Append('\n');
             sb.Append($"  {nameof(ChannelKnownId)}: ").Append(ChannelKnownId).Append('\n');
