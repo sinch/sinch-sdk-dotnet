@@ -3,9 +3,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
 
-namespace Sinch.Verification.Hooks
+namespace Sinch.Verification.SinchEvents
 {
-    public sealed class WhatsAppRequestEventResponse : RequestEventResponseBase
+    public sealed class WhatsAppRequestSinchEventResponse : RequestSinchEventResponseBase
     {
         [JsonPropertyName("whatsapp")]
         public WhatsApp? WhatsApp { get; set; }

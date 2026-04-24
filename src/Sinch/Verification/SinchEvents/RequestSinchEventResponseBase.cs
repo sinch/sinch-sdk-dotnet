@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
 
-namespace Sinch.Verification.Hooks
+namespace Sinch.Verification.SinchEvents
 {
-    public class RequestEventResponseBase
+    public class RequestSinchEventResponseBase
     {
         /// <summary>
         ///     Determines whether the verification can be executed.

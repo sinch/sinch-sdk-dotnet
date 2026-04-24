@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
 
-namespace Sinch.Verification.Hooks
+namespace Sinch.Verification.SinchEvents
 {
-    public sealed class PhoneCallRequestEventResponse : RequestEventResponseBase
+    public sealed class PhoneCallRequestSinchEventResponse : RequestSinchEventResponseBase
     {
         [JsonPropertyName("callout")]
         public PhoneCall? PhoneCall { get; set; }
@@ -13,7 +13,7 @@ namespace Sinch.Verification.Hooks
         /// <summary>
         ///     The Phone Call PIN that should be entered by the user.
         ///     Sinch servers automatically generate PIN codes for Phone Call verification.
-        ///     If you want to set your own code, you can specify it in the response to the Verification Request Event.
+        ///     If you want to set your own code, you can specify it in the response to the Verification Request Sinch Event.
         /// </summary>
         [JsonPropertyName("code")]
         public string? Code { get; set; }

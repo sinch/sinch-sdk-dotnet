@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
 
-namespace Sinch.Verification.Hooks
+namespace Sinch.Verification.SinchEvents
 {
-    public sealed class FlashCallRequestEventResponse : RequestEventResponseBase
+    public sealed class FlashCallRequestSinchEventResponse : RequestSinchEventResponseBase
     {
         [JsonPropertyName("flashCall")]
         public FlashCall? FlashCall { get; set; }
@@ -14,7 +14,7 @@ namespace Sinch.Verification.Hooks
         ///     The phone number that will be displayed to the user when the flashcall is received on the user's phone.
         ///     By default, the Sinch dashboard will randomly select the CLI that will be displayed during
         ///     a flashcall from a pool of numbers.
-        ///     If you want to set your own CLI, you can specify it in the response to the Verification Request Event.
+        ///     If you want to set your own CLI, you can specify it in the response to the Verification Request Sinch Event.
         /// </summary>
         [JsonPropertyName("cli")]
         public string? Cli { get; set; }
@@ -25,7 +25,7 @@ namespace Sinch.Verification.Hooks
         ///     then the verification request will fail.
         ///     By default, the Sinch dashboard will automatically optimize dial time out during a flashcall.
         ///     If you want to set your own dial time out for the flashcall,
-        ///     you can specify it in the response to the Verification Request Event.
+        ///     you can specify it in the response to the Verification Request Sinch Event.
         /// </summary>
         [JsonPropertyName("dialTimeout")]
         public int? DialTimeout { get; set; }

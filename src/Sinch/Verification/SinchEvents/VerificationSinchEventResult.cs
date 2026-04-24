@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
 
-namespace Sinch.Verification.Hooks
+namespace Sinch.Verification.SinchEvents
 {
     /// <summary>
     ///     This callback event is a POST request to the specified verification callback URL and triggered when
@@ -9,7 +9,7 @@ namespace Sinch.Verification.Hooks
     ///     It's used to report the verification result to the developer's backend application.
     ///     This callback event is only triggered when the verification callback URL is specified in your dashboard.
     /// </summary>
-    public sealed class VerificationResultEvent
+    public sealed class VerificationSinchEventResult
     {
         /// <summary>
         ///     The ID of the verification request.

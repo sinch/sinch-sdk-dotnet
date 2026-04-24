@@ -3,12 +3,12 @@ using System.Text.Json;
 using FluentAssertions;
 using Newtonsoft.Json.Linq;
 using Sinch.Verification.Common;
-using Sinch.Verification.Hooks;
+using Sinch.Verification.SinchEvents;
 using Xunit;
 
 namespace Sinch.Tests.Verification
 {
-    public class VerificationHooksTests
+    public class VerificationSinchEventsTests
     {
         [Fact]
         public void ShouldDeserializeVerificationRequestEvent()
@@ -16,7 +16,7 @@ namespace Sinch.Tests.Verification
             string jsonString = @"
             {
                 ""id"": ""1234567890"",
-                ""event"": ""VerificationRequestEvent"",
+                ""event"": ""VerificationSinchEventRequest"",
                 ""method"": ""sms"",
                 ""identity"": {
                     ""type"": ""number"",
@@ -33,12 +33,12 @@ namespace Sinch.Tests.Verification
                 ]
             }";
 
-            var deserialized = JsonSerializer.Deserialize<VerificationRequestEvent>(jsonString);
+            var deserialized = JsonSerializer.Deserialize<VerificationSinchEventRequest>(jsonString);
 
-            deserialized.Should().BeEquivalentTo(new VerificationRequestEvent()
+            deserialized.Should().BeEquivalentTo(new VerificationSinchEventRequest()
             {
                 Id = "1234567890",
-                Event = "VerificationRequestEvent",
+                Event = "VerificationSinchEventRequest",
                 Method = VerificationMethod.Sms,
                 Identity = new Identity()
                 {
@@ -65,7 +65,7 @@ namespace Sinch.Tests.Verification
             string jsonString = @"
             {
             ""id"": ""1234567890"",
-            ""event"": ""VerificationResultEvent"",
+            ""event"": ""VerificationSinchEventResult"",
             ""method"": ""sms"",
             ""identity"": {
                 ""type"": ""number"",
@@ -78,12 +78,12 @@ namespace Sinch.Tests.Verification
             ""custom"": ""string""
             }";
 
-            var deserialized = JsonSerializer.Deserialize<VerificationResultEvent>(jsonString);
+            var deserialized = JsonSerializer.Deserialize<VerificationSinchEventResult>(jsonString);
 
-            deserialized.Should().BeEquivalentTo(new VerificationResultEvent()
+            deserialized.Should().BeEquivalentTo(new VerificationSinchEventResult()
             {
                 Id = "1234567890",
-                Event = "VerificationResultEvent",
+                Event = "VerificationSinchEventResult",
                 Method = VerificationMethodEx.Sms,
                 Identity = new Identity()
                 {
@@ -99,12 +99,12 @@ namespace Sinch.Tests.Verification
         }
 
         [Fact]
-        public void SerializeHookResponse()
+        public void SerializeSinchEventResponse()
         {
-            var response = new SmsRequestEventResponse
+            var response = new SmsRequestSinchEventResponse
             {
                 Action = Action.Allow,
-                Sms = new Sinch.Verification.Hooks.Sms
+                Sms = new Sinch.Verification.SinchEvents.Sms
                 {
                     Code = "123",
                     AcceptLanguage = new List<string>()
@@ -129,11 +129,11 @@ namespace Sinch.Tests.Verification
         }
 
         [Fact]
-        public void SerializeHookWhatsAppResponse()
+        public void SerializeWhatsAppSinchEventResponse()
         {
-            var expected = Helpers.LoadResources("Verification/Webhooks/VerificationResponseWhatsAppDto.json");
+            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationResponseWhatsAppDto.json");
 
-            var response = new WhatsAppRequestEventResponse
+            var response = new WhatsAppRequestSinchEventResponse
             {
                 Action = Action.Allow,
                 WhatsApp = new WhatsApp

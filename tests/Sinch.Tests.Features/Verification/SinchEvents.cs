@@ -5,12 +5,12 @@ using FluentAssertions;
 using Reqnroll;
 using Sinch.Verification;
 using Sinch.Verification.Common;
-using Sinch.Verification.Hooks;
+using Sinch.Verification.SinchEvents;
 
 namespace Sinch.Tests.Features.Verification
 {
     [Binding]
-    public class Webhooks
+    public class SinchEvents
     {
         private readonly HttpClient _httpClient = new HttpClient();
         private HttpResponseMessage _verificationRequestResponseMessage;
@@ -19,7 +19,7 @@ namespace Sinch.Tests.Features.Verification
         private string _rawBody;
 
         [Given(@"the Verification Webhooks handler is available")]
-        public void GivenTheVerificationWebhooksHandlerIsAvailable()
+        public void GivenTheVerificationSinchEventsHandlerIsAvailable()
         {
             _sinchVerificationClient = Utils.SinchVerificationClient;
         }
@@ -44,8 +44,8 @@ namespace Sinch.Tests.Features.Verification
         public void ThenTheVerificationEventDescribesAEventType()
         {
             // TODO: schema of oas and api response diverge: https://tickets.sinch.com/browse/DEVEXP-946
-            var verificationEvent = JsonSerializer.Deserialize<VerificationRequestEvent>(_rawBody);
-            verificationEvent.As<VerificationRequestEvent>().Should().BeEquivalentTo(new VerificationRequestEvent
+            var verificationEvent = JsonSerializer.Deserialize<VerificationSinchEventRequest>(_rawBody);
+            verificationEvent.As<VerificationSinchEventRequest>().Should().BeEquivalentTo(new VerificationSinchEventRequest
             {
                 Id = "1ce0ffee-c0de-5eed-d00d-f00dfeed1337",
                 Event = "VerificationRequestEvent",
@@ -79,9 +79,9 @@ namespace Sinch.Tests.Features.Verification
         public void ThenTheVerificationEventDescribesAResultEventType()
         {
 
-            var resultEvent = JsonSerializer.Deserialize<VerificationResultEvent>(_rawBody);
+            var resultEvent = JsonSerializer.Deserialize<VerificationSinchEventResult>(_rawBody);
             // TODO: schema of oas and api response diverge: https://tickets.sinch.com/browse/DEVEXP-946
-            resultEvent.Should().BeEquivalentTo(new VerificationResultEvent()
+            resultEvent.Should().BeEquivalentTo(new VerificationSinchEventResult()
             {
                 Id = "1ce0ffee-c0de-5eed-d00d-f00dfeed1337",
                 Event = "VerificationResultEvent",

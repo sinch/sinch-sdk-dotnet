@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Verification.Hooks
+namespace Sinch.Verification.SinchEvents
 {
-    public sealed class SmsRequestEventResponse : RequestEventResponseBase
+    public sealed class SmsRequestSinchEventResponse : RequestSinchEventResponseBase
     {
         [JsonPropertyName("sms")]
         public Sms? Sms { get; set; }
@@ -14,7 +14,7 @@ namespace Sinch.Verification.Hooks
         /// <summary>
         ///     The SMS PIN that should be used.
         ///     By default, the Sinch dashboard will automatically generate PIN codes for SMS verification.
-        ///     If you want to set your own PIN, you can specify it in the response to the Verification Request Event.
+        ///     If you want to set your own PIN, you can specify it in the response to the Verification Request Sinch Event.
         /// </summary>
         [JsonPropertyName("code")]
         public string? Code { get; set; }
