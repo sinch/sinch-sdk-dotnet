@@ -1324,7 +1324,6 @@ The `CallbackUrl` property has been renamed to `EventDestinationTarget` on the f
 - `ActiveNumber`
 - `UpdateActiveNumberRequest`
 - `RentAnyNumberRequest`
-- `RentActiveNumberRequest`
 
 Version 1.*:
 ```csharp
