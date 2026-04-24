@@ -11,7 +11,7 @@ using DestinationType = Sinch.Voice.SinchEvents.DestinationType;
 
 namespace Sinch.Tests.Voice
 {
-    public class DeserializeHooksTests
+    public class DeserializeVoiceSinchEventsTests
     {
         private readonly ISinchVoiceClient _voiceClient = new SinchClient(new SinchClientConfiguration()
         {

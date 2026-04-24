@@ -11,7 +11,7 @@ using DestinationType = Sinch.Voice.SinchEvents.DestinationType;
 namespace Sinch.Tests.Features.Voice
 {
     [Binding]
-    public class Hooks
+    public class SinchEvents
     {
         private readonly HttpClient _httpClient = new HttpClient();
         private ISinchVoiceClient _voiceClient;
@@ -31,7 +31,7 @@ namespace Sinch.Tests.Features.Voice
         private string _rawEventTransactionContent;
 
         [Given(@"the Voice Webhooks handler is available")]
-        public void GivenTheVoiceWebhooksHandlerIsAvailable()
+        public void GivenTheVoiceSinchEventsHandlerIsAvailable()
         {
             _voiceClient = new SinchClient(
                 new SinchClientConfiguration

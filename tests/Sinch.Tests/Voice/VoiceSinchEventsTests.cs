@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Sinch.Tests.Voice
 {
-    public class HooksTests
+    public class VoiceSinchEventsTests
     {
         private readonly ISinchVoiceClient _voiceClient = new SinchClient(new SinchClientConfiguration()
         {
