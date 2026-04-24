@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
 using Sinch.Voice.Applications.GetNumbers;
-using Sinch.Voice.Applications.QueryNumber;
 using Sinch.Voice.Applications.UnassignNumbers;
 using Sinch.Voice.Applications.UpdateCallbackUrls;
 using Sinch.Voice.Applications.UpdateNumbers;
@@ -59,13 +58,6 @@ namespace Sinch.Voice.Applications
         Task UpdateCallbackUrls(UpdateCallbackUrlsRequest request,
             CancellationToken cancellationToken = default);
 
-        /// <summary>
-        ///     Returns information about the requested number.
-        /// </summary>
-        /// <param name="number">The phone number you want to query.</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<QueryNumberResponse> QueryNumber(string number, CancellationToken cancellationToken = default);
     }
 
     /// <inheritdoc />
@@ -131,12 +123,5 @@ namespace Sinch.Voice.Applications
                 cancellationToken);
         }
 
-        public Task<QueryNumberResponse> QueryNumber(string number, CancellationToken cancellationToken = default)
-        {
-            var uri = new Uri(_baseAddress, $"v1/calling/query/number/{number}");
-            _logger?.LogDebug("Querying a {number}", number);
-            return _http.Send<QueryNumberResponse>(uri, HttpMethod.Get,
-                cancellationToken);
-        }
     }
 }

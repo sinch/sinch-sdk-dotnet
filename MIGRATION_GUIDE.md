@@ -56,6 +56,7 @@
 - [Verification API: Verification event types renamed](#verification-api-verification-event-types-renamed)
 - [Voice API: Sinch.Voice.Hooks namespace renamed to Sinch.Voice.SinchEvents](#voice-api-sinchvoicehooks-namespace-renamed-to-sinchvoicesinchevents)
 - [Voice API: Voice event types renamed](#voice-api-voice-event-types-renamed)
+- [Voice API: ISinchVoiceApplications.QueryNumber removed](#voice-api-isinchvoiceapplicationsquerynumber-removed)
 
 ## .NET Framework Support
 
@@ -1511,3 +1512,19 @@ switch (sinchEvent)
 }
 ```
 
+## Voice API: ISinchVoiceApplications.QueryNumber removed
+
+The `QueryNumber` method and its associated response types (`QueryNumberResponse`, `NumberItem`, `NumberType`) have been removed from `ISinchVoiceApplications`.
+
+Version 1.*:
+```csharp
+using Sinch.Voice.Applications.QueryNumber;
+
+QueryNumberResponse response = await sinch.Voice.Applications.QueryNumber("+12015555555");
+NumberItem number = response.Number;
+```
+
+Version 2.*:
+```csharp
+// The QueryNumber operation is no longer available.
+```
