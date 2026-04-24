@@ -20,7 +20,7 @@ namespace Sinch.Conversation.Capability
     {
         /// <summary>
         ///     This method is asynchronous - it immediately returns the requested Capability registration.
-        ///     Capability check is then delivered as a sinch event to registered event destinations with trigger
+        ///     Capability check is then delivered as a Sinch event to registered event destinations with trigger
         ///     CAPABILITY for every reachable channel.
         /// </summary>
         /// <param name="request"></param>

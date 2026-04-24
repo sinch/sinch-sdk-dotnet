@@ -5,7 +5,7 @@ using Sinch.Conversation.SinchEvents.Models;
 namespace Sinch.Conversation.SinchEvents
 {
     /// <summary>
-    ///     This sinch event is used to deliver the results of the asynchronous capability checks.
+    ///     This Sinch event is used to deliver the results of the asynchronous capability checks.
     /// </summary>
     public sealed class CapabilityEvent : ConversationSinchEventBase
     {

@@ -5,7 +5,7 @@ using Sinch.Conversation.SinchEvents.Models;
 namespace Sinch.Conversation.SinchEvents
 {
     /// <summary>
-    ///     This sinch event provides a notification to the API clients that the corresponding app message was submitted to a channel. This notification is created before any confirmation from Delivery Receipts.
+    ///     This Sinch event provides a notification to the API clients that the corresponding app message was submitted to a channel. This notification is created before any confirmation from Delivery Receipts.
     /// </summary>
     public sealed class MessageSubmitEvent : ConversationSinchEventBase
     {

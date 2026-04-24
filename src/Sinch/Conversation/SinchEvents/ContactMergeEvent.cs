@@ -5,7 +5,7 @@ using Sinch.Conversation.SinchEvents.Models;
 namespace Sinch.Conversation.SinchEvents
 {
     /// <summary>
-    ///     This sinch event is sent when two contacts are merged.
+    ///     This Sinch event is sent when two contacts are merged.
     /// </summary>
     public sealed class ContactMergeEvent : ConversationSinchEventBase
     {

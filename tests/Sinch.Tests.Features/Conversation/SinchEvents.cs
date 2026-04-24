@@ -13,7 +13,7 @@ namespace Sinch.Tests.Features.Conversation;
 [Scope(Feature = "[Conversation][Webhooks events]")]
 public class SinchEvents
 {
-    private const string CallbackSecret = "CactusKnight_SurfsWaves";
+    private const string SinchEventSecret = "CactusKnight_SurfsWaves";
     private const string BaseEventDestinationsUrl = "http://localhost:3014/webhooks/conversation";
 
     private readonly HttpClient _httpClient = new();
@@ -143,7 +143,7 @@ public class SinchEvents
 
     private void ValidateAuthenticationHeader()
     {
-        _eventDestinations.ValidateAuthenticationHeader(_eventResponse.GetAllHeaders(), _rawEvent, CallbackSecret)
+        _eventDestinations.ValidateAuthenticationHeader(_eventResponse.GetAllHeaders(), _rawEvent, SinchEventSecret)
             .Should()
             .BeTrue();
     }
