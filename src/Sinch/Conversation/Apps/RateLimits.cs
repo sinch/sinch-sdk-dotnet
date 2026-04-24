@@ -24,9 +24,9 @@ namespace Sinch.Conversation.Apps
 
 
         /// <summary>
-        ///     The rate limit of sinch events sent to the event destinations registered for the app.
+        ///     The rate limit of Sinch events sent to the event destinations registered for the app.
         ///     Note that if you have multiple event destinations with shared triggers,
-        ///     multiple sinch events will be sent out for each triggering event. The default rate limit is 25.
+        ///     multiple Sinch events will be sent out for each triggering event. The default rate limit is 25.
         /// </summary>
         [JsonPropertyName("webhooks")]
         public long? EventDestinations { get; set; }

@@ -17,12 +17,12 @@ namespace Sinch.Conversation.EventDestinations
     ///     to an event that is triggered when a new contact has been created. - &#x60;CONTACT_DELETE&#x60;: Subscribe to an
     ///     event that is triggered when a contact has been deleted. - &#x60;CONTACT_MERGE&#x60;: Subscribe to an event that is
     ///     triggered when two contacts are merged. - &#x60;CONTACT_UPDATE&#x60;: Subscribe to an event that is triggered when
-    ///     a contact is updated. - &#x60;UNSUPPORTED&#x60;: Subscribe to sinch events that are not natively supported by the
+    ///     a contact is updated. - &#x60;UNSUPPORTED&#x60;: Subscribe to Sinch events that are not natively supported by the
     ///     Conversation API. - &#x60;OPT_IN&#x60;: Subscribe to opt_ins. - &#x60;OPT_OUT&#x60;: Subscribe to opt_outs. -
     ///     &#x60;CAPABILITY&#x60;: Subscribe to see get capability results. - &#x60;CHANNEL_EVENT&#x60;: Subscribe to channel
     ///     event notifications. - &#x60;CONVERSATION_DELETE&#x60;: Subscribe to get an event when a conversation is deleted. -
     ///     &#x60;CONTACT_IDENTITIES_DUPLICATION&#x60;: Subscribe to get an event when contact identity duplications are found
-    ///     during message or event processing. - &#x60;SMART_CONVERSATIONS&#x60;: Subscribe to smart conversations sinch event
+    ///     during message or event processing. - &#x60;SMART_CONVERSATIONS&#x60;: Subscribe to smart conversations Sinch event
     /// </summary>
     [JsonConverter(typeof(EnumRecordJsonConverter<EventDestinationTrigger>))]
     public record EventDestinationTrigger(string Value) : EnumRecord(Value)
