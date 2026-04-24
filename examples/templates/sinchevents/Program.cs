@@ -16,7 +16,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddSingleton<ServerBusinessLogic>();
 
-// Note: Unified credentials are not required for sinch event validation (only Sinch:Sms:SinchEventSecret is).
+// Note: Unified credentials are not required for Sinch event validation (only Sinch:Sms:SinchEventSecret is).
 // They are included here so you can respond to incoming messages using the SMS API if needed.
 builder.Services.AddSinchClient(() => new SinchClientConfiguration
 {

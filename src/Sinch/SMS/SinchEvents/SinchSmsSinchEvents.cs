@@ -19,8 +19,8 @@ namespace Sinch.SMS.SinchEvents
             var result = JsonSerializer.Deserialize<ISmsEvent>(json, JsonSerializerOptions);
             if (result == null)
             {
-                logger?.LogError("Failed to deserialize SMS sinch event. No matching event type found for payload: {json}", json);
-                throw new InvalidOperationException("Deserialization of SMS sinch event failed");
+                logger?.LogError("Failed to deserialize SMS Sinch event. No matching event type found for payload: {json}", json);
+                throw new InvalidOperationException("Deserialization of SMS Sinch event failed");
             }
 
             return result;

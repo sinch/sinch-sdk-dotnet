@@ -86,7 +86,7 @@ namespace Sinch.SMS.Batches.Send
         public abstract SmsType Type { get; }
 
         /// <summary>
-        ///     Request delivery report sinch event.<br/><br/>
+        ///     Request delivery report Sinch event.<br/><br/>
         ///     Note that delivery reports can be fetched from the API regardless of this setting.
         /// </summary>
         public DeliveryReport? DeliveryReport { get; set; }
@@ -114,7 +114,7 @@ namespace Sinch.SMS.Batches.Send
 
         /// <summary>
         ///     The client identifier of a batch message.
-        ///     If set, the identifier will be added in the delivery report/sinch event of this batch
+        ///     If set, the identifier will be added in the delivery report / Sinch event of this batch
         /// </summary>
         public string? ClientReference { get; set; }
 

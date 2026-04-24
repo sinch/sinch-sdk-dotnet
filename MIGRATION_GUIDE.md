@@ -476,7 +476,7 @@ Version 2.*:
 // Deserialize to the new explicit type
 var report = JsonSerializer.Deserialize<BatchDeliveryReportSms>(json);
 
-// or use the SMS sinch event helper which dispatches to the correct type based on the payload
+// or use the SMS Sinch event helper which dispatches to the correct type based on the payload
 var report = sinchClient.Sms.SinchEvents.ParseEvent(json).As<BatchDeliveryReportSms>();
 ```
 
@@ -490,7 +490,7 @@ var recipientReport = JsonSerializer.Deserialize<RecipientDeliveryReport>(json);
 Version 2.*:
 ```csharp
 var recipientReport = JsonSerializer.Deserialize<RecipientDeliveryReportSms>(json);
-// or via the sinch event parser:
+// or via the Sinch event parser:
 var recipientReport = sinchClient.Sms.SinchEvents.ParseEvent(json).As<RecipientDeliveryReportSms>();
 ```
 
@@ -504,7 +504,7 @@ var incoming = JsonSerializer.Deserialize<IncomingTextSms>(json);
 Version 2.*:
 ```csharp
 var incoming = JsonSerializer.Deserialize<TextMessage>(json);
-// or via the sinch event parser:
+// or via the Sinch event parser:
 var incoming = sinchClient.Sms.SinchEvents.ParseEvent(json).As<TextMessage>();
 ```
 
@@ -517,7 +517,7 @@ The following source files were removed as part of the refactor and should be de
 
 Replacement guidance
 
-- If you previously relied on `IIncomingSms` or `IncomingBinarySms`, switch to the new strongly-typed sinch event models (`TextMessage`, `BinaryMessage`, etc.) and prefer the `ISinchSmsSinchEvents.ParseEvent(string json)` helper which returns an `ISmsEvent` that you can pattern-match or cast as shown above.
+- If you previously relied on `IIncomingSms` or `IncomingBinarySms`, switch to the new strongly-typed Sinch event models (`TextMessage`, `BinaryMessage`, etc.) and prefer the `ISinchSmsSinchEvents.ParseEvent(string json)` helper which returns an `ISmsEvent` that you can pattern-match or cast as shown above.
 
 - Example migrating code that previously deserialized the old incoming binary type:
 
@@ -1370,7 +1370,7 @@ if (sinchEvent is UnsupportedConversationSinchEvent unsupported) { /* ... */ }
 
 ## SMS API: Sinch.SMS.Hooks namespace renamed to Sinch.SMS.SinchEvents
 
-All SMS sinch event types have moved from the `Sinch.SMS.Hooks` namespace to `Sinch.SMS.SinchEvents`. The subdomain property `sinch.Sms.Webhooks` has been renamed to `sinch.Sms.SinchEvents`, and the interface `ISmsWebhooks` has been renamed to `ISinchSmsSinchEvents`.
+All SMS Sinch event types have moved from the `Sinch.SMS.Hooks` namespace to `Sinch.SMS.SinchEvents`. The subdomain property `sinch.Sms.Webhooks` has been renamed to `sinch.Sms.SinchEvents`, and the interface `ISmsWebhooks` has been renamed to `ISinchSmsSinchEvents`.
 
 Version 1.*:
 ```csharp

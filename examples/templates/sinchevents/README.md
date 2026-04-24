@@ -26,10 +26,10 @@ The sample reads configuration from [appsettings.json](appsettings.json):
 - [`Sinch:ProjectId`](appsettings.json) - your Sinch project id
 - [`Sinch:KeyId`](appsettings.json) - your Sinch API key id
 - [`Sinch:KeySecret`](appsettings.json) - your Sinch API key secret
-- [`Sinch:Sms:SinchEventSecret`](appsettings.json) - optional shared secret used to validate incoming sinch event signatures
+- [`Sinch:Sms:SinchEventSecret`](appsettings.json) - optional shared secret used to validate incoming Sinch event signatures
 
 ### AllowedHosts configuration
-The `appsettings.json` sets `"AllowedHosts": "*"` to allow all hosts during development, which is necessary for sinch event development where external services (e.g., nGrok) must be able to POST (forward requests) to your endpoint. **In production, you should restrict this to Sinch's domain(s) for security.**
+The `appsettings.json` sets `"AllowedHosts": "*"` to allow all hosts during development, which is necessary for Sinch event development where external services (e.g., nGrok) must be able to POST (forward requests) to your endpoint. **In production, you should restrict this to Sinch's domain(s) for security.**
 
 ## How to run
 

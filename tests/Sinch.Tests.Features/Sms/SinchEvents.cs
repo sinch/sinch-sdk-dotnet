@@ -168,7 +168,7 @@ namespace Sinch.Tests.Features.Sms
         }
 
         /// <summary>
-        /// Validate sinch event authentication using HMAC signature.
+        /// Validate Sinch event authentication using HMAC signature.
         /// </summary>
         private static async Task<bool> ValidateSinchEventSignatureHeadersPresent(HttpResponseMessage response)
         {

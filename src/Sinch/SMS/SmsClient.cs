@@ -24,7 +24,7 @@ namespace Sinch.SMS
         /// <summary>
         ///     Inbounds, or Mobile Originated (MO) messages, are incoming messages.
         ///     Inbound messages can be listed and retrieved like batch messages and
-        ///     they can also be delivered by sinch event delivery like delivery reports.
+        ///     they can also be delivered by Sinch event delivery like delivery reports.
         /// </summary>
         ISinchSmsInbounds Inbounds { get; }
 
@@ -45,20 +45,20 @@ namespace Sinch.SMS
         ///         Retrieve
         ///         a delivery report
         ///     </see>
-        ///     or sent as a sinch event.
+        ///     or sent as a Sinch event.
         /// </summary>
         ISinchSmsDeliveryReports DeliveryReports { get; }
 
         /// <summary>
-        ///     Service for handling SMS sinch events.
+        ///     Service for handling SMS Sinch events.
         ///     <para>
-        ///     Use this to parse incoming sinch event payloads and validate HMAC signatures
+        ///     Use this to parse incoming Sinch event payloads and validate HMAC signatures
         ///     for inbound messages (mo_text, mo_binary) and delivery reports.
         ///     </para>
         /// </summary>
         /// <remarks>
-        ///     SMS sinch events are configured in the Sinch Dashboard, not via API.
-        ///     This service only handles parsing and validation of incoming sinch event requests.
+        ///     SMS Sinch events are configured in the Sinch Dashboard, not via API.
+        ///     This service only handles parsing and validation of incoming Sinch event requests.
         /// </remarks>
         ISinchSmsSinchEvents SinchEvents { get; }
 

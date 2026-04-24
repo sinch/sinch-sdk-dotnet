@@ -234,7 +234,7 @@ namespace Sinch.Tests.Sms
             Action act = () => Sms.SinchEvents.ParseEvent(payload);
 
             // Assert
-            act.Should().Throw<InvalidOperationException>().WithMessage("*Deserialization of SMS sinch event failed*");
+            act.Should().Throw<InvalidOperationException>().WithMessage("*Deserialization of SMS Sinch event failed*");
         }
 
         [Fact]
@@ -247,7 +247,7 @@ namespace Sinch.Tests.Sms
             Action act = () => Sms.SinchEvents.ParseEvent(payload);
 
             // Assert
-            act.Should().Throw<InvalidOperationException>().WithMessage("*Deserialization of SMS sinch event failed*");
+            act.Should().Throw<InvalidOperationException>().WithMessage("*Deserialization of SMS Sinch event failed*");
         }
     }
 }

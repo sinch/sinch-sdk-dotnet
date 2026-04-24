@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 namespace Sinch.SMS;
 
 /// <summary>
-///     Validates HMAC authentication headers for sinch event requests.
+///     Validates HMAC authentication headers for Sinch event requests.
 /// </summary>
 internal sealed class HmacAuthenticationValidation
 {
@@ -15,9 +15,9 @@ internal sealed class HmacAuthenticationValidation
     private const string SignatureHeader = "x-sinch-webhook-signature";
 
     /// <summary>
-    ///     Validates the HMAC authentication header from a sinch event request.
+    ///     Validates the HMAC authentication header from a Sinch event request.
     /// </summary>
-    /// <param name="secret">The sinch event secret.</param>
+    /// <param name="secret">The Sinch event secret.</param>
     /// <param name="headers">HTTP headers from the request (case-insensitive lookup will be performed).</param>
     /// <param name="jsonPayload">The raw JSON payload body.</param>
     /// <returns>True if the signature is valid, false otherwise.</returns>

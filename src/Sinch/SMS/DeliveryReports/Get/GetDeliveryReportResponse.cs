@@ -7,7 +7,7 @@ namespace Sinch.SMS.DeliveryReports.Get
 #pragma warning disable CS1570
 
         /// <summary>
-        ///     The type of sinch event for the delivery report.
+        ///     The type of Sinch event for the delivery report.
         ///     Returns a either a full or summary delivery report depending on what was set in the batch.
         ///     <see
         ///         href="https://developers.sinch.com/docs/sms/api-reference/sms/tag/Delivery-reports/#tag/Delivery-reports/operation/GetDeliveryReportByBatchId!in=query&path=type&t=request">
