@@ -6,7 +6,7 @@ namespace SinchEvents.Template.Sms;
 /// <summary>
 /// Ensure valid authentication to handle request.
 /// See https://developers.sinch.com/docs/sms/api-reference/sms/tag/Webhooks/#tag/Webhooks/section/Callbacks
-/// Contact your account manager to configure your callback sending headers validation and
+/// Contact your account manager to configure your sinch event sending headers validation and
 /// set requireAuthentication to true to validate request from Sinch servers.
 /// See https://developers.sinch.com/docs/numbers/api-reference/numbers/tag/Numbers-Callbacks for
 /// more information.
