@@ -1082,7 +1082,7 @@ namespace Sinch.Tests.Conversation
         }
 
         [Fact]
-        public void DeserializeUnsupportedCallbackEvent()
+        public void DeserializeUnsupportedConversationSinchEvent()
         {
             string json = Helpers.LoadResources("Conversation/SinchEvents/UnsupportedConversationSinchEvent.json");
 
@@ -1295,7 +1295,7 @@ namespace Sinch.Tests.Conversation
         }
 
         [Fact]
-        public void SerializeUnknownCallbackEventThrowsArgumentOutOfRangeException()
+        public void SerializeUnknownConversationSinchEventThrowsArgumentOutOfRangeException()
         {
             var unknownEvent = new UnknownConversationSinchEvent();
 
@@ -1306,7 +1306,7 @@ namespace Sinch.Tests.Conversation
         }
 
         [Fact]
-        public void DeserializeUnknownCallbackEventReturnsNull()
+        public void DeserializeUnknownConversationSinchEventReturnsNull()
         {
             const string json = @"{
                 ""app_id"": ""test_app_id"",
