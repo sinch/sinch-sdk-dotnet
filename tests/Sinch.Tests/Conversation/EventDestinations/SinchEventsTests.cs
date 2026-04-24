@@ -10,7 +10,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
 {
     public class SinchEventsTests : ConversationTestBase
     {
-        private const string CallbackSecret = "foo_secret1234";
+        private const string SinchEventSecret = "foo_secret1234";
         private const string TimestampHeader = "x-sinch-webhook-signature-timestamp";
         private const string NonceHeader = "x-sinch-webhook-signature-nonce";
         private const string AlgorithmHeader = "x-sinch-webhook-signature-algorithm";
@@ -27,7 +27,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
                 { TimestampHeader, "1634579353" },
                 { AlgorithmHeader, "HmacSHA256" },
                 { SignatureHeader, "wKmZBGo4Cf+y9cZoPHhiVw6ziKeubLGqN4OdG8jlaPo=" },
-            }, json, CallbackSecret);
+            }, json, SinchEventSecret);
 
             isValid.Should().BeTrue();
         }
@@ -43,7 +43,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
                 { TimestampHeader, ["1634579353"] },
                 { AlgorithmHeader, ["HmacSHA256"] },
                 { SignatureHeader, ["wKmZBGo4Cf+y9cZoPHhiVw6ziKeubLGqN4OdG8jlaPo="] },
-            }, json, CallbackSecret);
+            }, json, SinchEventSecret);
 
             isValid.Should().BeTrue();
         }

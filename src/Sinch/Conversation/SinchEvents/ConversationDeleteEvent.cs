@@ -5,7 +5,7 @@ using Sinch.Conversation.SinchEvents.Models;
 namespace Sinch.Conversation.SinchEvents
 {
     /// <summary>
-    ///     This sinch event is sent when a conversation between the subscribed app and a contact is deleted.
+    ///     This Sinch event is sent when a conversation between the subscribed app and a contact is deleted.
     /// </summary>
     public sealed class ConversationDeleteEvent : ConversationSinchEventBase
     {

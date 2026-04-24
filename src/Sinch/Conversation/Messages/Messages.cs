@@ -17,7 +17,7 @@ namespace Sinch.Conversation.Messages
     ///     To start sending messages you must have a Conversation API
     ///     <see href="https://dashboard.sinch.com/convapi/app">app</see>.
     ///     The app holds information about the channel credentials and registered event destinations
-    ///     to which the API delivers sinch events such as message delivery receipts and contact messages.
+    ///     to which the API delivers Sinch events such as message delivery receipts and contact messages.
     ///     If you don't already have an app please follow the instructions in the getting started guide available
     ///     in the <see href="https://dashboard.sinch.com/convapi/getting-started">Sinch Dashboard</see>
     ///     to create one.

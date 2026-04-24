@@ -677,7 +677,7 @@ namespace Sinch.Tests.Conversation.Apps
             ConversationChannelCredentials credentials,
             string callbackSecret)
         {
-            credentials.CallbackSecret = callbackSecret;
+            credentials.SinchEventSecret = callbackSecret;
             return credentials;
         }
 
@@ -686,7 +686,7 @@ namespace Sinch.Tests.Conversation.Apps
             string callbackSecret,
             int credentialOrdinalNumber)
         {
-            credentials.CallbackSecret = callbackSecret;
+            credentials.SinchEventSecret = callbackSecret;
             credentials.CredentialOrdinalNumber = credentialOrdinalNumber;
             return credentials;
         }

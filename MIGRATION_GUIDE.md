@@ -47,7 +47,7 @@
 - [Conversation API: CallbackSettings renamed to EventDestinationSettings](#conversation-api-callbacksettings-renamed-to-eventdestinationsettings)
 - [Conversation API: SendEventRequest and SendMessageRequest CallbackUrl renamed to EventDestinationTarget](#conversation-api-sendeventrequest-and-sendmessagerequest-callbackurl-renamed-to-eventdestinationtarget)
 - [Numbers API: CallbackConfiguration renamed to EventDestination](#numbers-api-callbackconfiguration-renamed-to-eventdestination)
-- [Numbers API: Sinch.Numbers.Hooks namespace renamed to Sinch.Numbers.SinchEvents; Event renamed to NumberSinchEvent](#numbers-api-sinchnumbershooks-namespace-renamed-to-sinchnumberssinchevents-event-renamed-to-numbersinchemvent)
+- [Numbers API: Sinch.Numbers.Hooks namespace renamed to Sinch.Numbers.SinchEvents; Event renamed to NumberSinchEvent](#numbers-api-sinchnumbershooks-namespace-renamed-to-sinchnumberssinchevents-event-renamed-to-numbersinchevent)
 - [Numbers API: CallbackUrl renamed to EventDestinationTarget](#numbers-api-callbackurl-renamed-to-eventdestinationtarget)
 - [Conversation API: ICallbackEvent and related types renamed](#conversation-api-icallbackevent-and-related-types-renamed)
 - [SMS API: Sinch.SMS.Hooks namespace renamed to Sinch.SMS.SinchEvents](#sms-api-sinchsmshooks-namespace-renamed-to-sinchsmssinchevents)
@@ -1326,7 +1326,6 @@ The `CallbackUrl` property has been renamed to `EventDestinationTarget` on the f
 - `ActiveNumber`
 - `UpdateActiveNumberRequest`
 - `RentAnyNumberRequest`
-- `RentActiveNumberRequest`
 
 Version 1.*:
 ```csharp

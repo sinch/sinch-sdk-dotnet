@@ -26,7 +26,7 @@ namespace Sinch.Numbers.Available.Rent
         public VoiceConfiguration? VoiceConfiguration { get; set; }
 
         /// <summary>
-        ///     The callback URL to be called for a rented number's provisioning / deprovisioning operations.
+        ///     The event destination target URL to be called for a rented number's provisioning / deprovisioning operations.
         /// </summary>
         [JsonPropertyName("callbackUrl")]
         public string? EventDestinationTarget { get; set; }

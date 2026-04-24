@@ -1082,7 +1082,7 @@ namespace Sinch.Tests.Conversation
         }
 
         [Fact]
-        public void DeserializeUnsupportedCallbackEvent()
+        public void DeserializeUnsupportedConversationSinchEvent()
         {
             string json = Helpers.LoadResources("Conversation/SinchEvents/UnsupportedConversationSinchEvent.json");
 
@@ -1295,7 +1295,7 @@ namespace Sinch.Tests.Conversation
         }
 
         [Fact]
-        public void SerializeUnknownCallbackEventThrowsArgumentOutOfRangeException()
+        public void SerializeUnknownConversationSinchEventThrowsArgumentOutOfRangeException()
         {
             var unknownEvent = new UnknownConversationSinchEvent();
 
@@ -1306,7 +1306,7 @@ namespace Sinch.Tests.Conversation
         }
 
         [Fact]
-        public void DeserializeUnknownCallbackEventReturnsNull()
+        public void DeserializeUnknownConversationSinchEventReturnsNull()
         {
             const string json = @"{
                 ""app_id"": ""test_app_id"",
@@ -1335,7 +1335,7 @@ namespace Sinch.Tests.Conversation
             Action act = () => Conversation.EventDestinations.ParseEvent(json);
 
             act.Should().Throw<InvalidOperationException>()
-                .WithMessage("Deserialization of conversation sinch event failed");
+                .WithMessage("Deserialization of conversation Sinch event failed");
         }
 
         /// <summary>
