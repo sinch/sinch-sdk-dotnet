@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Sinch.SMS.Hooks;
+using Sinch.SMS.SinchEvents;
 
-namespace Webhook.Template.Sms;
+namespace SinchEvents.Template.Sms;
 
 /// <summary>
-/// Action filter that validates Sinch SMS webhook HMAC signature before executing the action.
+/// Action filter that validates Sms Sinch Event HMAC signature before executing the action.
 /// </summary>
-public class SinchWebhookFilter(ISmsWebhooks webhooks, IConfiguration configuration, bool requireAuthentication)
+public class SmsSinchEventsFilter(ISinchSmsSinchEvents smsSinchEvents, IConfiguration configuration, bool requireAuthentication)
     : IAsyncActionFilter
 {
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -18,7 +18,7 @@ public class SinchWebhookFilter(ISmsWebhooks webhooks, IConfiguration configurat
         var body = await reader.ReadToEndAsync();
 
         // Always read and cache the body so controllers can reuse it regardless of auth requirement.
-        context.HttpContext.Items[SinchWebhookConstants.BodyItemKey] = body;
+        context.HttpContext.Items[SinchEventsConstants.BodyItemKey] = body;
 
         if (!requireAuthentication)
         {
@@ -27,11 +27,11 @@ public class SinchWebhookFilter(ISmsWebhooks webhooks, IConfiguration configurat
             return;
         }
 
-        var secret = configuration["Sinch:Sms:WebhookSecret"] ?? string.Empty;
+        var secret = configuration["Sinch:Sms:SinchEventSecret"] ?? string.Empty;
 
         var headersDictionary = request.Headers.ToDictionary(h => h.Key, h => h.Value.ToString(), StringComparer.OrdinalIgnoreCase);
 
-        if (!webhooks.ValidateAuthenticationHeader(secret, headersDictionary, body))
+        if (!smsSinchEvents.ValidateAuthenticationHeader(secret, headersDictionary, body))
         {
             context.Result = new UnauthorizedResult();
             return;

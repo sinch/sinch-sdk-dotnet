@@ -1,4 +1,4 @@
-# Backend application built using Sinch .NET SDK to handle incoming webhooks
+# Backend application built using Sinch .NET SDK to handle incoming Sinch Events
 
 This directory contains a server application based onto [Sinch .NET SDK](https://github.com/sinch/sinch-sdk-dotnet)
 
@@ -17,7 +17,7 @@ The sample reads configuration from [appsettings.json](appsettings.json):
     "KeyId": "",
     "KeySecret": "",
     "Sms": {
-      "WebhookSecret": ""
+      "SinchEventSecret": ""
     }
   }
 }
@@ -26,18 +26,18 @@ The sample reads configuration from [appsettings.json](appsettings.json):
 - [`Sinch:ProjectId`](appsettings.json) - your Sinch project id
 - [`Sinch:KeyId`](appsettings.json) - your Sinch API key id
 - [`Sinch:KeySecret`](appsettings.json) - your Sinch API key secret
-- [`Sinch:Sms:WebhookSecret`](appsettings.json) - optional shared secret used to validate incoming webhook signatures
+- [`Sinch:Sms:SinchEventSecret`](appsettings.json) - optional shared secret used to validate incoming sinch event signatures
 
 ### AllowedHosts configuration
-The `appsettings.json` sets `"AllowedHosts": "*"` to allow all hosts during development, which is necessary for webhook development where external services (e.g., nGrok) must be able to POST (forward requests) to your endpoint. **In production, you should restrict this to Sinch's domain(s) for security.**
+The `appsettings.json` sets `"AllowedHosts": "*"` to allow all hosts during development, which is necessary for sinch event development where external services (e.g., nGrok) must be able to POST (forward requests) to your endpoint. **In production, you should restrict this to Sinch's domain(s) for security.**
 
 ## How to run
 
 Restore and run the project:
 
 ```powershell
-# Navigate to the webhooks folder
-cd examples\templates\webhooks
+# Navigate to the sinchevents folder
+cd examples\templates\sinchevents
 
 # Restore and run
 dotnet restore
@@ -45,7 +45,7 @@ dotnet run
 ```
 
 **Authentication / Validating callbacks**
-The controller includes an optional validation step that checks headers and payload against a shared secret (configured at [`Sinch:Sms:WebhookSecret`](appsettings.json)). The example defaults to [`requireAuthentication = false`](Sms/WebhooksController.cs) — enable and configure it if you require strict validation of incoming callbacks.
+The controller includes an optional validation step that checks headers and payload against a shared secret (configured at [`Sinch:Sms:SinchEventSecret`](appsettings.json)). The example defaults to [`requireAuthentication = false`](Sms/SmsSinchEventsController.cs) — enable and configure it if you require strict validation of incoming callbacks.
 
 ## Use ngrok to forward request to local server
 

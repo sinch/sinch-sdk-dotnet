@@ -1,11 +1,10 @@
-// Sinch Webhook Template
+// Sinch SMS Sinch Events Template
 // This snippet is available at https://github.com/sinch/sinch-sdk-dotnet
 // See https://github.com/sinch/sinch-sdk-dotnet/tree/main/examples/templates/webhooks/README.md for details
 
-
 using Sinch;
-using Sinch.SMS.Hooks;
-using Webhook.Template.Sms;
+using Sinch.SMS.SinchEvents;
+using SinchEvents.Template.Sms;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +16,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddSingleton<ServerBusinessLogic>();
 
-// Note: Unified credentials are not required for webhook validation (only Sinch:Sms:WebhookSecret is).
+// Note: Unified credentials are not required for sinch event validation (only Sinch:Sms:SinchEventSecret is).
 // They are included here so you can respond to incoming messages using the SMS API if needed.
 builder.Services.AddSinchClient(() => new SinchClientConfiguration
 {
@@ -29,7 +28,7 @@ builder.Services.AddSinchClient(() => new SinchClientConfiguration
     }
 });
 
-builder.Services.AddSingleton<ISmsWebhooks>(sp => sp.GetRequiredService<ISinchClient>().Sms.Webhooks);
+builder.Services.AddSingleton<ISinchSmsSinchEvents>(sp => sp.GetRequiredService<ISinchClient>().Sms.SinchEvents);
 
 var app = builder.Build();
 

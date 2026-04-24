@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Sinch.SMS.Hooks;
+using Sinch.SMS.SinchEvents;
 
-namespace Webhook.Template.Sms;
+namespace SinchEvents.Template.Sms;
 
 /// <summary>
 /// Ensure valid authentication to handle request.
@@ -13,17 +13,17 @@ namespace Webhook.Template.Sms;
 /// </summary>
 
 [ApiController]
-[SinchWebhook(requireAuthentication: false)]
-public class WebhooksController : ControllerBase
+[SmsSinchEvent(requireAuthentication: false)]
+public class SmsSinchEventsController : ControllerBase
 {
-    private readonly ISmsWebhooks _webhooks;
-    private readonly ServerBusinessLogic _webhooksBusinessLogic;
+    private readonly ISinchSmsSinchEvents _smsSinchEvents;
+    private readonly ServerBusinessLogic _sinchEventsBusinessLogic;
     private readonly IConfiguration _configuration;
 
-    public WebhooksController(ISmsWebhooks webhooks, ServerBusinessLogic webhooksBusinessLogic, IConfiguration configuration)
+    public SmsSinchEventsController(ISinchSmsSinchEvents smsSinchEvents, ServerBusinessLogic sinchEventsBusinessLogic, IConfiguration configuration)
     {
-        _webhooks = webhooks;
-        _webhooksBusinessLogic = webhooksBusinessLogic;
+        _smsSinchEvents = smsSinchEvents;
+        _sinchEventsBusinessLogic = sinchEventsBusinessLogic;
         _configuration = configuration;
     }
 
@@ -31,10 +31,10 @@ public class WebhooksController : ControllerBase
     [Consumes("application/json")]
     public async Task<IActionResult> SmsDeliveryEvent()
     {
-        var body = HttpContext.Items[SinchWebhookConstants.BodyItemKey] as string;
+        var body = HttpContext.Items[SinchEventsConstants.BodyItemKey] as string;
 
-        var smsEvent = _webhooks.ParseEvent(body!);
-        await _webhooksBusinessLogic.HandleEvent(smsEvent);
+        var smsEvent = _smsSinchEvents.ParseEvent(body!);
+        await _sinchEventsBusinessLogic.HandleEvent(smsEvent);
 
         return Ok();
     }

@@ -2,7 +2,7 @@ using Sinch.SMS;
 using Sinch.SMS.DeliveryReports;
 using Sinch.SMS.Inbounds;
 
-namespace Webhook.Template.Sms;
+namespace SinchEvents.Template.Sms;
 
 public class ServerBusinessLogic(ILogger<ServerBusinessLogic> logger)
 {
