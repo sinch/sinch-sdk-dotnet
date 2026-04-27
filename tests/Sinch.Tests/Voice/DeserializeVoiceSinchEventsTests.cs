@@ -25,7 +25,7 @@ namespace Sinch.Tests.Voice
         [Fact]
         public void DeserializeAce()
         {
-            var json = Helpers.LoadResources("Voice/AnsweredCallSinchEvent.json");
+            var json = Helpers.LoadResources("Voice/AnsweredCallEvent.json");
 
             var @event = JsonSerializer.Deserialize<VoiceSinchEvent>(json);
             var eventWithClient = _voiceClient.ParseEvent(json);
@@ -56,7 +56,7 @@ namespace Sinch.Tests.Voice
         [Fact]
         public void DeserializeNotificationEvent()
         {
-            var json = Helpers.LoadResources("Voice/NotificationSinchEvent.json");
+            var json = Helpers.LoadResources("Voice/NotificationEvent.json");
 
             var @event = JsonSerializer.Deserialize<VoiceSinchEvent>(json);
             var eventWithClient = _voiceClient.ParseEvent(json);
@@ -88,7 +88,7 @@ namespace Sinch.Tests.Voice
         [Fact]
         public void DeserializePromtInputEvent()
         {
-            var json = Helpers.LoadResources("Voice/PromtInputSinchEvent.json");
+            var json = Helpers.LoadResources("Voice/PromtInputEvent.json");
             var @event = JsonSerializer.Deserialize<VoiceSinchEvent>(json);
             var eventWithClient = _voiceClient.ParseEvent(json);
 
@@ -120,7 +120,7 @@ namespace Sinch.Tests.Voice
         [Fact]
         public void DeserializeDisconnectedCallEvent()
         {
-            var json = Helpers.LoadResources("Voice/DisconnectedCallSinchEvent.json");
+            var json = Helpers.LoadResources("Voice/DisconnectedCallEvent.json");
 
             var @event = JsonSerializer.Deserialize<VoiceSinchEvent>(json);
             var eventWithClient = _voiceClient.ParseEvent(json);
@@ -165,7 +165,7 @@ namespace Sinch.Tests.Voice
         [Fact]
         public void DeserializeIncomingCallEvent()
         {
-            var json = Helpers.LoadResources("Voice/IncomingCallSinchEvent.json");
+            var json = Helpers.LoadResources("Voice/IncomingCallEvent.json");
 
             var @event = JsonSerializer.Deserialize<VoiceSinchEvent>(json);
             var eventWithClient = _voiceClient.ParseEvent(json);
