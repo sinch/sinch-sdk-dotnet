@@ -101,7 +101,7 @@ namespace Sinch.Tests.Verification
         [Fact]
         public void SerializeSinchEventResponse()
         {
-            var response = new SmsRequestSinchEventResponse
+            var response = new VerificationStartEventResponseSms
             {
                 Action = Action.Allow,
                 Sms = new Sinch.Verification.SinchEvents.Sms
@@ -133,7 +133,7 @@ namespace Sinch.Tests.Verification
         {
             var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationResponseWhatsAppDto.json");
 
-            var response = new WhatsAppRequestSinchEventResponse
+            var response = new VerificationStartEventResponseWhatsApp
             {
                 Action = Action.Allow,
                 WhatsApp = new WhatsApp

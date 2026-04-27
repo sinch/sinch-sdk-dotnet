@@ -5,7 +5,7 @@ using Sinch.Verification.Common;
 
 namespace Sinch.Verification.SinchEvents
 {
-    public sealed class WhatsAppRequestSinchEventResponse : RequestSinchEventResponseBase
+    public sealed class VerificationStartEventResponseWhatsApp : RequestSinchEventResponseBase
     {
         [JsonPropertyName("whatsapp")]
         public WhatsApp? WhatsApp { get; set; }

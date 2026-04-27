@@ -1439,10 +1439,10 @@ Renamed types:
 - `VerificationRequestEvent` → `VerificationSinchEventRequest`
 - `VerificationResultEvent` → `VerificationSinchEventResult`
 - `RequestEventResponseBase` → `RequestSinchEventResponseBase`
-- `SmsRequestEventResponse` → `SmsRequestSinchEventResponse`
-- `FlashCallRequestEventResponse` → `FlashCallRequestSinchEventResponse`
-- `PhoneCallRequestEventResponse` → `PhoneCallRequestSinchEventResponse`
-- `WhatsAppRequestEventResponse` → `WhatsAppRequestSinchEventResponse`
+- `SmsRequestEventResponse` → `VerificationStartEventResponseSms`
+- `FlashCallRequestEventResponse` → `VerificationStartEventResponseFlashCall`
+- `PhoneCallRequestEventResponse` → `VerificationStartEventResponsePhoneCall`
+- `WhatsAppRequestEventResponse` → `VerificationStartEventResponseWhatsApp`
 
 Version 1.*:
 ```csharp
