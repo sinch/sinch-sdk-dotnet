@@ -1107,7 +1107,7 @@ var isValid = sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, 
 
 Version 2.*:
 ```csharp
-var isValid = sinch.Conversation.SinchEvents.ValidateAuthenticationHeader(headers, rawBody, secret);
+var isValid = sinch.Conversation.EventDestinations.ValidateAuthenticationHeader(headers, rawBody, secret);
 ```
 
 ## Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts StringValues headers
@@ -1132,7 +1132,7 @@ var headers = new Dictionary<string, string>
     ["x-sinch-webhook-signature"] = signature
 };
 
-var isValid = sinch.Conversation.SinchEvents.ValidateAuthenticationHeader(headers, rawBody, secret);
+var isValid = sinch.Conversation.EventDestinations.ValidateAuthenticationHeader(headers, rawBody, secret);
 
 // Option B: multi-value headers (e.g. from HttpContext.Request.Headers)
 IReadOnlyDictionary<string, IEnumerable<string>> headers = new Dictionary<string, IEnumerable<string>>
@@ -1140,7 +1140,7 @@ IReadOnlyDictionary<string, IEnumerable<string>> headers = new Dictionary<string
     ["x-sinch-webhook-signature"] = new[] { signature }
 };
 
-var isValid = sinch.Conversation.SinchEvents.ValidateAuthenticationHeader(headers, rawBody, secret);
+var isValid = sinch.Conversation.EventDestinations.ValidateAuthenticationHeader(headers, rawBody, secret);
 ```
 
 ## Conversation API: Webhooks ParseEvent no longer accepts JsonNode
@@ -1155,7 +1155,7 @@ var callback = sinch.Conversation.Webhooks.ParseEvent(node!);
 
 Version 2.*:
 ```csharp
-var callback = sinch.Conversation.SinchEvents.ParseEvent(rawBody);
+var callback = sinch.Conversation.EventDestinations.ParseEvent(rawBody);
 ```
 
 ## Conversation API: Webhooks renamed to EventDestinations
@@ -1299,8 +1299,8 @@ Renamed types:
 
 Version 1.*:
 ```csharp
-ICallbackEvent sinchEvent = sinch.Conversation.EventDestinations.ParseEvent(rawBody);
-if (sinchEvent is UnsupportedCallbackEvent unsupported) { /* ... */ }
+ICallbackEvent callbackEvent = sinch.Conversation.Webhooks.ParseEvent(rawBody);
+if (callbackEvent is UnsupportedCallbackEvent unsupported) { /* ... */ }
 ```
 
 Version 2.*:
