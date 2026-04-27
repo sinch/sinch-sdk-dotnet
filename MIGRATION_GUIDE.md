@@ -1438,7 +1438,7 @@ Renamed types:
 
 - `VerificationRequestEvent` → `VerificationSinchEventRequest`
 - `VerificationResultEvent` → `VerificationSinchEventResult`
-- `RequestEventResponseBase` → `RequestSinchEventResponseBase`
+- `RequestEventResponseBase` → `VerificationStartEventResponseBase`
 - `SmsRequestEventResponse` → `VerificationStartEventResponseSms`
 - `FlashCallRequestEventResponse` → `VerificationStartEventResponseFlashCall`
 - `PhoneCallRequestEventResponse` → `VerificationStartEventResponsePhoneCall`
