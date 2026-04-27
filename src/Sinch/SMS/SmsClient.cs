@@ -24,7 +24,7 @@ namespace Sinch.SMS
         /// <summary>
         ///     Inbounds, or Mobile Originated (MO) messages, are incoming messages.
         ///     Inbound messages can be listed and retrieved like batch messages and
-        ///     they can also be delivered by Sinch event delivery like delivery reports.
+        ///     they can also be pushed to your event destination as Sinch events.
         /// </summary>
         ISinchSmsInbounds Inbounds { get; }
 
@@ -60,7 +60,7 @@ namespace Sinch.SMS
         ///     SMS Sinch events are configured in the Sinch Dashboard, not via API.
         ///     This service only handles parsing and validation of incoming Sinch event requests.
         /// </remarks>
-        ISinchSmsSinchEvents SinchEvents { get; }
+        ISmsSinchEvents SmsSinchEvents { get; }
 
         internal bool IsUsingServicePlanId { get; }
     }
@@ -116,9 +116,9 @@ namespace Sinch.SMS
                 http);
             DeliveryReports = new DeliveryReports.DeliveryReports(projectIdOrServicePlanId, baseAddress,
                 loggerFactory?.Create<ISinchSmsDeliveryReports>(), http);
-            SinchEvents = new SinchSmsSinchEvents(
+            SmsSinchEvents = new SmsSinchEvents(
                 http.JsonSerializerOptions,
-                loggerFactory?.Create<ISinchSmsSinchEvents>());
+                loggerFactory?.Create<ISmsSinchEvents>());
         }
 
         public ISinchSmsBatches Batches { get; }
@@ -129,7 +129,7 @@ namespace Sinch.SMS
 
         public ISinchSmsDeliveryReports DeliveryReports { get; }
 
-        public ISinchSmsSinchEvents SinchEvents { get; }
+        public ISmsSinchEvents SmsSinchEvents { get; }
 
         public bool IsUsingServicePlanId { get; }
     }

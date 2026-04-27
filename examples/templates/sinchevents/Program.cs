@@ -1,4 +1,4 @@
-// Sinch SMS Sinch Events Template
+// SMS Sinch Events Template
 // This snippet is available at https://github.com/sinch/sinch-sdk-dotnet
 // See https://github.com/sinch/sinch-sdk-dotnet/tree/main/examples/templates/sinchevents/README.md for details
 

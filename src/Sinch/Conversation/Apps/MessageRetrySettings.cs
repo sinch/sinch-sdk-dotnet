@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Conversation.Apps.Create
+namespace Sinch.Conversation.Apps
 {
     /// <summary>
     ///     This object contains settings related to message retry mechanism.

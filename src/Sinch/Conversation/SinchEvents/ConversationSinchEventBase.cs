@@ -12,7 +12,7 @@ namespace Sinch.Conversation.SinchEvents
         public required string AppId { get; set; }
 
         /// <summary>
-        ///     Timestamp marking when the channel Sinch event was accepted/received by the Conversation API.
+        ///     Timestamp marking when the channel event was accepted/received by the Conversation API.
         /// </summary>
         [JsonPropertyName("accepted_time")]
         public DateTime? AcceptedTime { get; set; }
