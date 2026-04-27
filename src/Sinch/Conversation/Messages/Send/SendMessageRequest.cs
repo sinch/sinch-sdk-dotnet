@@ -31,10 +31,10 @@ namespace Sinch.Conversation.Messages.Send
 
         /// <summary>
         ///     Overwrites the default event destination target for delivery receipts for this message.
+        ///     When the event destination target is a URL, it should be of the form: <c>https://host[:port]/path</c>
         ///     Note that you may
-        ///     [define a `secret_for_overridden_callback_urls` at the app level](https://developers.sinch.com/docs/conversation/api-reference/conversation/tag/App/operation/App_UpdateApp!path=callback_settings/secret_for_overridden_callback_urls&amp;t=request)
-        ///     this secret will be used to sign the contents of delivery receipts when the default
-        ///     event destination target URL is overridden by this property. The REST URL should be of the form: `http://host[:port]/path`
+        ///     <see href="https://developers.sinch.com/docs/conversation/api-reference/conversation/tag/App/operation/App_UpdateApp!path=callback_settings/secret_for_overridden_callback_urls&amp;t=request">define a secret for overridden event destination targets at the app level</see>;
+        ///     this secret will be used to sign the contents of delivery receipts when the default event destination target is overridden by this property.
         /// </summary>
         [JsonPropertyName("callback_url")]
         public Uri? EventDestinationTarget { get; set; }
