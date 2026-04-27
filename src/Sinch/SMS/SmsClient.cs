@@ -24,7 +24,7 @@ namespace Sinch.SMS
         /// <summary>
         ///     Inbounds, or Mobile Originated (MO) messages, are incoming messages.
         ///     Inbound messages can be listed and retrieved like batch messages and
-        ///     they can also be delivered by Sinch event delivery like delivery reports.
+        ///     they can also be pushed to your event destination as Sinch events.
         /// </summary>
         ISinchSmsInbounds Inbounds { get; }
 
