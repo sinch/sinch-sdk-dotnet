@@ -13,7 +13,7 @@ namespace Sinch.Voice.SinchEvents
     ///     enabled, the amd object will also be present on ACE callbacks.
     ///     Note: ACE Callbacks are not issued for InApp Calls (destination: username), only PSTN and SIP calls.
     /// </summary>
-    public sealed class AnsweredCallSinchEvent : VoiceSinchEvent
+    public sealed class AnsweredCallEvent : VoiceSinchEvent
     {
         /// <summary>
         ///     Must have the value ace.

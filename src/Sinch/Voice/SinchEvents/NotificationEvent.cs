@@ -8,7 +8,7 @@ namespace Sinch.Voice.SinchEvents
     ///     <br /><br />
     ///     If there is no response to the callback within the timeout period, the notification is discarded.
     /// </summary>
-    public sealed class NotificationSinchEvent : VoiceSinchEvent
+    public sealed class NotificationEvent : VoiceSinchEvent
     {
         /// <summary>
         ///     Must have the value notify.
@@ -64,7 +64,7 @@ namespace Sinch.Voice.SinchEvents
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(NotificationSinchEvent)} {{\n");
+            sb.Append($"class {nameof(NotificationEvent)} {{\n");
             sb.Append($"  {nameof(Event)}: ").Append(Event).Append('\n');
             sb.Append($"  {nameof(Type)}: ").Append(Type).Append('\n');
             sb.Append($"  {nameof(Destination)}: ").Append(Destination).Append('\n');

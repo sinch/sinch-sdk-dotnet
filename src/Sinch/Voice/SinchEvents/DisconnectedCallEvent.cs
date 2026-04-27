@@ -12,7 +12,7 @@ namespace Sinch.Voice.SinchEvents
     ///     This event doesn't support instructions and only supports the
     ///     [hangup](https://developers.sinch.com/docs/voice/api-reference/svaml/actions/#hangup) action.
     /// </summary>
-    public sealed class DisconnectedCallSinchEvent : VoiceSinchEvent
+    public sealed class DisconnectedCallEvent : VoiceSinchEvent
     {
         /// <summary>
         ///     Must have the value &#x60;dice&#x60;.

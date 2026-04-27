@@ -26,27 +26,27 @@ namespace Sinch.Voice.SinchEvents
 
             if (type == EventType.NotificationEvent.Value)
             {
-                return elem.Deserialize<NotificationSinchEvent>(options);
+                return elem.Deserialize<NotificationEvent>(options);
             }
 
             if (type == EventType.IncomingCallEvent.Value)
             {
-                return elem.Deserialize<IncomingCallSinchEvent>(options);
+                return elem.Deserialize<IncomingCallEvent>(options);
             }
 
             if (type == EventType.DisconnectedCallEvent.Value)
             {
-                return elem.Deserialize<DisconnectedCallSinchEvent>(options);
+                return elem.Deserialize<DisconnectedCallEvent>(options);
             }
 
             if (type == EventType.AnsweredCallEvent.Value)
             {
-                return elem.Deserialize<AnsweredCallSinchEvent>(options);
+                return elem.Deserialize<AnsweredCallEvent>(options);
             }
 
             if (type == EventType.PromptInputEvent.Value)
             {
-                return elem.Deserialize<PromptInputSinchEvent>(options);
+                return elem.Deserialize<PromtInputEvent>(options);
             }
 
             throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
@@ -56,19 +56,19 @@ namespace Sinch.Voice.SinchEvents
         {
             switch (value)
             {
-                case AnsweredCallSinchEvent answeredCallEvent:
+                case AnsweredCallEvent answeredCallEvent:
                     JsonSerializer.Serialize(writer, answeredCallEvent, options);
                     break;
-                case DisconnectedCallSinchEvent disconnectedCallEvent:
+                case DisconnectedCallEvent disconnectedCallEvent:
                     JsonSerializer.Serialize(writer, disconnectedCallEvent, options);
                     break;
-                case IncomingCallSinchEvent incomingCallEvent:
+                case IncomingCallEvent incomingCallEvent:
                     JsonSerializer.Serialize(writer, incomingCallEvent, options);
                     break;
-                case NotificationSinchEvent notificationEvent:
+                case NotificationEvent notificationEvent:
                     JsonSerializer.Serialize(writer, notificationEvent, options);
                     break;
-                case PromptInputSinchEvent promptInputEvent:
+                case PromtInputEvent promptInputEvent:
                     JsonSerializer.Serialize(writer, promptInputEvent, options);
                     break;
                 default:

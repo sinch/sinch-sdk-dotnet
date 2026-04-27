@@ -1479,11 +1479,6 @@ Several Voice event model types have been renamed. The JSON wire format is uncha
 Renamed types:
 
 - `IVoiceEvent` → `VoiceSinchEvent`
-- `AnsweredCallEvent` → `AnsweredCallSinchEvent`
-- `DisconnectedCallEvent` → `DisconnectedCallSinchEvent`
-- `IncomingCallEvent` → `IncomingCallSinchEvent`
-- `NotificationEvent` → `NotificationSinchEvent`
-- `PromtInputEvent` → `PromptInputSinchEvent`
 
 Version 1.*:
 ```csharp
@@ -1503,11 +1498,11 @@ Version 2.*:
 VoiceSinchEvent sinchEvent = sinch.Voice.ParseEvent(rawBody);
 switch (sinchEvent)
 {
-    case AnsweredCallSinchEvent ace: /* ... */ break;
-    case DisconnectedCallSinchEvent dice: /* ... */ break;
-    case IncomingCallSinchEvent ice: /* ... */ break;
-    case NotificationSinchEvent notify: /* ... */ break;
-    case PromptInputSinchEvent pie: /* ... */ break;
+    case AnsweredCallEvent ace: /* ... */ break;
+    case DisconnectedCallEvent dice: /* ... */ break;
+    case IncomingCallEvent ice: /* ... */ break;
+    case NotificationEvent notify: /* ... */ break;
+    case PromtInputEvent pie: /* ... */ break;
 }
 ```
 

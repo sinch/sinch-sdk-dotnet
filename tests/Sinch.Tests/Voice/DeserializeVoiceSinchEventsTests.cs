@@ -35,7 +35,7 @@ namespace Sinch.Tests.Voice
 
             void AssertEvent(VoiceSinchEvent parsed)
             {
-                parsed.As<AnsweredCallSinchEvent>().Should().BeEquivalentTo(new AnsweredCallSinchEvent
+                parsed.As<AnsweredCallEvent>().Should().BeEquivalentTo(new AnsweredCallEvent
                 {
                     Event = EventType.AnsweredCallEvent,
                     CallId = "a call id",
@@ -66,7 +66,7 @@ namespace Sinch.Tests.Voice
 
             void AssertEvent(VoiceSinchEvent parsed)
             {
-                parsed.As<NotificationSinchEvent>().Should().BeEquivalentTo(new NotificationSinchEvent
+                parsed.As<NotificationEvent>().Should().BeEquivalentTo(new NotificationEvent
                 {
                     Event = EventType.NotificationEvent,
                     CallId = "a call id",
@@ -97,7 +97,7 @@ namespace Sinch.Tests.Voice
 
             void AssertEvent(VoiceSinchEvent parsed)
             {
-                parsed.As<PromptInputSinchEvent>().Should().BeEquivalentTo(new PromptInputSinchEvent
+                parsed.As<PromtInputEvent>().Should().BeEquivalentTo(new PromtInputEvent
                 {
                     Event = EventType.PromptInputEvent,
                     CallId = "a call id",
@@ -130,7 +130,7 @@ namespace Sinch.Tests.Voice
 
             void AssertEvent(VoiceSinchEvent parsed)
             {
-                parsed.As<DisconnectedCallSinchEvent>().Should().BeEquivalentTo(new DisconnectedCallSinchEvent
+                parsed.As<DisconnectedCallEvent>().Should().BeEquivalentTo(new DisconnectedCallEvent
                 {
                     Event = EventType.DisconnectedCallEvent,
                     CallId = "a call id",
@@ -175,7 +175,7 @@ namespace Sinch.Tests.Voice
 
             void AssertEvent(VoiceSinchEvent parsed)
             {
-                parsed.As<IncomingCallSinchEvent>().Should().BeEquivalentTo(new IncomingCallSinchEvent
+                parsed.As<IncomingCallEvent>().Should().BeEquivalentTo(new IncomingCallEvent
                 {
                     Event = EventType.IncomingCallEvent,
                     CallId = "a call id",
