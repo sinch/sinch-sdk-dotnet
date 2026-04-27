@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Conversation.Apps.Create
+namespace Sinch.Conversation.Apps
 {
     /// <summary>
     ///     This object contains additional settings related to [delivery report based fallback](https://developers.sinch.com/docs/conversation/keyconcepts/#delivery-report-base-message-fallback). Note that this **paid** functionality is available for open beta testing.
