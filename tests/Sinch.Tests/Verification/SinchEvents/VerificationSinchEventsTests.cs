@@ -33,9 +33,9 @@ namespace Sinch.Tests.Verification
                 ]
             }";
 
-            var deserialized = JsonSerializer.Deserialize<VerificationSinchEventRequest>(jsonString);
+            var deserialized = JsonSerializer.Deserialize<VerificationStartEvent>(jsonString);
 
-            deserialized.Should().BeEquivalentTo(new VerificationSinchEventRequest()
+            deserialized.Should().BeEquivalentTo(new VerificationStartEvent()
             {
                 Id = "1234567890",
                 Event = "VerificationSinchEventRequest",
@@ -78,9 +78,9 @@ namespace Sinch.Tests.Verification
             ""custom"": ""string""
             }";
 
-            var deserialized = JsonSerializer.Deserialize<VerificationSinchEventResult>(jsonString);
+            var deserialized = JsonSerializer.Deserialize<VerificationResultEvent>(jsonString);
 
-            deserialized.Should().BeEquivalentTo(new VerificationSinchEventResult()
+            deserialized.Should().BeEquivalentTo(new VerificationResultEvent()
             {
                 Id = "1234567890",
                 Event = "VerificationSinchEventResult",

@@ -1436,8 +1436,7 @@ Several Verification event model types have been renamed. The JSON wire format i
 
 Renamed types:
 
-- `VerificationRequestEvent` → `VerificationSinchEventRequest`
-- `VerificationResultEvent` → `VerificationSinchEventResult`
+- `VerificationRequestEvent` → `VerificationStartEvent`
 - `RequestEventResponseBase` → `VerificationStartEventResponseBase`
 - `SmsRequestEventResponse` → `VerificationStartEventResponseSms`
 - `FlashCallRequestEventResponse` → `VerificationStartEventResponseFlashCall`
@@ -1447,12 +1446,10 @@ Renamed types:
 Version 1.*:
 ```csharp
 var requestEvent = JsonSerializer.Deserialize<VerificationRequestEvent>(json);
-var resultEvent = JsonSerializer.Deserialize<VerificationResultEvent>(json);
 ```
 
 Version 2.*:
 ```csharp
-var requestEvent = JsonSerializer.Deserialize<VerificationSinchEventRequest>(json);
-var resultEvent = JsonSerializer.Deserialize<VerificationSinchEventResult>(json);
+var requestEvent = JsonSerializer.Deserialize<VerificationStartEvent>(json);
 ```
 

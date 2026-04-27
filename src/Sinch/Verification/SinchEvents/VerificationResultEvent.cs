@@ -9,7 +9,7 @@ namespace Sinch.Verification.SinchEvents
     ///     It's used to report the verification result to the developer's backend application.
     ///     This Sinch event is only triggered when the verification event destination URL is specified in your dashboard.
     /// </summary>
-    public sealed class VerificationSinchEventResult
+    public sealed class VerificationResultEvent
     {
         /// <summary>
         ///     The ID of the verification request.
