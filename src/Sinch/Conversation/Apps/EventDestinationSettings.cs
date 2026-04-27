@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Conversation.Apps.Create
+namespace Sinch.Conversation.Apps
 {
     /// <summary>
     ///     This object contains additional settings related to event destination processing.
@@ -12,8 +12,7 @@ namespace Sinch.Conversation.Apps.Create
         ///     Secret can be used to sign contents of delivery receipts for a message that was sent with the default event destination target overridden (using the [&#x60;callback_url&#x60; field](https://developers.sinch.com/docs/conversation/api-reference/conversation/tag/Messages/#tag/Messages/operation/Messages_SendMessage!path&#x3D;callback_url&amp;t&#x3D;request)). You can then use the secret to verify the signature.
         /// </summary>
         [JsonPropertyName("secret_for_overridden_callback_urls")]
-        public string? SecretForOverriddenEventDestinationTarget { get; set; }
-
+        public string? SecretForOverriddenTarget { get; set; }
 
         /// <summary>
         ///     Returns the string presentation of the object
@@ -23,7 +22,7 @@ namespace Sinch.Conversation.Apps.Create
         {
             var sb = new StringBuilder();
             sb.Append($"class {nameof(EventDestinationSettings)} {{\n");
-            sb.Append($"  {nameof(SecretForOverriddenEventDestinationTarget)}: ").Append(Consts.HiddenString).Append('\n');
+            sb.Append($"  {nameof(SecretForOverriddenTarget)}: ").Append(Consts.HiddenString).Append('\n');
             sb.Append("}\n");
             return sb.ToString();
         }
