@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
 
-namespace Sinch.Numbers.EventDestination
+namespace Sinch.Numbers.EventDestinations
 {
     /// <summary>
     /// You can set up event destination URLs to receive event notifications when your numbers are updated.

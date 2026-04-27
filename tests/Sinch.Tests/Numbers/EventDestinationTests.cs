@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
-using Sinch.Numbers.EventDestination;
+using Sinch.Numbers.EventDestinations;
 using Xunit;
 
 namespace Sinch.Tests.Numbers

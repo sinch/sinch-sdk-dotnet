@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Numbers.EventDestination
+namespace Sinch.Numbers.EventDestinations
 {
     /// <summary>
     ///     Response message containing the event destination for a specific project

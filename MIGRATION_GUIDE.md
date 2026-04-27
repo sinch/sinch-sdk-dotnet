@@ -1298,7 +1298,7 @@ The `CallbackConfiguration` subdomain and all related types have been renamed to
 - `ISinchNumbers.CallbackConfiguration` → `ISinchNumbers.EventDestination`
 - `ISinchNumbersCallbackConfiguration` → `ISinchNumbersEventDestination`
 - Class `CallbackConfiguration` → `EventDestination`
-- Namespace `Sinch.Numbers.CallbackConfiguration` → `Sinch.Numbers.EventDestination`
+- Namespace `Sinch.Numbers.CallbackConfiguration` → `Sinch.Numbers.EventDestinations`
 
 Version 1.*:
 ```csharp
@@ -1309,9 +1309,9 @@ CallbackConfiguration config = await sinch.Numbers.CallbackConfiguration.Get();
 
 Version 2.*:
 ```csharp
-using Sinch.Numbers.EventDestination;
+using Sinch.Numbers.EventDestinations;
 
-EventDestination config = await sinch.Numbers.EventDestination.Get();
+EventDestination config = await sinch.Numbers.EventDestinations.Get();
 ```
 
 ## Numbers API: Sinch.Numbers.Hooks namespace renamed to Sinch.Numbers.SinchEvents; Event renamed to NumberSinchEvent
