@@ -45,6 +45,7 @@
 - [Conversation API: Webhooks renamed to EventDestinations](#conversation-api-webhooks-renamed-to-eventdestinations)
 - [Conversation API: Sinch.Conversation.Hooks namespace renamed to Sinch.Conversation.SinchEvents](#conversation-api-sinchconversationhooks-namespace-renamed-to-sinchconversationsinchevents)
 - [Conversation API: CallbackSettings renamed to EventDestinationSettings](#conversation-api-callbacksettings-renamed-to-eventdestinationsettings)
+- [Conversation API: EventDestinationSettings, DeliveryReportBasedFallback, and MessageRetrySettings namespace changed](#conversation-api-eventdestinationsettings-deliveryreportbasedfallback-and-messageretrysettings-namespace-changed)
 - [Conversation API: SendEventRequest and SendMessageRequest CallbackUrl renamed to EventDestinationTarget](#conversation-api-sendeventrequest-and-sendmessagerequest-callbackurl-renamed-to-eventdestinationtarget)
 - [Conversation API: ICallbackEvent and related types renamed](#conversation-api-icallbackevent-and-related-types-renamed)
 
@@ -1235,7 +1236,7 @@ var request = new CreateAppRequest
 
 Version 2.*:
 ```csharp
-using Sinch.Conversation.Apps.Create;
+using Sinch.Conversation.Apps;
 
 var request = new CreateAppRequest
 {
@@ -1245,6 +1246,20 @@ var request = new CreateAppRequest
         SecretForOverriddenEventDestinationTarget = "my-secret"
     }
 };
+```
+
+## Conversation API: EventDestinationSettings, DeliveryReportBasedFallback, and MessageRetrySettings namespace changed
+
+The types `EventDestinationSettings`, `DeliveryReportBasedFallback`, and `MessageRetrySettings` have been moved from `Sinch.Conversation.Apps.Create` to `Sinch.Conversation.Apps`. Update your `using` directives accordingly.
+
+Version 1.* / 2.0:
+```csharp
+using Sinch.Conversation.Apps.Create;
+```
+
+Version 2.*:
+```csharp
+using Sinch.Conversation.Apps;
 ```
 
 ## Conversation API: SendEventRequest and SendMessageRequest CallbackUrl renamed to EventDestinationTarget

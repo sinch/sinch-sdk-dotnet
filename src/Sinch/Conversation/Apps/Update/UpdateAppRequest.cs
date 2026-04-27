@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
-using Sinch.Conversation.Apps.Create;
 using Sinch.Conversation.Apps.Credentials;
 using Sinch.Conversation.Common;
 

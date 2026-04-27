@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Conversation.Apps.Create
+namespace Sinch.Conversation.Apps
 {
     /// <summary>
     ///     This object contains additional settings related to event destination processing.
@@ -13,7 +13,7 @@ namespace Sinch.Conversation.Apps.Create
         /// </summary>
         [JsonPropertyName("secret_for_overridden_callback_urls")]
         public string? SecretForOverriddenTarget { get; set; }
-        
+
         /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>
