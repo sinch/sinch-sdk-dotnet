@@ -7,7 +7,7 @@ namespace SinchEvents.Template.Sms;
 /// <summary>
 /// Action filter that validates Sms Sinch Event HMAC signature before executing the action.
 /// </summary>
-public class SmsSinchEventsFilter(ISinchSmsSinchEvents smsSinchEvents, IConfiguration configuration, bool requireAuthentication)
+    public class SmsSinchEventsFilter(ISmsSinchEvents smsSinchEvents, IConfiguration configuration, bool requireAuthentication)
     : IAsyncActionFilter
 {
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
