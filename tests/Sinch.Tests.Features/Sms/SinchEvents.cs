@@ -19,7 +19,7 @@ namespace Sinch.Tests.Features.Sms
         private const string SinchEventsUrlPrefix = "http://localhost:3017/webhooks/sms";
 
         private readonly HttpClient _httpClient = new();
-        private static ISinchSmsSinchEvents _sinchEvents;
+        private static ISmsSinchEvents _smsSinchEvents;
         private HttpResponseMessage _incomingSmsResponse;
         private HttpResponseMessage _deliveryReportResponse;
         private HttpResponseMessage _recipientDeliveryReportDeliveredResponse;
@@ -32,7 +32,7 @@ namespace Sinch.Tests.Features.Sms
         [Given(@"the SMS Webhooks handler is available")]
         public void GivenTheSmsSinchEventsHandlerIsAvailable()
         {
-            _sinchEvents = Utils.SinchClient.Sms.SinchEvents;
+            _smsSinchEvents = Utils.SinchClient.Sms.SmsSinchEvents;
         }
 
         [When(@"I send a request to trigger an ""incoming SMS"" event")]
@@ -179,7 +179,7 @@ namespace Sinch.Tests.Features.Sms
 
             var body = await response.Content.ReadAsStringAsync();
 
-            return _sinchEvents.ValidateAuthenticationHeader(SinchEventSecret, headers, body);
+            return _smsSinchEvents.ValidateAuthenticationHeader(SinchEventSecret, headers, body);
         }
     }
 }

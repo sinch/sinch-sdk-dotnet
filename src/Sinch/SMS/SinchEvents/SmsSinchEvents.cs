@@ -6,10 +6,10 @@ using Sinch.Logger;
 namespace Sinch.SMS.SinchEvents
 {
     /// <inheritdoc />
-    internal sealed class SinchSmsSinchEvents(
+    internal sealed class SmsSinchEvents(
         JsonSerializerOptions jsonSerializerOptions,
-        ILoggerAdapter<ISinchSmsSinchEvents>? logger = null)
-        : ISinchSmsSinchEvents
+        ILoggerAdapter<ISmsSinchEvents>? logger = null)
+        : ISmsSinchEvents
     {
         public JsonSerializerOptions JsonSerializerOptions { get; } = jsonSerializerOptions;
 

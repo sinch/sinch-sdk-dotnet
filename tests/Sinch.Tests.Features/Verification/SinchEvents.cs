@@ -44,8 +44,8 @@ namespace Sinch.Tests.Features.Verification
         public void ThenTheVerificationEventDescribesAEventType()
         {
             // TODO: schema of oas and api response diverge: https://tickets.sinch.com/browse/DEVEXP-946
-            var verificationEvent = JsonSerializer.Deserialize<VerificationSinchEventRequest>(_rawBody);
-            verificationEvent.As<VerificationSinchEventRequest>().Should().BeEquivalentTo(new VerificationSinchEventRequest
+            var verificationEvent = JsonSerializer.Deserialize<VerificationStartEvent>(_rawBody);
+            verificationEvent.As<VerificationStartEvent>().Should().BeEquivalentTo(new VerificationStartEvent
             {
                 Id = "1ce0ffee-c0de-5eed-d00d-f00dfeed1337",
                 Event = "VerificationRequestEvent",
@@ -79,9 +79,9 @@ namespace Sinch.Tests.Features.Verification
         public void ThenTheVerificationEventDescribesAResultEventType()
         {
 
-            var resultEvent = JsonSerializer.Deserialize<VerificationSinchEventResult>(_rawBody);
+            var resultEvent = JsonSerializer.Deserialize<VerificationResultEvent>(_rawBody);
             // TODO: schema of oas and api response diverge: https://tickets.sinch.com/browse/DEVEXP-946
-            resultEvent.Should().BeEquivalentTo(new VerificationSinchEventResult()
+            resultEvent.Should().BeEquivalentTo(new VerificationResultEvent()
             {
                 Id = "1ce0ffee-c0de-5eed-d00d-f00dfeed1337",
                 Event = "VerificationResultEvent",

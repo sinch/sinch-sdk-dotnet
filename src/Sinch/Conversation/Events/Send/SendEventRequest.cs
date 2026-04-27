@@ -25,7 +25,8 @@ namespace Sinch.Conversation.Events.Send
 
 
         /// <summary>
-        ///     Overwrites the default event destination target for delivery receipts for this message The REST URL should be of the form: &#x60;http://host[:port]/path&#x60;
+        ///     Overwrites the default event destination target for delivery receipts for this event.
+        ///     When the event destination target is a URL, it should be of the form: <c>https://host[:port]/path</c>
         /// </summary>
         [JsonPropertyName("callback_url")]
         public string? EventDestinationTarget { get; set; }

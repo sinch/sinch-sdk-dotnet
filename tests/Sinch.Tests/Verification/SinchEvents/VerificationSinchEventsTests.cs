@@ -33,9 +33,9 @@ namespace Sinch.Tests.Verification
                 ]
             }";
 
-            var deserialized = JsonSerializer.Deserialize<VerificationSinchEventRequest>(jsonString);
+            var deserialized = JsonSerializer.Deserialize<VerificationStartEvent>(jsonString);
 
-            deserialized.Should().BeEquivalentTo(new VerificationSinchEventRequest()
+            deserialized.Should().BeEquivalentTo(new VerificationStartEvent()
             {
                 Id = "1234567890",
                 Event = "VerificationSinchEventRequest",
@@ -78,9 +78,9 @@ namespace Sinch.Tests.Verification
             ""custom"": ""string""
             }";
 
-            var deserialized = JsonSerializer.Deserialize<VerificationSinchEventResult>(jsonString);
+            var deserialized = JsonSerializer.Deserialize<VerificationResultEvent>(jsonString);
 
-            deserialized.Should().BeEquivalentTo(new VerificationSinchEventResult()
+            deserialized.Should().BeEquivalentTo(new VerificationResultEvent()
             {
                 Id = "1234567890",
                 Event = "VerificationSinchEventResult",
@@ -101,7 +101,7 @@ namespace Sinch.Tests.Verification
         [Fact]
         public void SerializeSinchEventResponse()
         {
-            var response = new SmsRequestSinchEventResponse
+            var response = new VerificationStartEventResponseSms
             {
                 Action = Action.Allow,
                 Sms = new Sinch.Verification.SinchEvents.Sms
@@ -133,7 +133,7 @@ namespace Sinch.Tests.Verification
         {
             var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationResponseWhatsAppDto.json");
 
-            var response = new WhatsAppRequestSinchEventResponse
+            var response = new VerificationStartEventResponseWhatsApp
             {
                 Action = Action.Allow,
                 WhatsApp = new WhatsApp

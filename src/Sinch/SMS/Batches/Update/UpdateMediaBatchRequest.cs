@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using Sinch.SMS.Batches.Send;
 
 namespace Sinch.SMS.Batches.Update
@@ -29,5 +30,30 @@ namespace Sinch.SMS.Batches.Update
         ///     </see>
         /// </summary>
         public Dictionary<string, Dictionary<string, string>>? Parameters { get; set; }
+
+        /// <summary>
+        ///     Returns the string presentation of the object
+        /// </summary>
+        /// <returns>String presentation of the object</returns>
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append($"class {nameof(UpdateMediaBatchRequest)} {{\n");
+            sb.Append($"  {nameof(From)}: ").Append(From).Append('\n');
+            sb.Append($"  {nameof(Type)}: ").Append(Type).Append('\n');
+            sb.Append($"  {nameof(ToAdd)}: ").Append(ToAdd).Append('\n');
+            sb.Append($"  {nameof(ToRemove)}: ").Append(ToRemove).Append('\n');
+            sb.Append($"  {nameof(DeliveryReport)}: ").Append(DeliveryReport).Append('\n');
+            sb.Append($"  {nameof(SendAt)}: ").Append(SendAt).Append('\n');
+            sb.Append($"  {nameof(ExpireAt)}: ").Append(ExpireAt).Append('\n');
+            sb.Append($"  {nameof(EventDestinationTarget)}: ").Append(EventDestinationTarget).Append('\n');
+            sb.Append($"  {nameof(ClientReference)}: ").Append(ClientReference).Append('\n');
+            sb.Append($"  {nameof(FeedbackEnabled)}: ").Append(FeedbackEnabled).Append('\n');
+            sb.Append($"  {nameof(Body)}: ").Append(Body).Append('\n');
+            sb.Append($"  {nameof(StrictValidation)}: ").Append(StrictValidation).Append('\n');
+            sb.Append($"  {nameof(Parameters)}: ").Append(Parameters).Append('\n');
+            sb.Append("}\n");
+            return sb.ToString();
+        }
     }
 }
