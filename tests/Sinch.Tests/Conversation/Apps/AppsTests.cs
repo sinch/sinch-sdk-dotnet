@@ -374,7 +374,7 @@ namespace Sinch.Tests.Conversation.Apps
             },
             EventDestinationSettings = new EventDestinationSettings()
             {
-                SecretForOverriddenEventDestinationTarget = "secret",
+                SecretForOverriddenTarget = "secret",
             },
             DeliveryReportBasedFallback = new DeliveryReportBasedFallback()
             {
@@ -622,7 +622,7 @@ namespace Sinch.Tests.Conversation.Apps
                 },
                 EventDestinationSettings = new EventDestinationSettings
                 {
-                    SecretForOverriddenEventDestinationTarget = "secret"
+                    SecretForOverriddenTarget = "secret"
                 },
                 DeliveryReportBasedFallback = new DeliveryReportBasedFallback
                 {
