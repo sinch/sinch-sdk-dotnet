@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Net;
@@ -478,7 +477,7 @@ namespace Sinch.Tests.Conversation
                     }
                 }
             };
-            _baseRequest.EventDestinationTarget = new Uri("http://event-destination-target");
+            _baseRequest.EventDestinationTarget = "http://event-destination-target";
             _baseRequest.ChannelPriorityOrder = new List<ConversationChannel>()
             {
                 ConversationChannel.Instagram, ConversationChannel.Telegram

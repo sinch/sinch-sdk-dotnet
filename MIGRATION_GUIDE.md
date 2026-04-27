@@ -1264,7 +1264,7 @@ using Sinch.Conversation.Apps;
 
 ## Conversation API: SendEventRequest and SendMessageRequest CallbackUrl renamed to EventDestinationTarget
 
-The `CallbackUrl` property on `SendEventRequest` and `SendMessageRequest` has been renamed to `EventDestinationTarget`. The underlying JSON wire format is unchanged (`callback_url`).
+The `CallbackUrl` property on `SendEventRequest` and `SendMessageRequest` has been renamed to `EventDestinationTarget`. The type has also changed from `Uri?` to `string?` to align with the OAS spec. The underlying JSON wire format is unchanged (`callback_url`).
 
 Version 1.*:
 ```csharp
@@ -1284,7 +1284,7 @@ var request = new SendMessageRequest
     AppId = appId,
     Message = AppMessage.From(new TextMessage("Hello")),
     Recipient = new ContactRecipient { ContactId = contactId },
-    EventDestinationTarget = new Uri("https://example.com/delivery")
+    EventDestinationTarget = "https://example.com/delivery"
 };
 ```
 

@@ -37,7 +37,7 @@ namespace Sinch.Conversation.Messages.Send
         ///     this secret will be used to sign the contents of delivery receipts when the default event destination target is overridden by this property.
         /// </summary>
         [JsonPropertyName("callback_url")]
-        public Uri? EventDestinationTarget { get; set; }
+        public string? EventDestinationTarget { get; set; }
 
 
         /// <summary>
