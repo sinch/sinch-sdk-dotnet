@@ -60,6 +60,8 @@
 - [Fax API: Sinch.Fax.Hooks namespace renamed to Sinch.Fax.SinchEvents](#fax-api-sinchfaxhooks-namespace-renamed-to-sinchfaxsinchevents)
 - [Fax API: IFaxEvent renamed to IFaxSinchEvent](#fax-api-ifaxevent-renamed-to-ifaxsinchevent)
 - [Fax API: GenericFaxEvent renamed to FaxSinchEventBase](#fax-api-genericfaxevent-renamed-to-faxsincheventbase)
+- [Fax API: CallbackUrlContentType renamed to EventDestinationContentType](#fax-api-callbackurlcontenttype-renamed-to-eventdestinationcontenttype)
+- [Fax API: CallbackUrl renamed to EventDestinationTarget](#fax-api-callbackurl-renamed-to-eventdestinationtarget)
 
 ## .NET Framework Support
 
@@ -1561,5 +1563,41 @@ public sealed class IncomingFaxEvent : GenericFaxEvent, IFaxEvent { /* ... */ }
 Version 2.*:
 ```csharp
 public sealed class IncomingFaxEvent : FaxSinchEventBase, IFaxSinchEvent { /* ... */ }
+```
+
+## Fax API: CallbackUrlContentType renamed to EventDestinationContentType
+
+The `CallbackUrlContentType` type has been renamed to `EventDestinationContentType`.
+
+Version 1.*:
+```csharp
+request.CallbackUrlContentType = CallbackUrlContentType.MultipartFormData;
+```
+
+Version 2.*:
+```csharp
+request.EventDestinationContentType = EventDestinationContentType.MultipartFormData;
+```
+
+## Fax API: CallbackUrl renamed to EventDestinationTarget
+
+The `CallbackUrl` property on `Fax` and `SendFaxRequest` has been renamed to `EventDestinationTarget`. The corresponding `CallbackUrlContentType` property has been renamed to `EventDestinationContentType`. The wire field names (`callbackUrl`, `callbackUrlContentType`) are unchanged.
+
+Version 1.*:
+```csharp
+var request = new SendFaxRequest
+{
+    CallbackUrl = "https://my.server/events",
+    CallbackUrlContentType = CallbackUrlContentType.ApplicationJson
+};
+```
+
+Version 2.*:
+```csharp
+var request = new SendFaxRequest
+{
+    EventDestinationTarget = "https://my.server/events",
+    EventDestinationContentType = EventDestinationContentType.ApplicationJson
+};
 ```
 

@@ -15,7 +15,7 @@ namespace Sinch.Fax.Services
         /// The content type of the webhook.
         /// </summary>
         [JsonPropertyName("webhookContentType")]
-        public CallbackUrlContentType? WebhookContentType { get; set; }
+        public EventDestinationContentType? WebhookContentType { get; set; }
 
 
 

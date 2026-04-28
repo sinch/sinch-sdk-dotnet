@@ -22,8 +22,8 @@ namespace Sinch.Fax.Faxes
         /// <summary>
         ///     Create and send a fax or multiple faxes.<br/><br/>
         ///     Fax content may be supplied via one or more files or URLs of supported filetypes.<br/><br/>
-        ///     If you supply a callbackUrl the callback will be sent as multipart/form-data with the content
-        ///     of the fax as an attachment to the body, unless you specify callbackUrlContentType as application/json.
+        ///     If you supply an <see cref="SendFaxRequest.EventDestinationTarget"/> the event will be sent as multipart/form-data with the content
+        ///     of the fax as an attachment to the body, unless you specify <see cref="SendFaxRequest.EventDestinationContentType"/> as application/json.
         /// </summary>
         /// <param name="request">The fax request containing the recipients (To), content, and options. To can be a single phone number or a list of phone numbers in E.164 format.</param>
         /// <param name="cancellationToken"></param>
@@ -174,11 +174,11 @@ namespace Sinch.Fax.Faxes
                     content.Add(new StringContent(value), $"labels[{key}]");
             }
 
-            if (request.CallbackUrl != null)
-                content.Add(new StringContent(request.CallbackUrl), "callbackUrl");
+            if (request.EventDestinationTarget != null)
+                content.Add(new StringContent(request.EventDestinationTarget), "callbackUrl");
 
-            if (request.CallbackUrlContentType != null)
-                content.Add(new StringContent(request.CallbackUrlContentType.ToString()), "callbackUrlContentType");
+            if (request.EventDestinationContentType != null)
+                content.Add(new StringContent(request.EventDestinationContentType.ToString()), "callbackUrlContentType");
 
             if (request.ImageConversionMethod != null)
                 content.Add(new StringContent(request.ImageConversionMethod.ToString()), "imageConversionMethod");

@@ -38,7 +38,7 @@ public class Services
             {
                 Name = "Fax service for e2e tests",
                 IncomingWebhookUrl = "https://my-callback-server.com/fax",
-                WebhookContentType = CallbackUrlContentType.ApplicationJson,
+                WebhookContentType = EventDestinationContentType.ApplicationJson,
                 DefaultForProject = false,
                 DefaultFrom = "+12014444444",
                 NumberOfRetries = 2,
@@ -96,7 +96,7 @@ public class Services
     {
         _service.Should().NotBeNull();
         _service.Id.Should().Be("01W4FFL35P4NC4K35FAXSERVICE");
-        _service.WebhookContentType.Should().Be(CallbackUrlContentType.ApplicationJson);
+        _service.WebhookContentType.Should().Be(EventDestinationContentType.ApplicationJson);
         _service.DefaultFrom.Should().Be("+12014444444");
         _service.NumberOfRetries.Should().Be(2);
         _service.RetryDelaySeconds.Should().Be(30);
@@ -117,7 +117,7 @@ public class Services
             {
                 Id = "01W4FFL35P4NC4K35FAXSERVICE",
                 Name = "Updated Fax service name",
-                WebhookContentType = CallbackUrlContentType.MultipartFormData,
+                WebhookContentType = EventDestinationContentType.MultipartFormData,
                 DefaultForProject = true,
                 NumberOfRetries = 3,
                 RetryDelaySeconds = 60,
@@ -133,7 +133,7 @@ public class Services
     {
         _service.Should().NotBeNull();
         _service.Id.Should().Be("01W4FFL35P4NC4K35FAXSERVICE");
-        _service.WebhookContentType.Should().Be(CallbackUrlContentType.MultipartFormData);
+        _service.WebhookContentType.Should().Be(EventDestinationContentType.MultipartFormData);
         _service.NumberOfRetries.Should().Be(3);
         _service.RetryDelaySeconds.Should().Be(60);
         _service.ImageConversionMethod.Should().Be(ImageConversionMethod.Halftone);

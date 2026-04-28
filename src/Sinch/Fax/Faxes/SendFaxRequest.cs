@@ -82,16 +82,16 @@ namespace Sinch.Fax.Faxes
         public Dictionary<string, string>? Labels { get; set; }
 
         /// <summary>
-        ///     The URL to which a callback will be sent when the fax is completed. The callback will be sent as a POST request with a JSON body. The callback will be sent to the URL specified in the &#x60;callbackUrl&#x60; parameter, if provided, otherwise it will be sent to the URL specified in the &#x60;callbackUrl&#x60; field of the Fax Service object.
+        ///     The URL to which Sinch events will be sent when the fax is completed. If provided, overrides the event destination URL set on the Fax Service.
         /// </summary>
         [JsonPropertyName("callbackUrl")]
-        public string? CallbackUrl { get; set; }
+        public string? EventDestinationTarget { get; set; }
 
         /// <summary>
-        ///     The content type of the callback.
+        ///     The content type for delivering Sinch events to the event destination URL.
         /// </summary>
         [JsonPropertyName("callbackUrlContentType")]
-        public CallbackUrlContentType? CallbackUrlContentType { get; set; }
+        public EventDestinationContentType? EventDestinationContentType { get; set; }
 
         /// <summary>
         ///     Determines how documents are converted to black and white. Defaults to value selected on Fax Service object.
