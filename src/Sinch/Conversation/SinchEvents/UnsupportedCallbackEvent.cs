@@ -7,7 +7,7 @@ namespace Sinch.Conversation.SinchEvents
     /// <summary>
     ///     Some of the Sinch events received from the underlying channels might be specific to a single channel or may not have a proper mapping in Conversation API yet.
     /// </summary>
-    public sealed class UnsupportedConversationSinchEvent : ConversationSinchEventBase
+    public sealed class UnsupportedCallbackEvent : ConversationSinchEventBase
     {
         /// <summary>
         ///     Gets or Sets UnsupportedCallback
@@ -23,7 +23,7 @@ namespace Sinch.Conversation.SinchEvents
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"class {nameof(UnsupportedConversationSinchEvent)} {{\n");
+            sb.Append($"class {nameof(UnsupportedCallbackEvent)} {{\n");
             sb.Append($"  {nameof(AppId)}: ").Append(AppId).Append('\n');
             sb.Append($"  {nameof(AcceptedTime)}: ").Append(AcceptedTime).Append('\n');
             sb.Append($"  {nameof(EventTime)}: ").Append(EventTime).Append('\n');
