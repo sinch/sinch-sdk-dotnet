@@ -1084,17 +1084,17 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public void DeserializeUnsupportedConversationSinchEvent()
         {
-            string json = Helpers.LoadResources("Conversation/SinchEvents/UnsupportedConversationSinchEvent.json");
+            string json = Helpers.LoadResources("Conversation/SinchEvents/UnsupportedCallbackEvent.json");
 
-            var resultParse = Conversation.EventDestinations.ParseEvent(json).As<UnsupportedConversationSinchEvent>();
+            var resultParse = Conversation.EventDestinations.ParseEvent(json).As<UnsupportedCallbackEvent>();
             AssertEvent(resultParse);
 
-            var resultDeserialize = Deserialize<IConversationSinchEvent>(json).As<UnsupportedConversationSinchEvent>();
+            var resultDeserialize = Deserialize<IConversationSinchEvent>(json).As<UnsupportedCallbackEvent>();
             AssertEvent(resultDeserialize);
 
-            void AssertEvent(UnsupportedConversationSinchEvent actual)
+            void AssertEvent(UnsupportedCallbackEvent actual)
             {
-                actual.Should().BeEquivalentTo(new UnsupportedConversationSinchEvent
+                actual.Should().BeEquivalentTo(new UnsupportedCallbackEvent
                 {
                     AppId = "app id value",
                     AcceptedTime = Helpers.ParseUtc("2020-11-17T16:05:51.724083Z"),

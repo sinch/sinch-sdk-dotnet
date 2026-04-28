@@ -26,6 +26,6 @@ var client = new SinchClient(new SinchClientConfiguration()
 
 Console.WriteLine("Get event destination configuration");
 
-var response = await client.Numbers.EventDestination.Get();
+var response = await client.Numbers.EventDestinations.Get();
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

@@ -53,6 +53,7 @@
 - [Conversation API: ICallbackEvent and related types renamed](#conversation-api-icallbackevent-and-related-types-renamed)
 - [SMS API: Sinch.SMS.Hooks namespace renamed to Sinch.SMS.SinchEvents](#sms-api-sinchsmshooks-namespace-renamed-to-sinchsmssinchevents)
 - [SMS API: BatchBase and UpdateBatchBaseRequest CallbackUrl renamed to EventDestinationTarget](#sms-api-batchbase-and-updatebatchbaserequest-callbackurl-renamed-to-eventdestinationtarget)
+- [SMS API: ISmsEvent renamed to ISmsSinchEvent](#sms-api-ismsevent-renamed-to-ismssinchevent)
 - [Verification API: Sinch.Verification.Hooks namespace renamed to Sinch.Verification.SinchEvents](#verification-api-sinchverificationhooks-namespace-renamed-to-sinchverificationsinchevents)
 - [Verification API: Verification event types renamed](#verification-api-verification-event-types-renamed)
 - [Voice API: Sinch.Voice.Hooks namespace renamed to Sinch.Voice.SinchEvents](#voice-api-sinchvoicehooks-namespace-renamed-to-sinchvoicesinchevents)
@@ -529,7 +530,7 @@ The following source files were removed as part of the refactor and should be de
 
 Replacement guidance
 
-- If you previously relied on `IIncomingSms` or `IncomingBinarySms`, switch to the new strongly-typed Sinch event models (`TextMessage`, `BinaryMessage`, etc.) and prefer the `ISinchSmsSinchEvents.ParseEvent(string json)` helper which returns an `ISmsEvent` that you can pattern-match or cast as shown above.
+- If you previously relied on `IIncomingSms` or `IncomingBinarySms`, switch to the new strongly-typed Sinch event models (`TextMessage`, `BinaryMessage`, etc.) and prefer the `ISinchSmsSinchEvents.ParseEvent(string json)` helper which returns an `ISmsSinchEvent` that you can pattern-match or cast as shown above.
 
 - Example migrating code that previously deserialized the old incoming binary type:
 
@@ -559,7 +560,7 @@ public sealed class RecipientDeliveryReportSms : ISmsEvent
 ```
 Version 2.*:
 ```csharp
-public sealed class RecipientDeliveryReportSms : ISmsEvent
+public sealed class RecipientDeliveryReportSms : ISmsSinchEvent
 {
     [JsonPropertyName("operator_status_at")]
     public DateTime OperatorStatusAt { get; set; }
@@ -1438,6 +1439,22 @@ var batch = new SendSmsBatchRequest
     Body = "Hello!",
     EventDestinationTarget = new Uri("https://example.com/sinch-events")
 };
+```
+
+## SMS API: ISmsEvent renamed to ISmsSinchEvent
+
+The base interface for SMS Sinch events has been renamed from `ISmsEvent` to `ISmsSinchEvent`.
+
+Version 1.*:
+```csharp
+ISmsEvent sinchEvent = sinch.Sms.SinchEvents.ParseEvent(rawBody);
+if (sinchEvent is RecipientDeliveryReportSms report) { /* ... */ }
+```
+
+Version 2.*:
+```csharp
+ISmsSinchEvent sinchEvent = sinch.Sms.SinchEvents.ParseEvent(rawBody);
+if (sinchEvent is RecipientDeliveryReportSms report) { /* ... */ }
 ```
 
 ## Verification API: Sinch.Verification.Hooks namespace renamed to Sinch.Verification.SinchEvents
