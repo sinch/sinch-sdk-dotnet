@@ -99,7 +99,9 @@ namespace Sinch.Conversation.Apps.Credentials
 
 
         /// <summary>
-        ///     The secret used to verify the channel Sinch events for channels which support Sinch event verification. The Sinch event verification is not needed for Sinch-managed channels because the callbacks are not leaving Sinch internal networks. Max length is 256 characters. Note: leaving channel_callback_secret empty for channels with Sinch event verification will disable the verification.
+        ///     The secret used to verify the channel Sinch events for channels which support Sinch event verification.
+        ///     Sinch event verification is not needed for Sinch-managed channels because the events are not leaving Sinch internal networks.
+        ///     Max length is 256 characters. Note: leaving <see cref="SinchEventSecret"/> empty for channels with Sinch event verification will disable the verification.
         /// </summary>
         [JsonPropertyName("callback_secret")]
         public string? SinchEventSecret { get; set; }

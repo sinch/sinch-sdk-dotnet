@@ -6,7 +6,7 @@ namespace SinchEvents.Template.Sms;
 
 public class ServerBusinessLogic(ILogger<ServerBusinessLogic> logger)
 {
-    public async Task HandleEvent(ISmsEvent smsEvent)
+    public async Task HandleEvent(ISmsSinchEvent smsEvent)
     {
         switch (smsEvent)
         {

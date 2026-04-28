@@ -29,6 +29,6 @@ var client = new SinchClient(new SinchClientConfiguration()
 
 Console.WriteLine("Update event destination HMAC secret");
 
-var response = await client.Numbers.EventDestination.Update(hmacSecret);
+var response = await client.Numbers.EventDestinations.Update(hmacSecret);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

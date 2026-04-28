@@ -29,7 +29,7 @@ namespace Sinch.Conversation.Apps
         ///     multiple Sinch events will be sent out for each triggering event. The default rate limit is 25.
         /// </summary>
         [JsonPropertyName("webhooks")]
-        public long? EventDestinations { get; set; }
+        public long? EventsCount { get; set; }
 
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Sinch.Conversation.Apps
             sb.Append("class RateLimits {\n");
             sb.Append("  Inbound: ").Append(Inbound).Append("\n");
             sb.Append("  Outbound: ").Append(Outbound).Append("\n");
-            sb.Append("  EventDestinations: ").Append(EventDestinations).Append("\n");
+            sb.Append("  EventDestinations: ").Append(EventsCount).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
