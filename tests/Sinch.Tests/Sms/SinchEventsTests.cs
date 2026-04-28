@@ -18,7 +18,7 @@ namespace Sinch.Tests.Sms
             var parsed = Sms.SmsSinchEvents.ParseEvent(json).As<BatchDeliveryReportSms>();
             AssertDeliveryReport(parsed);
 
-            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.SmsSinchEvents.JsonSerializerOptions).As<BatchDeliveryReportSms>();
+            var deserialized = JsonSerializer.Deserialize<ISmsSinchEvent>(json, Sms.SmsSinchEvents.JsonSerializerOptions).As<BatchDeliveryReportSms>();
             AssertDeliveryReport(deserialized);
 
             void AssertDeliveryReport(BatchDeliveryReportSms report)
@@ -50,7 +50,7 @@ namespace Sinch.Tests.Sms
             var parsed = Sms.SmsSinchEvents.ParseEvent(json).As<RecipientDeliveryReportSms>();
             AssertRecipient(parsed);
 
-            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.SmsSinchEvents.JsonSerializerOptions).As<RecipientDeliveryReportSms>();
+            var deserialized = JsonSerializer.Deserialize<ISmsSinchEvent>(json, Sms.SmsSinchEvents.JsonSerializerOptions).As<RecipientDeliveryReportSms>();
             AssertRecipient(deserialized);
 
             void AssertRecipient(RecipientDeliveryReportSms report)
@@ -80,7 +80,7 @@ namespace Sinch.Tests.Sms
             var parsed = Sms.SmsSinchEvents.ParseEvent(json).As<BinaryInbound>();
             AssertBinary(parsed);
 
-            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.SmsSinchEvents.JsonSerializerOptions).As<BinaryInbound>();
+            var deserialized = JsonSerializer.Deserialize<ISmsSinchEvent>(json, Sms.SmsSinchEvents.JsonSerializerOptions).As<BinaryInbound>();
             AssertBinary(deserialized);
 
             void AssertBinary(BinaryInbound report)
@@ -108,7 +108,7 @@ namespace Sinch.Tests.Sms
             var parsed = Sms.SmsSinchEvents.ParseEvent(json).As<SmsInbound>();
             AssertText(parsed);
 
-            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.SmsSinchEvents.JsonSerializerOptions).As<SmsInbound>();
+            var deserialized = JsonSerializer.Deserialize<ISmsSinchEvent>(json, Sms.SmsSinchEvents.JsonSerializerOptions).As<SmsInbound>();
             AssertText(deserialized);
 
             void AssertText(SmsInbound report)
@@ -135,7 +135,7 @@ namespace Sinch.Tests.Sms
             var parsed = Sms.SmsSinchEvents.ParseEvent(json).As<MediaInbound>();
             AssertMedia(parsed);
 
-            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.SmsSinchEvents.JsonSerializerOptions).As<MediaInbound>();
+            var deserialized = JsonSerializer.Deserialize<ISmsSinchEvent>(json, Sms.SmsSinchEvents.JsonSerializerOptions).As<MediaInbound>();
             AssertMedia(deserialized);
 
             void AssertMedia(MediaInbound evt)
@@ -176,7 +176,7 @@ namespace Sinch.Tests.Sms
             var parsed = Sms.SmsSinchEvents.ParseEvent(json).As<BatchDeliveryReportMms>();
             AssertBatch(parsed);
 
-            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.SmsSinchEvents.JsonSerializerOptions).As<BatchDeliveryReportMms>();
+            var deserialized = JsonSerializer.Deserialize<ISmsSinchEvent>(json, Sms.SmsSinchEvents.JsonSerializerOptions).As<BatchDeliveryReportMms>();
             AssertBatch(deserialized);
 
             void AssertBatch(BatchDeliveryReportMms report)
@@ -202,7 +202,7 @@ namespace Sinch.Tests.Sms
             var parsed = Sms.SmsSinchEvents.ParseEvent(json).As<RecipientDeliveryReportMms>();
             AssertRecipient(parsed);
 
-            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.SmsSinchEvents.JsonSerializerOptions).As<RecipientDeliveryReportMms>();
+            var deserialized = JsonSerializer.Deserialize<ISmsSinchEvent>(json, Sms.SmsSinchEvents.JsonSerializerOptions).As<RecipientDeliveryReportMms>();
             AssertRecipient(deserialized);
 
             void AssertRecipient(RecipientDeliveryReportMms report)

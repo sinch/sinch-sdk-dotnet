@@ -52,7 +52,7 @@ namespace Sinch.SMS.SinchEvents
         /// </returns>
         /// <exception cref="System.Text.Json.JsonException">Thrown when JSON is invalid or cannot be deserialized.</exception>
         /// <exception cref="System.InvalidOperationException">Thrown when event type is unknown or deserialization fails.</exception>
-        ISmsEvent ParseEvent(string json);
+        ISmsSinchEvent ParseEvent(string json);
 
         /// <summary>
         ///     Validate Sinch event authentication using HMAC signature.
