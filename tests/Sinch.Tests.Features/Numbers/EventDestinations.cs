@@ -3,7 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
-using Sinch.Numbers.EventDestination;
+using Sinch.Numbers.EventDestinations;
 
 namespace Sinch.Tests.Features.Numbers
 {

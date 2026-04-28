@@ -28,7 +28,6 @@ namespace Sinch.Tests.Features.Numbers
         private ActiveNumber _rentAnyResponse;
         private Func<Task<ActiveNumber>> _rentNumberResponseOp;
         private ListActiveNumbersResponse _listNumbers;
-        private IAsyncEnumerable<ActiveNumber> _listAllNumbers;
         private Func<Task<ActiveNumber>> _activeNumberOp;
         private ActiveNumber _releaseResponse;
         private int _totalNumbers;

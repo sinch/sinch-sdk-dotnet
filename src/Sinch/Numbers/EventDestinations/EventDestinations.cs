@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Sinch.Core;
 using Sinch.Logger;
 
-namespace Sinch.Numbers.EventDestination
+namespace Sinch.Numbers.EventDestinations
 {
     /// <summary>
     /// You can set up event destination URLs to receive event notifications when your numbers are updated.
@@ -59,14 +59,14 @@ namespace Sinch.Numbers.EventDestination
     public interface ISinchNumbersEventDestination
     {
         /// <summary>
-        ///     Returns the event destinations for your project
+        ///     Returns the event destination for your project
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<EventDestination> Get(CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Updates the event destinations configuration for your project
+        ///     Updates the event destination    configuration for your project
         /// </summary>
         /// <param name="hmacSecret">The HMAC secret to be updated</param>
         /// <param name="cancellationToken"></param>
