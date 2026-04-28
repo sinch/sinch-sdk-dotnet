@@ -57,6 +57,9 @@
 - [Verification API: Verification event types renamed](#verification-api-verification-event-types-renamed)
 - [Voice API: Sinch.Voice.Hooks namespace renamed to Sinch.Voice.SinchEvents](#voice-api-sinchvoicehooks-namespace-renamed-to-sinchvoicesinchevents)
 - [Voice API: Voice event types renamed](#voice-api-voice-event-types-renamed)
+- [Fax API: Sinch.Fax.Hooks namespace renamed to Sinch.Fax.SinchEvents](#fax-api-sinchfaxhooks-namespace-renamed-to-sinchfaxsinchevents)
+- [Fax API: IFaxEvent renamed to IFaxSinchEvent](#fax-api-ifaxevent-renamed-to-ifaxsinchevent)
+- [Fax API: GenericFaxEvent renamed to FaxSinchEventBase](#fax-api-genericfaxevent-renamed-to-faxsincheventbase)
 
 ## .NET Framework Support
 
@@ -1516,5 +1519,47 @@ switch (sinchEvent)
     case NotificationEvent notify: /* ... */ break;
     case PromptInputEvent pie: /* ... */ break;
 }
+```
+
+## Fax API: Sinch.Fax.Hooks namespace renamed to Sinch.Fax.SinchEvents
+
+All Fax Sinch event types have moved from the `Sinch.Fax.Hooks` namespace to `Sinch.Fax.SinchEvents`.
+
+Version 1.*:
+```csharp
+using Sinch.Fax.Hooks;
+```
+
+Version 2.*:
+```csharp
+using Sinch.Fax.SinchEvents;
+```
+
+## Fax API: IFaxEvent renamed to IFaxSinchEvent
+
+The base interface for Fax Sinch events has been renamed from `IFaxEvent` to `IFaxSinchEvent`.
+
+Version 1.*:
+```csharp
+IFaxEvent sinchEvent = JsonSerializer.Deserialize<IFaxEvent>(json);
+```
+
+Version 2.*:
+```csharp
+IFaxSinchEvent sinchEvent = JsonSerializer.Deserialize<IFaxSinchEvent>(json);
+```
+
+## Fax API: GenericFaxEvent renamed to FaxSinchEventBase
+
+The abstract base class for Fax Sinch events has been renamed from `GenericFaxEvent` to `FaxSinchEventBase`.
+
+Version 1.*:
+```csharp
+public sealed class IncomingFaxEvent : GenericFaxEvent, IFaxEvent { /* ... */ }
+```
+
+Version 2.*:
+```csharp
+public sealed class IncomingFaxEvent : FaxSinchEventBase, IFaxSinchEvent { /* ... */ }
 ```
 
