@@ -86,9 +86,9 @@ namespace Sinch.Tests.Voice
         }
 
         [Fact]
-        public void DeserializePromtInputEvent()
+        public void DeserializePromptInputEvent()
         {
-            var json = Helpers.LoadResources("Voice/PromtInputEvent.json");
+            var json = Helpers.LoadResources("Voice/PromptInputEvent.json");
             var @event = JsonSerializer.Deserialize<VoiceSinchEvent>(json);
             var eventWithClient = _voiceClient.ParseEvent(json);
 
@@ -97,7 +97,7 @@ namespace Sinch.Tests.Voice
 
             void AssertEvent(VoiceSinchEvent parsed)
             {
-                parsed.As<PromtInputEvent>().Should().BeEquivalentTo(new PromtInputEvent
+                parsed.As<PromptInputEvent>().Should().BeEquivalentTo(new PromptInputEvent
                 {
                     Event = EventType.PromptInputEvent,
                     CallId = "a call id",

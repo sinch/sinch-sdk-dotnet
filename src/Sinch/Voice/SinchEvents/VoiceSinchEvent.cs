@@ -46,7 +46,7 @@ namespace Sinch.Voice.SinchEvents
 
             if (type == EventType.PromptInputEvent.Value)
             {
-                return elem.Deserialize<PromtInputEvent>(options);
+                return elem.Deserialize<PromptInputEvent>(options);
             }
 
             throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
@@ -68,7 +68,7 @@ namespace Sinch.Voice.SinchEvents
                 case NotificationEvent notificationEvent:
                     JsonSerializer.Serialize(writer, notificationEvent, options);
                     break;
-                case PromtInputEvent promptInputEvent:
+                case PromptInputEvent promptInputEvent:
                     JsonSerializer.Serialize(writer, promptInputEvent, options);
                     break;
                 default:

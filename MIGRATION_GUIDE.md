@@ -1501,7 +1501,7 @@ switch (sinchEvent)
     case DisconnectedCallEvent dice: /* ... */ break;
     case IncomingCallEvent ice: /* ... */ break;
     case NotificationEvent notify: /* ... */ break;
-    case PromtInputEvent pie: /* ... */ break;
+    case PromptInputEvent pie: /* ... */ break;
 }
 ```
 
@@ -1514,7 +1514,7 @@ switch (sinchEvent)
     case DisconnectedCallEvent dice: /* ... */ break;
     case IncomingCallEvent ice: /* ... */ break;
     case NotificationEvent notify: /* ... */ break;
-    case PromtInputEvent pie: /* ... */ break;
+    case PromptInputEvent pie: /* ... */ break;
 }
 ```
 

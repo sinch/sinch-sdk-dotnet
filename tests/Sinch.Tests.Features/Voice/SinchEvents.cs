@@ -71,8 +71,8 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""PIE"" event with a ""return"" type")]
         public void ThenTheVoiceEventDescribesAEventWithAType()
         {
-            _voiceClient.ParseEvent(_rawPieSequenceContent).As<PromtInputEvent>().Should().BeEquivalentTo(
-                new PromtInputEvent
+            _voiceClient.ParseEvent(_rawPieSequenceContent).As<PromptInputEvent>().Should().BeEquivalentTo(
+                new PromptInputEvent
                 {
                     CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000013",
                     Timestamp = Helpers.ParseUtc("2024-06-06T17:35:01Z"),
@@ -107,8 +107,8 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""PIE"" event with a ""sequence"" type")]
         public void ThenTheVoiceEventDescribesAPieEventWithASequenceType()
         {
-            _voiceClient.ParseEvent(_rawPieSequenceContent).As<PromtInputEvent>().Should().BeEquivalentTo(
-                new PromtInputEvent
+            _voiceClient.ParseEvent(_rawPieSequenceContent).As<PromptInputEvent>().Should().BeEquivalentTo(
+                new PromptInputEvent
                 {
                     CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000023",
                     Timestamp = Helpers.ParseUtc("2024-06-06T17:35:58Z"),
