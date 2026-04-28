@@ -56,7 +56,7 @@ namespace Sinch.Numbers.EventDestinations
     /// <b>Note:</b> Compute the HMAC on the plain text value before parsing the JSON payload.
     /// </para>
     /// </remarks>
-    public interface ISinchNumbersEventDestination
+    public interface ISinchNumbersEventDestinations
     {
         /// <summary>
         ///     Returns the event destination for your project
@@ -74,14 +74,14 @@ namespace Sinch.Numbers.EventDestinations
         Task<EventDestination> Update(string hmacSecret, CancellationToken cancellationToken = default);
     }
 
-    internal sealed class SinchNumbersEventDestination : ISinchNumbersEventDestination
+    internal sealed class SinchNumbersEventDestinations : ISinchNumbersEventDestinations
     {
         private readonly Uri _baseAddress;
         private readonly IHttp _http;
-        private readonly ILoggerAdapter<ISinchNumbersEventDestination>? _logger;
+        private readonly ILoggerAdapter<ISinchNumbersEventDestinations>? _logger;
         private readonly string _projectId;
 
-        public SinchNumbersEventDestination(string projectId, Uri baseAddress, ILoggerAdapter<ISinchNumbersEventDestination>? logger,
+        public SinchNumbersEventDestinations(string projectId, Uri baseAddress, ILoggerAdapter<ISinchNumbersEventDestinations>? logger,
             IHttp http)
         {
             _projectId = projectId;

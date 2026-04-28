@@ -10,21 +10,21 @@ namespace Sinch.Tests.Features.Numbers
     [Binding]
     public class EventDestinations
     {
-        private ISinchNumbersEventDestination _sinchNumbersEventDestination;
+        private ISinchNumbersEventDestinations _sinchNumbersEventDestinations;
         private EventDestination _eventDestination;
         private Func<Task<EventDestination>> _eventDestinationOp;
 
         [Given(@"the Numbers service ""Callback Configuration"" is available")]
         public void GivenTheNumbersServiceIsAvailable()
         {
-            _sinchNumbersEventDestination = Utils.SinchNumbersClient().EventDestination;
+            _sinchNumbersEventDestinations = Utils.SinchNumbersClient().EventDestinations;
         }
 
 
         [When(@"I send a request to retrieve the callback configuration")]
         public async Task WhenISendARequestToRetrieveTheEventDestinationConfiguration()
         {
-            _eventDestination = await _sinchNumbersEventDestination.Get();
+            _eventDestination = await _sinchNumbersEventDestinations.Get();
         }
 
         [Then(@"the response contains the project's callback configuration")]
@@ -40,7 +40,7 @@ namespace Sinch.Tests.Features.Numbers
         [When(@"I send a request to update the callback configuration with the secret ""(.*)""")]
         public void WhenISendARequestToUpdateTheEventDestinationWithTheSecret(string hmacSecret)
         {
-            _eventDestinationOp = () => _sinchNumbersEventDestination.Update(hmacSecret);
+            _eventDestinationOp = () => _sinchNumbersEventDestinations.Update(hmacSecret);
         }
 
         [Then(@"the response contains the updated project's callback configuration")]
