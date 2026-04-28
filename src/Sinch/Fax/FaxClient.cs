@@ -3,6 +3,7 @@ using Sinch.Core;
 using Sinch.Fax.Emails;
 using Sinch.Fax.Faxes;
 using Sinch.Fax.Services;
+using Sinch.Fax.SinchEvents;
 using Sinch.Logger;
 
 namespace Sinch.Fax
@@ -21,6 +22,9 @@ namespace Sinch.Fax
 
         /// <inheritdoc cref="ISinchFaxServices" />
         public ISinchFaxServices Services { get; }
+
+        /// <inheritdoc cref="ISinchFaxSinchEvents" />
+        public ISinchFaxSinchEvents SinchEvents { get; }
     }
 
     internal sealed class FaxClient : ISinchFax
@@ -30,6 +34,7 @@ namespace Sinch.Fax
             Faxes = new FaxesClient(projectId, baseAddress, loggerFactory?.Create<ISinchFaxFaxes>(), http);
             Services = new ServicesClient(projectId, baseAddress, loggerFactory?.Create<ISinchFaxServices>(), http);
             Emails = new EmailsClient(projectId, baseAddress, loggerFactory?.Create<ISinchFaxEmails>(), http);
+            SinchEvents = new FaxSinchEvents(http.JsonSerializerOptions, loggerFactory?.Create<ISinchFaxSinchEvents>());
         }
 
         /// <inheritdoc />
@@ -40,5 +45,8 @@ namespace Sinch.Fax
 
         /// <inheritdoc />
         public ISinchFaxServices Services { get; }
+
+        /// <inheritdoc />
+        public ISinchFaxSinchEvents SinchEvents { get; }
     }
 }
