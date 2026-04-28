@@ -19,7 +19,7 @@ namespace Sinch.Tests.Numbers
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond("application/json", Helpers.LoadResources("Numbers/EventDestinationResponse.json"));
 
-            var response = await Numbers.EventDestination.Get();
+            var response = await Numbers.EventDestinations.Get();
 
             response.Should().BeEquivalentTo(new EventDestination()
             {
@@ -40,7 +40,7 @@ namespace Sinch.Tests.Numbers
                 }))
                 .Respond("application/json", Helpers.LoadResources("Numbers/EventDestinationResponse.json"));
 
-            var response = await Numbers.EventDestination.Update("HMAC value");
+            var response = await Numbers.EventDestinations.Update("HMAC value");
 
             response.Should().BeEquivalentTo(new EventDestination()
             {
@@ -63,7 +63,7 @@ namespace Sinch.Tests.Numbers
                 }))
                 .Respond("application/json", Helpers.LoadResources("Numbers/EventDestinationResponse.json"));
 
-            var responseOp = () => Numbers.EventDestination.Update(hmacSecret);
+            var responseOp = () => Numbers.EventDestinations.Update(hmacSecret);
 
             await responseOp.Should().ThrowAsync<ArgumentNullException>();
         }
