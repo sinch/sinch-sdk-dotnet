@@ -1,3 +1,4 @@
+#nullable enable
 using FluentAssertions;
 using Sinch.Verification;
 using Sinch.Voice;
