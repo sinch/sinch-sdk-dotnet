@@ -16,11 +16,11 @@ namespace SinchEvents.Template.Sms;
 [SmsSinchEvent(requireAuthentication: false)]
 public class SmsSinchEventsController : ControllerBase
 {
-    private readonly ISinchSmsSinchEvents _smsSinchEvents;
+    private readonly ISmsSinchEvents _smsSinchEvents;
     private readonly ServerBusinessLogic _sinchEventsBusinessLogic;
     private readonly IConfiguration _configuration;
 
-    public SmsSinchEventsController(ISinchSmsSinchEvents smsSinchEvents, ServerBusinessLogic sinchEventsBusinessLogic, IConfiguration configuration)
+    public SmsSinchEventsController(ISmsSinchEvents smsSinchEvents, ServerBusinessLogic sinchEventsBusinessLogic, IConfiguration configuration)
     {
         _smsSinchEvents = smsSinchEvents;
         _sinchEventsBusinessLogic = sinchEventsBusinessLogic;

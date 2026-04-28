@@ -28,7 +28,7 @@ builder.Services.AddSinchClient(() => new SinchClientConfiguration
     }
 });
 
-builder.Services.AddSingleton<ISinchSmsSinchEvents>(sp => sp.GetRequiredService<ISinchClient>().Sms.SinchEvents);
+builder.Services.AddSingleton<ISmsSinchEvents>(sp => sp.GetRequiredService<ISinchClient>().Sms.SmsSinchEvents);
 
 var app = builder.Build();
 
