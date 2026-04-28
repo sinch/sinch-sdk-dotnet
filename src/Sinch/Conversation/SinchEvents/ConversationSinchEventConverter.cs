@@ -112,7 +112,7 @@ namespace Sinch.Conversation.SinchEvents
 
             if (elem.TryGetProperty("unsupported_callback", out _))
             {
-                return elem.Deserialize<UnsupportedConversationSinchEvent>(options);
+                return elem.Deserialize<UnsupportedCallbackEvent>(options);
             }
 
             // No matching event type found
@@ -180,7 +180,7 @@ namespace Sinch.Conversation.SinchEvents
                 case OptOutEvent optOutEvent:
                     JsonSerializer.Serialize(writer, optOutEvent, options);
                     break;
-                case UnsupportedConversationSinchEvent unsupportedEvent:
+                case UnsupportedCallbackEvent unsupportedEvent:
                     JsonSerializer.Serialize(writer, unsupportedEvent, options);
                     break;
                 default:
