@@ -13,8 +13,8 @@ namespace Sinch.Fax.Services
             var sb = new StringBuilder();
             sb.Append($"class {nameof(Service)} {{\n");
             sb.Append($"  {nameof(Name)}: ").Append(Name).Append('\n');
-            sb.Append($"  {nameof(IncomingWebhookUrl)}: ").Append(IncomingWebhookUrl).Append('\n');
-            sb.Append($"  {nameof(WebhookContentType)}: ").Append(WebhookContentType).Append('\n');
+            sb.Append($"  {nameof(IncomingEventDestinationTarget)}: ").Append(IncomingEventDestinationTarget).Append('\n');
+            sb.Append($"  {nameof(EventDestinationContentType)}: ").Append(EventDestinationContentType).Append('\n');
             sb.Append($"  {nameof(DefaultForProject)}: ").Append(DefaultForProject).Append('\n');
             sb.Append($"  {nameof(DefaultFrom)}: ").Append(DefaultFrom).Append('\n');
             sb.Append($"  {nameof(NumberOfRetries)}: ").Append(NumberOfRetries).Append('\n');

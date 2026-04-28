@@ -37,8 +37,8 @@ public class Services
             new CreateFaxServiceRequest
             {
                 Name = "Fax service for e2e tests",
-                IncomingWebhookUrl = "https://my-callback-server.com/fax",
-                WebhookContentType = EventDestinationContentType.ApplicationJson,
+                IncomingEventDestinationTarget = "https://my-callback-server.com/fax",
+                EventDestinationContentType = EventDestinationContentType.ApplicationJson,
                 DefaultForProject = false,
                 DefaultFrom = "+12014444444",
                 NumberOfRetries = 2,
@@ -96,7 +96,7 @@ public class Services
     {
         _service.Should().NotBeNull();
         _service.Id.Should().Be("01W4FFL35P4NC4K35FAXSERVICE");
-        _service.WebhookContentType.Should().Be(EventDestinationContentType.ApplicationJson);
+        _service.EventDestinationContentType.Should().Be(EventDestinationContentType.ApplicationJson);
         _service.DefaultFrom.Should().Be("+12014444444");
         _service.NumberOfRetries.Should().Be(2);
         _service.RetryDelaySeconds.Should().Be(30);
@@ -106,7 +106,7 @@ public class Services
         _service.SaveInboundFaxDocuments.Should().BeTrue();
         _service.SaveOutboundFaxDocuments.Should().BeTrue();
         _service.Name.Should().Be("Fax service for e2e tests");
-        _service.IncomingWebhookUrl.Should().Be("https://my-callback-server.com/fax");
+        _service.IncomingEventDestinationTarget.Should().Be("https://my-callback-server.com/fax");
     }
 
     [When(@"I send a request to update a service")]
@@ -117,7 +117,7 @@ public class Services
             {
                 Id = "01W4FFL35P4NC4K35FAXSERVICE",
                 Name = "Updated Fax service name",
-                WebhookContentType = EventDestinationContentType.MultipartFormData,
+                EventDestinationContentType = EventDestinationContentType.MultipartFormData,
                 DefaultForProject = true,
                 NumberOfRetries = 3,
                 RetryDelaySeconds = 60,
@@ -133,7 +133,7 @@ public class Services
     {
         _service.Should().NotBeNull();
         _service.Id.Should().Be("01W4FFL35P4NC4K35FAXSERVICE");
-        _service.WebhookContentType.Should().Be(EventDestinationContentType.MultipartFormData);
+        _service.EventDestinationContentType.Should().Be(EventDestinationContentType.MultipartFormData);
         _service.NumberOfRetries.Should().Be(3);
         _service.RetryDelaySeconds.Should().Be(60);
         _service.ImageConversionMethod.Should().Be(ImageConversionMethod.Halftone);

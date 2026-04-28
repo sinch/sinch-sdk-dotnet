@@ -25,7 +25,7 @@ namespace Sinch.Tests.Fax
             var request = new CreateFaxServiceRequest
             {
                 Name = "Test Service",
-                IncomingWebhookUrl = "https://example.com/fax"
+                IncomingEventDestinationTarget = "https://example.com/fax"
             };
 
             HttpMessageHandlerMock

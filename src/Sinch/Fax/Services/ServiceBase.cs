@@ -12,12 +12,10 @@ namespace Sinch.Fax.Services
         public ImageConversionMethod? ImageConversionMethod { get; set; }
 
         /// <summary>
-        /// The content type of the webhook.
+        ///     The content type for delivering Sinch events to the event destination URL.
         /// </summary>
         [JsonPropertyName("webhookContentType")]
-        public EventDestinationContentType? WebhookContentType { get; set; }
-
-
+        public EventDestinationContentType? EventDestinationContentType { get; set; }
 
         /// <summary>
         ///     A friendly name for the service. Maximum is 60 characters.
@@ -27,10 +25,10 @@ namespace Sinch.Fax.Services
 
 
         /// <summary>
-        ///     The URL to which Sinch will post when someone sends a fax to your Sinch number. To accept incoming faxes this must be set and your Sinch phone number must be configured to receive faxes.
+        ///     The URL to which Sinch will post Sinch events when someone sends a fax to your Sinch number. To accept incoming faxes this must be set and your Sinch phone number must be configured to receive faxes.
         /// </summary>
         [JsonPropertyName("incomingWebhookUrl")]
-        public string? IncomingWebhookUrl { get; set; }
+        public string? IncomingEventDestinationTarget { get; set; }
 
 
         /// <summary>

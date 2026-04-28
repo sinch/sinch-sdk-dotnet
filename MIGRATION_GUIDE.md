@@ -62,6 +62,8 @@
 - [Fax API: GenericFaxEvent renamed to FaxSinchEventBase](#fax-api-genericfaxevent-renamed-to-faxsincheventbase)
 - [Fax API: CallbackUrlContentType renamed to EventDestinationContentType](#fax-api-callbackurlcontenttype-renamed-to-eventdestinationcontenttype)
 - [Fax API: CallbackUrl renamed to EventDestinationTarget](#fax-api-callbackurl-renamed-to-eventdestinationtarget)
+- [Fax API: WebhookContentType renamed to EventDestinationContentType on ServiceBase](#fax-api-webhookcontenttype-renamed-to-eventdestinationcontenttype-on-servicebase)
+- [Fax API: IncomingWebhookUrl renamed to IncomingEventDestinationTarget on ServiceBase](#fax-api-incomingwebhookurl-renamed-to-incomingeventdestinationtarget-on-servicebase)
 
 ## .NET Framework Support
 
@@ -1581,7 +1583,7 @@ request.EventDestinationContentType = EventDestinationContentType.MultipartFormD
 
 ## Fax API: CallbackUrl renamed to EventDestinationTarget
 
-The `CallbackUrl` property on `Fax` and `SendFaxRequest` has been renamed to `EventDestinationTarget`. The corresponding `CallbackUrlContentType` property has been renamed to `EventDestinationContentType`. The wire field names (`callbackUrl`, `callbackUrlContentType`) are unchanged.
+The `CallbackUrl` property on `Fax` and `SendFaxRequest` has been renamed to `EventDestinationTarget`. The corresponding `CallbackUrlContentType` property has been renamed to `EventDestinationContentType`.
 
 Version 1.*:
 ```csharp
@@ -1598,6 +1600,46 @@ var request = new SendFaxRequest
 {
     EventDestinationTarget = "https://my.server/events",
     EventDestinationContentType = EventDestinationContentType.ApplicationJson
+};
+```
+
+## Fax API: WebhookContentType renamed to EventDestinationContentType on ServiceBase
+
+The `WebhookContentType` property on `ServiceBase` (and its subclasses `Service`, `CreateServiceRequest`, `UpdateServiceRequest`) has been renamed to `EventDestinationContentType`.
+
+Version 1.*:
+```csharp
+var request = new CreateServiceRequest
+{
+    WebhookContentType = CallbackUrlContentType.ApplicationJson
+};
+```
+
+Version 2.*:
+```csharp
+var request = new CreateServiceRequest
+{
+    EventDestinationContentType = EventDestinationContentType.ApplicationJson
+};
+```
+
+## Fax API: IncomingWebhookUrl renamed to IncomingEventDestinationTarget on ServiceBase
+
+The `IncomingWebhookUrl` property on `ServiceBase` (and its subclasses) has been renamed to `IncomingEventDestinationTarget`.
+
+Version 1.*:
+```csharp
+var request = new CreateServiceRequest
+{
+    IncomingWebhookUrl = "https://my.server/incoming"
+};
+```
+
+Version 2.*:
+```csharp
+var request = new CreateServiceRequest
+{
+    IncomingEventDestinationTarget = "https://my.server/incoming"
 };
 ```
 
