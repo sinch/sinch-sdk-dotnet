@@ -1486,7 +1486,7 @@ using Sinch.Voice.SinchEvents;
 
 ## Voice API: Voice event types renamed
 
-Several Voice event model types have been renamed. The JSON wire format is unchanged.
+The base type for Voice Sinch events has been renamed. The concrete event types and JSON wire format are unchanged.
 
 Renamed types:
 
