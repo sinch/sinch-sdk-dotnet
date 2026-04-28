@@ -403,7 +403,7 @@ namespace Sinch.Tests.Conversation.Apps
             });
             response.RateLimits.Should().BeEquivalentTo(new RateLimits()
             {
-                EventDestinations = 50,
+                EventsCount = 50,
                 Inbound = 100,
                 Outbound = 200
             });
@@ -597,7 +597,7 @@ namespace Sinch.Tests.Conversation.Apps
                 {
                     Inbound = 100,
                     Outbound = 200,
-                    EventDestinations = 50
+                    EventsCount = 50
                 },
                 RetentionPolicy = new RetentionPolicy
                 {
