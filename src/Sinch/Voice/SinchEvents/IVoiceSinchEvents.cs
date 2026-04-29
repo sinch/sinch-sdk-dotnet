@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
@@ -48,5 +50,17 @@ namespace Sinch.Voice.SinchEvents
         /// <returns>Parsed Voice Sinch event.</returns>
         /// <exception cref="System.InvalidOperationException">Thrown when the event type is unknown or deserialization fails.</exception>
         Task<IVoiceSinchEvent> ParseEventAsync(Stream json, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Validates the authentication header of an incoming Voice Sinch event request.
+        /// </summary>
+        /// <param name="method">HTTP method of the incoming request.</param>
+        /// <param name="path">Path of the incoming request (e.g. <c>/webhooks/voice</c>).</param>
+        /// <param name="headers">Headers from the incoming request.</param>
+        /// <param name="body">Raw request body string.</param>
+        /// <returns><see langword="true"/> if the computed signature matches the Authorization header; otherwise <see langword="false"/>.</returns>
+        bool ValidateAuthenticationHeader(HttpMethod method, string path,
+            Dictionary<string, IEnumerable<string>> headers,
+            string body);
     }
 }

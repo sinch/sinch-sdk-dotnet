@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using Sinch.Auth;
 using Sinch.Core;
 using Sinch.Logger;
@@ -39,38 +37,21 @@ namespace Sinch.Voice
         ///     Parse and validate incoming Voice Sinch event payloads.
         /// </summary>
         IVoiceSinchEvents SinchEvents { get; }
-
-        /// <summary>
-        ///     Validates the authentication header of an incoming Sinch event request.
-        /// </summary>
-        /// <param name="method"></param>
-        /// <param name="path"></param>
-        /// <param name="headers"></param>
-        /// <param name="body"></param>
-        /// <returns>True, if produced signature match with that of a header.</returns>
-        bool ValidateAuthenticationHeader(HttpMethod method, string path,
-            Dictionary<string, IEnumerable<string>> headers,
-            string body);
     }
 
     /// <inheritdoc />
     internal sealed class SinchVoiceClient : ISinchVoiceClient
     {
-        private readonly ApplicationSignedAuth _applicationSignedAuth;
-        private readonly ILoggerAdapter<ISinchVoiceClient>? _logger;
-
         public SinchVoiceClient(Uri baseAddress, LoggerFactory? loggerFactory,
             IHttp http, ApplicationSignedAuth applicationSignedAuth, Uri applicationManagementBaseAddress)
         {
-            _applicationSignedAuth = applicationSignedAuth;
-            _logger = loggerFactory?.Create<ISinchVoiceClient>();
             Callouts = new SinchCallout(loggerFactory?.Create<ISinchVoiceCallout>(), baseAddress, http);
             Calls = new SinchCalls(loggerFactory?.Create<ISinchVoiceCalls>(), baseAddress, http);
             Conferences = new SinchConferences(loggerFactory?.Create<ISinchVoiceConferences>(), baseAddress, http,
                 Callouts);
             Applications = new SinchApplications(loggerFactory?.Create<ISinchVoiceApplications>(),
                 applicationManagementBaseAddress, http);
-            SinchEvents = new VoiceSinchEvents(http.JsonSerializerOptions,
+            SinchEvents = new VoiceSinchEvents(http.JsonSerializerOptions, applicationSignedAuth,
                 loggerFactory?.Create<IVoiceSinchEvents>());
         }
 
@@ -88,12 +69,5 @@ namespace Sinch.Voice
 
         /// <inheritdoc />
         public IVoiceSinchEvents SinchEvents { get; }
-
-        public bool ValidateAuthenticationHeader(HttpMethod method, string path,
-            Dictionary<string, IEnumerable<string>> headers, string body)
-        {
-            return AuthorizationHeaderValidation.Validate(method, path, headers, body, _applicationSignedAuth,
-                _logger);
-        }
     }
 }

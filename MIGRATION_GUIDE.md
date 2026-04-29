@@ -66,6 +66,8 @@
 - [Fax API: WebhookContentType renamed to EventDestinationContentType on ServiceBase](#fax-api-webhookcontenttype-renamed-to-eventdestinationcontenttype-on-servicebase)
 - [Fax API: IncomingWebhookUrl renamed to IncomingEventDestinationTarget on ServiceBase](#fax-api-incomingwebhookurl-renamed-to-incomingeventdestinationtarget-on-servicebase)
 - [Conversation API: ParseEvent and ValidateAuthenticationHeader moved to SinchEvents sub-domain](#conversation-api-parseevent-and-validateauthenticationheader-moved-to-sinchevents-sub-domain)
+- [Numbers API: ValidateAuthenticationHeader moved to SinchEvents sub-domain](#numbers-api-validateauthenticationheader-moved-to-sinchevents-sub-domain)
+- [Voice API: ParseEvent and ValidateAuthenticationHeader moved to SinchEvents sub-domain](#voice-api-parseevent-and-validateauthenticationheader-moved-to-sinchevents-sub-domain)
 
 ## .NET Framework Support
 
@@ -1392,7 +1394,7 @@ if (callbackEvent is UnsupportedCallbackEvent unsupported) { /* ... */ }
 
 Version 2.*:
 ```csharp
-IConversationSinchEvent sinchEvent = sinch.Conversation.EventDestinations.ParseEvent(rawBody);
+IConversationSinchEvent sinchEvent = sinch.Conversation.SinchEvents.ParseEvent(rawBody);
 if (sinchEvent is UnsupportedConversationSinchEvent unsupported) { /* ... */ }
 ```
 
@@ -1532,7 +1534,7 @@ switch (sinchEvent)
 
 Version 2.*:
 ```csharp
-VoiceSinchEvent sinchEvent = sinch.Voice.ParseEvent(rawBody);
+VoiceSinchEvent sinchEvent = sinch.Voice.SinchEvents.ParseEvent(rawBody);
 switch (sinchEvent)
 {
     case AnsweredCallEvent ace: /* ... */ break;
@@ -1677,5 +1679,39 @@ using Sinch.Conversation.SinchEvents;
 
 var parsed = sinch.Conversation.SinchEvents.ParseEvent(rawBody);
 sinch.Conversation.SinchEvents.ValidateAuthenticationHeader(headers, rawBody, secret);
+```
+
+## Numbers API: ValidateAuthenticationHeader moved to SinchEvents sub-domain
+
+`ValidateAuthenticationHeader` has been removed from `ISinchNumbers` and is now on the new `INumbersSinchEvents` sub-domain, accessible as `sinch.Numbers.SinchEvents`.
+
+Version 1.*:
+```csharp
+bool isValid = sinch.Numbers.ValidateAuthenticationHeader(hmacSecret, rawBody, signatureHeaderValue);
+```
+
+Version 2.*:
+```csharp
+using Sinch.Numbers.SinchEvents;
+
+bool isValid = sinch.Numbers.SinchEvents.ValidateAuthenticationHeader(hmacSecret, rawBody, signatureHeaderValue);
+```
+
+## Voice API: ParseEvent and ValidateAuthenticationHeader moved to SinchEvents sub-domain
+
+`ParseEvent` and `ValidateAuthenticationHeader` have been removed from `ISinchVoiceClient` and are now on the new `IVoiceSinchEvents` sub-domain, accessible as `sinch.Voice.SinchEvents`.
+
+Version 1.*:
+```csharp
+VoiceSinchEvent sinchEvent = sinch.Voice.ParseEvent(rawBody);
+bool isValid = sinch.Voice.ValidateAuthenticationHeader(HttpMethod.Post, "/path", headers, rawBody);
+```
+
+Version 2.*:
+```csharp
+using Sinch.Voice.SinchEvents;
+
+VoiceSinchEvent sinchEvent = sinch.Voice.SinchEvents.ParseEvent(rawBody);
+bool isValid = sinch.Voice.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/path", headers, rawBody);
 ```
 

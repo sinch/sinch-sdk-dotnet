@@ -63,7 +63,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task ThenTheHeaderOfTheEventWithATypeContainsAValidAuthorization()
         {
             _rawPieSequenceContent = await _pieReturnResponse.Content.ReadAsStringAsync();
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
                 _pieReturnResponse.GetAllHeaders(),
                 _rawPieSequenceContent).Should().BeTrue();
         }
@@ -99,7 +99,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task ThenTheHeaderOfTheEventWithAPieTypeSequenceContainsAValidAuthorization()
         {
             _rawPieSequenceContent = await _pieSequenceResponse.Content.ReadAsStringAsync();
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
                 _pieSequenceResponse.GetAllHeaders(),
                 _rawPieSequenceContent).Should().BeTrue();
         }
@@ -135,7 +135,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task ThenTheHeaderOfTheEventDiceContainsAValidAuthorization()
         {
             _rawDiceContent = await _diceResponse.Content.ReadAsStringAsync();
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
                 _diceResponse.GetAllHeaders(),
                 _rawDiceContent).Should().BeTrue();
         }
@@ -182,7 +182,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task ThenTheHeaderOfTheEventContainsAValidAuthorization()
         {
             _rawAceContent = await _aceResponse.Content.ReadAsStringAsync();
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
                 _aceResponse.GetAllHeaders(),
                 _rawAceContent).Should().BeTrue();
         }
@@ -212,7 +212,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task ThenTheHeaderOfTheIceEventContainsAValidAuthorization()
         {
             _rawIceContent = await _iceResponse.Content.ReadAsStringAsync();
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
                 _iceResponse.GetAllHeaders(),
                 _rawIceContent).Should().BeTrue();
         }
@@ -257,7 +257,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task ThenTheHeaderOfTheRecordingFinishedEventContainsAValidAuthorization()
         {
             _rawEventRecordAvailableContent = await _eventRecordingFinishedResponse.Content.ReadAsStringAsync();
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
                 _eventRecordingFinishedResponse.GetAllHeaders(),
                 _rawEventRecordAvailableContent).Should().BeTrue();
         }
@@ -285,7 +285,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task ThenTheHeaderOfTheRecordingAvailableEventContainsAValidAuthorization()
         {
             _rawEventRecordAvailableContent = await _eventRecordingAvailableResponse.Content.ReadAsStringAsync();
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
                 _eventRecordingAvailableResponse.GetAllHeaders(),
                 _rawEventRecordAvailableContent).Should().BeTrue();
         }
@@ -314,7 +314,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task ThenTheHeaderOfTheTranscriptionAvailableEventContainsAValidAuthorization()
         {
             _rawEventTransactionContent = await _eventTranscriptionAvailableResponse.Content.ReadAsStringAsync();
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
                 _eventTranscriptionAvailableResponse.GetAllHeaders(),
                 _rawEventTransactionContent).Should().BeTrue();
         }

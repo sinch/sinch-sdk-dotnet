@@ -1,9 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
+using Sinch.Auth;
+using Sinch.Core;
 using Sinch.Logger;
 
 namespace Sinch.Voice.SinchEvents
@@ -11,6 +15,7 @@ namespace Sinch.Voice.SinchEvents
     /// <inheritdoc />
     internal sealed class VoiceSinchEvents(
         JsonSerializerOptions jsonSerializerOptions,
+        ApplicationSignedAuth applicationSignedAuth,
         ILoggerAdapter<IVoiceSinchEvents>? logger = null)
         : IVoiceSinchEvents
     {
@@ -59,6 +64,13 @@ namespace Sinch.Voice.SinchEvents
             }
 
             return result;
+        }
+
+        /// <inheritdoc />
+        public bool ValidateAuthenticationHeader(HttpMethod method, string path,
+            Dictionary<string, IEnumerable<string>> headers, string body)
+        {
+            return AuthorizationHeaderValidation.Validate(method, path, headers, body, applicationSignedAuth, logger);
         }
     }
 }
