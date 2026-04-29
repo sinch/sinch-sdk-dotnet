@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using Sinch.Auth;
 using Sinch.Core;
 using Sinch.Logger;

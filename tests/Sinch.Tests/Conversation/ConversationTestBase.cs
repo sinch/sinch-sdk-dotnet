@@ -1,7 +1,6 @@
 using System;
 using System.Text.Json;
 using Sinch.Conversation;
-using Sinch.Conversation.SinchEvents;
 using Sinch.Core;
 
 namespace Sinch.Tests.Conversation
