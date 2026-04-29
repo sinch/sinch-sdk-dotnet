@@ -18,8 +18,8 @@ namespace Sinch.Numbers.SinchEvents
         ///     Parses a Sinch Numbers event from a raw JSON string.
         /// </summary>
         /// <param name="json">The raw Sinch event payload.</param>
-        /// <returns>The parsed <see cref="NumberSinchEvent" />.</returns>
-        NumberSinchEvent ParseEvent(string json);
+        /// <returns>The parsed <see cref="INumberSinchEvent" />.</returns>
+        INumberSinchEvent ParseEvent(string json);
 
         /// <summary>
         ///     Validates a Sinch Numbers event using your HMAC secret and the raw signature header value.

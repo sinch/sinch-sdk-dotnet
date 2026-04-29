@@ -68,6 +68,7 @@
 - [Conversation API: ParseEvent and ValidateAuthenticationHeader moved to SinchEvents sub-domain](#conversation-api-parseevent-and-validateauthenticationheader-moved-to-sinchevents-sub-domain)
 - [Numbers API: ValidateAuthenticationHeader moved to SinchEvents sub-domain](#numbers-api-validateauthenticationheader-moved-to-sinchevents-sub-domain)
 - [Voice API: ParseEvent and ValidateAuthenticationHeader moved to SinchEvents sub-domain](#voice-api-parseevent-and-validateauthenticationheader-moved-to-sinchevents-sub-domain)
+- [Verification API: ValidateAuthenticationHeader moved to SinchEvents sub-domain](#verification-api-validateauthenticationheader-moved-to-sinchevents-sub-domain)
 
 ## .NET Framework Support
 
@@ -1495,6 +1496,22 @@ var requestEvent = JsonSerializer.Deserialize<VerificationRequestEvent>(json);
 Version 2.*:
 ```csharp
 var requestEvent = JsonSerializer.Deserialize<VerificationStartEvent>(json);
+```
+
+## Verification API: ValidateAuthenticationHeader moved to SinchEvents sub-domain
+
+`ValidateAuthenticationHeader` has been removed from `ISinchVerificationClient` and is now on the new `IVerificationSinchEvents` sub-domain, accessible as `sinch.Verification.SinchEvents`.
+
+Version 1.*:
+```csharp
+bool isValid = sinch.Verification.ValidateAuthenticationHeader(HttpMethod.Post, "/path", headers, rawBody);
+```
+
+Version 2.*:
+```csharp
+using Sinch.Verification.SinchEvents;
+
+bool isValid = sinch.Verification.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/path", headers, rawBody);
 ```
 
 ## Voice API: Sinch.Voice.Hooks namespace renamed to Sinch.Voice.SinchEvents

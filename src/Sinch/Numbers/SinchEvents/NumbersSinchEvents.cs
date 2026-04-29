@@ -10,7 +10,7 @@ namespace Sinch.Numbers.SinchEvents
     {
         public JsonSerializerOptions JsonSerializerOptions { get; } = jsonSerializerOptions;
 
-        public NumberSinchEvent ParseEvent(string json)
+        public INumberSinchEvent ParseEvent(string json)
         {
             var result = JsonSerializer.Deserialize<NumberSinchEvent>(json, JsonSerializerOptions);
             if (result == null)

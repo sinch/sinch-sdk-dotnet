@@ -1,61 +1,53 @@
 using System;
-using System.Text.Json.Serialization;
 
 namespace Sinch.Numbers.SinchEvents
 {
     /// <summary>
-    ///     A notification of an event sent to your configured Sinch event URL.
+    ///     Represents a Sinch Numbers event notification.
     /// </summary>
-    public sealed class NumberSinchEvent : INumberSinchEvent
+    public interface INumberSinchEvent
     {
         /// <summary>
         ///     The ID of the event.
         /// </summary>
-        [JsonPropertyName("eventId")]
-        public string? EventId { get; set; }
+        string? EventId { get; }
 
         /// <summary>
         ///     The date and time when the Sinch event was created and added to the Sinch events queue.
         /// </summary>
-        [JsonPropertyName("timestamp")]
-        public DateTime? Timestamp { get; set; }
+        DateTime? Timestamp { get; }
 
         /// <summary>
         ///     The ID of the project to which the event belongs.
         /// </summary>
-        [JsonPropertyName("projectId")]
-        public string? ProjectId { get; set; }
+        string? ProjectId { get; }
 
         /// <summary>
         ///     The unique identifier of the resource, depending on the resource type.
         ///     For example, a phone number, a hosting order ID, or a brand ID.
         /// </summary>
-        [JsonPropertyName("resourceId")]
-        public string? ResourceId { get; set; }
+        string? ResourceId { get; }
 
         /// <summary>
-        ///     The type of the resource. 
+        ///     The type of the resource.
         /// </summary>
-        [JsonPropertyName("resourceType")]
-        public ResourceType? ResourceType { get; set; }
+        ResourceType? ResourceType { get; }
 
         /// <summary>
         ///     The type of the event.
         /// </summary>
-        [JsonPropertyName("eventType")]
-        public EventType? EventType { get; set; }
+        EventType? EventType { get; }
 
         /// <summary>
-        ///     The status of the event
+        ///     The status of the event.
         /// </summary>
-        [JsonPropertyName("status")]
-        public EventStatus? Status { get; set; }
+        EventStatus? Status { get; }
 
         /// <summary>
         ///     If the status is FAILED, a failure code will be provided.
         ///     For numbers provisioning to SMS platform, there won't be any extra failureCode, as the result is binary.
         /// </summary>
-        [JsonPropertyName("failureCode")]
-        public FailureCode? FailureCode { get; set; }
+        FailureCode? FailureCode { get; }
     }
 }
+
