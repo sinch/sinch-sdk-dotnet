@@ -275,7 +275,6 @@ namespace Sinch
         {
             var conversationConfig = _sinchClientConfiguration.ConversationConfiguration;
 
-            // TODO! Need to be refactored when the EventsDestination support will be addressed: https://sinchenterprise.atlassian.net/browse/DEVEXP-1311
             if (conversationConfig.Region == null)
                 throw new InvalidOperationException(
                     $"{nameof(SinchConversationConfiguration)}.{nameof(SinchConversationConfiguration.Region)} is required. " +
@@ -292,9 +291,6 @@ namespace Sinch
             return new SinchConversationClient(
                 _sinchClientConfiguration.SinchUnifiedCredentials
                     ?.ProjectId!,
-                // unified credentials, alongside projectId, will be validated as part of lazy call to http
-                // this is needed for working of Conversation.Webhooks.ParseEvent() to be accessible, without providing
-                // SinchUnifiedCredentials, the design regarding just a static method for this is still in discussion.
                 conversationBaseAddress,
                 templatesBaseAddress,
                 _loggerFactory,
