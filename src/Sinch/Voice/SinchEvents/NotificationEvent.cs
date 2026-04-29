@@ -8,7 +8,7 @@ namespace Sinch.Voice.SinchEvents
     ///     <br /><br />
     ///     If there is no response to the callback within the timeout period, the notification is discarded.
     /// </summary>
-    public sealed class NotificationEvent : VoiceSinchEvent
+    public sealed class NotificationEvent : VoiceSinchEventBase
     {
         /// <summary>
         ///     Must have the value notify.

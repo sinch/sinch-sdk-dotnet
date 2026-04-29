@@ -71,7 +71,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""PIE"" event with a ""return"" type")]
         public void ThenTheVoiceEventDescribesAEventWithAType()
         {
-            _voiceClient.ParseEvent(_rawPieSequenceContent).As<PromptInputEvent>().Should().BeEquivalentTo(
+            _voiceClient.SinchEvents.ParseEvent(_rawPieSequenceContent).As<PromptInputEvent>().Should().BeEquivalentTo(
                 new PromptInputEvent
                 {
                     CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000013",
@@ -107,7 +107,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""PIE"" event with a ""sequence"" type")]
         public void ThenTheVoiceEventDescribesAPieEventWithASequenceType()
         {
-            _voiceClient.ParseEvent(_rawPieSequenceContent).As<PromptInputEvent>().Should().BeEquivalentTo(
+            _voiceClient.SinchEvents.ParseEvent(_rawPieSequenceContent).As<PromptInputEvent>().Should().BeEquivalentTo(
                 new PromptInputEvent
                 {
                     CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000023",
@@ -143,7 +143,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""DICE"" event")]
         public void ThenTheVoiceEventDescribesAEvent()
         {
-            _voiceClient.ParseEvent(_rawDiceContent).Should().BeEquivalentTo(new DisconnectedCallEvent
+            _voiceClient.SinchEvents.ParseEvent(_rawDiceContent).Should().BeEquivalentTo(new DisconnectedCallEvent
             {
                 CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000033",
                 Timestamp = Helpers.ParseUtc("2024-06-06T16:59:42Z"),
@@ -190,7 +190,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""ACE"" event")]
         public void ThenTheVoiceEventDescribesAceEvent()
         {
-            _voiceClient.ParseEvent(_rawAceContent).Should().BeEquivalentTo(new AnsweredCallEvent
+            _voiceClient.SinchEvents.ParseEvent(_rawAceContent).Should().BeEquivalentTo(new AnsweredCallEvent
             {
                 CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000043",
                 CallResourceUrl = null,
@@ -220,7 +220,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""ICE"" event")]
         public void ThenTheVoiceEventDescribesAIceEvent()
         {
-            _voiceClient.ParseEvent(_rawIceContent).As<IncomingCallEvent>().Should().BeEquivalentTo(
+            _voiceClient.SinchEvents.ParseEvent(_rawIceContent).As<IncomingCallEvent>().Should().BeEquivalentTo(
                 new IncomingCallEvent()
                 {
                     CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000053",
@@ -265,7 +265,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""notify"" event with a ""recording_finished"" type")]
         public void ThenTheVoiceEventDescribesANotifyEventWithARecordFinishedType()
         {
-            _voiceClient.ParseEvent(_rawEventRecordAvailableContent).As<NotificationEvent>().Should().BeEquivalentTo(
+            _voiceClient.SinchEvents.ParseEvent(_rawEventRecordAvailableContent).As<NotificationEvent>().Should().BeEquivalentTo(
                 new NotificationEvent()
                 {
                     CallId = "33dd8e62-0ac6-4e0c-a89f-36d121f861f9",
@@ -293,7 +293,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""notify"" event with a ""recording_available"" type")]
         public void ThenTheVoiceEventNotifyDescribesAEventWithARecordingAvailableType()
         {
-            _voiceClient.ParseEvent(_rawEventRecordAvailableContent).As<NotificationEvent>().Should().BeEquivalentTo(
+            _voiceClient.SinchEvents.ParseEvent(_rawEventRecordAvailableContent).As<NotificationEvent>().Should().BeEquivalentTo(
                 new NotificationEvent()
                 {
                     CallId = "33dd8e62-0ac6-4e0c-a89f-36d121f861f9",
@@ -322,7 +322,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""notify"" event with a ""transcription_available"" type")]
         public void ThenTheVoiceEventDescribesANotifyEventWithATranscriptionAvailableType()
         {
-            _voiceClient.ParseEvent(_rawEventTransactionContent).As<NotificationEvent>().Should().BeEquivalentTo(
+            _voiceClient.SinchEvents.ParseEvent(_rawEventTransactionContent).As<NotificationEvent>().Should().BeEquivalentTo(
                 new NotificationEvent()
                 {
                     CallId = "33dd8e62-0ac6-4e0c-a89f-36d121f861f9",

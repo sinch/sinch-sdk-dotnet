@@ -8,6 +8,7 @@ using Sinch.Conversation.Conversations;
 using Sinch.Conversation.EventDestinations;
 using Sinch.Conversation.Events;
 using Sinch.Conversation.Messages;
+using Sinch.Conversation.SinchEvents;
 using Sinch.Conversation.Transcoding;
 using Sinch.Conversation.TemplatesV2;
 using Sinch.Core;
@@ -37,6 +38,9 @@ namespace Sinch.Conversation
 
         /// <inheritdoc cref="ISinchConversationEventDestinations" />
         ISinchConversationEventDestinations EventDestinations { get; }
+
+        /// <inheritdoc cref="IConversationSinchEvents" />
+        IConversationSinchEvents SinchEvents { get; }
 
         /// <inheritdoc cref="ISinchConversationEvents" />
         ISinchConversationEvents Events { get; }
@@ -80,6 +84,8 @@ namespace Sinch.Conversation
                 loggerFactory?.Create<ISinchConversationConversations>(), http);
             EventDestinations = new EventDestinations.EventDestinations(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationEventDestinations>(), http);
+            SinchEvents = new ConversationSinchEvents(JsonSerializerOptionsInner,
+                loggerFactory?.Create<IConversationSinchEvents>());
             Events = new Events.Events(projectId, conversationBaseAddress,
                 loggerFactory?.Create<ISinchConversationEvents>(), http);
             Transcoding = new Transcoding.Transcoding(projectId, conversationBaseAddress,
@@ -104,6 +110,9 @@ namespace Sinch.Conversation
 
         /// <inheritdoc />
         public ISinchConversationEventDestinations EventDestinations { get; }
+
+        /// <inheritdoc />
+        public IConversationSinchEvents SinchEvents { get; }
 
         /// <inheritdoc />
         public ISinchConversationEvents Events { get; }

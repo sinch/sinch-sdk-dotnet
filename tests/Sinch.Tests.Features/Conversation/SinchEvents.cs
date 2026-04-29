@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
-using Sinch.Conversation.EventDestinations;
 using Sinch.Conversation.SinchEvents;
 using Sinch.Conversation.SinchEvents.Models;
 
@@ -17,7 +16,7 @@ public class SinchEvents
     private const string BaseEventDestinationsUrl = "http://localhost:3014/webhooks/conversation";
 
     private readonly HttpClient _httpClient = new();
-    private ISinchConversationEventDestinations _eventDestinations;
+    private IConversationSinchEvents _eventDestinations;
     private HttpResponseMessage _eventResponse;
     private string _rawEvent;
     private IConversationSinchEvent _parsedEvent;
@@ -25,7 +24,7 @@ public class SinchEvents
     [Given(@"the Conversation Webhooks handler is available")]
     public void GivenTheConversationEventDestinationsHandlerIsAvailable()
     {
-        _eventDestinations = Utils.SinchConversationClient().EventDestinations;
+        _eventDestinations = Utils.SinchConversationClient().SinchEvents;
     }
 
     [When(@"I send a request to trigger a ""(.*)"" event")]

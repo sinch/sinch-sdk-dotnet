@@ -8,8 +8,8 @@ namespace Sinch.Fax.SinchEvents
     /// <inheritdoc />
     internal sealed class FaxSinchEvents(
         JsonSerializerOptions jsonSerializerOptions,
-        ILoggerAdapter<ISinchFaxSinchEvents>? logger = null)
-        : ISinchFaxSinchEvents
+        ILoggerAdapter<IFaxSinchEvents>? logger = null)
+        : IFaxSinchEvents
     {
         public JsonSerializerOptions JsonSerializerOptions { get; } = jsonSerializerOptions;
 

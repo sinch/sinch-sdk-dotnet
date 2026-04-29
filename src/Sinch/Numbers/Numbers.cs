@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +13,7 @@ using Sinch.Numbers.Available.List;
 using Sinch.Numbers.Available.Rent;
 using Sinch.Numbers.Available.RentAny;
 using Sinch.Numbers.EventDestinations;
+using Sinch.Numbers.SinchEvents;
 
 namespace Sinch.Numbers
 {
@@ -30,6 +30,9 @@ namespace Sinch.Numbers
 
         /// <inheritdoc cref="ISinchNumbersEventDestinations"/>
         public ISinchNumbersEventDestinations EventDestinations { get; }
+
+        /// <inheritdoc cref="INumbersSinchEvents"/>
+        public INumbersSinchEvents SinchEvents { get; }
 
         /// <inheritdoc cref="ISinchNumbersAvailable.RentAny" />
         Task<ActiveNumber> RentAny(RentAnyNumberRequest request,
@@ -77,24 +80,6 @@ namespace Sinch.Numbers
         ///     For internal use, JsonSerializerOption to be utilized for serialization and deserialization of all Numbers models
         /// </summary>
         internal JsonSerializerOptions JsonSerializerOptions { get; }
-
-        /// <summary>
-        ///     Validates json of a Sinch event with your HMAC secret 
-        /// </summary>
-        /// <param name="hmacSecret">Your HMAC secret</param>
-        /// <param name="json">The JSON payload as a raw string to be validated.</param>
-        /// <param name="signatureHeaderValue">A value of X-Sinch-Signature header</param>
-        /// <returns>True if a validation is successful</returns>
-        bool ValidateAuthenticationHeader(string hmacSecret, string json, string signatureHeaderValue);
-
-        /// <summary>
-        ///     Validates json of a Sinch event with your HMAC secret 
-        /// </summary>
-        /// <param name="hmacSecret">Your HMAC secret</param>
-        /// <param name="json">The JSON payload as a raw string to be validated.</param>
-        /// <param name="headers">Headers of a Sinch event message, where method will look up for X-Sinch-Signature header</param>
-        /// <returns>True if a validation is successful</returns>
-        bool ValidateAuthenticationHeader(string hmacSecret, string json, HttpHeaders headers);
     }
 
     public sealed class Numbers : ISinchNumbers
@@ -112,12 +97,17 @@ namespace Sinch.Numbers
                 loggerFactory?.Create<AvailableNumbers>(), http);
             EventDestinations = new SinchNumbersEventDestinations(projectId, baseAddress,
                 loggerFactory?.Create<ISinchNumbersEventDestinations>(), http);
+            SinchEvents = new NumbersSinchEvents(http.JsonSerializerOptions,
+                loggerFactory?.Create<INumbersSinchEvents>());
             JsonSerializerOptions = http.JsonSerializerOptions;
         }
 
         public ISinchNumbersRegions Regions { get; }
 
         public ISinchNumbersEventDestinations EventDestinations { get; }
+
+        /// <inheritdoc />
+        public INumbersSinchEvents SinchEvents { get; }
 
         /// <inheritdoc />
         public Task<ActiveNumber> RentAny(RentAnyNumberRequest request, CancellationToken cancellationToken = default)
@@ -192,15 +182,5 @@ namespace Sinch.Numbers
         }
 
         public JsonSerializerOptions JsonSerializerOptions { get; }
-
-        public bool ValidateAuthenticationHeader(string hmacSecret, string json, string signatureHeaderValue)
-        {
-            return HeaderValidation.ValidateAuthHeader(hmacSecret, json, signatureHeaderValue);
-        }
-
-        public bool ValidateAuthenticationHeader(string hmacSecret, string json, HttpHeaders headers)
-        {
-            return HeaderValidation.ValidateAuthHeader(hmacSecret, json, headers);
-        }
     }
 }

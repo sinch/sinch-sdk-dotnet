@@ -1,0 +1,52 @@
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Sinch.Voice.SinchEvents
+{
+    /// <summary>
+    ///     Voice Sinch Events service. Provides helpers for parsing
+    ///     incoming Voice Sinch event payloads delivered by the Voice API.
+    /// </summary>
+    public interface IVoiceSinchEvents
+    {
+        JsonSerializerOptions JsonSerializerOptions { get; }
+
+        /// <summary>
+        ///     Parses a Voice Sinch event from a JSON string.
+        /// </summary>
+        /// <param name="json">The raw JSON payload from the Voice Sinch event request body.</param>
+        /// <returns>
+        ///     Parsed Voice Sinch event. Use pattern matching to handle specific event types:
+        ///     <list type="bullet">
+        ///         <item><description><see cref="IncomingCallEvent"/> — An incoming call (ICE).</description></item>
+        ///         <item><description><see cref="AnsweredCallEvent"/> — A call was answered (ACE).</description></item>
+        ///         <item><description><see cref="DisconnectedCallEvent"/> — A call was disconnected (DICE).</description></item>
+        ///         <item><description><see cref="PromptInputEvent"/> — Prompt input received (PIE).</description></item>
+        ///         <item><description><see cref="NotificationEvent"/> — A general notification (notify).</description></item>
+        ///     </list>
+        /// </returns>
+        /// <exception cref="System.Text.Json.JsonException">Thrown when JSON is invalid or cannot be deserialized.</exception>
+        /// <exception cref="System.InvalidOperationException">Thrown when the event type is unknown or deserialization fails.</exception>
+        IVoiceSinchEvent ParseEvent(string json);
+
+        /// <summary>
+        ///     Parses a Voice Sinch event from a <see cref="JsonNode"/>.
+        /// </summary>
+        /// <param name="json">The parsed JSON node from the Voice Sinch event request body.</param>
+        /// <returns>Parsed Voice Sinch event.</returns>
+        /// <exception cref="System.InvalidOperationException">Thrown when the event type is unknown or deserialization fails.</exception>
+        IVoiceSinchEvent ParseEvent(JsonNode json);
+
+        /// <summary>
+        ///     Parses a Voice Sinch event from a stream.
+        /// </summary>
+        /// <param name="json">A stream containing the JSON payload from the Voice Sinch event request body.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Parsed Voice Sinch event.</returns>
+        /// <exception cref="System.InvalidOperationException">Thrown when the event type is unknown or deserialization fails.</exception>
+        Task<IVoiceSinchEvent> ParseEventAsync(Stream json, CancellationToken cancellationToken = default);
+    }
+}

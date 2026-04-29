@@ -32,7 +32,7 @@ namespace Sinch.Tests.Features.Sms
         [Given(@"the SMS Webhooks handler is available")]
         public void GivenTheSmsSinchEventsHandlerIsAvailable()
         {
-            _smsSinchEvents = Utils.SinchClient.Sms.SmsSinchEvents;
+            _smsSinchEvents = Utils.SinchClient.Sms.SinchEvents;
         }
 
         [When(@"I send a request to trigger an ""incoming SMS"" event")]

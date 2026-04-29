@@ -60,7 +60,7 @@ namespace Sinch.SMS
         ///     SMS Sinch events are configured in the Sinch Dashboard, not via API.
         ///     This service only handles parsing and validation of incoming Sinch event requests.
         /// </remarks>
-        ISmsSinchEvents SmsSinchEvents { get; }
+        ISmsSinchEvents SinchEvents { get; }
 
         internal bool IsUsingServicePlanId { get; }
     }
@@ -116,7 +116,7 @@ namespace Sinch.SMS
                 http);
             DeliveryReports = new DeliveryReports.DeliveryReports(projectIdOrServicePlanId, baseAddress,
                 loggerFactory?.Create<ISinchSmsDeliveryReports>(), http);
-            SmsSinchEvents = new SmsSinchEvents(
+            SinchEvents = new SmsSinchEvents(
                 http.JsonSerializerOptions,
                 loggerFactory?.Create<ISmsSinchEvents>());
         }
@@ -129,7 +129,7 @@ namespace Sinch.SMS
 
         public ISinchSmsDeliveryReports DeliveryReports { get; }
 
-        public ISmsSinchEvents SmsSinchEvents { get; }
+        public ISmsSinchEvents SinchEvents { get; }
 
         public bool IsUsingServicePlanId { get; }
     }

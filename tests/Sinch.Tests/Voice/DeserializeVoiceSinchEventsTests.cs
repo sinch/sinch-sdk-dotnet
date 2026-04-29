@@ -27,13 +27,13 @@ namespace Sinch.Tests.Voice
         {
             var json = Helpers.LoadResources("Voice/AnsweredCallEvent.json");
 
-            var @event = JsonSerializer.Deserialize<VoiceSinchEvent>(json);
-            var eventWithClient = _voiceClient.ParseEvent(json);
+            var @event = JsonSerializer.Deserialize<IVoiceSinchEvent>(json);
+            var eventWithClient = _voiceClient.SinchEvents.ParseEvent(json);
 
             AssertEvent(@event);
             AssertEvent(eventWithClient);
 
-            void AssertEvent(VoiceSinchEvent parsed)
+            void AssertEvent(IVoiceSinchEvent parsed)
             {
                 parsed.As<AnsweredCallEvent>().Should().BeEquivalentTo(new AnsweredCallEvent
                 {
@@ -58,13 +58,13 @@ namespace Sinch.Tests.Voice
         {
             var json = Helpers.LoadResources("Voice/NotificationEvent.json");
 
-            var @event = JsonSerializer.Deserialize<VoiceSinchEvent>(json);
-            var eventWithClient = _voiceClient.ParseEvent(json);
+            var @event = JsonSerializer.Deserialize<IVoiceSinchEvent>(json);
+            var eventWithClient = _voiceClient.SinchEvents.ParseEvent(json);
 
             AssertEvent(@event);
             AssertEvent(eventWithClient);
 
-            void AssertEvent(VoiceSinchEvent parsed)
+            void AssertEvent(IVoiceSinchEvent parsed)
             {
                 parsed.As<NotificationEvent>().Should().BeEquivalentTo(new NotificationEvent
                 {
@@ -89,13 +89,13 @@ namespace Sinch.Tests.Voice
         public void DeserializePromptInputEvent()
         {
             var json = Helpers.LoadResources("Voice/PromptInputEvent.json");
-            var @event = JsonSerializer.Deserialize<VoiceSinchEvent>(json);
-            var eventWithClient = _voiceClient.ParseEvent(json);
+            var @event = JsonSerializer.Deserialize<IVoiceSinchEvent>(json);
+            var eventWithClient = _voiceClient.SinchEvents.ParseEvent(json);
 
             AssertEvent(@event);
             AssertEvent(eventWithClient);
 
-            void AssertEvent(VoiceSinchEvent parsed)
+            void AssertEvent(IVoiceSinchEvent parsed)
             {
                 parsed.As<PromptInputEvent>().Should().BeEquivalentTo(new PromptInputEvent
                 {
@@ -122,13 +122,13 @@ namespace Sinch.Tests.Voice
         {
             var json = Helpers.LoadResources("Voice/DisconnectedCallEvent.json");
 
-            var @event = JsonSerializer.Deserialize<VoiceSinchEvent>(json);
-            var eventWithClient = _voiceClient.ParseEvent(json);
+            var @event = JsonSerializer.Deserialize<IVoiceSinchEvent>(json);
+            var eventWithClient = _voiceClient.SinchEvents.ParseEvent(json);
 
             AssertEvent(@event);
             AssertEvent(eventWithClient);
 
-            void AssertEvent(VoiceSinchEvent parsed)
+            void AssertEvent(IVoiceSinchEvent parsed)
             {
                 parsed.As<DisconnectedCallEvent>().Should().BeEquivalentTo(new DisconnectedCallEvent
                 {
@@ -167,13 +167,13 @@ namespace Sinch.Tests.Voice
         {
             var json = Helpers.LoadResources("Voice/IncomingCallEvent.json");
 
-            var @event = JsonSerializer.Deserialize<VoiceSinchEvent>(json);
-            var eventWithClient = _voiceClient.ParseEvent(json);
+            var @event = JsonSerializer.Deserialize<IVoiceSinchEvent>(json);
+            var eventWithClient = _voiceClient.SinchEvents.ParseEvent(json);
 
             AssertEvent(@event);
             AssertEvent(eventWithClient);
 
-            void AssertEvent(VoiceSinchEvent parsed)
+            void AssertEvent(IVoiceSinchEvent parsed)
             {
                 parsed.As<IncomingCallEvent>().Should().BeEquivalentTo(new IncomingCallEvent
                 {

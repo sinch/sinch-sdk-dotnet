@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace Sinch.SMS;
+namespace Sinch.SMS.SinchEvents;
 
 /// <summary>
 ///     Validates HMAC authentication headers for Sinch event requests.

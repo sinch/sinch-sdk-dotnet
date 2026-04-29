@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Sinch.Conversation.EventDestinations;
+namespace Sinch.Conversation.SinchEvents;
 
 /// <summary>
 ///     Validates HMAC authentication headers for Conversation event destination requests.

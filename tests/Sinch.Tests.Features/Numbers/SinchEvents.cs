@@ -1,5 +1,4 @@
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
@@ -34,7 +33,7 @@ namespace Sinch.Tests.Features.Numbers
         public async Task ThenTheHeaderOfTheForEventContainsAValidSignature(string success, string p1)
         {
             _rawData = await _eventResponse.Content.ReadAsStringAsync();
-            _sinchNumbers.ValidateAuthenticationHeader(SinchEventSecret, _rawData, _eventResponse.Headers)
+            _sinchNumbers.SinchEvents.ValidateAuthenticationHeader(SinchEventSecret, _rawData, _eventResponse.Headers)
                 .Should()
                 .BeTrue();
         }
@@ -42,7 +41,7 @@ namespace Sinch.Tests.Features.Numbers
         [Then(@"the event describes a ""success"" for ""PROVISIONING_TO_VOICE_PLATFORM"" event")]
         public void ThenTheEventDescribesAForEvent()
         {
-            var parsedEvent = JsonSerializer.Deserialize<NumberSinchEvent>(_rawData);
+            var parsedEvent = _sinchNumbers.SinchEvents.ParseEvent(_rawData);
             parsedEvent.EventType.Should().Be(EventType.ProvisioningToVoicePlatform);
             parsedEvent.Status.Should().Be(EventStatus.Succeeded);
             parsedEvent.FailureCode.Should().BeNull();
@@ -58,7 +57,7 @@ namespace Sinch.Tests.Features.Numbers
         [Then(@"the event describes a ""failure"" for ""PROVISIONING_TO_VOICE_PLATFORM"" event")]
         public void ThenTheEventDescribesAFailureForEvent()
         {
-            var parsedEvent = JsonSerializer.Deserialize<NumberSinchEvent>(_rawData);
+            var parsedEvent = _sinchNumbers.SinchEvents.ParseEvent(_rawData);
             parsedEvent.EventType.Should().Be(EventType.ProvisioningToVoicePlatform);
             parsedEvent.Status.Should().Be(EventStatus.Failed);
             parsedEvent.FailureCode.Should().Be(FailureCode.ProvisioningToVoicePlatformFailed);

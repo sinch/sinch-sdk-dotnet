@@ -13,7 +13,7 @@ namespace Sinch.Voice.SinchEvents
     ///     [SVAML](https://developers.sinch.com/docs/voice/api-reference/svaml/) logic.<br /><br />
     ///     Note: PIE callbacks are not issued for DATA Calls, only PSTN and SIP calls.
     /// </summary>
-    public sealed class PromptInputEvent : VoiceSinchEvent
+    public sealed class PromptInputEvent : VoiceSinchEventBase
     {
         /// <summary>
         ///     Must have the value pie.

@@ -65,6 +65,7 @@
 - [Fax API: CallbackUrl renamed to EventDestinationTarget](#fax-api-callbackurl-renamed-to-eventdestinationtarget)
 - [Fax API: WebhookContentType renamed to EventDestinationContentType on ServiceBase](#fax-api-webhookcontenttype-renamed-to-eventdestinationcontenttype-on-servicebase)
 - [Fax API: IncomingWebhookUrl renamed to IncomingEventDestinationTarget on ServiceBase](#fax-api-incomingwebhookurl-renamed-to-incomingeventdestinationtarget-on-servicebase)
+- [Conversation API: ParseEvent and ValidateAuthenticationHeader moved to SinchEvents sub-domain](#conversation-api-parseevent-and-validateauthenticationheader-moved-to-sinchevents-sub-domain)
 
 ## .NET Framework Support
 
@@ -1124,7 +1125,7 @@ var isValid = sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, 
 
 Version 2.*:
 ```csharp
-var isValid = sinch.Conversation.EventDestinations.ValidateAuthenticationHeader(headers, rawBody, secret);
+var isValid = sinch.Conversation.SinchEvents.ValidateAuthenticationHeader(headers, rawBody, secret);
 ```
 
 ## Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts StringValues headers
@@ -1149,7 +1150,7 @@ var headers = new Dictionary<string, string>
     ["x-sinch-webhook-signature"] = signature
 };
 
-var isValid = sinch.Conversation.EventDestinations.ValidateAuthenticationHeader(headers, rawBody, secret);
+var isValid = sinch.Conversation.SinchEvents.ValidateAuthenticationHeader(headers, rawBody, secret);
 
 // Option B: multi-value headers (e.g. from HttpContext.Request.Headers)
 IReadOnlyDictionary<string, IEnumerable<string>> headers = new Dictionary<string, IEnumerable<string>>
@@ -1157,7 +1158,7 @@ IReadOnlyDictionary<string, IEnumerable<string>> headers = new Dictionary<string
     ["x-sinch-webhook-signature"] = new[] { signature }
 };
 
-var isValid = sinch.Conversation.EventDestinations.ValidateAuthenticationHeader(headers, rawBody, secret);
+var isValid = sinch.Conversation.SinchEvents.ValidateAuthenticationHeader(headers, rawBody, secret);
 ```
 
 ## Conversation API: Webhooks ParseEvent no longer accepts JsonNode
@@ -1172,7 +1173,7 @@ var callback = sinch.Conversation.Webhooks.ParseEvent(node!);
 
 Version 2.*:
 ```csharp
-var callback = sinch.Conversation.EventDestinations.ParseEvent(rawBody);
+var callback = sinch.Conversation.SinchEvents.ParseEvent(rawBody);
 ```
 
 ## Conversation API: Webhooks renamed to EventDestinations
@@ -1658,5 +1659,23 @@ var request = new CreateServiceRequest
 {
     IncomingEventDestinationTarget = "https://my.server/incoming"
 };
+```
+
+## Conversation API: ParseEvent and ValidateAuthenticationHeader moved to SinchEvents sub-domain
+
+`ParseEvent` and `ValidateAuthenticationHeader` have moved from `ISinchConversationWebhooks` (V1) to the new `IConversationSinchEvents` sub-domain, accessible as `sinch.Conversation.SinchEvents`.
+
+Version 1.*:
+```csharp
+var parsed = sinch.Conversation.Webhooks.ParseEvent(rawBody);
+sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, rawBody, secret);
+```
+
+Version 2.*:
+```csharp
+using Sinch.Conversation.SinchEvents;
+
+var parsed = sinch.Conversation.SinchEvents.ParseEvent(rawBody);
+sinch.Conversation.SinchEvents.ValidateAuthenticationHeader(headers, rawBody, secret);
 ```
 

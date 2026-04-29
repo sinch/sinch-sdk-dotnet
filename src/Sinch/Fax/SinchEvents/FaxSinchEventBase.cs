@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Fax.SinchEvents
 {
-    public abstract class FaxSinchEventBase
+    public abstract class FaxSinchEventBase : IFaxSinchEvent
     {
         /// <summary>
         ///     The type of the Fax Sinch event.

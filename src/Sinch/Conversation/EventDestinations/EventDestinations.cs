@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using Sinch.Conversation.SinchEvents;
 using Sinch.Core;
 using Sinch.Logger;
 
@@ -64,40 +61,6 @@ namespace Sinch.Conversation.EventDestinations
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task Delete(string eventDestinationId, CancellationToken cancellationToken = default);
-
-        /// <summary>
-        ///     Validates Sinch event request.
-        /// </summary>
-        /// <param name="headers">The Sinch event request headers as single-value entries.</param>
-        /// <param name="body">The Sinch event raw body, as received from the HTTP request.</param>
-        /// <param name="secret">The event destination secret used to generate the HMAC signature.</param>
-        /// <returns>True, if produced signature match with that of a header.</returns>
-        bool ValidateAuthenticationHeader(IDictionary<string, string> headers, string body, string secret);
-
-        /// <summary>
-        ///     Validates Sinch event request.
-        /// </summary>
-        /// <param name="headers">The Sinch event request headers.</param>
-        /// <param name="body">The Sinch event raw body, as received from the HTTP request.</param>
-        /// <param name="secret">The event destination secret used to generate the HMAC signature.</param>
-        /// <returns>True, if produced signature match with that of a header.</returns>
-        bool ValidateAuthenticationHeader(IReadOnlyDictionary<string, IEnumerable<string>> headers, string body,
-            string secret);
-
-        /// <summary>
-        ///     Parses a Sinch event payload from a raw JSON string.
-        /// </summary>
-        /// <param name="json">The raw Sinch event payload.</param>
-        /// <returns>The parsed Sinch event.</returns>
-        IConversationSinchEvent ParseEvent(string json);
-
-        /// <summary>
-        ///     Parses a Sinch event payload from a JSON stream.
-        /// </summary>
-        /// <param name="json">The Sinch event payload stream.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The parsed Sinch event.</returns>
-        Task<IConversationSinchEvent> ParseEventAsync(Stream json, CancellationToken cancellationToken = default);
     }
 
     /// <inheritdoc />
@@ -203,46 +166,6 @@ namespace Sinch.Conversation.EventDestinations
             _logger?.LogDebug("Deleting a event destination with {id}...", eventDestinationId);
             return _http.Value.Send<object>(uri, HttpMethod.Delete,
                 cancellationToken);
-        }
-
-        public bool ValidateAuthenticationHeader(IDictionary<string, string> headers, string body,
-            string secret)
-        {
-            return HmacAuthenticationValidation.ValidateAuthenticationHeader(secret, headers, body);
-        }
-
-        public bool ValidateAuthenticationHeader(IReadOnlyDictionary<string, IEnumerable<string>> headers, string body,
-            string secret)
-        {
-            return HmacAuthenticationValidation.ValidateAuthenticationHeader(secret, headers, body);
-        }
-
-        public IConversationSinchEvent ParseEvent(string json)
-        {
-            var jsonResult = JsonSerializer.Deserialize<IConversationSinchEvent>(json, _http.Value.JsonSerializerOptions);
-            if (jsonResult == null)
-            {
-                _logger?.LogError("Failed to deserialize conversation Sinch event. No matching event type found for payload: {json}", json);
-                throw new InvalidOperationException("Deserialization of conversation Sinch event failed");
-            }
-
-            return jsonResult;
-        }
-
-        public async Task<IConversationSinchEvent> ParseEventAsync(Stream jsonStream,
-            CancellationToken cancellationToken = default)
-        {
-            var jsonResult =
-                await JsonSerializer.DeserializeAsync<IConversationSinchEvent>(jsonStream,
-                    SinchConversationClient.JsonSerializerOptionsInner,
-                    cancellationToken);
-            if (jsonResult == null)
-            {
-                _logger?.LogError("Failed to deserialize conversation Sinch event. No matching event type found.");
-                throw new InvalidOperationException("Deserialization of conversation Sinch event failed");
-            }
-
-            return jsonResult;
         }
     }
 }

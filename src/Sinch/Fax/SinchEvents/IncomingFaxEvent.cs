@@ -3,7 +3,7 @@ using Sinch.Fax.Faxes;
 
 namespace Sinch.Fax.SinchEvents
 {
-    public sealed class IncomingFaxEvent : FaxSinchEventBase, IFaxSinchEvent
+    public sealed class IncomingFaxEvent : FaxSinchEventBase
     {
         public override FaxEventType Event { get; } = FaxEventType.IncomingFax;
 

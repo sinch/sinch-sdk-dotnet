@@ -15,7 +15,7 @@ namespace Sinch.Voice.SinchEvents
     ///     If there is no response to the callback within the timeout period, an error message is played, and the call is
     ///     disconnected.
     /// </summary>
-    public sealed class IncomingCallEvent : VoiceSinchEvent
+    public sealed class IncomingCallEvent : VoiceSinchEventBase
     {
         /// <summary>
         ///     Must have the value ice.

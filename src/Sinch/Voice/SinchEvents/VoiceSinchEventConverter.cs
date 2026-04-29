@@ -5,20 +5,9 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Voice.SinchEvents
 {
-    /// <summary>
-    ///     Marker interface for event types of voice.
-    /// </summary>
-    [JsonConverter(typeof(VoiceSinchEventConverter))]
-    public abstract class VoiceSinchEvent
+    public sealed class VoiceSinchEventConverter : JsonConverter<IVoiceSinchEvent>
     {
-        [JsonPropertyName("event")]
-        [JsonInclude]
-        internal abstract EventType Event { get; set; }
-    }
-
-    public sealed class VoiceSinchEventConverter : JsonConverter<VoiceSinchEvent>
-    {
-        public override VoiceSinchEvent? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override IVoiceSinchEvent? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var elem = JsonElement.ParseValue(ref reader);
             var descriptor = elem.EnumerateObject().FirstOrDefault(x => x.Name == "event");
@@ -52,7 +41,7 @@ namespace Sinch.Voice.SinchEvents
             throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
         }
 
-        public override void Write(Utf8JsonWriter writer, VoiceSinchEvent value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, IVoiceSinchEvent value, JsonSerializerOptions options)
         {
             switch (value)
             {
@@ -73,7 +62,7 @@ namespace Sinch.Voice.SinchEvents
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value),
-                        $"Cannot find a matching class for the interface {nameof(VoiceSinchEvent)}");
+                        $"Cannot find a matching class for the interface {nameof(IVoiceSinchEvent)}");
             }
         }
     }

@@ -6,7 +6,7 @@ using FluentAssertions;
 using Sinch.Conversation.SinchEvents;
 using Xunit;
 
-namespace Sinch.Tests.Conversation.EventDestinations
+namespace Sinch.Tests.Conversation.SinchEvents
 {
     public class SinchEventsTests : ConversationTestBase
     {
@@ -21,7 +21,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
         {
             var json = Helpers.LoadResources("Conversation/SinchEvents/SinchEventsAuthValidation.json");
 
-            var isValid = Conversation.EventDestinations.ValidateAuthenticationHeader(new Dictionary<string, string>()
+            var isValid = Conversation.SinchEvents.ValidateAuthenticationHeader(new Dictionary<string, string>()
             {
                 { NonceHeader, "01FJA8B4A7BM43YGWSG9GBV067" },
                 { TimestampHeader, "1634579353" },
@@ -37,7 +37,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
         {
             var json = Helpers.LoadResources("Conversation/SinchEvents/SinchEventsAuthValidation.json");
 
-            var isValid = Conversation.EventDestinations.ValidateAuthenticationHeader(new Dictionary<string, IEnumerable<string>>()
+            var isValid = Conversation.SinchEvents.ValidateAuthenticationHeader(new Dictionary<string, IEnumerable<string>>()
             {
                 { NonceHeader, ["01FJA8B4A7BM43YGWSG9GBV067"] },
                 { TimestampHeader, ["1634579353"] },
@@ -53,7 +53,7 @@ namespace Sinch.Tests.Conversation.EventDestinations
         {
             var json = Helpers.LoadResources("Conversation/SinchEvents/CapabilityEvent.json");
 
-            var result = Conversation.EventDestinations.ParseEvent(json);
+            var result = Conversation.SinchEvents.ParseEvent(json);
 
             result.Should().BeOfType<CapabilityEvent>();
             result.As<CapabilityEvent>().CapabilityNotification.Should().NotBeNull();
@@ -65,11 +65,12 @@ namespace Sinch.Tests.Conversation.EventDestinations
             var json = Helpers.LoadResources("Conversation/SinchEvents/CapabilityEvent.json");
             await using var stream = new MemoryStream(Encoding.UTF8.GetBytes(json));
 
-            var result = await Conversation.EventDestinations.ParseEventAsync(stream);
+            var result = await Conversation.SinchEvents.ParseEventAsync(stream);
 
             result.Should().BeOfType<CapabilityEvent>();
             result.As<CapabilityEvent>().CapabilityNotification.Should().NotBeNull();
         }
     }
 }
+
 

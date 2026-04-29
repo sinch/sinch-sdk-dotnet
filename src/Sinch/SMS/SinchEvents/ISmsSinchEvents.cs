@@ -34,7 +34,7 @@ namespace Sinch.SMS.SinchEvents
     /// <seealso href="https://developers.sinch.com/docs/sms/api-reference/sms/tag/Webhooks/">SMS Webhooks Documentation</seealso>
     public interface ISmsSinchEvents
     {
-        internal JsonSerializerOptions JsonSerializerOptions { get; }
+        JsonSerializerOptions JsonSerializerOptions { get; }
 
         /// <summary>
         ///     Parse a Sinch event from JSON payload.

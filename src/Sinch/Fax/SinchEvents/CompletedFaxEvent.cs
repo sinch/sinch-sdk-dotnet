@@ -4,7 +4,7 @@ using Sinch.Fax.Faxes;
 
 namespace Sinch.Fax.SinchEvents
 {
-    public sealed class CompletedFaxEvent : FaxSinchEventBase, IFaxSinchEvent
+    public sealed class CompletedFaxEvent : FaxSinchEventBase
     {
         public override FaxEventType Event { get; } = FaxEventType.CompletedFax;
 

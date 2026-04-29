@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using Sinch.Conversation.EventDestinations;
+using Sinch.Conversation.SinchEvents;
 using Xunit;
 
-namespace Sinch.Tests.Conversation.EventDestinations
+namespace Sinch.Tests.Conversation.SinchEvents
 {
     public class HmacAuthenticationValidationTests
     {

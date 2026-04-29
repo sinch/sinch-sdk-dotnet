@@ -7,7 +7,7 @@ namespace Sinch.Fax.SinchEvents
     ///     Fax Sinch Events service. Provides helpers for parsing and validating
     ///     incoming Sinch event payloads delivered by the Fax API.
     /// </summary>
-    public interface ISinchFaxSinchEvents
+    public interface IFaxSinchEvents
     {
         internal JsonSerializerOptions JsonSerializerOptions { get; }
 

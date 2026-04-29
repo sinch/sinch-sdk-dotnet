@@ -10,6 +10,6 @@ namespace Sinch.Fax.SinchEvents
         ///     The type of the Fax Sinch event.
         /// </summary>
         [JsonPropertyName("event")]
-        public FaxEventType Event { get; }
+        FaxEventType Event { get; }
     }
 }
