@@ -68,6 +68,7 @@
 - [Conversation API: ParseEvent and ValidateAuthenticationHeader moved to SinchEvents sub-domain](#conversation-api-parseevent-and-validateauthenticationheader-moved-to-sinchevents-sub-domain)
 - [Numbers API: ValidateAuthenticationHeader moved to SinchEvents sub-domain](#numbers-api-validateauthenticationheader-moved-to-sinchevents-sub-domain)
 - [Voice API: ParseEvent and ValidateAuthenticationHeader moved to SinchEvents sub-domain](#voice-api-parseevent-and-validateauthenticationheader-moved-to-sinchevents-sub-domain)
+- [Voice API: ParseEvent no longer accepts JsonNode](#voice-api-parseevent-no-longer-accepts-jsonnode)
 - [SMS API: ValidateAuthenticationHeader headers parameter changed to IDictionary\<string,IEnumerable\<string\>\>](#sms-api-validateauthenticationheader-headers-parameter-changed-to-idictionarystrings-ienumerablestring)
 - [Fax API: ValidateAuthenticationHeader headers parameter changed to IDictionary\<string,IEnumerable\<string\>\>](#fax-api-validateauthenticationheader-headers-parameter-changed-to-idictionarystrings-ienumerablestring)
 - [Verification API: ValidateAuthenticationHeader moved to SinchEvents sub-domain](#verification-api-validateauthenticationheader-moved-to-sinchevents-sub-domain)
@@ -1523,7 +1524,7 @@ var isValid = sinch.Sms.SinchEvents.ValidateAuthenticationHeader(secret, headers
 Version 1.*:
 ```csharp
 var headers = new Dictionary<string, string> { ... };
-var isValid = sinch.Fax.SinchEvents.ValidateAuthenticationHeader(headers, rawBody);
+var isValid = sinch.Fax.Webhooks.ValidateAuthenticationHeader(headers, rawBody);
 ```
 
 Version 2.*:
@@ -1764,5 +1765,20 @@ using Sinch.Voice.SinchEvents;
 
 VoiceSinchEvent sinchEvent = sinch.Voice.SinchEvents.ParseEvent(rawBody);
 bool isValid = sinch.Voice.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/path", headers, rawBody);
+```
+
+## Voice API: ParseEvent no longer accepts JsonNode
+
+`IVoiceSinchEvents.ParseEvent` now accepts only raw JSON strings or streams.
+
+Version 1.*:
+```csharp
+var node = JsonNode.Parse(rawBody);
+var sinchEvent = sinch.Voice.ParseEvent(node!);
+```
+
+Version 2.*:
+```csharp
+var sinchEvent = sinch.Voice.SinchEvents.ParseEvent(rawBody);
 ```
 

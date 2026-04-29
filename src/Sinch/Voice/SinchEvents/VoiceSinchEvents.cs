@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using Sinch.Auth;
@@ -29,21 +28,6 @@ namespace Sinch.Voice.SinchEvents
             {
                 logger?.LogError(
                     "Failed to deserialize Voice Sinch event. No matching event type found for payload: {json}", json);
-                throw new InvalidOperationException("Deserialization of Voice Sinch event failed");
-            }
-
-            return result;
-        }
-
-        /// <inheritdoc />
-        public IVoiceSinchEvent ParseEvent(JsonNode json)
-        {
-            var result = json.Deserialize<IVoiceSinchEvent>(JsonSerializerOptions);
-            if (result == null)
-            {
-                logger?.LogError(
-                    "Failed to deserialize Voice Sinch event. No matching event type found for payload: {json}",
-                    json.ToJsonString());
                 throw new InvalidOperationException("Deserialization of Voice Sinch event failed");
             }
 

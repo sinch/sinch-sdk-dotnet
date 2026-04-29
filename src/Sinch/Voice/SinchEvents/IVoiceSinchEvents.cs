@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,14 +32,6 @@ namespace Sinch.Voice.SinchEvents
         /// <exception cref="System.Text.Json.JsonException">Thrown when JSON is invalid or cannot be deserialized.</exception>
         /// <exception cref="System.InvalidOperationException">Thrown when the event type is unknown or deserialization fails.</exception>
         IVoiceSinchEvent ParseEvent(string json);
-
-        /// <summary>
-        ///     Parses a Voice Sinch event from a <see cref="JsonNode"/>.
-        /// </summary>
-        /// <param name="json">The parsed JSON node from the Voice Sinch event request body.</param>
-        /// <returns>Parsed Voice Sinch event.</returns>
-        /// <exception cref="System.InvalidOperationException">Thrown when the event type is unknown or deserialization fails.</exception>
-        IVoiceSinchEvent ParseEvent(JsonNode json);
 
         /// <summary>
         ///     Parses a Voice Sinch event from a stream.
