@@ -1677,11 +1677,11 @@ var request = new SendFaxRequest
 
 ## Fax API: WebhookContentType renamed to EventDestinationContentType on ServiceBase
 
-The `WebhookContentType` property on `ServiceBase` (and its subclasses `Service`, `CreateServiceRequest`, `UpdateServiceRequest`) has been renamed to `EventDestinationContentType`.
+The `WebhookContentType` property on `ServiceBase` (and its subclasses `Service`, `CreateFaxServiceRequest`, `UpdateFaxServiceRequest`) has been renamed to `EventDestinationContentType`.
 
 Version 1.*:
 ```csharp
-var request = new CreateServiceRequest
+var request = new CreateFaxServiceRequest
 {
     WebhookContentType = CallbackUrlContentType.ApplicationJson
 };
@@ -1689,7 +1689,7 @@ var request = new CreateServiceRequest
 
 Version 2.*:
 ```csharp
-var request = new CreateServiceRequest
+var request = new CreateFaxServiceRequest
 {
     EventDestinationContentType = EventDestinationContentType.ApplicationJson
 };
@@ -1701,7 +1701,7 @@ The `IncomingWebhookUrl` property on `ServiceBase` (and its subclasses) has been
 
 Version 1.*:
 ```csharp
-var request = new CreateServiceRequest
+var request = new CreateFaxServiceRequest
 {
     IncomingWebhookUrl = "https://my.server/incoming"
 };
@@ -1709,7 +1709,7 @@ var request = new CreateServiceRequest
 
 Version 2.*:
 ```csharp
-var request = new CreateServiceRequest
+var request = new CreateFaxServiceRequest
 {
     IncomingEventDestinationTarget = "https://my.server/incoming"
 };
