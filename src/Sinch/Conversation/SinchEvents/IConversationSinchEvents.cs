@@ -20,15 +20,6 @@ namespace Sinch.Conversation.SinchEvents
         /// <summary>
         ///     Validates the Sinch event HMAC authentication header.
         /// </summary>
-        /// <param name="headers">The HTTP headers from the incoming Sinch event request as single-value entries.</param>
-        /// <param name="body">The raw request body.</param>
-        /// <param name="secret">The event destination secret used to generate the HMAC signature.</param>
-        /// <returns>True if the produced signature matches the header value.</returns>
-        bool ValidateAuthenticationHeader(IDictionary<string, string> headers, string body, string secret);
-
-        /// <summary>
-        ///     Validates the Sinch event HMAC authentication header.
-        /// </summary>
         /// <param name="headers">The HTTP headers from the incoming Sinch event request.</param>
         /// <param name="body">The raw request body.</param>
         /// <param name="secret">The event destination secret used to generate the HMAC signature.</param>

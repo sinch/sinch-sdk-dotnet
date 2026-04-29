@@ -18,12 +18,6 @@ namespace Sinch.Conversation.SinchEvents
         public JsonSerializerOptions JsonSerializerOptions { get; } = jsonSerializerOptions;
 
         /// <inheritdoc />
-        public bool ValidateAuthenticationHeader(IDictionary<string, string> headers, string body, string secret)
-        {
-            return HmacAuthenticationValidation.ValidateAuthenticationHeader(secret, headers, body);
-        }
-
-        /// <inheritdoc />
         public bool ValidateAuthenticationHeader(IReadOnlyDictionary<string, IEnumerable<string>> headers, string body,
             string secret)
         {

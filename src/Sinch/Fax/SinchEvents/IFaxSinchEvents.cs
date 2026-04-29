@@ -35,6 +35,6 @@ namespace Sinch.Fax.SinchEvents
         ///     Always returns <c>true</c>. The Fax API does not define an authentication header
         ///     validation scheme, so no signature verification is performed.
         /// </returns>
-        bool ValidateAuthenticationHeader(IDictionary<string, string> headers, string body);
+        bool ValidateAuthenticationHeader(IDictionary<string, IEnumerable<string>> headers, string body);
     }
 }

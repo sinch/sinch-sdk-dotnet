@@ -28,7 +28,7 @@ namespace Sinch.Fax.SinchEvents
         }
 
         /// <inheritdoc />
-        public bool ValidateAuthenticationHeader(IDictionary<string, string> headers, string body)
+        public bool ValidateAuthenticationHeader(IDictionary<string, IEnumerable<string>> headers, string body)
         {
             // No header validation is defined for the Fax API.
             return true;

@@ -80,7 +80,7 @@ namespace Sinch.SMS.SinchEvents
         /// </remarks>
         bool ValidateAuthenticationHeader(
             string secret,
-            IDictionary<string, string> headers,
+            IDictionary<string, IEnumerable<string>> headers,
             string body);
     }
 }

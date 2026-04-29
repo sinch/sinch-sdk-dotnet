@@ -20,28 +20,6 @@ internal sealed class HmacAuthenticationValidation
     ///     Validates the HMAC authentication header from a Conversation event destination request.
     /// </summary>
     /// <param name="secret">The event destination secret.</param>
-    /// <param name="headers">HTTP headers from the request as single-value entries.</param>
-    /// <param name="jsonPayload">The raw JSON payload body.</param>
-    /// <returns>True if the signature is valid, false otherwise.</returns>
-    /// <exception cref="NotSupportedException">Thrown when the HMAC algorithm is not supported.</exception>
-    public static bool ValidateAuthenticationHeader(
-        string secret,
-        IDictionary<string, string> headers,
-        string jsonPayload)
-    {
-        var multiValueHeaders = new Dictionary<string, IEnumerable<string>>(headers.Count, StringComparer.OrdinalIgnoreCase);
-        foreach (var header in headers)
-        {
-            multiValueHeaders[header.Key] = [header.Value];
-        }
-
-        return ValidateAuthenticationHeader(secret, multiValueHeaders, jsonPayload);
-    }
-
-    /// <summary>
-    ///     Validates the HMAC authentication header from a Conversation event destination request.
-    /// </summary>
-    /// <param name="secret">The event destination secret.</param>
     /// <param name="headers">HTTP headers from the request (case-insensitive lookup will be performed).</param>
     /// <param name="jsonPayload">The raw JSON payload body.</param>
     /// <returns>True if the signature is valid, false otherwise.</returns>

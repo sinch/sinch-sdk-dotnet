@@ -22,14 +22,14 @@ namespace Sinch.Tests.Conversation.SinchEvents
         private const string ValidSignature = "ehhrg9MUuhpJUCo2drsI3zoqWViaojp8d6RahfBY3cg=";
 
         [Fact]
-        public void ValidateAuthenticationHeader_WithSingleValueHeaders_ReturnsTrue()
+        public void ValidateAuthenticationHeader_WithMultiValueHeaders_ReturnsTrue()
         {
-            IDictionary<string, string> headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            var headers = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
             {
-                [TimestampHeader] = ValidTimestamp,
-                [NonceHeader] = ValidNonce,
-                [AlgorithmHeader] = ValidAlgorithm,
-                [SignatureHeader] = ValidSignature
+                [TimestampHeader] = [ValidTimestamp],
+                [NonceHeader] = [ValidNonce],
+                [AlgorithmHeader] = [ValidAlgorithm],
+                [SignatureHeader] = [ValidSignature]
             };
 
             var result = HmacAuthenticationValidation.ValidateAuthenticationHeader(ValidSecret, headers, ValidJsonPayload);
@@ -56,12 +56,12 @@ namespace Sinch.Tests.Conversation.SinchEvents
         [Fact]
         public void ValidateAuthenticationHeader_WithInvalidSignature_ReturnsFalse()
         {
-            var headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            var headers = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
             {
-                [TimestampHeader] = ValidTimestamp,
-                [NonceHeader] = ValidNonce,
-                [AlgorithmHeader] = ValidAlgorithm,
-                [SignatureHeader] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+                [TimestampHeader] = [ValidTimestamp],
+                [NonceHeader] = [ValidNonce],
+                [AlgorithmHeader] = [ValidAlgorithm],
+                [SignatureHeader] = ["AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="]
             };
 
             var result = HmacAuthenticationValidation.ValidateAuthenticationHeader(ValidSecret, headers, ValidJsonPayload);
@@ -74,12 +74,12 @@ namespace Sinch.Tests.Conversation.SinchEvents
         {
             const string unsupportedAlgorithm = "HmacSHA512";
 
-            var headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            var headers = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
             {
-                [TimestampHeader] = ValidTimestamp,
-                [NonceHeader] = ValidNonce,
-                [AlgorithmHeader] = unsupportedAlgorithm,
-                [SignatureHeader] = ValidSignature
+                [TimestampHeader] = [ValidTimestamp],
+                [NonceHeader] = [ValidNonce],
+                [AlgorithmHeader] = [unsupportedAlgorithm],
+                [SignatureHeader] = [ValidSignature]
             };
 
             Action act = () => HmacAuthenticationValidation.ValidateAuthenticationHeader(ValidSecret, headers, ValidJsonPayload);
@@ -94,12 +94,12 @@ namespace Sinch.Tests.Conversation.SinchEvents
         [InlineData(AlgorithmHeader)]
         public void ValidateAuthenticationHeader_MissingHeader_ReturnsFalse(string missingHeader)
         {
-            var headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            var headers = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
             {
-                [TimestampHeader] = ValidTimestamp,
-                [NonceHeader] = ValidNonce,
-                [AlgorithmHeader] = ValidAlgorithm,
-                [SignatureHeader] = ValidSignature
+                [TimestampHeader] = [ValidTimestamp],
+                [NonceHeader] = [ValidNonce],
+                [AlgorithmHeader] = [ValidAlgorithm],
+                [SignatureHeader] = [ValidSignature]
             };
 
             headers.Remove(missingHeader);
@@ -114,12 +114,12 @@ namespace Sinch.Tests.Conversation.SinchEvents
         {
             var emptySecret = string.Empty;
 
-            var headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            var headers = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
             {
-                [TimestampHeader] = ValidTimestamp,
-                [NonceHeader] = ValidNonce,
-                [AlgorithmHeader] = ValidAlgorithm,
-                [SignatureHeader] = ValidSignature
+                [TimestampHeader] = [ValidTimestamp],
+                [NonceHeader] = [ValidNonce],
+                [AlgorithmHeader] = [ValidAlgorithm],
+                [SignatureHeader] = [ValidSignature]
             };
 
             var result = HmacAuthenticationValidation.ValidateAuthenticationHeader(emptySecret, headers, ValidJsonPayload);

@@ -20,22 +20,6 @@ namespace Sinch.Tests.Conversation.SinchEvents
         private readonly ConversationSinchEvents _conversationSinchEvents = new(SinchConversationClient.JsonSerializerOptionsInner);
 
         [Fact]
-        public void ValidateAuthenticationHeader_WithSingleValueHeaders_ReturnsTrue()
-        {
-            var json = Helpers.LoadResources("Conversation/SinchEvents/SinchEventsAuthValidation.json");
-
-            var isValid = _conversationSinchEvents.ValidateAuthenticationHeader(new Dictionary<string, string>()
-            {
-                { NonceHeader, "01FJA8B4A7BM43YGWSG9GBV067" },
-                { TimestampHeader, "1634579353" },
-                { AlgorithmHeader, "HmacSHA256" },
-                { SignatureHeader, "wKmZBGo4Cf+y9cZoPHhiVw6ziKeubLGqN4OdG8jlaPo=" },
-            }, json, SinchEventSecret);
-
-            isValid.Should().BeTrue();
-        }
-
-        [Fact]
         public void ValidateAuthenticationHeader_WithMultiValueHeaders_ReturnsTrue()
         {
             var json = Helpers.LoadResources("Conversation/SinchEvents/SinchEventsAuthValidation.json");

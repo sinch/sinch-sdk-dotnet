@@ -29,7 +29,7 @@ namespace Sinch.SMS.SinchEvents
         /// <inheritdoc />
         public bool ValidateAuthenticationHeader(
             string secret,
-            IDictionary<string, string> headers,
+            IDictionary<string, IEnumerable<string>> headers,
             string body)
         {
             return HmacAuthenticationValidation.ValidateAuthenticationHeader(secret, headers, body);

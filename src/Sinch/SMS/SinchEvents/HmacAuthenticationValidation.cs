@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 
 namespace Sinch.SMS.SinchEvents;
@@ -24,13 +25,24 @@ internal sealed class HmacAuthenticationValidation
     /// <exception cref="System.NotSupportedException">Thrown when the HMAC algorithm is not supported.</exception>
     public static bool ValidateAuthenticationHeader(
         string secret,
-        IDictionary<string, string> headers,
+        IDictionary<string, IEnumerable<string>> headers,
         string jsonPayload)
     {
-        var caseInsensitiveHeaders = new Dictionary<string, string>(headers, StringComparer.OrdinalIgnoreCase);
+        var caseInsensitiveHeaders = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase);
+        foreach (var kvp in headers)
+            caseInsensitiveHeaders[kvp.Key] = kvp.Value;
 
-        bool TryGetHeader(string name, out string value) =>
-            caseInsensitiveHeaders.TryGetValue(name, out value!) && !string.IsNullOrEmpty(value);
+        bool TryGetHeader(string name, out string value)
+        {
+            value = string.Empty;
+            if (!caseInsensitiveHeaders.TryGetValue(name, out var values))
+                return false;
+            var headerValue = values?.FirstOrDefault();
+            if (string.IsNullOrEmpty(headerValue))
+                return false;
+            value = headerValue;
+            return true;
+        }
 
         if (string.IsNullOrEmpty(secret) ||
             !TryGetHeader(TimestampHeader, out var timestampHeader) ||

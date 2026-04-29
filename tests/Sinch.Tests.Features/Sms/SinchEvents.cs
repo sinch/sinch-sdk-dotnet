@@ -175,7 +175,7 @@ namespace Sinch.Tests.Features.Sms
         {
             var headers = response.Headers.ToDictionary(
                 x => x.Key,
-                x => x.Value.FirstOrDefault(),
+                x => x.Value,
                 StringComparer.OrdinalIgnoreCase);
 
             var body = await response.Content.ReadAsStringAsync();

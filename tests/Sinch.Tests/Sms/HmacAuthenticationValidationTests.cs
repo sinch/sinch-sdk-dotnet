@@ -24,12 +24,12 @@ namespace Sinch.Tests.Sms
             var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(toBeSigned));
             var signature = Convert.ToBase64String(hash);
 
-            var headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            var headers = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
             {
-                ["x-sinch-webhook-signature-timestamp"] = timestamp,
-                ["x-sinch-webhook-signature-nonce"] = nonce,
-                ["x-sinch-webhook-signature-algorithm"] = algorithm,
-                ["x-sinch-webhook-signature"] = signature
+                ["x-sinch-webhook-signature-timestamp"] = [timestamp],
+                ["x-sinch-webhook-signature-nonce"] = [nonce],
+                ["x-sinch-webhook-signature-algorithm"] = [algorithm],
+                ["x-sinch-webhook-signature"] = [signature]
             };
 
             // Act
@@ -49,12 +49,12 @@ namespace Sinch.Tests.Sms
             const string nonce = "nonce-value";
             const string algorithm = "HmacSHA512"; // unsupported
 
-            var headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            var headers = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
             {
-                ["x-sinch-webhook-signature-timestamp"] = timestamp,
-                ["x-sinch-webhook-signature-nonce"] = nonce,
-                ["x-sinch-webhook-signature-algorithm"] = algorithm,
-                ["x-sinch-webhook-signature"] = "whatever"
+                ["x-sinch-webhook-signature-timestamp"] = [timestamp],
+                ["x-sinch-webhook-signature-nonce"] = [nonce],
+                ["x-sinch-webhook-signature-algorithm"] = [algorithm],
+                ["x-sinch-webhook-signature"] = ["whatever"]
             };
 
             // Act
@@ -72,12 +72,12 @@ namespace Sinch.Tests.Sms
             const string secret = "secret";
             const string jsonPayload = "{}";
 
-            var headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            var headers = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
             {
-                ["x-sinch-webhook-signature-timestamp"] = "123",
-                ["x-sinch-webhook-signature-nonce"] = "n",
-                ["x-sinch-webhook-signature-algorithm"] = "HmacSHA256",
-                ["x-sinch-webhook-signature"] = "s"
+                ["x-sinch-webhook-signature-timestamp"] = ["123"],
+                ["x-sinch-webhook-signature-nonce"] = ["n"],
+                ["x-sinch-webhook-signature-algorithm"] = ["HmacSHA256"],
+                ["x-sinch-webhook-signature"] = ["s"]
             };
 
             // Remove the header under test
@@ -108,12 +108,12 @@ namespace Sinch.Tests.Sms
             const string nonce = "n";
             const string algorithm = "HmacSHA256";
 
-            var headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            var headers = new Dictionary<string, IEnumerable<string>>(StringComparer.OrdinalIgnoreCase)
             {
-                ["x-sinch-webhook-signature-timestamp"] = timestamp,
-                ["x-sinch-webhook-signature-nonce"] = nonce,
-                ["x-sinch-webhook-signature-algorithm"] = algorithm,
-                ["x-sinch-webhook-signature"] = "sig"
+                ["x-sinch-webhook-signature-timestamp"] = [timestamp],
+                ["x-sinch-webhook-signature-nonce"] = [nonce],
+                ["x-sinch-webhook-signature-algorithm"] = [algorithm],
+                ["x-sinch-webhook-signature"] = ["sig"]
             };
 
             // Act

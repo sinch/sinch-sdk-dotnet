@@ -68,6 +68,8 @@
 - [Conversation API: ParseEvent and ValidateAuthenticationHeader moved to SinchEvents sub-domain](#conversation-api-parseevent-and-validateauthenticationheader-moved-to-sinchevents-sub-domain)
 - [Numbers API: ValidateAuthenticationHeader moved to SinchEvents sub-domain](#numbers-api-validateauthenticationheader-moved-to-sinchevents-sub-domain)
 - [Voice API: ParseEvent and ValidateAuthenticationHeader moved to SinchEvents sub-domain](#voice-api-parseevent-and-validateauthenticationheader-moved-to-sinchevents-sub-domain)
+- [SMS API: ValidateAuthenticationHeader headers parameter changed to IDictionary\<string,IEnumerable\<string\>\>](#sms-api-validateauthenticationheader-headers-parameter-changed-to-idictionarystrings-ienumerablestring)
+- [Fax API: ValidateAuthenticationHeader headers parameter changed to IDictionary\<string,IEnumerable\<string\>\>](#fax-api-validateauthenticationheader-headers-parameter-changed-to-idictionarystrings-ienumerablestring)
 - [Verification API: ValidateAuthenticationHeader moved to SinchEvents sub-domain](#verification-api-validateauthenticationheader-moved-to-sinchevents-sub-domain)
 
 ## .NET Framework Support
@@ -1133,7 +1135,7 @@ var isValid = sinch.Conversation.SinchEvents.ValidateAuthenticationHeader(header
 
 ## Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts StringValues headers
 
-`ISinchConversationWebhooks.ValidateAuthenticationHeader` no longer accepts `Dictionary<string, StringValues>`. Use either `IDictionary<string, string>` (single-value headers) or `IReadOnlyDictionary<string, IEnumerable<string>>` (multi-value headers).
+`ISinchConversationWebhooks.ValidateAuthenticationHeader` no longer accepts `Dictionary<string, StringValues>`. Use `IReadOnlyDictionary<string, IEnumerable<string>>` (multi-value headers, compatible with ASP.NET Core's `IHeaderDictionary`).
 
 Version 1.*:
 ```csharp
@@ -1147,15 +1149,7 @@ var isValid = sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, 
 
 Version 2.*:
 ```csharp
-// Option A: single-value headers (e.g. from a plain dictionary)
-var headers = new Dictionary<string, string>
-{
-    ["x-sinch-webhook-signature"] = signature
-};
-
-var isValid = sinch.Conversation.SinchEvents.ValidateAuthenticationHeader(headers, rawBody, secret);
-
-// Option B: multi-value headers (e.g. from HttpContext.Request.Headers)
+// Multi-value headers (e.g. from HttpContext.Request.Headers)
 IReadOnlyDictionary<string, IEnumerable<string>> headers = new Dictionary<string, IEnumerable<string>>
 {
     ["x-sinch-webhook-signature"] = new[] { signature }
@@ -1496,6 +1490,46 @@ var requestEvent = JsonSerializer.Deserialize<VerificationRequestEvent>(json);
 Version 2.*:
 ```csharp
 var requestEvent = JsonSerializer.Deserialize<VerificationStartEvent>(json);
+```
+
+## SMS API: ValidateAuthenticationHeader headers parameter changed to IDictionary<string,IEnumerable<string>>
+
+`ISmsSinchEvents.ValidateAuthenticationHeader` now accepts `IDictionary<string, IEnumerable<string>>` instead of `IDictionary<string, string>`.
+
+Version 1.*:
+```csharp
+var headers = new Dictionary<string, string>
+{
+    ["x-sinch-webhook-signature"] = signature
+};
+
+var isValid = sinch.Sms.Webhooks.ValidateAuthenticationHeader(secret, headers, rawBody);
+```
+
+Version 2.*:
+```csharp
+IDictionary<string, IEnumerable<string>> headers = new Dictionary<string, IEnumerable<string>>
+{
+    ["x-sinch-webhook-signature"] = [signature]
+};
+
+var isValid = sinch.Sms.SinchEvents.ValidateAuthenticationHeader(secret, headers, rawBody);
+```
+
+## Fax API: ValidateAuthenticationHeader headers parameter changed to IDictionary<string,IEnumerable<string>>
+
+`IFaxSinchEvents.ValidateAuthenticationHeader` now accepts `IDictionary<string, IEnumerable<string>>` instead of `IDictionary<string, string>`.
+
+Version 1.*:
+```csharp
+var headers = new Dictionary<string, string> { ... };
+var isValid = sinch.Fax.SinchEvents.ValidateAuthenticationHeader(headers, rawBody);
+```
+
+Version 2.*:
+```csharp
+IDictionary<string, IEnumerable<string>> headers = new Dictionary<string, IEnumerable<string>> { ... };
+var isValid = sinch.Fax.SinchEvents.ValidateAuthenticationHeader(headers, rawBody);
 ```
 
 ## Verification API: ValidateAuthenticationHeader moved to SinchEvents sub-domain
