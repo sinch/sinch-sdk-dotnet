@@ -1,10 +1,13 @@
 #nullable enable
 using FluentAssertions;
-using Sinch.Verification;
-using Sinch.Voice;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
+using Sinch.Auth;
+using Sinch.Verification.SinchEvents;
+using Sinch.Voice.SinchEvents;
 using Xunit;
 
 namespace Sinch.Tests.Core
@@ -14,25 +17,20 @@ namespace Sinch.Tests.Core
     /// </summary>
     public class AuthenticationHeaderValidationTests
     {
-        private readonly ISinchVoiceClient _voiceClient = new SinchClient(new SinchClientConfiguration()
-        {
-            VoiceConfiguration = new SinchVoiceConfiguration()
+        private static readonly ApplicationSignedAuth ApplicationSignedAuth =
+            new("669E367E-6BBA-48AB-AF15-266871C28135", "BeIukql3pTKJ8RGL5zo0DA==");
+        
+        private readonly VerificationSinchEvents _verificationSinchEvents = new(ApplicationSignedAuth);
+        
+        private readonly VoiceSinchEvents _voiceSinchEvents = new(
+            new JsonSerializerOptions(JsonSerializerDefaults.Web)
             {
-                AppKey = "669E367E-6BBA-48AB-AF15-266871C28135",
-                AppSecret = "BeIukql3pTKJ8RGL5zo0DA=="
-            }
-        }).Voice;
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            },
+            ApplicationSignedAuth);
 
-        private readonly ISinchVerificationClient _verificationClient = new SinchClient(new SinchClientConfiguration()
-        {
-            VerificationConfiguration = new SinchVerificationConfiguration()
-            {
-                AppKey = "669E367E-6BBA-48AB-AF15-266871C28135",
-                AppSecret = "BeIukql3pTKJ8RGL5zo0DA=="
-            }
-        }).Verification;
-
-        private string _body =
+        private const string Body =
             "{\"event\":\"ace\",\"callid\":\"822aa4b7-05b4-4d83-87c7-1f835ee0b6f6_257\",\"timestamp\":\"2014-09-24T10:59:41Z\",\"version\":1}";
 
         private Dictionary<string, IEnumerable<string>> SetupTestHeaders(string timestamp, string? auth, string contentType)
@@ -55,10 +53,10 @@ namespace Sinch.Tests.Core
             string body,
             bool expected)
         {
-            _voiceClient.SinchEvents.ValidateAuthenticationHeader(httpMethod, path,
+            _voiceSinchEvents.ValidateAuthenticationHeader(httpMethod, path,
                 headers, body).Should().Be(expected);
 
-            _verificationClient.ValidateAuthenticationHeader(httpMethod, path,
+            _verificationSinchEvents.ValidateAuthenticationHeader(httpMethod, path,
                 headers, body).Should().Be(expected);
         }
 
@@ -71,7 +69,7 @@ namespace Sinch.Tests.Core
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "application/json");
 
-            AssertHeaderValidation(headers, "/sinch/callback/ace", HttpMethod.Post, _body,
+            AssertHeaderValidation(headers, "/sinch/callback/ace", HttpMethod.Post, Body,
                 expected: true);
         }
 
@@ -82,7 +80,7 @@ namespace Sinch.Tests.Core
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:bdJO/XUVvIsb5SlZAKmvfw==",
                 "application/json");
 
-            AssertHeaderValidation(headers, "/sinch/callback/ace", HttpMethod.Post, _body,
+            AssertHeaderValidation(headers, "/sinch/callback/ace", HttpMethod.Post, Body,
                 expected: false);
         }
 
@@ -93,7 +91,7 @@ namespace Sinch.Tests.Core
                 null,
                 "application/json");
 
-            AssertHeaderValidation(headers, "/sinch/callback/ace", HttpMethod.Post, _body,
+            AssertHeaderValidation(headers, "/sinch/callback/ace", HttpMethod.Post, Body,
                 expected: false);
         }
 
@@ -104,7 +102,7 @@ namespace Sinch.Tests.Core
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "application/json");
 
-            AssertHeaderValidation(headers, "/not/that/path", HttpMethod.Post, _body,
+            AssertHeaderValidation(headers, "/not/that/path", HttpMethod.Post, Body,
                 expected: false);
         }
 
@@ -115,7 +113,7 @@ namespace Sinch.Tests.Core
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "application/json");
 
-            AssertHeaderValidation(headers, "/sinch/callback/ace", HttpMethod.Get, _body,
+            AssertHeaderValidation(headers, "/sinch/callback/ace", HttpMethod.Get, Body,
                 expected: false);
         }
 
@@ -126,7 +124,7 @@ namespace Sinch.Tests.Core
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "application/json");
 
-            AssertHeaderValidation(headers, "/sinch/callback/ace", HttpMethod.Post, _body,
+            AssertHeaderValidation(headers, "/sinch/callback/ace", HttpMethod.Post, Body,
                 expected: false);
         }
 
@@ -137,7 +135,7 @@ namespace Sinch.Tests.Core
                 "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=",
                 "text/html");
 
-            AssertHeaderValidation(headers, "/sinch/callback/ace", HttpMethod.Post, _body,
+            AssertHeaderValidation(headers, "/sinch/callback/ace", HttpMethod.Post, Body,
                 expected: false);
         }
 
@@ -162,7 +160,7 @@ namespace Sinch.Tests.Core
                 "application/json");
 
             AssertHeaderValidation(headers, "/sinch/callback/ace", HttpMethod.Post,
-                _body, expected: false);
+                Body, expected: false);
         }
     }
 }

@@ -6,7 +6,7 @@ using Sinch.Logger;
 namespace Sinch.Numbers.SinchEvents
 {
     internal sealed class NumbersSinchEvents(JsonSerializerOptions jsonSerializerOptions,
-        ILoggerAdapter<INumbersSinchEvents>? logger) : INumbersSinchEvents
+        ILoggerAdapter<INumbersSinchEvents>? logger = null) : INumbersSinchEvents
     {
         public JsonSerializerOptions JsonSerializerOptions { get; } = jsonSerializerOptions;
         

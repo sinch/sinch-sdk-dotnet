@@ -34,11 +34,7 @@ namespace Sinch.Tests.Features.Sms
         public void GivenTheSmsSinchEventsHandlerIsAvailable()
         {
             _smsSinchEvents = new SmsSinchEvents(
-                new JsonSerializerOptions(JsonSerializerDefaults.Web)
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-                });
+                new JsonSerializerOptions(JsonSerializerDefaults.Web));
         }
 
         [When(@"I send a request to trigger an ""incoming SMS"" event")]

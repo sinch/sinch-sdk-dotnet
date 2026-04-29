@@ -16,7 +16,7 @@ public class SinchEvents
     private const string BaseEventDestinationsUrl = "http://localhost:3014/webhooks/conversation";
 
     private readonly HttpClient _httpClient = new();
-    private IConversationSinchEvents _sinchEvents;
+    private IConversationSinchEvents _conversationSinchEvents;
     private HttpResponseMessage _eventResponse;
     private string _rawEvent;
     private IConversationSinchEvent _parsedEvent;
@@ -24,7 +24,7 @@ public class SinchEvents
     [Given(@"the Conversation Webhooks handler is available")]
     public void GivenTheConversationEventDestinationsHandlerIsAvailable()
     {
-        _sinchEvents = new ConversationSinchEvents(Sinch.Conversation.SinchConversationClient.JsonSerializerOptionsInner);
+        _conversationSinchEvents = new ConversationSinchEvents(Sinch.Conversation.SinchConversationClient.JsonSerializerOptionsInner);
     }
 
     [When(@"I send a request to trigger a ""(.*)"" event")]
@@ -137,12 +137,12 @@ public class SinchEvents
         _eventResponse.EnsureSuccessStatusCode();
 
         _rawEvent = await _eventResponse.Content.ReadAsStringAsync();
-        _parsedEvent = _sinchEvents.ParseEvent(_rawEvent);
+        _parsedEvent = _conversationSinchEvents.ParseEvent(_rawEvent);
     }
 
     private void ValidateAuthenticationHeader()
     {
-        _sinchEvents.ValidateAuthenticationHeader(_eventResponse.GetAllHeaders(), _rawEvent, SinchEventSecret)
+        _conversationSinchEvents.ValidateAuthenticationHeader(_eventResponse.GetAllHeaders(), _rawEvent, SinchEventSecret)
             .Should()
             .BeTrue();
     }

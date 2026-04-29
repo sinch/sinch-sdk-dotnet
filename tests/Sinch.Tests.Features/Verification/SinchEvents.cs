@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
+using Sinch.Auth;
 using Sinch.Verification;
 using Sinch.Verification.Common;
 using Sinch.Verification.SinchEvents;
@@ -12,16 +13,19 @@ namespace Sinch.Tests.Features.Verification
     [Binding]
     public class SinchEvents
     {
-        private readonly HttpClient _httpClient = new HttpClient();
+        private readonly HttpClient _httpClient = new();
         private HttpResponseMessage _verificationRequestResponseMessage;
         private HttpResponseMessage _verificationResultResponse;
-        private ISinchVerificationClient _sinchVerificationClient;
         private string _rawBody;
+        
+        private static readonly ApplicationSignedAuth ApplicationSignedAuth =
+            new("appKey", "YXBwU2VjcmV0");
+        private VerificationSinchEvents _verificationSinchEvents = new(ApplicationSignedAuth);
 
         [Given(@"the Verification Webhooks handler is available")]
         public void GivenTheVerificationSinchEventsHandlerIsAvailable()
         {
-            _sinchVerificationClient = Utils.SinchVerificationClient;
+            _verificationSinchEvents = new(ApplicationSignedAuth);
         }
 
         [When(@"I send a request to trigger a ""Verification Request"" event")]
@@ -35,7 +39,7 @@ namespace Sinch.Tests.Features.Verification
         public async Task ThenTheHeaderOfTheVerificationEventContainsAValidAuthorization()
         {
             _rawBody = await _verificationRequestResponseMessage.Content.ReadAsStringAsync();
-            _sinchVerificationClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/verification",
+            _verificationSinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/verification",
                 _verificationRequestResponseMessage.GetAllHeaders(),
                 _rawBody).Should().BeTrue();
         }
@@ -70,7 +74,7 @@ namespace Sinch.Tests.Features.Verification
         public async Task ThenTheHeaderOfTheVerificationResultEventContainsAValidAuthorization()
         {
             _rawBody = await _verificationResultResponse.Content.ReadAsStringAsync();
-            _sinchVerificationClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/verification",
+            _verificationSinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/verification",
                 _verificationResultResponse.GetAllHeaders(),
                 _rawBody).Should().BeTrue();
         }
