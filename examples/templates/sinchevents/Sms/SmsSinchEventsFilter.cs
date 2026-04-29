@@ -29,7 +29,10 @@ namespace SinchEvents.Template.Sms;
 
         var secret = configuration["Sinch:Sms:SinchEventSecret"] ?? string.Empty;
 
-        var headersDictionary = request.Headers.ToDictionary(h => h.Key, h => h.Value.ToString(), StringComparer.OrdinalIgnoreCase);
+        var headersDictionary = request.Headers.ToDictionary(
+            h => h.Key,
+            h => h.Value.AsEnumerable()!,
+            StringComparer.OrdinalIgnoreCase);
 
         if (!smsSinchEvents.ValidateAuthenticationHeader(secret, headersDictionary, body))
         {
