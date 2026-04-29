@@ -52,7 +52,7 @@ namespace Sinch.Voice.SinchEvents
 
         /// <inheritdoc />
         public bool ValidateAuthenticationHeader(HttpMethod method, string path,
-            Dictionary<string, IEnumerable<string>> headers, string body)
+            IDictionary<string, IEnumerable<string>> headers, string body)
         {
             return AuthorizationHeaderValidation.Validate(method, path, headers, body, applicationSignedAuth, logger);
         }

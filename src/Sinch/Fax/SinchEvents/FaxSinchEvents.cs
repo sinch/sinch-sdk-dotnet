@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using Sinch.Logger;
 
 namespace Sinch.Fax.SinchEvents
@@ -21,6 +24,19 @@ namespace Sinch.Fax.SinchEvents
             {
                 logger?.LogError(
                     "Failed to deserialize Fax Sinch event. No matching event type found for payload: {json}", json);
+                throw new InvalidOperationException("Deserialization of Fax Sinch event failed");
+            }
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IFaxSinchEvent> ParseEventAsync(Stream json, CancellationToken cancellationToken = default)
+        {
+            var result = await JsonSerializer.DeserializeAsync<IFaxSinchEvent>(json, JsonSerializerOptions, cancellationToken);
+            if (result == null)
+            {
+                logger?.LogError("Failed to deserialize Fax Sinch event. No matching event type found.");
                 throw new InvalidOperationException("Deserialization of Fax Sinch event failed");
             }
 

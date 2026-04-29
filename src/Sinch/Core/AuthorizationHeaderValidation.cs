@@ -74,7 +74,7 @@ namespace Sinch.Core
         }
 
         public static bool Validate<TLogger>(HttpMethod method, string path,
-            Dictionary<string, IEnumerable<string>> headers, string body, ApplicationSignedAuth applicationSignedAuth,
+            IDictionary<string, IEnumerable<string>> headers, string body, ApplicationSignedAuth applicationSignedAuth,
             ILoggerAdapter<TLogger>? logger = null)
         {
             var reHeaders = headers.ToDictionary(x => x.Key, y => new StringValues(y.Value.ToArray()));

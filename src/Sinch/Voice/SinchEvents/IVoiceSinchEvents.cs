@@ -51,7 +51,7 @@ namespace Sinch.Voice.SinchEvents
         /// <param name="body">Raw request body string.</param>
         /// <returns><see langword="true"/> if the computed signature matches the Authorization header; otherwise <see langword="false"/>.</returns>
         bool ValidateAuthenticationHeader(HttpMethod method, string path,
-            Dictionary<string, IEnumerable<string>> headers,
+            IDictionary<string, IEnumerable<string>> headers,
             string body);
     }
 }

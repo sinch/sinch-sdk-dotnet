@@ -1,5 +1,8 @@
+using System.IO;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Sinch.Numbers.SinchEvents
 {
@@ -20,6 +23,15 @@ namespace Sinch.Numbers.SinchEvents
         /// <param name="json">The raw Sinch event payload.</param>
         /// <returns>The parsed <see cref="INumberSinchEvent" />.</returns>
         INumberSinchEvent ParseEvent(string json);
+
+        /// <summary>
+        ///     Parses a Sinch Numbers event from a stream.
+        /// </summary>
+        /// <param name="json">A stream containing the JSON payload from the Sinch event request body.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>The parsed <see cref="INumberSinchEvent" />.</returns>
+        /// <exception cref="System.InvalidOperationException">Thrown when deserialization fails.</exception>
+        Task<INumberSinchEvent> ParseEventAsync(Stream json, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Validates a Sinch Numbers event using your HMAC secret and the raw signature header value.

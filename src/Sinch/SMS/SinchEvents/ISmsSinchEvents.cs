@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using Sinch.SMS.DeliveryReports;
 using Sinch.SMS.Inbounds;
 
@@ -53,6 +56,15 @@ namespace Sinch.SMS.SinchEvents
         /// <exception cref="System.Text.Json.JsonException">Thrown when JSON is invalid or cannot be deserialized.</exception>
         /// <exception cref="System.InvalidOperationException">Thrown when event type is unknown or deserialization fails.</exception>
         ISmsSinchEvent ParseEvent(string json);
+
+        /// <summary>
+        ///     Parse a Sinch event from a stream.
+        /// </summary>
+        /// <param name="json">A stream containing the JSON payload from the Sinch event request body.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Parsed SMS Sinch event.</returns>
+        /// <exception cref="System.InvalidOperationException">Thrown when event type is unknown or deserialization fails.</exception>
+        Task<ISmsSinchEvent> ParseEventAsync(Stream json, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Validate Sinch event authentication using HMAC signature.

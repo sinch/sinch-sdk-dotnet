@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Sinch.Fax.SinchEvents
 {
@@ -9,7 +12,7 @@ namespace Sinch.Fax.SinchEvents
     /// </summary>
     public interface IFaxSinchEvents
     {
-        internal JsonSerializerOptions JsonSerializerOptions { get; }
+        JsonSerializerOptions JsonSerializerOptions { get; }
 
         /// <summary>
         ///     Parse a Fax Sinch event from a JSON payload.
@@ -25,6 +28,15 @@ namespace Sinch.Fax.SinchEvents
         /// <exception cref="System.Text.Json.JsonException">Thrown when JSON is invalid or cannot be deserialized.</exception>
         /// <exception cref="System.InvalidOperationException">Thrown when event type is unknown or deserialization fails.</exception>
         IFaxSinchEvent ParseEvent(string json);
+
+        /// <summary>
+        ///     Parse a Fax Sinch event from a stream.
+        /// </summary>
+        /// <param name="json">A stream containing the JSON payload from the Sinch event request body.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Parsed Fax Sinch event.</returns>
+        /// <exception cref="System.InvalidOperationException">Thrown when event type is unknown or deserialization fails.</exception>
+        Task<IFaxSinchEvent> ParseEventAsync(Stream json, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Validates the Sinch event authentication header.

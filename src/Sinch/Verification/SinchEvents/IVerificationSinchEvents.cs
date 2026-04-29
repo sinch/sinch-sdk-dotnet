@@ -14,7 +14,7 @@ namespace Sinch.Verification.SinchEvents
         /// <param name="body">The raw request body as a string.</param>
         /// <returns>True, if produced signature match with that of a header.</returns>
         bool ValidateAuthenticationHeader(HttpMethod method, string path,
-            Dictionary<string, IEnumerable<string>> headers,
+            IDictionary<string, IEnumerable<string>> headers,
             string body);
     }
 }
