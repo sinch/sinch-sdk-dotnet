@@ -17,13 +17,15 @@ namespace Sinch.Tests.Conversation
 {
     public class EventDestinationsTests : ConversationTestBase
     {
+        private readonly ConversationSinchEvents _sinchEvents = new(SinchConversationClient.JsonSerializerOptionsInner);
+        
         [Fact]
         public void DeserializeCapabilityEvent()
         {
             string json =
                 Helpers.LoadResources("Conversation/SinchEvents/CapabilityEvent.json");
 
-            var resultParse = Conversation.SinchEvents.ParseEvent(json).As<CapabilityEvent>();
+            var resultParse = _sinchEvents.ParseEvent(json).As<CapabilityEvent>();
             AssertEvent(resultParse);
 
             var resultDeserialize = Deserialize<IConversationSinchEvent>(json).As<CapabilityEvent>();
@@ -64,7 +66,7 @@ namespace Sinch.Tests.Conversation
             string json =
                 Helpers.LoadResources("Conversation/SinchEvents/ChannelEvent.json");
 
-            var resultParse = Conversation.SinchEvents.ParseEvent(json).As<ChannelEvent>();
+            var resultParse = _sinchEvents.ParseEvent(json).As<ChannelEvent>();
             AssertEvent(resultParse);
 
             var result = Deserialize<IConversationSinchEvent>(json).As<ChannelEvent>();
@@ -107,7 +109,7 @@ namespace Sinch.Tests.Conversation
             string json =
                 Helpers.LoadResources("Conversation/SinchEvents/ContactCreateEvent.json");
 
-            var parseResult = Conversation.SinchEvents.ParseEvent(json).As<ContactCreateEvent>();
+            var parseResult = _sinchEvents.ParseEvent(json).As<ContactCreateEvent>();
             AssertEvent(parseResult);
             var result = Deserialize<IConversationSinchEvent>(json).As<ContactCreateEvent>();
             AssertEvent(result);
@@ -164,7 +166,7 @@ namespace Sinch.Tests.Conversation
             string json =
                 Helpers.LoadResources("Conversation/SinchEvents/ContactDeleteEvent.json");
 
-            var parseResult = Conversation.SinchEvents.ParseEvent(json).As<ContactDeleteEvent>();
+            var parseResult = _sinchEvents.ParseEvent(json).As<ContactDeleteEvent>();
             AssertEvent(parseResult);
 
             var result = Deserialize<IConversationSinchEvent>(json).As<ContactDeleteEvent>();
@@ -223,7 +225,7 @@ namespace Sinch.Tests.Conversation
             string json =
                 Helpers.LoadResources("Conversation/SinchEvents/ContactIdentitiesDuplicationEvent.json");
 
-            var parseResult = Conversation.SinchEvents.ParseEvent(json).As<ContactIdentitiesDuplicationEvent>();
+            var parseResult = _sinchEvents.ParseEvent(json).As<ContactIdentitiesDuplicationEvent>();
             AssertEvent(parseResult);
 
             var result = Deserialize<IConversationSinchEvent>(json).As<ContactIdentitiesDuplicationEvent>();
@@ -264,7 +266,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/SinchEvents/ContactMergeEvent.json");
 
-            var parseResult = Conversation.SinchEvents.ParseEvent(json).As<ContactMergeEvent>();
+            var parseResult = _sinchEvents.ParseEvent(json).As<ContactMergeEvent>();
             AssertEvent(parseResult);
 
             var result = Deserialize<IConversationSinchEvent>(json).As<ContactMergeEvent>();
@@ -331,7 +333,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/SinchEvents/ContactUpdateEvent.json");
 
-            var resultParse = Conversation.SinchEvents.ParseEvent(json).As<ContactUpdateEvent>();
+            var resultParse = _sinchEvents.ParseEvent(json).As<ContactUpdateEvent>();
             AssertEvent(resultParse);
 
             var resultDeserialize = Deserialize<IConversationSinchEvent>(json).As<ContactUpdateEvent>();
@@ -383,7 +385,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/SinchEvents/ConversationDeleteEvent.json");
 
-            var resultParse = Conversation.SinchEvents.ParseEvent(json).As<ConversationDeleteEvent>();
+            var resultParse = _sinchEvents.ParseEvent(json).As<ConversationDeleteEvent>();
             AssertEvent(resultParse);
 
             var resultDeserialize = Deserialize<IConversationSinchEvent>(json).As<ConversationDeleteEvent>();
@@ -430,7 +432,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/SinchEvents/ConversationStartEvent.json");
 
-            var resultParse = Conversation.SinchEvents.ParseEvent(json).As<ConversationStartEvent>();
+            var resultParse = _sinchEvents.ParseEvent(json).As<ConversationStartEvent>();
             AssertEvent(resultParse);
 
             var resultDeserialize = Deserialize<IConversationSinchEvent>(json).As<ConversationStartEvent>();
@@ -478,7 +480,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/SinchEvents/ConversationStopEvent.json");
 
-            var resultParse = Conversation.SinchEvents.ParseEvent(json).As<ConversationStopEvent>();
+            var resultParse = _sinchEvents.ParseEvent(json).As<ConversationStopEvent>();
             AssertEvent(resultParse);
 
             var resultDeserialize = Deserialize<IConversationSinchEvent>(json).As<ConversationStopEvent>();
@@ -526,7 +528,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/SinchEvents/EventDeliveryReportEvent.json");
 
-            var resultParse = Conversation.SinchEvents.ParseEvent(json).As<DeliveryEvent>();
+            var resultParse = _sinchEvents.ParseEvent(json).As<DeliveryEvent>();
             AssertEvent(resultParse);
 
             var resultDeserialize = Deserialize<IConversationSinchEvent>(json).As<DeliveryEvent>();
@@ -572,7 +574,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/SinchEvents/MessageDeliveryReceiptEvent.json");
 
-            var resultParse = Conversation.SinchEvents.ParseEvent(json).As<MessageDeliveryReceiptEvent>();
+            var resultParse = _sinchEvents.ParseEvent(json).As<MessageDeliveryReceiptEvent>();
             AssertEvent(resultParse);
 
             var resultDeserialize = Deserialize<IConversationSinchEvent>(json).As<MessageDeliveryReceiptEvent>();
@@ -620,7 +622,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/SinchEvents/InboundContactEvent.json");
 
-            var resultParse = Conversation.SinchEvents.ParseEvent(json).As<InboundEvent>();
+            var resultParse = _sinchEvents.ParseEvent(json).As<InboundEvent>();
             AssertEvent(resultParse);
 
             var resultDeserialize = Deserialize<IConversationSinchEvent>(json).As<InboundEvent>();
@@ -666,7 +668,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/SinchEvents/InboundContactMessageEvent.json");
 
-            var resultParse = Conversation.SinchEvents.ParseEvent(json).As<InboundEvent>();
+            var resultParse = _sinchEvents.ParseEvent(json).As<InboundEvent>();
             AssertEvent(resultParse);
 
             var resultDeserialize = Deserialize<IConversationSinchEvent>(json).As<InboundEvent>();
@@ -716,7 +718,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/SinchEvents/MessageInboundEvent.json");
 
-            var resultParse = Conversation.SinchEvents.ParseEvent(json).As<MessageInboundEvent>();
+            var resultParse = _sinchEvents.ParseEvent(json).As<MessageInboundEvent>();
             AssertEvent(resultParse);
 
             var resultDeserialize = Deserialize<IConversationSinchEvent>(json).As<MessageInboundEvent>();
@@ -763,7 +765,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/SinchEvents/MessageSubmitEvent.json");
 
-            var resultParse = Conversation.SinchEvents.ParseEvent(json).As<MessageSubmitEvent>();
+            var resultParse = _sinchEvents.ParseEvent(json).As<MessageSubmitEvent>();
             AssertEvent(resultParse);
 
             var resultDeserialize = Deserialize<IConversationSinchEvent>(json).As<MessageSubmitEvent>();
@@ -904,7 +906,7 @@ namespace Sinch.Tests.Conversation
             string json =
                 Helpers.LoadResources("Conversation/SinchEvents/MessageInboundSmartConversationRedactionEvent.json");
 
-            var resultParse = Conversation.SinchEvents.ParseEvent(json)
+            var resultParse = _sinchEvents.ParseEvent(json)
                 .As<MessageInboundSmartConversationRedactionEvent>();
             AssertEvent(resultParse);
 
@@ -958,7 +960,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/SinchEvents/SmartConversationsEvent.json");
 
-            var resultParse = Conversation.SinchEvents.ParseEvent(json).As<SmartConversationsEvent>();
+            var resultParse = _sinchEvents.ParseEvent(json).As<SmartConversationsEvent>();
             AssertEvent(resultParse);
 
             var resultDeserialize = Deserialize<IConversationSinchEvent>(json).As<SmartConversationsEvent>();
@@ -1086,7 +1088,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/SinchEvents/UnsupportedCallbackEvent.json");
 
-            var resultParse = Conversation.SinchEvents.ParseEvent(json).As<UnsupportedCallbackEvent>();
+            var resultParse = _sinchEvents.ParseEvent(json).As<UnsupportedCallbackEvent>();
             AssertEvent(resultParse);
 
             var resultDeserialize = Deserialize<IConversationSinchEvent>(json).As<UnsupportedCallbackEvent>();
@@ -1126,7 +1128,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/SinchEvents/OptInEvent.json");
 
-            var resultParse = Conversation.SinchEvents.ParseEvent(json).As<OptInEvent>();
+            var resultParse = _sinchEvents.ParseEvent(json).As<OptInEvent>();
             AssertEvent(resultParse);
 
             var resultDeserialize = Deserialize<IConversationSinchEvent>(json).As<OptInEvent>();
@@ -1163,7 +1165,7 @@ namespace Sinch.Tests.Conversation
         {
             string json = Helpers.LoadResources("Conversation/SinchEvents/OptOutEvent.json");
 
-            var resultParse = Conversation.SinchEvents.ParseEvent(json).As<OptOutEvent>();
+            var resultParse = _sinchEvents.ParseEvent(json).As<OptOutEvent>();
             AssertEvent(resultParse);
 
             var resultDeserialize = Deserialize<IConversationSinchEvent>(json).As<OptOutEvent>();
@@ -1249,18 +1251,9 @@ namespace Sinch.Tests.Conversation
         [Fact]
         public async Task DeserializeEventDestinationWithoutProvidingSinchUnifiedCredentials()
         {
-            var sinchClient = new SinchClient(new SinchClientConfiguration()
-            {
-                // TODO! It will removed with this ticket: https://sinchenterprise.atlassian.net/browse/DEVEXP-1311
-                ConversationConfiguration = new SinchConversationConfiguration()
-                {
-                    Region = ConversationRegion.Us
-                }
-            });
-
-            string json =
-                Helpers.LoadResources("Conversation/SinchEvents/CapabilityEvent.json");
-            var actual = sinchClient.Conversation.SinchEvents.ParseEvent(json).As<CapabilityEvent>();
+            var sinchEvents = new ConversationSinchEvents(SinchConversationClient.JsonSerializerOptionsInner);
+            var json = Helpers.LoadResources("Conversation/SinchEvents/CapabilityEvent.json");
+            var actual = sinchEvents.ParseEvent(json).As<CapabilityEvent>();
 
             actual.Should().BeEquivalentTo(new CapabilityEvent()
             {
@@ -1287,6 +1280,13 @@ namespace Sinch.Tests.Conversation
                 }
             });
 
+            var sinchClient = new SinchClient(new SinchClientConfiguration()
+            {
+                ConversationConfiguration = new SinchConversationConfiguration()
+                {
+                    Region = ConversationRegion.Us
+                }
+            });
             // other conversation endpoints should throw an error
             var op = () => sinchClient.Conversation.Messages.Get("1");
             await op.Should()
@@ -1332,7 +1332,7 @@ namespace Sinch.Tests.Conversation
                 }
             }";
 
-            Action act = () => Conversation.SinchEvents.ParseEvent(json);
+            Action act = () => _sinchEvents.ParseEvent(json);
 
             act.Should().Throw<InvalidOperationException>()
                 .WithMessage("Deserialization of conversation Sinch event failed");

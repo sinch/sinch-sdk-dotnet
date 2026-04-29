@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using FluentAssertions;
+using Sinch.Auth;
+using Sinch.Logger;
+using Sinch.Numbers.VoiceConfigurations;
 using Sinch.Voice;
 using Sinch.Voice.Callouts.Callout;
 using Sinch.Voice.Calls;
@@ -13,14 +17,9 @@ namespace Sinch.Tests.Voice
 {
     public class DeserializeVoiceSinchEventsTests
     {
-        private readonly ISinchVoiceClient _voiceClient = new SinchClient(new SinchClientConfiguration()
-        {
-            VoiceConfiguration = new SinchVoiceConfiguration()
-            {
-                AppKey = "appkey",
-                AppSecret = "appsecret",
-            }
-        }).Voice;
+        private static readonly JsonSerializerOptions SerializationOptions = new(JsonSerializerDefaults.Web);
+        private static readonly ApplicationSignedAuth Auth = new ("appkey", "appsecret");
+        private readonly VoiceSinchEvents _sinchEvents = new (SerializationOptions, Auth);
 
         [Fact]
         public void DeserializeAce()
@@ -28,7 +27,7 @@ namespace Sinch.Tests.Voice
             var json = Helpers.LoadResources("Voice/AnsweredCallEvent.json");
 
             var @event = JsonSerializer.Deserialize<IVoiceSinchEvent>(json);
-            var eventWithClient = _voiceClient.SinchEvents.ParseEvent(json);
+            var eventWithClient = _sinchEvents.ParseEvent(json);
 
             AssertEvent(@event);
             AssertEvent(eventWithClient);
@@ -59,7 +58,7 @@ namespace Sinch.Tests.Voice
             var json = Helpers.LoadResources("Voice/NotificationEvent.json");
 
             var @event = JsonSerializer.Deserialize<IVoiceSinchEvent>(json);
-            var eventWithClient = _voiceClient.SinchEvents.ParseEvent(json);
+            var eventWithClient = _sinchEvents.ParseEvent(json);
 
             AssertEvent(@event);
             AssertEvent(eventWithClient);
@@ -90,7 +89,7 @@ namespace Sinch.Tests.Voice
         {
             var json = Helpers.LoadResources("Voice/PromptInputEvent.json");
             var @event = JsonSerializer.Deserialize<IVoiceSinchEvent>(json);
-            var eventWithClient = _voiceClient.SinchEvents.ParseEvent(json);
+            var eventWithClient = _sinchEvents.ParseEvent(json);
 
             AssertEvent(@event);
             AssertEvent(eventWithClient);
@@ -123,7 +122,7 @@ namespace Sinch.Tests.Voice
             var json = Helpers.LoadResources("Voice/DisconnectedCallEvent.json");
 
             var @event = JsonSerializer.Deserialize<IVoiceSinchEvent>(json);
-            var eventWithClient = _voiceClient.SinchEvents.ParseEvent(json);
+            var eventWithClient = _sinchEvents.ParseEvent(json);
 
             AssertEvent(@event);
             AssertEvent(eventWithClient);
@@ -168,7 +167,7 @@ namespace Sinch.Tests.Voice
             var json = Helpers.LoadResources("Voice/IncomingCallEvent.json");
 
             var @event = JsonSerializer.Deserialize<IVoiceSinchEvent>(json);
-            var eventWithClient = _voiceClient.SinchEvents.ParseEvent(json);
+            var eventWithClient = _sinchEvents.ParseEvent(json);
 
             AssertEvent(@event);
             AssertEvent(eventWithClient);

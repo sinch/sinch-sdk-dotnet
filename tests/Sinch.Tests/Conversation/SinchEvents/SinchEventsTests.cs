@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Sinch.Conversation;
 using Sinch.Conversation.SinchEvents;
 using Xunit;
 
@@ -15,13 +16,15 @@ namespace Sinch.Tests.Conversation.SinchEvents
         private const string NonceHeader = "x-sinch-webhook-signature-nonce";
         private const string AlgorithmHeader = "x-sinch-webhook-signature-algorithm";
         private const string SignatureHeader = "x-sinch-webhook-signature";
+        
+        private readonly ConversationSinchEvents _sinchEvents = new(SinchConversationClient.JsonSerializerOptionsInner);
 
         [Fact]
         public void ValidateAuthenticationHeader_WithSingleValueHeaders_ReturnsTrue()
         {
             var json = Helpers.LoadResources("Conversation/SinchEvents/SinchEventsAuthValidation.json");
 
-            var isValid = Conversation.SinchEvents.ValidateAuthenticationHeader(new Dictionary<string, string>()
+            var isValid = _sinchEvents.ValidateAuthenticationHeader(new Dictionary<string, string>()
             {
                 { NonceHeader, "01FJA8B4A7BM43YGWSG9GBV067" },
                 { TimestampHeader, "1634579353" },
@@ -37,7 +40,7 @@ namespace Sinch.Tests.Conversation.SinchEvents
         {
             var json = Helpers.LoadResources("Conversation/SinchEvents/SinchEventsAuthValidation.json");
 
-            var isValid = Conversation.SinchEvents.ValidateAuthenticationHeader(new Dictionary<string, IEnumerable<string>>()
+            var isValid = _sinchEvents.ValidateAuthenticationHeader(new Dictionary<string, IEnumerable<string>>()
             {
                 { NonceHeader, ["01FJA8B4A7BM43YGWSG9GBV067"] },
                 { TimestampHeader, ["1634579353"] },
@@ -53,7 +56,7 @@ namespace Sinch.Tests.Conversation.SinchEvents
         {
             var json = Helpers.LoadResources("Conversation/SinchEvents/CapabilityEvent.json");
 
-            var result = Conversation.SinchEvents.ParseEvent(json);
+            var result = _sinchEvents.ParseEvent(json);
 
             result.Should().BeOfType<CapabilityEvent>();
             result.As<CapabilityEvent>().CapabilityNotification.Should().NotBeNull();
@@ -65,7 +68,7 @@ namespace Sinch.Tests.Conversation.SinchEvents
             var json = Helpers.LoadResources("Conversation/SinchEvents/CapabilityEvent.json");
             await using var stream = new MemoryStream(Encoding.UTF8.GetBytes(json));
 
-            var result = await Conversation.SinchEvents.ParseEventAsync(stream);
+            var result = await _sinchEvents.ParseEventAsync(stream);
 
             result.Should().BeOfType<CapabilityEvent>();
             result.As<CapabilityEvent>().CapabilityNotification.Should().NotBeNull();
