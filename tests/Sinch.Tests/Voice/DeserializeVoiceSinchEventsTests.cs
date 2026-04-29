@@ -15,8 +15,8 @@ namespace Sinch.Tests.Voice
     public class DeserializeVoiceSinchEventsTests
     {
         private static readonly JsonSerializerOptions SerializationOptions = new(JsonSerializerDefaults.Web);
-        private static readonly ApplicationSignedAuth Auth = new ("appkey", "appsecret");
-        private readonly VoiceSinchEvents _voiceSinchEvents = new (SerializationOptions, Auth);
+        private static readonly ApplicationSignedAuth Auth = new("appkey", "appsecret");
+        private readonly VoiceSinchEvents _voiceSinchEvents = new(SerializationOptions, Auth);
 
         [Fact]
         public void DeserializeAce()

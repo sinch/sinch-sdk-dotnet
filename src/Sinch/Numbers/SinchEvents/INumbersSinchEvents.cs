@@ -13,7 +13,7 @@ namespace Sinch.Numbers.SinchEvents
         ///     For internal use: the <see cref="JsonSerializerOptions" /> used to deserialize Numbers events.
         /// </summary>
         JsonSerializerOptions JsonSerializerOptions { get; }
-        
+
         /// <summary>
         ///     Parses a Sinch Numbers event from a raw JSON string.
         /// </summary>

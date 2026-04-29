@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
 using Sinch.Auth;
-using Sinch.Verification;
 using Sinch.Verification.Common;
 using Sinch.Verification.SinchEvents;
 
@@ -17,7 +16,7 @@ namespace Sinch.Tests.Features.Verification
         private HttpResponseMessage _verificationRequestResponseMessage;
         private HttpResponseMessage _verificationResultResponse;
         private string _rawBody;
-        
+
         private static readonly ApplicationSignedAuth ApplicationSignedAuth =
             new("appKey", "YXBwU2VjcmV0");
         private VerificationSinchEvents _verificationSinchEvents = new(ApplicationSignedAuth);

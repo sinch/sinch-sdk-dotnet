@@ -42,7 +42,7 @@ namespace Sinch.Verification
 
         /// <inheritdoc />
         public ISinchVerificationStatus VerificationStatus { get; }
-        
+
         /// <inheritdoc />
         public IVerificationSinchEvents SinchEvents { get; }
     }

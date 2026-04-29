@@ -16,7 +16,7 @@ namespace Sinch.Conversation.SinchEvents
     {
         /// <inheritdoc />
         public JsonSerializerOptions JsonSerializerOptions { get; } = jsonSerializerOptions;
-        
+
         /// <inheritdoc />
         public bool ValidateAuthenticationHeader(IDictionary<string, string> headers, string body, string secret)
         {

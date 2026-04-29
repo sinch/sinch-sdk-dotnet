@@ -9,7 +9,7 @@ namespace Sinch.Numbers.SinchEvents
         ILoggerAdapter<INumbersSinchEvents>? logger = null) : INumbersSinchEvents
     {
         public JsonSerializerOptions JsonSerializerOptions { get; } = jsonSerializerOptions;
-        
+
         public NumberSinchEvent ParseEvent(string json)
         {
             var result = JsonSerializer.Deserialize<NumberSinchEvent>(json, JsonSerializerOptions);

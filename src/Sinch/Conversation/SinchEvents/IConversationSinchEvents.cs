@@ -16,7 +16,7 @@ namespace Sinch.Conversation.SinchEvents
         ///     The <see cref="JsonSerializerOptions" /> used to deserialize Conversation events.
         /// </summary>
         JsonSerializerOptions JsonSerializerOptions { get; }
-        
+
         /// <summary>
         ///     Validates the Sinch event HMAC authentication header.
         /// </summary>

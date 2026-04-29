@@ -18,7 +18,7 @@ namespace Sinch.Tests.Conversation
     public class EventDestinationsTests : ConversationTestBase
     {
         private readonly ConversationSinchEvents _conversationSinchEvents = new(SinchConversationClient.JsonSerializerOptionsInner);
-        
+
         [Fact]
         public void DeserializeCapabilityEvent()
         {

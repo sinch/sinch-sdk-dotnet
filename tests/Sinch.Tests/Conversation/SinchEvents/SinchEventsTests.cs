@@ -16,7 +16,7 @@ namespace Sinch.Tests.Conversation.SinchEvents
         private const string NonceHeader = "x-sinch-webhook-signature-nonce";
         private const string AlgorithmHeader = "x-sinch-webhook-signature-algorithm";
         private const string SignatureHeader = "x-sinch-webhook-signature";
-        
+
         private readonly ConversationSinchEvents _conversationSinchEvents = new(SinchConversationClient.JsonSerializerOptionsInner);
 
         [Fact]
