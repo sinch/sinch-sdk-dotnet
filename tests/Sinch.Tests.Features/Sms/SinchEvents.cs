@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
@@ -32,7 +33,12 @@ namespace Sinch.Tests.Features.Sms
         [Given(@"the SMS Webhooks handler is available")]
         public void GivenTheSmsSinchEventsHandlerIsAvailable()
         {
-            _smsSinchEvents = Utils.SinchClient.Sms.SinchEvents;
+            _smsSinchEvents = new SmsSinchEvents(
+                new JsonSerializerOptions(JsonSerializerDefaults.Web)
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
         }
 
         [When(@"I send a request to trigger an ""incoming SMS"" event")]
