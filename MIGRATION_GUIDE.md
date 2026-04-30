@@ -42,6 +42,7 @@
 - [Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts JsonNode](#conversation-api-webhooks-validateauthenticationheader-no-longer-accepts-jsonnode)
 - [Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts StringValues headers](#conversation-api-webhooks-validateauthenticationheader-no-longer-accepts-stringvalues-headers)
 - [Conversation API: Webhooks ParseEvent no longer accepts JsonNode](#conversation-api-webhooks-parseevent-no-longer-accepts-jsonnode)
+- [Numbers API: `CallbackConfiguration` renamed to `EventDestinations`](#numbers-api-callbackconfiguration-renamed-to-eventdestinations)
 
 ## .NET Framework Support
 
@@ -1150,4 +1151,22 @@ var callback = sinch.Conversation.Webhooks.ParseEvent(node!);
 Version 2.*:
 ```csharp
 var callback = sinch.Conversation.Webhooks.ParseEvent(rawBody);
+```
+
+## Numbers API: `CallbackConfiguration` renamed to `EventDestinations`
+
+`ISinchNumbers.CallbackConfiguration` has been renamed to `ISinchNumbers.EventDestinations`.
+The return type is now `EventDestination` (was `CallbackConfiguration`).
+The namespace has changed from `Sinch.Numbers.CallbackConfiguration` to `Sinch.Numbers.EventDestinations`.
+
+**Before:**
+```csharp
+var config = await sinch.Numbers.CallbackConfiguration.Get();
+await sinch.Numbers.CallbackConfiguration.Update("my-secret");
+```
+
+**After:**
+```csharp
+var config = await sinch.Numbers.EventDestinations.Get();
+await sinch.Numbers.EventDestinations.Update("my-secret");
 ```

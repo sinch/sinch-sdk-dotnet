@@ -14,7 +14,7 @@ var projectId = ConfigurationHelper.GetProjectId() ?? "MY_PROJECT_ID";
 var keyId = ConfigurationHelper.GetKeyId() ?? "MY_KEY_ID";
 var keySecret = ConfigurationHelper.GetKeySecret() ?? "MY_KEY_SECRET";
 
-// The new HMAC secret for callback configuration
+// The new HMAC secret for the event destination configuration
 var hmacSecret = "NEW_HMAC_SECRET";
 
 var client = new SinchClient(new SinchClientConfiguration()
@@ -27,8 +27,8 @@ var client = new SinchClient(new SinchClientConfiguration()
     }
 });
 
-Console.WriteLine("Update callback HMAC secret");
+Console.WriteLine("Update event destination HMAC secret");
 
-var response = await client.Numbers.CallbackConfiguration.Update(hmacSecret);
+var response = await client.Numbers.EventDestinations.Update(hmacSecret);
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");

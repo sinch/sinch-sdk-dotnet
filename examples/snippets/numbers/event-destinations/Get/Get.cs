@@ -24,8 +24,8 @@ var client = new SinchClient(new SinchClientConfiguration()
     }
 });
 
-Console.WriteLine("Get callback configuration");
+Console.WriteLine("Get event destination configuration");
 
-var response = await client.Numbers.CallbackConfiguration.Get();
+var response = await client.Numbers.EventDestinations.Get();
 
 Console.WriteLine($"Response: {response.ToPrettyString()}");
