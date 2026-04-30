@@ -1,4 +1,4 @@
-﻿{
+{
   "displayName": "a display",
   "smsConfiguration": {
     "servicePlanId": "service plan id",
@@ -8,5 +8,5 @@
     "appId": "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEE",
     "type": "RTC"
   },
-  "callbackUrl": "foo callback"
+  "callbackUrl": "https://my-server.com/numbers-events"
 }

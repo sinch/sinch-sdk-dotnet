@@ -24,5 +24,11 @@ namespace Sinch.Numbers.Available.Rent
         [JsonConverter(typeof(VoiceConfigurationConverter))]
         [JsonPropertyName("voiceConfiguration")]
         public VoiceConfiguration? VoiceConfiguration { get; set; }
+
+        /// <summary>
+        ///     The event destination URL to be called for a rented number's provisioning / deprovisioning operations.
+        /// </summary>
+        [JsonPropertyName("callbackUrl")]
+        public string? EventDestinationTarget { get; set; }
     }
 }

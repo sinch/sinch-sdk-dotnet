@@ -43,6 +43,7 @@
 - [Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts StringValues headers](#conversation-api-webhooks-validateauthenticationheader-no-longer-accepts-stringvalues-headers)
 - [Conversation API: Webhooks ParseEvent no longer accepts JsonNode](#conversation-api-webhooks-parseevent-no-longer-accepts-jsonnode)
 - [Numbers API: `CallbackConfiguration` renamed to `EventDestinations`](#numbers-api-callbackconfiguration-renamed-to-eventdestinations)
+- [Numbers API: `CallbackUrl` renamed to `EventDestinationTarget`](#numbers-api-callbackurl-renamed-to-eventdestinationtarget)
 
 ## .NET Framework Support
 
@@ -1169,4 +1170,18 @@ await sinch.Numbers.CallbackConfiguration.Update("my-secret");
 ```csharp
 var config = await sinch.Numbers.EventDestinations.Get();
 await sinch.Numbers.EventDestinations.Update("my-secret");
+```
+## Numbers API: `CallbackUrl` renamed to `EventDestinationTarget`
+
+The `CallbackUrl` property on `ActiveNumber`, `RentAnyNumberRequest`,
+`RentActiveNumberRequest`, and `UpdateActiveNumberRequest` is now `EventDestinationTarget`.
+
+**Before:**
+```csharp
+request.CallbackUrl = "https://my-server.com/numbers-events";
+```
+
+**After:**
+```csharp
+request.EventDestinationTarget = "https://my-server.com/numbers-events";
 ```

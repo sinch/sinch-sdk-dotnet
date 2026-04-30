@@ -39,5 +39,5 @@
     "lastUpdatedTime": "2024-06-30T07:08:09.100Z",
     "type": "RTC"
   },
-  "callbackUrl": "foo callback"
+  "callbackUrl": "https://my-server.com/numbers-events"
 }

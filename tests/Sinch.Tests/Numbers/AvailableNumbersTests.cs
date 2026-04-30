@@ -83,7 +83,7 @@ namespace Sinch.Tests.Numbers
                 {
                     AppId = "app_id",
                 },
-                CallbackUrl = "callback_url"
+                EventDestinationTarget = "https://my-server.com/numbers-events"
             };
             var response = await Numbers.RentAny(request);
 
