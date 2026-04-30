@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Numbers.Hooks
+namespace Sinch.Numbers.SinchEvents
 {
     [JsonConverter(typeof(EnumRecordJsonConverter<EventType>))]
     public record EventType(string Value) : EnumRecord(Value)

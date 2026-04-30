@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Numbers.Hooks
+namespace Sinch.Numbers.SinchEvents
 {
     /// <summary>
     ///     Represents the event status options.

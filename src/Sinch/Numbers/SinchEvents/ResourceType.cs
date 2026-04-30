@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Numbers.Hooks
+namespace Sinch.Numbers.SinchEvents
 {
     /// <summary>
     ///     Represents the resource type options.
@@ -10,9 +10,9 @@ namespace Sinch.Numbers.Hooks
     public record ResourceType(string Value) : EnumRecord(Value)
     {
         /// <summary>
-        ///     Represents a number resource.
+        ///     Numbers which are already active and updated with new campaign IDs or service plan IDs.
         /// </summary>
-        public static readonly ResourceType Number = new("NUMBER");
+        public static readonly ResourceType ActiveNumber = new("ACTIVE_NUMBER");
 
         /// <summary>
         ///     Represents a hosting order resource.

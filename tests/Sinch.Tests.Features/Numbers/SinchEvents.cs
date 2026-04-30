@@ -1,18 +1,18 @@
+using System.Linq;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
 using Sinch.Numbers;
-using Sinch.Numbers.Hooks;
+using Sinch.Numbers.SinchEvents;
 
 namespace Sinch.Tests.Features.Numbers
 {
     [Binding]
     public class Webhooks
     {
-        private ISinchNumbers _sinchNumbers;
-        private readonly HttpClient _httpClient = new HttpClient();
+        private INumbersSinchEvents _sinchEvents;
+        private readonly HttpClient _httpClient = new();
         private HttpResponseMessage _eventResponse;
         private string _rawData;
         private const string SinchNumbersCallbackSecret = "strongPa$$PhraseWith36CharactersMax";
@@ -20,7 +20,7 @@ namespace Sinch.Tests.Features.Numbers
         [Given(@"the Numbers Webhooks handler is available")]
         public void GivenTheNumbersWebhooksHandlerIsAvailable()
         {
-            _sinchNumbers = Utils.SinchNumbersClient();
+            _sinchEvents = Utils.SinchNumbersClient().SinchEvents;
         }
 
         [When(@"I send a request to trigger the ""success"" for ""PROVISIONING_TO_VOICE_PLATFORM"" event")]
@@ -34,7 +34,10 @@ namespace Sinch.Tests.Features.Numbers
         public async Task ThenTheHeaderOfTheForEventContainsAValidSignature(string success, string p1)
         {
             _rawData = await _eventResponse.Content.ReadAsStringAsync();
-            _sinchNumbers.ValidateAuthenticationHeader(SinchNumbersCallbackSecret, _rawData, _eventResponse.Headers)
+            var headers = _eventResponse.Headers
+                .ToDictionary(h => h.Key, h => h.Value.AsEnumerable(),
+                    System.StringComparer.OrdinalIgnoreCase);
+            _sinchEvents.ValidateAuthenticationHeader(SinchNumbersCallbackSecret, headers, _rawData)
                 .Should()
                 .BeTrue();
         }
@@ -42,7 +45,7 @@ namespace Sinch.Tests.Features.Numbers
         [Then(@"the event describes a ""success"" for ""PROVISIONING_TO_VOICE_PLATFORM"" event")]
         public void ThenTheEventDescribesAForEvent()
         {
-            var parsedEvent = JsonSerializer.Deserialize<Event>(_rawData);
+            var parsedEvent = _sinchEvents.ParseEvent(_rawData) as NumbersSinchEvent;
             parsedEvent.EventType.Should().Be(EventType.ProvisioningToVoicePlatform);
             parsedEvent.Status.Should().Be(EventStatus.Succeeded);
             parsedEvent.FailureCode.Should().BeNull();
@@ -58,7 +61,7 @@ namespace Sinch.Tests.Features.Numbers
         [Then(@"the event describes a ""failure"" for ""PROVISIONING_TO_VOICE_PLATFORM"" event")]
         public void ThenTheEventDescribesAFailureForEvent()
         {
-            var parsedEvent = JsonSerializer.Deserialize<Event>(_rawData);
+            var parsedEvent = _sinchEvents.ParseEvent(_rawData) as NumbersSinchEvent;
             parsedEvent.EventType.Should().Be(EventType.ProvisioningToVoicePlatform);
             parsedEvent.Status.Should().Be(EventStatus.Failed);
             parsedEvent.FailureCode.Should().Be(FailureCode.ProvisioningToVoicePlatformFailed);

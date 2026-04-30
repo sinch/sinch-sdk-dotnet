@@ -44,6 +44,8 @@
 - [Conversation API: Webhooks ParseEvent no longer accepts JsonNode](#conversation-api-webhooks-parseevent-no-longer-accepts-jsonnode)
 - [Numbers API: `CallbackConfiguration` renamed to `EventDestinations`](#numbers-api-callbackconfiguration-renamed-to-eventdestinations)
 - [Numbers API: `CallbackUrl` renamed to `EventDestinationTarget`](#numbers-api-callbackurl-renamed-to-eventdestinationtarget)
+- [Numbers API: `Sinch.Numbers.Hooks` namespace moved to `Sinch.Numbers.SinchEvents`](#numbers-api-sinchnumbershooks-namespace-moved-to-sinchnumberssinchevents)
+- [Numbers API: `ValidateAuthenticationHeader` and `ParseEvent` moved to `SinchEvents`](#numbers-api-validateauthenticationheader-and-parseevent-moved-to-sinchevents)
 
 ## .NET Framework Support
 
@@ -436,7 +438,6 @@ if (scheduledProvisioning?.ErrorCodes?.Contains("CAMPAIGN_NOT_AVAILABLE"))
 Version 2.*:
 ```csharp
 using Sinch.Numbers;
-using Sinch.Numbers.Hooks;
 
 var scheduledProvisioning = activeNumber.SmsConfiguration?.ScheduledProvisioning;
 if (scheduledProvisioning?.ErrorCodes?.Contains(FailureCode.CampaignNotAvailable))
@@ -1184,4 +1185,58 @@ request.CallbackUrl = "https://my-server.com/numbers-events";
 **After:**
 ```csharp
 request.EventDestinationTarget = "https://my-server.com/numbers-events";
+```
+
+## Numbers API: `Sinch.Numbers.Hooks` namespace moved to `Sinch.Numbers.SinchEvents`
+
+All event payload types (`Event`, `EventType`, `EventStatus`, `ResourceType`) have moved
+from the `Sinch.Numbers.Hooks` namespace to `Sinch.Numbers.SinchEvents`. The `Event` class
+has also been renamed to `NumbersSinchEvent`.
+
+**Before:**
+```csharp
+using Sinch.Numbers.Hooks;
+
+var @event = JsonSerializer.Deserialize<Event>(json);
+```
+
+**After:**
+```csharp
+using Sinch.Numbers.SinchEvents;
+
+var @event = JsonSerializer.Deserialize<NumbersSinchEvent>(json);
+// or, preferably, use sinch.Numbers.SinchEvents.ParseEvent(json)
+```
+
+`ValidateAuthenticationHeader` and `ParseEvent` have been removed from
+`ISinchNumbers` and are now available on `ISinchNumbers.SinchEvents` as part of the new
+`INumbersSinchEvents` subdomain.
+The signature has also changed: instead of accepting `HttpHeaders` or a raw `string`
+for the signature value, it now accepts an `IDictionary<string, IEnumerable<string>>`
+for headers (compatible with ASP.NET Core's `IHeaderDictionary` and `HttpResponseMessage.Headers`).
+
+**Before:**
+```csharp
+// Option 1 — raw signature string
+bool valid = sinch.Numbers.ValidateAuthenticationHeader(hmacSecret, json, signatureHeaderValue);
+
+// Option 2 — HttpHeaders
+bool valid = sinch.Numbers.ValidateAuthenticationHeader(hmacSecret, json, httpHeaders);
+```
+
+**After:**
+```csharp
+var headers = new Dictionary<string, IEnumerable<string>>
+{
+    ["x-sinch-signature"] = new[] { signatureHeaderValue }
+};
+bool valid = sinch.Numbers.SinchEvents.ValidateAuthenticationHeader(hmacSecret, headers, json);
+```
+
+The `ParseEvent` method for deserializing Numbers Sinch Events
+has also moved to `sinch.Numbers.SinchEvents`:
+
+```csharp
+// Parse from string
+var sinchEvent = sinch.Numbers.SinchEvents.ParseEvent(jsonString);
 ```

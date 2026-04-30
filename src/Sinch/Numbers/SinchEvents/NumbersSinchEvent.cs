@@ -1,12 +1,12 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Numbers.Hooks
+namespace Sinch.Numbers.SinchEvents
 {
     /// <summary>
-    ///     A notification of an event sent to your configured callback URL.
+    ///     A notification of an event sent to your configured event destination.
     /// </summary>
-    public sealed class Event
+    public sealed class NumbersSinchEvent : INumbersSinchEvent
     {
         /// <summary>
         ///     The ID of the event.
