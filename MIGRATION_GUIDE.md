@@ -1208,6 +1208,8 @@ var @event = JsonSerializer.Deserialize<NumbersSinchEvent>(json);
 // or, preferably, use sinch.Numbers.SinchEvents.ParseEvent(json)
 ```
 
+## Numbers API: `ValidateAuthenticationHeader` and `ParseEvent` moved to `SinchEvents`
+
 `ValidateAuthenticationHeader` and `ParseEvent` have been removed from
 `ISinchNumbers` and are now available on `ISinchNumbers.SinchEvents` as part of the new
 `INumbersSinchEvents` subdomain.
