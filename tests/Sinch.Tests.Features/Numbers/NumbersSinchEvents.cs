@@ -20,7 +20,7 @@ namespace Sinch.Tests.Features.Numbers
         [Given(@"the Numbers Webhooks handler is available")]
         public void GivenTheNumbersWebhooksHandlerIsAvailable()
         {
-            _sinchEvents = Utils.SinchNumbersClient().SinchEvents;
+            _sinchEvents = new SinchClient(new SinchClientConfiguration()).Numbers.SinchEvents;
         }
 
         [When(@"I send a request to trigger the ""success"" for ""PROVISIONING_TO_VOICE_PLATFORM"" event")]
