@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using FluentAssertions;
-using Sinch.Numbers;
 using Sinch.Numbers.SinchEvents;
 using Xunit;
 
