@@ -9,7 +9,7 @@ namespace Sinch.Tests.Numbers
     public class NumbersSinchEventTests
     {
         [Fact]
-        public void DeserializeEvent()
+        public void Deserialize_ReturnsNumbersSinchEvent()
         {
             var json = Helpers.LoadResources("Numbers/SinchEvents/NumberSinchEvent.json");
 
@@ -25,7 +25,7 @@ namespace Sinch.Tests.Numbers
         }
 
         [Fact]
-        public void DeserializeEventWithCustomEnum()
+        public void Deserialize_PreservesUnknownEnumValue()
         {
             var json = Helpers.LoadResources("Numbers/SinchEvents/NumberSinchEventUnknownType.json");
 
