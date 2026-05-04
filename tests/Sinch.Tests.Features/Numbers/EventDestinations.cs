@@ -8,7 +8,7 @@ using Sinch.Numbers.EventDestinations;
 namespace Sinch.Tests.Features.Numbers
 {
     [Binding]
-    public class CallbackConfigurations
+    public class EventDestinations
     {
         private ISinchNumbersEventDestinations _sinchNumbersEventDestinations;
         private EventDestination _eventDestination;

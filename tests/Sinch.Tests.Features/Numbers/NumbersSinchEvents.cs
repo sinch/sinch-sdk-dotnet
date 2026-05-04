@@ -9,13 +9,13 @@ using Sinch.Numbers.SinchEvents;
 namespace Sinch.Tests.Features.Numbers
 {
     [Binding]
-    public class Webhooks
+    public class NumbersSinchEvents
     {
         private INumbersSinchEvents _sinchEvents;
         private readonly HttpClient _httpClient = new();
         private HttpResponseMessage _eventResponse;
         private string _rawData;
-        private const string SinchNumbersCallbackSecret = "strongPa$$PhraseWith36CharactersMax";
+        private const string HmacSecret = "strongPa$$PhraseWith36CharactersMax";
 
         [Given(@"the Numbers Webhooks handler is available")]
         public void GivenTheNumbersWebhooksHandlerIsAvailable()
@@ -37,7 +37,7 @@ namespace Sinch.Tests.Features.Numbers
             var headers = _eventResponse.Headers
                 .ToDictionary(h => h.Key, h => h.Value.AsEnumerable(),
                     System.StringComparer.OrdinalIgnoreCase);
-            _sinchEvents.ValidateAuthenticationHeader(SinchNumbersCallbackSecret, headers, _rawData)
+            _sinchEvents.ValidateAuthenticationHeader(HmacSecret, headers, _rawData)
                 .Should()
                 .BeTrue();
         }

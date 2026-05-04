@@ -15,7 +15,7 @@ namespace Sinch.Numbers.SinchEvents
         public string? EventId { get; set; }
 
         /// <summary>
-        ///     The date and time when the callback was created and added to the callbacks queue.
+        ///     The date and time when the event was created and added to the delivery queue.
         /// </summary>
         [JsonPropertyName("timestamp")]
         public DateTime? Timestamp { get; set; }
