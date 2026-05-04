@@ -13,6 +13,9 @@ The sample reads configuration from [appsettings.json](appsettings.json):
 ```json
 {
   "Sinch": {
+    "ProjectId": "",
+    "KeyId": "",
+    "KeySecret": "",
     "Sms": {
       "WebhookSecret": ""
     },
@@ -23,11 +26,9 @@ The sample reads configuration from [appsettings.json](appsettings.json):
 }
 ```
 
-- `Sinch:Sms:WebhookSecret` — optional shared secret for validating SMS event signatures
-- `Sinch:Numbers:HmacSecret` — optional shared secret for validating Numbers event signatures
-
-### AllowedHosts configuration
-The `appsettings.json` sets `"AllowedHosts": "*"` to allow all hosts during development, which is necessary when external services (e.g., ngrok) forward requests to your endpoint. **In production, restrict this to Sinch's domain(s) for security.**
+- `Sinch:ProjectId`, `Sinch:KeyId`, `Sinch:KeySecret` are unified credentials required for SMS event parsing
+- `Sinch:Sms:WebhookSecret` is optional shared secret for validating SMS event signatures
+- `Sinch:Numbers:HmacSecret` is optional shared secret for validating Numbers event signatures
 
 ## How to run
 
