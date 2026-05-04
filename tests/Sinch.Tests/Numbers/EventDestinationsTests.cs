@@ -17,7 +17,7 @@ namespace Sinch.Tests.Numbers
             HttpMessageHandlerMock
                 .When(HttpMethod.Get, $"https://numbers.api.sinch.com/v1/projects/{ProjectId}/callbackConfiguration")
                 .WithHeaders("Authorization", $"Bearer {Token}")
-                .Respond("application/json", Helpers.LoadResources("Numbers/CallbackConfigurationResponse.json"));
+                .Respond("application/json", Helpers.LoadResources("Numbers/EventDestinationResponse.json"));
 
             var response = await Numbers.EventDestinations.Get();
 
@@ -38,7 +38,7 @@ namespace Sinch.Tests.Numbers
                 {
                     hmacSecret = "HMAC value"
                 }))
-                .Respond("application/json", Helpers.LoadResources("Numbers/CallbackConfigurationResponse.json"));
+                .Respond("application/json", Helpers.LoadResources("Numbers/EventDestinationResponse.json"));
 
             var response = await Numbers.EventDestinations.Update("HMAC value");
 
@@ -61,7 +61,7 @@ namespace Sinch.Tests.Numbers
                 {
                     hmacSecret = "HMAC value"
                 }))
-                .Respond("application/json", Helpers.LoadResources("Numbers/CallbackConfigurationResponse.json"));
+                .Respond("application/json", Helpers.LoadResources("Numbers/EventDestinationResponse.json"));
 
             var responseOp = () => Numbers.EventDestinations.Update(hmacSecret);
 
