@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.Json;
 using FluentAssertions;
 using Sinch.Numbers;
 using Sinch.Numbers.SinchEvents;
@@ -22,6 +23,19 @@ namespace Sinch.Tests.Numbers
             result.EventId.Should().Be("01hpa0mww4m79q8j2dwn3ggbgz");
             result.Status.Should().Be(EventStatus.Succeeded);
             result.ResourceId.Should().Be("+17818510001");
+        }
+
+        [Fact]
+        public void ParseEvent_WorksWithDirectInstantiation()
+        {
+            var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+            var sinchEvents = new NumbersSinchEvents(options);
+
+            var result = sinchEvents.ParseEvent(Body);
+
+            result.Should().BeOfType<NumbersSinchEvent>();
+            result.EventId.Should().Be("01hpa0mww4m79q8j2dwn3ggbgz");
+            result.ResourceType.Should().Be(ResourceType.ActiveNumber);
         }
 
         [Fact]

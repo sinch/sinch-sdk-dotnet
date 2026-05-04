@@ -303,13 +303,13 @@ namespace Sinch
 
         private ISinchNumbers InitNumbers()
         {
-            var unifiedCredentials = ValidateUnifiedCredentials();
-
             var numbersBaseUrl = ResolveUrl(
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.NumbersUrl,
                 () => SinchUrlResolvers.ResolveNumbersUrl(_sinchClientConfiguration.NumbersConfiguration));
 
-            return new Numbers.Numbers(unifiedCredentials.ProjectId,
+            var projectId = _sinchClientConfiguration.SinchUnifiedCredentials?.ProjectId ?? string.Empty;
+
+            return new Numbers.Numbers(projectId,
                 numbersBaseUrl,
                 _loggerFactory, _httpCamelCase.Value);
         }

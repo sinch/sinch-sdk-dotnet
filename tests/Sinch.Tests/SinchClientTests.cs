@@ -136,5 +136,17 @@ namespace Sinch.Tests
             var accessor = Helpers.GetPrivateField<Func<HttpClient>, SinchClient>(sinch, "_httpClientAccessor");
             accessor.Should().NotBeNull();
         }
+
+        [Fact]
+        public void Numbers_SinchEvents_ParseEvent_DoesNotRequireCredentials()
+        {
+            var sinch = new SinchClient(new SinchClientConfiguration());
+            var json = Helpers.LoadResources("Numbers/SinchEvents/NumberSinchEvent.json");
+
+            var sinchEvent = sinch.Numbers.SinchEvents.ParseEvent(json);
+
+            sinchEvent.Should().NotBeNull();
+            sinchEvent.EventId.Should().Be("abcd1234efghijklmnop567890");
+        }
     }
 }
