@@ -17,8 +17,8 @@ namespace Sinch.Tests.Core
         }
 
         private const string JsonBody =
-            "{\"eventId\":\"01hpa0mww4m79q8j2dwn3ggbgz\",\"timestamp\":\"2024-02-10T17:22:09.412722588\",\"projectId\":\"37b62a7b-0177-abcd-efgh-e10f848de123\",\"resourceId\":\"+17818510001\",\"resourceType\":\"ACTIVE_NUMBER\",\"eventType\":\"DEPROVISIONING_FROM_VOICE_PLATFORM\",\"status\":\"SUCCEEDED\",\"failureCode\":null}";
-        private const string XSinchSignatureHeaderValue = "dcf80daac2f232f4b23d5f719db3aa0fdca6af43";
+            "{\"eventId\":\"01hpa0mww4m79q8j2dwn3ggbgz\",\"timestamp\":\"2024-02-10T17:22:09.412722588\",\"projectId\":\"37b62a7b-0177-abcd-efgh-e10f848de123\",\"resourceId\":\"+17818510001\",\"resourceType\":\"ACTIVE_NUMBER\",\"eventType\":\"DEPROVISIONING_TO_VOICE_PLATFORM\",\"status\":\"SUCCEEDED\",\"failureCode\":null}";
+        private const string XSinchSignatureHeaderValue = "364756359cc14b3c19105deb88c36bda865f4bc0";
         private const string CallbackSecret = "callback-secret";
 
         [Fact]
