@@ -6,6 +6,7 @@
 using Sinch;
 using Sinch.Numbers.SinchEvents;
 using Sinch.SMS.Hooks;
+using SinchEvents.Template.Numbers;
 using SinchEvents.Template.Sms;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,7 @@ builder.Services.AddControllers();
 
 // TODO: SMS event parsing requires credentials.
 builder.Services.AddSingleton<SmsServerBusinessLogic>();
+builder.Services.AddSingleton<NumbersServerBusinessLogic>();
 
 builder.Services.AddSinchClient(() => new SinchClientConfiguration
 {

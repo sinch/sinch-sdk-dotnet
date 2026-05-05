@@ -15,20 +15,21 @@ namespace SinchEvents.Template.Numbers;
 public class NumbersSinchEventsController : ControllerBase
 {
     private readonly INumbersSinchEvents _sinchEvents;
+    private readonly NumbersServerBusinessLogic _businessLogic;
 
-    public NumbersSinchEventsController(INumbersSinchEvents sinchEvents)
+    public NumbersSinchEventsController(INumbersSinchEvents sinchEvents, NumbersServerBusinessLogic businessLogic)
     {
         _sinchEvents = sinchEvents;
+        _businessLogic = businessLogic;
     }
 
     [HttpPost("NumbersEvent")]
     [Consumes("application/json")]
-    public IActionResult NumbersEvent()
+    public async Task<IActionResult> NumbersEvent()
     {
         var body = HttpContext.Items[SinchEventsConstants.BodyItemKey] as string;
         var sinchEvent = _sinchEvents.ParseEvent(body!);
-
-        // Handle: sinchEvent.EventType, .ResourceId, .ResourceType, .Status, etc.
+        await _businessLogic.HandleEvent(sinchEvent);
 
         return Ok();
     }
