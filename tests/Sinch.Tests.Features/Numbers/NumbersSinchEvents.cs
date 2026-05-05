@@ -34,10 +34,7 @@ namespace Sinch.Tests.Features.Numbers
         public async Task ThenTheHeaderOfTheForEventContainsAValidSignature(string success, string p1)
         {
             _rawData = await _eventResponse.Content.ReadAsStringAsync();
-            var headers = _eventResponse.Headers
-                .ToDictionary(h => h.Key, h => h.Value.AsEnumerable(),
-                    System.StringComparer.OrdinalIgnoreCase);
-            _sinchEvents.ValidateAuthenticationHeader(HmacSecret, headers, _rawData)
+            _sinchEvents.ValidateAuthenticationHeader(HmacSecret, _eventResponse.Headers, _rawData)
                 .Should()
                 .BeTrue();
         }

@@ -32,13 +32,7 @@ public class NumbersSinchEventsFilter(
 
         var secret = configuration["Sinch:Numbers:HmacSecret"] ?? string.Empty;
 
-        var headers = request.Headers
-            .ToDictionary(
-                h => h.Key,
-                h => h.Value.Select(v => v ?? string.Empty),
-                StringComparer.OrdinalIgnoreCase);
-
-        if (!sinchEvents.ValidateAuthenticationHeader(secret, headers, body))
+        if (!sinchEvents.ValidateAuthenticationHeader(secret, request.Headers, body))
         {
             context.Result = new UnauthorizedResult();
             return;

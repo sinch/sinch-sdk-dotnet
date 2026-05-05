@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using Microsoft.Extensions.Primitives;
 
 namespace Sinch.Numbers.SinchEvents
 {
@@ -23,7 +24,20 @@ namespace Sinch.Numbers.SinchEvents
         /// <returns><c>true</c> if the signature is valid.</returns>
         bool ValidateAuthenticationHeader(
             string hmacSecret,
-            IDictionary<string, IEnumerable<string>> headers,
+            IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers,
+            string body);
+
+        /// <summary>
+        ///     Validate the HMAC authentication header sent by Sinch.
+        ///     Use this overload with ASP.NET Core <c>request.Headers</c>.
+        /// </summary>
+        /// <param name="hmacSecret">Your HMAC secret.</param>
+        /// <param name="headers">All HTTP headers from the incoming request.</param>
+        /// <param name="body">Raw request body string.</param>
+        /// <returns><c>true</c> if the signature is valid.</returns>
+        bool ValidateAuthenticationHeader(
+            string hmacSecret,
+            IEnumerable<KeyValuePair<string, StringValues>> headers,
             string body);
     }
 }
