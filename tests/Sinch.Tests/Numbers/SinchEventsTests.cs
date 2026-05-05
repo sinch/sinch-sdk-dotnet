@@ -50,6 +50,30 @@ namespace Sinch.Tests.Numbers
         }
 
         [Fact]
+        public void ValidateAuthenticationHeader_ReturnsTrue_WhenHeaderKeyIsUpperCase()
+        {
+            var headers = new Dictionary<string, IEnumerable<string>>
+            {
+                ["X-SINCH-SIGNATURE"] = new[] { ValidSignature }
+            };
+
+            Numbers.SinchEvents.ValidateAuthenticationHeader(HmacSecret, headers, Body)
+                .Should().BeTrue();
+        }
+
+        [Fact]
+        public void ValidateAuthenticationHeader_ReturnsTrue_WhenHeaderKeyIsMixedCase()
+        {
+            var headers = new Dictionary<string, IEnumerable<string>>
+            {
+                ["X-Sinch-Signature"] = new[] { ValidSignature }
+            };
+
+            Numbers.SinchEvents.ValidateAuthenticationHeader(HmacSecret, headers, Body)
+                .Should().BeTrue();
+        }
+
+        [Fact]
         public void ValidateAuthenticationHeader_ReturnsFalse_WhenSignatureWrong()
         {
             var headers = new Dictionary<string, IEnumerable<string>>
