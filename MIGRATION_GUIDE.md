@@ -46,6 +46,7 @@
 - [Numbers API: `CallbackUrl` renamed to `EventDestinationTarget`](#numbers-api-callbackurl-renamed-to-eventdestinationtarget)
 - [Numbers API: `Sinch.Numbers.Hooks` namespace moved to `Sinch.Numbers.SinchEvents`](#numbers-api-sinchnumbershooks-namespace-moved-to-sinchnumberssinchevents)
 - [Numbers API: `ValidateAuthenticationHeader` and `ParseEvent` moved to `SinchEvents`](#numbers-api-validateauthenticationheader-and-parseevent-moved-to-sinchevents)
+- [Numbers API: `EventType.DeprovisioningFromCampaignProvisioningToCampaign` renamed](#eventtypedeprovisioningfromcampaignprovisioningtocampaign-renamed)
 
 ## .NET Framework Support
 
@@ -1239,4 +1240,19 @@ has also moved to `sinch.Numbers.SinchEvents`:
 ```csharp
 // Parse from string
 var sinchEvent = sinch.Numbers.SinchEvents.ParseEvent(jsonString);
+```
+
+## Numbers API: `EventType.DeprovisioningFromCampaignProvisioningToCampaign` renamed
+
+The `EventType` field `DeprovisioningFromCampaignProvisioningToCampaign` has been renamed to
+`DeprovisioningFromCampaign`.
+
+**Before:**
+```csharp
+EventType.DeprovisioningFromCampaignProvisioningToCampaign
+```
+
+**After:**
+```csharp
+EventType.DeprovisioningFromCampaign
 ```

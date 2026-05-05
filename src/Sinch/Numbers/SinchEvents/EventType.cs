@@ -24,7 +24,7 @@ namespace Sinch.Numbers.SinchEvents
         /// <summary>
         ///     An event that occurs when a number is unlinked from a Campaign.
         /// </summary>
-        public static EventType DeprovisioningFromCampaignProvisioningToCampaign = new("DEPROVISIONING_FROM_CAMPAIGN");
+        public static EventType DeprovisioningFromCampaign = new("DEPROVISIONING_FROM_CAMPAIGN");
 
         /// <summary>
         ///     An event that occurs when a number is enabled for Voice operations.
