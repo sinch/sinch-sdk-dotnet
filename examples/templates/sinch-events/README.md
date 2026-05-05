@@ -1,6 +1,6 @@
 # ASP.NET Core template for receiving Sinch Events
 
-This directory contains a server application based on the [Sinch .NET SDK](https://github.com/sinch/sinch-sdk-dotnet) that demonstrates how to receive and validate incoming Sinch Events for **SMS** and **Numbers**.
+This directory contains a server application based on the [Sinch .NET SDK](https://github.com/sinch/sinch-sdk-dotnet) that demonstrates how to receive and validate incoming Sinch Events.
 
 ## Requirements
 - .NET 8 SDK
