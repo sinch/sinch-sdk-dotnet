@@ -149,6 +149,19 @@ namespace Sinch
         /// <inheritdoc />
         public ISinchVoiceClient Voice => _voice.Value;
 
+        /// <summary>
+        ///     Creates a <see cref="SinchClient"/> without credentials.
+        ///     Use this when you only need features that do not require authentication
+        ///     (e.g. <see cref="ISinchNumbers.SinchEvents"/>).
+        /// </summary>
+        public SinchClient() : this(new SinchClientConfiguration())
+        {
+        }
+
+        /// <summary>
+        ///     Creates a <see cref="SinchClient"/> with the specified configuration.
+        /// </summary>
+        /// <param name="clientConfiguration">Client configuration including credentials and service options.</param>
         public SinchClient(SinchClientConfiguration clientConfiguration)
         {
             _sinchClientConfiguration = clientConfiguration;
