@@ -1204,8 +1204,7 @@ var @event = JsonSerializer.Deserialize<Event>(json);
 ```csharp
 using Sinch.Numbers.SinchEvents;
 
-var @event = JsonSerializer.Deserialize<NumbersSinchEvent>(json);
-// or, preferably, use sinch.Numbers.SinchEvents.ParseEvent(json)
+sinch.Numbers.SinchEvents.ParseEvent(json)
 ```
 
 ## Numbers API: `ValidateAuthenticationHeader` and `ParseEvent` moved to `SinchEvents`
