@@ -3,58 +3,38 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Numbers.SinchEvents
 {
-    /// <summary>
-    ///     A notification of an event sent to your configured event destination.
-    /// </summary>
+    /// <inheritdoc />
     public sealed class NumbersSinchEvent : INumbersSinchEvent
     {
-        /// <summary>
-        ///     The ID of the event.
-        /// </summary>
+        /// <inheritdoc />
         [JsonPropertyName("eventId")]
         public string? EventId { get; set; }
 
-        /// <summary>
-        ///     The date and time when the event was created and added to the delivery queue.
-        /// </summary>
+        /// <inheritdoc />
         [JsonPropertyName("timestamp")]
         public DateTime? Timestamp { get; set; }
 
-        /// <summary>
-        ///     The ID of the project to which the event belongs.
-        /// </summary>
+        /// <inheritdoc />
         [JsonPropertyName("projectId")]
         public string? ProjectId { get; set; }
 
-        /// <summary>
-        ///     The unique identifier of the resource, depending on the resource type.
-        ///     For example, a phone number, a hosting order ID, or a brand ID.
-        /// </summary>
+        /// <inheritdoc />
         [JsonPropertyName("resourceId")]
         public string? ResourceId { get; set; }
 
-        /// <summary>
-        ///     The type of the resource. 
-        /// </summary>
+        /// <inheritdoc />
         [JsonPropertyName("resourceType")]
         public ResourceType? ResourceType { get; set; }
 
-        /// <summary>
-        ///     The type of the event.
-        /// </summary>
+        /// <inheritdoc />
         [JsonPropertyName("eventType")]
         public EventType? EventType { get; set; }
 
-        /// <summary>
-        ///     The status of the event
-        /// </summary>
+        /// <inheritdoc />
         [JsonPropertyName("status")]
         public EventStatus? Status { get; set; }
 
-        /// <summary>
-        ///     If the status is FAILED, a failure code will be provided.
-        ///     For numbers provisioning to SMS platform, there won't be any extra failureCode, as the result is binary.
-        /// </summary>
+        /// <inheritdoc />
         [JsonPropertyName("failureCode")]
         public FailureCode? FailureCode { get; set; }
     }
