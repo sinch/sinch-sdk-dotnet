@@ -32,7 +32,7 @@ namespace Sinch.Tests.Numbers
                 new Container { VoiceConfiguration = config },
                 Numbers.JsonSerializerOptions);
 
-            Helpers.AssertJsonEqual(Helpers.LoadResources("Numbers/RtcVoiceSerializationExpected.json"), jsonString);
+            Helpers.AssertJsonEqual(Helpers.LoadResources("Numbers/Active/RtcVoiceSerializationExpected.json"), jsonString);
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace Sinch.Tests.Numbers
                 new Container { VoiceConfiguration = config },
                 Numbers.JsonSerializerOptions);
 
-            Helpers.AssertJsonEqual(Helpers.LoadResources("Numbers/FaxVoiceSerializationExpected.json"), jsonString);
+            Helpers.AssertJsonEqual(Helpers.LoadResources("Numbers/Active/FaxVoiceSerializationExpected.json"), jsonString);
         }
 
         [Fact]
@@ -60,14 +60,14 @@ namespace Sinch.Tests.Numbers
                 new Container { VoiceConfiguration = config },
                 Numbers.JsonSerializerOptions);
 
-            Helpers.AssertJsonEqual(Helpers.LoadResources("Numbers/EstVoiceSerializationExpected.json"), jsonString);
+            Helpers.AssertJsonEqual(Helpers.LoadResources("Numbers/Active/EstVoiceSerializationExpected.json"), jsonString);
         }
 
         [Fact]
         public void ShouldDeserializeVoiceEstConfiguration()
         {
             var obj = JsonSerializer.Deserialize<Container>(
-                Helpers.LoadResources("Numbers/EstVoiceResponse.json"),
+                Helpers.LoadResources("Numbers/Active/EstVoiceResponse.json"),
                 Numbers.JsonSerializerOptions);
 
             var prov = new ScheduledVoiceEstProvisioning()
@@ -93,7 +93,7 @@ namespace Sinch.Tests.Numbers
         public void ShouldDeserializeVoiceFaxConfiguration()
         {
             var obj = JsonSerializer.Deserialize<Container>(
-                Helpers.LoadResources("Numbers/FaxVoiceResponse.json"),
+                Helpers.LoadResources("Numbers/Active/FaxVoiceResponse.json"),
                 Numbers.JsonSerializerOptions);
 
             var scheduledVoiceFaxProvisioning = new ScheduledVoiceFaxProvisioning()
@@ -120,7 +120,7 @@ namespace Sinch.Tests.Numbers
         public void ShouldDeserializeVoiceRtcConfiguration()
         {
             var container = JsonSerializer.Deserialize<Container>(
-                Helpers.LoadResources("Numbers/RtcVoiceResponse.json"),
+                Helpers.LoadResources("Numbers/Active/RtcVoiceResponse.json"),
                 Numbers.JsonSerializerOptions);
 
             var expectedProvisioning = new ScheduledVoiceRtcProvisioning()
@@ -152,7 +152,7 @@ namespace Sinch.Tests.Numbers
         public void ScheduledVoiceRtcProvisioning_ShouldDeserializeToConcreteType()
         {
             var obj = JsonSerializer.Deserialize<Container>(
-                Helpers.LoadResources("Numbers/RtcVoiceResponse.json"),
+                Helpers.LoadResources("Numbers/Active/RtcVoiceResponse.json"),
                 Numbers.JsonSerializerOptions);
 
             var voiceRtc = (VoiceRtcConfiguration)obj.VoiceConfiguration;
@@ -174,7 +174,7 @@ namespace Sinch.Tests.Numbers
         public void ScheduledVoiceFaxProvisioning_ShouldDeserializeToConcreteType()
         {
             var container = JsonSerializer.Deserialize<Container>(
-                Helpers.LoadResources("Numbers/FaxVoiceResponse.json"),
+                Helpers.LoadResources("Numbers/Active/FaxVoiceResponse.json"),
                 Numbers.JsonSerializerOptions);
 
             var voiceFax = (VoiceFaxConfiguration)container.VoiceConfiguration;
@@ -185,7 +185,7 @@ namespace Sinch.Tests.Numbers
         public void ScheduledVoiceEstProvisioning_ShouldDeserializeToConcreteType()
         {
             var container = JsonSerializer.Deserialize<Container>(
-                Helpers.LoadResources("Numbers/EstVoiceResponse.json"),
+                Helpers.LoadResources("Numbers/Active/EstVoiceResponse.json"),
                 Numbers.JsonSerializerOptions);
 
             var voiceEst = (VoiceEstConfiguration)container.VoiceConfiguration;
@@ -196,7 +196,7 @@ namespace Sinch.Tests.Numbers
         public void VoiceRtcConfiguration_ShouldDeserializeToConcreteType()
         {
             var obj = JsonSerializer.Deserialize<Container>(
-                Helpers.LoadResources("Numbers/RtcVoiceResponse.json"),
+                Helpers.LoadResources("Numbers/Active/RtcVoiceResponse.json"),
                 Numbers.JsonSerializerOptions);
 
             obj.VoiceConfiguration.Should().BeOfType<VoiceRtcConfiguration>();
@@ -206,7 +206,7 @@ namespace Sinch.Tests.Numbers
         public void VoiceEstConfiguration_ShouldDeserializeToConcreteType()
         {
             var obj = JsonSerializer.Deserialize<Container>(
-                Helpers.LoadResources("Numbers/EstVoiceResponse.json"),
+                Helpers.LoadResources("Numbers/Active/EstVoiceResponse.json"),
                 Numbers.JsonSerializerOptions);
 
             obj.VoiceConfiguration.Should().BeOfType<VoiceEstConfiguration>();
@@ -216,7 +216,7 @@ namespace Sinch.Tests.Numbers
         public void VoiceFaxConfiguration_ShouldDeserializeToConcreteType()
         {
             var obj = JsonSerializer.Deserialize<Container>(
-                Helpers.LoadResources("Numbers/FaxVoiceResponse.json"),
+                Helpers.LoadResources("Numbers/Active/FaxVoiceResponse.json"),
                 Numbers.JsonSerializerOptions);
 
             obj.VoiceConfiguration.Should().BeOfType<VoiceFaxConfiguration>();
@@ -325,7 +325,7 @@ namespace Sinch.Tests.Numbers
         public void ShouldDeserializeVoiceRtcConfigurationButWithFaxProvisioning()
         {
             var obj = JsonSerializer.Deserialize<Container>(
-                Helpers.LoadResources("Numbers/RtcVoiceConfigWithFaxProvisioning.json"),
+                Helpers.LoadResources("Numbers/Active/RtcVoiceConfigWithFaxProvisioning.json"),
                 Numbers.JsonSerializerOptions);
 
             obj.VoiceConfiguration.Should().BeOfType<VoiceRtcConfiguration>();
@@ -336,7 +336,7 @@ namespace Sinch.Tests.Numbers
         public void ShouldDeserializeVoiceEstConfigurationWithRtcProvisioning()
         {
             var obj = JsonSerializer.Deserialize<Container>(
-                Helpers.LoadResources("Numbers/EstVoiceConfigWithRtcProvisioning.json"),
+                Helpers.LoadResources("Numbers/Active/EstVoiceConfigWithRtcProvisioning.json"),
                 Numbers.JsonSerializerOptions);
 
             obj.VoiceConfiguration.Should().BeOfType<VoiceEstConfiguration>();
@@ -347,7 +347,7 @@ namespace Sinch.Tests.Numbers
         public void ShouldDeserializeVoiceFaxConfigurationWithEstProvisioning()
         {
             var obj = JsonSerializer.Deserialize<Container>(
-                Helpers.LoadResources("Numbers/FaxVoiceConfigWithEstProvisioning.json"),
+                Helpers.LoadResources("Numbers/Active/FaxVoiceConfigWithEstProvisioning.json"),
                 Numbers.JsonSerializerOptions);
 
             obj.VoiceConfiguration.Should().BeOfType<VoiceFaxConfiguration>();

@@ -310,7 +310,7 @@ namespace Sinch.Tests.Numbers
         [Fact]
         public void DeserializeScheduledProvisioningWithErrorCodes()
         {
-            var json = Helpers.LoadResources("Numbers/ScheduledProvisioningWithErrorCodes.json");
+            var json = Helpers.LoadResources("Numbers/Active/ScheduledProvisioningWithErrorCodes.json");
 
             var result = JsonSerializer.Deserialize<ScheduledProvisioning>(json, Numbers.JsonSerializerOptions);
 
