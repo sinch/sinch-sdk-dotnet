@@ -1,6 +1,6 @@
 // Sinch Events Template
 // This snippet is available at https://github.com/sinch/sinch-sdk-dotnet
-// See https://github.com/sinch/sinch-sdk-dotnet/tree/main/examples/templates/sinchevents/README.md for details
+// See https://github.com/sinch/sinch-sdk-dotnet/tree/main/examples/templates/sinch-events/README.md for details
 
 
 using Sinch;
