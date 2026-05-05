@@ -1212,9 +1212,8 @@ sinch.Numbers.SinchEvents.ParseEvent(json)
 `ValidateAuthenticationHeader` and `ParseEvent` have been removed from
 `ISinchNumbers` and are now available on `ISinchNumbers.SinchEvents` as part of the new
 `INumbersSinchEvents` subdomain.
-The signature has also changed: instead of accepting `HttpHeaders` or a raw `string`
-for the signature value, it now accepts an `IDictionary<string, IEnumerable<string>>`
-for headers (compatible with ASP.NET Core's `IHeaderDictionary` and `HttpResponseMessage.Headers`).
+The signature has also changed: the method now accepts the headers collection directly
+from your HTTP framework — no manual dictionary construction needed.
 
 **Before:**
 ```csharp
@@ -1227,11 +1226,11 @@ bool valid = sinch.Numbers.ValidateAuthenticationHeader(hmacSecret, json, httpHe
 
 **After:**
 ```csharp
-var headers = new Dictionary<string, IEnumerable<string>>
-{
-    ["x-sinch-signature"] = new[] { signatureHeaderValue }
-};
-bool valid = sinch.Numbers.SinchEvents.ValidateAuthenticationHeader(hmacSecret, headers, json);
+// ASP.NET Core — pass request.Headers directly
+bool valid = sinch.Numbers.SinchEvents.ValidateAuthenticationHeader(hmacSecret, request.Headers, body);
+
+// HttpClient — pass response.Headers directly
+bool valid = sinch.Numbers.SinchEvents.ValidateAuthenticationHeader(hmacSecret, response.Headers, body);
 ```
 
 The `ParseEvent` method for deserializing Numbers Sinch Events
