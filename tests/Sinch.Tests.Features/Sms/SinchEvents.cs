@@ -11,7 +11,7 @@ using Sinch.SMS.SinchEvents;
 namespace Sinch.Tests.Features.Sms
 {
     [Binding]
-    public class Webhooks
+    public class SinchEvents
     {
         private const string WebhookSecret = "KayakingTheSwell";
         private const string WebhooksUrlPrefix = "http://localhost:3017/webhooks/sms";
