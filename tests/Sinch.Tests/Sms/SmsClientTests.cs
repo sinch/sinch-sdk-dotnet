@@ -119,7 +119,7 @@ namespace Sinch.Tests.Sms
         public void Sms_SinchEvents_ParseEvent_DoesNotRequireCredentialsOrRegion()
         {
             var client = new SinchClient();
-            var json = Helpers.LoadResources("Sms/Hooks/DeliveryReportSms.json");
+            var json = Helpers.LoadResources("Sms/SinchEvents/DeliveryReportSms.json");
 
             var smsEvent = client.Sms.SinchEvents.ParseEvent(json);
 
