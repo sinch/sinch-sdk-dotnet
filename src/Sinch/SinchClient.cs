@@ -359,15 +359,15 @@ namespace Sinch
                     _loggerFactory, bearerSnakeHttp);
             }
 
-            var unifiedCredentials = ValidateUnifiedCredentials();
-
             if (sinchSmsConfiguration.Region == null)
                 throw new InvalidOperationException(
                     $"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)} is required. " +
                     $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.");
 
+            var projectId = _sinchClientConfiguration.SinchUnifiedCredentials?.ProjectId ?? string.Empty;
+
             _logger?.LogInformation("Initializing SMS client with {project_id} in {region}",
-                unifiedCredentials.ProjectId,
+                projectId,
                 sinchSmsConfiguration.Region);
 
             var smsResolvedUrl = ResolveUrl(
@@ -375,7 +375,7 @@ namespace Sinch
                 () => SinchUrlResolvers.ResolveSmsUrl(sinchSmsConfiguration));
 
             return new SmsClient(
-                new ProjectId(unifiedCredentials.ProjectId),
+                new ProjectId(projectId),
                 smsResolvedUrl,
                 _loggerFactory,
                 _httpSnakeCase.Value);

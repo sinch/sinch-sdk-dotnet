@@ -8,6 +8,7 @@ using FluentAssertions;
 using NSubstitute;
 using RichardSzalay.MockHttp;
 using Sinch.SMS;
+using Sinch.SMS.DeliveryReports;
 using Xunit;
 
 namespace Sinch.Tests.Sms
@@ -107,6 +108,23 @@ namespace Sinch.Tests.Sms
             });
             var act = () => sinch.Sms;
             act.Should().NotThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Sms_SinchEvents_ParseEvent_DoesNotRequireCredentials()
+        {
+            var client = new SinchClient(new SinchClientConfiguration()
+            {
+                SmsConfiguration = new SinchSmsConfiguration
+                {
+                    Region = SmsRegion.Us
+                }
+            });
+            var json = Helpers.LoadResources("Sms/Hooks/DeliveryReportSms.json");
+
+            var smsEvent = client.Sms.SinchEvents.ParseEvent(json);
+
+            smsEvent.Should().BeOfType<BatchDeliveryReportSms>();
         }
     }
 }
