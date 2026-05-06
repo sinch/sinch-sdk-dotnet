@@ -11,7 +11,7 @@ namespace Sinch.Numbers.SinchEvents
     internal sealed class NumbersSinchEvents : INumbersSinchEvents
     {
         private readonly ILoggerAdapter<INumbersSinchEvents>? _logger;
-        
+
         private const string SinchSignature = "x-sinch-signature";
 
         internal NumbersSinchEvents(
