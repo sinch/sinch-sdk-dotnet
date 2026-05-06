@@ -4,7 +4,7 @@ using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Sinch.Core
+namespace Sinch.Numbers.SinchEvents
 {
     internal static class HeaderValidation
     {

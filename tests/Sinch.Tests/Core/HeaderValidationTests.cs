@@ -1,6 +1,6 @@
 using System.Net.Http;
 using FluentAssertions;
-using Sinch.Core;
+using Sinch.Numbers.SinchEvents;
 using Xunit;
 
 namespace Sinch.Tests.Core
