@@ -16,19 +16,10 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 
 builder.Services.AddControllers();
 
-// TODO: SMS event parsing requires credentials.
 builder.Services.AddSingleton<SmsServerBusinessLogic>();
 builder.Services.AddSingleton<NumbersServerBusinessLogic>();
 
-builder.Services.AddSinchClient(() => new SinchClientConfiguration
-{
-    SinchUnifiedCredentials = new SinchUnifiedCredentials
-    {
-        ProjectId = builder.Configuration["Sinch:ProjectId"]!,
-        KeyId = builder.Configuration["Sinch:KeyId"]!,
-        KeySecret = builder.Configuration["Sinch:KeySecret"]!
-    }
-});
+builder.Services.AddSinchClient(() => new SinchClientConfiguration());
 
 builder.Services.AddSinchEventHandlers(ServiceLifetime.Scoped);
 

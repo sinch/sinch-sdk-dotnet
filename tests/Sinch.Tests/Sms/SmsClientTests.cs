@@ -54,7 +54,7 @@ namespace Sinch.Tests.Sms
         }
 
         [Fact]
-        public void ResolveSmsUrl_ThrowsWhenRegionNotSet()
+        public void Sms_Batches_ThrowWhenRegionNotSet()
         {
             var client = new SinchClient(new SinchClientConfiguration()
             {
@@ -65,7 +65,10 @@ namespace Sinch.Tests.Sms
                     ProjectId = "project-id"
                 }
             });
-            var act = () => client.Sms;
+
+            client.Sms.SinchEvents.Should().NotBeNull();
+
+            var act = () => client.Sms.Batches;
             act.Should().Throw<InvalidOperationException>()
                 .WithMessage("*Region*required*");
         }
@@ -111,15 +114,9 @@ namespace Sinch.Tests.Sms
         }
 
         [Fact]
-        public void Sms_SinchEvents_ParseEvent_DoesNotRequireCredentials()
+        public void Sms_SinchEvents_ParseEvent_DoesNotRequireCredentialsOrRegion()
         {
-            var client = new SinchClient(new SinchClientConfiguration()
-            {
-                SmsConfiguration = new SinchSmsConfiguration
-                {
-                    Region = SmsRegion.Us
-                }
-            });
+            var client = new SinchClient();
             var json = Helpers.LoadResources("Sms/Hooks/DeliveryReportSms.json");
 
             var smsEvent = client.Sms.SinchEvents.ParseEvent(json);

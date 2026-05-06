@@ -360,9 +360,10 @@ namespace Sinch
             }
 
             if (sinchSmsConfiguration.Region == null)
-                throw new InvalidOperationException(
-                    $"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)} is required. " +
-                    $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.");
+            {
+                _logger?.LogInformation("Initializing SMS Sinch Events without outbound SMS region configuration");
+                return new SmsClient(_loggerFactory, _httpSnakeCase.Value);
+            }
 
             var projectId = _sinchClientConfiguration.SinchUnifiedCredentials?.ProjectId ?? string.Empty;
 

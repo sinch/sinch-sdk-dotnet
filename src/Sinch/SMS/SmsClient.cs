@@ -61,6 +61,18 @@ namespace Sinch.SMS
 
     internal sealed class SmsClient : ISinchSms
     {
+        private readonly ISinchSmsBatches? _batches;
+        private readonly ISinchSmsDeliveryReports? _deliveryReports;
+        private readonly ISinchSmsGroups? _groups;
+        private readonly ISinchSmsInbounds? _inbounds;
+
+        internal SmsClient(LoggerFactory? loggerFactory, IHttp http)
+        {
+            SinchEvents = new SmsSinchEvents(
+                http.JsonSerializerOptions,
+                loggerFactory?.Create<ISmsSinchEvents>());
+        }
+
         /// <summary>
         ///     Creates an instance of Sms service with project id
         /// </summary>
@@ -97,27 +109,33 @@ namespace Sinch.SMS
         /// <param name="loggerFactory"></param>
         /// <param name="http"></param>
         private SmsClient(string projectIdOrServicePlanId, Uri baseAddress, LoggerFactory? loggerFactory, IHttp http)
+            : this(loggerFactory, http)
         {
-            Batches = new Batches.Batches(projectIdOrServicePlanId, baseAddress,
+            _batches = new Batches.Batches(projectIdOrServicePlanId, baseAddress,
                 loggerFactory?.Create<ISinchSmsBatches>(), http);
-            Inbounds = new Inbounds.Inbounds(projectIdOrServicePlanId, baseAddress,
+            _inbounds = new Inbounds.Inbounds(projectIdOrServicePlanId, baseAddress,
                 loggerFactory?.Create<ISinchSmsInbounds>(), http);
-            Groups = new Groups.Groups(projectIdOrServicePlanId, baseAddress, loggerFactory?.Create<ISinchSmsGroups>(),
+            _groups = new Groups.Groups(projectIdOrServicePlanId, baseAddress, loggerFactory?.Create<ISinchSmsGroups>(),
                 http);
-            DeliveryReports = new DeliveryReports.DeliveryReports(projectIdOrServicePlanId, baseAddress,
+            _deliveryReports = new DeliveryReports.DeliveryReports(projectIdOrServicePlanId, baseAddress,
                 loggerFactory?.Create<ISinchSmsDeliveryReports>(), http);
-            SinchEvents = new SmsSinchEvents(
-                http.JsonSerializerOptions,
-                loggerFactory?.Create<ISmsSinchEvents>());
         }
 
-        public ISinchSmsBatches Batches { get; }
+        public ISinchSmsBatches Batches => _batches ?? throw new InvalidOperationException(
+            $"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)} is required. " +
+            $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.");
 
-        public ISinchSmsInbounds Inbounds { get; }
+        public ISinchSmsInbounds Inbounds => _inbounds ?? throw new InvalidOperationException(
+            $"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)} is required. " +
+            $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.");
 
-        public ISinchSmsGroups Groups { get; }
+        public ISinchSmsGroups Groups => _groups ?? throw new InvalidOperationException(
+            $"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)} is required. " +
+            $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.");
 
-        public ISinchSmsDeliveryReports DeliveryReports { get; }
+        public ISinchSmsDeliveryReports DeliveryReports => _deliveryReports ?? throw new InvalidOperationException(
+            $"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)} is required. " +
+            $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.");
 
         public ISmsSinchEvents SinchEvents { get; }
 
