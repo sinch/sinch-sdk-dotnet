@@ -27,8 +27,8 @@ namespace Sinch.Tests.Features.Sms
         private string _rawRecipientDeliveryReportDeliveredContent;
         private string _rawRecipientDeliveryReportAbortedContent;
 
-        [Given(@"the SMS Webhooks handler is available")]
-        public void GivenTheSmsWebhooksHandlerIsAvailable()
+        [Given(@"the SMS Sinch Events handler is available")]
+        public void GivenTheSmsSinchEventsHandlerIsAvailable()
         {
             _sinchEvents = Utils.SinchClient.Sms.SinchEvents;
         }
@@ -61,28 +61,28 @@ namespace Sinch.Tests.Features.Sms
         public async Task ThenTheHeaderOfTheEventIncomingSmsContainsAValidSignature()
         {
             _rawIncomingSmsContent = await _incomingSmsResponse.Content.ReadAsStringAsync();
-            (await ValidateWebhookSignatureHeadersPresent(_incomingSmsResponse)).Should().BeTrue();
+            (await ValidateSignatureHeadersPresent(_incomingSmsResponse)).Should().BeTrue();
         }
 
         [Then(@"the header of the event ""DeliveryReport"" contains a valid signature")]
         public async Task ThenTheHeaderOfTheEventDeliveryReportContainsAValidSignature()
         {
             _rawDeliveryReportContent = await _deliveryReportResponse.Content.ReadAsStringAsync();
-            (await ValidateWebhookSignatureHeadersPresent(_deliveryReportResponse)).Should().BeTrue();
+            (await ValidateSignatureHeadersPresent(_deliveryReportResponse)).Should().BeTrue();
         }
 
         [Then(@"the header of the event ""DeliveryReport"" with the status ""Delivered"" contains a valid signature")]
         public async Task ThenTheHeaderOfTheEventDeliveryReportWithStatusDeliveredContainsAValidSignature()
         {
             _rawRecipientDeliveryReportDeliveredContent = await _recipientDeliveryReportDeliveredResponse.Content.ReadAsStringAsync();
-            (await ValidateWebhookSignatureHeadersPresent(_recipientDeliveryReportDeliveredResponse)).Should().BeTrue();
+            (await ValidateSignatureHeadersPresent(_recipientDeliveryReportDeliveredResponse)).Should().BeTrue();
         }
 
         [Then(@"the header of the event ""DeliveryReport"" with the status ""Aborted"" contains a valid signature")]
         public async Task ThenTheHeaderOfTheEventDeliveryReportWithStatusAbortedContainsAValidSignature()
         {
             _rawRecipientDeliveryReportAbortedContent = await _recipientDeliveryReportAbortedResponse.Content.ReadAsStringAsync();
-            (await ValidateWebhookSignatureHeadersPresent(_recipientDeliveryReportAbortedResponse)).Should().BeTrue();
+            (await ValidateSignatureHeadersPresent(_recipientDeliveryReportAbortedResponse)).Should().BeTrue();
         }
 
         [Then(@"the SMS event describes an ""incoming SMS"" event")]
@@ -165,7 +165,7 @@ namespace Sinch.Tests.Features.Sms
             });
         }
 
-        private static async Task<bool> ValidateWebhookSignatureHeadersPresent(HttpResponseMessage response)
+        private static async Task<bool> ValidateSignatureHeadersPresent(HttpResponseMessage response)
         {
             var body = await response.Content.ReadAsStringAsync();
 

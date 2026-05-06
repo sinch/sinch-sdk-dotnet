@@ -14,7 +14,7 @@ namespace Sinch.SMS.DeliveryReports
     public interface ISinchSmsDeliveryReports
     {
         /// <summary>
-        ///     Delivery reports can be retrieved even if no callback was requested.
+        ///     Delivery reports can be retrieved even if no delivery report event was requested.
         ///     The difference between a summary and a full report is only that the full report contains
         ///     the phone numbers in <see href="https://community.sinch.com/t5/Glossary/E-164/ta-p/7537">E.164</see>
         ///     format for each status code.

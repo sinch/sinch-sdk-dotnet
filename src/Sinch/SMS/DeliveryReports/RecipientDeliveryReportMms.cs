@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace Sinch.SMS.DeliveryReports
 {
     /// <summary>
-    /// MMS recipient delivery report webhook event
+    /// MMS recipient delivery report Sinch Event.
     /// </summary>
     public class RecipientDeliveryReportMms : IRecipientDeliveryReport
     {
