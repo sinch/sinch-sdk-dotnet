@@ -33,7 +33,7 @@ The sample reads configuration from [appsettings.json](appsettings.json):
 ## How to run
 
 ```powershell
-cd examples\templates\sinchevents
+cd examples\templates\sinch-events
 dotnet restore
 dotnet run
 ```
