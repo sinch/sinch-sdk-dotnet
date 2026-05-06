@@ -3,9 +3,8 @@
 // See https://github.com/sinch/sinch-sdk-dotnet/tree/main/examples/templates/sinch-events/README.md for details
 
 
+using Microsoft.Extensions.DependencyInjection;
 using Sinch;
-using Sinch.Numbers.SinchEvents;
-using Sinch.SMS.Hooks;
 using SinchEvents.Template.Numbers;
 using SinchEvents.Template.Sms;
 
@@ -31,8 +30,7 @@ builder.Services.AddSinchClient(() => new SinchClientConfiguration
     }
 });
 
-builder.Services.AddSingleton<ISmsWebhooks>(sp => sp.GetRequiredService<ISinchClient>().Sms.Webhooks);
-builder.Services.AddSingleton<INumbersSinchEvents>(sp => sp.GetRequiredService<ISinchClient>().Numbers.SinchEvents);
+builder.Services.AddSinchEventHandlers(ServiceLifetime.Scoped);
 
 var app = builder.Build();
 
