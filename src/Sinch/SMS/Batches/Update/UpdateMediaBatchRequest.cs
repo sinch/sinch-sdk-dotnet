@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using Sinch.SMS.Batches.Send;
 
 namespace Sinch.SMS.Batches.Update

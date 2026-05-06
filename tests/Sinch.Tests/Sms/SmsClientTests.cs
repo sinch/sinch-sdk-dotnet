@@ -125,5 +125,16 @@ namespace Sinch.Tests.Sms
 
             smsEvent.Should().BeOfType<BatchDeliveryReportSms>();
         }
+
+        [Fact]
+        public void Sms_SinchEvents_ValidateAuthenticationHeader_DoesNotRequireCredentialsOrRegion()
+        {
+            var client = new SinchClient();
+            var headers = new Dictionary<string, IEnumerable<string>>();
+
+            var result = client.Sms.SinchEvents.ValidateAuthenticationHeader("secret", headers, "{}");
+
+            result.Should().BeFalse();
+        }
     }
 }

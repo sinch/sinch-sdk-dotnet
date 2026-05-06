@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Sinch.Tests.Sms
 {
-    public class WebhooksTests : SmsTestBase
+    public class SinchEventsTests : SmsTestBase
     {
         [Fact]
         public void DeserializeDeliveryReport()

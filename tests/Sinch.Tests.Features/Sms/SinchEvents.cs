@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -13,11 +15,11 @@ namespace Sinch.Tests.Features.Sms
     [Binding]
     public class SinchEvents
     {
-        private const string WebhookSecret = "KayakingTheSwell";
-        private const string WebhooksUrlPrefix = "http://localhost:3017/webhooks/sms";
+        private const string SinchEventSecret = "KayakingTheSwell";
+        private const string SinchEventsUrlPrefix = "http://localhost:3017/webhooks/sms";
 
         private readonly HttpClient _httpClient = new();
-        private static ISmsSinchEvents _sinchEvents;
+        private static ISmsSinchEvents _smsSinchEvents;
         private HttpResponseMessage _incomingSmsResponse;
         private HttpResponseMessage _deliveryReportResponse;
         private HttpResponseMessage _recipientDeliveryReportDeliveredResponse;
@@ -27,62 +29,62 @@ namespace Sinch.Tests.Features.Sms
         private string _rawRecipientDeliveryReportDeliveredContent;
         private string _rawRecipientDeliveryReportAbortedContent;
 
-        [Given(@"the SMS Sinch Events handler is available")]
+        [Given(@"the SMS Webhooks handler is available")]
         public void GivenTheSmsSinchEventsHandlerIsAvailable()
         {
-            _sinchEvents = Utils.SinchClient.Sms.SinchEvents;
+            _smsSinchEvents = Utils.SinchClient.Sms.SinchEvents;
         }
 
         [When(@"I send a request to trigger an ""incoming SMS"" event")]
         public async Task WhenISendARequestToTriggerAnIncomingSmsEvent()
         {
-            _incomingSmsResponse = await _httpClient.GetAsync($"{WebhooksUrlPrefix}/incoming-sms");
+            _incomingSmsResponse = await _httpClient.GetAsync($"{SinchEventsUrlPrefix}/incoming-sms");
         }
 
         [When(@"I send a request to trigger an ""SMS delivery report"" event")]
         public async Task WhenISendARequestToTriggerAnSmsDeliveryReportEvent()
         {
-            _deliveryReportResponse = await _httpClient.GetAsync($"{WebhooksUrlPrefix}/delivery-report-sms");
+            _deliveryReportResponse = await _httpClient.GetAsync($"{SinchEventsUrlPrefix}/delivery-report-sms");
         }
 
         [When(@"I send a request to trigger an ""SMS recipient delivery report"" event with the status ""Delivered""")]
         public async Task WhenISendARequestToTriggerAnSmsRecipientDeliveryReportEventWithStatusDelivered()
         {
-            _recipientDeliveryReportDeliveredResponse = await _httpClient.GetAsync($"{WebhooksUrlPrefix}/recipient-delivery-report-sms-delivered");
+            _recipientDeliveryReportDeliveredResponse = await _httpClient.GetAsync($"{SinchEventsUrlPrefix}/recipient-delivery-report-sms-delivered");
         }
 
         [When(@"I send a request to trigger an ""SMS recipient delivery report"" event with the status ""Aborted""")]
         public async Task WhenISendARequestToTriggerAnSmsRecipientDeliveryReportEventWithStatusAborted()
         {
-            _recipientDeliveryReportAbortedResponse = await _httpClient.GetAsync($"{WebhooksUrlPrefix}/recipient-delivery-report-sms-aborted");
+            _recipientDeliveryReportAbortedResponse = await _httpClient.GetAsync($"{SinchEventsUrlPrefix}/recipient-delivery-report-sms-aborted");
         }
 
         [Then(@"the header of the event ""IncomingSMS"" contains a valid signature")]
         public async Task ThenTheHeaderOfTheEventIncomingSmsContainsAValidSignature()
         {
             _rawIncomingSmsContent = await _incomingSmsResponse.Content.ReadAsStringAsync();
-            (await ValidateSignatureHeadersPresent(_incomingSmsResponse)).Should().BeTrue();
+            (await ValidateSinchEventSignatureHeadersPresent(_incomingSmsResponse)).Should().BeTrue();
         }
 
         [Then(@"the header of the event ""DeliveryReport"" contains a valid signature")]
         public async Task ThenTheHeaderOfTheEventDeliveryReportContainsAValidSignature()
         {
             _rawDeliveryReportContent = await _deliveryReportResponse.Content.ReadAsStringAsync();
-            (await ValidateSignatureHeadersPresent(_deliveryReportResponse)).Should().BeTrue();
+            (await ValidateSinchEventSignatureHeadersPresent(_deliveryReportResponse)).Should().BeTrue();
         }
 
         [Then(@"the header of the event ""DeliveryReport"" with the status ""Delivered"" contains a valid signature")]
         public async Task ThenTheHeaderOfTheEventDeliveryReportWithStatusDeliveredContainsAValidSignature()
         {
             _rawRecipientDeliveryReportDeliveredContent = await _recipientDeliveryReportDeliveredResponse.Content.ReadAsStringAsync();
-            (await ValidateSignatureHeadersPresent(_recipientDeliveryReportDeliveredResponse)).Should().BeTrue();
+            (await ValidateSinchEventSignatureHeadersPresent(_recipientDeliveryReportDeliveredResponse)).Should().BeTrue();
         }
 
         [Then(@"the header of the event ""DeliveryReport"" with the status ""Aborted"" contains a valid signature")]
         public async Task ThenTheHeaderOfTheEventDeliveryReportWithStatusAbortedContainsAValidSignature()
         {
             _rawRecipientDeliveryReportAbortedContent = await _recipientDeliveryReportAbortedResponse.Content.ReadAsStringAsync();
-            (await ValidateSignatureHeadersPresent(_recipientDeliveryReportAbortedResponse)).Should().BeTrue();
+            (await ValidateSinchEventSignatureHeadersPresent(_recipientDeliveryReportAbortedResponse)).Should().BeTrue();
         }
 
         [Then(@"the SMS event describes an ""incoming SMS"" event")]
@@ -165,11 +167,14 @@ namespace Sinch.Tests.Features.Sms
             });
         }
 
-        private static async Task<bool> ValidateSignatureHeadersPresent(HttpResponseMessage response)
+        /// <summary>
+        /// Validate Sinch event authentication using HMAC signature.
+        /// </summary>
+        private static async Task<bool> ValidateSinchEventSignatureHeadersPresent(HttpResponseMessage response)
         {
             var body = await response.Content.ReadAsStringAsync();
 
-            return _sinchEvents.ValidateAuthenticationHeader(WebhookSecret, response.Headers, body);
+            return _smsSinchEvents.ValidateAuthenticationHeader(SinchEventSecret, response.Headers, body);
         }
     }
 }
