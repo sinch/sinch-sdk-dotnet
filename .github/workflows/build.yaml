@@ -95,6 +95,12 @@ jobs:
       - name: Build Examples
         run: dotnet build examples/dirs.proj
 
+      - name: Build Snippets Solution
+        run: dotnet build examples/snippets/Snippets.sln
+
+      - name: Build Webhook Template Solution
+        run: dotnet build examples/templates/webhooks/Webhook.Template.sln
+
       - name: Test
         run: dotnet test tests/Sinch.Tests --framework ${{ matrix.tfm }} --no-restore --verbosity normal
 
