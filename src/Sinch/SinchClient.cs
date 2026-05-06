@@ -151,8 +151,10 @@ namespace Sinch
 
         /// <summary>
         ///     Creates a <see cref="SinchClient"/> without credentials.
-        ///     Use this when you only need features that do not require authentication
-        ///     (e.g. <see cref="ISinchNumbers.SinchEvents"/>).
+        ///     Use this when you only need to parse or validate incoming Sinch Events
+        ///     without making authenticated API calls, such as
+        ///     <see cref="Sinch.Numbers.SinchEvents.INumbersSinchEvents.ParseEvent"/> and
+        ///     <see cref="Sinch.Numbers.SinchEvents.INumbersSinchEvents.ValidateAuthenticationHeader(string, IEnumerable{KeyValuePair{string, IEnumerable{string}}}, string)"/>.
         /// </summary>
         public SinchClient() : this(new SinchClientConfiguration())
         {
