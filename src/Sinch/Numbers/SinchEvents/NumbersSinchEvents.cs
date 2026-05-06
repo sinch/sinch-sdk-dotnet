@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using Microsoft.Extensions.Primitives;
-using Sinch.Core;
 using Sinch.Logger;
 
 namespace Sinch.Numbers.SinchEvents
