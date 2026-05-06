@@ -11,6 +11,7 @@ namespace Sinch.Numbers.SinchEvents
     internal sealed class NumbersSinchEvents : INumbersSinchEvents
     {
         private readonly ILoggerAdapter<INumbersSinchEvents>? _logger;
+        private readonly JsonSerializerOptions _jsonSerializerOptions;
 
         private const string SinchSignature = "x-sinch-signature";
 
@@ -18,15 +19,13 @@ namespace Sinch.Numbers.SinchEvents
             JsonSerializerOptions jsonSerializerOptions,
             ILoggerAdapter<INumbersSinchEvents>? logger = null)
         {
-            JsonSerializerOptions = jsonSerializerOptions;
+            _jsonSerializerOptions = jsonSerializerOptions;
             _logger = logger;
         }
 
-        public JsonSerializerOptions JsonSerializerOptions { get; }
-
         public INumbersSinchEvent ParseEvent(string json)
         {
-            var result = JsonSerializer.Deserialize<NumbersSinchEvent>(json, JsonSerializerOptions);
+            var result = JsonSerializer.Deserialize<NumbersSinchEvent>(json, _jsonSerializerOptions);
             if (result is null)
             {
                 _logger?.LogError("Failed to deserialize Numbers Sinch Event. Payload: {json}", json);

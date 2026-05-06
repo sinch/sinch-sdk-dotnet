@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Text.Json;
 using Microsoft.Extensions.Primitives;
 
 namespace Sinch.Numbers.SinchEvents
@@ -10,8 +9,6 @@ namespace Sinch.Numbers.SinchEvents
     /// </summary>
     public interface INumbersSinchEvents
     {
-        internal JsonSerializerOptions JsonSerializerOptions { get; }
-
         /// <summary>Parse a Numbers Sinch Event from a raw JSON string.</summary>
         INumbersSinchEvent ParseEvent(string json);
 
