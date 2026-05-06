@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Sinch.SMS.Hooks;
+using Sinch.SMS.SinchEvents;
 using SinchEvents.Template;
 
 namespace SinchEvents.Template.Sms;
@@ -14,12 +14,12 @@ namespace SinchEvents.Template.Sms;
 [SmsSinchEvent(requireAuthentication: false)]
 public class SmsSinchEventsController : ControllerBase
 {
-    private readonly ISmsWebhooks _smsWebhooks;
+    private readonly ISmsSinchEvents _smsSinchEvents;
     private readonly SmsServerBusinessLogic _businessLogic;
 
-    public SmsSinchEventsController(ISmsWebhooks smsWebhooks, SmsServerBusinessLogic businessLogic)
+    public SmsSinchEventsController(ISmsSinchEvents smsSinchEvents, SmsServerBusinessLogic businessLogic)
     {
-        _smsWebhooks = smsWebhooks;
+        _smsSinchEvents = smsSinchEvents;
         _businessLogic = businessLogic;
     }
 
@@ -29,7 +29,7 @@ public class SmsSinchEventsController : ControllerBase
     {
         var body = HttpContext.Items[SinchEventsConstants.BodyItemKey] as string;
 
-        var smsEvent = _smsWebhooks.ParseEvent(body!);
+        var smsEvent = _smsSinchEvents.ParseEvent(body!);
         await _businessLogic.HandleEvent(smsEvent);
 
         return Ok();

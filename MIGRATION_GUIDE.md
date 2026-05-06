@@ -548,6 +548,38 @@ public sealed class RecipientDeliveryReportSms : ISmsEvent
 }
 ```
 
+## SMS: `ISmsWebhooks` renamed to `ISmsSinchEvents`
+
+`ISinchSms.Webhooks` has been renamed to `ISinchSms.SinchEvents`.
+The interface is now `ISmsSinchEvents` (was `ISmsWebhooks`).
+
+**Before:**
+```csharp
+var sinchEvent = sinch.Sms.Webhooks.ParseEvent(json);
+bool valid = sinch.Sms.Webhooks.ValidateAuthenticationHeader(secret, request.Headers, body);
+```
+
+**After:**
+```csharp
+var sinchEvent = sinch.Sms.SinchEvents.ParseEvent(json);
+bool valid = sinch.Sms.SinchEvents.ValidateAuthenticationHeader(secret, request.Headers, body);
+```
+
+## SMS: Namespace `Sinch.SMS.Hooks` renamed to `Sinch.SMS.SinchEvents`
+
+The SMS event parsing interface moved from `Sinch.SMS.Hooks` to `Sinch.SMS.SinchEvents`.
+Event payload models remain in `Sinch.SMS.Inbounds` and `Sinch.SMS.DeliveryReports`.
+
+**Before:**
+```csharp
+using Sinch.SMS.Hooks;
+```
+
+**After:**
+```csharp
+using Sinch.SMS.SinchEvents;
+```
+
 ## ConversationChannelCredentials, InstagramCredentials and LineEnterpriseCredentials moved to new namespace
 
 The following classes have been moved from the `Sinch.Conversation.Apps` namespace to `Sinch.Conversation.Apps.Credentials`:

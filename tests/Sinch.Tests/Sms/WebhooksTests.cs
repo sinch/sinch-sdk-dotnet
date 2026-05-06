@@ -1,5 +1,4 @@
 using System;
-using System.Text.Json;
 using FluentAssertions;
 using Sinch.SMS;
 using Sinch.SMS.DeliveryReports;
@@ -15,11 +14,8 @@ namespace Sinch.Tests.Sms
         {
             var json = Helpers.LoadResources("Sms/Hooks/DeliveryReportSms.json");
 
-            var parsed = Sms.Webhooks.ParseEvent(json).As<BatchDeliveryReportSms>();
+            var parsed = Sms.SinchEvents.ParseEvent(json).As<BatchDeliveryReportSms>();
             AssertDeliveryReport(parsed);
-
-            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.Webhooks.JsonSerializerOptions).As<BatchDeliveryReportSms>();
-            AssertDeliveryReport(deserialized);
 
             void AssertDeliveryReport(BatchDeliveryReportSms report)
             {
@@ -47,11 +43,8 @@ namespace Sinch.Tests.Sms
         {
             var json = Helpers.LoadResources("Sms/Hooks/RecipientDeliveryReportSms.json");
 
-            var parsed = Sms.Webhooks.ParseEvent(json).As<RecipientDeliveryReportSms>();
+            var parsed = Sms.SinchEvents.ParseEvent(json).As<RecipientDeliveryReportSms>();
             AssertRecipient(parsed);
-
-            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.Webhooks.JsonSerializerOptions).As<RecipientDeliveryReportSms>();
-            AssertRecipient(deserialized);
 
             void AssertRecipient(RecipientDeliveryReportSms report)
             {
@@ -77,11 +70,8 @@ namespace Sinch.Tests.Sms
         {
             var json = Helpers.LoadResources("Sms/Hooks/InboundBinary.json");
 
-            var parsed = Sms.Webhooks.ParseEvent(json).As<BinaryInbound>();
+            var parsed = Sms.SinchEvents.ParseEvent(json).As<BinaryInbound>();
             AssertBinary(parsed);
-
-            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.Webhooks.JsonSerializerOptions).As<BinaryInbound>();
-            AssertBinary(deserialized);
 
             void AssertBinary(BinaryInbound report)
             {
@@ -105,11 +95,8 @@ namespace Sinch.Tests.Sms
         {
             var json = Helpers.LoadResources("Sms/Hooks/InboundText.json");
 
-            var parsed = Sms.Webhooks.ParseEvent(json).As<SmsInbound>();
+            var parsed = Sms.SinchEvents.ParseEvent(json).As<SmsInbound>();
             AssertText(parsed);
-
-            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.Webhooks.JsonSerializerOptions).As<SmsInbound>();
-            AssertText(deserialized);
 
             void AssertText(SmsInbound report)
             {
@@ -132,11 +119,8 @@ namespace Sinch.Tests.Sms
         {
             var json = Helpers.LoadResources("Sms/Hooks/InboundMedia.json");
 
-            var parsed = Sms.Webhooks.ParseEvent(json).As<MediaInbound>();
+            var parsed = Sms.SinchEvents.ParseEvent(json).As<MediaInbound>();
             AssertMedia(parsed);
-
-            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.Webhooks.JsonSerializerOptions).As<MediaInbound>();
-            AssertMedia(deserialized);
 
             void AssertMedia(MediaInbound evt)
             {
@@ -173,11 +157,8 @@ namespace Sinch.Tests.Sms
         {
             var json = Helpers.LoadResources("Sms/Hooks/BatchDeliveryReportMms.json");
 
-            var parsed = Sms.Webhooks.ParseEvent(json).As<BatchDeliveryReportMms>();
+            var parsed = Sms.SinchEvents.ParseEvent(json).As<BatchDeliveryReportMms>();
             AssertBatch(parsed);
-
-            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.Webhooks.JsonSerializerOptions).As<BatchDeliveryReportMms>();
-            AssertBatch(deserialized);
 
             void AssertBatch(BatchDeliveryReportMms report)
             {
@@ -199,11 +180,8 @@ namespace Sinch.Tests.Sms
         {
             var json = Helpers.LoadResources("Sms/Hooks/RecipientDeliveryReportMms.json");
 
-            var parsed = Sms.Webhooks.ParseEvent(json).As<RecipientDeliveryReportMms>();
+            var parsed = Sms.SinchEvents.ParseEvent(json).As<RecipientDeliveryReportMms>();
             AssertRecipient(parsed);
-
-            var deserialized = JsonSerializer.Deserialize<ISmsEvent>(json, Sms.Webhooks.JsonSerializerOptions).As<RecipientDeliveryReportMms>();
-            AssertRecipient(deserialized);
 
             void AssertRecipient(RecipientDeliveryReportMms report)
             {
@@ -231,10 +209,10 @@ namespace Sinch.Tests.Sms
             var payload = "{\"unknownProperty\":\"anyValue\"}";
 
             // Act
-            Action act = () => Sms.Webhooks.ParseEvent(payload);
+            Action act = () => Sms.SinchEvents.ParseEvent(payload);
 
             // Assert
-            act.Should().Throw<InvalidOperationException>().WithMessage("*Deserialization of SMS webhook event failed*");
+            act.Should().Throw<InvalidOperationException>().WithMessage("*Deserialization of SMS Sinch Event failed*");
         }
 
         [Fact]
@@ -244,10 +222,10 @@ namespace Sinch.Tests.Sms
             var payload = "{\"type\":\"unknown\"}";
 
             // Act
-            Action act = () => Sms.Webhooks.ParseEvent(payload);
+            Action act = () => Sms.SinchEvents.ParseEvent(payload);
 
             // Assert
-            act.Should().Throw<InvalidOperationException>().WithMessage("*Deserialization of SMS webhook event failed*");
+            act.Should().Throw<InvalidOperationException>().WithMessage("*Deserialization of SMS Sinch Event failed*");
         }
     }
 }

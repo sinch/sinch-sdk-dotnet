@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Sinch.SMS.Hooks;
+using Sinch.SMS.SinchEvents;
 using SinchEvents.Template;
 
 namespace SinchEvents.Template.Sms;
@@ -8,7 +8,7 @@ namespace SinchEvents.Template.Sms;
 /// <summary>
 /// Action filter that validates SMS Sinch Event HMAC signature before executing the action.
 /// </summary>
-public class SmsSinchEventsFilter(ISmsWebhooks webhooks, IConfiguration configuration, bool requireAuthentication)
+public class SmsSinchEventsFilter(ISmsSinchEvents sinchEvents, IConfiguration configuration, bool requireAuthentication)
     : IAsyncActionFilter
 {
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -30,9 +30,7 @@ public class SmsSinchEventsFilter(ISmsWebhooks webhooks, IConfiguration configur
 
         var secret = configuration["Sinch:Sms:WebhookSecret"] ?? string.Empty;
 
-        var headersDictionary = request.Headers.ToDictionary(h => h.Key, h => h.Value.ToString(), StringComparer.OrdinalIgnoreCase);
-
-        if (!webhooks.ValidateAuthenticationHeader(secret, headersDictionary, body))
+        if (!sinchEvents.ValidateAuthenticationHeader(secret, request.Headers, body))
         {
             context.Result = new UnauthorizedResult();
             return;

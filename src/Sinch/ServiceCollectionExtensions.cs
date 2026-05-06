@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Sinch.Numbers.SinchEvents;
-using Sinch.SMS.Hooks;
+using Sinch.SMS.SinchEvents;
 
 namespace Sinch
 {
@@ -120,8 +120,8 @@ namespace Sinch
                 lifetime));
 
             services.TryAdd(new ServiceDescriptor(
-                typeof(ISmsWebhooks),
-                sp => sp.GetRequiredService<ISinchClient>().Sms.Webhooks,
+                typeof(ISmsSinchEvents),
+                sp => sp.GetRequiredService<ISinchClient>().Sms.SinchEvents,
                 lifetime));
 
             return services;
