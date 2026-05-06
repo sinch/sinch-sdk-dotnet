@@ -13,7 +13,7 @@
   "delivery_report": "none",
   "send_at": "2019-08-24T14:19:22Z",
   "expire_at": "2019-08-24T14:21:22Z",
-  "callback_url": "https://calback.yes",
+  "callback_url": "https://my-server.com/sms-events",
   "client_reference": "mock-client-ref-123",
   "feedback_enabled": true,
   "parameters": {

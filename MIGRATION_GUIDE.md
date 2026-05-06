@@ -20,6 +20,7 @@
 - [Removed TemplatesV1 from Conversation API](#removed-templatesv1-from-conversation-api)
 - [SMS Webhooks: renamed and removed types](#sms-webhooks-renamed-and-removed-types)
 - [SMS Webhooks: property rename for per-recipient delivery reports](#sms-webhooks-property-rename-for-per-recipient-delivery-reports)
+- [SMS API: `CallbackUrl` renamed to `EventDestinationTarget`](#sms-api-callbackurl-renamed-to-eventdestinationtarget)
 - [SMS: `ISmsWebhooks` renamed to `ISmsSinchEvents`](#sms-ismswebhooks-renamed-to-ismssinchevents)
 - [SMS: Namespace `Sinch.SMS.Hooks` renamed to `Sinch.SMS.SinchEvents`](#sms-namespace-sinchsmshooks-renamed-to-sinchsmssinchevents)
 - [ConversationChannelCredentials, InstagramCredentials and LineEnterpriseCredentials moved to new namespace](#conversationchanelcredentials-instagramcredentials-and-lineenterprisecredentials-moved-to-new-namespace)
@@ -565,6 +566,28 @@ bool valid = sinch.Sms.Webhooks.ValidateAuthenticationHeader(secret, request.Hea
 ```csharp
 var sinchEvent = sinch.Sms.SinchEvents.ParseEvent(json);
 bool valid = sinch.Sms.SinchEvents.ValidateAuthenticationHeader(secret, request.Headers, body);
+```
+
+## SMS API: `CallbackUrl` renamed to `EventDestinationTarget`
+
+The `CallbackUrl` property on SMS batch request models is now `EventDestinationTarget`.
+This affects `SendTextBatchRequest`, `SendBinaryBatchRequest`, `SendMediaBatchRequest`,
+`UpdateTextBatchRequest`, `UpdateBinaryBatchRequest`, and `UpdateMediaBatchRequest`.
+
+**Before:**
+```csharp
+var request = new SendTextBatchRequest
+{
+    CallbackUrl = new Uri("https://my-server.com/sms-events")
+};
+```
+
+**After:**
+```csharp
+var request = new SendTextBatchRequest
+{
+    EventDestinationTarget = new Uri("https://my-server.com/sms-events")
+};
 ```
 
 ## SMS: Namespace `Sinch.SMS.Hooks` renamed to `Sinch.SMS.SinchEvents`
