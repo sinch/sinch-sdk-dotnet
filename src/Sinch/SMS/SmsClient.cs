@@ -67,6 +67,12 @@ namespace Sinch.SMS
         private readonly ISinchSmsInbounds? _inbounds;
         private readonly bool _supportsApiOperations;
 
+        /// <summary>
+        ///     Creates an SMS client that supports Sinch Events parsing and signature validation only.
+        ///     SMS API operations remain unavailable until SMS configuration is provided.
+        /// </summary>
+        /// <param name="loggerFactory">Logger factory used to create SMS-related loggers.</param>
+        /// <param name="http">HTTP abstraction that provides serializer options used by SMS Sinch Events.</param>
         internal SmsClient(LoggerFactory? loggerFactory, IHttp http)
         {
             SinchEvents = new SmsSinchEvents(
@@ -77,10 +83,10 @@ namespace Sinch.SMS
         /// <summary>
         ///     Creates an instance of Sms service with project id
         /// </summary>
-        /// <param name="projectId"></param>
-        /// <param name="baseAddress"></param>
-        /// <param name="loggerFactory"></param>
-        /// <param name="http"></param>
+        /// <param name="projectId">Project identifier used in SMS API paths.</param>
+        /// <param name="baseAddress">Base address for SMS API requests.</param>
+        /// <param name="loggerFactory">Logger factory used to create SMS-related loggers.</param>
+        /// <param name="http">HTTP abstraction used for SMS API requests.</param>
         internal SmsClient(ProjectId projectId, Uri baseAddress, LoggerFactory? loggerFactory, IHttp http) : this(
             projectId.Value, baseAddress, loggerFactory, http)
         {
@@ -89,10 +95,10 @@ namespace Sinch.SMS
         /// <summary>
         ///     Creates an instance of Sms service with service plan id
         /// </summary>
-        /// <param name="servicePlanId"></param>
-        /// <param name="baseAddress"></param>
-        /// <param name="loggerFactory"></param>
-        /// <param name="http"></param>
+        /// <param name="servicePlanId">Service plan identifier used in SMS API paths.</param>
+        /// <param name="baseAddress">Base address for SMS API requests.</param>
+        /// <param name="loggerFactory">Logger factory used to create SMS-related loggers.</param>
+        /// <param name="http">HTTP abstraction used for SMS API requests.</param>
         internal SmsClient(ServicePlanId servicePlanId, Uri baseAddress, LoggerFactory? loggerFactory,
             IHttp http) : this(
             servicePlanId.Value, baseAddress, loggerFactory, http)
@@ -105,10 +111,10 @@ namespace Sinch.SMS
         ///     They are not distinguished more cause only service_plan_id and project_id is in the same place in url path
         ///     parameters, but base address is different.
         /// </summary>
-        /// <param name="projectIdOrServicePlanId"></param>
-        /// <param name="baseAddress"></param>
-        /// <param name="loggerFactory"></param>
-        /// <param name="http"></param>
+        /// <param name="projectIdOrServicePlanId">Project ID or service plan ID used in SMS API paths.</param>
+        /// <param name="baseAddress">Base address for SMS API requests.</param>
+        /// <param name="loggerFactory">Logger factory used to create SMS-related loggers.</param>
+        /// <param name="http">HTTP abstraction used for SMS API requests.</param>
         private SmsClient(string projectIdOrServicePlanId, Uri baseAddress, LoggerFactory? loggerFactory, IHttp http)
             : this(loggerFactory, http)
         {
