@@ -1198,14 +1198,14 @@ has also been renamed to `NumbersSinchEvent`.
 ```csharp
 using Sinch.Numbers.Hooks;
 
-var @event = JsonSerializer.Deserialize<Event>(json);
+var sinchEvent = JsonSerializer.Deserialize<Event>(json);
 ```
 
 **After:**
 ```csharp
 using Sinch.Numbers.SinchEvents;
 
-sinch.Numbers.SinchEvents.ParseEvent(json)
+var sinchEvent = sinch.Numbers.SinchEvents.ParseEvent(json)
 ```
 
 ## Numbers API: `ValidateAuthenticationHeader` and `ParseEvent` moved to `SinchEvents`
