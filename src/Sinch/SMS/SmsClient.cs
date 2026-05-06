@@ -65,6 +65,7 @@ namespace Sinch.SMS
         private readonly ISinchSmsDeliveryReports? _deliveryReports;
         private readonly ISinchSmsGroups? _groups;
         private readonly ISinchSmsInbounds? _inbounds;
+        private readonly bool _supportsApiOperations;
 
         internal SmsClient(LoggerFactory? loggerFactory, IHttp http)
         {
@@ -111,6 +112,7 @@ namespace Sinch.SMS
         private SmsClient(string projectIdOrServicePlanId, Uri baseAddress, LoggerFactory? loggerFactory, IHttp http)
             : this(loggerFactory, http)
         {
+            _supportsApiOperations = true;
             _batches = new Batches.Batches(projectIdOrServicePlanId, baseAddress,
                 loggerFactory?.Create<ISinchSmsBatches>(), http);
             _inbounds = new Inbounds.Inbounds(projectIdOrServicePlanId, baseAddress,
@@ -121,24 +123,32 @@ namespace Sinch.SMS
                 loggerFactory?.Create<ISinchSmsDeliveryReports>(), http);
         }
 
-        public ISinchSmsBatches Batches => _batches ?? throw new InvalidOperationException(
-            $"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)} is required. " +
-            $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.");
+        public ISinchSmsBatches Batches => _supportsApiOperations
+            ? _batches!
+            : throw CreateApiConfigurationException();
 
-        public ISinchSmsInbounds Inbounds => _inbounds ?? throw new InvalidOperationException(
-            $"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)} is required. " +
-            $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.");
+        public ISinchSmsInbounds Inbounds => _supportsApiOperations
+            ? _inbounds!
+            : throw CreateApiConfigurationException();
 
-        public ISinchSmsGroups Groups => _groups ?? throw new InvalidOperationException(
-            $"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)} is required. " +
-            $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.");
+        public ISinchSmsGroups Groups => _supportsApiOperations
+            ? _groups!
+            : throw CreateApiConfigurationException();
 
-        public ISinchSmsDeliveryReports DeliveryReports => _deliveryReports ?? throw new InvalidOperationException(
-            $"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)} is required. " +
-            $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.");
+        public ISinchSmsDeliveryReports DeliveryReports => _supportsApiOperations
+            ? _deliveryReports!
+            : throw CreateApiConfigurationException();
 
         public ISmsSinchEvents SinchEvents { get; }
 
         public bool IsUsingServicePlanId { get; }
+
+        private static InvalidOperationException CreateApiConfigurationException()
+        {
+            return new InvalidOperationException(
+                "SMS API operations are unavailable when the SMS client is initialized for Sinch Events only. " +
+                $"Configure either {nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)} or " +
+                $"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.ServicePlanIdConfiguration)} to use SMS API operations.");
+        }
     }
 }

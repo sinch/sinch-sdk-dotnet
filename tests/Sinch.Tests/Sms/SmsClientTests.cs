@@ -70,7 +70,9 @@ namespace Sinch.Tests.Sms
 
             var act = () => client.Sms.Batches;
             act.Should().Throw<InvalidOperationException>()
-                .WithMessage("*Region*required*");
+                .WithMessage("*Sinch Events only*")
+                .WithMessage("*Region*")
+                .WithMessage("*ServicePlanIdConfiguration*");
         }
 
         [Fact]
