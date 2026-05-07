@@ -98,8 +98,8 @@ jobs:
       - name: Build Snippets Solution
         run: dotnet build examples/snippets/Snippets.sln
 
-      - name: Build Webhook Template Solution
-        run: dotnet build examples/templates/webhooks/Webhook.Template.sln
+      - name: Build Sinch Events Template Solution
+        run: dotnet build examples/templates/sinch-events/SinchEvents.Template.sln
 
       - name: Test
         run: dotnet test tests/Sinch.Tests --framework ${{ matrix.tfm }} --no-restore --verbosity normal
