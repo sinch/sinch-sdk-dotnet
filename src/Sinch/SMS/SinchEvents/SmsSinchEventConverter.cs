@@ -3,9 +3,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Sinch.SMS.DeliveryReports;
 using Sinch.SMS.Inbounds;
-using Sinch.SMS.SinchEvents;
 
-namespace Sinch.SMS
+namespace Sinch.SMS.SinchEvents
 {
     /// <summary>
     ///     JSON converter for <see cref="ISmsSinchEvent"/> that uses the "type" discriminator field
