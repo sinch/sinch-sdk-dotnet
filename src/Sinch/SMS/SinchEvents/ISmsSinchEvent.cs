@@ -1,9 +1,13 @@
+using System.Text.Json.Serialization;
+
 namespace Sinch.SMS.SinchEvents
 {
     /// <summary>
-    ///     Marker interface for all SMS Sinch Events.
+    ///     Base interface for all SMS events (inbound messages and delivery reports).
+    ///     Used by Sinch Events and REST API deserialization to route events to concrete types.
     /// </summary>
-    public interface ISmsSinchEvent : ISmsEvent
+    [JsonConverter(typeof(SmsEventConverter))]
+    public interface ISmsEvent
     {
     }
 }
