@@ -105,7 +105,7 @@ namespace Sinch
         /// <example>
         /// <code>
         /// builder.Services.AddSinchClient(() => config);
-        /// builder.Services.AddSinchEventHandlers(ServiceLifetime.Scoped);
+        /// builder.Services.AddSinchEventsHandlers(ServiceLifetime.Scoped);
         /// </code>
         /// </example>
         public static IServiceCollection AddSinchEventsHandlers(
