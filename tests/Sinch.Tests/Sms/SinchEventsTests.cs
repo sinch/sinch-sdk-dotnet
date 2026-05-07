@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using Sinch.SMS.DeliveryReports;
 using Sinch.SMS.Inbounds;
@@ -8,6 +9,12 @@ namespace Sinch.Tests.Sms
 {
     public class SinchEventsTests : SmsTestBase
     {
+        private const string HmacSecret = "my_secret_key";
+        private const string SignedPayload = "{\"event\":\"test\"}";
+        private const string Timestamp = "1736760161";
+        private const string Nonce = "01JHFFHWYY7HSS4FWTMDTQEK8V";
+        private const string Algorithm = "HmacSHA256";
+
         [Fact]
         public void DeserializeDeliveryReport()
         {
@@ -225,6 +232,59 @@ namespace Sinch.Tests.Sms
 
             // Assert
             act.Should().Throw<InvalidOperationException>().WithMessage("*Deserialization of SMS Sinch Event failed*");
+        }
+
+        [Fact]
+        public void ValidateAuthenticationHeader_ReturnsTrue_WhenHeaderKeyIsUpperCase()
+        {
+            var headers = CreateAuthenticationHeaders(key => key.ToUpperInvariant());
+
+            var result = Sms.SinchEvents.ValidateAuthenticationHeader(HmacSecret, headers, SignedPayload);
+
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void ValidateAuthenticationHeader_ReturnsTrue_WhenHeaderKeyIsMixedCase()
+        {
+            var headers = CreateAuthenticationHeaders(ToMixedCaseHeaderKey);
+
+            var result = Sms.SinchEvents.ValidateAuthenticationHeader(HmacSecret, headers, SignedPayload);
+
+            result.Should().BeTrue();
+        }
+
+        private static Dictionary<string, IEnumerable<string>> CreateAuthenticationHeaders(Func<string, string> transformHeaderKey)
+        {
+            var signature = CreateSignature();
+
+            return new Dictionary<string, IEnumerable<string>>
+            {
+                [transformHeaderKey("x-sinch-webhook-signature-timestamp")] = new[] { Timestamp },
+                [transformHeaderKey("x-sinch-webhook-signature-nonce")] = new[] { Nonce },
+                [transformHeaderKey("x-sinch-webhook-signature-algorithm")] = new[] { Algorithm },
+                [transformHeaderKey("x-sinch-webhook-signature")] = new[] { signature }
+            };
+        }
+
+        private static string CreateSignature()
+        {
+            var toBeSigned = $"{SignedPayload}.{Nonce}.{Timestamp}";
+            using var hmac = new System.Security.Cryptography.HMACSHA256(System.Text.Encoding.UTF8.GetBytes(HmacSecret));
+            var hash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(toBeSigned));
+            return Convert.ToBase64String(hash);
+        }
+
+        private static string ToMixedCaseHeaderKey(string headerKey)
+        {
+            return headerKey switch
+            {
+                "x-sinch-webhook-signature-timestamp" => "X-Sinch-Webhook-Signature-Timestamp",
+                "x-sinch-webhook-signature-nonce" => "X-Sinch-Webhook-Signature-Nonce",
+                "x-sinch-webhook-signature-algorithm" => "X-Sinch-Webhook-Signature-Algorithm",
+                "x-sinch-webhook-signature" => "X-Sinch-Webhook-Signature",
+                _ => headerKey
+            };
         }
     }
 }
