@@ -42,6 +42,11 @@
 - [Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts JsonNode](#conversation-api-webhooks-validateauthenticationheader-no-longer-accepts-jsonnode)
 - [Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts StringValues headers](#conversation-api-webhooks-validateauthenticationheader-no-longer-accepts-stringvalues-headers)
 - [Conversation API: Webhooks ParseEvent no longer accepts JsonNode](#conversation-api-webhooks-parseevent-no-longer-accepts-jsonnode)
+- [Numbers API: `CallbackConfiguration` renamed to `EventDestinations`](#numbers-api-callbackconfiguration-renamed-to-eventdestinations)
+- [Numbers API: `CallbackUrl` renamed to `EventDestinationTarget`](#numbers-api-callbackurl-renamed-to-eventdestinationtarget)
+- [Numbers API: `Sinch.Numbers.Hooks` namespace moved to `Sinch.Numbers.SinchEvents`](#numbers-api-sinchnumbershooks-namespace-moved-to-sinchnumberssinchevents)
+- [Numbers API: `ValidateAuthenticationHeader` and `ParseEvent` moved to `SinchEvents`](#numbers-api-validateauthenticationheader-and-parseevent-moved-to-sinchevents)
+- [Numbers API: `EventType.DeprovisioningFromCampaignProvisioningToCampaign` renamed](#eventtypedeprovisioningfromcampaignprovisioningtocampaign-renamed)
 
 ## .NET Framework Support
 
@@ -434,7 +439,6 @@ if (scheduledProvisioning?.ErrorCodes?.Contains("CAMPAIGN_NOT_AVAILABLE"))
 Version 2.*:
 ```csharp
 using Sinch.Numbers;
-using Sinch.Numbers.Hooks;
 
 var scheduledProvisioning = activeNumber.SmsConfiguration?.ScheduledProvisioning;
 if (scheduledProvisioning?.ErrorCodes?.Contains(FailureCode.CampaignNotAvailable))
@@ -1150,4 +1154,105 @@ var callback = sinch.Conversation.Webhooks.ParseEvent(node!);
 Version 2.*:
 ```csharp
 var callback = sinch.Conversation.Webhooks.ParseEvent(rawBody);
+```
+
+## Numbers API: `CallbackConfiguration` renamed to `EventDestinations`
+
+`ISinchNumbers.CallbackConfiguration` has been renamed to `ISinchNumbers.EventDestinations`.
+The return type is now `EventDestination` (was `CallbackConfiguration`).
+The namespace has changed from `Sinch.Numbers.CallbackConfiguration` to `Sinch.Numbers.EventDestinations`.
+
+**Before:**
+```csharp
+var config = await sinch.Numbers.CallbackConfiguration.Get();
+await sinch.Numbers.CallbackConfiguration.Update("my-secret");
+```
+
+**After:**
+```csharp
+var config = await sinch.Numbers.EventDestinations.Get();
+await sinch.Numbers.EventDestinations.Update("my-secret");
+```
+## Numbers API: `CallbackUrl` renamed to `EventDestinationTarget`
+
+The `CallbackUrl` property on `ActiveNumber`, `RentAnyNumberRequest`,
+`RentActiveNumberRequest`, and `UpdateActiveNumberRequest` is now `EventDestinationTarget`.
+
+**Before:**
+```csharp
+request.CallbackUrl = "https://my-server.com/numbers-events";
+```
+
+**After:**
+```csharp
+request.EventDestinationTarget = "https://my-server.com/numbers-events";
+```
+
+## Numbers API: `Sinch.Numbers.Hooks` namespace moved to `Sinch.Numbers.SinchEvents`
+
+All event payload types (`Event`, `EventType`, `EventStatus`, `ResourceType`) have moved
+from the `Sinch.Numbers.Hooks` namespace to `Sinch.Numbers.SinchEvents`. The `Event` class
+has also been renamed to `NumbersSinchEvent`.
+
+**Before:**
+```csharp
+using Sinch.Numbers.Hooks;
+
+var sinchEvent = JsonSerializer.Deserialize<Event>(json);
+```
+
+**After:**
+```csharp
+using Sinch.Numbers.SinchEvents;
+
+var sinchEvent = sinch.Numbers.SinchEvents.ParseEvent(json)
+```
+
+## Numbers API: `ValidateAuthenticationHeader` and `ParseEvent` moved to `SinchEvents`
+
+`ValidateAuthenticationHeader` and `ParseEvent` have been removed from
+`ISinchNumbers` and are now available on `ISinchNumbers.SinchEvents` as part of the new
+`INumbersSinchEvents` subdomain.
+The signature has also changed: the method now accepts the headers collection directly
+from your HTTP framework — no manual dictionary construction needed.
+
+**Before:**
+```csharp
+// Option 1 — raw signature string
+bool valid = sinch.Numbers.ValidateAuthenticationHeader(hmacSecret, json, signatureHeaderValue);
+
+// Option 2 — HttpHeaders
+bool valid = sinch.Numbers.ValidateAuthenticationHeader(hmacSecret, json, httpHeaders);
+```
+
+**After:**
+```csharp
+// ASP.NET Core — pass request.Headers directly
+bool valid = sinch.Numbers.SinchEvents.ValidateAuthenticationHeader(hmacSecret, request.Headers, body);
+
+// HttpClient — pass response.Headers directly
+bool valid = sinch.Numbers.SinchEvents.ValidateAuthenticationHeader(hmacSecret, response.Headers, body);
+```
+
+The `ParseEvent` method for deserializing Numbers Sinch Events
+has also moved to `sinch.Numbers.SinchEvents`:
+
+```csharp
+// Parse from string
+var sinchEvent = sinch.Numbers.SinchEvents.ParseEvent(jsonString);
+```
+
+## Numbers API: `EventType.DeprovisioningFromCampaignProvisioningToCampaign` renamed
+
+The `EventType` field `DeprovisioningFromCampaignProvisioningToCampaign` has been renamed to
+`DeprovisioningFromCampaign`.
+
+**Before:**
+```csharp
+EventType.DeprovisioningFromCampaignProvisioningToCampaign
+```
+
+**After:**
+```csharp
+EventType.DeprovisioningFromCampaign
 ```

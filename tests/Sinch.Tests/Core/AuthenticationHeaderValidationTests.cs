@@ -34,7 +34,7 @@ namespace Sinch.Tests.Core
         private string _body =
             "{\"event\":\"ace\",\"callid\":\"822aa4b7-05b4-4d83-87c7-1f835ee0b6f6_257\",\"timestamp\":\"2014-09-24T10:59:41Z\",\"version\":1}";
 
-        private Dictionary<string, IEnumerable<string>> SetupTestHeaders(string timestamp, string? auth, string contentType)
+        private Dictionary<string, IEnumerable<string>> SetupTestHeaders(string timestamp, string auth, string contentType)
         {
             var headers = new Dictionary<string, IEnumerable<string>>
             {

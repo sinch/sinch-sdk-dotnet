@@ -295,7 +295,7 @@ namespace Sinch.Tests.Numbers
                     LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
                 }
             },
-            CallbackUrl = "foo callback"
+            EventDestinationTarget = "https://my-server.com/numbers-events"
         };
 
 
@@ -310,7 +310,7 @@ namespace Sinch.Tests.Numbers
         [Fact]
         public void DeserializeScheduledProvisioningWithErrorCodes()
         {
-            var json = Helpers.LoadResources("Numbers/ScheduledProvisioningWithErrorCodes.json");
+            var json = Helpers.LoadResources("Numbers/Active/ScheduledProvisioningWithErrorCodes.json");
 
             var result = JsonSerializer.Deserialize<ScheduledProvisioning>(json, Numbers.JsonSerializerOptions);
 
@@ -368,7 +368,7 @@ namespace Sinch.Tests.Numbers
                         LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
                     }
                 },
-                CallbackUrl = "foo callback"
+                EventDestinationTarget = "https://my-server.com/numbers-events"
             };
 
             HttpMessageHandlerMock
@@ -393,7 +393,7 @@ namespace Sinch.Tests.Numbers
                         AppId = "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEE",
                         Type = VoiceApplicationType.Rtc
                     },
-                    CallbackUrl = "foo callback"
+                    EventDestinationTarget = "https://my-server.com/numbers-events"
                 });
 
             response.Should().BeEquivalentTo(expectedActiveNumber);
@@ -438,7 +438,7 @@ namespace Sinch.Tests.Numbers
                         LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
                     }
                 },
-                CallbackUrl = "foo callback"
+                EventDestinationTarget = "https://my-server.com/numbers-events"
             };
 
             HttpMessageHandlerMock
@@ -462,7 +462,7 @@ namespace Sinch.Tests.Numbers
                     {
                         TrunkId = "trunk-id-12345"
                     },
-                    CallbackUrl = "foo callback"
+                    EventDestinationTarget = "https://my-server.com/numbers-events"
                 });
 
             response.Should().BeEquivalentTo(expectedActiveNumber);
@@ -507,7 +507,7 @@ namespace Sinch.Tests.Numbers
                         LastUpdatedTime = Helpers.ParseUtc("2024-07-01T11:58:35.610198Z"),
                     }
                 },
-                CallbackUrl = "foo callback"
+                EventDestinationTarget = "https://my-server.com/numbers-events"
             };
 
             HttpMessageHandlerMock
@@ -531,7 +531,7 @@ namespace Sinch.Tests.Numbers
                     {
                         ServiceId = "fax-service-id-12345"
                     },
-                    CallbackUrl = "foo callback"
+                    EventDestinationTarget = "https://my-server.com/numbers-events"
                 });
 
             response.Should().BeEquivalentTo(expectedActiveNumber);

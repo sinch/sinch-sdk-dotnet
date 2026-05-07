@@ -13,6 +13,6 @@ See main [README.md](../README.md) for how to execute snippets.
   - [numbers/Get](Get/Get.cs)
 - Regions
   - [numbers/regions/List](regions/List/List.cs)
-- Callbacks
-  - [numbers/callbacks/Get](callbacks/Get/Get.cs)
-  - [numbers/callbacks/Update](callbacks/Update/Update.cs)
+- Event Destinations
+  - [numbers/event-destinations/Get](event-destinations/Get/Get.cs)
+  - [numbers/event-destinations/Update](event-destinations/Update/Update.cs)

@@ -16,5 +16,5 @@
     "appId": "app_id",
     "type": "RTC"
   },
-  "callbackUrl": "callback_url"
+  "callbackUrl": "https://my-server.com/numbers-events"
 }

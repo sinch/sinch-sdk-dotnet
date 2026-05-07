@@ -149,6 +149,21 @@ namespace Sinch
         /// <inheritdoc />
         public ISinchVoiceClient Voice => _voice.Value;
 
+        /// <summary>
+        ///     Creates a <see cref="SinchClient"/> without credentials.
+        ///     Use this when you only need to parse or validate incoming Sinch Events
+        ///     without making authenticated API calls, such as
+        ///     <see cref="Sinch.Numbers.SinchEvents.INumbersSinchEvents.ParseEvent"/> and
+        ///     <see cref="Sinch.Numbers.SinchEvents.INumbersSinchEvents.ValidateAuthenticationHeader(string, IEnumerable{KeyValuePair{string, IEnumerable{string}}}, string)"/>.
+        /// </summary>
+        public SinchClient() : this(new SinchClientConfiguration())
+        {
+        }
+
+        /// <summary>
+        ///     Creates a <see cref="SinchClient"/> with the specified configuration.
+        /// </summary>
+        /// <param name="clientConfiguration">Client configuration including credentials and service options.</param>
         public SinchClient(SinchClientConfiguration clientConfiguration)
         {
             _sinchClientConfiguration = clientConfiguration;
@@ -303,13 +318,13 @@ namespace Sinch
 
         private ISinchNumbers InitNumbers()
         {
-            var unifiedCredentials = ValidateUnifiedCredentials();
-
             var numbersBaseUrl = ResolveUrl(
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.NumbersUrl,
                 () => SinchUrlResolvers.ResolveNumbersUrl(_sinchClientConfiguration.NumbersConfiguration));
 
-            return new Numbers.Numbers(unifiedCredentials.ProjectId,
+            var projectId = _sinchClientConfiguration.SinchUnifiedCredentials?.ProjectId ?? string.Empty;
+
+            return new Numbers.Numbers(projectId,
                 numbersBaseUrl,
                 _loggerFactory, _httpCamelCase.Value);
         }

@@ -1,7 +1,10 @@
 using System;
 using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+using Sinch.Numbers.SinchEvents;
+using Sinch.SMS.Hooks;
 
 namespace Sinch
 {
@@ -87,6 +90,41 @@ namespace Sinch
             });
 
             return builder;
+        }
+
+        /// <summary>
+        /// Registers Sinch Events handler interfaces into the service collection so they can be
+        /// injected directly where needed.
+        /// <para>
+        /// Requires <see cref="AddSinchClient"/> to have been called first.
+        /// </para>
+        /// </summary>
+        /// <param name="services">The service collection.</param>
+        /// <param name="lifetime">The <see cref="ServiceLifetime"/> for the registered event handler services.</param>
+        /// <returns>The service collection for chaining.</returns>
+        /// <example>
+        /// <code>
+        /// builder.Services.AddSinchClient(() => config);
+        /// builder.Services.AddSinchEventsHandlers(ServiceLifetime.Scoped);
+        /// </code>
+        /// </example>
+        public static IServiceCollection AddSinchEventsHandlers(
+            this IServiceCollection services,
+            ServiceLifetime lifetime)
+        {
+            ArgumentNullException.ThrowIfNull(services);
+
+            services.TryAdd(new ServiceDescriptor(
+                typeof(INumbersSinchEvents),
+                sp => sp.GetRequiredService<ISinchClient>().Numbers.SinchEvents,
+                lifetime));
+
+            services.TryAdd(new ServiceDescriptor(
+                typeof(ISmsWebhooks),
+                sp => sp.GetRequiredService<ISinchClient>().Sms.Webhooks,
+                lifetime));
+
+            return services;
         }
     }
 }

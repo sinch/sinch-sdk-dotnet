@@ -1,0 +1,10 @@
+{
+  "eventId": "abcd1234efghijklmnop567890",
+  "timestamp": "2023-06-06T07:45:27.78789",
+  "projectId": "abcd12ef-ab12-ab12-bc34-abcdef123456",
+  "resourceId": "+12345612345",
+  "resourceType": "ACTIVE_NUMBER",
+  "eventType": "PROVISIONING_TO_CAMPAIGN",
+  "status": "FAILED",
+  "failureCode": "CAMPAIGN_NOT_AVAILABLE"
+}
