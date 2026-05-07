@@ -2,8 +2,6 @@
 // This snippet is available at https://github.com/sinch/sinch-sdk-dotnet
 // See https://github.com/sinch/sinch-sdk-dotnet/tree/main/examples/templates/sinch-events/README.md for details
 
-
-using Microsoft.Extensions.DependencyInjection;
 using Sinch;
 using SinchEvents.Template.Numbers;
 using SinchEvents.Template.Sms;
@@ -30,7 +28,7 @@ builder.Services.AddSinchClient(() => new SinchClientConfiguration
     }
 });
 
-builder.Services.AddSinchEventHandlers(ServiceLifetime.Scoped);
+builder.Services.AddSinchEventsHandlers(ServiceLifetime.Scoped);
 
 var app = builder.Build();
 

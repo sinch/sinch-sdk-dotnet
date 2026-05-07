@@ -3,7 +3,7 @@ using FluentAssertions;
 using Sinch.Numbers.SinchEvents;
 using Xunit;
 
-namespace Sinch.Tests.Core
+namespace Sinch.Tests.Numbers
 {
     public class AuthHeaderValidationTests
     {

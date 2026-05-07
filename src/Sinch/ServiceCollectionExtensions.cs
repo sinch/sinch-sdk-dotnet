@@ -93,7 +93,7 @@ namespace Sinch
         }
 
         /// <summary>
-        /// Registers Sinch Event handler interfaces into the service collection so they can be
+        /// Registers Sinch Events handler interfaces into the service collection so they can be
         /// injected directly where needed.
         /// <para>
         /// Requires <see cref="AddSinchClient"/> to have been called first.
@@ -105,10 +105,10 @@ namespace Sinch
         /// <example>
         /// <code>
         /// builder.Services.AddSinchClient(() => config);
-        /// builder.Services.AddSinchEventHandlers(ServiceLifetime.Scoped);
+        /// builder.Services.AddSinchEventsHandlers(ServiceLifetime.Scoped);
         /// </code>
         /// </example>
-        public static IServiceCollection AddSinchEventHandlers(
+        public static IServiceCollection AddSinchEventsHandlers(
             this IServiceCollection services,
             ServiceLifetime lifetime)
         {
