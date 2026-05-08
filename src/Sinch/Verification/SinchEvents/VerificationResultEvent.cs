@@ -1,15 +1,15 @@
 using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
 
-namespace Sinch.Verification.Hooks
+namespace Sinch.Verification.SinchEvents
 {
     /// <summary>
-    ///     This callback event is a POST request to the specified verification callback URL and triggered when
+    ///     This Sinch event is a POST request to the specified verification event destination and triggered when
     ///     a verification has been completed and the result is known.
     ///     It's used to report the verification result to the developer's backend application.
-    ///     This callback event is only triggered when the verification callback URL is specified in your dashboard.
+    ///     This Sinch event is only triggered when the verification event destination is specified in your dashboard.
     /// </summary>
-    public sealed class VerificationResultEvent
+    public sealed class VerificationResultEvent : IVerificationSinchEvent
     {
         /// <summary>
         ///     The ID of the verification request.

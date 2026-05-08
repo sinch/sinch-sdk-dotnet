@@ -5,7 +5,7 @@ using FluentAssertions;
 using Reqnroll;
 using Sinch.Verification;
 using Sinch.Verification.Common;
-using Sinch.Verification.Hooks;
+using Sinch.Verification.SinchEvents;
 
 namespace Sinch.Tests.Features.Verification
 {
@@ -35,7 +35,7 @@ namespace Sinch.Tests.Features.Verification
         public async Task ThenTheHeaderOfTheVerificationEventContainsAValidAuthorization()
         {
             _rawBody = await _verificationRequestResponseMessage.Content.ReadAsStringAsync();
-            _sinchVerificationClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/verification",
+            _sinchVerificationClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/verification",
                 _verificationRequestResponseMessage.GetAllHeaders(),
                 _rawBody).Should().BeTrue();
         }
@@ -44,7 +44,7 @@ namespace Sinch.Tests.Features.Verification
         public void ThenTheVerificationEventDescribesAEventType()
         {
             // TODO: schema of oas and api response diverge: https://tickets.sinch.com/browse/DEVEXP-946
-            var verificationEvent = JsonSerializer.Deserialize<VerificationRequestEvent>(_rawBody);
+            var verificationEvent = _sinchVerificationClient.SinchEvents.ParseEvent(_rawBody);
             verificationEvent.As<VerificationRequestEvent>().Should().BeEquivalentTo(new VerificationRequestEvent
             {
                 Id = "1ce0ffee-c0de-5eed-d00d-f00dfeed1337",
@@ -70,7 +70,7 @@ namespace Sinch.Tests.Features.Verification
         public async Task ThenTheHeaderOfTheVerificationResultEventContainsAValidAuthorization()
         {
             _rawBody = await _verificationResultResponse.Content.ReadAsStringAsync();
-            _sinchVerificationClient.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/verification",
+            _sinchVerificationClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/verification",
                 _verificationResultResponse.GetAllHeaders(),
                 _rawBody).Should().BeTrue();
         }
@@ -79,7 +79,7 @@ namespace Sinch.Tests.Features.Verification
         public void ThenTheVerificationEventDescribesAResultEventType()
         {
 
-            var resultEvent = JsonSerializer.Deserialize<VerificationResultEvent>(_rawBody);
+            var resultEvent = _sinchVerificationClient.SinchEvents.ParseEvent(_rawBody);
             // TODO: schema of oas and api response diverge: https://tickets.sinch.com/browse/DEVEXP-946
             resultEvent.Should().BeEquivalentTo(new VerificationResultEvent()
             {

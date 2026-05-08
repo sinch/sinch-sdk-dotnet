@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Sinch.Verification.Hooks
+namespace Sinch.Verification.SinchEvents
 {
     public sealed class FlashCallRequestEventResponse : RequestEventResponseBase
     {

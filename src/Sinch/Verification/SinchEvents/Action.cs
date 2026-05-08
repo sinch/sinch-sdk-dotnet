@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Verification.Hooks
+namespace Sinch.Verification.SinchEvents
 {
     [JsonConverter(typeof(EnumRecordJsonConverter<Action>))]
     public record Action(string Value) : EnumRecord(Value)

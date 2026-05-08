@@ -4,6 +4,7 @@ using System.Net.Http;
 using Sinch.Auth;
 using Sinch.Core;
 using Sinch.Logger;
+using Sinch.Verification.SinchEvents;
 
 namespace Sinch.Verification
 {
@@ -22,33 +23,22 @@ namespace Sinch.Verification
         /// </summary>
         ISinchVerificationStatus VerificationStatus { get; }
 
-        /// <summary>
-        ///     Validates callback request.
-        /// </summary>
-        /// <param name="method"></param>
-        /// <param name="path"></param>
-        /// <param name="headers"></param>
-        /// <param name="body"></param>
-        /// <returns>True, if produced signature match with that of a header.</returns>
-        bool ValidateAuthenticationHeader(HttpMethod method, string path,
-            Dictionary<string, IEnumerable<string>> headers,
-            string body);
+        /// <inheritdoc cref="IVerificationSinchEvents"/>
+        IVerificationSinchEvents SinchEvents { get; }
     }
 
     internal sealed class SinchVerificationClient : ISinchVerificationClient
     {
-        private readonly ILoggerAdapter<ISinchVerificationClient>? _logger;
-
-        private readonly ApplicationSignedAuth _applicationSignedAuth;
-
         internal SinchVerificationClient(Uri baseAddress, LoggerFactory? loggerFactory,
-            IHttp http, ApplicationSignedAuth applicationSignedAuth)
+            IHttp http, ApplicationSignedAuth? applicationSignedAuth)
         {
-            _logger = loggerFactory?.Create<ISinchVerificationClient>();
-            _applicationSignedAuth = applicationSignedAuth;
             Verification = new SinchVerification(loggerFactory?.Create<SinchVerification>(), baseAddress, http);
             VerificationStatus =
                 new SinchVerificationStatus(loggerFactory?.Create<SinchVerificationStatus>(), baseAddress, http);
+            SinchEvents = new VerificationSinchEvents(
+                http.JsonSerializerOptions,
+                applicationSignedAuth,
+                loggerFactory?.Create<IVerificationSinchEvents>());
         }
 
         /// <inheritdoc />
@@ -57,11 +47,7 @@ namespace Sinch.Verification
         /// <inheritdoc />
         public ISinchVerificationStatus VerificationStatus { get; }
 
-        public bool ValidateAuthenticationHeader(HttpMethod method, string path,
-            Dictionary<string, IEnumerable<string>> headers, string body)
-        {
-            return AuthorizationHeaderValidation.Validate(method, path, headers, body, _applicationSignedAuth,
-                _logger);
-        }
+        /// <inheritdoc />
+        public IVerificationSinchEvents SinchEvents { get; }
     }
 }

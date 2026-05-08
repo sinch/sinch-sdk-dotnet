@@ -57,7 +57,7 @@ namespace Sinch.Tests.Core
             _voiceClient.ValidateAuthenticationHeader(httpMethod, path,
                 headers, body).Should().Be(expected);
 
-            _verificationClient.ValidateAuthenticationHeader(httpMethod, path,
+            _verificationClient.SinchEvents.ValidateAuthenticationHeader(httpMethod, path,
                 headers, body).Should().Be(expected);
         }
 

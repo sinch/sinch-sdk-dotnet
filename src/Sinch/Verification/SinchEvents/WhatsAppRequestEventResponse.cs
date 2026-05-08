@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
 
-namespace Sinch.Verification.Hooks
+namespace Sinch.Verification.SinchEvents
 {
     public sealed class WhatsAppRequestEventResponse : RequestEventResponseBase
     {
@@ -26,10 +26,9 @@ namespace Sinch.Verification.Hooks
         public List<string>? AcceptLanguage { get; set; }
 
         /// <summary>
-        /// Gets or Sets additional properties
+        ///     Gets or sets additional properties.
         /// </summary>
         [JsonExtensionData]
         public Dictionary<string, JsonElement> AdditionalProperties { get; set; } = new Dictionary<string, JsonElement>();
-
     }
 }

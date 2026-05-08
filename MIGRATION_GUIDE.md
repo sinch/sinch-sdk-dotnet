@@ -51,6 +51,10 @@
 - [Numbers API: `Sinch.Numbers.Hooks` namespace moved to `Sinch.Numbers.SinchEvents`](#numbers-api-sinchnumbershooks-namespace-moved-to-sinchnumberssinchevents)
 - [Numbers API: `ValidateAuthenticationHeader` and `ParseEvent` moved to `SinchEvents`](#numbers-api-validateauthenticationheader-and-parseevent-moved-to-sinchevents)
 - [Numbers API: `EventType.DeprovisioningFromCampaignProvisioningToCampaign` renamed](#eventtypedeprovisioningfromcampaignprovisioningtocampaign-renamed)
+- [Verification API: `Sinch.Verification.Hooks` namespace moved to `Sinch.Verification.SinchEvents`](#verification-api-sinchverificationhooks-namespace-moved-to-sinchverificationsinchevents)
+- [Verification API: `ValidateAuthenticationHeader` moved to `SinchEvents`](#verification-api-validateauthenticationheader-moved-to-sinchevents)
+- [Verification API: `ParseEvent` moved to `SinchEvents`](#verification-api-parseevent-moved-to-sinchevents)
+- [Verification API: `SerializeResponse` added to `SinchEvents`](#verification-api-serializeresponse-added-to-sinchevents)
 
 ## .NET Framework Support
 
@@ -68,7 +72,9 @@ If you are currently targeting .NET 6 or 7, you must upgrade your project's targ
 ```
 
 ## Initialize `SinchClient` with unified credentials:
-
+var verificationEvent = (VerificationRequestEvent)sinch.Verification.SinchEvents.ParseEvent(json);
+```
+var verificationEvent = (VerificationRequestEvent)sinch.Verification.SinchEvents.ParseEvent(json);
 Console application:
 
 Version 1:
@@ -1325,4 +1331,74 @@ EventType.DeprovisioningFromCampaignProvisioningToCampaign
 **After:**
 ```csharp
 EventType.DeprovisioningFromCampaign
+```
+
+## Verification API: `Sinch.Verification.Hooks` namespace moved to `Sinch.Verification.SinchEvents`
+
+Verification request and result event payloads, along with verification response payload models, moved to the `Sinch.Verification.SinchEvents` namespace.
+
+**Before:**
+```csharp
+using Sinch.Verification.Hooks;
+
+var verificationEvent = JsonSerializer.Deserialize<VerificationRequestEvent>(json);
+```
+
+**After:**
+```csharp
+using Sinch.Verification.SinchEvents;
+
+var verificationEvent = sinch.Verification.SinchEvents.ParseEvent(json);
+```
+
+## Verification API: `ValidateAuthenticationHeader` moved to `SinchEvents`
+
+`ValidateAuthenticationHeader` has been removed from `ISinchVerificationClient` and is now available on `ISinchVerificationClient.SinchEvents`.
+
+**Before:**
+```csharp
+bool valid = sinch.Verification.ValidateAuthenticationHeader(HttpMethod.Post, path, headers, body);
+```
+
+**After:**
+```csharp
+bool valid = sinch.Verification.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, path, headers, body);
+```
+
+## Verification API: `ParseEvent` moved to `SinchEvents`
+
+`ParseEvent` is now available on `ISinchVerificationClient.SinchEvents` and returns `IVerificationSinchEvent`.
+
+**Before:**
+```csharp
+var verificationEvent = JsonSerializer.Deserialize<VerificationResultEvent>(json);
+```
+
+**After:**
+```csharp
+var verificationEvent = sinch.Verification.SinchEvents.ParseEvent(json);
+```
+
+## Verification API: `SerializeResponse` added to `SinchEvents`
+
+Verification response payloads are now serialized through `ISinchVerificationClient.SinchEvents`.
+
+**Before:**
+```csharp
+var response = new SmsRequestEventResponse
+{
+    Action = Action.Allow
+};
+
+var json = JsonSerializer.Serialize(response);
+```
+
+**After:**
+```csharp
+var response = new SmsRequestEventResponse
+{
+    Action = Action.Allow
+};
+
+var json = sinch.Verification.SinchEvents.SerializeResponse(response);
 ```
