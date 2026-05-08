@@ -338,9 +338,10 @@ namespace Sinch
                 var servicePlanIdConfig = sinchSmsConfiguration.ServicePlanIdConfiguration;
 
                 if (servicePlanIdConfig.ServicePlanIdRegion == null)
-                    throw new InvalidOperationException(
-                        $"{nameof(ServicePlanIdConfiguration)}.{nameof(ServicePlanIdConfiguration.ServicePlanIdRegion)} is required. " +
-                        $"Set it to one of the values in {nameof(SmsServicePlanIdRegion)}, e.g. {nameof(SmsServicePlanIdRegion)}.{nameof(SmsServicePlanIdRegion.Us)}.");
+                {
+                    _logger?.LogInformation("Initializing SMS Sinch Events without SMS service plan region configuration");
+                    return new SmsClient(_loggerFactory, _httpSnakeCase.Value, servicePlanIdConfig);
+                }
 
                 _logger?.LogInformation("Initializing SMS client with {service_plan_id} in {region}",
                     servicePlanIdConfig.ServicePlanId,
@@ -348,7 +349,7 @@ namespace Sinch
 
                 var smsBaseUrl = ResolveUrl(
                     _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.SmsUrl,
-                    () => SinchUrlResolvers.ResolveSmsServicePlanIdUrl(sinchSmsConfiguration.ServicePlanIdConfiguration));
+                    () => SinchUrlResolvers.ResolveSmsServicePlanIdUrl(servicePlanIdConfig));
 
                 var bearerSnakeHttp = new Http(new Lazy<ISinchAuth>(new BearerAuth(servicePlanIdConfig.ApiToken)),
                     _httpClientAccessor,

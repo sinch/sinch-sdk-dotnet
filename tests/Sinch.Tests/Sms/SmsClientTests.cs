@@ -99,7 +99,10 @@ namespace Sinch.Tests.Sms
             {
                 SmsConfiguration = SinchSmsConfiguration.WithServicePlanId("servicePlanId", "apiToken", null!)
             });
-            var act = () => sinch.Sms;
+
+            sinch.Sms.SinchEvents.Should().NotBeNull();
+
+            var act = () => sinch.Sms.Batches;
             act.Should().Throw<InvalidOperationException>()
                 .WithMessage("*ServicePlanIdRegion*required*");
         }

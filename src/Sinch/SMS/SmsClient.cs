@@ -65,7 +65,7 @@ namespace Sinch.SMS
         private readonly ISinchSmsDeliveryReports? _deliveryReports;
         private readonly ISinchSmsGroups? _groups;
         private readonly ISinchSmsInbounds? _inbounds;
-        private readonly bool _supportsApiOperations;
+        private readonly ServicePlanIdConfiguration? _servicePlanIdConfiguration;
 
         /// <summary>
         ///     Creates an SMS client that supports Sinch Events parsing and signature validation only.
@@ -73,8 +73,11 @@ namespace Sinch.SMS
         /// </summary>
         /// <param name="loggerFactory">Logger factory used to create SMS-related loggers.</param>
         /// <param name="http">HTTP abstraction that provides serializer options used by SMS Sinch Events.</param>
-        internal SmsClient(LoggerFactory? loggerFactory, IHttp http)
+        /// <param name="servicePlanIdConfiguration">Service plan configuration</param>
+        internal SmsClient(LoggerFactory? loggerFactory, IHttp http,
+            ServicePlanIdConfiguration? servicePlanIdConfiguration = null)
         {
+            _servicePlanIdConfiguration = servicePlanIdConfiguration;
             SinchEvents = new SmsSinchEvents(
                 http.JsonSerializerOptions,
                 loggerFactory?.Create<ISmsSinchEvents>());
@@ -118,7 +121,6 @@ namespace Sinch.SMS
         private SmsClient(string projectIdOrServicePlanId, Uri baseAddress, LoggerFactory? loggerFactory, IHttp http)
             : this(loggerFactory, http)
         {
-            _supportsApiOperations = true;
             _batches = new Batches.Batches(projectIdOrServicePlanId, baseAddress,
                 loggerFactory?.Create<ISinchSmsBatches>(), http);
             _inbounds = new Inbounds.Inbounds(projectIdOrServicePlanId, baseAddress,
@@ -129,25 +131,34 @@ namespace Sinch.SMS
                 loggerFactory?.Create<ISinchSmsDeliveryReports>(), http);
         }
 
-        public ISinchSmsBatches Batches => _supportsApiOperations
-            ? _batches!
-            : throw CreateApiConfigurationException();
+        public ISinchSmsBatches Batches => GetRequiredApiClient(_batches);
 
-        public ISinchSmsInbounds Inbounds => _supportsApiOperations
-            ? _inbounds!
-            : throw CreateApiConfigurationException();
+        public ISinchSmsInbounds Inbounds => GetRequiredApiClient(_inbounds);
 
-        public ISinchSmsGroups Groups => _supportsApiOperations
-            ? _groups!
-            : throw CreateApiConfigurationException();
+        public ISinchSmsGroups Groups => GetRequiredApiClient(_groups);
 
-        public ISinchSmsDeliveryReports DeliveryReports => _supportsApiOperations
-            ? _deliveryReports!
-            : throw CreateApiConfigurationException();
+        public ISinchSmsDeliveryReports DeliveryReports => GetRequiredApiClient(_deliveryReports);
 
         public ISmsSinchEvents SinchEvents { get; }
 
         public bool IsUsingServicePlanId { get; }
+
+        private T GetRequiredApiClient<T>(T? client)
+            where T : class
+        {
+            if (client != null)
+                return client;
+
+            ValidateApiClientAvailability();
+            
+            throw CreateApiConfigurationException();
+        }
+
+        private void ValidateApiClientAvailability()
+        {
+            if (_servicePlanIdConfiguration is { ServicePlanIdRegion: null })
+                throw CreateMissingServicePlanIdRegionException();
+        }
 
         private static InvalidOperationException CreateApiConfigurationException()
         {
@@ -155,6 +166,13 @@ namespace Sinch.SMS
                 "SMS API operations are unavailable when the SMS client is initialized for Sinch Events only. " +
                 $"Configure either {nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)} or " +
                 $"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.ServicePlanIdConfiguration)} to use SMS API operations.");
+        }
+
+        private static InvalidOperationException CreateMissingServicePlanIdRegionException()
+        {
+            return new InvalidOperationException(
+                $"{nameof(ServicePlanIdConfiguration)}.{nameof(ServicePlanIdConfiguration.ServicePlanIdRegion)} is required. " +
+                $"Set it to one of the values in {nameof(SmsServicePlanIdRegion)}, e.g. {nameof(SmsServicePlanIdRegion)}.{nameof(SmsServicePlanIdRegion.Us)}.");
         }
     }
 }
