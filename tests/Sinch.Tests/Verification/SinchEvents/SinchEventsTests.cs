@@ -34,7 +34,7 @@ namespace Sinch.Tests.Verification.SinchEvents
             var parsed = sinchEvents.ParseEvent(json);
 
             parsed.Should().BeOfType<VerificationResultEvent>()
-                .Which.Status.Should().Be(Sinch.Verification.Common.VerificationStatus.Successful);
+                .Which.Status.Should().Be(VerificationStatus.Successful);
         }
 
         [Fact]
@@ -94,6 +94,21 @@ namespace Sinch.Tests.Verification.SinchEvents
         }
 
         [Fact]
+        public void ValidateAuthenticationHeader_Throws_WhenVerificationCredentialsAreUnavailable()
+        {
+            var sinchEvents = new SinchClient().Verification.SinchEvents;
+
+            System.Action act = () => sinchEvents.ValidateAuthenticationHeader(
+                HttpMethod.Post,
+                "/sinch/callback/ace",
+                new Dictionary<string, IEnumerable<string>>(),
+                "{}");
+
+            act.Should().Throw<System.InvalidOperationException>()
+                .WithMessage("Verification application credentials are required to validate the authentication header.");
+        }
+
+        [Fact]
         public void SerializeResponse_SerializesDerivedVerificationResponse()
         {
             var sinchEvents = new VerificationSinchEvents(new JsonSerializerOptions(JsonSerializerDefaults.Web));
@@ -136,8 +151,8 @@ namespace Sinch.Tests.Verification.SinchEvents
 
             Helpers.AssertJsonEqual(expected, json);
         }
-        
-         [Fact]
+
+        [Fact]
         public void DeserializeVerificationRequestEvent_ReturnsExpectedEvent()
         {
             var jsonString = Helpers.LoadResources("Verification/SinchEvents/VerificationRequestEvent.json");
@@ -189,10 +204,10 @@ namespace Sinch.Tests.Verification.SinchEvents
                 Custom = "string",
                 Reason = Reason.Fraud,
                 Source = Source.Intercepted,
-                Status = VerificationStatus.Pending
+                Status = VerificationStatus.Successful
             });
         }
-        
+
         [Fact]
         public void SerializeResponse_ReturnsExpectedSmsPayload_WhenSmsResponseProvided()
         {
@@ -215,7 +230,7 @@ namespace Sinch.Tests.Verification.SinchEvents
 
             Helpers.AssertJsonEqual(expected, json);
         }
-        
+
         [Fact]
         public void SerializeResponse_ReturnsExpectedWhatsAppPayload_WhenWhatsAppResponseProvided()
         {

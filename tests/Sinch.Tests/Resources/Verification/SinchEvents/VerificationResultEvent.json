@@ -6,7 +6,7 @@
     "type": "number",
     "endpoint": "+11235551234"
   },
-  "status": "PENDING",
+  "status": "SUCCESSFUL",
   "reason": "Fraud",
   "reference": "12345",
   "source": "intercepted",

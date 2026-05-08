@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using Sinch.Auth;
 using Sinch.Core;
 using Sinch.Logger;
@@ -30,14 +28,14 @@ namespace Sinch.Verification
     internal sealed class SinchVerificationClient : ISinchVerificationClient
     {
         internal SinchVerificationClient(Uri baseAddress, LoggerFactory? loggerFactory,
-            IHttp http, ApplicationSignedAuth? applicationSignedAuth)
+            IHttp http, Lazy<ISinchAuth> auth)
         {
             Verification = new SinchVerification(loggerFactory?.Create<SinchVerification>(), baseAddress, http);
             VerificationStatus =
                 new SinchVerificationStatus(loggerFactory?.Create<SinchVerificationStatus>(), baseAddress, http);
             SinchEvents = new VerificationSinchEvents(
                 http.JsonSerializerOptions,
-                applicationSignedAuth,
+                auth,
                 loggerFactory?.Create<IVerificationSinchEvents>());
         }
 

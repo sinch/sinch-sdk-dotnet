@@ -12,17 +12,17 @@ namespace Sinch.Verification.SinchEvents
 {
     internal sealed class VerificationSinchEvents : IVerificationSinchEvents
     {
-        private readonly ApplicationSignedAuth? _applicationSignedAuth;
+        private readonly Lazy<ISinchAuth>? _auth;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
         private readonly ILoggerAdapter<IVerificationSinchEvents>? _logger;
 
         internal VerificationSinchEvents(
             JsonSerializerOptions jsonSerializerOptions,
-            ApplicationSignedAuth? applicationSignedAuth = null,
+            Lazy<ISinchAuth>? auth = null,
             ILoggerAdapter<IVerificationSinchEvents>? logger = null)
         {
             _jsonSerializerOptions = jsonSerializerOptions;
-            _applicationSignedAuth = applicationSignedAuth;
+            _auth = auth;
             _logger = logger;
         }
 
@@ -50,18 +50,12 @@ namespace Sinch.Verification.SinchEvents
             Dictionary<string, IEnumerable<string>> headers,
             string body)
         {
-            if (_applicationSignedAuth is null)
-            {
-                throw new InvalidOperationException(
-                    "Verification application credentials are required to validate the authentication header.");
-            }
-
             return AuthorizationHeaderValidation.Validate(
                 method,
                 path,
                 headers,
                 body,
-                _applicationSignedAuth,
+                ResolveApplicationSignedAuth(),
                 _logger);
         }
 
@@ -100,6 +94,40 @@ namespace Sinch.Verification.SinchEvents
             }
 
             return result;
+        }
+
+        private ApplicationSignedAuth ResolveApplicationSignedAuth()
+        {
+            if (_auth is null)
+            {
+                throw CreateMissingVerificationCredentialsException();
+            }
+
+            try
+            {
+                if (_auth.Value is ApplicationSignedAuth applicationSignedAuth)
+                {
+                    return applicationSignedAuth;
+                }
+            }
+            catch (InvalidOperationException exception)
+            {
+                throw CreateMissingVerificationCredentialsException(exception);
+            }
+            catch (ArgumentNullException exception)
+            {
+                throw CreateMissingVerificationCredentialsException(exception);
+            }
+
+            throw CreateMissingVerificationCredentialsException();
+        }
+
+        private static InvalidOperationException CreateMissingVerificationCredentialsException(
+            Exception? innerException = null)
+        {
+            return new InvalidOperationException(
+                "Verification application credentials are required to validate the authentication header.",
+                innerException);
         }
     }
 }

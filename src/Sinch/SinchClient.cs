@@ -248,29 +248,33 @@ namespace Sinch
 
         private ISinchVerificationClient InitVerification()
         {
-            var config = _sinchClientConfiguration.VerificationConfiguration ??
-                throw new InvalidOperationException($"{nameof(SinchVerificationConfiguration)} is not set.");
+            var config = _sinchClientConfiguration.VerificationConfiguration;
 
-            if (string.IsNullOrEmpty(config.AppKey))
-                throw new ArgumentNullException(nameof(config.AppKey), "The value should be present");
+            var auth = new Lazy<ISinchAuth>(() =>
+            {
+                var currentConfig = _sinchClientConfiguration.VerificationConfiguration ??
+                    throw new InvalidOperationException($"{nameof(SinchVerificationConfiguration)} is not set.");
 
-            if (string.IsNullOrEmpty(config.AppSecret))
-                throw new ArgumentNullException(nameof(config.AppSecret), "The value should be present");
+                if (string.IsNullOrEmpty(currentConfig.AppKey))
+                    throw new ArgumentNullException(nameof(currentConfig.AppKey), "The value should be present");
 
-            ISinchAuth auth;
-            if (config.AuthStrategy == AuthStrategy.ApplicationSign)
-                auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
-            else
-                auth = new BasicAuth(config.AppKey, config.AppSecret);
+                if (string.IsNullOrEmpty(currentConfig.AppSecret))
+                    throw new ArgumentNullException(nameof(currentConfig.AppSecret), "The value should be present");
 
-            var http = new Http(new Lazy<ISinchAuth>(auth), _httpClientAccessor, _loggerFactory?.Create<IHttp>(),
+                if (currentConfig.AuthStrategy == AuthStrategy.ApplicationSign)
+                    return new ApplicationSignedAuth(currentConfig.AppKey, currentConfig.AppSecret);
+
+                return new BasicAuth(currentConfig.AppKey, currentConfig.AppSecret);
+            });
+
+            var http = new Http(auth, _httpClientAccessor, _loggerFactory?.Create<IHttp>(),
                 JsonNamingPolicy.CamelCase);
 
             var verificationUrl = ResolveUrl(
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VerificationUrl,
                 () => SinchUrlResolvers.ResolveVerificationUrl(config));
 
-            return new SinchVerificationClient(verificationUrl, _loggerFactory, http, (auth as ApplicationSignedAuth)!);
+            return new SinchVerificationClient(verificationUrl, _loggerFactory, http, auth);
         }
 
         private ISinchFax InitFax()

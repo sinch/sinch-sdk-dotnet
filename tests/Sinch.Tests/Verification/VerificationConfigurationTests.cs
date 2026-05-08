@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Sinch.Verification;
 using Xunit;
@@ -71,28 +72,31 @@ namespace Sinch.Tests.Verification
         [Theory]
         [MemberData(nameof(VerificationCredentialsMissingTestCaseData.TestCasesData),
             MemberType = typeof(VerificationCredentialsMissingTestCaseData))]
-        public void ThrowIfVerificationCredentialsAreMissing(VerificationCredentialsMissingTestCaseData data)
+        public void VerificationWithMissingCredentials_ParseEvent_DoesNotRequireValidCredentials(
+            VerificationCredentialsMissingTestCaseData data)
         {
             var client = new SinchClient(new SinchClientConfiguration()
             {
                 VerificationConfiguration = data.VerificationConfiguration
             });
-            var op = () => client.Verification;
-            var which = op.Should().ThrowExactly<ArgumentNullException>().Which;
-            which.ParamName.Should().Be(data.ParamName);
-            which.Message.Should().Be(data.Message);
+            var json = Helpers.LoadResources("Verification/SinchEvents/VerificationRequestEvent.json");
+
+            var sinchEvent = client.Verification.SinchEvents.ParseEvent(json);
+
+            sinchEvent.Should().BeOfType<Sinch.Verification.SinchEvents.VerificationRequestEvent>();
         }
 
-
         [Fact]
-        public void ThrowIfVerificationConfigIsNull()
+        public async Task VerificationWithoutConfiguration_ThrowsWhenApiOperationNeedsAuthentication()
         {
             var client = new SinchClient(new SinchClientConfiguration()
             {
                 VerificationConfiguration = null
             });
-            var op = () => client.Verification;
-            op.Should().ThrowExactly<InvalidOperationException>().Which.Message.Should()
+
+            var op = () => client.Verification.Verification.StartSms("+15551234567");
+
+            (await op.Should().ThrowAsync<InvalidOperationException>()).Which.Message.Should()
                 .Be("SinchVerificationConfiguration is not set.");
         }
     }
