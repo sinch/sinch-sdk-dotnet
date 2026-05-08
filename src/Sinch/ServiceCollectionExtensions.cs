@@ -120,7 +120,9 @@ namespace Sinch
         /// Registers Sinch Events handler interfaces into the service collection so they can be
         /// injected directly where needed.
         /// <para>
-        /// Requires <see cref="AddSinchClient"/> to have been called first.
+        /// Requires one of the <see cref="ServiceCollectionExtensions.AddSinchClient(IServiceCollection, Action{HttpClient}?)"/>
+        /// or <see cref="ServiceCollectionExtensions.AddSinchClient(IServiceCollection, Func{SinchClientConfiguration}, Action{HttpClient}?)"/>
+        /// overloads to have been called first.
         /// </para>
         /// </summary>
         /// <param name="services">The service collection.</param>
