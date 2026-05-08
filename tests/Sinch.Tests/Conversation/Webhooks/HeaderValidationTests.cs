@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Sinch.Tests.Conversation.Webhooks
 {
-    public class HmacAuthenticationValidationTests
+    public class HeaderValidationTests
     {
         private const string TimestampHeader = "x-sinch-webhook-signature-timestamp";
         private const string NonceHeader = "x-sinch-webhook-signature-nonce";
@@ -32,7 +32,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                 [SignatureHeader] = ValidSignature
             };
 
-            var result = HmacAuthenticationValidation.ValidateAuthenticationHeader(ValidSecret, headers, ValidJsonPayload);
+            var result = HeaderValidation.ValidateAuthenticationHeader(ValidSecret, headers, ValidJsonPayload);
 
             result.Should().BeTrue();
         }
@@ -48,7 +48,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                 [SignatureHeader.ToUpperInvariant()] = [ValidSignature]
             };
 
-            var result = HmacAuthenticationValidation.ValidateAuthenticationHeader(ValidSecret, headers, ValidJsonPayload);
+            var result = HeaderValidation.ValidateAuthenticationHeader(ValidSecret, headers, ValidJsonPayload);
 
             result.Should().BeTrue();
         }
@@ -64,7 +64,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                 [SignatureHeader] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
             };
 
-            var result = HmacAuthenticationValidation.ValidateAuthenticationHeader(ValidSecret, headers, ValidJsonPayload);
+            var result = HeaderValidation.ValidateAuthenticationHeader(ValidSecret, headers, ValidJsonPayload);
 
             result.Should().BeFalse();
         }
@@ -82,7 +82,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                 [SignatureHeader] = ValidSignature
             };
 
-            Action act = () => HmacAuthenticationValidation.ValidateAuthenticationHeader(ValidSecret, headers, ValidJsonPayload);
+            Action act = () => HeaderValidation.ValidateAuthenticationHeader(ValidSecret, headers, ValidJsonPayload);
 
             act.Should().Throw<NotSupportedException>().WithMessage("*Unsupported HMAC algorithm*");
         }
@@ -104,7 +104,7 @@ namespace Sinch.Tests.Conversation.Webhooks
 
             headers.Remove(missingHeader);
 
-            var result = HmacAuthenticationValidation.ValidateAuthenticationHeader(ValidSecret, headers, ValidJsonPayload);
+            var result = HeaderValidation.ValidateAuthenticationHeader(ValidSecret, headers, ValidJsonPayload);
 
             result.Should().BeFalse();
         }
@@ -122,7 +122,7 @@ namespace Sinch.Tests.Conversation.Webhooks
                 [SignatureHeader] = ValidSignature
             };
 
-            var result = HmacAuthenticationValidation.ValidateAuthenticationHeader(emptySecret, headers, ValidJsonPayload);
+            var result = HeaderValidation.ValidateAuthenticationHeader(emptySecret, headers, ValidJsonPayload);
 
             result.Should().BeFalse();
         }

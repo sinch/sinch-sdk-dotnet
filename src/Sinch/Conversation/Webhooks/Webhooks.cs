@@ -208,13 +208,13 @@ namespace Sinch.Conversation.Webhooks
         public bool ValidateAuthenticationHeader(IDictionary<string, string> headers, string body,
             string secret)
         {
-            return HmacAuthenticationValidation.ValidateAuthenticationHeader(secret, headers, body);
+            return HeaderValidation.ValidateAuthenticationHeader(secret, headers, body);
         }
 
         public bool ValidateAuthenticationHeader(IReadOnlyDictionary<string, IEnumerable<string>> headers, string body,
             string secret)
         {
-            return HmacAuthenticationValidation.ValidateAuthenticationHeader(secret, headers, body);
+            return HeaderValidation.ValidateAuthenticationHeader(secret, headers, body);
         }
 
         public ICallbackEvent ParseEvent(string json)

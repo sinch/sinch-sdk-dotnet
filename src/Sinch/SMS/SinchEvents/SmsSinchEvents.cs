@@ -68,7 +68,7 @@ namespace Sinch.SMS.SinchEvents
                 }
             }
 
-            return HmacAuthenticationValidation.ValidateAuthenticationHeader(hmacSecret, headerDict, body);
+            return HeaderValidation.ValidateAuthenticationHeader(hmacSecret, headerDict, body);
         }
     }
 }

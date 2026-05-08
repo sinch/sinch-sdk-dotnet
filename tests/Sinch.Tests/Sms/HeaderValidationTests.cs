@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using FluentAssertions;
+using Sinch.SMS.SinchEvents;
 using Xunit;
 
 namespace Sinch.Tests.Sms
 {
-    public class HmacAuthenticationValidationTests
+    public class HeaderValidationTests
     {
         [Fact]
         public void ValidateAuthenticationHeader_WithSupportedAlgorithm_ReturnsTrue()
@@ -32,7 +33,7 @@ namespace Sinch.Tests.Sms
             };
 
             // Act
-            var result = SMS.HmacAuthenticationValidation.ValidateAuthenticationHeader(secret, headers, jsonPayload);
+            var result = HeaderValidation.ValidateAuthenticationHeader(secret, headers, jsonPayload);
 
             // Assert
             result.Should().BeTrue();
@@ -57,7 +58,7 @@ namespace Sinch.Tests.Sms
             };
 
             // Act
-            Action act = () => SMS.HmacAuthenticationValidation.ValidateAuthenticationHeader(secret, headers, jsonPayload);
+            Action act = () => HeaderValidation.ValidateAuthenticationHeader(secret, headers, jsonPayload);
 
             // Assert
             act.Should().Throw<NotSupportedException>().WithMessage("*Unsupported HMAC algorithm*");
@@ -83,7 +84,7 @@ namespace Sinch.Tests.Sms
             headers.Remove(missingHeader);
 
             // Act
-            var result = SMS.HmacAuthenticationValidation.ValidateAuthenticationHeader(secret, headers, jsonPayload);
+            var result = HeaderValidation.ValidateAuthenticationHeader(secret, headers, jsonPayload);
 
             // Assert
             result.Should().BeFalse();
@@ -116,7 +117,7 @@ namespace Sinch.Tests.Sms
             };
 
             // Act
-            var result = SMS.HmacAuthenticationValidation.ValidateAuthenticationHeader(secret, headers, jsonPayload);
+            var result = HeaderValidation.ValidateAuthenticationHeader(secret, headers, jsonPayload);
 
             // Assert
             result.Should().BeFalse();
