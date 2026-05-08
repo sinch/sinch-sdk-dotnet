@@ -107,7 +107,7 @@ namespace Sinch.SMS.Batches.Update
         ///     Override the default event destination URL for this batch. Must be a valid URL.
         /// </summary>
         [JsonPropertyName("callback_url")]
-        public Uri? EventDestinationTarget { get; set; }
+        public string? EventDestinationTarget { get; set; }
 
 
         /// <summary>
