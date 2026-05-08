@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using FluentAssertions;
+using Newtonsoft.Json.Linq;
 using Sinch.Verification;
+using Sinch.Verification.Common;
 using Sinch.Verification.SinchEvents;
 using Xunit;
 
@@ -11,6 +13,94 @@ namespace Sinch.Tests.Verification
 {
     public class SinchEventsTests
     {
+        [Fact]
+        public void ShouldDeserializeVerificationRequestEvent()
+        {
+            string jsonString = @"
+            {
+                ""id"": ""1234567890"",
+                ""event"": ""VerificationRequestEvent"",
+                ""method"": ""sms"",
+                ""identity"": {
+                    ""type"": ""number"",
+                    ""endpoint"": ""+11235551234""
+                },
+                ""price"": {
+                    ""amount"": 10.5,
+                    ""currencyId"": ""USD""
+                },
+                ""reference"": ""string"",
+                ""custom"": ""string"",
+                ""acceptLanguage"": [
+                    ""es-ES""
+                ]
+            }";
+
+            var deserialized = JsonSerializer.Deserialize<VerificationRequestEvent>(jsonString);
+
+            deserialized.Should().BeEquivalentTo(new VerificationRequestEvent()
+            {
+                Id = "1234567890",
+                Event = "VerificationRequestEvent",
+                Method = VerificationMethod.Sms,
+                Identity = new Identity()
+                {
+                    Endpoint = "+11235551234",
+                    Type = IdentityType.Number,
+                },
+                Price = new PriceDetail()
+                {
+                    Amount = 10.5,
+                    CurrencyId = "USD",
+                },
+                Reference = "string",
+                Custom = "string",
+                AcceptLanguage = new List<string>()
+                {
+                    "es-ES"
+                }
+            });
+        }
+
+        [Fact]
+        public void ShouldDeserializeVerificationResultEvent()
+        {
+            string jsonString = @"
+            {
+            ""id"": ""1234567890"",
+            ""event"": ""VerificationResultEvent"",
+            ""method"": ""sms"",
+            ""identity"": {
+                ""type"": ""number"",
+                ""endpoint"": ""+11235551234""
+            },
+            ""status"": ""PENDING"",
+            ""reason"": ""Fraud"",
+            ""reference"": ""12345"",
+            ""source"": ""intercepted"",
+            ""custom"": ""string""
+            }";
+
+            var deserialized = JsonSerializer.Deserialize<VerificationResultEvent>(jsonString);
+
+            deserialized.Should().BeEquivalentTo(new VerificationResultEvent()
+            {
+                Id = "1234567890",
+                Event = "VerificationResultEvent",
+                Method = VerificationMethodEx.Sms,
+                Identity = new Identity()
+                {
+                    Endpoint = "+11235551234",
+                    Type = IdentityType.Number,
+                },
+                Reference = "12345",
+                Custom = "string",
+                Reason = Reason.Fraud,
+                Source = Source.Intercepted,
+                Status = VerificationStatus.Pending
+            });
+        }
+
         [Fact]
         public void ParseEvent_ReturnsVerificationRequestEvent()
         {
@@ -55,7 +145,7 @@ namespace Sinch.Tests.Verification
             var parsed = sinchEvents.ParseEvent(json);
 
             parsed.Should().BeOfType<VerificationResultEvent>()
-                .Which.Status.Should().Be(Common.VerificationStatus.Successful);
+                .Which.Status.Should().Be(Sinch.Verification.Common.VerificationStatus.Successful);
         }
 
         [Fact]
@@ -69,7 +159,7 @@ namespace Sinch.Tests.Verification
 
             var sinchEvents = new VerificationSinchEvents(new JsonSerializerOptions(JsonSerializerDefaults.Web));
 
-            Action act = () => sinchEvents.ParseEvent(json);
+            System.Action act = () => sinchEvents.ParseEvent(json);
 
             act.Should().Throw<JsonException>()
                 .WithMessage("*Unknown Verification Sinch Event type*");
@@ -120,8 +210,8 @@ namespace Sinch.Tests.Verification
             var sinchEvents = new VerificationSinchEvents(new JsonSerializerOptions(JsonSerializerDefaults.Web));
             var response = new SmsRequestEventResponse
             {
-                Action = Action.Allow,
-                Sms = new Sms
+                Action = Sinch.Verification.SinchEvents.Action.Allow,
+                Sms = new Sinch.Verification.SinchEvents.Sms
                 {
                     Code = "123",
                     AcceptLanguage = new List<string> { "en-US" }
@@ -133,6 +223,62 @@ namespace Sinch.Tests.Verification
             json.Should().Contain("\"action\":\"allow\"");
             json.Should().Contain("\"sms\"");
             json.Should().Contain("\"code\":\"123\"");
+        }
+
+        [Fact]
+        public void SerializeHookWhatsAppResponse()
+        {
+            var expected = Helpers.LoadResources("Verification/Webhooks/VerificationResponseWhatsAppDto.json");
+
+            var response = new WhatsAppRequestEventResponse
+            {
+                Action = Sinch.Verification.SinchEvents.Action.Allow,
+                WhatsApp = new WhatsApp
+                {
+                    CodeType = WhatsAppCodeType.Numeric,
+                    AcceptLanguage = new List<string>()
+                    {
+                        "a language"
+                    },
+                    AdditionalProperties = new Dictionary<string, JsonElement>()
+                    {
+                        { "my key", JsonDocument.Parse("\"my value\"").RootElement }
+                    }
+                }
+            };
+
+            var responseJson = JsonSerializer.Serialize(response);
+            Helpers.AssertJsonEqual(expected, responseJson);
+        }
+
+        [Fact]
+        public void SerializeResponse_MatchesExpectedSmsPayload()
+        {
+            var response = new SmsRequestEventResponse
+            {
+                Action = Sinch.Verification.SinchEvents.Action.Allow,
+                Sms = new Sinch.Verification.SinchEvents.Sms
+                {
+                    Code = "123",
+                    AcceptLanguage = new List<string>()
+                    {
+                        "en-US"
+                    }
+                }
+            };
+
+            var json = JsonSerializer.Serialize(response);
+
+            var expected = JToken.Parse(@"
+                                {
+                                    ""action"": ""allow"",
+                                    ""sms"": {
+                                        ""code"": ""123"",
+                                        ""acceptLanguage"": [""en-US""]
+                                     }
+                                }");
+            var actual = JToken.Parse(json);
+            actual.Should().BeEquivalentTo(expected);
         }
     }
 }
