@@ -17,7 +17,7 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<SmsServerBusinessLogic>();
 builder.Services.AddSingleton<NumbersServerBusinessLogic>();
 
-builder.Services.AddSinchClient(() => new SinchClientConfiguration());
+builder.Services.AddSinchClient();
 
 builder.Services.AddSinchEventsHandlers(ServiceLifetime.Scoped);
 

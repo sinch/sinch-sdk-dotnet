@@ -14,6 +14,30 @@ namespace Sinch
     public static class ServiceCollectionExtensions
     {
         /// <summary>
+        /// Adds <see cref="ISinchClient"/> to the service collection with default configuration.
+        /// <para>
+        /// Use this overload when you only need SDK features that do not require outbound API
+        /// credentials, such as parsing or validating incoming Sinch Events in ASP.NET applications.
+        /// </para>
+        /// </summary>
+        /// <param name="services">The service collection.</param>
+        /// <param name="configureClient">Optional action to configure the HttpClient.</param>
+        /// <returns>The IHttpClientBuilder for further HttpClient configuration (e.g., Polly policies).</returns>
+        /// <example>
+        /// <code>
+        /// builder.Services.AddSinchClient();
+        /// </code>
+        /// </example>
+        public static IHttpClientBuilder AddSinchClient(
+            this IServiceCollection services,
+            Action<HttpClient>? configureClient = null)
+        {
+            ArgumentNullException.ThrowIfNull(services);
+
+            return services.AddSinchClient(() => new SinchClientConfiguration(), configureClient);
+        }
+
+        /// <summary>
         /// Adds <see cref="ISinchClient"/> to the service collection with proper HttpClient management.
         /// <para>
         /// This method configures IHttpClientFactory for proper connection pooling and DNS refresh,
@@ -22,7 +46,7 @@ namespace Sinch
         /// </para>
         /// </summary>
         /// <param name="services">The service collection.</param>
-        /// <param name="configureFactory"></param>
+        /// <param name="configureFactory">Factory that returns the Sinch client configuration used for authenticated API access and other custom settings.</param>
         /// <param name="configureClient">Optional action to configure the HttpClient.</param>
         /// <returns>The IHttpClientBuilder for further HttpClient configuration (e.g., Polly policies).</returns>
         /// <example>
