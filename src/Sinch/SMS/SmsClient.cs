@@ -150,7 +150,7 @@ namespace Sinch.SMS
                 return client;
 
             ValidateApiClientAvailability();
-            
+
             throw CreateApiConfigurationException();
         }
 
