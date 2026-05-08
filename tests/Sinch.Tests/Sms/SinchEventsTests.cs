@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using FluentAssertions;
 using Sinch.SMS.DeliveryReports;
 using Sinch.SMS.Inbounds;
+using Sinch.SMS.SinchEvents;
 using Xunit;
 
 namespace Sinch.Tests.Sms
@@ -42,6 +44,19 @@ namespace Sinch.Tests.Sms
                     ClientReference = "a client reference"
                 });
             }
+        }
+
+        [Fact]
+        public void ParseEvent_WorksWithDirectInstantiation()
+        {
+            var json = Helpers.LoadResources("Sms/SinchEvents/DeliveryReportSms.json");
+            var sinchEvents = new SmsSinchEvents(new JsonSerializerOptions(JsonSerializerDefaults.Web));
+
+            var parsed = sinchEvents.ParseEvent(json).As<BatchDeliveryReportSms>();
+
+            parsed.Should().BeOfType<BatchDeliveryReportSms>();
+            parsed.BatchId.Should().Be("01FC66621XXXXX119Z8PMV1QPQ");
+            parsed.ClientReference.Should().Be("a client reference");
         }
 
         [Fact]
