@@ -19,7 +19,7 @@
 - [Removed obsolete MessageSource property from ListMessagesRequest](#removed-obsolete-messagesource-property-from-listmessagesrequest)
 - [Removed TemplatesV1 from Conversation API](#removed-templatesv1-from-conversation-api)
 - [SMS Webhooks: renamed and removed types](#sms-webhooks-renamed-and-removed-types)
-- [SMS Webhooks: property rename for per-recipient delivery reports](#sms-webhooks-property-rename-for-per-recipient-delivery-reports)
+- [SMS Webhooks / Sinch Events: property rename for per-recipient delivery reports](#sms-webhooks--sinch-events-property-rename-for-per-recipient-delivery-reports)
 - [SMS API: `CallbackUrl` renamed to `EventDestinationTarget`](#sms-api-callbackurl-renamed-to-eventdestinationtarget)
 - [SMS: `ISmsWebhooks` renamed to `ISmsSinchEvents`](#sms-ismswebhooks-renamed-to-ismssinchevents)
 - [SMS: `ParseEvent` now returns `ISmsSinchEvent`](#sms-parseevent-now-returns-ismssinchevent)
@@ -509,7 +509,7 @@ Replacement guidance
 
 - If you previously relied on `IIncomingSms`, switch to `IInbound`.
 - If you previously relied on `IncomingTextSms` or `IncomingBinarySms`, switch to `SmsInbound` or `BinaryInbound`.
-- Prefer the `ISmsSinchEvents.ParseEvent(string json)` helper, which now returns `ISmsSinchEvent` that you can pattern-match or cast to `IInbound`, `BatchDeliveryReportSms`, `RecipientDeliveryReportSms`, and the other concrete Sinch Events models.
+- Prefer `ISmsSinchEvents.ParseEvent(string json)` when the payload type is not known in advance. It is the public API that resolves the incoming SMS Sinch Event JSON to the correct concrete `ISmsSinchEvent` implementation. If you already know the concrete payload type, you can still deserialize directly to that concrete model.
 
 - Example migrating code that previously deserialized the old incoming binary type:
 
@@ -525,7 +525,7 @@ var bin = sinchClient.Sms.SinchEvents.ParseEvent(json).As<BinaryInbound>();
 var bin = JsonSerializer.Deserialize<BinaryInbound>(json);
 ```
 
-## SMS Webhooks: property rename for per-recipient delivery reports
+## SMS Webhooks / Sinch Events: property rename for per-recipient delivery reports
 
 The property `OperatorStatusName` in `RecipientDeliveryReportSms` was renamed to `OperatorStatusAt`.
 

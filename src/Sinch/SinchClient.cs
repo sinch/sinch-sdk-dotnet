@@ -339,7 +339,8 @@ namespace Sinch
 
                 if (servicePlanIdConfig.ServicePlanIdRegion == null)
                 {
-                    _logger?.LogInformation("Initializing SMS Sinch Events without SMS service plan region configuration");
+                    _logger?.LogInformation(
+                        "Initializing SMS client without service plan region configuration; SMS REST API operations will remain unavailable until ServicePlanIdRegion is configured");
                     return new SmsClient(_loggerFactory, _httpSnakeCase.Value, servicePlanIdConfig);
                 }
 
@@ -362,7 +363,8 @@ namespace Sinch
 
             if (sinchSmsConfiguration.Region == null)
             {
-                _logger?.LogInformation("Initializing SMS Sinch Events without outbound SMS region configuration");
+                _logger?.LogInformation(
+                    "Initializing SMS client without outbound SMS region configuration; SMS REST API operations will remain unavailable until Region is configured");
                 return new SmsClient(_loggerFactory, _httpSnakeCase.Value);
             }
 
