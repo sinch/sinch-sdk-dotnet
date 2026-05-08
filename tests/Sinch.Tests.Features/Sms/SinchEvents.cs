@@ -13,7 +13,7 @@ namespace Sinch.Tests.Features.Sms
     [Binding]
     public class SinchEvents
     {
-        private const string SinchEventSecret = "KayakingTheSwell";
+        private const string SinchEventsSecret = "KayakingTheSwell";
         private const string SinchEventsUrlPrefix = "http://localhost:3017/webhooks/sms";
 
         private readonly HttpClient _httpClient = new();
@@ -172,7 +172,7 @@ namespace Sinch.Tests.Features.Sms
         {
             var body = await response.Content.ReadAsStringAsync();
 
-            return _smsSinchEvents.ValidateAuthenticationHeader(SinchEventSecret, response.Headers, body);
+            return _smsSinchEvents.ValidateAuthenticationHeader(SinchEventsSecret, response.Headers, body);
         }
     }
 }

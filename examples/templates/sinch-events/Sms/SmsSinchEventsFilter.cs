@@ -28,7 +28,7 @@ public class SmsSinchEventsFilter(ISmsSinchEvents sinchEvents, IConfiguration co
             return;
         }
 
-        var secret = configuration["Sinch:Sms:SinchEventSecret"] ?? string.Empty;
+        var secret = configuration["Sinch:Sms:SinchEventsSecret"] ?? string.Empty;
 
         if (!sinchEvents.ValidateAuthenticationHeader(secret, request.Headers, body))
         {

@@ -7,7 +7,8 @@ namespace SinchEvents.Template.Sms;
 /// <summary>
 /// Example controller for receiving SMS Sinch Events.
 /// Set requireAuthentication to true once you have configured a shared secret
-/// at 'Sinch:Sms:SinchEventSecret' in appsettings if you want to validate signatures.
+/// at 'Sinch:Sms:SinchEventsSecret' in appsettings if you want to validate signatures.
+/// See https://developers.sinch.com/docs/sms/api-reference/sms/tag/Webhooks/
 /// </summary>
 [ApiController]
 [SmsSinchEvent(requireAuthentication: false)]
