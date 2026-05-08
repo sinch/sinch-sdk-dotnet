@@ -1,0 +1,14 @@
+{
+  "id": "1234567890",
+  "event": "VerificationResultEvent",
+  "method": "sms",
+  "identity": {
+    "type": "number",
+    "endpoint": "+11235551234"
+  },
+  "status": "PENDING",
+  "reason": "Fraud",
+  "reference": "12345",
+  "source": "intercepted",
+  "custom": "string"
+}

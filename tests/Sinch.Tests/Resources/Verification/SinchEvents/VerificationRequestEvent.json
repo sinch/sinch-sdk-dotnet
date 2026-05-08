@@ -1,0 +1,18 @@
+{
+  "id": "1234567890",
+  "event": "VerificationRequestEvent",
+  "method": "sms",
+  "identity": {
+    "type": "number",
+    "endpoint": "+11235551234"
+  },
+  "price": {
+    "amount": 10.5,
+    "currencyId": "USD"
+  },
+  "reference": "string",
+  "custom": "string",
+  "acceptLanguage": [
+    "es-ES"
+  ]
+}
