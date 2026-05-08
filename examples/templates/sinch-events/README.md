@@ -17,7 +17,7 @@ The sample reads configuration from [appsettings.json](appsettings.json):
       "SinchEventsSecret": ""
     },
     "Numbers": {
-      "HmacSecret": ""
+      "SinchEventsSecret": ""
     }
   }
 }
@@ -25,7 +25,7 @@ The sample reads configuration from [appsettings.json](appsettings.json):
 
 - No unified credentials or SMS region are required to parse or validate incoming Sinch Events in this template.
 - `Sinch:Sms:SinchEventsSecret` is an optional shared secret for validating SMS event signatures.
-- `Sinch:Numbers:HmacSecret` is an optional shared secret for validating Numbers event signatures.
+- `Sinch:Numbers:SinchEventsSecret` is an optional shared secret for validating Numbers event signatures.
 
 If you later extend this sample to make authenticated API calls, add a configured `SinchClientConfiguration` with unified credentials and any product-specific settings that those outbound API calls require.
 
@@ -43,7 +43,7 @@ The [Sms/](Sms/) folder contains a controller that receives SMS delivery reports
 
 ## Numbers Events
 
-The [Numbers/](Numbers/) folder contains a controller that receives Numbers event notifications (e.g. number provisioning status changes). Authentication is controlled by the `[NumbersSinchEvent(requireAuthentication: false)]` attribute. Set it to `true` and configure `Sinch:Numbers:HmacSecret` if you want to validate incoming signatures.
+The [Numbers/](Numbers/) folder contains a controller that receives Numbers event notifications (e.g. number provisioning status changes). Authentication is controlled by the `[NumbersSinchEvent(requireAuthentication: false)]` attribute. Set it to `true` and configure `Sinch:Numbers:SinchEventsSecret` if you want to validate incoming signatures.
 
 ## Use ngrok to forward requests to your local server
 

@@ -7,7 +7,7 @@ namespace SinchEvents.Template.Numbers;
 /// <summary>
 ///     Example controller for receiving Numbers Sinch Events.
 ///     Set requireAuthentication to true once you have configured an HMAC secret
-///     at 'Sinch:Numbers:HmacSecret' in appsettings.
+///     at 'Sinch:Numbers:SinchEventsSecret' in appsettings.
 ///     See https://developers.sinch.com/docs/numbers/api-reference/numbers/tag/Numbers-Callbacks
 /// </summary>
 [ApiController]

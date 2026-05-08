@@ -30,7 +30,7 @@ public class NumbersSinchEventsFilter(
             return;
         }
 
-        var secret = configuration["Sinch:Numbers:HmacSecret"] ?? string.Empty;
+        var secret = configuration["Sinch:Numbers:SinchEventsSecret"] ?? string.Empty;
 
         if (!sinchEvents.ValidateAuthenticationHeader(secret, request.Headers, body))
         {
