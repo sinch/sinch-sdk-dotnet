@@ -154,18 +154,18 @@ namespace Sinch.Tests
         public void Verification_SinchEvents_ParseEvent_DoesNotRequireConfiguration()
         {
             var sinch = new SinchClient(new SinchClientConfiguration());
-            var json = Helpers.LoadResources("Verification/SinchEvents/VerificationRequestEvent.json");
+            var json = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEvent.json");
 
             var sinchEvent = sinch.Verification.SinchEvents.ParseEvent(json);
 
-            sinchEvent.Should().BeOfType<Sinch.Verification.SinchEvents.VerificationRequestEvent>();
+            sinchEvent.Should().BeOfType<Sinch.Verification.SinchEvents.VerificationStartEvent>();
         }
 
         [Fact]
         public void Verification_SinchEvents_SerializeResponse_DoesNotRequireConfiguration()
         {
             var sinch = new SinchClient(new SinchClientConfiguration());
-            var response = new Sinch.Verification.SinchEvents.SmsRequestEventResponse
+            var response = new Sinch.Verification.SinchEvents.VerificationStartEventResponseSms
             {
                 Action = Sinch.Verification.SinchEvents.Action.Allow,
                 Sms = new Sinch.Verification.SinchEvents.Sms

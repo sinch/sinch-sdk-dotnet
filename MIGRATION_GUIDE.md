@@ -55,6 +55,7 @@
 - [Verification API: `ValidateAuthenticationHeader` moved to `SinchEvents`](#verification-api-validateauthenticationheader-moved-to-sinchevents)
 - [Verification API: `ParseEvent` moved to `SinchEvents`](#verification-api-parseevent-moved-to-sinchevents)
 - [Verification API: `SerializeResponse` added to `SinchEvents`](#verification-api-serializeresponse-added-to-sinchevents)
+- [Verification API: Verification event types renamed](#verification-api-verification-event-types-renamed)
 
 ## .NET Framework Support
 
@@ -1401,4 +1402,27 @@ var response = new SmsRequestEventResponse
 };
 
 var json = sinch.Verification.SinchEvents.SerializeResponse(response);
+```
+
+## Verification API: Verification event types renamed
+
+Several Verification event model types have been renamed. The JSON wire format is unchanged.
+
+Renamed types:
+
+- `VerificationRequestEvent` → `VerificationStartEvent`
+- `RequestEventResponseBase` → `VerificationStartEventResponseBase`
+- `SmsRequestEventResponse` → `VerificationStartEventResponseSms`
+- `FlashCallRequestEventResponse` → `VerificationStartEventResponseFlashCall`
+- `PhoneCallRequestEventResponse` → `VerificationStartEventResponsePhoneCall`
+- `WhatsAppRequestEventResponse` → `VerificationStartEventResponseWhatsApp`
+
+Version 1.*:
+```csharp
+var requestEvent = JsonSerializer.Deserialize<VerificationRequestEvent>(json);
+```
+
+Version 2.*:
+```csharp
+var requestEvent = JsonSerializer.Deserialize<VerificationStartEvent>(json);
 ```

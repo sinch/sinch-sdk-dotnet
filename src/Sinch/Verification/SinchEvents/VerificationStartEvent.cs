@@ -9,7 +9,7 @@ namespace Sinch.Verification.SinchEvents
     ///     is triggered when a new verification request is made from the SDK client or the Verification Request API.
     ///     This Sinch event is only triggered when a verification event destination is specified in your dashboard.
     /// </summary>
-    public sealed class VerificationRequestEvent : IVerificationSinchEvent
+    public sealed class VerificationStartEvent : IVerificationSinchEvent
     {
         /// <summary>
         ///     The ID of the verification request.

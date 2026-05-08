@@ -45,7 +45,7 @@ namespace Sinch.Tests.Features.Verification
         {
             // TODO: schema of oas and api response diverge: https://tickets.sinch.com/browse/DEVEXP-946
             var verificationEvent = _verificationSinchEvents.ParseEvent(_rawBody);
-            verificationEvent.As<VerificationRequestEvent>().Should().BeEquivalentTo(new VerificationRequestEvent
+            verificationEvent.As<VerificationStartEvent>().Should().BeEquivalentTo(new VerificationStartEvent
             {
                 Id = "1ce0ffee-c0de-5eed-d00d-f00dfeed1337",
                 Event = "VerificationRequestEvent",

@@ -38,7 +38,7 @@ namespace Sinch.Verification.SinchEvents
             var eventType = eventTypeProperty.GetString();
             return eventType switch
             {
-                "VerificationRequestEvent" => DeserializeEvent<VerificationRequestEvent>(json, eventType),
+                "VerificationRequestEvent" => DeserializeEvent<VerificationStartEvent>(json, eventType),
                 "VerificationResultEvent" => DeserializeEvent<VerificationResultEvent>(json, eventType),
                 _ => throw new JsonException($"Unknown Verification Sinch Event type '{eventType}'.")
             };
@@ -75,7 +75,7 @@ namespace Sinch.Verification.SinchEvents
                     StringComparer.OrdinalIgnoreCase),
                 body);
 
-        public string SerializeResponse(RequestEventResponseBase response)
+        public string SerializeResponse(VerificationStartEventResponseBase response)
         {
             return JsonSerializer.Serialize(response, response.GetType(), _jsonSerializerOptions);
         }

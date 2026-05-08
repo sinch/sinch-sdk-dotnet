@@ -79,11 +79,11 @@ namespace Sinch.Tests.Verification
             {
                 VerificationConfiguration = data.VerificationConfiguration
             });
-            var json = Helpers.LoadResources("Verification/SinchEvents/VerificationRequestEvent.json");
+            var json = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEvent.json");
 
             var sinchEvent = client.Verification.SinchEvents.ParseEvent(json);
 
-            sinchEvent.Should().BeOfType<Sinch.Verification.SinchEvents.VerificationRequestEvent>();
+            sinchEvent.Should().BeOfType<Sinch.Verification.SinchEvents.VerificationStartEvent>();
         }
 
         [Fact]

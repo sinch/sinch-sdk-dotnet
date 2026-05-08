@@ -14,13 +14,13 @@ namespace Sinch.Tests.Verification.SinchEvents
         [Fact]
         public void ParseEvent_ReturnsVerificationRequestEvent()
         {
-            var json = Helpers.LoadResources("Verification/SinchEvents/VerificationRequestEvent.json");
+            var json = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEvent.json");
 
             var sinchEvents = new VerificationSinchEvents(new JsonSerializerOptions(JsonSerializerDefaults.Web));
 
             var parsed = sinchEvents.ParseEvent(json);
 
-            parsed.Should().BeOfType<VerificationRequestEvent>()
+            parsed.Should().BeOfType<VerificationStartEvent>()
                 .Which.Id.Should().Be("1234567890");
         }
 
@@ -112,7 +112,7 @@ namespace Sinch.Tests.Verification.SinchEvents
         public void SerializeResponse_SerializesDerivedVerificationResponse()
         {
             var sinchEvents = new VerificationSinchEvents(new JsonSerializerOptions(JsonSerializerDefaults.Web));
-            var response = new SmsRequestEventResponse
+            var response = new VerificationStartEventResponseSms
             {
                 Action = Sinch.Verification.SinchEvents.Action.Allow,
                 Sms = new Sinch.Verification.SinchEvents.Sms
@@ -132,9 +132,9 @@ namespace Sinch.Tests.Verification.SinchEvents
         [Fact]
         public void SerializeResponse_MatchesExpectedSmsPayload()
         {
-            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationResponseSms.json");
+            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseSms.json");
 
-            var response = new SmsRequestEventResponse
+            var response = new VerificationStartEventResponseSms
             {
                 Action = Action.Allow,
                 Sms = new Sinch.Verification.SinchEvents.Sms
@@ -155,14 +155,14 @@ namespace Sinch.Tests.Verification.SinchEvents
         [Fact]
         public void DeserializeVerificationRequestEvent_ReturnsExpectedEvent()
         {
-            var jsonString = Helpers.LoadResources("Verification/SinchEvents/VerificationRequestEvent.json");
+            var jsonString = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEvent.json");
 
-            var deserialized = JsonSerializer.Deserialize<VerificationRequestEvent>(jsonString);
+            var deserialized = JsonSerializer.Deserialize<VerificationStartEvent>(jsonString);
 
-            deserialized.Should().BeEquivalentTo(new VerificationRequestEvent()
+            deserialized.Should().BeEquivalentTo(new VerificationStartEvent()
             {
                 Id = "1234567890",
-                Event = "VerificationRequestEvent",
+                Event = "VerificationStartEvent",
                 Method = VerificationMethod.Sms,
                 Identity = new Identity()
                 {
@@ -211,9 +211,9 @@ namespace Sinch.Tests.Verification.SinchEvents
         [Fact]
         public void SerializeResponse_ReturnsExpectedSmsPayload_WhenSmsResponseProvided()
         {
-            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationResponseSms.json");
+            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseSms.json");
 
-            var response = new SmsRequestEventResponse
+            var response = new VerificationStartEventResponseSms
             {
                 Action = Action.Allow,
                 Sms = new Sinch.Verification.SinchEvents.Sms
@@ -234,9 +234,9 @@ namespace Sinch.Tests.Verification.SinchEvents
         [Fact]
         public void SerializeResponse_ReturnsExpectedWhatsAppPayload_WhenWhatsAppResponseProvided()
         {
-            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationResponseWhatsApp.json");
+            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseWhatsApp.json");
 
-            var response = new WhatsAppRequestEventResponse
+            var response = new VerificationStartEventResponseWhatsApp
             {
                 Action = Action.Allow,
                 WhatsApp = new WhatsApp
