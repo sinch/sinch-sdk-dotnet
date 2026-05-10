@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Verification.SinchEvents
 {
-    public class VerificationStartEventResponseBase
+    public abstract class VerificationStartEventResponseBase
     {
         /// <summary>
         ///     Determines whether the verification can be executed.

@@ -35,13 +35,18 @@ namespace Sinch.Verification.SinchEvents
                 throw new JsonException("Verification Sinch Event payload is missing the event discriminator.");
             }
 
-            var eventType = eventTypeProperty.GetString();
-            return eventType switch
+            if (eventTypeProperty.ValueEquals("VerificationRequestEvent"))
             {
-                "VerificationRequestEvent" => DeserializeEvent<VerificationStartEvent>(json, eventType),
-                "VerificationResultEvent" => DeserializeEvent<VerificationResultEvent>(json, eventType),
-                _ => throw new JsonException($"Unknown Verification Sinch Event type '{eventType}'.")
-            };
+                return DeserializeEvent<VerificationStartEvent>(json, "VerificationRequestEvent");
+            }
+
+            if (eventTypeProperty.ValueEquals("VerificationResultEvent"))
+            {
+                return DeserializeEvent<VerificationResultEvent>(json, "VerificationResultEvent");
+            }
+
+            throw new JsonException(
+                $"Unknown Verification Sinch Event type '{eventTypeProperty.GetString()}'.");
         }
 
         public bool ValidateAuthenticationHeader(

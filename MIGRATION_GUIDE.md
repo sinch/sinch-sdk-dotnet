@@ -1417,6 +1417,8 @@ Renamed types:
 - `PhoneCallRequestEventResponse` → `VerificationStartEventResponsePhoneCall`
 - `WhatsAppRequestEventResponse` → `VerificationStartEventResponseWhatsApp`
 
+`VerificationStartEventResponseBase` is now abstract. Instantiate one of the concrete response types instead.
+
 Version 1.*:
 ```csharp
 var requestEvent = JsonSerializer.Deserialize<VerificationRequestEvent>(json);

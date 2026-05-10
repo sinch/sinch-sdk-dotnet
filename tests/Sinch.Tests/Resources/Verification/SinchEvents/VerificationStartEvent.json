@@ -1,6 +1,6 @@
 {
   "id": "1234567890",
-  "event": "VerificationStartEvent",
+  "event": "VerificationRequestEvent",
   "method": "sms",
   "identity": {
     "type": "number",

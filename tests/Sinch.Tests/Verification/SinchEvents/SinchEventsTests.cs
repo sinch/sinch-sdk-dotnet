@@ -162,7 +162,7 @@ namespace Sinch.Tests.Verification.SinchEvents
             deserialized.Should().BeEquivalentTo(new VerificationStartEvent()
             {
                 Id = "1234567890",
-                Event = "VerificationStartEvent",
+                Event = "VerificationRequestEvent",
                 Method = VerificationMethod.Sms,
                 Identity = new Identity()
                 {
