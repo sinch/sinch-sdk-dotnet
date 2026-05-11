@@ -1417,7 +1417,7 @@ var json = JsonSerializer.Serialize(response);
 
 **After:**
 ```csharp
-var response = new SmsRequestEventResponse
+var response = new VerificationStartEventResponseSms
 {
     Action = Action.Allow
 };
@@ -1438,14 +1438,16 @@ Renamed types:
 - `PhoneCallRequestEventResponse` → `VerificationStartEventResponsePhoneCall`
 - `WhatsAppRequestEventResponse` → `VerificationStartEventResponseWhatsApp`
 
+> The `"event"` field values in the JSON payload (`"VerificationRequestEvent"`, `"VerificationResultEvent"`) are unchanged — only the C# type names changed.
+
 `VerificationStartEventResponseBase` is now abstract. Instantiate one of the concrete response types instead.
 
-Version 1.*:
+**Before:**
 ```csharp
-var requestEvent = JsonSerializer.Deserialize<VerificationRequestEvent>(json);
+var response = new RequestEventResponseBase { Action = Action.Allow };
 ```
 
-Version 2.*:
+**After:**
 ```csharp
-var requestEvent = JsonSerializer.Deserialize<VerificationStartEvent>(json);
+var response = new VerificationStartEventResponseSms { Action = Action.Allow };
 ```

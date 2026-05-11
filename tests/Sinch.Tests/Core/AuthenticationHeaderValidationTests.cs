@@ -163,5 +163,33 @@ namespace Sinch.Tests.Core
             AssertHeaderValidation(headers, "/sinch/callback/ace", HttpMethod.Post,
                 _body, expected: false);
         }
+
+        [Fact]
+        public void ValidateRequest_WithUpperCaseHeaderNames()
+        {
+            var headers = new Dictionary<string, IEnumerable<string>>
+            {
+                { "X-TIMESTAMP", new[] { "2014-09-24T10:59:41Z" } },
+                { "CONTENT-TYPE", new[] { "application/json" } },
+                { "AUTHORIZATION", new[] { "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=" } }
+            };
+
+            AssertHeaderValidation(headers, "/sinch/callback/ace", HttpMethod.Post, _body,
+                expected: true);
+        }
+
+        [Fact]
+        public void ValidateRequest_WithMixedCaseHeaderNames()
+        {
+            var headers = new Dictionary<string, IEnumerable<string>>
+            {
+                { "X-Timestamp", new[] { "2014-09-24T10:59:41Z" } },
+                { "Content-Type", new[] { "application/json" } },
+                { "Authorization", new[] { "application 669E367E-6BBA-48AB-AF15-266871C28135:Tg6fMyo8mj9pYfWQ9ssbx3Tc1BNC87IEygAfLbJqZb4=" } }
+            };
+
+            AssertHeaderValidation(headers, "/sinch/callback/ace", HttpMethod.Post, _body,
+                expected: true);
+        }
     }
 }
