@@ -1,4 +1,7 @@
 using System;
+using System.Net.Http;
+using Sinch;
+using Sinch.Auth;
 using Sinch.Core;
 using Sinch.Logger;
 using Sinch.SMS.Batches;
@@ -51,83 +54,52 @@ namespace Sinch.SMS
 
         /// <inheritdoc cref="ISmsSinchEvents" />
         ISmsSinchEvents SinchEvents { get; }
-
-        internal bool IsUsingServicePlanId { get; }
     }
-
-    internal record ServicePlanId(string Value);
-
-    internal record ProjectId(string Value);
 
     internal sealed class SmsClient : ISinchSms
     {
-        private readonly ISinchSmsBatches? _batches;
-        private readonly ISinchSmsDeliveryReports? _deliveryReports;
-        private readonly ISinchSmsGroups? _groups;
-        private readonly ISinchSmsInbounds? _inbounds;
-        private readonly ServicePlanIdConfiguration? _servicePlanIdConfiguration;
+        private ISinchSmsBatches? _batches;
+        private ISinchSmsDeliveryReports? _deliveryReports;
+        private ISinchSmsGroups? _groups;
+        private ISinchSmsInbounds? _inbounds;
 
-        /// <summary>
-        ///     Creates an SMS client that supports Sinch Events parsing and signature validation only.
-        ///     SMS API operations remain unavailable until SMS configuration is provided.
-        /// </summary>
-        /// <param name="loggerFactory">Logger factory used to create SMS-related loggers.</param>
-        /// <param name="http">HTTP abstraction that provides serializer options used by SMS Sinch Events.</param>
-        /// <param name="servicePlanIdConfiguration">Service plan configuration</param>
-        internal SmsClient(LoggerFactory? loggerFactory, IHttp http,
-            ServicePlanIdConfiguration? servicePlanIdConfiguration = null)
+        internal SmsClient(
+            SinchSmsConfiguration config,
+            string projectId,
+            string? smsUrlOverride,
+            LoggerFactory? loggerFactory,
+            IHttp oauthHttp,
+            Func<HttpClient> httpClientAccessor)
         {
-            _servicePlanIdConfiguration = servicePlanIdConfiguration;
-            SinchEvents = new SmsSinchEvents(
-                http.JsonSerializerOptions,
-                loggerFactory?.Create<ISmsSinchEvents>());
+            SinchEvents = new SmsSinchEvents(oauthHttp.JsonSerializerOptions, loggerFactory?.Create<ISmsSinchEvents>());
+
+            if (config.ServicePlanIdConfiguration is ServicePlanIdConfiguration svcPlanConfig)
+            {
+                var baseAddress = !string.IsNullOrEmpty(smsUrlOverride)
+                    ? new Uri(smsUrlOverride)
+                    : SinchUrlResolvers.ResolveSmsServicePlanIdUrl(svcPlanConfig);
+                var bearerHttp = new Http(
+                    new Lazy<ISinchAuth>(new BearerAuth(svcPlanConfig.ApiToken)),
+                    httpClientAccessor,
+                    loggerFactory?.Create<IHttp>(),
+                    SnakeCaseNamingPolicy.Instance);
+                InitApiClients(svcPlanConfig.ServicePlanId, baseAddress, loggerFactory, bearerHttp);
+            }
+            else if (config.Region is not null)
+            {
+                var baseAddress = !string.IsNullOrEmpty(smsUrlOverride)
+                    ? new Uri(smsUrlOverride)
+                    : SinchUrlResolvers.ResolveSmsUrl(config);
+                InitApiClients(projectId, baseAddress, loggerFactory, oauthHttp);
+            }
         }
 
-        /// <summary>
-        ///     Creates an instance of Sms service with project id
-        /// </summary>
-        /// <param name="projectId">Project identifier used in SMS API paths.</param>
-        /// <param name="baseAddress">Base address for SMS API requests.</param>
-        /// <param name="loggerFactory">Logger factory used to create SMS-related loggers.</param>
-        /// <param name="http">HTTP abstraction used for SMS API requests.</param>
-        internal SmsClient(ProjectId projectId, Uri baseAddress, LoggerFactory? loggerFactory, IHttp http) : this(
-            projectId.Value, baseAddress, loggerFactory, http)
+        private void InitApiClients(string id, Uri baseAddress, LoggerFactory? loggerFactory, IHttp http)
         {
-        }
-
-        /// <summary>
-        ///     Creates an instance of Sms service with service plan id
-        /// </summary>
-        /// <param name="servicePlanId">Service plan identifier used in SMS API paths.</param>
-        /// <param name="baseAddress">Base address for SMS API requests.</param>
-        /// <param name="loggerFactory">Logger factory used to create SMS-related loggers.</param>
-        /// <param name="http">HTTP abstraction used for SMS API requests.</param>
-        internal SmsClient(ServicePlanId servicePlanId, Uri baseAddress, LoggerFactory? loggerFactory,
-            IHttp http) : this(
-            servicePlanId.Value, baseAddress, loggerFactory, http)
-        {
-            IsUsingServicePlanId = true;
-        }
-
-        /// <summary>
-        ///     Creates an instance of Sms service. Be aware that first parameter is either projectId or servicePlanId.
-        ///     They are not distinguished more cause only service_plan_id and project_id is in the same place in url path
-        ///     parameters, but base address is different.
-        /// </summary>
-        /// <param name="projectIdOrServicePlanId">Project ID or service plan ID used in SMS API paths.</param>
-        /// <param name="baseAddress">Base address for SMS API requests.</param>
-        /// <param name="loggerFactory">Logger factory used to create SMS-related loggers.</param>
-        /// <param name="http">HTTP abstraction used for SMS API requests.</param>
-        private SmsClient(string projectIdOrServicePlanId, Uri baseAddress, LoggerFactory? loggerFactory, IHttp http)
-            : this(loggerFactory, http)
-        {
-            _batches = new Batches.Batches(projectIdOrServicePlanId, baseAddress,
-                loggerFactory?.Create<ISinchSmsBatches>(), http);
-            _inbounds = new Inbounds.Inbounds(projectIdOrServicePlanId, baseAddress,
-                loggerFactory?.Create<ISinchSmsInbounds>(), http);
-            _groups = new Groups.Groups(projectIdOrServicePlanId, baseAddress, loggerFactory?.Create<ISinchSmsGroups>(),
-                http);
-            _deliveryReports = new DeliveryReports.DeliveryReports(projectIdOrServicePlanId, baseAddress,
+            _batches = new Batches.Batches(id, baseAddress, loggerFactory?.Create<ISinchSmsBatches>(), http);
+            _inbounds = new Inbounds.Inbounds(id, baseAddress, loggerFactory?.Create<ISinchSmsInbounds>(), http);
+            _groups = new Groups.Groups(id, baseAddress, loggerFactory?.Create<ISinchSmsGroups>(), http);
+            _deliveryReports = new DeliveryReports.DeliveryReports(id, baseAddress,
                 loggerFactory?.Create<ISinchSmsDeliveryReports>(), http);
         }
 
@@ -141,23 +113,10 @@ namespace Sinch.SMS
 
         public ISmsSinchEvents SinchEvents { get; }
 
-        public bool IsUsingServicePlanId { get; }
-
         private T GetRequiredApiClient<T>(T? client)
             where T : class
         {
-            if (client != null)
-                return client;
-
-            ValidateApiClientAvailability();
-
-            throw CreateApiConfigurationException();
-        }
-
-        private void ValidateApiClientAvailability()
-        {
-            if (_servicePlanIdConfiguration is { ServicePlanIdRegion: null })
-                throw CreateMissingServicePlanIdRegionException();
+            return client ?? throw CreateApiConfigurationException();
         }
 
         private static InvalidOperationException CreateApiConfigurationException()
@@ -166,13 +125,6 @@ namespace Sinch.SMS
                 "SMS API operations are unavailable when the SMS client is initialized for Sinch Events only. " +
                 $"Configure either {nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)} or " +
                 $"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.ServicePlanIdConfiguration)} to use SMS API operations.");
-        }
-
-        private static InvalidOperationException CreateMissingServicePlanIdRegionException()
-        {
-            return new InvalidOperationException(
-                $"{nameof(ServicePlanIdConfiguration)}.{nameof(ServicePlanIdConfiguration.ServicePlanIdRegion)} is required. " +
-                $"Set it to one of the values in {nameof(SmsServicePlanIdRegion)}, e.g. {nameof(SmsServicePlanIdRegion)}.{nameof(SmsServicePlanIdRegion.Us)}.");
         }
     }
 }

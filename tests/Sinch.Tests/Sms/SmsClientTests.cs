@@ -93,21 +93,6 @@ namespace Sinch.Tests.Sms
         }
 
         [Fact]
-        public void SmsWithServicePlanId_ThrowsWhenRegionNotSet()
-        {
-            var sinch = new SinchClient(new SinchClientConfiguration()
-            {
-                SmsConfiguration = SinchSmsConfiguration.WithServicePlanId("servicePlanId", "apiToken", null!)
-            });
-
-            sinch.Sms.SinchEvents.Should().NotBeNull();
-
-            var act = () => sinch.Sms.Batches;
-            act.Should().Throw<InvalidOperationException>()
-                .WithMessage("*ServicePlanIdRegion*required*");
-        }
-
-        [Fact]
         public void SmsWithServicePlanId_DoesNotThrow_WhenRegionIsSet()
         {
             var sinch = new SinchClient(new SinchClientConfiguration()
