@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -63,7 +62,7 @@ namespace Sinch.SMS.Batches.Send
         ///     URL to the media file
         /// </summary>
         [JsonPropertyName("url")]
-        public required Uri Url { get; set; }
+        public required string Url { get; set; }
 
         /// <summary>
         ///     Returns the string presentation of the object

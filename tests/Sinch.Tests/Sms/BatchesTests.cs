@@ -173,7 +173,7 @@ namespace Sinch.Tests.Sms
                 Body = new MediaBody
                 {
                     Message = "Hi ${name} (${an_identifier}) ! How are you?",
-                    Url = new Uri("https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png")
+                    Url = "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png"
                 },
                 Parameters = new Dictionary<string, Dictionary<string, string>>
                 {
@@ -211,7 +211,7 @@ namespace Sinch.Tests.Sms
                 Body = new MediaBody
                 {
                     Message = "Hi ${name} (${an_identifier}) ! How are you?",
-                    Url = new Uri("https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png"),
+                    Url = "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png",
                     Subject = "subject field"
                 },
                 Parameters = new Dictionary<string, Dictionary<string, string>>
@@ -536,7 +536,7 @@ namespace Sinch.Tests.Sms
                     Body = new MediaBody
                     {
                         Message = "Hi ${name} (${an_identifier}) ! How are you?",
-                        Url = new Uri("https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png")
+                        Url = "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png"
                     },
                     Parameters = new Dictionary<string, Dictionary<string, string>>
                     {
@@ -575,7 +575,7 @@ namespace Sinch.Tests.Sms
                     Body = new MediaBody
                     {
                         Message = "Hi ${name} (${an_identifier}) ! How are you?",
-                        Url = new Uri("https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png"),
+                        Url = "https://en.wikipedia.org/wiki/Sinch_(company)#/media/File:Sinch_LockUp_RGB.png",
                         Subject = "subject field"
                     },
                     Parameters = new Dictionary<string, Dictionary<string, string>>

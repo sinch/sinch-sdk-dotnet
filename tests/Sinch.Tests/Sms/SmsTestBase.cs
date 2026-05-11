@@ -1,4 +1,3 @@
-using System;
 using Sinch.SMS;
 
 namespace Sinch.Tests.Sms
@@ -9,8 +8,13 @@ namespace Sinch.Tests.Sms
 
         protected SmsTestBase()
         {
-            Sms = new SmsClient(new ProjectId(ProjectId), new Uri("https://zt.us.sms.api.sinch.com"), default,
-                HttpSnakeCase);
+            Sms = new SmsClient(
+                new SinchSmsConfiguration { Region = SmsRegion.Us },
+                ProjectId,
+                null,
+                default,
+                HttpSnakeCase,
+                () => HttpClient);
         }
     }
 }
