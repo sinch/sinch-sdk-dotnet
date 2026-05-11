@@ -24,6 +24,7 @@
 - [SMS: `ISmsWebhooks` renamed to `ISmsSinchEvents`](#sms-ismswebhooks-renamed-to-ismssinchevents)
 - [SMS: `ParseEvent` now returns `ISmsSinchEvent`](#sms-parseevent-now-returns-ismssinchevent)
 - [SMS: Namespace `Sinch.SMS.Hooks` renamed to `Sinch.SMS.SinchEvents`](#sms-namespace-sinchsmshooks-renamed-to-sinchsmssinchevents)
+- [SMS: `MediaBody.Url` changed from `Uri` to `string`](#sms-mediabodyurl-changed-from-uri-to-string)
 - [ConversationChannelCredentials, InstagramCredentials and LineEnterpriseCredentials moved to new namespace](#conversationchanelcredentials-instagramcredentials-and-lineenterprisecredentials-moved-to-new-namespace)
 - [Verification API: Callout renamed to PhoneCall and Seamless renamed to Data](#verification-api-callout-renamed-to-phonecall-and-seamless-renamed-to-data)
 - [Fax API: ListEmailsResponse replaced with concrete response types](#fax-api-listemailsresponse-replaced-with-concrete-response-types)
@@ -616,6 +617,26 @@ using Sinch.SMS.Hooks;
 **After:**
 ```csharp
 using Sinch.SMS.SinchEvents;
+```
+
+## SMS: `MediaBody.Url` changed from `Uri` to `string`
+
+`MediaBody.Url` is now a `string` instead of `Uri`.
+
+**Before:**
+```csharp
+var body = new MediaBody
+{
+    Url = new Uri("https://example.com/image.png")
+};
+```
+
+**After:**
+```csharp
+var body = new MediaBody
+{
+    Url = "https://example.com/image.png"
+};
 ```
 
 ## ConversationChannelCredentials, InstagramCredentials and LineEnterpriseCredentials moved to new namespace
