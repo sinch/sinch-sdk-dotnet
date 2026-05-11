@@ -28,25 +28,16 @@ namespace Sinch.Verification.SinchEvents
 
         public IVerificationSinchEvent ParseEvent(string json)
         {
-            using var document = JsonDocument.Parse(json);
-            if (!document.RootElement.TryGetProperty("event", out var eventTypeProperty) ||
-                eventTypeProperty.ValueKind != JsonValueKind.String)
+            var result = JsonSerializer.Deserialize<IVerificationSinchEvent>(json, _jsonSerializerOptions);
+            if (result is null)
             {
-                throw new JsonException("Verification Sinch Event payload is missing the event discriminator.");
+                _logger?.LogError(
+                    "Failed to deserialize Verification Sinch Event. No matching event type found for payload: {json}",
+                    json);
+                throw new InvalidOperationException("Deserialization of Verification Sinch Event failed.");
             }
 
-            if (eventTypeProperty.ValueEquals("VerificationRequestEvent"))
-            {
-                return DeserializeEvent<VerificationStartEvent>(json, "VerificationRequestEvent");
-            }
-
-            if (eventTypeProperty.ValueEquals("VerificationResultEvent"))
-            {
-                return DeserializeEvent<VerificationResultEvent>(json, "VerificationResultEvent");
-            }
-
-            throw new JsonException(
-                $"Unknown Verification Sinch Event type '{eventTypeProperty.GetString()}'.");
+            return result;
         }
 
         public bool ValidateAuthenticationHeader(
@@ -83,22 +74,6 @@ namespace Sinch.Verification.SinchEvents
         public string SerializeResponse(VerificationStartEventResponseBase response)
         {
             return JsonSerializer.Serialize(response, response.GetType(), _jsonSerializerOptions);
-        }
-
-        private TEvent DeserializeEvent<TEvent>(string json, string? eventType)
-            where TEvent : class, IVerificationSinchEvent
-        {
-            var result = JsonSerializer.Deserialize<TEvent>(json, _jsonSerializerOptions);
-            if (result is null)
-            {
-                _logger?.LogError(
-                    "Failed to deserialize Verification Sinch Event of type {eventType}. Payload: {json}",
-                    eventType,
-                    json);
-                throw new InvalidOperationException("Deserialization of Verification Sinch Event failed.");
-            }
-
-            return result;
         }
 
         private ApplicationSignedAuth ResolveApplicationSignedAuth()
