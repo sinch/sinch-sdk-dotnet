@@ -1,4 +1,3 @@
-using System.Net.Http;
 using Sinch.SMS;
 
 namespace Sinch.Tests.Sms
