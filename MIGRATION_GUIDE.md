@@ -559,13 +559,13 @@ public sealed class RecipientDeliveryReportSms : IRecipientDeliveryReport
 `ISinchSms.Webhooks` has been renamed to `ISinchSms.SinchEvents`.
 The interface is now `ISmsSinchEvents` (was `ISmsWebhooks`).
 
-**Before:**
+Version 1.*:
 ```csharp
 var sinchEvent = sinch.Sms.Webhooks.ParseEvent(json);
 bool valid = sinch.Sms.Webhooks.ValidateAuthenticationHeader(secret, request.Headers, body);
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 var sinchEvent = sinch.Sms.SinchEvents.ParseEvent(json);
 bool valid = sinch.Sms.SinchEvents.ValidateAuthenticationHeader(secret, request.Headers, body);
@@ -595,7 +595,7 @@ The `CallbackUrl` property on SMS batch request models is now `EventDestinationT
 This affects `SendTextBatchRequest`, `SendBinaryBatchRequest`, `SendMediaBatchRequest`,
 `UpdateTextBatchRequest`, `UpdateBinaryBatchRequest`, and `UpdateMediaBatchRequest`.
 
-**Before:**
+Version 1.*:
 ```csharp
 var request = new SendTextBatchRequest
 {
@@ -603,7 +603,7 @@ var request = new SendTextBatchRequest
 };
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 var request = new SendTextBatchRequest
 {
@@ -616,12 +616,12 @@ var request = new SendTextBatchRequest
 The SMS event parsing interface moved from `Sinch.SMS.Hooks` to `Sinch.SMS.SinchEvents`.
 Event payload models remain in `Sinch.SMS.Inbounds` and `Sinch.SMS.DeliveryReports`.
 
-**Before:**
+Version 1.*:
 ```csharp
 using Sinch.SMS.Hooks;
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 using Sinch.SMS.SinchEvents;
 ```
@@ -630,7 +630,7 @@ using Sinch.SMS.SinchEvents;
 
 `MediaBody.Url` is now a `string` instead of `Uri`.
 
-**Before:**
+Version 1.*:
 ```csharp
 var body = new MediaBody
 {
@@ -638,7 +638,7 @@ var body = new MediaBody
 };
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 var body = new MediaBody
 {
@@ -1260,13 +1260,13 @@ var callback = sinch.Conversation.Webhooks.ParseEvent(rawBody);
 The return type is now `EventDestination` (was `CallbackConfiguration`).
 The namespace has changed from `Sinch.Numbers.CallbackConfiguration` to `Sinch.Numbers.EventDestinations`.
 
-**Before:**
+Version 1.*:
 ```csharp
 var config = await sinch.Numbers.CallbackConfiguration.Get();
 await sinch.Numbers.CallbackConfiguration.Update("my-secret");
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 var config = await sinch.Numbers.EventDestinations.Get();
 await sinch.Numbers.EventDestinations.Update("my-secret");
@@ -1276,12 +1276,12 @@ await sinch.Numbers.EventDestinations.Update("my-secret");
 The `CallbackUrl` property on `ActiveNumber`, `RentAnyNumberRequest`,
 `RentActiveNumberRequest`, and `UpdateActiveNumberRequest` is now `EventDestinationTarget`.
 
-**Before:**
+Version 1.*:
 ```csharp
 request.CallbackUrl = "https://my-server.com/numbers-events";
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 request.EventDestinationTarget = "https://my-server.com/numbers-events";
 ```
@@ -1292,14 +1292,14 @@ All event payload types (`Event`, `EventType`, `EventStatus`, `ResourceType`) ha
 from the `Sinch.Numbers.Hooks` namespace to `Sinch.Numbers.SinchEvents`. The `Event` class
 has also been renamed to `NumbersSinchEvent`.
 
-**Before:**
+Version 1.*:
 ```csharp
 using Sinch.Numbers.Hooks;
 
 var sinchEvent = JsonSerializer.Deserialize<Event>(json);
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 using Sinch.Numbers.SinchEvents;
 
@@ -1314,7 +1314,7 @@ var sinchEvent = sinch.Numbers.SinchEvents.ParseEvent(json)
 The signature has also changed: the method now accepts the headers collection directly
 from your HTTP framework — no manual dictionary construction needed.
 
-**Before:**
+Version 1.*:
 ```csharp
 // Option 1 — raw signature string
 bool valid = sinch.Numbers.ValidateAuthenticationHeader(hmacSecret, json, signatureHeaderValue);
@@ -1323,7 +1323,7 @@ bool valid = sinch.Numbers.ValidateAuthenticationHeader(hmacSecret, json, signat
 bool valid = sinch.Numbers.ValidateAuthenticationHeader(hmacSecret, json, httpHeaders);
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 // ASP.NET Core — pass request.Headers directly
 bool valid = sinch.Numbers.SinchEvents.ValidateAuthenticationHeader(hmacSecret, request.Headers, body);
@@ -1345,12 +1345,12 @@ var sinchEvent = sinch.Numbers.SinchEvents.ParseEvent(jsonString);
 The `EventType` field `DeprovisioningFromCampaignProvisioningToCampaign` has been renamed to
 `DeprovisioningFromCampaign`.
 
-**Before:**
+Version 1.*:
 ```csharp
 EventType.DeprovisioningFromCampaignProvisioningToCampaign
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 EventType.DeprovisioningFromCampaign
 ```
@@ -1359,14 +1359,14 @@ EventType.DeprovisioningFromCampaign
 
 Verification request and result event payloads, along with verification response payload models, moved to the `Sinch.Verification.SinchEvents` namespace.
 
-**Before:**
+Version 1.*:
 ```csharp
 using Sinch.Verification.Hooks;
 
 var verificationEvent = JsonSerializer.Deserialize<VerificationRequestEvent>(json);
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 using Sinch.Verification.SinchEvents;
 
@@ -1377,12 +1377,12 @@ var verificationEvent = sinch.Verification.SinchEvents.ParseEvent(json);
 
 `ValidateAuthenticationHeader` has been removed from `ISinchVerificationClient` and is now available on `ISinchVerificationClient.SinchEvents`.
 
-**Before:**
+Version 1.*:
 ```csharp
 bool valid = sinch.Verification.ValidateAuthenticationHeader(HttpMethod.Post, path, headers, body);
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 bool valid = sinch.Verification.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, path, headers, body);
 ```
@@ -1391,12 +1391,12 @@ bool valid = sinch.Verification.SinchEvents.ValidateAuthenticationHeader(HttpMet
 
 `ParseEvent` is now available on `ISinchVerificationClient.SinchEvents` and returns `IVerificationSinchEvent`.
 
-**Before:**
+Version 1.*:
 ```csharp
 var verificationEvent = JsonSerializer.Deserialize<VerificationResultEvent>(json);
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 var verificationEvent = sinch.Verification.SinchEvents.ParseEvent(json);
 ```
@@ -1405,7 +1405,7 @@ var verificationEvent = sinch.Verification.SinchEvents.ParseEvent(json);
 
 Verification response payloads are now serialized through `ISinchVerificationClient.SinchEvents`.
 
-**Before:**
+Version 1.*:
 ```csharp
 var response = new SmsRequestEventResponse
 {
@@ -1415,7 +1415,7 @@ var response = new SmsRequestEventResponse
 var json = JsonSerializer.Serialize(response);
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 var response = new VerificationStartEventResponseSms
 {
@@ -1438,16 +1438,14 @@ Renamed types:
 - `PhoneCallRequestEventResponse` → `VerificationStartEventResponsePhoneCall`
 - `WhatsAppRequestEventResponse` → `VerificationStartEventResponseWhatsApp`
 
-> The `"event"` field values in the JSON payload (`"VerificationRequestEvent"`, `"VerificationResultEvent"`) are unchanged — only the C# type names changed.
-
 `VerificationStartEventResponseBase` is now abstract. Instantiate one of the concrete response types instead.
 
-**Before:**
+Version 1.*:
 ```csharp
 var response = new RequestEventResponseBase { Action = Action.Allow };
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 var response = new VerificationStartEventResponseSms { Action = Action.Allow };
 ```
