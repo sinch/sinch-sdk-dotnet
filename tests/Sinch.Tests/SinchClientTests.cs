@@ -141,7 +141,7 @@ namespace Sinch.Tests
         [Fact]
         public void Numbers_SinchEvents_ParseEvent_DoesNotRequireCredentials()
         {
-            var sinch = new SinchClient(new SinchClientConfiguration());
+            var sinch = new SinchClient();
             var json = Helpers.LoadResources("Numbers/SinchEvents/NumberSinchEvent.json");
 
             var sinchEvent = sinch.Numbers.SinchEvents.ParseEvent(json);
@@ -153,7 +153,7 @@ namespace Sinch.Tests
         [Fact]
         public void Verification_SinchEvents_ParseEvent_DoesNotRequireConfiguration()
         {
-            var sinch = new SinchClient(new SinchClientConfiguration());
+            var sinch = new SinchClient();
             var json = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEvent.json");
 
             var sinchEvent = sinch.Verification.SinchEvents.ParseEvent(json);
@@ -164,7 +164,7 @@ namespace Sinch.Tests
         [Fact]
         public void Verification_SinchEvents_SerializeResponse_DoesNotRequireConfiguration()
         {
-            var sinch = new SinchClient(new SinchClientConfiguration());
+            var sinch = new SinchClient();
             var response = new Sinch.Verification.SinchEvents.VerificationStartEventResponseSms
             {
                 Action = Sinch.Verification.SinchEvents.Action.Allow,
