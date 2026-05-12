@@ -1523,8 +1523,10 @@ var isValid = sinch.Voice.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Po
 
 ## Voice API: `ParseEvent` moved to `SinchEvents`
 
-`ParseEvent` and `ParseEventAsync` have moved from `ISinchVoiceClient` to
-`ISinchVoiceClient.SinchEvents`. The return type is now `VoiceSinchEvent` (was `IVoiceEvent`).
+`ParseEvent` has moved from `ISinchVoiceClient` to `ISinchVoiceClient.SinchEvents`.
+The return type is now `VoiceSinchEvent` (was `IVoiceEvent`).
+The `ParseEvent(JsonNode json)` overload has been removed — pass the raw JSON string instead.
+`ParseEventAsync` has been removed.
 
 Version 1.*:
 ```csharp
