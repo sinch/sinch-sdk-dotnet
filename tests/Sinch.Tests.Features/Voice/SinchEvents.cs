@@ -14,7 +14,8 @@ namespace Sinch.Tests.Features.Voice
     public class SinchEvents
     {
         private readonly HttpClient _httpClient = new HttpClient();
-        private ISinchVoiceClient _voiceClient;
+        private static IVoiceSinchEvents _voiceSinchEvents;
+        private static IVoiceSinchEvents _voiceSinchEventsWithAuth;
         private HttpResponseMessage _pieReturnResponse;
         private string _rawPieSequenceContent;
         private HttpResponseMessage _pieSequenceResponse;
@@ -33,24 +34,8 @@ namespace Sinch.Tests.Features.Voice
         [Given(@"the Voice Webhooks handler is available")]
         public void GivenTheVoiceSinchEventsHandlerIsAvailable()
         {
-            _voiceClient = new SinchClient(
-                new SinchClientConfiguration
-                {
-                    SinchOptions = new SinchOptions
-                    {
-                        ApiUrlOverrides = new ApiUrlOverrides()
-                        {
-                            VoiceUrl = "http://localhost:3019",
-                            VoiceApplicationManagementUrl = "http://localhost:3020"
-                        }
-                    },
-                    VoiceConfiguration = new SinchVoiceConfiguration()
-                    {
-                        AppKey = "appKey",
-                        AppSecret = "YXBwU2VjcmV0"
-                    }
-                }
-            ).Voice;
+            _voiceSinchEvents = new SinchClient().Voice.SinchEvents;
+            _voiceSinchEventsWithAuth = Utils.TestSinchVoiceClient.SinchEvents;
         }
 
         [When(@"I send a request to trigger a ""PIE"" event with a ""return"" type")]
@@ -63,7 +48,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task ThenTheHeaderOfTheEventWithATypeContainsAValidAuthorization()
         {
             _rawPieSequenceContent = await _pieReturnResponse.Content.ReadAsStringAsync();
-            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+            _voiceSinchEventsWithAuth.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
                 _pieReturnResponse.GetAllHeaders(),
                 _rawPieSequenceContent).Should().BeTrue();
         }
@@ -71,7 +56,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""PIE"" event with a ""return"" type")]
         public void ThenTheVoiceEventDescribesAEventWithAType()
         {
-            _voiceClient.SinchEvents.ParseEvent(_rawPieSequenceContent).As<PromptInputEvent>().Should().BeEquivalentTo(
+            _voiceSinchEvents.ParseEvent(_rawPieSequenceContent).As<PromptInputEvent>().Should().BeEquivalentTo(
                 new PromptInputEvent
                 {
                     CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000013",
@@ -99,7 +84,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task ThenTheHeaderOfTheEventWithAPieTypeSequenceContainsAValidAuthorization()
         {
             _rawPieSequenceContent = await _pieSequenceResponse.Content.ReadAsStringAsync();
-            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+            _voiceSinchEventsWithAuth.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
                 _pieSequenceResponse.GetAllHeaders(),
                 _rawPieSequenceContent).Should().BeTrue();
         }
@@ -107,7 +92,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""PIE"" event with a ""sequence"" type")]
         public void ThenTheVoiceEventDescribesAPieEventWithASequenceType()
         {
-            _voiceClient.SinchEvents.ParseEvent(_rawPieSequenceContent).As<PromptInputEvent>().Should().BeEquivalentTo(
+            _voiceSinchEvents.ParseEvent(_rawPieSequenceContent).As<PromptInputEvent>().Should().BeEquivalentTo(
                 new PromptInputEvent
                 {
                     CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000023",
@@ -135,7 +120,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task ThenTheHeaderOfTheEventDiceContainsAValidAuthorization()
         {
             _rawDiceContent = await _diceResponse.Content.ReadAsStringAsync();
-            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+            _voiceSinchEventsWithAuth.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
                 _diceResponse.GetAllHeaders(),
                 _rawDiceContent).Should().BeTrue();
         }
@@ -143,7 +128,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""DICE"" event")]
         public void ThenTheVoiceEventDescribesAEvent()
         {
-            _voiceClient.SinchEvents.ParseEvent(_rawDiceContent).Should().BeEquivalentTo(new DisconnectedCallEvent
+            _voiceSinchEvents.ParseEvent(_rawDiceContent).Should().BeEquivalentTo(new DisconnectedCallEvent
             {
                 CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000033",
                 Timestamp = Helpers.ParseUtc("2024-06-06T16:59:42Z"),
@@ -182,7 +167,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task ThenTheHeaderOfTheEventContainsAValidAuthorization()
         {
             _rawAceContent = await _aceResponse.Content.ReadAsStringAsync();
-            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+            _voiceSinchEventsWithAuth.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
                 _aceResponse.GetAllHeaders(),
                 _rawAceContent).Should().BeTrue();
         }
@@ -190,7 +175,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""ACE"" event")]
         public void ThenTheVoiceEventDescribesAceEvent()
         {
-            _voiceClient.SinchEvents.ParseEvent(_rawAceContent).Should().BeEquivalentTo(new AnsweredCallEvent
+            _voiceSinchEvents.ParseEvent(_rawAceContent).Should().BeEquivalentTo(new AnsweredCallEvent
             {
                 CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000043",
                 CallResourceUrl = null,
@@ -212,7 +197,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task ThenTheHeaderOfTheIceEventContainsAValidAuthorization()
         {
             _rawIceContent = await _iceResponse.Content.ReadAsStringAsync();
-            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+            _voiceSinchEventsWithAuth.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
                 _iceResponse.GetAllHeaders(),
                 _rawIceContent).Should().BeTrue();
         }
@@ -220,7 +205,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""ICE"" event")]
         public void ThenTheVoiceEventDescribesAIceEvent()
         {
-            _voiceClient.SinchEvents.ParseEvent(_rawIceContent).As<IncomingCallEvent>().Should().BeEquivalentTo(
+            _voiceSinchEvents.ParseEvent(_rawIceContent).As<IncomingCallEvent>().Should().BeEquivalentTo(
                 new IncomingCallEvent()
                 {
                     CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000053",
@@ -257,7 +242,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task ThenTheHeaderOfTheRecordingFinishedEventContainsAValidAuthorization()
         {
             _rawEventRecordAvailableContent = await _eventRecordingFinishedResponse.Content.ReadAsStringAsync();
-            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+            _voiceSinchEventsWithAuth.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
                 _eventRecordingFinishedResponse.GetAllHeaders(),
                 _rawEventRecordAvailableContent).Should().BeTrue();
         }
@@ -265,7 +250,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""notify"" event with a ""recording_finished"" type")]
         public void ThenTheVoiceEventDescribesANotifyEventWithARecordFinishedType()
         {
-            _voiceClient.SinchEvents.ParseEvent(_rawEventRecordAvailableContent).As<NotificationEvent>().Should().BeEquivalentTo(
+            _voiceSinchEvents.ParseEvent(_rawEventRecordAvailableContent).As<NotificationEvent>().Should().BeEquivalentTo(
                 new NotificationEvent()
                 {
                     CallId = "33dd8e62-0ac6-4e0c-a89f-36d121f861f9",
@@ -285,7 +270,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task ThenTheHeaderOfTheRecordingAvailableEventContainsAValidAuthorization()
         {
             _rawEventRecordAvailableContent = await _eventRecordingAvailableResponse.Content.ReadAsStringAsync();
-            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+            _voiceSinchEventsWithAuth.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
                 _eventRecordingAvailableResponse.GetAllHeaders(),
                 _rawEventRecordAvailableContent).Should().BeTrue();
         }
@@ -293,7 +278,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""notify"" event with a ""recording_available"" type")]
         public void ThenTheVoiceEventNotifyDescribesAEventWithARecordingAvailableType()
         {
-            _voiceClient.SinchEvents.ParseEvent(_rawEventRecordAvailableContent).As<NotificationEvent>().Should().BeEquivalentTo(
+            _voiceSinchEvents.ParseEvent(_rawEventRecordAvailableContent).As<NotificationEvent>().Should().BeEquivalentTo(
                 new NotificationEvent()
                 {
                     CallId = "33dd8e62-0ac6-4e0c-a89f-36d121f861f9",
@@ -314,7 +299,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task ThenTheHeaderOfTheTranscriptionAvailableEventContainsAValidAuthorization()
         {
             _rawEventTransactionContent = await _eventTranscriptionAvailableResponse.Content.ReadAsStringAsync();
-            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+            _voiceSinchEventsWithAuth.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
                 _eventTranscriptionAvailableResponse.GetAllHeaders(),
                 _rawEventTransactionContent).Should().BeTrue();
         }
@@ -322,7 +307,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the Voice event describes a ""notify"" event with a ""transcription_available"" type")]
         public void ThenTheVoiceEventDescribesANotifyEventWithATranscriptionAvailableType()
         {
-            _voiceClient.SinchEvents.ParseEvent(_rawEventTransactionContent).As<NotificationEvent>().Should().BeEquivalentTo(
+            _voiceSinchEvents.ParseEvent(_rawEventTransactionContent).As<NotificationEvent>().Should().BeEquivalentTo(
                 new NotificationEvent()
                 {
                     CallId = "33dd8e62-0ac6-4e0c-a89f-36d121f861f9",
