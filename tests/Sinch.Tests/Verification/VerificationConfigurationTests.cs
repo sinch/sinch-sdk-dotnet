@@ -97,7 +97,7 @@ namespace Sinch.Tests.Verification
             var op = () => client.Verification.Verification.StartSms("+15551234567");
 
             (await op.Should().ThrowAsync<InvalidOperationException>()).Which.Message.Should()
-                .Be("SinchVerificationConfiguration is not set.");
+                .Be("VerificationConfiguration with AppKey and AppSecret is required to use Verification API methods. Set VerificationConfiguration when creating SinchClient.");
         }
     }
 }
