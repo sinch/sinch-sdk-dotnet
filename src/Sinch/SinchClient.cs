@@ -224,36 +224,12 @@ namespace Sinch
                 _loggerFactory,
                 _httpClientAccessor);
 
-        private ISinchVerificationClient InitVerification()
-        {
-            var config = _sinchClientConfiguration.VerificationConfiguration;
-
-            var auth = new Lazy<ISinchAuth>(() =>
-            {
-                var currentConfig = _sinchClientConfiguration.VerificationConfiguration ??
-                    throw new InvalidOperationException($"{nameof(SinchVerificationConfiguration)} is not set.");
-
-                if (string.IsNullOrEmpty(currentConfig.AppKey))
-                    throw new ArgumentNullException(nameof(currentConfig.AppKey), "The value should be present");
-
-                if (string.IsNullOrEmpty(currentConfig.AppSecret))
-                    throw new ArgumentNullException(nameof(currentConfig.AppSecret), "The value should be present");
-
-                if (currentConfig.AuthStrategy == AuthStrategy.ApplicationSign)
-                    return new ApplicationSignedAuth(currentConfig.AppKey, currentConfig.AppSecret);
-
-                return new BasicAuth(currentConfig.AppKey, currentConfig.AppSecret);
-            });
-
-            var http = new Http(auth, _httpClientAccessor, _loggerFactory?.Create<IHttp>(),
-                JsonNamingPolicy.CamelCase);
-
-            var verificationUrl = ResolveUrl(
+        private ISinchVerificationClient InitVerification() =>
+            new SinchVerificationClient(
+                _sinchClientConfiguration.VerificationConfiguration,
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VerificationUrl,
-                () => SinchUrlResolvers.ResolveVerificationUrl(config));
-
-            return new SinchVerificationClient(verificationUrl, _loggerFactory, http, auth);
-        }
+                _loggerFactory,
+                _httpClientAccessor);
 
         private ISinchFax InitFax()
         {

@@ -1,4 +1,6 @@
 using System;
+using System.Net.Http;
+using System.Text.Json;
 using Sinch.Auth;
 using Sinch.Core;
 using Sinch.Logger;
@@ -27,23 +29,68 @@ namespace Sinch.Verification
 
     internal sealed class SinchVerificationClient : ISinchVerificationClient
     {
-        internal SinchVerificationClient(Uri baseAddress, LoggerFactory? loggerFactory,
-            IHttp http, Lazy<ISinchAuth> auth)
+        private static readonly JsonSerializerOptions DefaultJsonOptions =
+            new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+
+        private const string ConfigRequired =
+            "VerificationConfiguration with AppKey and AppSecret is required to use Verification API methods. " +
+            "Set VerificationConfiguration when creating SinchClient.";
+
+        private readonly ISinchVerification? _verification;
+        private readonly ISinchVerificationStatus? _verificationStatus;
+
+        internal SinchVerificationClient(
+            SinchVerificationConfiguration? config,
+            string? verificationUrlOverride,
+            LoggerFactory? loggerFactory,
+            Func<HttpClient> httpClientAccessor)
         {
-            Verification = new SinchVerification(loggerFactory?.Create<SinchVerification>(), baseAddress, http);
-            VerificationStatus =
-                new SinchVerificationStatus(loggerFactory?.Create<SinchVerificationStatus>(), baseAddress, http);
+            var auth = new Lazy<ISinchAuth>(() =>
+            {
+                var currentConfig = config ??
+                    throw new InvalidOperationException(ConfigRequired);
+
+                if (string.IsNullOrEmpty(currentConfig.AppKey))
+                    throw new ArgumentNullException(nameof(currentConfig.AppKey), "The value should be present");
+
+                if (string.IsNullOrEmpty(currentConfig.AppSecret))
+                    throw new ArgumentNullException(nameof(currentConfig.AppSecret), "The value should be present");
+
+                if (currentConfig.AuthStrategy == AuthStrategy.ApplicationSign)
+                    return new ApplicationSignedAuth(currentConfig.AppKey, currentConfig.AppSecret);
+
+                return new BasicAuth(currentConfig.AppKey, currentConfig.AppSecret);
+            });
+
+            var verificationUrl = !string.IsNullOrEmpty(verificationUrlOverride)
+                ? new Uri(verificationUrlOverride)
+                : SinchUrlResolvers.ResolveVerificationUrl(config);
+
+            Http? http = null;
+            if (config != null)
+            {
+                http = new Http(auth, httpClientAccessor, loggerFactory?.Create<IHttp>(),
+                    JsonNamingPolicy.CamelCase);
+
+                _verification = new SinchVerification(loggerFactory?.Create<SinchVerification>(), verificationUrl,
+                    http);
+                _verificationStatus = new SinchVerificationStatus(
+                    loggerFactory?.Create<SinchVerificationStatus>(), verificationUrl, http);
+            }
+
             SinchEvents = new VerificationSinchEvents(
-                http.JsonSerializerOptions,
+                http?.JsonSerializerOptions ?? DefaultJsonOptions,
                 auth,
                 loggerFactory?.Create<IVerificationSinchEvents>());
         }
 
         /// <inheritdoc />
-        public ISinchVerification Verification { get; }
+        public ISinchVerification Verification =>
+            _verification ?? throw new InvalidOperationException(ConfigRequired);
 
         /// <inheritdoc />
-        public ISinchVerificationStatus VerificationStatus { get; }
+        public ISinchVerificationStatus VerificationStatus =>
+            _verificationStatus ?? throw new InvalidOperationException(ConfigRequired);
 
         /// <inheritdoc />
         public IVerificationSinchEvents SinchEvents { get; }
