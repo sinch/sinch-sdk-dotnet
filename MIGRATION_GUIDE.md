@@ -78,9 +78,7 @@ If you are currently targeting .NET 6 or 7, you must upgrade your project's targ
 ```
 
 ## Initialize `SinchClient` with unified credentials:
-var verificationEvent = (VerificationRequestEvent)sinch.Verification.SinchEvents.ParseEvent(json);
-```
-var verificationEvent = (VerificationRequestEvent)sinch.Verification.SinchEvents.ParseEvent(json);
+
 Console application:
 
 Version 1:
