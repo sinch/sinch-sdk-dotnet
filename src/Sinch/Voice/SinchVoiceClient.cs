@@ -1,11 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Threading;
-using System.Threading.Tasks;
 using Sinch.Auth;
 using Sinch.Core;
 using Sinch.Logger;
@@ -41,59 +37,25 @@ namespace Sinch.Voice
         ISinchVoiceApplications Applications { get; }
 
         /// <summary>
-        ///     Validates callback request.
+        ///     Parse incoming Voice Sinch Events, validate Sinch request signatures, and serialize event responses.
         /// </summary>
-        /// <param name="method"></param>
-        /// <param name="path"></param>
-        /// <param name="headers"></param>
-        /// <param name="body"></param>
-        /// <returns>True, if produced signature match with that of a header.</returns>
-        bool ValidateAuthenticationHeader(HttpMethod method, string path,
-            Dictionary<string, IEnumerable<string>> headers,
-            string body);
-
-        /// <summary>
-        ///     Parses a Voice callback
-        /// </summary>
-        /// <param name="json"></param>
-        /// <returns></returns>
-        IVoiceEvent ParseEvent(string json);
-
-        /// <summary>
-        ///     Parses a Voice callback
-        /// </summary>
-        /// <param name="json"></param>
-        /// <returns></returns>
-        IVoiceEvent ParseEvent(JsonNode json);
-
-        /// <summary>
-        ///     Parses a Voice callback
-        /// </summary>
-        /// <param name="json"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<IVoiceEvent> ParseEventAsync(Stream json, CancellationToken cancellationToken = default);
+        IVoiceSinchEvents SinchEvents { get; }
     }
 
     /// <inheritdoc />
     internal sealed class SinchVoiceClient : ISinchVoiceClient
     {
-        private readonly ApplicationSignedAuth _applicationSignedAuth;
-        private readonly ILoggerAdapter<ISinchVoiceClient>? _logger;
-        private readonly JsonSerializerOptions _jsonSerializerOptions;
-
         public SinchVoiceClient(Uri baseAddress, LoggerFactory? loggerFactory,
-            IHttp http, ApplicationSignedAuth applicationSignedAuth, Uri applicationManagementBaseAddress)
+            IHttp http, ApplicationSignedAuth? applicationSignedAuth, Uri applicationManagementBaseAddress)
         {
-            _jsonSerializerOptions = http.JsonSerializerOptions;
-            _applicationSignedAuth = applicationSignedAuth;
-            _logger = loggerFactory?.Create<ISinchVoiceClient>();
             Callouts = new SinchCallout(loggerFactory?.Create<ISinchVoiceCallout>(), baseAddress, http);
             Calls = new SinchCalls(loggerFactory?.Create<ISinchVoiceCalls>(), baseAddress, http);
             Conferences = new SinchConferences(loggerFactory?.Create<ISinchVoiceConferences>(), baseAddress, http,
                 Callouts);
             Applications = new SinchApplications(loggerFactory?.Create<ISinchVoiceApplications>(),
                 applicationManagementBaseAddress, http);
+            SinchEvents = new VoiceSinchEvents(http.JsonSerializerOptions, applicationSignedAuth,
+                loggerFactory?.Create<IVoiceSinchEvents>());
         }
 
         /// <inheritdoc />
@@ -108,47 +70,8 @@ namespace Sinch.Voice
         /// <inheritdoc />
         public ISinchVoiceApplications Applications { get; }
 
-        public bool ValidateAuthenticationHeader(HttpMethod method, string path,
-            Dictionary<string, IEnumerable<string>> headers, string body)
-        {
-            return AuthorizationHeaderValidation.Validate(method, path, headers, body, _applicationSignedAuth,
-                _logger);
-        }
-
-        public IVoiceEvent ParseEvent(string json)
-        {
-            var jsonResult = JsonSerializer.Deserialize<IVoiceEvent>(json, _jsonSerializerOptions);
-            if (jsonResult == null)
-            {
-                throw new InvalidOperationException("Deserialization of Voice event failed");
-            }
-
-            return jsonResult;
-        }
-
-        public IVoiceEvent ParseEvent(JsonNode json)
-        {
-            var jsonResult = json.Deserialize<IVoiceEvent>(_jsonSerializerOptions);
-            if (jsonResult == null)
-            {
-                throw new InvalidOperationException("Deserialization of Voice event failed");
-            }
-
-            return jsonResult;
-        }
-
-        public async Task<IVoiceEvent> ParseEventAsync(Stream jsonStream,
-            CancellationToken cancellationToken = default)
-        {
-            var jsonResult =
-                await JsonSerializer.DeserializeAsync<IVoiceEvent>(jsonStream, _jsonSerializerOptions,
-                    cancellationToken);
-            if (jsonResult == null)
-            {
-                throw new InvalidOperationException("Deserialization of Voice event failed");
-            }
-
-            return jsonResult;
-        }
+        /// <inheritdoc />
+        public IVoiceSinchEvents SinchEvents { get; }
     }
 }
+

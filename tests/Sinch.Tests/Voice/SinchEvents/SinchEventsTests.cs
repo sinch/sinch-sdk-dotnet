@@ -32,7 +32,7 @@ namespace Sinch.Tests.Voice.SinchEvents
             // https://developers.sinch.com/docs/voice/api-reference/authentication/callback-signed-request/
             // full path: "https://callbacks.yourdomain.com/sinch/callback/ace"
 
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
+            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
                 new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
@@ -51,7 +51,7 @@ namespace Sinch.Tests.Voice.SinchEvents
         [Fact]
         public void FailIfInvalidAuthHeaderValue()
         {
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
+            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
                 new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
@@ -70,7 +70,7 @@ namespace Sinch.Tests.Voice.SinchEvents
         [Fact]
         public void FailIfAuthHeaderMissing()
         {
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
+            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
                 new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
@@ -82,7 +82,7 @@ namespace Sinch.Tests.Voice.SinchEvents
         [Fact]
         public void FailIfInvalidPath()
         {
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/not/that/path",
+            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/not/that/path",
                 new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
@@ -101,7 +101,7 @@ namespace Sinch.Tests.Voice.SinchEvents
         [Fact]
         public void FailNotThatHttpMethod()
         {
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
+            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Get, "/sinch/callback/ace",
                 new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
@@ -120,7 +120,7 @@ namespace Sinch.Tests.Voice.SinchEvents
         [Fact]
         public void FailNotThatTimestamp()
         {
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
+            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
                 new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2019-11-03T10:59:41Z" } },
@@ -139,7 +139,7 @@ namespace Sinch.Tests.Voice.SinchEvents
         [Fact]
         public void FailNotThatContentType()
         {
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
+            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
                 new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
@@ -159,7 +159,7 @@ namespace Sinch.Tests.Voice.SinchEvents
         public void FailNotThatBody()
         {
             var differentBody = "{\"hello\":\"world\"}";
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
+            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
                 new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },
@@ -178,7 +178,7 @@ namespace Sinch.Tests.Voice.SinchEvents
         [Fact]
         public void FailNotApplicationHeader()
         {
-            _voiceClient.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
+            _voiceClient.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, "/sinch/callback/ace",
                 new Dictionary<string, IEnumerable<string>>()
                 {
                     { "x-timestamp", new[] { "2014-09-24T10:59:41Z" } },

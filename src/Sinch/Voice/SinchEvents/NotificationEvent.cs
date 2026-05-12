@@ -4,11 +4,11 @@ using System.Text.Json.Serialization;
 namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
-    ///     This is the general callback used to send notifications. It's a POST request to the specified calling callback URL.
+    ///     This is the general Sinch event used to send notifications. It's a POST request to the specified event destination URL.
     ///     <br /><br />
-    ///     If there is no response to the callback within the timeout period, the notification is discarded.
+    ///     If there is no response to the event within the timeout period, the notification is discarded.
     /// </summary>
-    public sealed class NotificationEvent : IVoiceEvent
+    public sealed class NotificationEvent : VoiceSinchEvent
     {
         /// <summary>
         ///     Must have the value notify.

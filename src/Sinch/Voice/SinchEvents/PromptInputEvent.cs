@@ -5,15 +5,15 @@ using Sinch.Core;
 namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
-    ///     This callback is triggered as a result of a
+    ///     This Sinch event is triggered as a result of a
     ///     [runMenu](https://developers.sinch.com/docs/voice/api-reference/svaml/actions/#runmenu) action. It can be triggered
     ///     from either a user pressing a number of DTMF digits, or by the return command.
     ///     <br /><br />
-    ///     It's a POST request to the specified calling callback URL. Your application can respond with
+    ///     It's a POST request to the specified event destination URL. Your application can respond with
     ///     [SVAML](https://developers.sinch.com/docs/voice/api-reference/svaml/) logic.<br /><br />
-    ///     Note: PIE callbacks are not issued for DATA Calls, only PSTN and SIP calls.
+    ///     Note: PIE events are not issued for DATA Calls, only PSTN and SIP calls.
     /// </summary>
-    public sealed class PromptInputEvent : IVoiceEvent
+    public sealed class PromptInputEvent : VoiceSinchEvent
     {
         /// <summary>
         ///     Must have the value pie.

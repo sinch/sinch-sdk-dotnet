@@ -4,16 +4,16 @@ using System.Text.Json.Serialization;
 namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
-    ///     This callback is made when the call is picked up by the callee (person receiving the call). It's a POST request to
-    ///     the specified calling callback URL. Look here for allowed
+    ///     This Sinch event is sent when the call is picked up by the callee (person receiving the call). It's a POST request to
+    ///     the specified event destination URL. Look here for allowed
     ///     [instructions](https://developers.sinch.com/docs/voice/api-reference/svaml/instructions) and
     ///     [actions](https://developers.sinch.com/docs/voice/api-reference/svaml/actions).
-    ///     If there is no response to the callback within the timeout period, the call is connected.
+    ///     If there is no response to the ACE event within the timeout period, the call is connected.
     ///     If you have [Answering Machine Detection (AMD)](https://developers.sinch.com/docs/voice/api-reference/amd_v2)
-    ///     enabled, the amd object will also be present on ACE callbacks.
-    ///     Note: ACE Callbacks are not issued for InApp Calls (destination: username), only PSTN and SIP calls.
+    ///     enabled, the amd object will also be present on ACE events.
+    ///     Note: ACE events are not issued for InApp Calls (destination: username), only PSTN and SIP calls.
     /// </summary>
-    public sealed class AnsweredCallEvent : IVoiceEvent
+    public sealed class AnsweredCallEvent : VoiceSinchEvent
     {
         /// <summary>
         ///     Must have the value ace.

@@ -57,6 +57,12 @@
 - [Verification API: `ParseEvent` moved to `SinchEvents`](#verification-api-parseevent-moved-to-sinchevents)
 - [Verification API: `SerializeResponse` added to `SinchEvents`](#verification-api-serializeresponse-added-to-sinchevents)
 - [Verification API: Verification event types renamed](#verification-api-verification-event-types-renamed)
+- [Voice API: `Sinch.Voice.Hooks` namespace renamed to `Sinch.Voice.SinchEvents`](#voice-api-sinchvoicehooks-namespace-renamed-to-sinchvoicesinchevents)
+- [Voice API: `IVoiceEvent` renamed to `VoiceSinchEvent`](#voice-api-ivoiceevent-renamed-to-voicesinchevent)
+- [Voice API: `VoiceEventConverter` renamed to `VoiceSinchEventConverter`](#voice-api-voiceeventconverter-renamed-to-voicesincheventconverter)
+- [Voice API: `ValidateAuthenticationHeader` moved to `SinchEvents`](#voice-api-validateauthenticationheader-moved-to-sinchevents)
+- [Voice API: `ParseEvent` moved to `SinchEvents`](#voice-api-parseevent-moved-to-sinchevents)
+- [Voice API: `SerializeResponse` added to `SinchEvents`](#voice-api-serializeresponse-added-to-sinchevents)
 
 ## .NET Framework Support
 
@@ -1448,4 +1454,97 @@ var response = new RequestEventResponseBase { Action = Action.Allow };
 Version 2.*:
 ```csharp
 var response = new VerificationStartEventResponseSms { Action = Action.Allow };
+```
+
+## Voice API: `Sinch.Voice.Hooks` namespace renamed to `Sinch.Voice.SinchEvents`
+
+All Voice event model types have moved from `Sinch.Voice.Hooks` to `Sinch.Voice.SinchEvents`.
+
+Version 1.*:
+```csharp
+using Sinch.Voice.Hooks;
+```
+
+Version 2.*:
+```csharp
+using Sinch.Voice.SinchEvents;
+```
+
+## Voice API: `IVoiceEvent` renamed to `VoiceSinchEvent`
+
+The abstract base class for all Voice event types has been renamed from `IVoiceEvent` to
+`VoiceSinchEvent`. The `I` prefix was misleading because it is an abstract class, not an
+interface. All concrete event types (`AnsweredCallEvent`, `DisconnectedCallEvent`,
+`IncomingCallEvent`, `NotificationEvent`, `PromptInputEvent`) are unchanged.
+
+> The `"event"` JSON discriminator values are unchanged — only the C# base class name changed.
+
+Version 1.*:
+```csharp
+IVoiceEvent voiceEvent = sinch.Voice.ParseEvent(json);
+```
+
+Version 2.*:
+```csharp
+VoiceSinchEvent voiceEvent = sinch.Voice.SinchEvents.ParseEvent(json);
+```
+
+## Voice API: `VoiceEventConverter` renamed to `VoiceSinchEventConverter`
+
+The custom `JsonConverter` used to deserialize Voice events has been renamed from
+`VoiceEventConverter` to `VoiceSinchEventConverter`. This is only relevant if you were
+referencing the converter directly (e.g. via `[JsonConverter(typeof(VoiceEventConverter))]`
+on a custom subclass).
+
+Version 1.*:
+```csharp
+[JsonConverter(typeof(VoiceEventConverter))]
+```
+
+Version 2.*:
+```csharp
+[JsonConverter(typeof(VoiceSinchEventConverter))]
+```
+
+## Voice API: `ValidateAuthenticationHeader` moved to `SinchEvents`
+
+`ValidateAuthenticationHeader` has moved from `ISinchVoiceClient` to
+`ISinchVoiceClient.SinchEvents`.
+
+Version 1.*:
+```csharp
+var isValid = sinch.Voice.ValidateAuthenticationHeader(HttpMethod.Post, path, headers, body);
+```
+
+Version 2.*:
+```csharp
+var isValid = sinch.Voice.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, path, headers, body);
+```
+
+## Voice API: `ParseEvent` moved to `SinchEvents`
+
+`ParseEvent` and `ParseEventAsync` have moved from `ISinchVoiceClient` to
+`ISinchVoiceClient.SinchEvents`. The return type is now `VoiceSinchEvent` (was `IVoiceEvent`).
+
+Version 1.*:
+```csharp
+IVoiceEvent voiceEvent = sinch.Voice.ParseEvent(json);
+```
+
+Version 2.*:
+```csharp
+VoiceSinchEvent voiceEvent = sinch.Voice.SinchEvents.ParseEvent(json);
+```
+
+## Voice API: `SerializeResponse` added to `SinchEvents`
+
+Voice SVAML event responses (for ICE, ACE, and PIE events) are now serialized through
+`ISinchVoiceClient.SinchEvents.SerializeResponse`. This is a new addition with no breaking
+change — if you were previously calling `JsonSerializer.Serialize` directly, you can
+optionally switch to this method to use the same serializer options as the SDK.
+
+Version 2.*:
+```csharp
+var svaml = new CallEventResponse { Action = new ConnectPstn { ... } };
+var json = sinch.Voice.SinchEvents.SerializeResponse(svaml);
 ```

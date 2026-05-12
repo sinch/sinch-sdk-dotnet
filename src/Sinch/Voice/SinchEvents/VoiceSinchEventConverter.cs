@@ -6,19 +6,14 @@ using System.Text.Json.Serialization;
 namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
-    ///     Marker interface for event types of voice.
+    ///     JSON converter for <see cref="VoiceSinchEvent" /> that uses the <c>"event"</c> discriminator field
+    ///     to determine the concrete event type.
     /// </summary>
-    [JsonConverter(typeof(VoiceEventConverter))]
-    public abstract class IVoiceEvent
+    public sealed class VoiceSinchEventConverter : JsonConverter<VoiceSinchEvent>
     {
-        [JsonPropertyName("event")]
-        [JsonInclude]
-        internal abstract EventType Event { get; set; }
-    }
-
-    public sealed class VoiceEventConverter : JsonConverter<IVoiceEvent>
-    {
-        public override IVoiceEvent? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        /// <inheritdoc />
+        public override VoiceSinchEvent? Read(ref Utf8JsonReader reader, Type typeToConvert,
+            JsonSerializerOptions options)
         {
             var elem = JsonElement.ParseValue(ref reader);
             var descriptor = elem.EnumerateObject().FirstOrDefault(x => x.Name == "event");
@@ -49,10 +44,11 @@ namespace Sinch.Voice.SinchEvents
                 return elem.Deserialize<PromptInputEvent>(options);
             }
 
-            throw new JsonException($"Failed to match verification method object, got {descriptor.Name}");
+            throw new JsonException($"Failed to match Voice Sinch Event type, got {descriptor.Value.GetString()}");
         }
 
-        public override void Write(Utf8JsonWriter writer, IVoiceEvent value, JsonSerializerOptions options)
+        /// <inheritdoc />
+        public override void Write(Utf8JsonWriter writer, VoiceSinchEvent value, JsonSerializerOptions options)
         {
             switch (value)
             {
@@ -73,7 +69,7 @@ namespace Sinch.Voice.SinchEvents
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value),
-                        $"Cannot find a matching class for the interface {nameof(IVoiceEvent)}");
+                        $"Cannot find a matching class for {nameof(VoiceSinchEvent)}");
             }
         }
     }

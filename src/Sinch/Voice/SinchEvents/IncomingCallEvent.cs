@@ -9,13 +9,13 @@ using Sinch.Voice.Calls.Actions;
 namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
-    ///     When a call reaches the Sinch platform, the system makes a POST request to the specified calling callback URL.
+    ///     When a call reaches the Sinch platform, the system makes a POST request to the specified event destination URL.
     ///     This event, called the ICE event, can be triggered by either an incoming data call or an incoming PSTN call. Look
     ///     here for allowed instructions and actions.
-    ///     If there is no response to the callback within the timeout period, an error message is played, and the call is
+    ///     If there is no response to the ICE event within the timeout period, an error message is played, and the call is
     ///     disconnected.
     /// </summary>
-    public sealed class IncomingCallEvent : IVoiceEvent
+    public sealed class IncomingCallEvent : VoiceSinchEvent
     {
         /// <summary>
         ///     Must have the value ice.
