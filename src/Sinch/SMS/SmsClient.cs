@@ -61,6 +61,7 @@ namespace Sinch.SMS
         private ISinchSmsDeliveryReports? _deliveryReports;
         private ISinchSmsGroups? _groups;
         private ISinchSmsInbounds? _inbounds;
+        private readonly SinchSmsConfiguration _config;
 
         internal SmsClient(
             SinchSmsConfiguration config,
@@ -71,6 +72,7 @@ namespace Sinch.SMS
             Func<HttpClient> httpClientAccessor)
         {
             SinchEvents = new SmsSinchEvents(oauthHttp.JsonSerializerOptions, loggerFactory?.Create<ISmsSinchEvents>());
+            _config = config;
 
             if (config.ServicePlanIdConfiguration is ServicePlanIdConfiguration svcPlanConfig)
             {
@@ -118,12 +120,22 @@ namespace Sinch.SMS
             return client ?? throw CreateApiConfigurationException();
         }
 
-        private static InvalidOperationException CreateApiConfigurationException()
+        private InvalidOperationException CreateApiConfigurationException()
         {
+            var missing = new System.Collections.Generic.List<string>();
+
+            if (_config.ServicePlanIdConfiguration is null && _config.Region is null)
+            {
+                missing.Add($"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)}");
+                missing.Add($"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.ServicePlanIdConfiguration)}");
+            }
+
+            var detail = missing.Count > 0
+                ? $" Missing: {string.Join(" and ", missing)}."
+                : string.Empty;
+
             return new InvalidOperationException(
-                "SMS API operations are unavailable when the SMS client is initialized for Sinch Events only. " +
-                $"Configure either {nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)} or " +
-                $"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.ServicePlanIdConfiguration)} to use SMS API operations.");
+                $"SMS API operations require a region or service plan configuration.{detail}");
         }
     }
 }

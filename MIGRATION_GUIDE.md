@@ -607,7 +607,7 @@ Version 2.*:
 ```csharp
 var request = new SendTextBatchRequest
 {
-    EventDestinationTarget = new Uri("https://my-server.com/sms-events")
+    EventDestinationTarget = "https://my-server.com/sms-events"
 };
 ```
 
