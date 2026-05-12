@@ -70,9 +70,39 @@ namespace Sinch.Tests.Sms
 
             var act = () => client.Sms.Batches;
             act.Should().Throw<InvalidOperationException>()
-                .WithMessage("*Sinch Events only*")
+                .WithMessage("*SMS API operations require*")
                 .WithMessage("*Region*")
                 .WithMessage("*ServicePlanIdConfiguration*");
+        }
+
+        [Fact]
+        public void Sms_Batches_DoesNotThrow_WhenRegionIsSet()
+        {
+            var client = new SinchClient(new SinchClientConfiguration()
+            {
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
+                {
+                    KeyId = "key-id",
+                    KeySecret = "key-secret",
+                    ProjectId = "project-id"
+                },
+                SmsConfiguration = new SinchSmsConfiguration { Region = SmsRegion.Us }
+            });
+
+            var act = () => client.Sms.Batches;
+            act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void Sms_Batches_DoesNotThrow_WhenServicePlanIdIsSet()
+        {
+            var sinch = new SinchClient(new SinchClientConfiguration()
+            {
+                SmsConfiguration = SinchSmsConfiguration.WithServicePlanId("servicePlanId", "apiToken", SmsServicePlanIdRegion.Eu)
+            });
+
+            var act = () => sinch.Sms.Batches;
+            act.Should().NotThrow();
         }
 
         [Fact]
