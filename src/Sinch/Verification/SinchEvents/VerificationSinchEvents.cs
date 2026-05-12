@@ -43,13 +43,13 @@ namespace Sinch.Verification.SinchEvents
         public bool ValidateAuthenticationHeader(
             HttpMethod method,
             string path,
-            Dictionary<string, IEnumerable<string>> headers,
+            IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers,
             string body)
         {
             return AuthorizationHeaderValidation.Validate(
                 method,
                 path,
-                headers,
+                headers.ToDictionary(h => h.Key, h => h.Value),
                 body,
                 ResolveApplicationSignedAuth(),
                 _logger);
@@ -63,12 +63,7 @@ namespace Sinch.Verification.SinchEvents
             ValidateAuthenticationHeader(
                 method,
                 path,
-                headers.ToDictionary(
-                    header => header.Key,
-                    header => header.Value
-                        .Where(value => value is not null)
-                        .Select(value => value!),
-                    StringComparer.OrdinalIgnoreCase),
+                headers.Select(h => new KeyValuePair<string, IEnumerable<string>>(h.Key, h.Value)),
                 body);
 
         public string SerializeResponse(VerificationStartEventResponseBase response)

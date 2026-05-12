@@ -21,7 +21,7 @@ namespace Sinch.Verification.SinchEvents
         bool ValidateAuthenticationHeader(
             HttpMethod method,
             string path,
-            Dictionary<string, IEnumerable<string>> headers,
+            IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers,
             string body);
 
         /// <summary>
