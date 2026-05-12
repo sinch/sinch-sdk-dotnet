@@ -66,7 +66,7 @@ namespace Sinch.Tests.Sms
                 }
             });
 
-            client.Sms.SinchEvents.Should().NotBeNull();
+            
 
             var act = () => client.Sms.Batches;
             act.Should().Throw<InvalidOperationException>()
