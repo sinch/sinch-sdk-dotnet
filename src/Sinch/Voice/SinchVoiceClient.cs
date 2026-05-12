@@ -63,6 +63,9 @@ namespace Sinch.Voice
             LoggerFactory? loggerFactory,
             Func<HttpClient> httpClientAccessor)
         {
+            ApplicationSignedAuth? auth = null;
+            Http? http = null;
+
             if (config != null)
             {
                 if (string.IsNullOrEmpty(config.AppKey))
@@ -71,8 +74,8 @@ namespace Sinch.Voice
                 if (string.IsNullOrEmpty(config.AppSecret))
                     throw new ArgumentNullException(nameof(config.AppSecret), "The value should be present");
 
-                var auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
-                var http = new Http(new Lazy<ISinchAuth>(auth), httpClientAccessor,
+                auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
+                http = new Http(new Lazy<ISinchAuth>(auth), httpClientAccessor,
                     loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
 
                 var voiceUrl = !string.IsNullOrEmpty(voiceUrlOverride)
@@ -89,19 +92,12 @@ namespace Sinch.Voice
                     http, _callouts);
                 _applications = new SinchApplications(loggerFactory?.Create<ISinchVoiceApplications>(),
                     voiceAppMgmtUrl, http);
+            }
 
-                SinchEvents = new VoiceSinchEvents(
-                    http.JsonSerializerOptions,
-                    auth,
-                    loggerFactory?.Create<IVoiceSinchEvents>());
-            }
-            else
-            {
-                SinchEvents = new VoiceSinchEvents(
-                    DefaultJsonOptions,
-                    null,
-                    loggerFactory?.Create<IVoiceSinchEvents>());
-            }
+            SinchEvents = new VoiceSinchEvents(
+                http?.JsonSerializerOptions ?? DefaultJsonOptions,
+                auth,
+                loggerFactory?.Create<IVoiceSinchEvents>());
         }
 
         /// <inheritdoc />
