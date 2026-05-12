@@ -55,14 +55,12 @@
 - [Verification API: `Sinch.Verification.Hooks` namespace moved to `Sinch.Verification.SinchEvents`](#verification-api-sinchverificationhooks-namespace-moved-to-sinchverificationsinchevents)
 - [Verification API: `ValidateAuthenticationHeader` moved to `SinchEvents`](#verification-api-validateauthenticationheader-moved-to-sinchevents)
 - [Verification API: `ParseEvent` moved to `SinchEvents`](#verification-api-parseevent-moved-to-sinchevents)
-- [Verification API: `SerializeResponse` added to `SinchEvents`](#verification-api-serializeresponse-added-to-sinchevents)
 - [Verification API: Verification event types renamed](#verification-api-verification-event-types-renamed)
 - [Voice API: `Sinch.Voice.Hooks` namespace renamed to `Sinch.Voice.SinchEvents`](#voice-api-sinchvoicehooks-namespace-renamed-to-sinchvoicesinchevents)
 - [Voice API: `IVoiceEvent` renamed to `VoiceSinchEvent`](#voice-api-ivoiceevent-renamed-to-voicesinchevent)
 - [Voice API: `VoiceEventConverter` renamed to `VoiceSinchEventConverter`](#voice-api-voiceeventconverter-renamed-to-voicesincheventconverter)
 - [Voice API: `ValidateAuthenticationHeader` moved to `SinchEvents`](#voice-api-validateauthenticationheader-moved-to-sinchevents)
 - [Voice API: `ParseEvent` moved to `SinchEvents`](#voice-api-parseevent-moved-to-sinchevents)
-- [Voice API: `SerializeResponse` added to `SinchEvents`](#voice-api-serializeresponse-added-to-sinchevents)
 
 ## .NET Framework Support
 
@@ -1407,30 +1405,6 @@ Version 2.*:
 var verificationEvent = sinch.Verification.SinchEvents.ParseEvent(json);
 ```
 
-## Verification API: `SerializeResponse` added to `SinchEvents`
-
-Verification response payloads are now serialized through `ISinchVerificationClient.SinchEvents`.
-
-Version 1.*:
-```csharp
-var response = new SmsRequestEventResponse
-{
-    Action = Action.Allow
-};
-
-var json = JsonSerializer.Serialize(response);
-```
-
-Version 2.*:
-```csharp
-var response = new VerificationStartEventResponseSms
-{
-    Action = Action.Allow
-};
-
-var json = sinch.Verification.SinchEvents.SerializeResponse(response);
-```
-
 ## Verification API: Verification event types renamed
 
 Several Verification event model types have been renamed. The JSON wire format is unchanged.
@@ -1536,17 +1510,4 @@ IVoiceEvent voiceEvent = sinch.Voice.ParseEvent(json);
 Version 2.*:
 ```csharp
 VoiceSinchEvent voiceEvent = sinch.Voice.SinchEvents.ParseEvent(json);
-```
-
-## Voice API: `SerializeResponse` added to `SinchEvents`
-
-Voice SVAML event responses (for ICE, ACE, and PIE events) are now serialized through
-`ISinchVoiceClient.SinchEvents.SerializeResponse`. This is a new addition with no breaking
-change — if you were previously calling `JsonSerializer.Serialize` directly, you can
-optionally switch to this method to use the same serializer options as the SDK.
-
-Version 2.*:
-```csharp
-var svaml = new CallEventResponse { Action = new ConnectPstn { ... } };
-var json = sinch.Voice.SinchEvents.SerializeResponse(svaml);
 ```
