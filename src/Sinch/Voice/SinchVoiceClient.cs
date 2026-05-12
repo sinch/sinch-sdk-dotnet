@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
+using Sinch;
 using Sinch.Auth;
 using Sinch.Core;
 using Sinch.Logger;
@@ -45,30 +45,81 @@ namespace Sinch.Voice
     /// <inheritdoc />
     internal sealed class SinchVoiceClient : ISinchVoiceClient
     {
-        public SinchVoiceClient(Uri baseAddress, LoggerFactory? loggerFactory,
-            IHttp http, ApplicationSignedAuth? applicationSignedAuth, Uri applicationManagementBaseAddress)
+        private static readonly JsonSerializerOptions DefaultJsonOptions =
+            new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+
+        private const string ConfigRequired =
+            "VoiceConfiguration with AppKey and AppSecret is required to use Voice API methods. " +
+            "Set VoiceConfiguration when creating SinchClient.";
+
+        private readonly ISinchVoiceCallout? _callouts;
+        private readonly ISinchVoiceCalls? _calls;
+        private readonly ISinchVoiceConferences? _conferences;
+        private readonly ISinchVoiceApplications? _applications;
+
+        internal SinchVoiceClient(
+            SinchVoiceConfiguration? config,
+            string? voiceUrlOverride,
+            string? voiceAppMgmtUrlOverride,
+            LoggerFactory? loggerFactory,
+            Func<HttpClient> httpClientAccessor)
         {
-            Callouts = new SinchCallout(loggerFactory?.Create<ISinchVoiceCallout>(), baseAddress, http);
-            Calls = new SinchCalls(loggerFactory?.Create<ISinchVoiceCalls>(), baseAddress, http);
-            Conferences = new SinchConferences(loggerFactory?.Create<ISinchVoiceConferences>(), baseAddress, http,
-                Callouts);
-            Applications = new SinchApplications(loggerFactory?.Create<ISinchVoiceApplications>(),
-                applicationManagementBaseAddress, http);
-            SinchEvents = new VoiceSinchEvents(http.JsonSerializerOptions, applicationSignedAuth,
-                loggerFactory?.Create<IVoiceSinchEvents>());
+            if (config != null)
+            {
+                if (string.IsNullOrEmpty(config.AppKey))
+                    throw new ArgumentNullException(nameof(config.AppKey), "The value should be present");
+
+                if (string.IsNullOrEmpty(config.AppSecret))
+                    throw new ArgumentNullException(nameof(config.AppSecret), "The value should be present");
+
+                var auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
+                var http = new Http(new Lazy<ISinchAuth>(auth), httpClientAccessor,
+                    loggerFactory?.Create<IHttp>(), JsonNamingPolicy.CamelCase);
+
+                var voiceUrl = !string.IsNullOrEmpty(voiceUrlOverride)
+                    ? new Uri(voiceUrlOverride)
+                    : SinchUrlResolvers.ResolveVoiceUrl(config);
+
+                var voiceAppMgmtUrl = !string.IsNullOrEmpty(voiceAppMgmtUrlOverride)
+                    ? new Uri(voiceAppMgmtUrlOverride)
+                    : SinchUrlResolvers.ResolveVoiceApplicationManagementUrl(config);
+
+                _callouts = new SinchCallout(loggerFactory?.Create<ISinchVoiceCallout>(), voiceUrl, http);
+                _calls = new SinchCalls(loggerFactory?.Create<ISinchVoiceCalls>(), voiceUrl, http);
+                _conferences = new SinchConferences(loggerFactory?.Create<ISinchVoiceConferences>(), voiceUrl,
+                    http, _callouts);
+                _applications = new SinchApplications(loggerFactory?.Create<ISinchVoiceApplications>(),
+                    voiceAppMgmtUrl, http);
+
+                SinchEvents = new VoiceSinchEvents(
+                    http.JsonSerializerOptions,
+                    auth,
+                    loggerFactory?.Create<IVoiceSinchEvents>());
+            }
+            else
+            {
+                SinchEvents = new VoiceSinchEvents(
+                    DefaultJsonOptions,
+                    null,
+                    loggerFactory?.Create<IVoiceSinchEvents>());
+            }
         }
 
         /// <inheritdoc />
-        public ISinchVoiceCallout Callouts { get; }
+        public ISinchVoiceCallout Callouts =>
+            _callouts ?? throw new InvalidOperationException(ConfigRequired);
 
         /// <inheritdoc />
-        public ISinchVoiceCalls Calls { get; }
+        public ISinchVoiceCalls Calls =>
+            _calls ?? throw new InvalidOperationException(ConfigRequired);
 
         /// <inheritdoc />
-        public ISinchVoiceConferences Conferences { get; }
+        public ISinchVoiceConferences Conferences =>
+            _conferences ?? throw new InvalidOperationException(ConfigRequired);
 
         /// <inheritdoc />
-        public ISinchVoiceApplications Applications { get; }
+        public ISinchVoiceApplications Applications =>
+            _applications ?? throw new InvalidOperationException(ConfigRequired);
 
         /// <inheritdoc />
         public IVoiceSinchEvents SinchEvents { get; }

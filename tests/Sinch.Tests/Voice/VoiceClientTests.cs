@@ -113,17 +113,5 @@ namespace Sinch.Tests.Voice
             which.ParamName.Should().Be(data.ParamName);
             which.Message.Should().Be(data.Message);
         }
-
-        [Fact]
-        public void ThrowIfVoiceConfigIsNull()
-        {
-            var client = new SinchClient(new SinchClientConfiguration()
-            {
-                VoiceConfiguration = null
-            });
-            var voiceOp = () => client.Voice;
-            voiceOp.Should().ThrowExactly<InvalidOperationException>().Which.Message.Should()
-                .Be("SinchVoiceConfiguration is not set.");
-        }
     }
 }
