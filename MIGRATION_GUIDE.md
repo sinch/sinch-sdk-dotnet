@@ -55,7 +55,6 @@
 - [Verification API: `Sinch.Verification.Hooks` namespace moved to `Sinch.Verification.SinchEvents`](#verification-api-sinchverificationhooks-namespace-moved-to-sinchverificationsinchevents)
 - [Verification API: `ValidateAuthenticationHeader` moved to `SinchEvents`](#verification-api-validateauthenticationheader-moved-to-sinchevents)
 - [Verification API: `ParseEvent` moved to `SinchEvents`](#verification-api-parseevent-moved-to-sinchevents)
-- [Verification API: `SerializeResponse` added to `SinchEvents`](#verification-api-serializeresponse-added-to-sinchevents)
 - [Verification API: Verification event types renamed](#verification-api-verification-event-types-renamed)
 
 ## .NET Framework Support
@@ -1399,30 +1398,6 @@ var verificationEvent = JsonSerializer.Deserialize<VerificationResultEvent>(json
 Version 2.*:
 ```csharp
 var verificationEvent = sinch.Verification.SinchEvents.ParseEvent(json);
-```
-
-## Verification API: `SerializeResponse` added to `SinchEvents`
-
-Verification response payloads are now serialized through `ISinchVerificationClient.SinchEvents`.
-
-Version 1.*:
-```csharp
-var response = new SmsRequestEventResponse
-{
-    Action = Action.Allow
-};
-
-var json = JsonSerializer.Serialize(response);
-```
-
-Version 2.*:
-```csharp
-var response = new VerificationStartEventResponseSms
-{
-    Action = Action.Allow
-};
-
-var json = sinch.Verification.SinchEvents.SerializeResponse(response);
 ```
 
 ## Verification API: Verification event types renamed
