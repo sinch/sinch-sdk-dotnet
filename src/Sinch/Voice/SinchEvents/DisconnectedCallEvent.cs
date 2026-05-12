@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 using Sinch.Voice.Calls;
 using Sinch.Voice.Calls.Actions;
 
-namespace Sinch.Voice.Hooks
+namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
     ///     This callback is made when the call is disconnected. It's a POST request to the specified calling callback URL.

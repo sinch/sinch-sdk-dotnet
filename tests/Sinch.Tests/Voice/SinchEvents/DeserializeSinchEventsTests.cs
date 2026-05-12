@@ -5,13 +5,12 @@ using Sinch.Voice;
 using Sinch.Voice.Callouts.Callout;
 using Sinch.Voice.Calls;
 using Sinch.Voice.Calls.Actions;
-using Sinch.Voice.Hooks;
+using Sinch.Voice.SinchEvents;
 using Xunit;
-using DestinationType = Sinch.Voice.Hooks.DestinationType;
 
-namespace Sinch.Tests.Voice
+namespace Sinch.Tests.Voice.SinchEvents
 {
-    public class DeserializeHooksTests
+    public class DeserializeSinchEventsTests
     {
         private readonly ISinchVoiceClient _voiceClient = new SinchClient(new SinchClientConfiguration()
         {
@@ -151,7 +150,7 @@ namespace Sinch.Tests.Voice
                     },
                     To = new To
                     {
-                        Type = DestinationType.Number,
+                        Type = Sinch.Voice.SinchEvents.DestinationType.Number,
                         Endpoint = "123456789"
                     },
                     ApplicationKey = "an app key",
@@ -191,7 +190,7 @@ namespace Sinch.Tests.Voice
                     Cli = "cli number",
                     To = new To
                     {
-                        Type = DestinationType.Number,
+                        Type = Sinch.Voice.SinchEvents.DestinationType.Number,
                         Endpoint = "+123456879"
                     },
                     Domain = Domain.Mxp,
@@ -228,9 +227,9 @@ namespace Sinch.Tests.Voice
         public void DeserializeDestinationTypeCaseInsensitive(string domainStr)
         {
 
-            var enumValue = JsonSerializer.Deserialize<DestinationType>(domainStr);
+            var enumValue = JsonSerializer.Deserialize<Sinch.Voice.SinchEvents.DestinationType>(domainStr);
 
-            enumValue.Should().BeEquivalentTo(DestinationType.Number);
+            enumValue.Should().BeEquivalentTo(Sinch.Voice.SinchEvents.DestinationType.Number);
         }
     }
 }

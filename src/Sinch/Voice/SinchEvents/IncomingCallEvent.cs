@@ -6,7 +6,7 @@ using Sinch.Core;
 using Sinch.Voice.Callouts.Callout;
 using Sinch.Voice.Calls.Actions;
 
-namespace Sinch.Voice.Hooks
+namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
     ///     When a call reaches the Sinch platform, the system makes a POST request to the specified calling callback URL.

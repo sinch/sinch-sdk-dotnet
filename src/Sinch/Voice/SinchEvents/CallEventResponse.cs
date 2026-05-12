@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using Sinch.Voice.Calls.Actions;
 using Sinch.Voice.Calls.Instructions;
 
-namespace Sinch.Voice.Hooks
+namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
     ///     The Incoming Call Event (ICE) or The Answered Call Event (ACE) requires a valid SVAML object in response.

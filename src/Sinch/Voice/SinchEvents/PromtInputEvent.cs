@@ -2,7 +2,7 @@ using System;
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Voice.Hooks
+namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
     ///     This callback is triggered as a result of a

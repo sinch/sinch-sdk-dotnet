@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Voice.Hooks
+namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
     ///     This is the general callback used to send notifications. It's a POST request to the specified calling callback URL.

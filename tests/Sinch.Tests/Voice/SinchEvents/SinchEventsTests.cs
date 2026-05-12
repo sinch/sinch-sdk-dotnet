@@ -4,9 +4,9 @@ using FluentAssertions;
 using Sinch.Voice;
 using Xunit;
 
-namespace Sinch.Tests.Voice
+namespace Sinch.Tests.Voice.SinchEvents
 {
-    public class HooksTests
+    public class SinchEventsTests
     {
         private readonly ISinchVoiceClient _voiceClient = new SinchClient(new SinchClientConfiguration()
         {

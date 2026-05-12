@@ -13,7 +13,7 @@ using Sinch.Voice.Applications;
 using Sinch.Voice.Callouts;
 using Sinch.Voice.Calls;
 using Sinch.Voice.Conferences;
-using Sinch.Voice.Hooks;
+using Sinch.Voice.SinchEvents;
 
 namespace Sinch.Voice
 {
