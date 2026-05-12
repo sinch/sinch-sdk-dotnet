@@ -1,7 +1,6 @@
 using System;
 using System.Net.Http;
 using System.Text.Json;
-using Sinch;
 using Sinch.Auth;
 using Sinch.Core;
 using Sinch.Logger;

@@ -7,6 +7,7 @@ using Sinch.Verification;
 using SinchEvents.Template.Numbers;
 using SinchEvents.Template.Sms;
 using SinchEvents.Template.Verification;
+using SinchEvents.Template.Voice;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<SmsServerBusinessLogic>();
 builder.Services.AddSingleton<NumbersServerBusinessLogic>();
 builder.Services.AddSingleton<VerificationServerBusinessLogic>();
+builder.Services.AddSingleton<VoiceServerBusinessLogic>();
 
 builder.Services.AddSinchClient(() => new SinchClientConfiguration
 {
