@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Sinch.Numbers.SinchEvents;
-using Sinch.SMS.Hooks;
+using Sinch.SMS.SinchEvents;
 
 namespace Sinch
 {
@@ -14,6 +14,30 @@ namespace Sinch
     public static class ServiceCollectionExtensions
     {
         /// <summary>
+        /// Adds <see cref="ISinchClient"/> to the service collection with default configuration.
+        /// <para>
+        /// Use this overload when you only need SDK features that do not require outbound API
+        /// credentials, such as parsing or validating incoming Sinch Events in ASP.NET applications.
+        /// </para>
+        /// </summary>
+        /// <param name="services">The service collection.</param>
+        /// <param name="configureClient">Optional action to configure the HttpClient.</param>
+        /// <returns>The IHttpClientBuilder for further HttpClient configuration (e.g., Polly policies).</returns>
+        /// <example>
+        /// <code>
+        /// builder.Services.AddSinchClient();
+        /// </code>
+        /// </example>
+        public static IHttpClientBuilder AddSinchClient(
+            this IServiceCollection services,
+            Action<HttpClient>? configureClient = null)
+        {
+            ArgumentNullException.ThrowIfNull(services);
+
+            return services.AddSinchClient(() => new SinchClientConfiguration(), configureClient);
+        }
+
+        /// <summary>
         /// Adds <see cref="ISinchClient"/> to the service collection with proper HttpClient management.
         /// <para>
         /// This method configures IHttpClientFactory for proper connection pooling and DNS refresh,
@@ -22,7 +46,7 @@ namespace Sinch
         /// </para>
         /// </summary>
         /// <param name="services">The service collection.</param>
-        /// <param name="configureFactory"></param>
+        /// <param name="configureFactory">Factory that returns the Sinch client configuration used for authenticated API access and other custom settings.</param>
         /// <param name="configureClient">Optional action to configure the HttpClient.</param>
         /// <returns>The IHttpClientBuilder for further HttpClient configuration (e.g., Polly policies).</returns>
         /// <example>
@@ -96,7 +120,9 @@ namespace Sinch
         /// Registers Sinch Events handler interfaces into the service collection so they can be
         /// injected directly where needed.
         /// <para>
-        /// Requires <see cref="AddSinchClient"/> to have been called first.
+        /// Requires one of the <see cref="ServiceCollectionExtensions.AddSinchClient(IServiceCollection, Action{HttpClient}?)"/>
+        /// or <see cref="ServiceCollectionExtensions.AddSinchClient(IServiceCollection, Func{SinchClientConfiguration}, Action{HttpClient}?)"/>
+        /// overloads to have been called first.
         /// </para>
         /// </summary>
         /// <param name="services">The service collection.</param>
@@ -120,8 +146,8 @@ namespace Sinch
                 lifetime));
 
             services.TryAdd(new ServiceDescriptor(
-                typeof(ISmsWebhooks),
-                sp => sp.GetRequiredService<ISinchClient>().Sms.Webhooks,
+                typeof(ISmsSinchEvents),
+                sp => sp.GetRequiredService<ISinchClient>().Sms.SinchEvents,
                 lifetime));
 
             return services;

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace Sinch.SMS.DeliveryReports
 {
     /// <summary>
-    ///     Batch-level delivery report webhook event.
+    ///     Batch-level delivery report Sinch Event.
     /// </summary>
     public sealed class BatchDeliveryReportSms : IBatchDeliveryReport
     {

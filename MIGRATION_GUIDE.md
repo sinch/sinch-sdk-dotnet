@@ -19,7 +19,12 @@
 - [Removed obsolete MessageSource property from ListMessagesRequest](#removed-obsolete-messagesource-property-from-listmessagesrequest)
 - [Removed TemplatesV1 from Conversation API](#removed-templatesv1-from-conversation-api)
 - [SMS Webhooks: renamed and removed types](#sms-webhooks-renamed-and-removed-types)
-- [SMS Webhooks: property rename for per-recipient delivery reports](#sms-webhooks-property-rename-for-per-recipient-delivery-reports)
+- [SMS Webhooks / Sinch Events: property rename for per-recipient delivery reports](#sms-webhooks--sinch-events-property-rename-for-per-recipient-delivery-reports)
+- [SMS API: `CallbackUrl` renamed to `EventDestinationTarget`](#sms-api-callbackurl-renamed-to-eventdestinationtarget)
+- [SMS: `ISmsWebhooks` renamed to `ISmsSinchEvents`](#sms-ismswebhooks-renamed-to-ismssinchevents)
+- [SMS: `ParseEvent` now returns `ISmsSinchEvent`](#sms-parseevent-now-returns-ismssinchevent)
+- [SMS: Namespace `Sinch.SMS.Hooks` renamed to `Sinch.SMS.SinchEvents`](#sms-namespace-sinchsmshooks-renamed-to-sinchsmssinchevents)
+- [SMS: `MediaBody.Url` changed from `Uri` to `string`](#sms-mediabodyurl-changed-from-uri-to-string)
 - [ConversationChannelCredentials, InstagramCredentials and LineEnterpriseCredentials moved to new namespace](#conversationchanelcredentials-instagramcredentials-and-lineenterprisecredentials-moved-to-new-namespace)
 - [Verification API: Callout renamed to PhoneCall and Seamless renamed to Data](#verification-api-callout-renamed-to-phonecall-and-seamless-renamed-to-data)
 - [Fax API: ListEmailsResponse replaced with concrete response types](#fax-api-listemailsresponse-replaced-with-concrete-response-types)
@@ -449,32 +454,28 @@ if (scheduledProvisioning?.ErrorCodes?.Contains(FailureCode.CampaignNotAvailable
 
 ## SMS Webhooks: renamed and removed types
 
-Several types used for SMS webhook payloads have been renamed to make their intent more explicit and to avoid collisions with other APIs. A couple of now-redundant inbound types were removed.
+Several types used for SMS event payloads have been renamed.
 
-Renamed types
+Renamed types:
 
 - `DeliveryReport` -> `BatchDeliveryReportSms`
 - `RecipientDeliveryReport` -> `RecipientDeliveryReportSms`
-- `IncomingTextSms` -> `TextMessage`
+- `IncomingTextSms` -> `SmsInbound`
+- `IncomingBinarySms` -> `BinaryInbound`
 
-Example — batch delivery report
+Example batch delivery report:
 
 Version 1.*:
 ```csharp
-// Deserialize directly to the old type
 var report = JsonSerializer.Deserialize<DeliveryReport>(json);
 ```
 
 Version 2.*:
 ```csharp
-// Deserialize to the new explicit type
-var report = JsonSerializer.Deserialize<BatchDeliveryReportSms>(json);
-
-// or use the SMS webhooks helper which dispatches to the correct type based on the payload
-var report = sinchClient.Sms.Webhooks.ParseEvent(json).As<BatchDeliveryReportSms>();
+var report = sinchClient.Sms.SinchEvents.ParseEvent(json).As<BatchDeliveryReportSms>();
 ```
 
-Example — recipient delivery report
+Example recipient delivery report:
 
 Version 1.*:
 ```csharp
@@ -483,12 +484,10 @@ var recipientReport = JsonSerializer.Deserialize<RecipientDeliveryReport>(json);
 
 Version 2.*:
 ```csharp
-var recipientReport = JsonSerializer.Deserialize<RecipientDeliveryReportSms>(json);
-// or via the webhooks parser:
-var recipientReport = sinchClient.Sms.Webhooks.ParseEvent(json).As<RecipientDeliveryReportSms>();
+var recipientReport = sinchClient.Sms.SinchEvents.ParseEvent(json).As<RecipientDeliveryReportSms>();
 ```
 
-Example — incoming text message
+Example incoming text message:
 
 Version 1.*:
 ```csharp
@@ -497,12 +496,10 @@ var incoming = JsonSerializer.Deserialize<IncomingTextSms>(json);
 
 Version 2.*:
 ```csharp
-var incoming = JsonSerializer.Deserialize<TextMessage>(json);
-// or via the webhooks parser:
-var incoming = sinchClient.Sms.Webhooks.ParseEvent(json).As<TextMessage>();
+var incoming = sinchClient.Sms.SinchEvents.ParseEvent(json).As<SmsInbound>();
 ```
 
-Deleted files / types
+Deleted files / types:
 
 The following source files were removed as part of the refactor and should be deleted from any code references you may have:
 
@@ -511,7 +508,9 @@ The following source files were removed as part of the refactor and should be de
 
 Replacement guidance
 
-- If you previously relied on `IIncomingSms` or `IncomingBinarySms`, switch to the new strongly-typed webhook models (`TextMessage`, `BinaryMessage`, etc.) and prefer the `ISmsWebhooks.ParseEvent(string json)` helper which returns an `ISmsEvent` that you can pattern-match or cast as shown above.
+- If you previously relied on `IIncomingSms`, switch to `IInbound`.
+- If you previously relied on `IncomingTextSms` or `IncomingBinarySms`, switch to `SmsInbound` or `BinaryInbound`.
+- Prefer `ISmsSinchEvents.ParseEvent(string json)` when the payload type is not known in advance. It is the public API that resolves the incoming SMS Sinch Event JSON to the correct concrete `ISmsSinchEvent` implementation. If you already know the concrete payload type, you can still deserialize directly to that concrete model.
 
 - Example migrating code that previously deserialized the old incoming binary type:
 
@@ -522,18 +521,18 @@ var bin = JsonSerializer.Deserialize<IncomingBinarySms>(json);
 
 Version 2.*:
 ```csharp
-var bin = sinchClient.Sms.Webhooks.ParseEvent(json).As<BinaryMessage>();
+var bin = sinchClient.Sms.SinchEvents.ParseEvent(json).As<BinaryInbound>();
 // or when using plain deserialization:
-var bin = JsonSerializer.Deserialize<BinaryMessage>(json);
+var bin = JsonSerializer.Deserialize<BinaryInbound>(json);
 ```
 
-## SMS Webhooks: property rename for recipient delivery reports
+## SMS Webhooks / Sinch Events: property rename for per-recipient delivery reports
 
 The property `OperatorStatusName` in `RecipientDeliveryReportSms` was renamed to `OperatorStatusAt`.
 
 Version 1.*:
 ```csharp
-public sealed class RecipientDeliveryReportSms : ISmsEvent
+public sealed class RecipientDeliveryReportSms
 {
     [JsonPropertyName("operator_status_name")]
     public string? OperatorStatusName { get; set; }
@@ -541,11 +540,103 @@ public sealed class RecipientDeliveryReportSms : ISmsEvent
 ```
 Version 2.*:
 ```csharp
-public sealed class RecipientDeliveryReportSms : ISmsEvent
+public sealed class RecipientDeliveryReportSms : IRecipientDeliveryReport
 {
     [JsonPropertyName("operator_status_at")]
-    public DateTime OperatorStatusAt { get; set; }
+    public DateTime? OperatorStatusAt { get; set; }
 }
+```
+
+## SMS: `ISmsWebhooks` renamed to `ISmsSinchEvents`
+
+`ISinchSms.Webhooks` has been renamed to `ISinchSms.SinchEvents`.
+The interface is now `ISmsSinchEvents` (was `ISmsWebhooks`).
+
+**Before:**
+```csharp
+var sinchEvent = sinch.Sms.Webhooks.ParseEvent(json);
+bool valid = sinch.Sms.Webhooks.ValidateAuthenticationHeader(secret, request.Headers, body);
+```
+
+**After:**
+```csharp
+var sinchEvent = sinch.Sms.SinchEvents.ParseEvent(json);
+bool valid = sinch.Sms.SinchEvents.ValidateAuthenticationHeader(secret, request.Headers, body);
+```
+
+## SMS: `ParseEvent` now returns `ISmsSinchEvent`
+
+The SMS Sinch Events parser now returns `Sinch.SMS.SinchEvents.ISmsSinchEvent` instead of `Sinch.SMS.ISmsEvent`.
+
+Version 1.*:
+```csharp
+using Sinch.SMS;
+
+ISmsEvent smsEvent = sinch.Sms.Webhooks.ParseEvent(json);
+```
+
+Version 2.*:
+```csharp
+using Sinch.SMS.SinchEvents;
+
+ISmsSinchEvent smsEvent = sinch.Sms.SinchEvents.ParseEvent(json);
+```
+
+## SMS API: `CallbackUrl` renamed to `EventDestinationTarget`
+
+The `CallbackUrl` property on SMS batch request models is now `EventDestinationTarget`.
+This affects `SendTextBatchRequest`, `SendBinaryBatchRequest`, `SendMediaBatchRequest`,
+`UpdateTextBatchRequest`, `UpdateBinaryBatchRequest`, and `UpdateMediaBatchRequest`.
+
+**Before:**
+```csharp
+var request = new SendTextBatchRequest
+{
+    CallbackUrl = new Uri("https://my-server.com/sms-events")
+};
+```
+
+**After:**
+```csharp
+var request = new SendTextBatchRequest
+{
+    EventDestinationTarget = "https://my-server.com/sms-events"
+};
+```
+
+## SMS: Namespace `Sinch.SMS.Hooks` renamed to `Sinch.SMS.SinchEvents`
+
+The SMS event parsing interface moved from `Sinch.SMS.Hooks` to `Sinch.SMS.SinchEvents`.
+Event payload models remain in `Sinch.SMS.Inbounds` and `Sinch.SMS.DeliveryReports`.
+
+**Before:**
+```csharp
+using Sinch.SMS.Hooks;
+```
+
+**After:**
+```csharp
+using Sinch.SMS.SinchEvents;
+```
+
+## SMS: `MediaBody.Url` changed from `Uri` to `string`
+
+`MediaBody.Url` is now a `string` instead of `Uri`.
+
+**Before:**
+```csharp
+var body = new MediaBody
+{
+    Url = new Uri("https://example.com/image.png")
+};
+```
+
+**After:**
+```csharp
+var body = new MediaBody
+{
+    Url = "https://example.com/image.png"
+};
 ```
 
 ## ConversationChannelCredentials, InstagramCredentials and LineEnterpriseCredentials moved to new namespace

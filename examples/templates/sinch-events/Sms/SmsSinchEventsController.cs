@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Sinch.SMS.Hooks;
+using Sinch.SMS.SinchEvents;
 using SinchEvents.Template;
 
 namespace SinchEvents.Template.Sms;
@@ -7,19 +7,19 @@ namespace SinchEvents.Template.Sms;
 /// <summary>
 /// Example controller for receiving SMS Sinch Events.
 /// Set requireAuthentication to true once you have configured a shared secret
-/// at 'Sinch:Sms:WebhookSecret' in appsettings.
+/// at 'Sinch:Sms:SinchEventsSecret' in appsettings if you want to validate signatures.
 /// See https://developers.sinch.com/docs/sms/api-reference/sms/tag/Webhooks/
 /// </summary>
 [ApiController]
 [SmsSinchEvent(requireAuthentication: false)]
 public class SmsSinchEventsController : ControllerBase
 {
-    private readonly ISmsWebhooks _smsWebhooks;
+    private readonly ISmsSinchEvents _smsSinchEvents;
     private readonly SmsServerBusinessLogic _businessLogic;
 
-    public SmsSinchEventsController(ISmsWebhooks smsWebhooks, SmsServerBusinessLogic businessLogic)
+    public SmsSinchEventsController(ISmsSinchEvents smsSinchEvents, SmsServerBusinessLogic businessLogic)
     {
-        _smsWebhooks = smsWebhooks;
+        _smsSinchEvents = smsSinchEvents;
         _businessLogic = businessLogic;
     }
 
@@ -29,7 +29,7 @@ public class SmsSinchEventsController : ControllerBase
     {
         var body = HttpContext.Items[SinchEventsConstants.BodyItemKey] as string;
 
-        var smsEvent = _smsWebhooks.ParseEvent(body!);
+        var smsEvent = _smsSinchEvents.ParseEvent(body!);
         await _businessLogic.HandleEvent(smsEvent);
 
         return Ok();

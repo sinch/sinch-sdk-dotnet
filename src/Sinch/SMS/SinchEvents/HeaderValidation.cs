@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace Sinch.SMS;
+namespace Sinch.SMS.SinchEvents;
 
 /// <summary>
-///     Validates HMAC authentication headers for webhook requests.
+///     Validates HMAC authentication headers for Sinch Events requests.
 /// </summary>
-internal sealed class HmacAuthenticationValidation
+internal sealed class HeaderValidation
 {
     private const string TimestampHeader = "x-sinch-webhook-signature-timestamp";
     private const string NonceHeader = "x-sinch-webhook-signature-nonce";
@@ -15,9 +15,9 @@ internal sealed class HmacAuthenticationValidation
     private const string SignatureHeader = "x-sinch-webhook-signature";
 
     /// <summary>
-    ///     Validates the HMAC authentication header from a webhook request.
+    ///     Validates the HMAC authentication header from a Sinch Events request.
     /// </summary>
-    /// <param name="secret">The webhook secret.</param>
+    /// <param name="secret">The Sinch Events secret.</param>
     /// <param name="headers">HTTP headers from the request (case-insensitive lookup will be performed).</param>
     /// <param name="jsonPayload">The raw JSON payload body.</param>
     /// <returns>True if the signature is valid, false otherwise.</returns>

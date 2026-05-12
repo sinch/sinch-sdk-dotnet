@@ -5,7 +5,7 @@ using Sinch.Core;
 namespace Sinch.SMS.DeliveryReports
 {
     /// <summary>
-    ///     Per-recipient delivery report webhook event.
+    ///     Per-recipient delivery report Sinch Event.
     /// </summary>
     public sealed class RecipientDeliveryReportSms : IRecipientDeliveryReport
     {

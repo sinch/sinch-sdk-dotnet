@@ -22,7 +22,7 @@ namespace Sinch.SMS.DeliveryReports
         /// <summary>
         ///     The status field describes which state a particular message is in.
         ///     Note that statuses of type Intermediate will only be reported
-        ///     if you request a status per recipient no callback will be made to report them.
+        ///     if you request a status per recipient no event will be sent to report them.
         /// </summary>
         public DeliveryReportStatus? Status { get; set; }
 

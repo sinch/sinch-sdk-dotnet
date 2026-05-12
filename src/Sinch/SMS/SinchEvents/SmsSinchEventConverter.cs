@@ -4,10 +4,10 @@ using System.Text.Json.Serialization;
 using Sinch.SMS.DeliveryReports;
 using Sinch.SMS.Inbounds;
 
-namespace Sinch.SMS
+namespace Sinch.SMS.SinchEvents
 {
     /// <summary>
-    ///     JSON converter for <see cref="ISmsEvent"/> that uses the "type" discriminator field
+    ///     JSON converter for <see cref="ISmsSinchEvent"/> that uses the "type" discriminator field
     ///     to determine the concrete event type (inbound messages or delivery reports).
     /// </summary>
     /// <remarks>
@@ -22,11 +22,11 @@ namespace Sinch.SMS
     ///         <item><description>recipient_delivery_report_mms - <see cref="RecipientDeliveryReportMms"/></description></item>
     ///     </list>
     /// </remarks>
-    public sealed class SmsEventConverter : JsonConverter<ISmsEvent>
+    public sealed class SmsSinchEventConverter : JsonConverter<ISmsSinchEvent>
     {
         private const string TypePropertyName = "type";
 
-        public override ISmsEvent? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override ISmsSinchEvent? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             // Parse the JSON element to inspect the "type" property
             var element = JsonElement.ParseValue(ref reader);
@@ -59,7 +59,7 @@ namespace Sinch.SMS
             };
         }
 
-        public override void Write(Utf8JsonWriter writer, ISmsEvent value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, ISmsSinchEvent value, JsonSerializerOptions options)
         {
             switch (value)
             {

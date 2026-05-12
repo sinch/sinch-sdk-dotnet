@@ -1,6 +1,8 @@
+using Sinch.SMS.SinchEvents;
+
 namespace Sinch.SMS.DeliveryReports
 {
-    public interface IDeliveryReport : ISmsEvent
+    public interface IDeliveryReport : ISmsSinchEvent
     {
     }
 }

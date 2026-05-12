@@ -8,6 +8,7 @@ using FluentAssertions;
 using NSubstitute;
 using RichardSzalay.MockHttp;
 using Sinch.SMS;
+using Sinch.SMS.DeliveryReports;
 using Xunit;
 
 namespace Sinch.Tests.Sms
@@ -53,7 +54,7 @@ namespace Sinch.Tests.Sms
         }
 
         [Fact]
-        public void ResolveSmsUrl_ThrowsWhenRegionNotSet()
+        public void Sms_Batches_ThrowWhenRegionNotSet()
         {
             var client = new SinchClient(new SinchClientConfiguration()
             {
@@ -64,9 +65,44 @@ namespace Sinch.Tests.Sms
                     ProjectId = "project-id"
                 }
             });
-            var act = () => client.Sms;
+
+
+
+            var act = () => client.Sms.Batches;
             act.Should().Throw<InvalidOperationException>()
-                .WithMessage("*Region*required*");
+                .WithMessage("*SMS API operations require*")
+                .WithMessage("*Region*")
+                .WithMessage("*ServicePlanIdConfiguration*");
+        }
+
+        [Fact]
+        public void Sms_Batches_DoesNotThrow_WhenRegionIsSet()
+        {
+            var client = new SinchClient(new SinchClientConfiguration()
+            {
+                SinchUnifiedCredentials = new SinchUnifiedCredentials()
+                {
+                    KeyId = "key-id",
+                    KeySecret = "key-secret",
+                    ProjectId = "project-id"
+                },
+                SmsConfiguration = new SinchSmsConfiguration { Region = SmsRegion.Us }
+            });
+
+            var act = () => client.Sms.Batches;
+            act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void Sms_Batches_DoesNotThrow_WhenServicePlanIdIsSet()
+        {
+            var sinch = new SinchClient(new SinchClientConfiguration()
+            {
+                SmsConfiguration = SinchSmsConfiguration.WithServicePlanId("servicePlanId", "apiToken", SmsServicePlanIdRegion.Eu)
+            });
+
+            var act = () => sinch.Sms.Batches;
+            act.Should().NotThrow();
         }
 
         [Fact]
@@ -87,18 +123,6 @@ namespace Sinch.Tests.Sms
         }
 
         [Fact]
-        public void SmsWithServicePlanId_ThrowsWhenRegionNotSet()
-        {
-            var sinch = new SinchClient(new SinchClientConfiguration()
-            {
-                SmsConfiguration = SinchSmsConfiguration.WithServicePlanId("servicePlanId", "apiToken", null!)
-            });
-            var act = () => sinch.Sms;
-            act.Should().Throw<InvalidOperationException>()
-                .WithMessage("*ServicePlanIdRegion*required*");
-        }
-
-        [Fact]
         public void SmsWithServicePlanId_DoesNotThrow_WhenRegionIsSet()
         {
             var sinch = new SinchClient(new SinchClientConfiguration()
@@ -107,6 +131,28 @@ namespace Sinch.Tests.Sms
             });
             var act = () => sinch.Sms;
             act.Should().NotThrow<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Sms_SinchEvents_ParseEvent_DoesNotRequireCredentialsOrRegion()
+        {
+            var client = new SinchClient();
+            var json = Helpers.LoadResources("Sms/SinchEvents/DeliveryReportSms.json");
+
+            var smsEvent = client.Sms.SinchEvents.ParseEvent(json);
+
+            smsEvent.Should().BeOfType<BatchDeliveryReportSms>();
+        }
+
+        [Fact]
+        public void Sms_SinchEvents_ValidateAuthenticationHeader_DoesNotRequireCredentialsOrRegion()
+        {
+            var client = new SinchClient();
+            var headers = new Dictionary<string, IEnumerable<string>>();
+
+            var result = client.Sms.SinchEvents.ValidateAuthenticationHeader("secret", headers, "{}");
+
+            result.Should().BeFalse();
         }
     }
 }

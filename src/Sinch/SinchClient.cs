@@ -329,57 +329,14 @@ namespace Sinch
                 _loggerFactory, _httpCamelCase.Value);
         }
 
-        private SmsClient InitSms()
-        {
-            var sinchSmsConfiguration = _sinchClientConfiguration.SmsConfiguration;
-
-            if (sinchSmsConfiguration.ServicePlanIdConfiguration != null)
-            {
-                var servicePlanIdConfig = sinchSmsConfiguration.ServicePlanIdConfiguration;
-
-                if (servicePlanIdConfig.ServicePlanIdRegion == null)
-                    throw new InvalidOperationException(
-                        $"{nameof(ServicePlanIdConfiguration)}.{nameof(ServicePlanIdConfiguration.ServicePlanIdRegion)} is required. " +
-                        $"Set it to one of the values in {nameof(SmsServicePlanIdRegion)}, e.g. {nameof(SmsServicePlanIdRegion)}.{nameof(SmsServicePlanIdRegion.Us)}.");
-
-                _logger?.LogInformation("Initializing SMS client with {service_plan_id} in {region}",
-                    servicePlanIdConfig.ServicePlanId,
-                    servicePlanIdConfig.ServicePlanIdRegion.Value);
-
-                var smsBaseUrl = ResolveUrl(
-                    _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.SmsUrl,
-                    () => SinchUrlResolvers.ResolveSmsServicePlanIdUrl(sinchSmsConfiguration.ServicePlanIdConfiguration));
-
-                var bearerSnakeHttp = new Http(new Lazy<ISinchAuth>(new BearerAuth(servicePlanIdConfig.ApiToken)),
-                    _httpClientAccessor,
-                    _loggerFactory?.Create<IHttp>(),
-                    SnakeCaseNamingPolicy.Instance);
-                return new SmsClient(new ServicePlanId(servicePlanIdConfig.ServicePlanId),
-                    smsBaseUrl,
-                    _loggerFactory, bearerSnakeHttp);
-            }
-
-            var unifiedCredentials = ValidateUnifiedCredentials();
-
-            if (sinchSmsConfiguration.Region == null)
-                throw new InvalidOperationException(
-                    $"{nameof(SinchSmsConfiguration)}.{nameof(SinchSmsConfiguration.Region)} is required. " +
-                    $"Set it to one of the values in {nameof(SmsRegion)}, e.g. {nameof(SmsRegion)}.{nameof(SmsRegion.Us)}.");
-
-            _logger?.LogInformation("Initializing SMS client with {project_id} in {region}",
-                unifiedCredentials.ProjectId,
-                sinchSmsConfiguration.Region);
-
-            var smsResolvedUrl = ResolveUrl(
+        private SmsClient InitSms() =>
+            new SmsClient(
+                _sinchClientConfiguration.SmsConfiguration,
+                _sinchClientConfiguration.SinchUnifiedCredentials?.ProjectId ?? string.Empty,
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.SmsUrl,
-                () => SinchUrlResolvers.ResolveSmsUrl(sinchSmsConfiguration));
-
-            return new SmsClient(
-                new ProjectId(unifiedCredentials.ProjectId),
-                smsResolvedUrl,
                 _loggerFactory,
-                _httpSnakeCase.Value);
-        }
+                _httpSnakeCase.Value,
+                _httpClientAccessor);
 
         private IHttp InitHttpSnakeCase()
         {

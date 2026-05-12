@@ -1,12 +1,12 @@
-using Sinch.SMS;
 using Sinch.SMS.DeliveryReports;
 using Sinch.SMS.Inbounds;
+using Sinch.SMS.SinchEvents;
 
 namespace SinchEvents.Template.Sms;
 
 public class SmsServerBusinessLogic(ILogger<SmsServerBusinessLogic> logger)
 {
-    public async Task HandleEvent(ISmsEvent smsEvent)
+    public async Task HandleEvent(ISmsSinchEvent smsEvent)
     {
         switch (smsEvent)
         {
