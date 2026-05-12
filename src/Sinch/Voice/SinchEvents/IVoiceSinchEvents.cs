@@ -1,9 +1,5 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
-using System.Text.Json.Nodes;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Primitives;
 
 namespace Sinch.Voice.SinchEvents
@@ -20,21 +16,6 @@ namespace Sinch.Voice.SinchEvents
         /// <param name="json">Raw JSON string of the incoming event payload.</param>
         /// <returns>The parsed <see cref="VoiceSinchEvent" />.</returns>
         VoiceSinchEvent ParseEvent(string json);
-
-        /// <summary>
-        ///     Parse a Voice Sinch Event from a <see cref="JsonNode" />.
-        /// </summary>
-        /// <param name="json">The JSON node representing the incoming event payload.</param>
-        /// <returns>The parsed <see cref="VoiceSinchEvent" />.</returns>
-        VoiceSinchEvent ParseEvent(JsonNode json);
-
-        /// <summary>
-        ///     Asynchronously parse a Voice Sinch Event from a stream.
-        /// </summary>
-        /// <param name="json">Stream containing the raw JSON payload.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The parsed <see cref="VoiceSinchEvent" />.</returns>
-        Task<VoiceSinchEvent> ParseEventAsync(Stream json, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Validate the authentication header sent by Sinch.
