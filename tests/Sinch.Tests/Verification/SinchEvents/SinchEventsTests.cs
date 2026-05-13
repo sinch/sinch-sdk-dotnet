@@ -38,6 +38,19 @@ namespace Sinch.Tests.Verification.SinchEvents
         }
 
         [Fact]
+        public void ParseEvent_ReturnsVerificationSmsDeliveredEvent()
+        {
+            var json = Helpers.LoadResources("Verification/SinchEvents/VerificationSmsDeliveredEvent.json");
+
+            var sinchEvents = new VerificationSinchEvents(new JsonSerializerOptions(JsonSerializerDefaults.Web));
+
+            var parsed = sinchEvents.ParseEvent(json);
+
+            parsed.Should().BeOfType<VerificationSmsDeliveredEvent>()
+                .Which.SmsResult.Should().Be(SmsDeliveryResult.Successful);
+        }
+
+        [Fact]
         public void ParseEvent_Throws_WhenEventTypeUnknown()
         {
             const string json = """

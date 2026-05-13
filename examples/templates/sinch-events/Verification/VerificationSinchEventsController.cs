@@ -45,6 +45,12 @@ public class VerificationSinchEventsController : ControllerBase
             return Ok();
         }
 
+        if (verificationEvent is VerificationSmsDeliveredEvent smsDeliveredEvent)
+        {
+            _businessLogic.HandleEvent(smsDeliveredEvent);
+            return Ok();
+        }
+
         throw new InvalidOperationException($"Unexpected verification event type: {verificationEvent.GetType()}");
     }
 }

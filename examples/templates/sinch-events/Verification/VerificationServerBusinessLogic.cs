@@ -15,4 +15,9 @@ public class VerificationServerBusinessLogic(ILogger<VerificationServerBusinessL
     {
         logger.LogInformation("Handle result event: {Event}", verificationEvent.ToPrettyString());
     }
+
+    public void HandleEvent(VerificationSmsDeliveredEvent verificationEvent)
+    {
+        logger.LogInformation("Handle SMS delivered event: {Event}", verificationEvent.ToPrettyString());
+    }
 }

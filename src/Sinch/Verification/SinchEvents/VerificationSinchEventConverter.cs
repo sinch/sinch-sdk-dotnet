@@ -29,6 +29,7 @@ namespace Sinch.Verification.SinchEvents
             {
                 "VerificationRequestEvent" => element.Deserialize<VerificationStartEvent>(options),
                 "VerificationResultEvent" => element.Deserialize<VerificationResultEvent>(options),
+                "VerificationSmsDeliveredEvent" => element.Deserialize<VerificationSmsDeliveredEvent>(options),
                 _ => throw new JsonException($"Unknown Verification Sinch Event type '{eventProperty.GetString()}'.")
             };
         }
@@ -45,6 +46,9 @@ namespace Sinch.Verification.SinchEvents
                     break;
                 case VerificationResultEvent verificationResultEvent:
                     JsonSerializer.Serialize(writer, verificationResultEvent, options);
+                    break;
+                case VerificationSmsDeliveredEvent verificationSmsDeliveredEvent:
+                    JsonSerializer.Serialize(writer, verificationSmsDeliveredEvent, options);
                     break;
                 default:
                     JsonSerializer.Serialize(writer, value, value.GetType(), options);
