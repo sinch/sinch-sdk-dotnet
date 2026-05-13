@@ -124,6 +124,7 @@ namespace Sinch.Tests.Verification.SinchEvents
         [Fact]
         public void SerializeResponse_SerializesDerivedVerificationResponse()
         {
+            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseSms.json");
             var sinchEvents = new VerificationSinchEvents(new JsonSerializerOptions(JsonSerializerDefaults.Web));
             var response = new VerificationStartEventResponseSms
             {
@@ -137,9 +138,7 @@ namespace Sinch.Tests.Verification.SinchEvents
 
             var json = sinchEvents.SerializeResponse(response);
 
-            json.Should().Contain("\"action\":\"allow\"");
-            json.Should().Contain("\"sms\"");
-            json.Should().Contain("\"code\":\"123\"");
+            Helpers.AssertJsonEqual(expected, json);
         }
 
         [Fact]

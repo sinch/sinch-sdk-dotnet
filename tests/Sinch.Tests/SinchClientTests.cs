@@ -165,6 +165,7 @@ namespace Sinch.Tests
         public void Verification_SinchEvents_SerializeResponse_DoesNotRequireConfiguration()
         {
             var sinch = new SinchClient();
+            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseSms.json");
             var response = new Sinch.Verification.SinchEvents.VerificationStartEventResponseSms
             {
                 Action = Sinch.Verification.SinchEvents.Action.Allow,
@@ -177,7 +178,7 @@ namespace Sinch.Tests
 
             var json = sinch.Verification.SinchEvents.SerializeResponse(response);
 
-            json.Should().Contain("\"action\":\"allow\"");
+            Helpers.AssertJsonEqual(expected, json);
         }
     }
 }
