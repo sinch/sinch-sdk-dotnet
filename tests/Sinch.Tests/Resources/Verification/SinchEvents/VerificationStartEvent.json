@@ -11,8 +11,5 @@
     "currencyId": "USD"
   },
   "reference": "string",
-  "custom": "string",
-  "acceptLanguage": [
-    "es-ES"
-  ]
+  "custom": "string"
 }

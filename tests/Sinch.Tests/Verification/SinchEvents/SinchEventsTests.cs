@@ -118,7 +118,7 @@ namespace Sinch.Tests.Verification.SinchEvents
                 "{}");
 
             act.Should().Throw<System.InvalidOperationException>()
-                .WithMessage("Verification application credentials are required to validate the authentication header.");
+                .WithMessage("VerificationConfiguration with AppKey and AppSecret is required to use Verification API methods. Set VerificationConfiguration when creating SinchClient.");
         }
 
         [Fact]
@@ -188,11 +188,7 @@ namespace Sinch.Tests.Verification.SinchEvents
                     CurrencyId = "USD",
                 },
                 Reference = "string",
-                Custom = "string",
-                AcceptLanguage = new List<string>()
-                {
-                    "es-ES"
-                }
+                Custom = "string"
             });
         }
 

@@ -58,6 +58,7 @@
 - [Verification API: Verification event types renamed](#verification-api-verification-event-types-renamed)
 - [Verification API: `IVerificationSinchEvent` replaced by `VerificationEvent`](#verification-api-iverificationsinchemvent-replaced-by-verificationevent)
 - [Verification API: `Method` property type changed to `VerificationMethod`](#verification-api-method-property-type-changed-to-verificationmethod)
+- [Verification API: `VerificationStartEvent.AcceptLanguage` removed](#verification-api-verificationstarteventacceptlanguage-removed)
 
 ## .NET Framework Support
 
@@ -1452,3 +1453,18 @@ Version 2.*:
 ```csharp
 VerificationMethod? method = resultEvent.Method;
 ```
+
+## Verification API: `VerificationStartEvent.AcceptLanguage` removed
+
+The `AcceptLanguage` property on `VerificationStartEvent` has been removed.
+
+Version 1.*:
+```csharp
+if (ev is VerificationStartEvent startEvent)
+{
+    var languages = startEvent.AcceptLanguage;
+}
+```
+
+Version 2.*:
+The `AcceptLanguage` property no longer exists on `VerificationStartEvent`. Remove any references to it.

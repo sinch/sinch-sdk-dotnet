@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
 
@@ -16,15 +15,5 @@ namespace Sinch.Verification.SinchEvents
         /// </summary>
         [JsonPropertyName("price")]
         public PriceDetail? Price { get; set; }
-
-        /// <summary>
-        ///     Allows you to set or override if provided in the API request, the SMS verification content language.
-        ///     Only used with the SMS verification method.
-        ///     The content language specified in the API request or in the event can be overridden
-        ///     by carrier provider specific templates, due to compliance and legal requirements,
-        ///     such as <see href="https://community.sinch.com/t5/SMS/Sinch-US-Short-Code-Onboarding-Overview/ta-p/7085">US shortcode requirements (pdf).</see>
-        /// </summary>
-        [JsonPropertyName("acceptLanguage")]
-        public List<string>? AcceptLanguage { get; set; }
     }
 }
