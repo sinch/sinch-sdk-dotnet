@@ -1408,13 +1408,13 @@ Several Verification event model types have been renamed. The JSON wire format i
 Renamed types:
 
 - `VerificationRequestEvent` → `VerificationStartEvent`
-- `RequestEventResponseBase` → `VerificationStartEventResponseBase`
+- `RequestEventResponseBase` → `VerificationStartEventResponse`
 - `SmsRequestEventResponse` → `VerificationStartEventResponseSms`
 - `FlashCallRequestEventResponse` → `VerificationStartEventResponseFlashCall`
 - `PhoneCallRequestEventResponse` → `VerificationStartEventResponsePhoneCall`
 - `WhatsAppRequestEventResponse` → `VerificationStartEventResponseWhatsApp`
 
-`VerificationStartEventResponseBase` is now abstract. Instantiate one of the concrete response types instead.
+`VerificationStartEventResponse` is now abstract. Instantiate one of the concrete response types instead.
 
 Version 1.*:
 ```csharp

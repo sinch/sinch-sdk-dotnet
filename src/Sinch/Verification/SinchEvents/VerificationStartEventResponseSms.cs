@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Verification.SinchEvents
 {
-    public sealed class VerificationStartEventResponseSms : VerificationStartEventResponseBase
+    public sealed class VerificationStartEventResponseSms : VerificationStartEventResponse
     {
         [JsonPropertyName("sms")]
         public Sms? Sms { get; set; }

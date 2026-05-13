@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Verification.SinchEvents
 {
-    public sealed class VerificationStartEventResponsePhoneCall : VerificationStartEventResponseBase
+    public sealed class VerificationStartEventResponsePhoneCall : VerificationStartEventResponse
     {
         [JsonPropertyName("callout")]
         public PhoneCall? PhoneCall { get; set; }

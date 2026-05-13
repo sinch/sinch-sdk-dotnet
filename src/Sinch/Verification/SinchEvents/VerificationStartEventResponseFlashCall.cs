@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Sinch.Verification.SinchEvents
 {
-    public sealed class VerificationStartEventResponseFlashCall : VerificationStartEventResponseBase
+    public sealed class VerificationStartEventResponseFlashCall : VerificationStartEventResponse
     {
         [JsonPropertyName("flashCall")]
         public FlashCall? FlashCall { get; set; }

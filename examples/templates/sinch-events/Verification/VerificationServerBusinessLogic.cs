@@ -5,7 +5,7 @@ namespace SinchEvents.Template.Verification;
 
 public class VerificationServerBusinessLogic(ILogger<VerificationServerBusinessLogic> logger)
 {
-    public VerificationStartEventResponseBase HandleEvent(VerificationStartEvent verificationEvent)
+    public VerificationStartEventResponse HandleEvent(VerificationStartEvent verificationEvent)
     {
         logger.LogInformation("Handle start event: {Event}", verificationEvent.ToPrettyString());
         return new VerificationStartEventResponseSms { Action = Sinch.Verification.SinchEvents.Action.Allow };

@@ -66,7 +66,7 @@ namespace Sinch.Verification.SinchEvents
                 headers.Select(h => new KeyValuePair<string, IEnumerable<string>>(h.Key, h.Value)),
                 body);
 
-        public string SerializeResponse(VerificationStartEventResponseBase response)
+        public string SerializeResponse(VerificationStartEventResponse response)
         {
             return JsonSerializer.Serialize(response, response.GetType(), _jsonSerializerOptions);
         }
