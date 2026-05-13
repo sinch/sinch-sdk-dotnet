@@ -24,7 +24,7 @@ public class VerificationSinchEventsController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost("VerificationStartEvent")]
+    [HttpPost("VerificationEvent")]
     [Consumes("application/json")]
     public IActionResult VerificationEvent()
     {
