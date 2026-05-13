@@ -139,7 +139,7 @@ namespace Sinch.Tests
         }
 
         [Fact]
-        public void Numbers_SinchEvents_ParseEvent_DoesNotRequireCredentials()
+        public void Numbers_SinchEvents_ParseEvent_DoesNotRequireConfiguration()
         {
             var sinch = new SinchClient();
             var json = Helpers.LoadResources("Numbers/SinchEvents/NumberSinchEvent.json");
