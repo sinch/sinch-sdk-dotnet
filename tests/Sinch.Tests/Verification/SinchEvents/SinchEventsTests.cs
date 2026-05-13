@@ -266,5 +266,36 @@ namespace Sinch.Tests.Verification.SinchEvents
             var responseJson = JsonSerializer.Serialize(response);
             Helpers.AssertJsonEqual(expected, responseJson);
         }
+
+        [Fact]
+        public void ParseEvent_DoesNotRequireConfiguration()
+        {
+            var sinch = new SinchClient();
+            var json = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEvent.json");
+
+            var sinchEvent = sinch.Verification.SinchEvents.ParseEvent(json);
+
+            sinchEvent.Should().BeOfType<VerificationStartEvent>();
+        }
+
+        [Fact]
+        public void SerializeResponse_DoesNotRequireConfiguration()
+        {
+            var sinch = new SinchClient();
+            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseSms.json");
+            var response = new VerificationStartEventResponseSms
+            {
+                Action = Action.Allow,
+                Sms = new Sinch.Verification.SinchEvents.Sms
+                {
+                    Code = "123",
+                    AcceptLanguage = new List<string> { "en-US" }
+                }
+            };
+
+            var json = sinch.Verification.SinchEvents.SerializeResponse(response);
+
+            Helpers.AssertJsonEqual(expected, json);
+        }
     }
 }

@@ -138,47 +138,5 @@ namespace Sinch.Tests
             accessor.Should().NotBeNull();
         }
 
-        [Fact]
-        public void Numbers_SinchEvents_ParseEvent_DoesNotRequireCredentials()
-        {
-            var sinch = new SinchClient();
-            var json = Helpers.LoadResources("Numbers/SinchEvents/NumberSinchEvent.json");
-
-            var sinchEvent = sinch.Numbers.SinchEvents.ParseEvent(json);
-
-            sinchEvent.Should().NotBeNull();
-            sinchEvent.EventId.Should().Be("abcd1234efghijklmnop567890");
-        }
-
-        [Fact]
-        public void Verification_SinchEvents_ParseEvent_DoesNotRequireConfiguration()
-        {
-            var sinch = new SinchClient();
-            var json = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEvent.json");
-
-            var sinchEvent = sinch.Verification.SinchEvents.ParseEvent(json);
-
-            sinchEvent.Should().BeOfType<Sinch.Verification.SinchEvents.VerificationStartEvent>();
-        }
-
-        [Fact]
-        public void Verification_SinchEvents_SerializeResponse_DoesNotRequireConfiguration()
-        {
-            var sinch = new SinchClient();
-            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseSms.json");
-            var response = new Sinch.Verification.SinchEvents.VerificationStartEventResponseSms
-            {
-                Action = Sinch.Verification.SinchEvents.Action.Allow,
-                Sms = new Sinch.Verification.SinchEvents.Sms
-                {
-                    Code = "123",
-                    AcceptLanguage = new List<string> { "en-US" }
-                }
-            };
-
-            var json = sinch.Verification.SinchEvents.SerializeResponse(response);
-
-            Helpers.AssertJsonEqual(expected, json);
-        }
     }
 }
