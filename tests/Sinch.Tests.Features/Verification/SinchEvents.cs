@@ -84,7 +84,7 @@ namespace Sinch.Tests.Features.Verification
             {
                 Id = "1ce0ffee-c0de-5eed-d00d-f00dfeed1337",
                 Event = "VerificationResultEvent",
-                Method = VerificationMethodEx.Sms,
+                Method = VerificationMethod.Sms,
                 Identity = Identity.Number("+33612345678"),
                 Status = VerificationStatus.Successful
             });

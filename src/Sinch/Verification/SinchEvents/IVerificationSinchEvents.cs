@@ -13,7 +13,7 @@ namespace Sinch.Verification.SinchEvents
         /// <summary>
         ///     Parse a Verification Sinch Event from a raw JSON string.
         /// </summary>
-        IVerificationSinchEvent ParseEvent(string json);
+        VerificationEvent ParseEvent(string json);
 
         /// <summary>
         ///     Validate the authentication header sent by Sinch.

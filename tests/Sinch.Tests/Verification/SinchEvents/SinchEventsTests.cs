@@ -207,7 +207,7 @@ namespace Sinch.Tests.Verification.SinchEvents
             {
                 Id = "1234567890",
                 Event = "VerificationResultEvent",
-                Method = VerificationMethodEx.Sms,
+                Method = VerificationMethod.Sms,
                 Identity = new Identity()
                 {
                     Endpoint = "+11235551234",

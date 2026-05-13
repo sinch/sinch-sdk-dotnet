@@ -26,9 +26,9 @@ namespace Sinch.Verification.SinchEvents
             _logger = logger;
         }
 
-        public IVerificationSinchEvent ParseEvent(string json)
+        public VerificationEvent ParseEvent(string json)
         {
-            var result = JsonSerializer.Deserialize<IVerificationSinchEvent>(json, _jsonSerializerOptions);
+            var result = JsonSerializer.Deserialize<VerificationEvent>(json, _jsonSerializerOptions);
             if (result is null)
             {
                 _logger?.LogError(

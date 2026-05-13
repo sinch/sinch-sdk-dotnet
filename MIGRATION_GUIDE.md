@@ -56,6 +56,8 @@
 - [Verification API: `ValidateAuthenticationHeader` moved to `SinchEvents`](#verification-api-validateauthenticationheader-moved-to-sinchevents)
 - [Verification API: `ParseEvent` moved to `SinchEvents`](#verification-api-parseevent-moved-to-sinchevents)
 - [Verification API: Verification event types renamed](#verification-api-verification-event-types-renamed)
+- [Verification API: `IVerificationSinchEvent` replaced by `VerificationEvent`](#verification-api-iverificationsinchemvent-replaced-by-verificationevent)
+- [Verification API: `Method` property type changed to `VerificationMethod`](#verification-api-method-property-type-changed-to-verificationmethod)
 
 ## .NET Framework Support
 
@@ -1421,4 +1423,32 @@ var response = new RequestEventResponseBase { Action = Action.Allow };
 Version 2.*:
 ```csharp
 var response = new VerificationStartEventResponseSms { Action = Action.Allow };
+```
+
+## Verification API: `IVerificationSinchEvent` replaced by `VerificationEvent`
+
+`IVerificationSinchEvent` has been removed. `ParseEvent` now returns `VerificationEvent`, an abstract base class that exposes the shared fields `Id`, `Event`, `Method`, `Identity`, `Reference`, and `Custom` directly.
+
+Version 1.*:
+```csharp
+IVerificationSinchEvent sinchEvent = sinch.Verification.SinchEvents.ParseEvent(body);
+```
+
+Version 2.*:
+```csharp
+VerificationEvent sinchEvent = sinch.Verification.SinchEvents.ParseEvent(body);
+```
+
+## Verification API: `Method` property type changed to `VerificationMethod`
+
+The `Method` property on `VerificationResultEvent` and `VerificationSmsDeliveredEvent` was previously typed as `VerificationMethodEx?`. It is now `VerificationMethod?`, inherited from `VerificationEvent`.
+
+Version 1.*:
+```csharp
+VerificationMethodEx? method = resultEvent.Method;
+```
+
+Version 2.*:
+```csharp
+VerificationMethod? method = resultEvent.Method;
 ```

@@ -9,33 +9,8 @@ namespace Sinch.Verification.SinchEvents
     ///     It's used to report the verification result to the developer's backend application.
     ///     This Sinch event is only triggered when the verification event destination is specified in your dashboard.
     /// </summary>
-    public sealed class VerificationResultEvent : IVerificationSinchEvent
+    public sealed class VerificationResultEvent : VerificationEvent
     {
-        /// <summary>
-        ///     The ID of the verification request.
-        /// </summary>
-        [JsonPropertyName("id")]
-        public string? Id { get; set; }
-
-        /// <summary>
-        ///     The type of the event.
-        /// </summary>
-        [JsonPropertyName("event")]
-        public string? Event { get; set; }
-
-        /// <summary>
-        ///     The verification method.
-        /// </summary>
-        [JsonPropertyName("method")]
-        public VerificationMethodEx? Method { get; set; }
-
-        /// <summary>
-        ///     Specifies the type of endpoint that will be verified and the particular endpoint.
-        ///     `number` is currently the only supported endpoint type.
-        /// </summary>
-        [JsonPropertyName("identity")]
-        public Identity? Identity { get; set; }
-
         /// <summary>
         ///     The status of the verification request.
         /// </summary>
@@ -49,21 +24,9 @@ namespace Sinch.Verification.SinchEvents
         public Reason? Reason { get; set; }
 
         /// <summary>
-        ///     The reference ID that was optionally passed together with the verification request.
-        /// </summary>
-        [JsonPropertyName("reference")]
-        public string? Reference { get; set; }
-
-        /// <summary>
         ///     Free text that the client is sending, used to show if the call/SMS was intercepted or not.
         /// </summary>
         [JsonPropertyName("source")]
         public Source? Source { get; set; }
-
-        /// <summary>
-        ///     A custom string that can be provided during a verification request.
-        /// </summary>
-        [JsonPropertyName("custom")]
-        public string? Custom { get; set; }
     }
 }
