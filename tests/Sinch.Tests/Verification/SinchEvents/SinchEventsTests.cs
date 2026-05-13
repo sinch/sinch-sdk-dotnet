@@ -168,8 +168,9 @@ namespace Sinch.Tests.Verification.SinchEvents
         public void DeserializeVerificationRequestEvent_ReturnsExpectedEvent()
         {
             var jsonString = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEvent.json");
+            var sinchEvents = new VerificationSinchEvents(new JsonSerializerOptions(JsonSerializerDefaults.Web));
 
-            var deserialized = JsonSerializer.Deserialize<VerificationStartEvent>(jsonString);
+            var deserialized = sinchEvents.ParseEvent(jsonString);
 
             deserialized.Should().BeEquivalentTo(new VerificationStartEvent()
             {
@@ -195,8 +196,9 @@ namespace Sinch.Tests.Verification.SinchEvents
         public void DeserializeVerificationResultEvent_ReturnsExpectedEvent()
         {
             var jsonString = Helpers.LoadResources("Verification/SinchEvents/VerificationResultEvent.json");
+            var sinchEvents = new VerificationSinchEvents(new JsonSerializerOptions(JsonSerializerDefaults.Web));
 
-            var deserialized = JsonSerializer.Deserialize<VerificationResultEvent>(jsonString);
+            var deserialized = sinchEvents.ParseEvent(jsonString);
 
             deserialized.Should().BeEquivalentTo(new VerificationResultEvent()
             {
