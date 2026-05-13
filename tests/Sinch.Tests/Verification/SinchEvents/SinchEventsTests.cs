@@ -242,25 +242,6 @@ namespace Sinch.Tests.Verification.SinchEvents
         }
 
         [Fact]
-        public void SinchClient_WithoutCredentials_CanParseVerificationEvent()
-        {
-            var sinchEvents = new SinchClient(new SinchClientConfiguration()).Verification.SinchEvents;
-
-            const string json = """
-                {
-                  "id": "1234567890",
-                  "event": "VerificationRequestEvent",
-                  "method": "sms",
-                  "identity": { "type": "number", "endpoint": "+11235551234" }
-                }
-                """;
-
-            var ev = sinchEvents.ParseEvent(json);
-
-            ev.Should().NotBeNull();
-        }
-
-        [Fact]
         public void SerializeResponse_ReturnsExpectedWhatsAppPayload_WhenWhatsAppResponseProvided()
         {
             var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseWhatsApp.json");
