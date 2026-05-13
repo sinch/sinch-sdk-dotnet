@@ -31,21 +31,20 @@ public class VerificationSinchEventsController : ControllerBase
         var body = HttpContext.Items[SinchEventsConstants.BodyItemKey] as string;
         var verificationEvent = _verificationSinchEvents.ParseEvent(body!);
 
-        var response = verificationEvent switch
+        if (verificationEvent is VerificationStartEvent startEvent)
         {
-            VerificationStartEvent startEvent => _businessLogic.VerificationStartEvent(startEvent),
-            VerificationResultEvent resultEvent => _businessLogic.VerificationResultEvent(resultEvent),
-            _ => throw new InvalidOperationException($"Unexpected verification event type: {verificationEvent.GetType()}")
-        };
-
-        if (response is not null)
-        {
-            
+            var response = _businessLogic.HandleEvent(startEvent);
             var serializedResponse = _verificationSinchEvents.SerializeResponse(response);
             _logger.LogInformation("JSON response: {SerializedResponse}", serializedResponse);
             return Ok(serializedResponse);
         }
-        
-        return Ok();
+
+        if (verificationEvent is VerificationResultEvent resultEvent)
+        {
+            _businessLogic.HandleEvent(resultEvent);
+            return Ok();
+        }
+
+        throw new InvalidOperationException($"Unexpected verification event type: {verificationEvent.GetType()}");
     }
 }
