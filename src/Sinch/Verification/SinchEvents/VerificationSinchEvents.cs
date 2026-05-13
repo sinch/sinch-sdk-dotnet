@@ -78,31 +78,18 @@ namespace Sinch.Verification.SinchEvents
                 throw CreateMissingVerificationCredentialsException();
             }
 
-            try
+            if (_auth.Value is ApplicationSignedAuth applicationSignedAuth)
             {
-                if (_auth.Value is ApplicationSignedAuth applicationSignedAuth)
-                {
-                    return applicationSignedAuth;
-                }
-            }
-            catch (InvalidOperationException exception)
-            {
-                throw CreateMissingVerificationCredentialsException(exception);
-            }
-            catch (ArgumentNullException exception)
-            {
-                throw CreateMissingVerificationCredentialsException(exception);
+                return applicationSignedAuth;
             }
 
             throw CreateMissingVerificationCredentialsException();
         }
 
-        private static InvalidOperationException CreateMissingVerificationCredentialsException(
-            Exception? innerException = null)
+        private static InvalidOperationException CreateMissingVerificationCredentialsException()
         {
             return new InvalidOperationException(
-                "Verification application credentials are required to validate the authentication header.",
-                innerException);
+                "Verification application credentials are required to validate the authentication header.");
         }
     }
 }
