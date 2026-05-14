@@ -54,8 +54,10 @@
 - [Numbers API: `EventType.DeprovisioningFromCampaignProvisioningToCampaign` renamed](#eventtypedeprovisioningfromcampaignprovisioningtocampaign-renamed)
 - [Verification API: `Sinch.Verification.Hooks` namespace moved to `Sinch.Verification.SinchEvents`](#verification-api-sinchverificationhooks-namespace-moved-to-sinchverificationsinchevents)
 - [Verification API: `ValidateAuthenticationHeader` moved to `SinchEvents`](#verification-api-validateauthenticationheader-moved-to-sinchevents)
-- [Verification API: `ParseEvent` moved to `SinchEvents`](#verification-api-parseevent-moved-to-sinchevents)
 - [Verification API: Verification event types renamed](#verification-api-verification-event-types-renamed)
+- [Verification API: `IVerificationSinchEvent` replaced by `VerificationEvent`](#verification-api-iverificationsinchemvent-replaced-by-verificationevent)
+- [Verification API: `Method` property type changed to `VerificationMethod`](#verification-api-method-property-type-changed-to-verificationmethod)
+- [Verification API: `VerificationStartEvent.AcceptLanguage` removed](#verification-api-verificationstarteventacceptlanguage-removed)
 - [Voice API: `Sinch.Voice.Hooks` namespace renamed to `Sinch.Voice.SinchEvents`](#voice-api-sinchvoicehooks-namespace-renamed-to-sinchvoicesinchevents)
 - [Voice API: `IVoiceEvent` renamed to `VoiceSinchEvent`](#voice-api-ivoiceevent-renamed-to-voicesinchevent)
 - [Voice API: `VoiceEventConverter` renamed to `VoiceSinchEventConverter`](#voice-api-voiceeventconverter-renamed-to-voicesincheventconverter)
@@ -1389,20 +1391,6 @@ Version 2.*:
 bool valid = sinch.Verification.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, path, headers, body);
 ```
 
-## Verification API: `ParseEvent` moved to `SinchEvents`
-
-`ParseEvent` is now available on `ISinchVerificationClient.SinchEvents` and returns `IVerificationSinchEvent`.
-
-Version 1.*:
-```csharp
-var verificationEvent = JsonSerializer.Deserialize<VerificationResultEvent>(json);
-```
-
-Version 2.*:
-```csharp
-var verificationEvent = sinch.Verification.SinchEvents.ParseEvent(json);
-```
-
 ## Verification API: Verification event types renamed
 
 Several Verification event model types have been renamed. The JSON wire format is unchanged.
@@ -1410,13 +1398,13 @@ Several Verification event model types have been renamed. The JSON wire format i
 Renamed types:
 
 - `VerificationRequestEvent` → `VerificationStartEvent`
-- `RequestEventResponseBase` → `VerificationStartEventResponseBase`
+- `RequestEventResponseBase` → `VerificationStartEventResponse`
 - `SmsRequestEventResponse` → `VerificationStartEventResponseSms`
 - `FlashCallRequestEventResponse` → `VerificationStartEventResponseFlashCall`
 - `PhoneCallRequestEventResponse` → `VerificationStartEventResponsePhoneCall`
 - `WhatsAppRequestEventResponse` → `VerificationStartEventResponseWhatsApp`
 
-`VerificationStartEventResponseBase` is now abstract. Instantiate one of the concrete response types instead.
+`VerificationStartEventResponse` is now abstract. Instantiate one of the concrete response types instead.
 
 Version 1.*:
 ```csharp
@@ -1427,6 +1415,49 @@ Version 2.*:
 ```csharp
 var response = new VerificationStartEventResponseSms { Action = Action.Allow };
 ```
+
+## Verification API: `IVerificationSinchEvent` replaced by `VerificationEvent`
+
+`IVerificationSinchEvent` has been removed. `ParseEvent` now returns `VerificationEvent`, an abstract base class that exposes the shared fields `Id`, `Event`, `Method`, `Identity`, `Reference`, and `Custom` directly.
+
+Version 1.*:
+```csharp
+IVerificationSinchEvent sinchEvent = sinch.Verification.SinchEvents.ParseEvent(body);
+```
+
+Version 2.*:
+```csharp
+VerificationEvent sinchEvent = sinch.Verification.SinchEvents.ParseEvent(body);
+```
+
+## Verification API: `Method` property type changed to `VerificationMethod`
+
+The `Method` property on `VerificationResultEvent` and `VerificationSmsDeliveredEvent` was previously typed as `VerificationMethodEx?`. It is now `VerificationMethod?`, inherited from `VerificationEvent`.
+
+Version 1.*:
+```csharp
+VerificationMethodEx? method = resultEvent.Method;
+```
+
+Version 2.*:
+```csharp
+VerificationMethod? method = resultEvent.Method;
+```
+
+## Verification API: `VerificationStartEvent.AcceptLanguage` removed
+
+The `AcceptLanguage` property on `VerificationStartEvent` has been removed.
+
+Version 1.*:
+```csharp
+if (ev is VerificationStartEvent startEvent)
+{
+    var languages = startEvent.AcceptLanguage;
+}
+```
+
+Version 2.*:
+The `AcceptLanguage` property no longer exists on `VerificationStartEvent`. Remove any references to it.
 
 ## Voice API: `Sinch.Voice.Hooks` namespace renamed to `Sinch.Voice.SinchEvents`
 

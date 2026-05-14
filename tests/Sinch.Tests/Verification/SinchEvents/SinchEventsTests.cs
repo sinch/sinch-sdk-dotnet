@@ -38,6 +38,19 @@ namespace Sinch.Tests.Verification.SinchEvents
         }
 
         [Fact]
+        public void ParseEvent_ReturnsVerificationSmsDeliveredEvent()
+        {
+            var json = Helpers.LoadResources("Verification/SinchEvents/VerificationSmsDeliveredEvent.json");
+
+            var sinchEvents = new VerificationSinchEvents(new JsonSerializerOptions(JsonSerializerDefaults.Web));
+
+            var parsed = sinchEvents.ParseEvent(json);
+
+            parsed.Should().BeOfType<VerificationSmsDeliveredEvent>()
+                .Which.SmsResult.Should().Be(SmsDeliveryResult.Successful);
+        }
+
+        [Fact]
         public void ParseEvent_Throws_WhenEventTypeUnknown()
         {
             const string json = """
@@ -105,12 +118,13 @@ namespace Sinch.Tests.Verification.SinchEvents
                 "{}");
 
             act.Should().Throw<System.InvalidOperationException>()
-                .WithMessage("Verification application credentials are required to validate the authentication header.");
+                .WithMessage("VerificationConfiguration with AppKey and AppSecret is required to use Verification API methods. Set VerificationConfiguration when creating SinchClient.");
         }
 
         [Fact]
         public void SerializeResponse_SerializesDerivedVerificationResponse()
         {
+            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseSms.json");
             var sinchEvents = new VerificationSinchEvents(new JsonSerializerOptions(JsonSerializerDefaults.Web));
             var response = new VerificationStartEventResponseSms
             {
@@ -124,9 +138,7 @@ namespace Sinch.Tests.Verification.SinchEvents
 
             var json = sinchEvents.SerializeResponse(response);
 
-            json.Should().Contain("\"action\":\"allow\"");
-            json.Should().Contain("\"sms\"");
-            json.Should().Contain("\"code\":\"123\"");
+            Helpers.AssertJsonEqual(expected, json);
         }
 
         [Fact]
@@ -156,8 +168,9 @@ namespace Sinch.Tests.Verification.SinchEvents
         public void DeserializeVerificationRequestEvent_ReturnsExpectedEvent()
         {
             var jsonString = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEvent.json");
+            var sinchEvents = new VerificationSinchEvents(new JsonSerializerOptions(JsonSerializerDefaults.Web));
 
-            var deserialized = JsonSerializer.Deserialize<VerificationStartEvent>(jsonString);
+            var deserialized = sinchEvents.ParseEvent(jsonString);
 
             deserialized.Should().BeEquivalentTo(new VerificationStartEvent()
             {
@@ -175,11 +188,7 @@ namespace Sinch.Tests.Verification.SinchEvents
                     CurrencyId = "USD",
                 },
                 Reference = "string",
-                Custom = "string",
-                AcceptLanguage = new List<string>()
-                {
-                    "es-ES"
-                }
+                Custom = "string"
             });
         }
 
@@ -187,14 +196,15 @@ namespace Sinch.Tests.Verification.SinchEvents
         public void DeserializeVerificationResultEvent_ReturnsExpectedEvent()
         {
             var jsonString = Helpers.LoadResources("Verification/SinchEvents/VerificationResultEvent.json");
+            var sinchEvents = new VerificationSinchEvents(new JsonSerializerOptions(JsonSerializerDefaults.Web));
 
-            var deserialized = JsonSerializer.Deserialize<VerificationResultEvent>(jsonString);
+            var deserialized = sinchEvents.ParseEvent(jsonString);
 
             deserialized.Should().BeEquivalentTo(new VerificationResultEvent()
             {
                 Id = "1234567890",
                 Event = "VerificationResultEvent",
-                Method = VerificationMethodEx.Sms,
+                Method = VerificationMethod.Sms,
                 Identity = new Identity()
                 {
                     Endpoint = "+11235551234",
@@ -232,25 +242,6 @@ namespace Sinch.Tests.Verification.SinchEvents
         }
 
         [Fact]
-        public void SinchClient_WithoutCredentials_CanParseVerificationEvent()
-        {
-            var sinchEvents = new SinchClient(new SinchClientConfiguration()).Verification.SinchEvents;
-
-            const string json = """
-                {
-                  "id": "1234567890",
-                  "event": "VerificationRequestEvent",
-                  "method": "sms",
-                  "identity": { "type": "number", "endpoint": "+11235551234" }
-                }
-                """;
-
-            var ev = sinchEvents.ParseEvent(json);
-
-            ev.Should().NotBeNull();
-        }
-
-        [Fact]
         public void SerializeResponse_ReturnsExpectedWhatsAppPayload_WhenWhatsAppResponseProvided()
         {
             var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseWhatsApp.json");
@@ -274,6 +265,37 @@ namespace Sinch.Tests.Verification.SinchEvents
 
             var responseJson = JsonSerializer.Serialize(response);
             Helpers.AssertJsonEqual(expected, responseJson);
+        }
+
+        [Fact]
+        public void ParseEvent_DoesNotRequireConfiguration()
+        {
+            var sinch = new SinchClient();
+            var json = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEvent.json");
+
+            var sinchEvent = sinch.Verification.SinchEvents.ParseEvent(json);
+
+            sinchEvent.Should().BeOfType<VerificationStartEvent>();
+        }
+
+        [Fact]
+        public void SerializeResponse_DoesNotRequireConfiguration()
+        {
+            var sinch = new SinchClient();
+            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseSms.json");
+            var response = new VerificationStartEventResponseSms
+            {
+                Action = Action.Allow,
+                Sms = new Sinch.Verification.SinchEvents.Sms
+                {
+                    Code = "123",
+                    AcceptLanguage = new List<string> { "en-US" }
+                }
+            };
+
+            var json = sinch.Verification.SinchEvents.SerializeResponse(response);
+
+            Helpers.AssertJsonEqual(expected, json);
         }
     }
 }

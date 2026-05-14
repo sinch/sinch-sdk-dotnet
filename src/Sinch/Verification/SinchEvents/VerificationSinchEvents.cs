@@ -26,9 +26,9 @@ namespace Sinch.Verification.SinchEvents
             _logger = logger;
         }
 
-        public IVerificationSinchEvent ParseEvent(string json)
+        public VerificationEvent ParseEvent(string json)
         {
-            var result = JsonSerializer.Deserialize<IVerificationSinchEvent>(json, _jsonSerializerOptions);
+            var result = JsonSerializer.Deserialize<VerificationEvent>(json, _jsonSerializerOptions);
             if (result is null)
             {
                 _logger?.LogError(
@@ -66,7 +66,7 @@ namespace Sinch.Verification.SinchEvents
                 headers.Select(h => new KeyValuePair<string, IEnumerable<string>>(h.Key, h.Value)),
                 body);
 
-        public string SerializeResponse(VerificationStartEventResponseBase response)
+        public string SerializeResponse(VerificationStartEventResponse response)
         {
             return JsonSerializer.Serialize(response, response.GetType(), _jsonSerializerOptions);
         }
@@ -78,31 +78,18 @@ namespace Sinch.Verification.SinchEvents
                 throw CreateMissingVerificationCredentialsException();
             }
 
-            try
+            if (_auth.Value is ApplicationSignedAuth applicationSignedAuth)
             {
-                if (_auth.Value is ApplicationSignedAuth applicationSignedAuth)
-                {
-                    return applicationSignedAuth;
-                }
-            }
-            catch (InvalidOperationException exception)
-            {
-                throw CreateMissingVerificationCredentialsException(exception);
-            }
-            catch (ArgumentNullException exception)
-            {
-                throw CreateMissingVerificationCredentialsException(exception);
+                return applicationSignedAuth;
             }
 
             throw CreateMissingVerificationCredentialsException();
         }
 
-        private static InvalidOperationException CreateMissingVerificationCredentialsException(
-            Exception? innerException = null)
+        private static InvalidOperationException CreateMissingVerificationCredentialsException()
         {
             return new InvalidOperationException(
-                "Verification application credentials are required to validate the authentication header.",
-                innerException);
+                "Verification application credentials are required to validate the authentication header.");
         }
     }
 }

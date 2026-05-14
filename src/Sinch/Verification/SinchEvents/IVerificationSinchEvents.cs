@@ -13,7 +13,7 @@ namespace Sinch.Verification.SinchEvents
         /// <summary>
         ///     Parse a Verification Sinch Event from a raw JSON string.
         /// </summary>
-        IVerificationSinchEvent ParseEvent(string json);
+        VerificationEvent ParseEvent(string json);
 
         /// <summary>
         ///     Validate the authentication header sent by Sinch.
@@ -35,8 +35,8 @@ namespace Sinch.Verification.SinchEvents
             string body);
 
         /// <summary>
-        ///     Serialize a verification request event response payload.
+        ///     Serialize response to a received verification start event
         /// </summary>
-        string SerializeResponse(VerificationStartEventResponseBase response);
+        string SerializeResponse(VerificationStartEventResponse response);
     }
 }
