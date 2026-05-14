@@ -5,14 +5,14 @@ using System.Text.Json.Serialization;
 namespace Sinch.Verification.SinchEvents
 {
     /// <summary>
-    ///     JSON converter for <see cref="VerificationEvent"/> that uses the "event"
+    ///     JSON converter for <see cref="VerificationSinchEvent"/> that uses the "event"
     ///     discriminator field to determine the concrete Verification event type.
     /// </summary>
-    public sealed class VerificationSinchEventConverter : JsonConverter<VerificationEvent>
+    public sealed class VerificationSinchEventConverter : JsonConverter<VerificationSinchEvent>
     {
         private const string EventPropertyName = "event";
 
-        public override VerificationEvent? Read(
+        public override VerificationSinchEvent? Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options)
@@ -35,7 +35,7 @@ namespace Sinch.Verification.SinchEvents
 
         public override void Write(
             Utf8JsonWriter writer,
-            VerificationEvent value,
+            VerificationSinchEvent value,
             JsonSerializerOptions options)
         {
             switch (value)

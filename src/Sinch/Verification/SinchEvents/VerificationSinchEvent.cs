@@ -8,7 +8,7 @@ namespace Sinch.Verification.SinchEvents
     ///     event type as defined by the <c>VerificationEventBase</c> schema in the OAS spec.
     /// </summary>
     [JsonConverter(typeof(VerificationSinchEventConverter))]
-    public abstract class VerificationEvent
+    public abstract class VerificationSinchEvent
     {
         /// <summary>
         ///     The ID of the verification request.

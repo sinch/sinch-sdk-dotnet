@@ -55,7 +55,7 @@
 - [Verification API: `Sinch.Verification.Hooks` namespace moved to `Sinch.Verification.SinchEvents`](#verification-api-sinchverificationhooks-namespace-moved-to-sinchverificationsinchevents)
 - [Verification API: `ValidateAuthenticationHeader` moved to `SinchEvents`](#verification-api-validateauthenticationheader-moved-to-sinchevents)
 - [Verification API: Verification event types renamed](#verification-api-verification-event-types-renamed)
-- [Verification API: `IVerificationSinchEvent` replaced by `VerificationEvent`](#verification-api-iverificationsinchemvent-replaced-by-verificationevent)
+- [Verification API: `IVerificationSinchEvent` replaced by `VerificationSinchEvent`](#verification-api-iverificationsinchemvent-replaced-by-verificationsinchemvent)
 - [Verification API: `Method` property type changed to `VerificationMethod`](#verification-api-method-property-type-changed-to-verificationmethod)
 - [Verification API: `VerificationStartEvent.AcceptLanguage` removed](#verification-api-verificationstarteventacceptlanguage-removed)
 
@@ -1411,9 +1411,9 @@ Version 2.*:
 var response = new VerificationStartEventResponseSms { Action = Action.Allow };
 ```
 
-## Verification API: `IVerificationSinchEvent` replaced by `VerificationEvent`
+## Verification API: `IVerificationSinchEvent` replaced by `VerificationSinchEvent`
 
-`IVerificationSinchEvent` has been removed. `ParseEvent` now returns `VerificationEvent`, an abstract base class that exposes the shared fields `Id`, `Event`, `Method`, `Identity`, `Reference`, and `Custom` directly.
+`IVerificationSinchEvent` has been removed. `ParseEvent` now returns `VerificationSinchEvent`, an abstract base class that exposes the shared fields `Id`, `Event`, `Method`, `Identity`, `Reference`, and `Custom` directly.
 
 Version 1.*:
 ```csharp
@@ -1422,12 +1422,12 @@ IVerificationSinchEvent sinchEvent = sinch.Verification.SinchEvents.ParseEvent(b
 
 Version 2.*:
 ```csharp
-VerificationEvent sinchEvent = sinch.Verification.SinchEvents.ParseEvent(body);
+VerificationSinchEvent sinchEvent = sinch.Verification.SinchEvents.ParseEvent(body);
 ```
 
 ## Verification API: `Method` property type changed to `VerificationMethod`
 
-The `Method` property on `VerificationResultEvent` and `VerificationSmsDeliveredEvent` was previously typed as `VerificationMethodEx?`. It is now `VerificationMethod?`, inherited from `VerificationEvent`.
+The `Method` property on `VerificationResultEvent` and `VerificationSmsDeliveredEvent` was previously typed as `VerificationMethodEx?`. It is now `VerificationMethod?`, inherited from `VerificationSinchEvent`.
 
 Version 1.*:
 ```csharp
