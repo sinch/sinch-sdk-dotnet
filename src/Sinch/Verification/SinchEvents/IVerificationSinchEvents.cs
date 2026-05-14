@@ -35,7 +35,7 @@ namespace Sinch.Verification.SinchEvents
             string body);
 
         /// <summary>
-        ///     Serialize a verification request event response payload.
+        ///     Serialize response to a received verification start event
         /// </summary>
         string SerializeResponse(VerificationStartEventResponse response);
     }
