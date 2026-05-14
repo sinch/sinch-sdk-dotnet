@@ -136,6 +136,6 @@ namespace Sinch.Tests
             var accessor = Helpers.GetPrivateField<Func<HttpClient>, SinchClient>(sinch, "_httpClientAccessor");
             accessor.Should().NotBeNull();
         }
-        
+
     }
 }
