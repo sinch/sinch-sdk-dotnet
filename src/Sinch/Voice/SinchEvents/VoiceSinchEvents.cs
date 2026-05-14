@@ -45,9 +45,8 @@ namespace Sinch.Voice.SinchEvents
             IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers,
             string body)
         {
-            EnsureCredentials();
             return AuthorizationHeaderValidation.Validate(method, path,
-                headers.ToDictionary(x => x.Key, x => x.Value), body, _applicationSignedAuth!, _logger);
+                headers.ToDictionary(x => x.Key, x => x.Value), body, ResolveApplicationSignedAuth(), _logger);
         }
 
         /// <inheritdoc />
@@ -57,10 +56,9 @@ namespace Sinch.Voice.SinchEvents
             IEnumerable<KeyValuePair<string, StringValues>> headers,
             string body)
         {
-            EnsureCredentials();
             var reHeaders = headers.ToDictionary(x => x.Key, x => (IEnumerable<string>)x.Value);
-            return AuthorizationHeaderValidation.Validate(method, path, reHeaders, body, _applicationSignedAuth!,
-                _logger);
+            return AuthorizationHeaderValidation.Validate(method, path, reHeaders, body,
+                ResolveApplicationSignedAuth(), _logger);
         }
 
         /// <inheritdoc />
@@ -69,13 +67,15 @@ namespace Sinch.Voice.SinchEvents
             return JsonSerializer.Serialize(response, _jsonSerializerOptions);
         }
 
-        private void EnsureCredentials()
+        private ApplicationSignedAuth ResolveApplicationSignedAuth()
         {
             if (_applicationSignedAuth == null)
             {
                 throw new InvalidOperationException(
                     "Voice application credentials are required to validate the authentication header.");
             }
+
+            return _applicationSignedAuth;
         }
     }
 }
