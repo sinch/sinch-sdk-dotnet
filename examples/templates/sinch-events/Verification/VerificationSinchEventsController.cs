@@ -7,7 +7,7 @@ namespace SinchEvents.Template.Verification;
 /// Example controller for receiving Verification Sinch Events.
 /// </summary>
 [ApiController]
-[VerificationSinchEvent(requireAuthentication: false)]
+[VerificationSinchEvent(requireAuthentication: true)]
 public class VerificationSinchEventsController : ControllerBase
 {
     private readonly IVerificationSinchEvents _verificationSinchEvents;
