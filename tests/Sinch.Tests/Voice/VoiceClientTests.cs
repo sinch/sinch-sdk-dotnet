@@ -113,5 +113,30 @@ namespace Sinch.Tests.Voice
             which.ParamName.Should().Be(data.ParamName);
             which.Message.Should().Be(data.Message);
         }
+
+        [Fact]
+        public void SinchEvents_ParseEvent_DoesNotRequireConfiguration()
+        {
+            var sinch = new SinchClient();
+            var json = Helpers.LoadResources("Voice/AnsweredCallEvent.json");
+
+            var sinchEvent = sinch.Voice.SinchEvents.ParseEvent(json);
+
+            sinchEvent.Should().BeOfType<Sinch.Voice.SinchEvents.AnsweredCallEvent>();
+        }
+
+        [Fact]
+        public void SinchEvents_SerializeResponse_DoesNotRequireConfiguration()
+        {
+            var sinch = new SinchClient();
+            var response = new Sinch.Voice.SinchEvents.CallEventResponse
+            {
+                Action = new Sinch.Voice.Calls.Actions.Hangup()
+            };
+
+            var json = sinch.Voice.SinchEvents.SerializeResponse(response);
+
+            json.Should().Contain("\"hangup\"");
+        }
     }
 }
