@@ -14,13 +14,13 @@ namespace Sinch.Fax
     public interface ISinchFax
     {
         /// <inheritdoc cref="ISinchFaxFaxes" />
-        public ISinchFaxFaxes Faxes { get; }
+        ISinchFaxFaxes Faxes { get; }
 
         /// <inheritdoc cref="ISinchFaxEmails" />
-        public ISinchFaxEmails Emails { get; }
+        ISinchFaxEmails Emails { get; }
 
         /// <inheritdoc cref="ISinchFaxServices" />
-        public ISinchFaxServices Services { get; }
+        ISinchFaxServices Services { get; }
     }
 
     internal sealed class FaxClient : ISinchFax

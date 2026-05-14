@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Sinch.Fax.Faxes;
 
-namespace Sinch.Fax.Hooks
+namespace Sinch.Fax.SinchEvents
 {
-    public sealed class CompletedFaxEvent : GenericFaxEvent, IFaxEvent
+    public sealed class CompletedFaxEvent : GenericFaxEvent, IFaxSinchEvent
     {
         public override FaxEventType Event { get; } = FaxEventType.CompletedFax;
 
