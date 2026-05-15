@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Sinch.Numbers.SinchEvents;
 using Sinch.SMS.SinchEvents;
+using Sinch.Fax.SinchEvents;
 using Sinch.Verification.SinchEvents;
 using Sinch.Voice.SinchEvents;
 
@@ -150,6 +151,11 @@ namespace Sinch
             services.TryAdd(new ServiceDescriptor(
                 typeof(ISmsSinchEvents),
                 sp => sp.GetRequiredService<ISinchClient>().Sms.SinchEvents,
+                lifetime));
+
+            services.TryAdd(new ServiceDescriptor(
+                typeof(IFaxSinchEvents),
+                sp => sp.GetRequiredService<ISinchClient>().Fax.SinchEvents,
                 lifetime));
 
             services.TryAdd(new ServiceDescriptor(

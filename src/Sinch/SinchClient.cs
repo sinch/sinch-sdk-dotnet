@@ -231,18 +231,12 @@ namespace Sinch
                 _loggerFactory,
                 _httpClientAccessor);
 
-        private ISinchFax InitFax()
-        {
-            var unifiedCredentials = ValidateUnifiedCredentials();
-
-            var faxConfig = _sinchClientConfiguration.FaxConfiguration;
-
-            var faxUrl = ResolveUrl(
+        private ISinchFax InitFax() =>
+            new FaxClient(
+                _sinchClientConfiguration,
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.FaxUrl,
-                () => SinchUrlResolvers.ResolveFaxUrl(faxConfig));
-
-            return new FaxClient(unifiedCredentials.ProjectId, faxUrl, _loggerFactory, _httpCamelCase.Value);
-        }
+                _loggerFactory,
+                _httpClientAccessor);
 
         private ISinchConversation InitConversation()
         {
