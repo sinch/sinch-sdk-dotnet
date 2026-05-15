@@ -4,6 +4,7 @@
 
 using Sinch;
 using Sinch.Verification;
+using SinchEvents.Template.Fax;
 using SinchEvents.Template.Numbers;
 using SinchEvents.Template.Sms;
 using SinchEvents.Template.Verification;
@@ -17,6 +18,7 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 
 builder.Services.AddControllers();
 
+builder.Services.AddSingleton<FaxServerBusinessLogic>();
 builder.Services.AddSingleton<SmsServerBusinessLogic>();
 builder.Services.AddSingleton<NumbersServerBusinessLogic>();
 builder.Services.AddSingleton<VerificationServerBusinessLogic>();
