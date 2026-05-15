@@ -7,7 +7,7 @@ namespace Sinch.Fax.SinchEvents
     public interface IFaxSinchEvent
     {
         /// <summary>
-        ///     The different events that can trigger a webhook
+        ///     The type of event delivered to the event destination.
         /// </summary>
         [JsonPropertyName("event")]
         FaxEventType Event { get; }
