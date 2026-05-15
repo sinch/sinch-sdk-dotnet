@@ -63,6 +63,12 @@
 - [Voice API: `VoiceEventConverter` renamed to `VoiceSinchEventConverter`](#voice-api-voiceeventconverter-renamed-to-voicesincheventconverter)
 - [Voice API: `ValidateAuthenticationHeader` moved to `SinchEvents`](#voice-api-validateauthenticationheader-moved-to-sinchevents)
 - [Voice API: `ParseEvent` moved to `SinchEvents`](#voice-api-parseevent-moved-to-sinchevents)
+- [Fax API: `CallbackUrlContentType` class renamed to `FaxContentType`](#fax-api-callbackurlcontenttype-class-renamed-to-faxcontenttype)
+- [Fax API: `CallbackUrl` renamed to `EventDestinationTarget`](#fax-api-callbackurl-renamed-to-eventdestinationtarget)
+- [Fax API: `CallbackUrlContentType` property renamed to `EventDestinationContentType`](#fax-api-callbackurlcontenttype-property-renamed-to-eventdestinationcontenttype)
+- [Fax API: `IncomingWebhookUrl` renamed to `IncomingEventDestinationUrl`](#fax-api-incomingwebhookurl-renamed-to-incomingeventdestinationurl)
+- [Fax API: `WebhookContentType` renamed to `EventDestinationContentType`](#fax-api-webhookcontenttype-renamed-to-eventdestinationcontenttype)
+- [Fax API: `IFaxSinchEvents` subdomain added](#fax-api-ifaxsinchevents-subdomain-added)
 
 ## .NET Framework Support
 
@@ -1539,4 +1545,92 @@ IVoiceEvent voiceEvent = sinch.Voice.ParseEvent(json);
 Version 2.*:
 ```csharp
 VoiceSinchEvent voiceEvent = sinch.Voice.SinchEvents.ParseEvent(json);
+```
+
+## Fax API: `CallbackUrlContentType` class renamed to `FaxContentType`
+
+The `CallbackUrlContentType` enum record has been renamed to `FaxContentType`.
+The serialized string values (`"multipart/form-data"`, `"application/json"`) are unchanged.
+
+Version 1.*:
+```csharp
+CallbackUrlContentType.MultipartFormData
+CallbackUrlContentType.ApplicationJson
+```
+
+Version 2.*:
+```csharp
+FaxContentType.MultipartFormData
+FaxContentType.ApplicationJson
+```
+
+## Fax API: `CallbackUrl` renamed to `EventDestinationTarget`
+
+`CallbackUrl` on `Fax` and `SendFaxRequest` has been renamed to `EventDestinationTarget`.
+The JSON wire name `"callbackUrl"` is unchanged.
+
+Version 1.*:
+```csharp
+var request = new SendFaxRequest { CallbackUrl = "https://my-server.com/fax-events" };
+```
+
+Version 2.*:
+```csharp
+var request = new SendFaxRequest { EventDestinationTarget = "https://my-server.com/fax-events" };
+```
+
+## Fax API: `CallbackUrlContentType` property renamed to `EventDestinationContentType`
+
+`CallbackUrlContentType` property on `Fax` and `SendFaxRequest` has been renamed to `EventDestinationContentType`.
+The JSON wire name `"callbackUrlContentType"` is unchanged.
+
+Version 1.*:
+```csharp
+var request = new SendFaxRequest { CallbackUrlContentType = FaxContentType.ApplicationJson };
+```
+
+Version 2.*:
+```csharp
+var request = new SendFaxRequest { EventDestinationContentType = FaxContentType.ApplicationJson };
+```
+
+## Fax API: `IncomingWebhookUrl` renamed to `IncomingEventDestinationUrl`
+
+`ServiceBase.IncomingWebhookUrl` has been renamed to `ServiceBase.IncomingEventDestinationUrl`.
+The JSON wire name `"incomingWebhookUrl"` is unchanged.
+
+Version 1.*:
+```csharp
+var service = new CreateFaxServiceRequest { IncomingWebhookUrl = "https://my-server.com/fax-events" };
+```
+
+Version 2.*:
+```csharp
+var service = new CreateFaxServiceRequest { IncomingEventDestinationUrl = "https://my-server.com/fax-events" };
+```
+
+## Fax API: `WebhookContentType` renamed to `EventDestinationContentType`
+
+`ServiceBase.WebhookContentType` has been renamed to `ServiceBase.EventDestinationContentType`.
+The JSON wire name `"webhookContentType"` is unchanged.
+
+Version 1.*:
+```csharp
+var service = new CreateFaxServiceRequest { WebhookContentType = FaxContentType.ApplicationJson };
+```
+
+Version 2.*:
+```csharp
+var service = new CreateFaxServiceRequest { EventDestinationContentType = FaxContentType.ApplicationJson };
+```
+
+## Fax API: `IFaxSinchEvents` subdomain added
+
+`ISinchFax` now exposes a `SinchEvents` property of type `IFaxSinchEvents`.
+Use it to parse incoming Fax Sinch Events and validate HMAC signatures.
+
+Version 2.*:
+```csharp
+var sinchEvent = sinch.Fax.SinchEvents.ParseEvent(json);
+bool valid = sinch.Fax.SinchEvents.ValidateAuthenticationHeader(secret, request.Headers, body);
 ```

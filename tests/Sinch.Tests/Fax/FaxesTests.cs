@@ -332,7 +332,7 @@ namespace Sinch.Tests.Fax
             fax.Status.Should().Be(FaxStatus.Completed);
             fax.HeaderTimeZone.Should().Be("America/New_York");
             fax.RetryDelaySeconds.Should().Be(60);
-            fax.CallbackUrlContentType.Should().Be(CallbackUrlContentType.MultipartFormData);
+            fax.EventDestinationContentType.Should().Be(FaxContentType.MultipartFormData);
             fax.ProjectId.Should().Be(ProjectId);
             fax.ServiceId.Should().Be("01K1TTENC4TSJ0LLYJ1GGLYJU1Y");
             fax.Price.Should().NotBeNull();

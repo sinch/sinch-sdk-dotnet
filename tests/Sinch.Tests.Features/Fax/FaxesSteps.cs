@@ -128,7 +128,7 @@ public class FaxesSteps
         request.HeaderPageNumbers = true;
         request.HeaderTimeZone = "America/New_York";
         request.RetryDelaySeconds = 60;
-        request.CallbackUrlContentType = CallbackUrlContentType.MultipartFormData;
+        request.EventDestinationContentType = FaxContentType.MultipartFormData;
         request.ImageConversionMethod = ImageConversionMethod.Halftone;
         _sendFaxResponse = await _faxesApi.Send(request);
     }
@@ -163,7 +163,7 @@ public class FaxesSteps
         request.HeaderPageNumbers = true;
         request.HeaderTimeZone = "America/New_York";
         request.RetryDelaySeconds = 60;
-        request.CallbackUrlContentType = CallbackUrlContentType.MultipartFormData;
+        request.EventDestinationContentType = FaxContentType.MultipartFormData;
         request.ImageConversionMethod = ImageConversionMethod.Halftone;
         _sendFaxResponse = await _faxesApi.Send(request);
     }
@@ -193,7 +193,7 @@ public class FaxesSteps
         _fax.Status.Should().Be(FaxStatus.Completed);
         _fax.HeaderTimeZone.Should().Be("America/New_York");
         _fax.RetryDelaySeconds.Should().Be(60);
-        _fax.CallbackUrlContentType.Should().Be(CallbackUrlContentType.MultipartFormData);
+        _fax.EventDestinationContentType.Should().Be(FaxContentType.MultipartFormData);
         _fax.ProjectId.Should().Be("123coffee-dada-beef-cafe-baadc0de5678");
         _fax.ServiceId.Should().Be("01K1TTENC4TSJ0LLYJ1GGLYJU1Y");
         _fax.Price.Should().NotBeNull();

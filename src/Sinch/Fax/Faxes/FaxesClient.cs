@@ -174,11 +174,11 @@ namespace Sinch.Fax.Faxes
                     content.Add(new StringContent(value), $"labels[{key}]");
             }
 
-            if (request.CallbackUrl != null)
-                content.Add(new StringContent(request.CallbackUrl), "callbackUrl");
+            if (request.EventDestinationTarget != null)
+                content.Add(new StringContent(request.EventDestinationTarget), "callbackUrl");
 
-            if (request.CallbackUrlContentType != null)
-                content.Add(new StringContent(request.CallbackUrlContentType.ToString()), "callbackUrlContentType");
+            if (request.EventDestinationContentType != null)
+                content.Add(new StringContent(request.EventDestinationContentType.ToString()), "callbackUrlContentType");
 
             if (request.ImageConversionMethod != null)
                 content.Add(new StringContent(request.ImageConversionMethod.ToString()), "imageConversionMethod");
