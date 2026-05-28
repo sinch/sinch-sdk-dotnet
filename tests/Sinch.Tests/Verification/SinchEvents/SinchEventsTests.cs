@@ -307,6 +307,52 @@ namespace Sinch.Tests.Verification.SinchEvents
         }
 
         [Fact]
+        public void SerializeResponse_ReturnsExpectedPhoneCallPayload_WhenPartialPhoneCallFieldsProvided()
+        {
+            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponsePhoneCall.json");
+
+            var response = new VerificationStartEventResponsePhoneCall
+            {
+                Action = Action.Allow,
+                PhoneCall = new PhoneCall
+                {
+                    Code = "1234"
+                }
+            };
+
+            var json = JsonSerializer.Serialize(response);
+
+            Helpers.AssertJsonEqual(expected, json);
+        }
+
+        [Fact]
+        public void SerializeResponse_ReturnsExpectedPhoneCallPayload_WhenAllPhoneCallFieldsProvided()
+        {
+            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponsePhoneCallAllFields.json");
+
+            var response = new VerificationStartEventResponsePhoneCall
+            {
+                Action = Action.Allow,
+                PhoneCall = new PhoneCall
+                {
+                    Code = "1234",
+                    Speech = new Speech
+                    {
+                        Locale = "en-US"
+                    },
+                    AdditionalProperties = new Dictionary<string, JsonElement>
+                    {
+                        { "my key", JsonDocument.Parse("\"my value\"").RootElement }
+                    }
+                }
+            };
+
+            var json = JsonSerializer.Serialize(response);
+
+            Helpers.AssertJsonEqual(expected, json);
+        }
+
+        [Fact]
         public void SerializeResponse_DoesNotRequireConfiguration()
         {
             var sinch = new SinchClient();
