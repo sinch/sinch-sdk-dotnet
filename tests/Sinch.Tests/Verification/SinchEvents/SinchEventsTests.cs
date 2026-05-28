@@ -6,6 +6,7 @@ using Sinch.Verification;
 using Sinch.Verification.Common;
 using Sinch.Verification.SinchEvents;
 using Xunit;
+using Action = Sinch.Verification.SinchEvents.Action;
 
 namespace Sinch.Tests.Verification.SinchEvents
 {
@@ -122,49 +123,6 @@ namespace Sinch.Tests.Verification.SinchEvents
         }
 
         [Fact]
-        public void SerializeResponse_SerializesDerivedVerificationResponse()
-        {
-            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseSms.json");
-            var sinchEvents = new VerificationSinchEvents(new JsonSerializerOptions(JsonSerializerDefaults.Web));
-            var response = new VerificationStartEventResponseSms
-            {
-                Action = Sinch.Verification.SinchEvents.Action.Allow,
-                Sms = new Sinch.Verification.SinchEvents.Sms
-                {
-                    Code = "123",
-                    AcceptLanguage = new List<string> { "en-US" }
-                }
-            };
-
-            var json = sinchEvents.SerializeResponse(response);
-
-            Helpers.AssertJsonEqual(expected, json);
-        }
-
-        [Fact]
-        public void SerializeResponse_MatchesExpectedSmsPayload()
-        {
-            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseSms.json");
-
-            var response = new VerificationStartEventResponseSms
-            {
-                Action = Action.Allow,
-                Sms = new Sinch.Verification.SinchEvents.Sms
-                {
-                    Code = "123",
-                    AcceptLanguage = new List<string>()
-                    {
-                        "en-US"
-                    }
-                }
-            };
-
-            var json = JsonSerializer.Serialize(response);
-
-            Helpers.AssertJsonEqual(expected, json);
-        }
-
-        [Fact]
         public void DeserializeVerificationRequestEvent_ReturnsExpectedEvent()
         {
             var jsonString = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEvent.json");
@@ -219,7 +177,7 @@ namespace Sinch.Tests.Verification.SinchEvents
         }
 
         [Fact]
-        public void SerializeResponse_ReturnsExpectedSmsPayload_WhenSmsResponseProvided()
+        public void SerializeResponse_ReturnsExpectedSmsPayload_WhenPartialSmsFieldsProvided()
         {
             var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseSms.json");
 
@@ -276,6 +234,32 @@ namespace Sinch.Tests.Verification.SinchEvents
             var sinchEvent = sinch.Verification.SinchEvents.ParseEvent(json);
 
             sinchEvent.Should().BeOfType<VerificationStartEvent>();
+        }
+
+        [Fact]
+        public void SerializeResponse_ReturnsExpectedSmsPayload_WhenAllSmsFieldsProvided()
+        {
+            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseSmsAllFields.json");
+
+            var response = new VerificationStartEventResponseSms
+            {
+                Action = Action.Allow,
+                Sms = new Sinch.Verification.SinchEvents.Sms
+                {
+                    Code = "5666",
+                    CodeType = SmsCodeType.Numeric,
+                    Expiry = "01:02:03",
+                    AcceptLanguage = new List<string> { "fr-FR" },
+                    AdditionalProperties = new Dictionary<string, JsonElement>
+                    {
+                        { "my key", JsonDocument.Parse("\"my value\"").RootElement }
+                    }
+                }
+            };
+
+            var json = JsonSerializer.Serialize(response);
+
+            Helpers.AssertJsonEqual(expected, json);
         }
 
         [Fact]
