@@ -12,16 +12,15 @@ namespace Sinch.Verification.SinchEvents
 {
     internal sealed class VerificationSinchEvents : IVerificationSinchEvents
     {
+        private static JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+
         private readonly Lazy<ISinchAuth>? _auth;
-        private readonly JsonSerializerOptions _jsonSerializerOptions;
         private readonly ILoggerAdapter<IVerificationSinchEvents>? _logger;
 
         internal VerificationSinchEvents(
-            JsonSerializerOptions jsonSerializerOptions,
             Lazy<ISinchAuth>? auth = null,
             ILoggerAdapter<IVerificationSinchEvents>? logger = null)
         {
-            _jsonSerializerOptions = jsonSerializerOptions;
             _auth = auth;
             _logger = logger;
         }
