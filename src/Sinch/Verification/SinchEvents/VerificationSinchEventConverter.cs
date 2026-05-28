@@ -8,11 +8,11 @@ namespace Sinch.Verification.SinchEvents
     ///     JSON converter for <see cref="VerificationSinchEvent"/> that uses the "event"
     ///     discriminator field to determine the concrete Verification event type.
     /// </summary>
-    public sealed class VerificationSinchEventConverter : JsonConverter<VerificationSinchEvent>
+    public sealed class VerificationSinchEventConverter : JsonConverter<IVerificationSinchEvent>
     {
         private const string EventPropertyName = "event";
 
-        public override VerificationSinchEvent? Read(
+        public override IVerificationSinchEvent? Read(
             ref Utf8JsonReader reader,
             Type typeToConvert,
             JsonSerializerOptions options)
@@ -35,7 +35,7 @@ namespace Sinch.Verification.SinchEvents
 
         public override void Write(
             Utf8JsonWriter writer,
-            VerificationSinchEvent value,
+            IVerificationSinchEvent value,
             JsonSerializerOptions options)
         {
             switch (value)
