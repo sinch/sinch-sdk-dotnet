@@ -8,6 +8,7 @@ namespace Sinch.Verification.SinchEvents
         ///     Determines whether the verification can be executed.
         /// </summary>
         [JsonPropertyName("action")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Action? Action { get; set; }
     }
 }
