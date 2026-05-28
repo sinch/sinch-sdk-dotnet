@@ -200,9 +200,28 @@ namespace Sinch.Tests.Verification.SinchEvents
         }
 
         [Fact]
-        public void SerializeResponse_ReturnsExpectedWhatsAppPayload_WhenWhatsAppResponseProvided()
+        public void SerializeResponse_ReturnsExpectedWhatsAppPayload_WhenPartialWhatsAppFieldsProvided()
         {
             var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseWhatsApp.json");
+
+            var response = new VerificationStartEventResponseWhatsApp
+            {
+                Action = Action.Allow,
+                WhatsApp = new WhatsApp
+                {
+                    CodeType = WhatsAppCodeType.Numeric
+                }
+            };
+
+            var json = JsonSerializer.Serialize(response);
+
+            Helpers.AssertJsonEqual(expected, json);
+        }
+
+        [Fact]
+        public void SerializeResponse_ReturnsExpectedWhatsAppPayload_WhenAllWhatsAppFieldsProvided()
+        {
+            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseWhatsAppAllFields.json");
 
             var response = new VerificationStartEventResponseWhatsApp
             {

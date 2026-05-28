@@ -1,10 +1,6 @@
 {
   "whatsapp": {
-    "codeType": "Numeric",
-    "acceptLanguage": [
-      "a language"
-    ],
-    "my key": "my value"
+    "codeType": "Numeric"
   },
   "action": "allow"
 }
