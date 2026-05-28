@@ -265,7 +265,7 @@ namespace Sinch.Fax.Faxes
 
             _loggerAdapter?.LogInformation("Downloading the content of the fax with {id}", id);
             var uriBuilder = new UriBuilder(_uri);
-            uriBuilder.Path += $"/{id}/file.pdf"; // only pdf is supported for now
+            uriBuilder.Path += $"/{id}/file";
             return _http.Send<ContentResult>(uriBuilder.Uri, HttpMethod.Get, cancellationToken);
         }
 

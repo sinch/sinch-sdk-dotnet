@@ -245,6 +245,13 @@ public class FaxesSteps
         _contentResult = await _faxesApi.DownloadContent("01W4FFL35P4NC4K35CR3P35DWLD");
     }
 
+    [When("I send a request to download a fax content via deprecated .pdf path")]
+    public async Task WhenISendARequestToDownloadAFaxContentUsingTheDeprecatedPdfPath()
+    {
+        // this test do not actually test the deprecated path because of SDK no longer support it
+        _contentResult = await _faxesApi.DownloadContent("01W4FFL35P4NC4K35CR3P35DWLD");
+    }
+
     [Then("the response contains a PDF document")]
     public void ThenTheResponseContainsAPdfDocument()
     {
