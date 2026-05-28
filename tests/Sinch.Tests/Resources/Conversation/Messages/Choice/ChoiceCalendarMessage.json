@@ -1,0 +1,11 @@
+{
+  "calendar_message": {
+    "title": "Add to calendar",
+    "event_start": "2024-01-15T10:00:00Z",
+    "event_end": "2024-01-15T11:00:00Z",
+    "event_title": "Team Meeting",
+    "event_description": "Weekly team sync",
+    "fallback_url": "https://calendar.google.com/event"
+  },
+  "postback_data": "postback calendar_message data value"
+}

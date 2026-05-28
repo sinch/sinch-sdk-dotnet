@@ -1,0 +1,7 @@
+{
+  "share_location_message": {
+    "title": "Share your location",
+    "fallback_url": "https://maps.google.com"
+  },
+  "postback_data": "postback share_location_message data value"
+}
