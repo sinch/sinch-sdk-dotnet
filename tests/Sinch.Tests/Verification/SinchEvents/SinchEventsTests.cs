@@ -263,6 +263,50 @@ namespace Sinch.Tests.Verification.SinchEvents
         }
 
         [Fact]
+        public void SerializeResponse_ReturnsExpectedFlashCallPayload_WhenPartialFlashCallFieldsProvided()
+        {
+            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseFlashCall.json");
+
+            var response = new VerificationStartEventResponseFlashCall
+            {
+                Action = Action.Allow,
+                FlashCall = new FlashCall
+                {
+                    Cli = "+12025550187"
+                }
+            };
+
+            var json = JsonSerializer.Serialize(response);
+
+            Helpers.AssertJsonEqual(expected, json);
+        }
+
+        [Fact]
+        public void SerializeResponse_ReturnsExpectedFlashCallPayload_WhenAllFlashCallFieldsProvided()
+        {
+            var expected = Helpers.LoadResources("Verification/SinchEvents/VerificationStartEventResponseFlashCallAllFields.json");
+
+            var response = new VerificationStartEventResponseFlashCall
+            {
+                Action = Action.Allow,
+                FlashCall = new FlashCall
+                {
+                    Cli = "+12025550187",
+                    DialTimeout = 30,
+                    InterceptionTimeout = 60,
+                    AdditionalProperties = new Dictionary<string, JsonElement>
+                    {
+                        { "my key", JsonDocument.Parse("\"my value\"").RootElement }
+                    }
+                }
+            };
+
+            var json = JsonSerializer.Serialize(response);
+
+            Helpers.AssertJsonEqual(expected, json);
+        }
+
+        [Fact]
         public void SerializeResponse_DoesNotRequireConfiguration()
         {
             var sinch = new SinchClient();

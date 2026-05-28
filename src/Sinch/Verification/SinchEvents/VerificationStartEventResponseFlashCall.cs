@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Verification.SinchEvents
@@ -5,6 +7,7 @@ namespace Sinch.Verification.SinchEvents
     public sealed class VerificationStartEventResponseFlashCall : VerificationStartEventResponse
     {
         [JsonPropertyName("flashCall")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public FlashCall? FlashCall { get; set; }
     }
 
@@ -17,17 +20,27 @@ namespace Sinch.Verification.SinchEvents
         ///     If you want to set your own CLI, you can specify it in the response to the Verification Request Event.
         /// </summary>
         [JsonPropertyName("cli")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? Cli { get; set; }
+
+        /// <summary>
+        ///     The amount of time that a phone will ring.
+        /// </summary>
+        [JsonPropertyName("dialTimeout")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? DialTimeout { get; set; }
 
         /// <summary>
         ///     The maximum time that a flashcall verification will be active and can be completed.
         ///     If the phone number hasn't been verified successfully during this time,
         ///     then the verification request will fail.
         ///     By default, the Sinch dashboard will automatically optimize dial time out during a flashcall.
-        ///     If you want to set your own dial time out for the flashcall,
-        ///     you can specify it in the response to the Verification Request Event.
         /// </summary>
-        [JsonPropertyName("dialTimeout")]
-        public int? DialTimeout { get; set; }
+        [JsonPropertyName("interceptionTimeout")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? InterceptionTimeout { get; set; }
+
+        [JsonExtensionData]
+        public Dictionary<string, JsonElement> AdditionalProperties { get; set; } = new Dictionary<string, JsonElement>();
     }
 }
