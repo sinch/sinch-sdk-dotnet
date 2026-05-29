@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
-using Sinch.Voice;
 using Sinch.Voice.Applications;
 using Sinch.Voice.Applications.GetNumbers;
-using Sinch.Voice.Applications.QueryNumber;
 using Sinch.Voice.Applications.UnassignNumbers;
 using Sinch.Voice.Applications.UpdateCallbackUrls;
 using Sinch.Voice.Applications.UpdateNumbers;
@@ -21,7 +19,6 @@ namespace Sinch.Tests.Features.Voice
         private GetNumbersResponse _listNumbersResponse;
         private Func<Task> _assignNumberOp;
         private Func<Task> _unassignOp;
-        private QueryNumberResponse _queryNumberResponse;
         private Callbacks _callbackUrlsResponse;
         private Func<Task> _updateCallbacksOp;
 
@@ -103,30 +100,6 @@ namespace Sinch.Tests.Features.Voice
         public async Task ThenTheUnassignNumberResponseContainsNoData()
         {
             await _unassignOp.Should().NotThrowAsync();
-        }
-
-        [When(@"I send a request to get information about a specific number")]
-        public async Task WhenISendARequestToGetInformationAboutASpecificNumber()
-        {
-            _queryNumberResponse = await _sinchVoiceApplications.QueryNumber("+12015555555");
-        }
-
-        [Then(@"the response contains details about the specific number")]
-        public void ThenTheResponseContainsDetailsAboutTheSpecificNumber()
-        {
-            _queryNumberResponse.Number.Should().BeEquivalentTo(
-                new Sinch.Voice.Applications.QueryNumber.NumberItem()
-                {
-                    CountryId = "US",
-                    NumberType = NumberType.Fixed,
-                    NormalizedNumber = "+12015555555",
-                    Restricted = true,
-                    Rate = new Rate()
-                    {
-                        Amount = 0.01m,
-                        CurrencyId = "USD"
-                    }
-                });
         }
 
         [When(@"I send a request to get the callback URLs associated to an application")]
