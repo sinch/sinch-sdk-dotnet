@@ -538,7 +538,7 @@ namespace Sinch.Tests.Fax
             const string faxId = "01W4FFL35P4NC4K35CR3P35DWLD";
 
             HttpMessageHandlerMock
-                .When(HttpMethod.Get, $"https://fax.api.sinch.com{BaseFaxesPath}/{faxId}/file.pdf")
+                .When(HttpMethod.Get, $"https://fax.api.sinch.com{BaseFaxesPath}/{faxId}/file")
                 .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond(req =>
                 {
