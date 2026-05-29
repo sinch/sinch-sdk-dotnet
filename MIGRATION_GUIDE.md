@@ -52,6 +52,7 @@
 - [Numbers API: `Sinch.Numbers.Hooks` namespace moved to `Sinch.Numbers.SinchEvents`](#numbers-api-sinchnumbershooks-namespace-moved-to-sinchnumberssinchevents)
 - [Numbers API: `ValidateAuthenticationHeader` and `ParseEvent` moved to `SinchEvents`](#numbers-api-validateauthenticationheader-and-parseevent-moved-to-sinchevents)
 - [Numbers API: `EventType.DeprovisioningFromCampaignProvisioningToCampaign` renamed](#eventtypedeprovisioningfromcampaignprovisioningtocampaign-renamed)
+- [Voice API: `QueryNumber` removed](#voice-api-querynumber-removed)
 
 ## .NET Framework Support
 
@@ -1347,3 +1348,20 @@ EventType.DeprovisioningFromCampaignProvisioningToCampaign
 ```csharp
 EventType.DeprovisioningFromCampaign
 ```
+## Voice API: `QueryNumber` removed
+
+The `QueryNumber` method on `IApplications` has been removed. This endpoint was deprecated by Sinch and is no longer supported.
+
+### Removed
+
+- `IApplications.QueryNumber(string number, CancellationToken cancellationToken)` — no replacement available
+- `QueryNumberResponse`, `NumberItem`, and `NumberType` classes in the `Sinch.Voice.Applications.QueryNumber` namespace
+
+**Before:**
+```csharp
+var result = await sinchClient.Voice.Applications.QueryNumber("+12025551234");
+```
+
+**After:**
+
+Remove any calls to `QueryNumber`. There is no equivalent replacement in the Sinch Voice API.
