@@ -1429,3 +1429,21 @@ if (ev is VerificationRequestEvent requestEvent)
 
 Version 2.*:
 The `AcceptLanguage` property no longer exists on `VerificationStartEvent`. Remove any references to it.
+
+### Voice API: `QueryNumber` removed
+
+The `QueryNumber` method on `IApplications` has been removed. This endpoint was deprecated by Sinch and is no longer supported.
+
+### Removed
+
+- `IApplications.QueryNumber(string number, CancellationToken cancellationToken)` — no replacement available
+- `QueryNumberResponse`, `NumberItem`, and `NumberType` classes in the `Sinch.Voice.Applications.QueryNumber` namespace
+
+Version 1.*:
+```csharp
+var result = await sinchClient.Voice.Applications.QueryNumber("+12025551234");
+```
+
+Version 2.*:
+
+Remove any calls to `QueryNumber`. There is no equivalent replacement in the Sinch Voice API.
