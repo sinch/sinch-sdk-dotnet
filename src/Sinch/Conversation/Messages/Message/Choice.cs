@@ -34,5 +34,17 @@ namespace Sinch.Conversation.Messages.Message
         /// </summary>
         [JsonPropertyName("url_message")]
         public UrlMessage? UrlMessage { get; set; }
+
+        /// <summary>
+        ///     Message containing details about a calendar event.
+        /// </summary>
+        [JsonPropertyName("calendar_message")]
+        public CalendarMessage? CalendarMessage { get; set; }
+
+        /// <summary>
+        ///     Message requesting location from a user.
+        /// </summary>
+        [JsonPropertyName("share_location_message")]
+        public ShareLocationMessage? ShareLocationMessage { get; set; }
     }
 }
