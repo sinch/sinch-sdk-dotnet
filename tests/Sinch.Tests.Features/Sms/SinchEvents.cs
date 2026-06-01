@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
@@ -22,10 +21,7 @@ namespace Sinch.Tests.Features.Sms
         private HttpResponseMessage _deliveryReportResponse;
         private HttpResponseMessage _recipientDeliveryReportDeliveredResponse;
         private HttpResponseMessage _recipientDeliveryReportAbortedResponse;
-        private string _rawIncomingSmsContent;
-        private string _rawDeliveryReportContent;
-        private string _rawRecipientDeliveryReportDeliveredContent;
-        private string _rawRecipientDeliveryReportAbortedContent;
+        private string _rawBody;
 
         [Given(@"the SMS Webhooks handler is available")]
         public void GivenTheSmsSinchEventsHandlerIsAvailable()
@@ -60,39 +56,36 @@ namespace Sinch.Tests.Features.Sms
         [Then(@"the header of the event ""IncomingSMS"" contains a valid signature")]
         public async Task ThenTheHeaderOfTheEventIncomingSmsContainsAValidSignature()
         {
-            _rawIncomingSmsContent = await _incomingSmsResponse.Content.ReadAsStringAsync();
-            (await ValidateSinchEventSignatureHeadersPresent(_incomingSmsResponse)).Should().BeTrue();
+            _rawBody = await _incomingSmsResponse.Content.ReadAsStringAsync();
+            _smsSinchEvents.ValidateAuthenticationHeader(SinchEventsSecret, _incomingSmsResponse.GetAllHeaders(), _rawBody).Should().BeTrue();
         }
 
         [Then(@"the header of the event ""DeliveryReport"" contains a valid signature")]
         public async Task ThenTheHeaderOfTheEventDeliveryReportContainsAValidSignature()
         {
-            _rawDeliveryReportContent = await _deliveryReportResponse.Content.ReadAsStringAsync();
-            (await ValidateSinchEventSignatureHeadersPresent(_deliveryReportResponse)).Should().BeTrue();
+            _rawBody = await _deliveryReportResponse.Content.ReadAsStringAsync();
+            _smsSinchEvents.ValidateAuthenticationHeader(SinchEventsSecret, _deliveryReportResponse.GetAllHeaders(), _rawBody).Should().BeTrue();
         }
 
         [Then(@"the header of the event ""DeliveryReport"" with the status ""Delivered"" contains a valid signature")]
         public async Task ThenTheHeaderOfTheEventDeliveryReportWithStatusDeliveredContainsAValidSignature()
         {
-            _rawRecipientDeliveryReportDeliveredContent = await _recipientDeliveryReportDeliveredResponse.Content.ReadAsStringAsync();
-            (await ValidateSinchEventSignatureHeadersPresent(_recipientDeliveryReportDeliveredResponse)).Should().BeTrue();
+            _rawBody = await _recipientDeliveryReportDeliveredResponse.Content.ReadAsStringAsync();
+            _smsSinchEvents.ValidateAuthenticationHeader(SinchEventsSecret, _recipientDeliveryReportDeliveredResponse.GetAllHeaders(), _rawBody).Should().BeTrue();
         }
 
         [Then(@"the header of the event ""DeliveryReport"" with the status ""Aborted"" contains a valid signature")]
         public async Task ThenTheHeaderOfTheEventDeliveryReportWithStatusAbortedContainsAValidSignature()
         {
-            _rawRecipientDeliveryReportAbortedContent = await _recipientDeliveryReportAbortedResponse.Content.ReadAsStringAsync();
-            (await ValidateSinchEventSignatureHeadersPresent(_recipientDeliveryReportAbortedResponse)).Should().BeTrue();
+            _rawBody = await _recipientDeliveryReportAbortedResponse.Content.ReadAsStringAsync();
+            _smsSinchEvents.ValidateAuthenticationHeader(SinchEventsSecret, _recipientDeliveryReportAbortedResponse.GetAllHeaders(), _rawBody).Should().BeTrue();
         }
 
         [Then(@"the SMS event describes an ""incoming SMS"" event")]
         public void ThenTheSmsEventDescribesAnIncomingSmsEvent()
         {
-            var incomingSms = JsonSerializer.Deserialize<SmsInbound>(_rawIncomingSmsContent, new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
-            });
-            incomingSms.Should().BeEquivalentTo(new SmsInbound
+            var smsEvent = _smsSinchEvents.ParseEvent(_rawBody);
+            smsEvent.As<SmsInbound>().Should().BeEquivalentTo(new SmsInbound
             {
                 Body = "Hello John! 👋",
                 From = "12015555555",
@@ -106,11 +99,8 @@ namespace Sinch.Tests.Features.Sms
         [Then(@"the SMS event describes an ""SMS delivery report"" event")]
         public void ThenTheSmsEventDescribesAnSmsDeliveryReportEvent()
         {
-            var deliveryReport = JsonSerializer.Deserialize<BatchDeliveryReportSms>(_rawDeliveryReportContent, new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
-            });
-            deliveryReport.Should().BeEquivalentTo(new BatchDeliveryReportSms
+            var smsEvent = _smsSinchEvents.ParseEvent(_rawBody);
+            smsEvent.As<BatchDeliveryReportSms>().Should().BeEquivalentTo(new BatchDeliveryReportSms
             {
                 BatchId = "01W4FFL35P4NC4K35SMSBATCH8",
                 ClientReference = "client-ref",
@@ -131,11 +121,8 @@ namespace Sinch.Tests.Features.Sms
         [Then(@"the SMS event describes an SMS recipient delivery report event with the status ""Delivered""")]
         public void ThenTheSmsEventDescribesAnSmsRecipientDeliveryReportEventWithStatusDelivered()
         {
-            var recipientDeliveryReport = JsonSerializer.Deserialize<RecipientDeliveryReportSms>(_rawRecipientDeliveryReportDeliveredContent, new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
-            });
-            recipientDeliveryReport.Should().BeEquivalentTo(new RecipientDeliveryReportSms
+            var smsEvent = _smsSinchEvents.ParseEvent(_rawBody);
+            smsEvent.As<RecipientDeliveryReportSms>().Should().BeEquivalentTo(new RecipientDeliveryReportSms
             {
                 At = Helpers.ParseUtc("2024-06-06T08:17:19.210Z"),
                 BatchId = "01W4FFL35P4NC4K35SMSBATCH9",
@@ -150,11 +137,8 @@ namespace Sinch.Tests.Features.Sms
         [Then(@"the SMS event describes an SMS recipient delivery report event with the status ""Aborted""")]
         public void ThenTheSmsEventDescribesAnSmsRecipientDeliveryReportEventWithStatusAborted()
         {
-            var recipientDeliveryReport = JsonSerializer.Deserialize<RecipientDeliveryReportSms>(_rawRecipientDeliveryReportAbortedContent, new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
-            });
-            recipientDeliveryReport.Should().BeEquivalentTo(new RecipientDeliveryReportSms
+            var smsEvent = _smsSinchEvents.ParseEvent(_rawBody);
+            smsEvent.As<RecipientDeliveryReportSms>().Should().BeEquivalentTo(new RecipientDeliveryReportSms
             {
                 At = Helpers.ParseUtc("2024-06-06T08:17:15.603Z"),
                 BatchId = "01W4FFL35P4NC4K35SMSBATCH9",
@@ -165,14 +149,5 @@ namespace Sinch.Tests.Features.Sms
             });
         }
 
-        /// <summary>
-        /// Validate Sinch event authentication using HMAC signature.
-        /// </summary>
-        private static async Task<bool> ValidateSinchEventSignatureHeadersPresent(HttpResponseMessage response)
-        {
-            var body = await response.Content.ReadAsStringAsync();
-
-            return _smsSinchEvents.ValidateAuthenticationHeader(SinchEventsSecret, response.Headers, body);
-        }
     }
 }
