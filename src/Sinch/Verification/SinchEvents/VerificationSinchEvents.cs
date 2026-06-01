@@ -12,8 +12,6 @@ namespace Sinch.Verification.SinchEvents
 {
     internal sealed class VerificationSinchEvents : IVerificationSinchEvents
     {
-        private static JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-
         private readonly Lazy<ISinchAuth>? _auth;
         private readonly ILoggerAdapter<IVerificationSinchEvents>? _logger;
 
@@ -27,7 +25,7 @@ namespace Sinch.Verification.SinchEvents
 
         public IVerificationSinchEvent ParseEvent(string json)
         {
-            var result = JsonSerializer.Deserialize<IVerificationSinchEvent>(json, _jsonSerializerOptions);
+            var result = JsonSerializer.Deserialize<IVerificationSinchEvent>(json);
             if (result is null)
             {
                 _logger?.LogError(
@@ -67,7 +65,7 @@ namespace Sinch.Verification.SinchEvents
 
         public string SerializeResponse(VerificationStartEventResponse response)
         {
-            return JsonSerializer.Serialize(response, response.GetType(), _jsonSerializerOptions);
+            return JsonSerializer.Serialize(response, response.GetType());
         }
 
         private ApplicationSignedAuth ResolveApplicationSignedAuth()
