@@ -13,8 +13,11 @@ namespace Sinch.Tests.Features.Verification
         private readonly HttpClient _httpClient = new HttpClient();
         private HttpResponseMessage _verificationRequestResponseMessage;
         private HttpResponseMessage _verificationResultResponse;
+        private HttpResponseMessage _verificationSMSDeliveredEventResponse;
+
         private static IVerificationSinchEvents _verificationSinchEvents;
         private static IVerificationSinchEvents _verificationSinchEventsWithAuth;
+
         private string _rawBody;
 
         [Given(@"the Verification Webhooks handler is available")]
@@ -43,7 +46,6 @@ namespace Sinch.Tests.Features.Verification
         [Then(@"the Verification event describes a ""Verification Request"" event type")]
         public void ThenTheVerificationEventDescribesAEventType()
         {
-            // TODO: schema of oas and api response diverge: https://tickets.sinch.com/browse/DEVEXP-946
             var verificationEvent = _verificationSinchEvents.ParseEvent(_rawBody);
             verificationEvent.As<VerificationStartEvent>().Should().BeEquivalentTo(new VerificationStartEvent
             {
@@ -79,7 +81,6 @@ namespace Sinch.Tests.Features.Verification
         public void ThenTheVerificationEventDescribesAResultEventType()
         {
             var resultEvent = _verificationSinchEvents.ParseEvent(_rawBody);
-            // TODO: schema of oas and api response diverge: https://tickets.sinch.com/browse/DEVEXP-946
             resultEvent.Should().BeEquivalentTo(new VerificationResultEvent()
             {
                 Id = "1ce0ffee-c0de-5eed-d00d-f00dfeed1337",
@@ -93,20 +94,35 @@ namespace Sinch.Tests.Features.Verification
         [When(@"I send a request to trigger a ""Verification SMS Delivered Event"" event")]
         public async Task WhenISendARequestToTriggerAVerificationSMSDelivered()
         {
-            // TODO
+            _verificationSMSDeliveredEventResponse =
+                 await _httpClient.GetAsync("http://localhost:3018/webhooks/verification/verification-sms-delivery-event");
         }
 
         [Then(@"the header of the Verification event ""Verification SMS Delivered Event"" contains a valid authorization")]
         public async Task ThenTheHeaderOfTheVerificationSMSDeliveredContainsAValidAuthorization()
         {
-            // TODO
-
+            _rawBody = await _verificationSMSDeliveredEventResponse.Content.ReadAsStringAsync();
+            _verificationSinchEventsWithAuth.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/verification",
+                _verificationSMSDeliveredEventResponse.GetAllHeaders(),
+                _rawBody).Should().BeTrue();
         }
 
         [Then(@"the Verification event describes a ""Verification SMS Delivered Event"" event type")]
         public void ThenTheVerificationEventDescribesAVerificationSMSDeliveredType()
         {
-            // TODO
+            var resultEvent = _verificationSinchEvents.ParseEvent(_rawBody);
+            resultEvent.Should().BeEquivalentTo(new VerificationSmsDeliveredEvent()
+            {
+
+                Id = "0198511c-d1d1-8bf3-109b-85455d310123",
+                Event = "VerificationSmsDeliveredEvent",
+                Method = VerificationMethod.Sms,
+                Identity = Identity.Number("+33123456789"),
+                SmsResult = SmsDeliveryResult.Successful
+            });
+
+
+
         }
     }
 }
