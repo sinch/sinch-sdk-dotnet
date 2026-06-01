@@ -16,31 +16,27 @@ jobs:
             tfm: net10.0
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0
+        uses: gittools/actions/gitversion/setup@v4
         with:
-          # NOTE!: https://github.com/GitTools/GitVersion/issues/3614 from tag branch gitversion appends suffix 
-          # of tags-v*** which breaks publish right after tag branch build
-          versionSpec: '5.11.x'
+          versionSpec: '6.7.x'
 
       - name: Determine Version
         id: gitversion # id to later be referenced
-        uses: gittools/actions/gitversion/execute@v0
-        with:
-          useConfigFile: true
+        uses: gittools/actions/gitversion/execute@v4
 
       - name: Setup .NET SDK
         id: dotnet
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
 
       - name: Checkout mockserver e2e
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: sinch/sinch-sdk-mockserver
           token: ${{ secrets.MOCKSERVER_REPO_PAT_CI }}
@@ -112,7 +108,7 @@ jobs:
     needs: build
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -128,7 +124,7 @@ jobs:
           useConfigFile: true
 
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
             8.0.x
@@ -143,7 +139,7 @@ jobs:
         run: dotnet pack --configuration Release src/Sinch -p:PackageVersion=${{ steps.gitversion.outputs.semVer }} -p:Version=${{ steps.gitversion.outputs.semVer }} --no-restore
 
       - name: Archive nuget packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: package
           path: src/Sinch/bin/Release/*.nupkg
