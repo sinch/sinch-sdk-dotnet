@@ -1364,4 +1364,7 @@ var result = await sinchClient.Voice.Applications.QueryNumber("+12025551234");
 
 **After:**
 
-Remove any calls to `QueryNumber`. There is no equivalent replacement in the Sinch Voice API.
+Remove any calls to `QueryNumber`. There is no equivalent replacement in the SDK yet.
+
+Instead, use the new [Number Lookup API V2](https://developers.sinch.com/docs/number-lookup-api-v2).
+
