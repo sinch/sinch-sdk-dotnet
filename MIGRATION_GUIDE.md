@@ -59,6 +59,16 @@
     - [Verification API: Verification event types renamed](#verification-api-verification-event-types-renamed)
     - [Verification API: `Method` property type changed to `VerificationMethod`](#verification-api-method-property-type-changed-to-verificationmethod)
     - [Verification API: `VerificationStartEvent.AcceptLanguage` removed](#verification-api-verificationstarteventacceptlanguage-removed)
+    - [Voice API: `Sinch.Voice.Hooks` namespace renamed to `Sinch.Voice.SinchEvents`](#voice-api-sinchvoicehooks-namespace-renamed-to-sinchvoicesinchevents)
+    - [Voice API: `ValidateAuthenticationHeader` and `ParseEvent` moved to `SinchEvents`](#voice-api-validateauthenticationheader-and-parseevent-moved-to-sinchevents)
+    - [Voice API: `IVoiceEvent` renamed to `IVoiceSinchEvent`](#voice-api-ivoiceevent-renamed-to-ivoicesinchevent)
+    - [Voice API: `ParseEvent` overloads removed](#voice-api-parseevent-overloads-removed)
+    - [Voice API: `PromtInputEvent` renamed to `PromptInputEvent`](#voice-api-promtinputevent-renamed-to-promptinputevent)
+    - [Voice API: `CallEventResponse` renamed to `SinchEventResponse`](#voice-api-calleventresponse-renamed-to-sincheventresponse)
+    - [Voice API: Destination types consolidated into `Sinch.Voice.Destinations`](#voice-api-destination-types-consolidated-into-sinchvoicedestinations)
+    - [Voice API: SVAML namespaces moved](#voice-api-svaml-namespaces-moved)
+    - [Voice API: `CallHeader` moved to `Sinch.Voice`](#voice-api-callheader-moved-to-sinchvoice)
+    - [Voice API: Applications callbacks renamed to EventDestinations](#voice-api-applications-callbacks-renamed-to-eventdestinations)
 
 ---
 ## 2.0.0
@@ -1476,3 +1486,211 @@ Remove any calls to `QueryNumber`. There is no equivalent replacement in the SDK
 
 Instead, use the new [Number Lookup API V2](https://developers.sinch.com/docs/number-lookup-api-v2).
 
+
+### Voice API: `Sinch.Voice.Hooks` namespace renamed to `Sinch.Voice.SinchEvents`
+
+All Voice event payload types have moved from `Sinch.Voice.Hooks` to `Sinch.Voice.SinchEvents`.
+
+Version 1.*:
+```csharp
+using Sinch.Voice.Hooks;
+```
+
+Version 2.*:
+```csharp
+using Sinch.Voice.SinchEvents;
+```
+
+### Voice API: `ValidateAuthenticationHeader` and `ParseEvent` moved to `SinchEvents`
+
+Both methods have been removed from `ISinchVoiceClient` and are now available on `ISinchVoiceClient.SinchEvents`.
+
+Version 1.*:
+```csharp
+bool valid = sinch.Voice.ValidateAuthenticationHeader(HttpMethod.Post, path, headers, body);
+IVoiceEvent voiceEvent = sinch.Voice.ParseEvent(json);
+```
+
+Version 2.*:
+```csharp
+bool valid = sinch.Voice.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, path, headers, body);
+IVoiceSinchEvent voiceEvent = sinch.Voice.SinchEvents.ParseEvent(json);
+```
+
+### Voice API: `IVoiceEvent` renamed to `IVoiceSinchEvent`
+
+The base type for all Voice events has been replaced by a proper interface `IVoiceSinchEvent` (the old `IVoiceEvent` was an abstract class despite its name). `ParseEvent` now returns `IVoiceSinchEvent`.
+
+A second interface `IVoiceCallSinchEvent : IVoiceSinchEvent` has been introduced for events that carry call-level fields (`Timestamp`, `Custom`, `ApplicationKey`). It is implemented by `IncomingCallEvent`, `AnsweredCallEvent`, and `DisconnectedCallEvent`.
+
+Version 1.*:
+```csharp
+IVoiceEvent voiceEvent = sinch.Voice.ParseEvent(json);
+```
+
+Version 2.*:
+```csharp
+IVoiceSinchEvent voiceEvent = sinch.Voice.SinchEvents.ParseEvent(json);
+
+// Cast to IVoiceCallSinchEvent to access shared call-level fields
+if (voiceEvent is IVoiceCallSinchEvent callEvent)
+{
+    var timestamp = callEvent.Timestamp;
+    var applicationKey = callEvent.ApplicationKey;
+}
+```
+
+### Voice API: `ParseEvent` overloads removed
+
+The `JsonNode` and `Stream` overloads of `ParseEvent`, as well as `ParseEventAsync`, have been removed. Pass the raw JSON string directly.
+
+Version 1.*:
+```csharp
+IVoiceEvent e1 = sinch.Voice.ParseEvent(JsonNode.Parse(json)!);
+IVoiceEvent e2 = await sinch.Voice.ParseEventAsync(stream, cancellationToken);
+```
+
+Version 2.*:
+```csharp
+IVoiceSinchEvent e = sinch.Voice.SinchEvents.ParseEvent(json);
+```
+
+### Voice API: `PromtInputEvent` renamed to `PromptInputEvent`
+
+The class name contained a typo. The JSON wire format (`"event": "pie"`) is unchanged.
+
+Version 1.*:
+```csharp
+if (voiceEvent is PromtInputEvent pie) { }
+```
+
+Version 2.*:
+```csharp
+if (voiceEvent is PromptInputEvent pie) { }
+```
+
+### Voice API: `CallEventResponse` renamed to `SinchEventResponse`
+
+The SVAML response object returned from ICE / ACE event handlers has been renamed.
+
+Version 1.*:
+```csharp
+return new CallEventResponse { Action = new Hangup() };
+```
+
+Version 2.*:
+```csharp
+return new SinchEventResponse { Action = new Hangup() };
+```
+
+### Voice API: Destination types consolidated into `Sinch.Voice.Destinations`
+
+Three separate destination type systems have been merged into a single namespace `Sinch.Voice.Destinations`:
+
+| Removed | Replacement |
+|---|---|
+| `Sinch.Voice.Common.Destination` | `Sinch.Voice.Destinations.ICalloutDestination` |
+| `Sinch.Voice.Common.ParticipantType` | `Sinch.Voice.Destinations.DestinationType` |
+| `Sinch.Voice.Callouts.Callout.Destination` | `Sinch.Voice.Destinations.ICalloutDestination` |
+| `Sinch.Voice.Callouts.Callout.DestinationType` | `Sinch.Voice.Destinations.DestinationType` |
+| `Sinch.Voice.Hooks.DestinationType` | `Sinch.Voice.Destinations.DestinationType` |
+| `Sinch.Voice.Hooks.To` | `Sinch.Voice.Destinations.ISinchEventDestination` |
+
+Concrete destination classes: `DestinationPstn`, `DestinationMxp`, `DestinationSip`, `DestinationDid`, `DestinationWebSocket`.
+
+Callout destination fields (conference, TTS, custom callouts) now accept `ICalloutDestination`. Event `to` fields (ICE, DICE) now return `ISinchEventDestination`.
+
+Version 1.*:
+```csharp
+using Sinch.Voice.Callouts.Callout;
+
+var request = new ConferenceCalloutRequest
+{
+    Destination = new Destination { Type = DestinationType.Number, Endpoint = "+12015555555" }
+};
+```
+
+Version 2.*:
+```csharp
+using Sinch.Voice.Destinations;
+
+var request = new ConferenceCalloutRequest
+{
+    Destination = new DestinationPstn { Endpoint = "+12015555555" }
+};
+```
+
+### Voice API: SVAML namespaces moved
+
+SVAML actions and instructions have moved out of `Sinch.Voice.Calls` into a dedicated `Sinch.Voice.Svaml` namespace.
+
+Version 1.*:
+```csharp
+using Sinch.Voice.Calls.Actions;
+using Sinch.Voice.Calls.Instructions;
+```
+
+Version 2.*:
+```csharp
+using Sinch.Voice.Svaml.Actions;
+using Sinch.Voice.Svaml.Instructions;
+```
+
+### Voice API: `CallHeader` moved to `Sinch.Voice`
+
+`CallHeader` has moved from `Sinch.Voice.Calls.Actions` to the root `Sinch.Voice` namespace.
+
+Version 1.*:
+```csharp
+using Sinch.Voice.Calls.Actions;
+```
+
+Version 2.*:
+```csharp
+using Sinch.Voice;
+```
+
+### Voice API: Applications callbacks renamed to EventDestinations
+
+`ISinchVoiceApplications` methods, request and response types related to callback URL configuration have been renamed to use the Event Destinations terminology.
+
+Renamed methods:
+
+- `GetCallbackUrls(...)` → `GetEventDestinations(...)`
+- `UpdateCallbackUrls(...)` → `UpdateEventDestinations(...)`
+
+Renamed types:
+
+- `Callbacks` → `EventDestinations`
+- `CallbackUrls` → `EventDestinationTarget`
+- `UpdateCallbackUrlsRequest` → `UpdateEventDestinationsRequest`
+
+Version 1.*:
+```csharp
+using Sinch.Voice.Applications;
+using Sinch.Voice.Applications.UpdateCallbackUrls;
+
+Callbacks config = await sinch.Voice.Applications.GetCallbackUrls(applicationKey);
+string primary = config.Url?.Primary;
+
+await sinch.Voice.Applications.UpdateCallbackUrls(new UpdateCallbackUrlsRequest
+{
+    ApplicationKey = applicationKey,
+    Url = new CallbackUrls { Primary = "https://my-server.com/voice-events" }
+});
+```
+
+Version 2.*:
+```csharp
+using Sinch.Voice.Applications;
+using Sinch.Voice.Applications.UpdateEventDestinations;
+
+EventDestinations config = await sinch.Voice.Applications.GetEventDestinations(applicationKey);
+string primary = config.Url?.Primary;
+
+await sinch.Voice.Applications.UpdateEventDestinations(new UpdateEventDestinationsRequest
+{
+    ApplicationKey = applicationKey,
+    Url = new EventDestinationTarget { Primary = "https://my-server.com/voice-events" }
+});
+```
