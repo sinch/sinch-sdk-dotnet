@@ -7,7 +7,7 @@ namespace Sinch.Verification.SinchEvents
     ///     an SMS sent for verification has been delivered to the user.
     ///     This Sinch event is only triggered when the verification event destination is specified in your dashboard.
     /// </summary>
-    public sealed class VerificationSmsDeliveredEvent : VerificationEvent
+    public sealed class VerificationSmsDeliveredEvent : VerificationSinchEvent
     {
         /// <summary>
         ///     The result of the SMS delivery.

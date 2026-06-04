@@ -8,6 +8,7 @@ namespace Sinch.Verification.SinchEvents
     public sealed class VerificationStartEventResponseWhatsApp : VerificationStartEventResponse
     {
         [JsonPropertyName("whatsapp")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public WhatsApp? WhatsApp { get; set; }
     }
 
@@ -17,12 +18,14 @@ namespace Sinch.Verification.SinchEvents
         ///     Accepted values for the type of code to be generated are Numeric, Alpha, and Alphanumeric.
         /// </summary>
         [JsonPropertyName("codeType")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public WhatsAppCodeType? CodeType { get; set; }
 
         /// <summary>
-        ///     The SMS verification content language. Set in the verification request.
+        ///     The WhatsApp verification content language. Set in the verification request.
         /// </summary>
         [JsonPropertyName("acceptLanguage")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public List<string>? AcceptLanguage { get; set; }
 
         /// <summary>

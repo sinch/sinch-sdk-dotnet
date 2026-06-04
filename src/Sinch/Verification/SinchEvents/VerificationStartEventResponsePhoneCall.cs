@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Verification.SinchEvents
@@ -5,6 +7,7 @@ namespace Sinch.Verification.SinchEvents
     public sealed class VerificationStartEventResponsePhoneCall : VerificationStartEventResponse
     {
         [JsonPropertyName("callout")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public PhoneCall? PhoneCall { get; set; }
     }
 
@@ -16,13 +19,18 @@ namespace Sinch.Verification.SinchEvents
         ///     If you want to set your own code, you can specify it in the response to the Verification Request Event.
         /// </summary>
         [JsonPropertyName("code")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? Code { get; set; }
 
         /// <summary>
         ///     An object defining various properties for the text-to-speech message.
         /// </summary>
         [JsonPropertyName("speech")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Speech? Speech { get; set; }
+
+        [JsonExtensionData]
+        public Dictionary<string, JsonElement> AdditionalProperties { get; set; } = new Dictionary<string, JsonElement>();
     }
 
     public sealed class Speech
@@ -32,6 +40,7 @@ namespace Sinch.Verification.SinchEvents
         ///     Currently, only en-US is supported.
         /// </summary>
         [JsonPropertyName("locale")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? Locale { get; set; }
     }
 }

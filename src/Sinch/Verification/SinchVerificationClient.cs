@@ -29,9 +29,6 @@ namespace Sinch.Verification
 
     internal sealed class SinchVerificationClient : ISinchVerificationClient
     {
-        private static readonly JsonSerializerOptions DefaultJsonOptions =
-            new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-
         private const string ConfigRequired =
             "VerificationConfiguration with AppKey and AppSecret is required to use Verification API methods. " +
             "Set VerificationConfiguration when creating SinchClient.";
@@ -79,7 +76,6 @@ namespace Sinch.Verification
             }
 
             SinchEvents = new VerificationSinchEvents(
-                http?.JsonSerializerOptions ?? DefaultJsonOptions,
                 auth,
                 loggerFactory?.Create<IVerificationSinchEvents>());
         }
