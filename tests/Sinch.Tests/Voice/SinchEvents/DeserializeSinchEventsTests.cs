@@ -5,7 +5,6 @@ using FluentAssertions;
 using Sinch.Voice;
 using Sinch.Voice.Calls;
 using Sinch.Voice.Callouts.Callout;
-using Sinch.Voice.Svaml.Actions;
 using Sinch.Voice.SinchEvents;
 using Xunit;
 

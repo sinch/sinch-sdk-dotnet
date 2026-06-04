@@ -59,7 +59,7 @@ namespace Sinch.Voice.Svaml.Actions
         ///     <see href="https://developers.sinch.com/docs/voice/api-reference/voice/voice/tag/Callbacks/#tag/Callbacks/operation/dice">DICE</see> callbacks for the call.
         /// </summary>
         [JsonPropertyName("suppressCallbacks")]
-        public bool? SuppressCallbacks { get; set; }
+        public bool? SuppressSinchEvents { get; set; }
 
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Sinch.Voice.Svaml.Actions
             sb.Append("  MaxDuration: ").Append(MaxDuration).Append("\n");
             sb.Append("  DialTimeout: ").Append(DialTimeout).Append("\n");
             sb.Append("  Cli: ").Append(Cli).Append("\n");
-            sb.Append("  SuppressCallbacks: ").Append(SuppressCallbacks).Append("\n");
+            sb.Append("  SuppressCallbacks: ").Append(SuppressSinchEvents).Append("\n");
             sb.Append("  Dtmf: ").Append(Dtmf).Append("\n");
             sb.Append("  Indications: ").Append(Indications).Append("\n");
             sb.Append("  Amd: ").Append(Amd).Append("\n");

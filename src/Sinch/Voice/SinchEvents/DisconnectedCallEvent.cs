@@ -3,7 +3,6 @@ using Sinch.Voice.Destinations;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Voice.Calls;
-using Sinch.Voice.Svaml.Actions;
 
 namespace Sinch.Voice.SinchEvents
 {

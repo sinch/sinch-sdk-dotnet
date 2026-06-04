@@ -56,7 +56,7 @@ namespace Sinch.Voice.Svaml.Actions
         ///     callbacks for the call.
         /// </summary>
         [JsonPropertyName("suppressCallbacks")]
-        public bool? SuppressCallbacks { get; set; }
+        public bool? SuppressSinchEvents { get; set; }
 
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Sinch.Voice.Svaml.Actions
             sb.Append("  MaxDuration: ").Append(MaxDuration).Append("\n");
             sb.Append("  Cli: ").Append(Cli).Append("\n");
             sb.Append("  Transport: ").Append(Transport).Append("\n");
-            sb.Append("  SuppressCallbacks: ").Append(SuppressCallbacks).Append("\n");
+            sb.Append("  SuppressCallbacks: ").Append(SuppressSinchEvents).Append("\n");
             sb.Append("  CallHeaders: ").Append(CallHeaders).Append("\n");
             sb.Append("  Moh: ").Append(Moh).Append("\n");
             sb.Append("}\n");
