@@ -1,4 +1,3 @@
-using System;
 using System.Text.Json.Serialization;
 
 namespace Sinch.Voice.SinchEvents
@@ -13,7 +12,7 @@ namespace Sinch.Voice.SinchEvents
     ///     enabled, the amd object will also be present on ACE events.
     ///     Note: ACE events are not issued for InApp Calls (destination: username), only PSTN and SIP calls.
     /// </summary>
-    public sealed class AnsweredCallEvent : VoiceSinchEvent
+    public sealed class AnsweredCallEvent : VoiceCallSinchEvent
     {
         /// <summary>
         ///     Must have the value ace.
@@ -24,50 +23,11 @@ namespace Sinch.Voice.SinchEvents
 
 
         /// <summary>
-        ///     The unique ID assigned to this call.
-        /// </summary>
-        [JsonPropertyName("callid")]
-        public string? CallId { get; set; }
-
-
-        /// <summary>
-        ///     The path of the API resource.
-        /// </summary>
-        [JsonPropertyName("callResourceUrl")]
-        public string? CallResourceUrl { get; set; }
-
-
-        /// <summary>
-        ///     The timestamp in UTC format.
-        /// </summary>
-        [JsonPropertyName("timestamp")]
-        public DateTime? Timestamp { get; set; }
-
-
-        /// <summary>
-        ///     The current API version.
-        /// </summary>
-        [JsonPropertyName("version")]
-        public int? Version { get; set; }
-
-
-        /// <summary>
-        ///     A string that can be used to pass custom information related to the call.
-        /// </summary>
-        [JsonPropertyName("custom")]
-        public string? Custom { get; set; }
-
-        /// <summary>
         ///     If [Answering Machine Detection (AMD)](https://developers.sinch.com/docs/voice/api-reference/amd_v2) is enabled,
         ///     this object contains information about whether the call was answered by a machine.
         /// </summary>
         [JsonPropertyName("amd")]
         public AnsweringMachineDetection? Amd { get; set; }
 
-        /// <summary>
-        ///     The unique application key. You can find it in the Sinch [dashboard](https://dashboard.sinch.com/voice/apps).
-        /// </summary>
-        [JsonPropertyName("applicationKey")]
-        public string? ApplicationKey { get; set; }
     }
 }

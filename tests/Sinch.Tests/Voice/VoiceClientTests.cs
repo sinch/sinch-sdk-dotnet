@@ -129,7 +129,7 @@ namespace Sinch.Tests.Voice
         public void SinchEvents_SerializeResponse_DoesNotRequireConfiguration()
         {
             var sinch = new SinchClient();
-            var response = new Sinch.Voice.SinchEvents.CallEventResponse
+            var response = new Sinch.Voice.SinchEvents.SinchEventResponse
             {
                 Action = new Sinch.Voice.Calls.Actions.Hangup()
             };

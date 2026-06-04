@@ -31,7 +31,7 @@ public class VoiceSinchEventsController : ControllerBase
         var body = HttpContext.Items[SinchEventsConstants.BodyItemKey] as string;
         var voiceEvent = _voiceSinchEvents.ParseEvent(body!);
 
-        CallEventResponse? response = voiceEvent switch
+        SinchEventResponse? response = voiceEvent switch
         {
             IncomingCallEvent ice => _businessLogic.IncomingCallEvent(ice),
             AnsweredCallEvent ace => _businessLogic.AnsweredCallEvent(ace),
@@ -51,13 +51,13 @@ public class VoiceSinchEventsController : ControllerBase
         return Ok();
     }
 
-    private CallEventResponse? HandleDisconnected(DisconnectedCallEvent dice)
+    private SinchEventResponse? HandleDisconnected(DisconnectedCallEvent dice)
     {
         _businessLogic.DisconnectedCallEvent(dice);
         return null;
     }
 
-    private CallEventResponse? HandleNotification(NotificationEvent notify)
+    private SinchEventResponse? HandleNotification(NotificationEvent notify)
     {
         _businessLogic.NotificationEvent(notify);
         return null;

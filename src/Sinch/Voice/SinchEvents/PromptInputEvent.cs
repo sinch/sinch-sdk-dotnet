@@ -23,12 +23,6 @@ namespace Sinch.Voice.SinchEvents
         internal override EventType Event { get; set; } = EventType.PromptInputEvent;
 
         /// <summary>
-        ///     The unique ID assigned to this call.
-        /// </summary>
-        [JsonPropertyName("callid")]
-        public string? CallId { get; set; }
-
-        /// <summary>
         ///     The timestamp in UTC format.
         /// </summary>
         [JsonPropertyName("timestamp")]
@@ -39,12 +33,6 @@ namespace Sinch.Voice.SinchEvents
         /// </summary>
         [JsonPropertyName("menuResult")]
         public MenuResult? MenuResult { get; set; }
-
-        /// <summary>
-        ///     The current API version.
-        /// </summary>
-        [JsonPropertyName("version")]
-        public int? Version { get; set; }
 
         /// <summary>
         ///     The unique application key. You can find it in the Sinch [dashboard](https://dashboard.sinch.com/voice/apps).
@@ -58,12 +46,6 @@ namespace Sinch.Voice.SinchEvents
         [JsonPropertyName("custom")]
         public string? Custom { get; set; }
 
-
-        /// <summary>
-        ///     Used in some types of events, it presents the unique Conference ID assigned to this call.
-        /// </summary>
-        [JsonPropertyName("conferenceId")]
-        public string? ConferenceId { get; set; }
     }
 
     public sealed class MenuResult

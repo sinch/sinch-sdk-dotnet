@@ -14,8 +14,8 @@ namespace Sinch.Voice.SinchEvents
         ///     Parse a Voice Sinch Event from a raw JSON string.
         /// </summary>
         /// <param name="json">Raw JSON string of the incoming event payload.</param>
-        /// <returns>The parsed <see cref="VoiceSinchEvent" />.</returns>
-        VoiceSinchEvent ParseEvent(string json);
+        /// <returns>The parsed <see cref="IVoiceSinchEvent" />.</returns>
+        IVoiceSinchEvent ParseEvent(string json);
 
         /// <summary>
         ///     Validate the authentication header sent by Sinch.
@@ -47,11 +47,11 @@ namespace Sinch.Voice.SinchEvents
             string body);
 
         /// <summary>
-        ///     Serialize a <see cref="CallEventResponse" /> (SVAML) to a JSON string suitable for returning
+        ///     Serialize a <see cref="SinchEventResponse" /> (SVAML) to a JSON string suitable for returning
         ///     as the HTTP response body to an ICE, ACE, or PIE event.
         /// </summary>
         /// <param name="response">The SVAML response object to serialize.</param>
         /// <returns>JSON string representation of the response.</returns>
-        string SerializeResponse(CallEventResponse response);
+        string SerializeResponse(SinchEventResponse response);
     }
 }

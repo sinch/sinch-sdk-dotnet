@@ -1,4 +1,5 @@
 using System.Text.Json.Nodes;
+using Sinch.Voice.Destinations;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
@@ -28,11 +29,7 @@ namespace Sinch.Tests.Features.Voice
             _ttsCalloutResponse = await _sinchVoiceCallouts.Tts(new TextToSpeechCalloutRequest()
             {
                 Cli = "+12015555555",
-                Destination = new Destination()
-                {
-                    Type = DestinationType.Number,
-                    Endpoint = "+12017777777"
-                },
+                Destination = new DestinationPstn { Endpoint = "+12017777777" },
                 Locale = "en-US",
                 Text = "Hello, this is a call from Sinch."
             });
@@ -53,11 +50,7 @@ namespace Sinch.Tests.Features.Voice
             _conferenceCalloutResponse = await _sinchVoiceCallouts.Conference(new ConferenceCalloutRequest()
             {
                 Cli = "+12015555555",
-                Destination = new Destination()
-                {
-                    Endpoint = "+12017777777",
-                    Type = DestinationType.Number,
-                },
+                Destination = new DestinationPstn { Endpoint = "+12017777777" },
                 Locale = "en-US",
                 ConferenceId = "myConferenceId-E2E",
                 Greeting = "Welcome to this conference call.",
@@ -81,11 +74,7 @@ namespace Sinch.Tests.Features.Voice
             _customCalloutResponse = await _sinchVoiceCallouts.Custom(new CustomCalloutRequest()
             {
                 Cli = "+12015555555",
-                Destination = new Destination()
-                {
-                    Type = DestinationType.Number,
-                    Endpoint = "+12017777777"
-                },
+                Destination = new DestinationPstn { Endpoint = "+12017777777" },
                 Custom = "Custom text",
                 Ice = JsonNode.Parse(
                         "{\"action\":{\"name\":\"connectPstn\",\"number\":\"+12017777777\",\"cli\":\"+12015555555\"},\"instructions\":[{\"name\":\"say\",\"text\":\"Welcome to Sinch.\",\"locale\":\"en-US/male\"},{\"name\":\"startRecording\",\"options\":{\"destinationUrl\":\"To specify\",\"credentials\":\"To specify\"}}]}"),

@@ -1,4 +1,5 @@
 using System;
+using Sinch.Voice.Destinations;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -40,11 +41,7 @@ namespace Sinch.Tests.Features.Voice
         {
             _callInformation.Should().BeEquivalentTo(new Call
             {
-                To = new Destination
-                {
-                    Type = ParticipantType.Number,
-                    Endpoint = "+12017777777"
-                },
+                To = new DestinationPstn { Endpoint = "+12017777777" },
                 Domain = CallDomain.Pstn,
                 CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000003",
                 Duration = 14,

@@ -6,13 +6,13 @@ using System.Text.Json.Serialization;
 namespace Sinch.Voice.SinchEvents
 {
     /// <summary>
-    ///     JSON converter for <see cref="VoiceSinchEvent" /> that uses the <c>"event"</c> discriminator field
+    ///     JSON converter for <see cref="IVoiceSinchEvent" /> that uses the <c>"event"</c> discriminator field
     ///     to determine the concrete event type.
     /// </summary>
-    public sealed class VoiceSinchEventConverter : JsonConverter<VoiceSinchEvent>
+    public sealed class VoiceSinchEventConverter : JsonConverter<IVoiceSinchEvent>
     {
         /// <inheritdoc />
-        public override VoiceSinchEvent? Read(ref Utf8JsonReader reader, Type typeToConvert,
+        public override IVoiceSinchEvent? Read(ref Utf8JsonReader reader, Type typeToConvert,
             JsonSerializerOptions options)
         {
             var elem = JsonElement.ParseValue(ref reader);
@@ -48,7 +48,7 @@ namespace Sinch.Voice.SinchEvents
         }
 
         /// <inheritdoc />
-        public override void Write(Utf8JsonWriter writer, VoiceSinchEvent value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, IVoiceSinchEvent value, JsonSerializerOptions options)
         {
             switch (value)
             {

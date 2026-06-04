@@ -5,13 +5,13 @@ namespace SinchEvents.Template.Voice;
 
 public class VoiceServerBusinessLogic(ILogger<VoiceServerBusinessLogic> logger)
 {
-    public CallEventResponse? IncomingCallEvent(IncomingCallEvent incomingCallEvent)
+    public SinchEventResponse? IncomingCallEvent(IncomingCallEvent incomingCallEvent)
     {
         logger.LogInformation("Handle ICE event: {Event}", incomingCallEvent.ToPrettyString());
         return null;
     }
 
-    public CallEventResponse? AnsweredCallEvent(AnsweredCallEvent answeredCallEvent)
+    public SinchEventResponse? AnsweredCallEvent(AnsweredCallEvent answeredCallEvent)
     {
         logger.LogInformation("Handle ACE event: {Event}", answeredCallEvent.ToPrettyString());
         return null;
@@ -22,7 +22,7 @@ public class VoiceServerBusinessLogic(ILogger<VoiceServerBusinessLogic> logger)
         logger.LogInformation("Handle DiCE event: {Event}", disconnectedCallEvent.ToPrettyString());
     }
 
-    public CallEventResponse? PromptInputEvent(PromptInputEvent promptInputEvent)
+    public SinchEventResponse? PromptInputEvent(PromptInputEvent promptInputEvent)
     {
         logger.LogInformation("Handle PIE event: {Event}", promptInputEvent.ToPrettyString());
         return null;

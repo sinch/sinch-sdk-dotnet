@@ -1,4 +1,5 @@
 using System.Net.Http;
+using Sinch.Voice.Destinations;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Reqnroll;
@@ -6,7 +7,6 @@ using Sinch.Voice;
 using Sinch.Voice.Callouts.Callout;
 using Sinch.Voice.Calls;
 using Sinch.Voice.SinchEvents;
-using DestinationType = Sinch.Voice.SinchEvents.DestinationType;
 
 namespace Sinch.Tests.Features.Voice
 {
@@ -146,11 +146,7 @@ namespace Sinch.Tests.Features.Voice
                     Amount = 0.0095m,
                     CurrencyId = "EUR"
                 },
-                To = new To()
-                {
-                    Endpoint = "12017777777",
-                    Type = DestinationType.Number
-                },
+                To = new DestinationPstn { Endpoint = "12017777777" },
                 Duration = 12,
                 From = "12015555555",
                 ApplicationKey = "f00dcafe-abba-c0de-1dea-dabb1ed4caf3"
@@ -178,7 +174,6 @@ namespace Sinch.Tests.Features.Voice
             _voiceSinchEvents.ParseEvent(_rawAceContent).Should().BeEquivalentTo(new AnsweredCallEvent
             {
                 CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000043",
-                CallResourceUrl = null,
                 Timestamp = Helpers.ParseUtc("2024-06-06T17:10:34Z"),
                 Version = 1,
                 Custom = "Custom text",
@@ -219,11 +214,7 @@ namespace Sinch.Tests.Features.Voice
                         Amount = 0.0m,
                     },
                     Cli = "12015555555",
-                    To = new To()
-                    {
-                        Type = DestinationType.Did,
-                        Endpoint = "+12017777777"
-                    },
+                    To = new DestinationDid { Endpoint = "+12017777777" },
                     Domain = Domain.Pstn,
                     ApplicationKey = "f00dcafe-abba-c0de-1dea-dabb1ed4caf3",
                     OriginationType = Domain.Pstn,

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using Sinch.Voice.Destinations;
 using System.Text.Json.Serialization;
-using Sinch.Voice.Common;
 
 namespace Sinch.Voice.Calls.Actions
 {
@@ -11,9 +11,9 @@ namespace Sinch.Voice.Calls.Actions
     {
         public string Name { get; } = "connectMxp";
 
-        /// <inheritdoc cref="Destination" />
+        /// <summary>The data (app or web) endpoint to connect the call to.</summary>
         [JsonPropertyName("destination")]
-        public Destination? Destination { get; set; }
+        public DestinationMxp? Destination { get; set; }
 
         /// <summary>
         ///     An optional parameter that allows you to specify or override call headers provided to the receiving Sinch SDK

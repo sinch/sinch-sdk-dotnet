@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Sinch.Voice.Destinations;
 using Sinch.Core;
 
 namespace Sinch.Voice.Callouts.Callout
@@ -6,7 +7,7 @@ namespace Sinch.Voice.Callouts.Callout
     public sealed class TextToSpeechCalloutRequest
     {
 
-        public required Destination Destination { get; set; }
+        public required ICalloutDestination Destination { get; set; }
 
 
         /// <summary>

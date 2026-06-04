@@ -27,9 +27,9 @@ namespace Sinch.Voice.SinchEvents
         }
 
         /// <inheritdoc />
-        public VoiceSinchEvent ParseEvent(string json)
+        public IVoiceSinchEvent ParseEvent(string json)
         {
-            var result = JsonSerializer.Deserialize<VoiceSinchEvent>(json, _jsonSerializerOptions);
+            var result = JsonSerializer.Deserialize<IVoiceSinchEvent>(json, _jsonSerializerOptions);
             if (result == null)
             {
                 throw new InvalidOperationException("Deserialization of Voice Sinch Event failed");
@@ -62,7 +62,7 @@ namespace Sinch.Voice.SinchEvents
         }
 
         /// <inheritdoc />
-        public string SerializeResponse(CallEventResponse response)
+        public string SerializeResponse(SinchEventResponse response)
         {
             return JsonSerializer.Serialize(response, _jsonSerializerOptions);
         }

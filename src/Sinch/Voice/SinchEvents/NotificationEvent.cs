@@ -17,24 +17,6 @@ namespace Sinch.Voice.SinchEvents
         internal override EventType Event { get; set; } = EventType.NotificationEvent;
 
         /// <summary>
-        ///     The unique ID assigned to this call.
-        /// </summary>
-        [JsonPropertyName("callid")]
-        public string? CallId { get; set; }
-
-        /// <summary>
-        ///     Used in some types of events, it presents the unique Conference ID assigned to this call.
-        /// </summary>
-        [JsonPropertyName("conferenceId")]
-        public string? ConferenceId { get; set; }
-
-        /// <summary>
-        ///     The current API version.
-        /// </summary>
-        [JsonPropertyName("version")]
-        public int? Version { get; set; }
-
-        /// <summary>
         ///     The type of information communicated in the notification.
         /// </summary>
         [JsonPropertyName("type")]
@@ -45,7 +27,6 @@ namespace Sinch.Voice.SinchEvents
         /// </summary>
         [JsonPropertyName("custom")]
         public string? Custom { get; set; }
-
 
         /// <inheritdoc cref="AnsweringMachineDetection"/>
         [JsonPropertyName("amd")]
@@ -67,9 +48,9 @@ namespace Sinch.Voice.SinchEvents
             sb.Append($"class {nameof(NotificationEvent)} {{\n");
             sb.Append($"  {nameof(Event)}: ").Append(Event).Append('\n');
             sb.Append($"  {nameof(Type)}: ").Append(Type).Append('\n');
+            sb.Append($"  {nameof(Custom)}: ").Append(Custom).Append('\n');
             sb.Append($"  {nameof(Destination)}: ").Append(Destination).Append('\n');
             sb.Append($"  {nameof(Amd)}: ").Append(Amd).Append('\n');
-            sb.Append($"  {nameof(Custom)}: ").Append(Custom).Append('\n');
             sb.Append("}\n");
             return sb.ToString();
         }

@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using Sinch.Voice.Destinations;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Core;
@@ -15,7 +15,7 @@ namespace Sinch.Voice.SinchEvents
     ///     If there is no response to the ICE event within the timeout period, an error message is played, and the call is
     ///     disconnected.
     /// </summary>
-    public sealed class IncomingCallEvent : VoiceSinchEvent
+    public sealed class IncomingCallEvent : VoiceCallSinchEvent
     {
         /// <summary>
         ///     Must have the value ice.
@@ -25,38 +25,10 @@ namespace Sinch.Voice.SinchEvents
 
 
         /// <summary>
-        ///     The unique ID assigned to this call.
-        /// </summary>
-        [JsonPropertyName("callid")]
-        public string? CallId { get; set; }
-
-
-        /// <summary>
         ///     The path of the API resource.
         /// </summary>
         [JsonPropertyName("callResourceUrl")]
         public string? CallResourceUrl { get; set; }
-
-
-        /// <summary>
-        ///     The timestamp in UTC format.
-        /// </summary>
-        [JsonPropertyName("timestamp")]
-        public DateTime? Timestamp { get; set; }
-
-
-        /// <summary>
-        ///     The current API version.
-        /// </summary>
-        [JsonPropertyName("version")]
-        public int? Version { get; set; }
-
-
-        /// <summary>
-        ///     A string that can be used to pass custom information related to the call.
-        /// </summary>
-        [JsonPropertyName("custom")]
-        public string? Custom { get; set; }
 
 
         /// <summary>
@@ -79,7 +51,7 @@ namespace Sinch.Voice.SinchEvents
         ///     Gets or Sets To
         /// </summary>
         [JsonPropertyName("to")]
-        public To? To { get; set; }
+        public ISinchEventDestination? To { get; set; }
 
 
         /// <summary>
@@ -87,13 +59,6 @@ namespace Sinch.Voice.SinchEvents
         /// </summary>
         [JsonPropertyName("domain")]
         public Domain? Domain { get; set; }
-
-
-        /// <summary>
-        ///     The unique application key. You can find it in the Sinch [dashboard](https://dashboard.sinch.com/voice/apps).
-        /// </summary>
-        [JsonPropertyName("applicationKey")]
-        public string? ApplicationKey { get; set; }
 
 
         /// <summary>
@@ -125,12 +90,6 @@ namespace Sinch.Voice.SinchEvents
         public List<CallHeader>? CallHeaders { get; set; }
 
         /// <summary>
-        ///     Used in some types of events, it presents the unique Conference ID assigned to this call.
-        /// </summary>
-        [JsonPropertyName("conferenceId")]
-        public string? ConferenceId { get; set; }
-
-        /// <summary>
         ///     Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -139,11 +98,7 @@ namespace Sinch.Voice.SinchEvents
             var sb = new StringBuilder();
             sb.Append("class IceRequest {\n");
             sb.Append("  Event: ").Append(Event).Append("\n");
-            sb.Append("  CallId: ").Append(CallId).Append("\n");
             sb.Append("  CallResourceUrl: ").Append(CallResourceUrl).Append("\n");
-            sb.Append("  Timestamp: ").Append(Timestamp).Append("\n");
-            sb.Append("  Version: ").Append(Version).Append("\n");
-            sb.Append("  Custom: ").Append(Custom).Append("\n");
             sb.Append("  UserRate: ").Append(UserRate).Append("\n");
             sb.Append("  Cli: ").Append(Cli).Append("\n");
             sb.Append("  To: ").Append(To).Append("\n");
@@ -152,7 +107,6 @@ namespace Sinch.Voice.SinchEvents
             sb.Append("  Duration: ").Append(Duration).Append("\n");
             sb.Append("  Rdnis: ").Append(Rdnis).Append("\n");
             sb.Append("  CallHeaders: ").Append(CallHeaders).Append("\n");
-            sb.Append("  ConferenceId: ").Append(ConferenceId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
