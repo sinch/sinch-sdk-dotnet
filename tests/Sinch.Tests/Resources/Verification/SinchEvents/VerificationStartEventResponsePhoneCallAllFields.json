@@ -1,0 +1,10 @@
+{
+  "callout": {
+    "code": "1234",
+    "speech": {
+      "locale": "en-US"
+    },
+    "my key": "my value"
+  },
+  "action": "allow"
+}

@@ -18,6 +18,10 @@ The sample reads configuration from [appsettings.json](appsettings.json):
     },
     "Numbers": {
       "SinchEventsSecret": ""
+    },
+    "Verification": {
+      "AppKey": "",
+      "AppSecret": ""
     }
   }
 }
@@ -26,6 +30,7 @@ The sample reads configuration from [appsettings.json](appsettings.json):
 - No unified credentials or SMS region are required to parse or validate incoming Sinch Events in this template.
 - `Sinch:Sms:SinchEventsSecret` is an optional shared secret for validating SMS event signatures.
 - `Sinch:Numbers:SinchEventsSecret` is an optional shared secret for validating Numbers event signatures.
+- `Sinch:Verification:AppKey` and `Sinch:Verification:AppSecret` are only needed when you enable Verification signed-request validation in this template. They are not required for `ParseEvent(...)` by itself.
 
 If you later extend this sample to make authenticated API calls, add a configured `SinchClientConfiguration` with unified credentials and any product-specific settings that those outbound API calls require.
 
@@ -59,3 +64,12 @@ ngrok http 5000
 
    - **SMS**: Set your event destination URL to `https://xxxx.ngrok.app/SmsEvent`
    - **Numbers**: Set your event destination URL to `https://xxxx.ngrok.app/NumbersEvent`
+
+## Verification Events
+
+The [Verification/](Verification/) folder contains a controller that receives Verification Sinch Events. Authentication is controlled by the `[VerificationSinchEvent(requireAuthentication: false)]` attribute. Set it to `true` and configure `Sinch:Verification:AppKey` and `Sinch:Verification:AppSecret` if you want to validate incoming signed requests.
+
+- The template parses the incoming Verification event and switches on the concrete event type.
+- For `VerificationStartEvent`, the business logic returns a simple `ALLOW` response that the controller serializes with `SerializeResponse(...)`.
+- For `VerificationResultEvent`, the business logic logs the incoming event and the controller returns `200 OK`.
+- Use the endpoint `https://xxxx.ngrok.app/VerificationEvent` as your Verification event destination URL.

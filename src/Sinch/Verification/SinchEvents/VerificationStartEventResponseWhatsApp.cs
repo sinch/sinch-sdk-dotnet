@@ -3,11 +3,12 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Sinch.Verification.Common;
 
-namespace Sinch.Verification.Hooks
+namespace Sinch.Verification.SinchEvents
 {
-    public sealed class WhatsAppRequestEventResponse : RequestEventResponseBase
+    public sealed class VerificationStartEventResponseWhatsApp : VerificationStartEventResponse
     {
         [JsonPropertyName("whatsapp")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public WhatsApp? WhatsApp { get; set; }
     }
 
@@ -17,19 +18,20 @@ namespace Sinch.Verification.Hooks
         ///     Accepted values for the type of code to be generated are Numeric, Alpha, and Alphanumeric.
         /// </summary>
         [JsonPropertyName("codeType")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public WhatsAppCodeType? CodeType { get; set; }
 
         /// <summary>
-        ///     The SMS verification content language. Set in the verification request.
+        ///     The WhatsApp verification content language. Set in the verification request.
         /// </summary>
         [JsonPropertyName("acceptLanguage")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public List<string>? AcceptLanguage { get; set; }
 
         /// <summary>
-        /// Gets or Sets additional properties
+        ///     Gets or sets additional properties.
         /// </summary>
         [JsonExtensionData]
         public Dictionary<string, JsonElement> AdditionalProperties { get; set; } = new Dictionary<string, JsonElement>();
-
     }
 }

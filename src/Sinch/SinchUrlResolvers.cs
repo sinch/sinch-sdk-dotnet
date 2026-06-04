@@ -26,8 +26,8 @@ namespace Sinch
         internal static Uri ResolveFaxUrl(SinchFaxConfiguration config)
             => new(config.UrlOverride ?? "https://fax.api.sinch.com/");
 
-        internal static Uri ResolveVerificationUrl(SinchVerificationConfiguration config)
-            => new(config.UrlOverride ?? "https://verification.api.sinch.com/");
+        internal static Uri ResolveVerificationUrl(SinchVerificationConfiguration? config)
+            => new(config?.UrlOverride ?? "https://verification.api.sinch.com/");
 
         internal static Uri ResolveVoiceUrl(SinchVoiceConfiguration config)
             => new(config.VoiceUrlOverride ?? $"https://{config.Region.Value}.api.sinch.com/");
