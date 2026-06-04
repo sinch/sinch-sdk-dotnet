@@ -6,7 +6,7 @@ using Sinch.Core;
 using Sinch.Logger;
 using Sinch.Voice.Applications.GetNumbers;
 using Sinch.Voice.Applications.UnassignNumbers;
-using Sinch.Voice.Applications.UpdateCallbackUrls;
+using Sinch.Voice.Applications.UpdateEventDestinations;
 using Sinch.Voice.Applications.UpdateNumbers;
 
 namespace Sinch.Voice.Applications
@@ -41,23 +41,22 @@ namespace Sinch.Voice.Applications
         Task UnassignNumber(UnassignNumberRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Returns any callback URLs configured for the specified application.
+        ///     Returns any event destination URLs configured for the specified application.
         /// </summary>
         /// <param name="applicationKey"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<Callbacks> GetCallbackUrls(string applicationKey,
+        Task<EventDestinations> GetEventDestinations(string applicationKey,
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Update the configured callback URLs for the specified application.
+        ///     Update the configured event destination URLs for the specified application.
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task UpdateCallbackUrls(UpdateCallbackUrlsRequest request,
+        Task UpdateEventDestinations(UpdateEventDestinationsRequest request,
             CancellationToken cancellationToken = default);
-
     }
 
     /// <inheritdoc />
@@ -102,26 +101,26 @@ namespace Sinch.Voice.Applications
         }
 
         /// <inheritdoc />
-        public Task<Callbacks> GetCallbackUrls(string applicationKey, CancellationToken cancellationToken = default)
+        public Task<EventDestinations> GetEventDestinations(string applicationKey,
+            CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"v1/configuration/callbacks/applications/{applicationKey}");
-            _logger?.LogDebug("Getting callback urls...");
-            return _http.Send<Callbacks>(uri, HttpMethod.Get,
+            _logger?.LogDebug("Getting event destinations...");
+            return _http.Send<EventDestinations>(uri, HttpMethod.Get,
                 cancellationToken);
         }
 
         /// <inheritdoc />
-        public Task UpdateCallbackUrls(UpdateCallbackUrlsRequest request,
+        public Task UpdateEventDestinations(UpdateEventDestinationsRequest request,
             CancellationToken cancellationToken = default)
         {
             var uri = new Uri(_baseAddress, $"v1/configuration/callbacks/applications/{request.ApplicationKey}");
-            _logger?.LogDebug("Updating callback urls...");
+            _logger?.LogDebug("Updating event destinations...");
             return _http.Send<object, EmptyResponse>(uri, HttpMethod.Post, new
             {
                 url = request.Url
             },
                 cancellationToken);
         }
-
     }
 }

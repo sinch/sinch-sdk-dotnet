@@ -6,7 +6,7 @@ using Reqnroll;
 using Sinch.Voice.Applications;
 using Sinch.Voice.Applications.GetNumbers;
 using Sinch.Voice.Applications.UnassignNumbers;
-using Sinch.Voice.Applications.UpdateCallbackUrls;
+using Sinch.Voice.Applications.UpdateEventDestinations;
 using Sinch.Voice.Applications.UpdateNumbers;
 using NumberItem = Sinch.Voice.Applications.GetNumbers.NumberItem;
 
@@ -19,8 +19,8 @@ namespace Sinch.Tests.Features.Voice
         private GetNumbersResponse _listNumbersResponse;
         private Func<Task> _assignNumberOp;
         private Func<Task> _unassignOp;
-        private Callbacks _callbackUrlsResponse;
-        private Func<Task> _updateCallbacksOp;
+        private EventDestinations _eventDestinationsResponse;
+        private Func<Task> _updateEventDestinationsOp;
 
         [When(@"I send a request to get information about my owned numbers")]
         public async Task WhenISendARequestToGetInformationAboutMyOwnedNumbers()
@@ -105,15 +105,15 @@ namespace Sinch.Tests.Features.Voice
         [When(@"I send a request to get the callback URLs associated to an application")]
         public async Task WhenISendARequestToGetTheCallbackUrLsAssociatedToAnApplication()
         {
-            _callbackUrlsResponse = await _sinchVoiceApplications.GetCallbackUrls("f00dcafe-abba-c0de-1dea-dabb1ed4caf3");
+            _eventDestinationsResponse = await _sinchVoiceApplications.GetEventDestinations("f00dcafe-abba-c0de-1dea-dabb1ed4caf3");
         }
 
         [Then(@"the response contains callback URLs details")]
         public void ThenTheResponseContainsCallbackUrLsDetails()
         {
-            _callbackUrlsResponse.Should().BeEquivalentTo(new Callbacks()
+            _eventDestinationsResponse.Should().BeEquivalentTo(new EventDestinations()
             {
-                Url = new CallbackUrls()
+                Url = new EventDestinationTarget()
                 {
                     Primary = "https://my.callback-server.com/voice",
                     Fallback = "https://my.fallback-server.com/voice"
@@ -124,10 +124,10 @@ namespace Sinch.Tests.Features.Voice
         [When(@"I send a request to update the callback URLs associated to an application")]
         public void WhenISendARequestToUpdateTheCallbackUrLsAssociatedToAnApplication()
         {
-            _updateCallbacksOp = () => _sinchVoiceApplications.UpdateCallbackUrls(new UpdateCallbackUrlsRequest()
+            _updateEventDestinationsOp = () => _sinchVoiceApplications.UpdateEventDestinations(new UpdateEventDestinationsRequest()
             {
                 ApplicationKey = "f00dcafe-abba-c0de-1dea-dabb1ed4caf3",
-                Url = new CallbackUrls()
+                Url = new EventDestinationTarget()
                 {
                     Primary = "https://my-new.callback-server.com/voice"
                 }
@@ -137,7 +137,7 @@ namespace Sinch.Tests.Features.Voice
         [Then(@"the update callback URLs response contains no data")]
         public async Task ThenTheUpdateCallbackUrLsResponseContainsNoData()
         {
-            await _updateCallbacksOp.Should().NotThrowAsync();
+            await _updateEventDestinationsOp.Should().NotThrowAsync();
         }
     }
 }
