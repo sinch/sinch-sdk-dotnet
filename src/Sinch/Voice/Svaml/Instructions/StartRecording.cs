@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Sinch.Voice.Calls.Instructions
+namespace Sinch.Voice.Svaml.Instructions
 {
     /// <summary>
     ///     Starts a recording of the call.

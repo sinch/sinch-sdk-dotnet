@@ -131,7 +131,7 @@ namespace Sinch.Tests.Voice
             var sinch = new SinchClient();
             var response = new Sinch.Voice.SinchEvents.SinchEventResponse
             {
-                Action = new Sinch.Voice.Calls.Actions.Hangup()
+                Action = new Sinch.Voice.Svaml.Actions.Hangup()
             };
 
             var json = sinch.Voice.SinchEvents.SerializeResponse(response);

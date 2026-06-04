@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using Sinch.Voice.Calls.Actions;
-using Sinch.Voice.Calls.Instructions;
+using Sinch.Voice.Svaml.Actions;
+using Sinch.Voice.Svaml.Instructions;
 
 namespace Sinch.Voice.SinchEvents
 {

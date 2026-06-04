@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Voice.Calls.Actions
+namespace Sinch.Voice.Svaml.Actions
 {
     /// <summary>
     ///     Parks the call and places the caller on hold. The caller is placed into a loop, listening to an IVR prompt (either

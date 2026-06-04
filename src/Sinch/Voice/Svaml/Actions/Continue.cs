@@ -1,4 +1,4 @@
-namespace Sinch.Voice.Calls.Actions
+namespace Sinch.Voice.Svaml.Actions
 {
     /// <summary>
     ///     Continues to set up a call.

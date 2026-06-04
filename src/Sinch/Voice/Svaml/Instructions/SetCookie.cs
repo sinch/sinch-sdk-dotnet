@@ -1,24 +1,24 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Voice.Calls.Actions
+namespace Sinch.Voice.Svaml.Instructions
 {
     /// <summary>
-    ///     Call Headers can be used to pass custom data from a Sinch SDK client to another, or specified in an ICE response to
-    ///     be made available to the receiving client. Further, if Call Headers is specified they will be available in ICE and
-    ///     DICE events.
+    ///     Creates a cookie for the duration of the call.
     /// </summary>
-    public sealed class CallHeader
+    public sealed class SetCookie : IInstruction
     {
+        public string Name { get; } = "setCookie";
+
         /// <summary>
-        ///     The call header key of the key value pair.
+        ///     The name of the cookie you want to set.
         /// </summary>
         [JsonPropertyName("key")]
         public string? Key { get; set; }
 
 
         /// <summary>
-        ///     The call header value of the key value pair.
+        ///     The value of the cookie you want to set.
         /// </summary>
         [JsonPropertyName("value")]
         public string? Value { get; set; }
@@ -31,7 +31,8 @@ namespace Sinch.Voice.Calls.Actions
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class CallHeader {\n");
+            sb.Append("class SetCookie {\n");
+            sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Key: ").Append(Key).Append("\n");
             sb.Append("  Value: ").Append(Value).Append("\n");
             sb.Append("}\n");

@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Core;
 using Sinch.Voice.Callouts.Callout;
-using Sinch.Voice.Calls.Actions;
+using Sinch.Voice.Svaml.Actions;
 
 namespace Sinch.Voice.SinchEvents
 {

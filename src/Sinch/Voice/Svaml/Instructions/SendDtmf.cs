@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Voice.Calls.Instructions
+namespace Sinch.Voice.Svaml.Instructions
 {
     /// <summary>
     ///     Plays DTMF tones in the call.

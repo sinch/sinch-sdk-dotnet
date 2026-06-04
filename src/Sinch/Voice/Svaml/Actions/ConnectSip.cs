@@ -3,7 +3,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Voice.Calls.Actions
+namespace Sinch.Voice.Svaml.Actions
 {
     /// <summary>
     ///     Determines how to route a call to a SIP server. 

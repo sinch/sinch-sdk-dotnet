@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Voice.Calls.Actions
+namespace Sinch.Voice.Svaml.Actions
 {
     /// <summary>
     ///     Connects an incoming call to a conference.

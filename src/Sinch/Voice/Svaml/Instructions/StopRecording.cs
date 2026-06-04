@@ -1,4 +1,4 @@
-namespace Sinch.Voice.Calls.Instructions
+namespace Sinch.Voice.Svaml.Instructions
 {
     /// <summary>
     ///     Stops the recording of the call.

@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Sinch.Voice.Calls.Instructions
+namespace Sinch.Voice.Svaml.Instructions
 {
     /// <summary>
     ///     Forces the callee to answer the call.

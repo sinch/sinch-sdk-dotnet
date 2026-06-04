@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Voice.Calls.Instructions
+namespace Sinch.Voice.Svaml.Instructions
 {
     /// <summary>
     ///     Plays Interactive Voice Response (IVR) files for the supported locale or SSML commands at the Sinch backend. An IVR

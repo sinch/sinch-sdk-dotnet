@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Sinch.Voice.Destinations;
 using System.Text.Json.Serialization;
 
-namespace Sinch.Voice.Calls.Actions
+namespace Sinch.Voice.Svaml.Actions
 {
     /// <summary>
     ///     Determines how an application-to-application call is connected.

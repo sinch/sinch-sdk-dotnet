@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Sinch.Voice.Calls.Actions
+namespace Sinch.Voice.Svaml.Actions
 {
     /// <summary>
     ///     Marker interface for Call Actions.

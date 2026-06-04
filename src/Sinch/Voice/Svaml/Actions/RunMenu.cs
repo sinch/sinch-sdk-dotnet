@@ -3,7 +3,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Core;
 
-namespace Sinch.Voice.Calls.Actions
+namespace Sinch.Voice.Svaml.Actions
 {
     /// <summary>
     ///     Plays an interactive voice response (IVR) menu to the callee. This menu can play pre-recorded files or
