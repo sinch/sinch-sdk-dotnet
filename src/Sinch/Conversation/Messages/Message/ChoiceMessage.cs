@@ -76,6 +76,104 @@ namespace Sinch.Conversation.Messages.Message
     }
 
     /// <summary>
+    ///     Message containing details about a calendar event.
+    /// </summary>
+    public sealed class CalendarMessage
+    {
+        [JsonConstructor]
+        public CalendarMessage()
+        {
+        }
+
+        /// <summary>
+        ///     The title is shown close to the button that leads to open a user calendar.
+        /// </summary>
+        [JsonPropertyName("title")]
+#if NET7_0_OR_GREATER
+        public required string Title { get; set; }
+#else
+        public string Title { get; set; } = null!;
+#endif
+
+        /// <summary>
+        ///     The timestamp defines start of a calendar event.
+        /// </summary>
+        [JsonPropertyName("event_start")]
+#if NET7_0_OR_GREATER
+        public required DateTime EventStart { get; set; }
+#else
+        public DateTime EventStart { get; set; }
+#endif
+
+        /// <summary>
+        ///     The timestamp defines end of a calendar event.
+        /// </summary>
+        [JsonPropertyName("event_end")]
+#if NET7_0_OR_GREATER
+        public required DateTime EventEnd { get; set; }
+#else
+        public DateTime EventEnd { get; set; }
+#endif
+
+        /// <summary>
+        ///     Title of a calendar event.
+        /// </summary>
+        [JsonPropertyName("event_title")]
+#if NET7_0_OR_GREATER
+        public required string EventTitle { get; set; }
+#else
+        public string EventTitle { get; set; } = null!;
+#endif
+
+        /// <summary>
+        ///     Description of a calendar event.
+        /// </summary>
+        [JsonPropertyName("event_description")]
+        public string? EventDescription { get; set; }
+
+        /// <summary>
+        ///     The URL that is opened when the user cannot open a calendar event directly or channel does not have support for this type.
+        /// </summary>
+        [JsonPropertyName("fallback_url")]
+#if NET7_0_OR_GREATER
+        public required string FallbackUrl { get; set; }
+#else
+        public string FallbackUrl { get; set; } = null!;
+#endif
+    }
+
+    /// <summary>
+    ///     Message requesting location from a user.
+    /// </summary>
+    public sealed class ShareLocationMessage
+    {
+        [JsonConstructor]
+        public ShareLocationMessage()
+        {
+        }
+
+        /// <summary>
+        ///     The title is shown close to the button that leads to open a map to share a location.
+        /// </summary>
+        [JsonPropertyName("title")]
+#if NET7_0_OR_GREATER
+        public required string Title { get; set; }
+#else
+        public string Title { get; set; } = null!;
+#endif
+
+        /// <summary>
+        ///     The URL that is opened when channel does not have support for this type.
+        /// </summary>
+        [JsonPropertyName("fallback_url")]
+#if NET7_0_OR_GREATER
+        public required string FallbackUrl { get; set; }
+#else
+        public string FallbackUrl { get; set; } = null!;
+#endif
+    }
+
+    /// <summary>
     ///     Message for triggering a call.
     /// </summary>
     public sealed class CallMessage
