@@ -1,1 +1,4 @@
 * text eol=lf
+
+# Mark all .png files as binary
+*.png binary
