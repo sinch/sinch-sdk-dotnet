@@ -1,0 +1,9 @@
+{
+  "action": "allow",
+  "sms": {
+    "code": "123",
+    "acceptLanguage": [
+      "en-US"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "sms": {
+    "code": "5666",
+    "codeType": "Numeric",
+    "expiry": "01:02:03",
+    "acceptLanguage": [
+      "fr-FR"
+    ],
+    "my key": "my value"
+  },
+  "action": "allow"
+}

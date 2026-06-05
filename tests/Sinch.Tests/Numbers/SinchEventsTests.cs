@@ -104,5 +104,17 @@ namespace Sinch.Tests.Numbers
             Numbers.SinchEvents.ValidateAuthenticationHeader("wrong-secret", headers, Body)
                 .Should().BeFalse();
         }
+
+        [Fact]
+        public void ParseEvent_DoesNotRequireCredentials()
+        {
+            var sinch = new SinchClient();
+            var json = Helpers.LoadResources("Numbers/SinchEvents/NumberSinchEvent.json");
+
+            var sinchEvent = sinch.Numbers.SinchEvents.ParseEvent(json);
+
+            sinchEvent.Should().NotBeNull();
+            sinchEvent.EventId.Should().Be("abcd1234efghijklmnop567890");
+        }
     }
 }

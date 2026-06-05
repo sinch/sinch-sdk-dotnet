@@ -1,0 +1,12 @@
+{
+  "id": "1234567890",
+  "event": "VerificationSmsDeliveredEvent",
+  "method": "sms",
+  "identity": {
+    "type": "number",
+    "endpoint": "+11235551234"
+  },
+  "smsResult": "Successful",
+  "reference": "string",
+  "custom": "string"
+}

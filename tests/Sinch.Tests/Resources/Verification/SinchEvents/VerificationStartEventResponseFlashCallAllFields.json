@@ -1,0 +1,9 @@
+{
+  "flashCall": {
+    "cli": "+12025550187",
+    "dialTimeout": 30,
+    "interceptionTimeout": 60,
+    "my key": "my value"
+  },
+  "action": "allow"
+}

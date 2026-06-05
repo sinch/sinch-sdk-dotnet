@@ -246,32 +246,12 @@ namespace Sinch
                 voiceAppMgmtUrl);
         }
 
-        private ISinchVerificationClient InitVerification()
-        {
-            var config = _sinchClientConfiguration.VerificationConfiguration ??
-                throw new InvalidOperationException($"{nameof(SinchVerificationConfiguration)} is not set.");
-
-            if (string.IsNullOrEmpty(config.AppKey))
-                throw new ArgumentNullException(nameof(config.AppKey), "The value should be present");
-
-            if (string.IsNullOrEmpty(config.AppSecret))
-                throw new ArgumentNullException(nameof(config.AppSecret), "The value should be present");
-
-            ISinchAuth auth;
-            if (config.AuthStrategy == AuthStrategy.ApplicationSign)
-                auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
-            else
-                auth = new BasicAuth(config.AppKey, config.AppSecret);
-
-            var http = new Http(new Lazy<ISinchAuth>(auth), _httpClientAccessor, _loggerFactory?.Create<IHttp>(),
-                JsonNamingPolicy.CamelCase);
-
-            var verificationUrl = ResolveUrl(
+        private ISinchVerificationClient InitVerification() =>
+            new SinchVerificationClient(
+                _sinchClientConfiguration.VerificationConfiguration,
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VerificationUrl,
-                () => SinchUrlResolvers.ResolveVerificationUrl(config));
-
-            return new SinchVerificationClient(verificationUrl, _loggerFactory, http, (auth as ApplicationSignedAuth)!);
-        }
+                _loggerFactory,
+                _httpClientAccessor);
 
         private ISinchFax InitFax()
         {
