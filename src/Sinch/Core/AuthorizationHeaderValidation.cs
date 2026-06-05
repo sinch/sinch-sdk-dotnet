@@ -10,7 +10,7 @@ using Sinch.Logger;
 namespace Sinch.Core
 {
     /// <summary>
-    ///     Validates authentication header for Voice And Verification webhooks <br/>
+    ///     Validates authentication header for Voice And Verification sinch events <br/>
     ///     For details, [see](https://developers.sinch.com/docs/verification/api-reference/authentication/callback-signed-request/)
     /// </summary>
     internal static class AuthorizationHeaderValidation

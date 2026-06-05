@@ -1,9 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.Json;
 using Sinch.Auth;
 using Sinch.Core;
 using Sinch.Logger;
+using Sinch.Verification.SinchEvents;
 
 namespace Sinch.Verification
 {
@@ -22,46 +23,72 @@ namespace Sinch.Verification
         /// </summary>
         ISinchVerificationStatus VerificationStatus { get; }
 
-        /// <summary>
-        ///     Validates callback request.
-        /// </summary>
-        /// <param name="method"></param>
-        /// <param name="path"></param>
-        /// <param name="headers"></param>
-        /// <param name="body"></param>
-        /// <returns>True, if produced signature match with that of a header.</returns>
-        bool ValidateAuthenticationHeader(HttpMethod method, string path,
-            Dictionary<string, IEnumerable<string>> headers,
-            string body);
+        /// <inheritdoc cref="IVerificationSinchEvents"/>
+        IVerificationSinchEvents SinchEvents { get; }
     }
 
     internal sealed class SinchVerificationClient : ISinchVerificationClient
     {
-        private readonly ILoggerAdapter<ISinchVerificationClient>? _logger;
+        private const string ConfigRequired =
+            "VerificationConfiguration with AppKey and AppSecret is required to use Verification API methods. " +
+            "Set VerificationConfiguration when creating SinchClient.";
 
-        private readonly ApplicationSignedAuth _applicationSignedAuth;
+        private readonly ISinchVerification? _verification;
+        private readonly ISinchVerificationStatus? _verificationStatus;
 
-        internal SinchVerificationClient(Uri baseAddress, LoggerFactory? loggerFactory,
-            IHttp http, ApplicationSignedAuth applicationSignedAuth)
+        internal SinchVerificationClient(
+            SinchVerificationConfiguration? config,
+            string? verificationUrlOverride,
+            LoggerFactory? loggerFactory,
+            Func<HttpClient> httpClientAccessor)
         {
-            _logger = loggerFactory?.Create<ISinchVerificationClient>();
-            _applicationSignedAuth = applicationSignedAuth;
-            Verification = new SinchVerification(loggerFactory?.Create<SinchVerification>(), baseAddress, http);
-            VerificationStatus =
-                new SinchVerificationStatus(loggerFactory?.Create<SinchVerificationStatus>(), baseAddress, http);
+            var auth = new Lazy<ISinchAuth>(() =>
+            {
+                var currentConfig = config ??
+                    throw new InvalidOperationException(ConfigRequired);
+
+                if (string.IsNullOrEmpty(currentConfig.AppKey))
+                    throw new ArgumentNullException(nameof(currentConfig.AppKey), "The value should be present");
+
+                if (string.IsNullOrEmpty(currentConfig.AppSecret))
+                    throw new ArgumentNullException(nameof(currentConfig.AppSecret), "The value should be present");
+
+                if (currentConfig.AuthStrategy == AuthStrategy.ApplicationSign)
+                    return new ApplicationSignedAuth(currentConfig.AppKey, currentConfig.AppSecret);
+
+                return new BasicAuth(currentConfig.AppKey, currentConfig.AppSecret);
+            });
+
+            var verificationUrl = !string.IsNullOrEmpty(verificationUrlOverride)
+                ? new Uri(verificationUrlOverride)
+                : SinchUrlResolvers.ResolveVerificationUrl(config);
+
+            Http? http = null;
+            if (config != null)
+            {
+                http = new Http(auth, httpClientAccessor, loggerFactory?.Create<IHttp>(),
+                    JsonNamingPolicy.CamelCase);
+
+                _verification = new SinchVerification(loggerFactory?.Create<SinchVerification>(), verificationUrl,
+                    http);
+                _verificationStatus = new SinchVerificationStatus(
+                    loggerFactory?.Create<SinchVerificationStatus>(), verificationUrl, http);
+            }
+
+            SinchEvents = new VerificationSinchEvents(
+                auth,
+                loggerFactory?.Create<IVerificationSinchEvents>());
         }
 
         /// <inheritdoc />
-        public ISinchVerification Verification { get; }
+        public ISinchVerification Verification =>
+            _verification ?? throw new InvalidOperationException(ConfigRequired);
 
         /// <inheritdoc />
-        public ISinchVerificationStatus VerificationStatus { get; }
+        public ISinchVerificationStatus VerificationStatus =>
+            _verificationStatus ?? throw new InvalidOperationException(ConfigRequired);
 
-        public bool ValidateAuthenticationHeader(HttpMethod method, string path,
-            Dictionary<string, IEnumerable<string>> headers, string body)
-        {
-            return AuthorizationHeaderValidation.Validate(method, path, headers, body, _applicationSignedAuth,
-                _logger);
-        }
+        /// <inheritdoc />
+        public IVerificationSinchEvents SinchEvents { get; }
     }
 }

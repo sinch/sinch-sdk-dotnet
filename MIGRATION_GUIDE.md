@@ -1,60 +1,69 @@
-# Migration to 2.0
+# Sinch .NET SDK Migration Guide
 
-## Content list:
-- [.NET Framework Support](#net-framework-support)
-- [Initialize SinchClient with unified credentials](#initialize-sinchclient-with-unified-credentials)
-- [Initialize Voice and Verification clients](#initialize-voice-and-verification-clients)
-- [Provide Logger, and your own HttpClient](#provide-logger-and-your-own-httpclient)
-- [Set API Regions (where applicable)](#set-api-regionswhere-applicable)
-- [Override API urls](#override-api-urls)
-- [Use SMS API with ServicePlanId](#use-sms-api-with-serviceplanid)
-- [VoiceConfiguration is now abstract](#voiceconfiguration-is-now-abstract)
-- [ScheduledVoiceProvisioning is now abstract](#scheduledvoiceprovisioning-is-now-abstract)
-- [VoiceConfiguration and ScheduledVoiceProvisioning classes moved to new namespace](#voiceconfiguration-and-scheduledvoiceprovisioning-classes-moved-to-new-namespace)
-- [VoiceConfiguration Type property is now internal](#voiceconfiguration-type-property-is-now-internal)
-- [Removed obsolete UrlMessage and CallMessage constructors](#removed-obsolete-urlmessage-and-callmessage-constructors)
-- [Fax API: Region is no longer supported](#fax-api-region-is-no-longer-supported)
-- [Numbers API: Callbacks renamed to CallbackConfiguration](#callbacks-renamed-to-callbackconfiguration)
-- [Numbers API: ScheduledProvisioning.ErrorCodes type changed to IList\<FailureCode\>](#scheduledprovisioningerrorcodes-type-changed-to-ilistfailurecode)
-- [Removed obsolete MessageSource property from ListMessagesRequest](#removed-obsolete-messagesource-property-from-listmessagesrequest)
-- [Removed TemplatesV1 from Conversation API](#removed-templatesv1-from-conversation-api)
-- [SMS Webhooks: renamed and removed types](#sms-webhooks-renamed-and-removed-types)
-- [SMS Webhooks / Sinch Events: property rename for per-recipient delivery reports](#sms-webhooks--sinch-events-property-rename-for-per-recipient-delivery-reports)
-- [SMS API: `CallbackUrl` renamed to `EventDestinationTarget`](#sms-api-callbackurl-renamed-to-eventdestinationtarget)
-- [SMS: `ISmsWebhooks` renamed to `ISmsSinchEvents`](#sms-ismswebhooks-renamed-to-ismssinchevents)
-- [SMS: `ParseEvent` now returns `ISmsSinchEvent`](#sms-parseevent-now-returns-ismssinchevent)
-- [SMS: Namespace `Sinch.SMS.Hooks` renamed to `Sinch.SMS.SinchEvents`](#sms-namespace-sinchsmshooks-renamed-to-sinchsmssinchevents)
-- [SMS: `MediaBody.Url` changed from `Uri` to `string`](#sms-mediabodyurl-changed-from-uri-to-string)
-- [ConversationChannelCredentials, InstagramCredentials and LineEnterpriseCredentials moved to new namespace](#conversationchanelcredentials-instagramcredentials-and-lineenterprisecredentials-moved-to-new-namespace)
-- [Verification API: Callout renamed to PhoneCall and Seamless renamed to Data](#verification-api-callout-renamed-to-phonecall-and-seamless-renamed-to-data)
-- [Fax API: ListEmailsResponse replaced with concrete response types](#fax-api-listemailsresponse-replaced-with-concrete-response-types)
-- [Conversation API: Coordinates properties changed from float to double](#conversation-api-coordinates-properties-changed-from-float-to-double)
-- [Fax API: SendFaxRequest constructors replaced with factory methods](#fax-api-sendfaxrequest-constructors-replaced-with-factory-methods)
-- [Conversation API: InjectEventRequest now supports only AppEvent](#conversation-api-injecteventrequest-now-supports-only-appevent)
-- [Region configuration is now required for SMS and Conversation](#region-configuration-is-now-required-for-sms-and-conversation)
-- [Conversation API: WhatsApp payment_settings replaced by payment_buttons](#conversation-api-whatsapp-payment_settings-replaced-by-payment_buttons)
-- [Conversation API: ConversationDirection.UndefinedDirection removed](#conversation-api-conversationdirectionundefineddirection-removed)
-- [Conversation API: ListConversationsRequest.OnlyActive is no longer required](#conversation-api-listconversationsrequestonlyactive-is-no-longer-required)
-- [Conversation API: InjectMessageRequest fields are now required](#conversation-api-injectmessagerequest-fields-are-now-required)
-- [Conversation API: InjectMessageRequest requires a constructor for the message payload](#conversation-api-injectmessagerequest-requires-a-constructor-for-the-message-payload)
-- [Conversation API: ConversationEvent.Event and ConversationEventEvent removed](#conversation-api-conversationeventevent-and-conversationeventevent-removed)
-- [Conversation API: TemplatesV2 ChannelTemplateOverrides type changed to Dictionary with ConversationChannel keys](#conversation-api-templatesv2-channeltemplateoverrides-type-changed-to-dictionary-with-conversationchannel-keys)
-- [Conversation API: TemplatesV2 ParameterMappings type changed to Dictionary](#conversation-api-templatesv2-parametermappings-type-changed-to-dictionary)
-- [Conversation API: Template.Id is now nullable](#conversation-api-templateid-is-now-nullable)
-- [Conversation API: CreateTemplateRequest and UpdateTemplateRequest no longer expose create\_time and update\_time](#conversation-api-createtemplaterequest-and-updatetemplaterequest-no-longer-expose-create_time-and-update_time)
-- [Conversation API: Webhooks List now returns ListWebhooksResponse](#conversation-api-webhooks-list-now-returns-listwebhooksresponse)
-- [Conversation API: Webhooks request fields are now optional per OAS spec](#conversation-api-webhooks-request-fields-are-now-optional-per-oas-spec)
-- [Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts JsonNode](#conversation-api-webhooks-validateauthenticationheader-no-longer-accepts-jsonnode)
-- [Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts StringValues headers](#conversation-api-webhooks-validateauthenticationheader-no-longer-accepts-stringvalues-headers)
-- [Conversation API: Webhooks ParseEvent no longer accepts JsonNode](#conversation-api-webhooks-parseevent-no-longer-accepts-jsonnode)
-- [Numbers API: `CallbackConfiguration` renamed to `EventDestinations`](#numbers-api-callbackconfiguration-renamed-to-eventdestinations)
-- [Numbers API: `CallbackUrl` renamed to `EventDestinationTarget`](#numbers-api-callbackurl-renamed-to-eventdestinationtarget)
-- [Numbers API: `Sinch.Numbers.Hooks` namespace moved to `Sinch.Numbers.SinchEvents`](#numbers-api-sinchnumbershooks-namespace-moved-to-sinchnumberssinchevents)
-- [Numbers API: `ValidateAuthenticationHeader` and `ParseEvent` moved to `SinchEvents`](#numbers-api-validateauthenticationheader-and-parseevent-moved-to-sinchevents)
-- [Numbers API: `EventType.DeprovisioningFromCampaignProvisioningToCampaign` renamed](#eventtypedeprovisioningfromcampaignprovisioningtocampaign-renamed)
-- [Voice API: `QueryNumber` removed](#voice-api-querynumber-removed)
+## Table of Contents
 
-## .NET Framework Support
+- [2.0.0](#200)
+    - [.NET Framework Support](#net-framework-support)
+    - [Initialize SinchClient with unified credentials](#initialize-sinchclient-with-unified-credentials)
+    - [Initialize Voice and Verification clients](#initialize-voice-and-verification-clients)
+    - [Provide Logger, and your own HttpClient](#provide-logger-and-your-own-httpclient)
+    - [Set API Regions (where applicable)](#set-api-regionswhere-applicable)
+    - [Override API urls](#override-api-urls)
+    - [Use SMS API with ServicePlanId](#use-sms-api-with-serviceplanid)
+    - [VoiceConfiguration is now abstract](#voiceconfiguration-is-now-abstract)
+    - [ScheduledVoiceProvisioning is now abstract](#scheduledvoiceprovisioning-is-now-abstract)
+    - [VoiceConfiguration and ScheduledVoiceProvisioning classes moved to new namespace](#voiceconfiguration-and-scheduledvoiceprovisioning-classes-moved-to-new-namespace)
+    - [VoiceConfiguration Type property is now internal](#voiceconfiguration-type-property-is-now-internal)
+    - [Removed obsolete UrlMessage and CallMessage constructors](#removed-obsolete-urlmessage-and-callmessage-constructors)
+    - [Fax API: Region is no longer supported](#fax-api-region-is-no-longer-supported)
+    - [Numbers API: Callbacks renamed to CallbackConfiguration](#callbacks-renamed-to-callbackconfiguration)
+    - [Numbers API: ScheduledProvisioning.ErrorCodes type changed to IList\<FailureCode\>](#scheduledprovisioningerrorcodes-type-changed-to-ilistfailurecode)
+    - [Removed obsolete MessageSource property from ListMessagesRequest](#removed-obsolete-messagesource-property-from-listmessagesrequest)
+    - [Removed TemplatesV1 from Conversation API](#removed-templatesv1-from-conversation-api)
+    - [SMS Webhooks: renamed and removed types](#sms-webhooks-renamed-and-removed-types)
+    - [SMS Webhooks / Sinch Events: property rename for per-recipient delivery reports](#sms-webhooks--sinch-events-property-rename-for-per-recipient-delivery-reports)
+    - [SMS API: `CallbackUrl` renamed to `EventDestinationTarget`](#sms-api-callbackurl-renamed-to-eventdestinationtarget)
+    - [SMS: `ISmsWebhooks` renamed to `ISmsSinchEvents`](#sms-ismswebhooks-renamed-to-ismssinchevents)
+    - [SMS: `ParseEvent` now returns `ISmsSinchEvent`](#sms-parseevent-now-returns-ismssinchevent)
+    - [SMS: Namespace `Sinch.SMS.Hooks` renamed to `Sinch.SMS.SinchEvents`](#sms-namespace-sinchsmshooks-renamed-to-sinchsmssinchevents)
+    - [SMS: `MediaBody.Url` changed from `Uri` to `string`](#sms-mediabodyurl-changed-from-uri-to-string)
+    - [ConversationChannelCredentials, InstagramCredentials and LineEnterpriseCredentials moved to new namespace](#conversationchanelcredentials-instagramcredentials-and-lineenterprisecredentials-moved-to-new-namespace)
+    - [Verification API: Callout renamed to PhoneCall and Seamless renamed to Data](#verification-api-callout-renamed-to-phonecall-and-seamless-renamed-to-data)
+    - [Fax API: ListEmailsResponse replaced with concrete response types](#fax-api-listemailsresponse-replaced-with-concrete-response-types)
+    - [Conversation API: Coordinates properties changed from float to double](#conversation-api-coordinates-properties-changed-from-float-to-double)
+    - [Fax API: SendFaxRequest constructors replaced with factory methods](#fax-api-sendfaxrequest-constructors-replaced-with-factory-methods)
+    - [Conversation API: InjectEventRequest now supports only AppEvent](#conversation-api-injecteventrequest-now-supports-only-appevent)
+    - [Region configuration is now required for SMS and Conversation](#region-configuration-is-now-required-for-sms-and-conversation)
+    - [Conversation API: WhatsApp payment_settings replaced by payment_buttons](#conversation-api-whatsapp-payment_settings-replaced-by-payment_buttons)
+    - [Conversation API: ConversationDirection.UndefinedDirection removed](#conversation-api-conversationdirectionundefineddirection-removed)
+    - [Conversation API: ListConversationsRequest.OnlyActive is no longer required](#conversation-api-listconversationsrequestonlyactive-is-no-longer-required)
+    - [Conversation API: InjectMessageRequest fields are now required](#conversation-api-injectmessagerequest-fields-are-now-required)
+    - [Conversation API: InjectMessageRequest requires a constructor for the message payload](#conversation-api-injectmessagerequest-requires-a-constructor-for-the-message-payload)
+    - [Conversation API: ConversationEvent.Event and ConversationEventEvent removed](#conversation-api-conversationeventevent-and-conversationeventevent-removed)
+    - [Conversation API: TemplatesV2 ChannelTemplateOverrides type changed to Dictionary with ConversationChannel keys](#conversation-api-templatesv2-channeltemplateoverrides-type-changed-to-dictionary-with-conversationchannel-keys)
+    - [Conversation API: TemplatesV2 ParameterMappings type changed to Dictionary](#conversation-api-templatesv2-parametermappings-type-changed-to-dictionary)
+    - [Conversation API: Template.Id is now nullable](#conversation-api-templateid-is-now-nullable)
+    - [Conversation API: CreateTemplateRequest and UpdateTemplateRequest no longer expose create\_time and update\_time](#conversation-api-createtemplaterequest-and-updatetemplaterequest-no-longer-expose-create_time-and-update_time)
+    - [Conversation API: Webhooks List now returns ListWebhooksResponse](#conversation-api-webhooks-list-now-returns-listwebhooksresponse)
+    - [Conversation API: Webhooks request fields are now optional per OAS spec](#conversation-api-webhooks-request-fields-are-now-optional-per-oas-spec)
+    - [Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts JsonNode](#conversation-api-webhooks-validateauthenticationheader-no-longer-accepts-jsonnode)
+    - [Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts StringValues headers](#conversation-api-webhooks-validateauthenticationheader-no-longer-accepts-stringvalues-headers)
+    - [Conversation API: Webhooks ParseEvent no longer accepts JsonNode](#conversation-api-webhooks-parseevent-no-longer-accepts-jsonnode)
+    - [Numbers API: `CallbackConfiguration` renamed to `EventDestinations`](#numbers-api-callbackconfiguration-renamed-to-eventdestinations)
+    - [Numbers API: `CallbackUrl` renamed to `EventDestinationTarget`](#numbers-api-callbackurl-renamed-to-eventdestinationtarget)
+    - [Numbers API: `Sinch.Numbers.Hooks` namespace moved to `Sinch.Numbers.SinchEvents`](#numbers-api-sinchnumbershooks-namespace-moved-to-sinchnumberssinchevents)
+    - [Numbers API: `ValidateAuthenticationHeader` and `ParseEvent` moved to `SinchEvents`](#numbers-api-validateauthenticationheader-and-parseevent-moved-to-sinchevents)
+    - [Numbers API: `EventType.DeprovisioningFromCampaignProvisioningToCampaign` renamed](#eventtypedeprovisioningfromcampaignprovisioningtocampaign-renamed)
+    - [Verification API: `Sinch.Verification.Hooks` namespace moved to `Sinch.Verification.SinchEvents`](#verification-api-sinchverificationhooks-namespace-moved-to-sinchverificationsinchevents)
+    - [Verification API: `ValidateAuthenticationHeader` moved to `SinchEvents`](#verification-api-validateauthenticationheader-moved-to-sinchevents)
+    - [Verification API: Verification event types renamed](#verification-api-verification-event-types-renamed)
+    - [Verification API: `Method` property type changed to `VerificationMethod`](#verification-api-method-property-type-changed-to-verificationmethod)
+    - [Verification API: `VerificationStartEvent.AcceptLanguage` removed](#verification-api-verificationstarteventacceptlanguage-removed)
+
+---
+## 2.0.0
+
+### .NET Framework Support
 
 Version 2.0 of the Sinch .NET SDK drops support for .NET 6 and .NET 7. The SDK now requires **.NET 8.0**, **.NET 9.0**, or **.NET 10.0**.
 
@@ -69,7 +78,7 @@ If you are currently targeting .NET 6 or 7, you must upgrade your project's targ
 <TargetFramework>net10.0</TargetFramework>
 ```
 
-## Initialize `SinchClient` with unified credentials:
+### Initialize `SinchClient` with unified credentials:
 
 Console application:
 
@@ -108,7 +117,7 @@ builder.Services.AddSinchClient(() => new SinchClientConfiguration
 
 This automatically integrates with `IHttpClientFactory` and `ILoggerFactory` from the DI container.
 
-## Initialize `Voice` and `Verification` clients:
+### Initialize `Voice` and `Verification` clients:
 
 Version 1:
 ```csharp
@@ -136,7 +145,7 @@ var sinchVoiceClient = sinch.Voice;
 var sinchVerificationClient = sinch.Verification;
 ```
 
-## Provide `Logger`, and your own `HttpClient`:
+### Provide `Logger`, and your own `HttpClient`:
 
 Version 1:
 ```csharp
@@ -161,7 +170,7 @@ var sinch = new SinchClient(new SinchClientConfiguration()
 
 **Note:** In version 2, you no longer need to provide your own `HttpClient`. The SDK manages HTTP client lifecycle internally with proper connection pooling and DNS refresh. Only provide a custom `IHttpClientFactory` if you have specific requirements.
 
-## Set API Regions(where applicable):
+### Set API Regions(where applicable):
 
 Version 1, with `SinchOptions`:
 ```csharp
@@ -188,7 +197,7 @@ var sinch = new SinchClient(new SinchClientConfiguration()
 });
 ```
 
-## Override API urls:
+### Override API urls:
 
 Version 1, with `ApiUrlOverrides` class:
 ```csharp
@@ -224,7 +233,7 @@ var sinch = new SinchClient(new SinchClientConfiguration()
 });
 ```
 
-## Use SMS API with `ServicePlanId`:
+### Use SMS API with `ServicePlanId`:
 
 Version 1:
 ```csharp
@@ -243,7 +252,7 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 });
 ```
 
-## VoiceConfiguration is now abstract
+### VoiceConfiguration is now abstract
 
 The `VoiceConfiguration` class in the Numbers API is now abstract. You must use one of the concrete implementations based on your voice application type:
 
@@ -267,7 +276,7 @@ var voiceConfig = new VoiceEstConfiguration();
 var voiceConfig = new VoiceFaxConfiguration();
 ```
 
-## ScheduledVoiceProvisioning is now abstract
+### ScheduledVoiceProvisioning is now abstract
 
 The `ScheduledVoiceProvisioning` class is now abstract. You must use one of the concrete implementations based on your voice application type:
 
@@ -288,7 +297,7 @@ var scheduledProvisioning = new ScheduledVoiceEstProvisioning();
 var scheduledProvisioning = new ScheduledVoiceFaxProvisioning();
 ```
 
-## VoiceConfiguration and ScheduledVoiceProvisioning classes moved to new namespace
+### VoiceConfiguration and ScheduledVoiceProvisioning classes moved to new namespace
 
 The following classes have been moved from the `Sinch.Numbers` namespace to `Sinch.Numbers.VoiceConfigurations`:
 
@@ -305,7 +314,7 @@ Version 2.*:
 using Sinch.Numbers.VoiceConfigurations;
 ```
 
-## VoiceConfiguration Type property is now internal
+### VoiceConfiguration Type property is now internal
 
 The `Type` property on `VoiceConfiguration` and its derived classes (`VoiceRtcConfiguration`, `VoiceEstConfiguration`, `VoiceFaxConfiguration`) is now `internal`. The same applies to `ScheduledVoiceProvisioning` derived classes.
 
@@ -328,7 +337,7 @@ if (voiceConfig is VoiceRtcConfiguration rtcConfig)
 }
 ```
 
-## Removed obsolete UrlMessage and CallMessage constructors
+### Removed obsolete UrlMessage and CallMessage constructors
 
 The obsolete constructors for `UrlMessage` and `CallMessage` (used in Choice messages in the Conversation API) have been removed. Use object initializer syntax instead:
 
@@ -353,7 +362,7 @@ var callMessage = new CallMessage
 };
 ```
 
-## Fax API: Region is no longer supported
+### Fax API: Region is no longer supported
 
 The `Region` property on `SinchFaxConfiguration` has been removed. The Fax API now uses a single global endpoint regardless of region.
 
@@ -376,7 +385,7 @@ var sinchClient = new SinchClient(new SinchClientConfiguration()
 });
 ```
 
-## Numbers API
+### Numbers API
 
 The `Callbacks` property on `ISinchNumbers` has been renamed to `CallbackConfiguration`.
 
@@ -390,7 +399,7 @@ Version 2.*:
 var callbackConfiguration = sinchClient.Numbers.CallbackConfiguration;
 ```
 
-## Removed obsolete MessageSource property from ListMessagesRequest
+### Removed obsolete MessageSource property from ListMessagesRequest
 
 The deprecated `MessageSource` property has been removed from `ListMessagesRequest`. Use `MessagesSource` instead.
 
@@ -410,7 +419,7 @@ var request = new ListMessagesRequest
 };
 ```
 
-## Removed TemplatesV1 from Conversation API
+### Removed TemplatesV1 from Conversation API
 
 The `TemplatesV1` property has been removed from the Conversation API client. Use `Templates` instead.
 The templates client interface has also been renamed from `ISinchConversationTemplatesV2` to `ISinchConversationTemplates`.
@@ -427,7 +436,7 @@ var templates = await sinchClient.Conversation.Templates.List();
 ISinchConversationTemplates templatesClient = sinchClient.Conversation.Templates;
 ```
 
-## ScheduledProvisioning.ErrorCodes type changed to IList\<FailureCode\>
+### ScheduledProvisioning.ErrorCodes type changed to IList\<FailureCode\>
 
 The `ErrorCodes` property on `ScheduledProvisioning` has been changed from `List<string>?` to `IList<FailureCode>?`.
 
@@ -453,7 +462,7 @@ if (scheduledProvisioning?.ErrorCodes?.Contains(FailureCode.CampaignNotAvailable
 }
 ```
 
-## SMS Webhooks: renamed and removed types
+### SMS Webhooks: renamed and removed types
 
 Several types used for SMS event payloads have been renamed.
 
@@ -527,7 +536,7 @@ var bin = sinchClient.Sms.SinchEvents.ParseEvent(json).As<BinaryInbound>();
 var bin = JsonSerializer.Deserialize<BinaryInbound>(json);
 ```
 
-## SMS Webhooks / Sinch Events: property rename for per-recipient delivery reports
+### SMS Webhooks / Sinch Events: property rename for per-recipient delivery reports
 
 The property `OperatorStatusName` in `RecipientDeliveryReportSms` was renamed to `OperatorStatusAt`.
 
@@ -548,24 +557,24 @@ public sealed class RecipientDeliveryReportSms : IRecipientDeliveryReport
 }
 ```
 
-## SMS: `ISmsWebhooks` renamed to `ISmsSinchEvents`
+### SMS: `ISmsWebhooks` renamed to `ISmsSinchEvents`
 
 `ISinchSms.Webhooks` has been renamed to `ISinchSms.SinchEvents`.
 The interface is now `ISmsSinchEvents` (was `ISmsWebhooks`).
 
-**Before:**
+Version 1.*:
 ```csharp
 var sinchEvent = sinch.Sms.Webhooks.ParseEvent(json);
 bool valid = sinch.Sms.Webhooks.ValidateAuthenticationHeader(secret, request.Headers, body);
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 var sinchEvent = sinch.Sms.SinchEvents.ParseEvent(json);
 bool valid = sinch.Sms.SinchEvents.ValidateAuthenticationHeader(secret, request.Headers, body);
 ```
 
-## SMS: `ParseEvent` now returns `ISmsSinchEvent`
+### SMS: `ParseEvent` now returns `ISmsSinchEvent`
 
 The SMS Sinch Events parser now returns `Sinch.SMS.SinchEvents.ISmsSinchEvent` instead of `Sinch.SMS.ISmsEvent`.
 
@@ -583,13 +592,13 @@ using Sinch.SMS.SinchEvents;
 ISmsSinchEvent smsEvent = sinch.Sms.SinchEvents.ParseEvent(json);
 ```
 
-## SMS API: `CallbackUrl` renamed to `EventDestinationTarget`
+### SMS API: `CallbackUrl` renamed to `EventDestinationTarget`
 
 The `CallbackUrl` property on SMS batch request models is now `EventDestinationTarget`.
 This affects `SendTextBatchRequest`, `SendBinaryBatchRequest`, `SendMediaBatchRequest`,
 `UpdateTextBatchRequest`, `UpdateBinaryBatchRequest`, and `UpdateMediaBatchRequest`.
 
-**Before:**
+Version 1.*:
 ```csharp
 var request = new SendTextBatchRequest
 {
@@ -597,7 +606,7 @@ var request = new SendTextBatchRequest
 };
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 var request = new SendTextBatchRequest
 {
@@ -605,26 +614,26 @@ var request = new SendTextBatchRequest
 };
 ```
 
-## SMS: Namespace `Sinch.SMS.Hooks` renamed to `Sinch.SMS.SinchEvents`
+### SMS: Namespace `Sinch.SMS.Hooks` renamed to `Sinch.SMS.SinchEvents`
 
 The SMS event parsing interface moved from `Sinch.SMS.Hooks` to `Sinch.SMS.SinchEvents`.
 Event payload models remain in `Sinch.SMS.Inbounds` and `Sinch.SMS.DeliveryReports`.
 
-**Before:**
+Version 1.*:
 ```csharp
 using Sinch.SMS.Hooks;
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 using Sinch.SMS.SinchEvents;
 ```
 
-## SMS: `MediaBody.Url` changed from `Uri` to `string`
+### SMS: `MediaBody.Url` changed from `Uri` to `string`
 
 `MediaBody.Url` is now a `string` instead of `Uri`.
 
-**Before:**
+Version 1.*:
 ```csharp
 var body = new MediaBody
 {
@@ -632,7 +641,7 @@ var body = new MediaBody
 };
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 var body = new MediaBody
 {
@@ -640,7 +649,7 @@ var body = new MediaBody
 };
 ```
 
-## ConversationChannelCredentials, InstagramCredentials and LineEnterpriseCredentials moved to new namespace
+### ConversationChannelCredentials, InstagramCredentials and LineEnterpriseCredentials moved to new namespace
 
 The following classes have been moved from the `Sinch.Conversation.Apps` namespace to `Sinch.Conversation.Apps.Credentials`:
 
@@ -658,7 +667,7 @@ Version 2.*:
 using Sinch.Conversation.Apps.Credentials;
 ```
 
-## Verification API: Callout renamed to PhoneCall and Seamless renamed to Data
+### Verification API: Callout renamed to PhoneCall and Seamless renamed to Data
 
 ### Renamed Classes
 
@@ -683,7 +692,7 @@ In `ISinchVerificationStatus` and `SinchVerificationStatus`:
 - `GetCalloutByIdentity(...)` → `GetPhoneCallByIdentity(...)`
 - `GetCalloutByReference(...)` → `GetPhoneCallByReference(...)`
 
-## Fax API: ListEmailsResponse replaced with concrete response types
+### Fax API: ListEmailsResponse replaced with concrete response types
 
 The generic `ListEmailsResponse<T>` class has been replaced with two concrete response types. The methods in `ISinchFaxEmails` and `ISinchFaxServices` now return explicitly-typed response objects instead of a generic type.
 
@@ -709,7 +718,7 @@ var emailsResponse = await sinchClient.Fax.Emails.List("serviceId");
 var emailObjects = emailsResponse.Emails; // List<Email>
 ```
 
-## Conversation API: Coordinates properties changed from float to double
+### Conversation API: Coordinates properties changed from float to double
 
 The `Latitude` and `Longitude` properties of the `Coordinates` record (used in `LocationMessage`) have been changed from `float` to `double`.
 
@@ -729,7 +738,7 @@ public record Coordinates(double Latitude, double Longitude);
 new Coordinates(47.7981899, -4.3727685)
 ```
 
-## Fax API: SendFaxRequest constructors replaced with factory methods
+### Fax API: SendFaxRequest constructors replaced with factory methods
 
 The `SendFaxRequest` class previously provided multiple constructors for different content sources. This has been refactored to use static factory methods.
 
@@ -825,7 +834,7 @@ request.To = ["+12015555555"];
 var response = await sinchClient.Fax.Faxes.Send(request);
 ```
 
-## Conversation API: InjectEventRequest now supports only AppEvent
+### Conversation API: InjectEventRequest now supports only AppEvent
 
 The `InjectEventRequest` class now supports injecting only `AppEvent`. Support for `ContactEvent` and `ContactMessageEvent` has been removed.
 
@@ -847,7 +856,7 @@ var request = new InjectEventRequest
 };
 ```
 
-## Region configuration is now required for SMS and Conversation
+### Region configuration is now required for SMS and Conversation
 
 The `Region` property in `SinchSmsConfiguration` and `ConversationRegion` in `SinchConversationConfiguration` are now **required**. Validation is performed at runtime when the Sinch client is first accessed and an `InvalidOperationException` is thrown if the region is not provided.
 
@@ -895,7 +904,7 @@ var sinch = new SinchClient(new SinchClientConfiguration
 });
 ```
 
-## Conversation API: WhatsApp payment_settings replaced by payment_buttons
+### Conversation API: WhatsApp payment_settings replaced by payment_buttons
 
 The `PaymentSettings` property on `OrderDetailsPayment` has been removed. Use `PaymentButtons` instead, which accepts a list of 1–2 `IWhatsAppPaymentButton` items.
 
@@ -942,7 +951,7 @@ new WhatsAppPaymentSettingsButtonPaymentLink { Uri = "https://pay.example.com/or
 new WhatsAppPaymentSettingsButtonBoleto { DigitableLine = "12345.67890 12345.678901 12345.678901 1 12340000012300" }
 ```
 
-## Conversation API: ConversationDirection.UndefinedDirection removed
+### Conversation API: ConversationDirection.UndefinedDirection removed
 
 The `UndefinedDirection` static member has been removed from `ConversationDirection`.
 The valid values are now `ToApp` and `ToContact` only.
@@ -959,7 +968,7 @@ var direction = ConversationDirection.ToApp;
 var direction = ConversationDirection.ToContact;
 ```
 
-## Conversation API: ConversationEvent.Event and ConversationEventEvent removed
+### Conversation API: ConversationEvent.Event and ConversationEventEvent removed
 
 `ConversationEvent.Event` (of type `ConversationEventEvent`) has been removed. `AppEvent`, `ContactEvent`, and `ContactMessageEvent` are now top-level properties directly on `ConversationEvent`.
 
@@ -977,7 +986,7 @@ var contactEvent = conversationEvent.ContactEvent;
 var contactMessageEvent = conversationEvent.ContactMessageEvent;
 ```
 
-## Conversation API: ListConversationsRequest.OnlyActive is no longer required
+### Conversation API: ListConversationsRequest.OnlyActive is no longer required
 
 `OnlyActive` has been changed from `required bool` to `bool?`.
 
@@ -991,7 +1000,7 @@ Version 2.*:
 var request = new ListConversationsRequest { AppId = "app-id" };
 ```
 
-## Conversation API: InjectMessageRequest fields are now required
+### Conversation API: InjectMessageRequest fields are now required
 
 `Direction`, `ChannelIdentity`, and `ContactId` are now `required` on `InjectMessageRequest`.
 
@@ -1016,7 +1025,7 @@ var request = new InjectMessageRequest(appMessage)
 };
 ```
 
-## Conversation API: InjectMessageRequest requires a constructor for the message payload
+### Conversation API: InjectMessageRequest requires a constructor for the message payload
 
 `AppMessage` and `ContactMessage` are no longer settable via object initializer.
 
@@ -1044,7 +1053,7 @@ var request = new InjectMessageRequest(new ContactMessage(new TextMessage("Hello
 };
 ```
 
-## Conversation API: TemplatesV2 ChannelTemplateOverrides type changed to Dictionary with ConversationChannel keys
+### Conversation API: TemplatesV2 ChannelTemplateOverrides type changed to Dictionary with ConversationChannel keys
 
 `TemplateTranslation.ChannelTemplateOverrides` type changed from `ChannelTemplateOverride` to `Dictionary<ConversationChannel, ChannelTemplateOverride>`. The old `ChannelTemplateOverride` class (with fixed `WhatsApp`/`KakaoTalk` properties) has been replaced by a new `ChannelTemplateOverride` class that represents a single channel entry (previously named `OverrideTemplateReference`).
 
@@ -1074,7 +1083,7 @@ var translation = new TemplateTranslation(new TextMessage("Hi"))
 };
 ```
 
-## Conversation API: TemplatesV2 ParameterMappings type changed to Dictionary
+### Conversation API: TemplatesV2 ParameterMappings type changed to Dictionary
 
 `ChannelTemplateOverride.ParameterMappings` type changed from `TemplateReferenceParameterMappings` to `Dictionary<string, string>`. The `TemplateReferenceParameterMappings` class has been removed.
 
@@ -1097,7 +1106,7 @@ var overrideRef = new ChannelTemplateOverride
 };
 ```
 
-## Conversation API: Template.Id is now nullable
+### Conversation API: Template.Id is now nullable
 
 `Template.Id` changed from `required string` to `string?`.
 
@@ -1111,7 +1120,7 @@ Version 2.*:
 var template = new Template();
 ```
 
-## Conversation API: CreateTemplateRequest and UpdateTemplateRequest no longer expose create\_time and update\_time
+### Conversation API: CreateTemplateRequest and UpdateTemplateRequest no longer expose create\_time and update\_time
 
 `CreateTime` and `UpdateTime` have been removed from `CreateTemplateRequest` and `UpdateTemplateRequest`.
 
@@ -1134,7 +1143,7 @@ var request = new CreateTemplateRequest
 };
 ```
 
-## Conversation API: Webhooks List now returns ListWebhooksResponse
+### Conversation API: Webhooks List now returns ListWebhooksResponse
 
 `ISinchConversationWebhooks.List` now returns a response wrapper type instead of returning an enumerable directly.
 
@@ -1149,7 +1158,7 @@ ListWebhooksResponse response = await sinch.Conversation.Webhooks.List(appId);
 IEnumerable<Webhook> webhooks = response.Webhooks ?? Enumerable.Empty<Webhook>();
 ```
 
-## Conversation API: Webhooks request fields are now optional per OAS spec
+### Conversation API: Webhooks request fields are now optional per OAS spec
 
 The Webhook, CreateWebhookRequest, and UpdateWebhookRequest classes now have optional fields:
 
@@ -1185,7 +1194,7 @@ var update = new UpdateWebhookRequest
 };
 ```
 
-## Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts JsonNode
+### Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts JsonNode
 
 `ISinchConversationWebhooks.ValidateAuthenticationHeader` now accepts only raw callback body strings.
 
@@ -1200,7 +1209,7 @@ Version 2.*:
 var isValid = sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, rawBody, secret);
 ```
 
-## Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts StringValues headers
+### Conversation API: Webhooks ValidateAuthenticationHeader no longer accepts StringValues headers
 
 `ISinchConversationWebhooks.ValidateAuthenticationHeader` no longer accepts `Dictionary<string, StringValues>`. Use either `IDictionary<string, string>` (single-value headers) or `IReadOnlyDictionary<string, IEnumerable<string>>` (multi-value headers).
 
@@ -1233,7 +1242,7 @@ IReadOnlyDictionary<string, IEnumerable<string>> headers = new Dictionary<string
 var isValid = sinch.Conversation.Webhooks.ValidateAuthenticationHeader(headers, rawBody, secret);
 ```
 
-## Conversation API: Webhooks ParseEvent no longer accepts JsonNode
+### Conversation API: Webhooks ParseEvent no longer accepts JsonNode
 
 `ISinchConversationWebhooks.ParseEvent` now accepts raw JSON strings or streams only.
 
@@ -1248,59 +1257,59 @@ Version 2.*:
 var callback = sinch.Conversation.Webhooks.ParseEvent(rawBody);
 ```
 
-## Numbers API: `CallbackConfiguration` renamed to `EventDestinations`
+### Numbers API: `CallbackConfiguration` renamed to `EventDestinations`
 
 `ISinchNumbers.CallbackConfiguration` has been renamed to `ISinchNumbers.EventDestinations`.
 The return type is now `EventDestination` (was `CallbackConfiguration`).
 The namespace has changed from `Sinch.Numbers.CallbackConfiguration` to `Sinch.Numbers.EventDestinations`.
 
-**Before:**
+Version 1.*:
 ```csharp
 var config = await sinch.Numbers.CallbackConfiguration.Get();
 await sinch.Numbers.CallbackConfiguration.Update("my-secret");
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 var config = await sinch.Numbers.EventDestinations.Get();
 await sinch.Numbers.EventDestinations.Update("my-secret");
 ```
-## Numbers API: `CallbackUrl` renamed to `EventDestinationTarget`
+### Numbers API: `CallbackUrl` renamed to `EventDestinationTarget`
 
 The `CallbackUrl` property on `ActiveNumber`, `RentAnyNumberRequest`,
 `RentActiveNumberRequest`, and `UpdateActiveNumberRequest` is now `EventDestinationTarget`.
 
-**Before:**
+Version 1.*:
 ```csharp
 request.CallbackUrl = "https://my-server.com/numbers-events";
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 request.EventDestinationTarget = "https://my-server.com/numbers-events";
 ```
 
-## Numbers API: `Sinch.Numbers.Hooks` namespace moved to `Sinch.Numbers.SinchEvents`
+### Numbers API: `Sinch.Numbers.Hooks` namespace moved to `Sinch.Numbers.SinchEvents`
 
 All event payload types (`Event`, `EventType`, `EventStatus`, `ResourceType`) have moved
 from the `Sinch.Numbers.Hooks` namespace to `Sinch.Numbers.SinchEvents`. The `Event` class
 has also been renamed to `NumbersSinchEvent`.
 
-**Before:**
+Version 1.*:
 ```csharp
 using Sinch.Numbers.Hooks;
 
 var sinchEvent = JsonSerializer.Deserialize<Event>(json);
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 using Sinch.Numbers.SinchEvents;
 
 var sinchEvent = sinch.Numbers.SinchEvents.ParseEvent(json)
 ```
 
-## Numbers API: `ValidateAuthenticationHeader` and `ParseEvent` moved to `SinchEvents`
+### Numbers API: `ValidateAuthenticationHeader` and `ParseEvent` moved to `SinchEvents`
 
 `ValidateAuthenticationHeader` and `ParseEvent` have been removed from
 `ISinchNumbers` and are now available on `ISinchNumbers.SinchEvents` as part of the new
@@ -1308,7 +1317,7 @@ var sinchEvent = sinch.Numbers.SinchEvents.ParseEvent(json)
 The signature has also changed: the method now accepts the headers collection directly
 from your HTTP framework — no manual dictionary construction needed.
 
-**Before:**
+Version 1.*:
 ```csharp
 // Option 1 — raw signature string
 bool valid = sinch.Numbers.ValidateAuthenticationHeader(hmacSecret, json, signatureHeaderValue);
@@ -1317,7 +1326,7 @@ bool valid = sinch.Numbers.ValidateAuthenticationHeader(hmacSecret, json, signat
 bool valid = sinch.Numbers.ValidateAuthenticationHeader(hmacSecret, json, httpHeaders);
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 // ASP.NET Core — pass request.Headers directly
 bool valid = sinch.Numbers.SinchEvents.ValidateAuthenticationHeader(hmacSecret, request.Headers, body);
@@ -1334,21 +1343,94 @@ has also moved to `sinch.Numbers.SinchEvents`:
 var sinchEvent = sinch.Numbers.SinchEvents.ParseEvent(jsonString);
 ```
 
-## Numbers API: `EventType.DeprovisioningFromCampaignProvisioningToCampaign` renamed
+### Numbers API: `EventType.DeprovisioningFromCampaignProvisioningToCampaign` renamed
 
 The `EventType` field `DeprovisioningFromCampaignProvisioningToCampaign` has been renamed to
 `DeprovisioningFromCampaign`.
 
-**Before:**
+Version 1.*:
 ```csharp
 EventType.DeprovisioningFromCampaignProvisioningToCampaign
 ```
 
-**After:**
+Version 2.*:
 ```csharp
 EventType.DeprovisioningFromCampaign
 ```
-## Voice API: `QueryNumber` removed
+
+### Verification API: `Sinch.Verification.Hooks` namespace moved to `Sinch.Verification.SinchEvents`
+
+Verification request and result event payloads, along with verification response payload models, moved to the `Sinch.Verification.SinchEvents` namespace.
+
+### Verification API: `ValidateAuthenticationHeader` moved to `SinchEvents`
+
+`ValidateAuthenticationHeader` has been removed from `ISinchVerificationClient` and is now available on `ISinchVerificationClient.SinchEvents`.
+
+Version 1.*:
+```csharp
+bool valid = sinch.Verification.ValidateAuthenticationHeader(HttpMethod.Post, path, headers, body);
+```
+
+Version 2.*:
+```csharp
+bool valid = sinch.Verification.SinchEvents.ValidateAuthenticationHeader(HttpMethod.Post, path, headers, body);
+```
+
+### Verification API: Verification event types renamed
+
+Several Verification event model types have been renamed. The JSON wire format is unchanged.
+
+Renamed types:
+
+- `VerificationRequestEvent` → `VerificationStartEvent`
+- `RequestEventResponseBase` → `VerificationStartEventResponse`
+- `SmsRequestEventResponse` → `VerificationStartEventResponseSms`
+- `FlashCallRequestEventResponse` → `VerificationStartEventResponseFlashCall`
+- `CalloutRequestEventResponse` → `VerificationStartEventResponsePhoneCall`
+- `WhatsAppRequestEventResponse` → `VerificationStartEventResponseWhatsApp`
+
+`VerificationStartEventResponse` is now abstract. Instantiate one of the concrete response types instead.
+
+Version 1.*:
+```csharp
+var response = new RequestEventResponseBase { Action = Action.Allow };
+```
+
+Version 2.*:
+```csharp
+var response = new VerificationStartEventResponseSms { Action = Action.Allow };
+```
+
+### Verification API: `Method` property type changed to `VerificationMethod`
+
+The `Method` property on `VerificationResultEvent` was previously typed as `VerificationMethodEx?`. It is now `VerificationMethod?`, inherited from `VerificationSinchEvent`.
+
+Version 1.*:
+```csharp
+VerificationMethodEx? method = resultEvent.Method;
+```
+
+Version 2.*:
+```csharp
+VerificationMethod? method = resultEvent.Method;
+```
+
+### Verification API: `VerificationStartEvent.AcceptLanguage` removed
+
+The `AcceptLanguage` property on `VerificationStartEvent` has been removed.
+
+Version 1.*:
+```csharp
+if (ev is VerificationRequestEvent requestEvent)
+{
+    var languages = requestEvent.AcceptLanguage;
+}
+```
+
+Version 2.*:
+The `AcceptLanguage` property no longer exists on `VerificationStartEvent`. Remove any references to it.
+
+### Voice API: `QueryNumber` removed
 
 The `QueryNumber` method on `IApplications` has been removed. This endpoint was deprecated by Sinch and is no longer supported.
 
@@ -1357,11 +1439,14 @@ The `QueryNumber` method on `IApplications` has been removed. This endpoint was 
 - `IApplications.QueryNumber(string number, CancellationToken cancellationToken)` — no replacement available
 - `QueryNumberResponse`, `NumberItem`, and `NumberType` classes in the `Sinch.Voice.Applications.QueryNumber` namespace
 
-**Before:**
+Version 1.*:
 ```csharp
 var result = await sinchClient.Voice.Applications.QueryNumber("+12025551234");
 ```
 
-**After:**
+Version 2.*:
 
-Remove any calls to `QueryNumber`. There is no equivalent replacement in the Sinch Voice API.
+Remove any calls to `QueryNumber`. There is no equivalent replacement in the SDK yet.
+
+Instead, use the new [Number Lookup API V2](https://developers.sinch.com/docs/number-lookup-api-v2).
+

@@ -3,8 +3,10 @@
 // See https://github.com/sinch/sinch-sdk-dotnet/tree/main/examples/templates/sinch-events/README.md for details
 
 using Sinch;
+using Sinch.Verification;
 using SinchEvents.Template.Numbers;
 using SinchEvents.Template.Sms;
+using SinchEvents.Template.Verification;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,8 +18,16 @@ builder.Services.AddControllers();
 
 builder.Services.AddSingleton<SmsServerBusinessLogic>();
 builder.Services.AddSingleton<NumbersServerBusinessLogic>();
+builder.Services.AddSingleton<VerificationServerBusinessLogic>();
 
-builder.Services.AddSinchClient();
+builder.Services.AddSinchClient(() => new SinchClientConfiguration
+{
+       VerificationConfiguration = new SinchVerificationConfiguration
+       {
+              AppKey = builder.Configuration["Sinch:Verification:AppKey"] ?? string.Empty,
+              AppSecret = builder.Configuration["Sinch:Verification:AppSecret"] ?? string.Empty
+       }
+});
 
 builder.Services.AddSinchEventsHandlers(ServiceLifetime.Scoped);
 
