@@ -1,3 +1,5 @@
+using Sinch.Voice.Destinations;
+
 namespace Sinch.Voice.Callouts.Callout
 {
     public sealed class ConferenceCalloutRequest
@@ -6,7 +8,7 @@ namespace Sinch.Voice.Callouts.Callout
         ///     The type of device and number or endpoint to call.
         /// </summary>
 
-        public required Destination Destination { get; set; }
+        public required ICalloutDestination Destination { get; set; }
 
         /// <summary>
         ///     The conferenceId of the conference to which you want the callee to join. If the conferenceId doesn't exist a

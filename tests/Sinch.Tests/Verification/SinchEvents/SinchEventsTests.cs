@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using FluentAssertions;
+
 using Sinch.Auth;
 using Sinch.Verification.Common;
 using Sinch.Verification.SinchEvents;

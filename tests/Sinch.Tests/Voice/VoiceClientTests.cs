@@ -115,15 +115,28 @@ namespace Sinch.Tests.Voice
         }
 
         [Fact]
-        public void ThrowIfVoiceConfigIsNull()
+        public void SinchEvents_ParseEvent_DoesNotRequireConfiguration()
         {
-            var client = new SinchClient(new SinchClientConfiguration()
+            var sinch = new SinchClient();
+            var json = Helpers.LoadResources("Voice/AnsweredCallEvent.json");
+
+            var sinchEvent = sinch.Voice.SinchEvents.ParseEvent(json);
+
+            sinchEvent.Should().BeOfType<Sinch.Voice.SinchEvents.AnsweredCallEvent>();
+        }
+
+        [Fact]
+        public void SinchEvents_SerializeResponse_DoesNotRequireConfiguration()
+        {
+            var sinch = new SinchClient();
+            var response = new Sinch.Voice.SinchEvents.SinchEventResponse
             {
-                VoiceConfiguration = null
-            });
-            var voiceOp = () => client.Voice;
-            voiceOp.Should().ThrowExactly<InvalidOperationException>().Which.Message.Should()
-                .Be("SinchVoiceConfiguration is not set.");
+                Action = new Sinch.Voice.Svaml.Actions.Hangup()
+            };
+
+            var json = sinch.Voice.SinchEvents.SerializeResponse(response);
+
+            json.Should().Contain("\"hangup\"");
         }
     }
 }

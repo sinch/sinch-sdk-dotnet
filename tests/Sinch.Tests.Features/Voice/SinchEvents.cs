@@ -1,0 +1,311 @@
+using System.Net.Http;
+using Sinch.Voice.Destinations;
+using System.Threading.Tasks;
+using FluentAssertions;
+using Reqnroll;
+using Sinch.Voice;
+using Sinch.Voice.Callouts.Callout;
+using Sinch.Voice.Calls;
+using Sinch.Voice.SinchEvents;
+
+namespace Sinch.Tests.Features.Voice
+{
+    [Binding]
+    public class SinchEvents
+    {
+        private readonly HttpClient _httpClient = new HttpClient();
+        private static IVoiceSinchEvents _voiceSinchEvents;
+        private static IVoiceSinchEvents _voiceSinchEventsWithAuth;
+        private HttpResponseMessage _pieReturnResponse;
+        private string _rawPieSequenceContent;
+        private HttpResponseMessage _pieSequenceResponse;
+        private HttpResponseMessage _diceResponse;
+        private string _rawDiceContent;
+        private HttpResponseMessage _aceResponse;
+        private string _rawAceContent;
+        private HttpResponseMessage _iceResponse;
+        private string _rawIceContent;
+        private HttpResponseMessage _eventRecordingFinishedResponse;
+        private string _rawEventRecordAvailableContent;
+        private HttpResponseMessage _eventRecordingAvailableResponse;
+        private HttpResponseMessage _eventTranscriptionAvailableResponse;
+        private string _rawEventTransactionContent;
+
+        [Given(@"the Voice Webhooks handler is available")]
+        public void GivenTheVoiceSinchEventsHandlerIsAvailable()
+        {
+            _voiceSinchEvents = new SinchClient().Voice.SinchEvents;
+            _voiceSinchEventsWithAuth = Utils.TestSinchVoiceClient.SinchEvents;
+        }
+
+        [When(@"I send a request to trigger a ""PIE"" event with a ""return"" type")]
+        public async Task WhenISendARequestToTriggerAEventWithAType()
+        {
+            _pieReturnResponse = await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/pie-return");
+        }
+
+        [Then(@"the header of the ""PIE"" event with a ""return"" type contains a valid authorization")]
+        public async Task ThenTheHeaderOfTheEventWithATypeContainsAValidAuthorization()
+        {
+            _rawPieSequenceContent = await _pieReturnResponse.Content.ReadAsStringAsync();
+            _voiceSinchEventsWithAuth.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+                _pieReturnResponse.GetAllHeaders(),
+                _rawPieSequenceContent).Should().BeTrue();
+        }
+
+        [Then(@"the Voice event describes a ""PIE"" event with a ""return"" type")]
+        public void ThenTheVoiceEventDescribesAEventWithAType()
+        {
+            _voiceSinchEvents.ParseEvent(_rawPieSequenceContent).As<PromptInputEvent>().Should().BeEquivalentTo(
+                new PromptInputEvent
+                {
+                    CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000013",
+                    Timestamp = Helpers.ParseUtc("2024-06-06T17:35:01Z"),
+                    MenuResult = new MenuResult()
+                    {
+                        InputMethod = InputMethod.Dtmf,
+                        Value = "cancel",
+                        MenuId = "main",
+                        Type = MenuType.Return,
+                    },
+                    Version = 1,
+                    ApplicationKey = "f00dcafe-abba-c0de-1dea-dabb1ed4caf3",
+                    Custom = "Custom text"
+                });
+        }
+
+        [When(@"I send a request to trigger a ""PIE"" event with a ""sequence"" type")]
+        public async Task WhenISendARequestToTriggerAPieEventWithATypeSequence()
+        {
+            _pieSequenceResponse = await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/pie-sequence");
+        }
+
+        [Then(@"the header of the ""PIE"" event with a ""sequence"" type contains a valid authorization")]
+        public async Task ThenTheHeaderOfTheEventWithAPieTypeSequenceContainsAValidAuthorization()
+        {
+            _rawPieSequenceContent = await _pieSequenceResponse.Content.ReadAsStringAsync();
+            _voiceSinchEventsWithAuth.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+                _pieSequenceResponse.GetAllHeaders(),
+                _rawPieSequenceContent).Should().BeTrue();
+        }
+
+        [Then(@"the Voice event describes a ""PIE"" event with a ""sequence"" type")]
+        public void ThenTheVoiceEventDescribesAPieEventWithASequenceType()
+        {
+            _voiceSinchEvents.ParseEvent(_rawPieSequenceContent).As<PromptInputEvent>().Should().BeEquivalentTo(
+                new PromptInputEvent
+                {
+                    CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000023",
+                    Timestamp = Helpers.ParseUtc("2024-06-06T17:35:58Z"),
+                    MenuResult = new MenuResult()
+                    {
+                        Type = MenuType.Sequence,
+                        Value = "1234",
+                        MenuId = "confirm",
+                        InputMethod = InputMethod.Dtmf
+                    },
+                    Version = 1,
+                    ApplicationKey = "f00dcafe-abba-c0de-1dea-dabb1ed4caf3",
+                    Custom = "Custom text"
+                });
+        }
+
+        [When(@"I send a request to trigger a ""DICE"" event")]
+        public async Task WhenISendARequestToTriggerAEvent()
+        {
+            _diceResponse = await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/dice");
+        }
+
+        [Then(@"the header of the ""DICE"" event contains a valid authorization")]
+        public async Task ThenTheHeaderOfTheEventDiceContainsAValidAuthorization()
+        {
+            _rawDiceContent = await _diceResponse.Content.ReadAsStringAsync();
+            _voiceSinchEventsWithAuth.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+                _diceResponse.GetAllHeaders(),
+                _rawDiceContent).Should().BeTrue();
+        }
+
+        [Then(@"the Voice event describes a ""DICE"" event")]
+        public void ThenTheVoiceEventDescribesAEvent()
+        {
+            _voiceSinchEvents.ParseEvent(_rawDiceContent).Should().BeEquivalentTo(new DisconnectedCallEvent
+            {
+                CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000033",
+                Timestamp = Helpers.ParseUtc("2024-06-06T16:59:42Z"),
+                Reason = CallResultReason.ManagerHangUp,
+                Result = CallResult.Answered,
+                Version = 1,
+                Custom = "Custom text",
+                Debit = new Rate()
+                {
+                    Amount = 0.0095m,
+                    CurrencyId = "EUR"
+                },
+                UserRate = new Rate()
+                {
+                    Amount = 0.0095m,
+                    CurrencyId = "EUR"
+                },
+                To = new DestinationPstn { Endpoint = "12017777777" },
+                Duration = 12,
+                From = "12015555555",
+                ApplicationKey = "f00dcafe-abba-c0de-1dea-dabb1ed4caf3"
+            });
+        }
+
+        [When(@"I send a request to trigger a ""ACE"" event")]
+        public async Task WhenISendARequestToTriggerAceEvent()
+        {
+            _aceResponse = await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/ace");
+        }
+
+        [Then(@"the header of the ""ACE"" event contains a valid authorization")]
+        public async Task ThenTheHeaderOfTheEventContainsAValidAuthorization()
+        {
+            _rawAceContent = await _aceResponse.Content.ReadAsStringAsync();
+            _voiceSinchEventsWithAuth.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+                _aceResponse.GetAllHeaders(),
+                _rawAceContent).Should().BeTrue();
+        }
+
+        [Then(@"the Voice event describes a ""ACE"" event")]
+        public void ThenTheVoiceEventDescribesAceEvent()
+        {
+            _voiceSinchEvents.ParseEvent(_rawAceContent).Should().BeEquivalentTo(new AnsweredCallEvent
+            {
+                CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000043",
+                Timestamp = Helpers.ParseUtc("2024-06-06T17:10:34Z"),
+                Version = 1,
+                Custom = "Custom text",
+                ApplicationKey = "f00dcafe-abba-c0de-1dea-dabb1ed4caf3",
+                Amd = null
+            });
+        }
+
+        [When(@"I send a request to trigger a ""ICE"" event")]
+        public async Task WhenISendARequestToTriggerIceEvent()
+        {
+            _iceResponse = await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/ice");
+        }
+
+        [Then(@"the header of the ""ICE"" event contains a valid authorization")]
+        public async Task ThenTheHeaderOfTheIceEventContainsAValidAuthorization()
+        {
+            _rawIceContent = await _iceResponse.Content.ReadAsStringAsync();
+            _voiceSinchEventsWithAuth.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+                _iceResponse.GetAllHeaders(),
+                _rawIceContent).Should().BeTrue();
+        }
+
+        [Then(@"the Voice event describes a ""ICE"" event")]
+        public void ThenTheVoiceEventDescribesAIceEvent()
+        {
+            _voiceSinchEvents.ParseEvent(_rawIceContent).As<IncomingCallEvent>().Should().BeEquivalentTo(
+                new IncomingCallEvent()
+                {
+                    CallId = "1ce0ffee-ca11-ca11-ca11-abcdef000053",
+                    CallResourceUrl =
+                        "https://calling-use1.api.sinch.com/calling/v1/calls/id/1ce0ffee-ca11-ca11-ca11-abcdef000053",
+                    Timestamp = Helpers.ParseUtc("2024-06-06T17:20:14Z"),
+                    Version = 1,
+                    UserRate = new Rate()
+                    {
+                        CurrencyId = "USD",
+                        Amount = 0.0m,
+                    },
+                    Cli = "12015555555",
+                    To = new DestinationDid { Endpoint = "+12017777777" },
+                    Domain = Domain.Pstn,
+                    ApplicationKey = "f00dcafe-abba-c0de-1dea-dabb1ed4caf3",
+                    OriginationType = Domain.Pstn,
+                    Rdnis = string.Empty
+                });
+        }
+
+        [When(@"I send a request to trigger a ""recording_finished"" event")]
+        public async Task WhenISendARequestToTriggerARecordFinishedEvent()
+        {
+            _eventRecordingFinishedResponse =
+                await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/notify/recording_finished");
+        }
+
+        [Then(@"the header of the ""recording_finished"" event contains a valid authorization")]
+        public async Task ThenTheHeaderOfTheRecordingFinishedEventContainsAValidAuthorization()
+        {
+            _rawEventRecordAvailableContent = await _eventRecordingFinishedResponse.Content.ReadAsStringAsync();
+            _voiceSinchEventsWithAuth.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+                _eventRecordingFinishedResponse.GetAllHeaders(),
+                _rawEventRecordAvailableContent).Should().BeTrue();
+        }
+
+        [Then(@"the Voice event describes a ""notify"" event with a ""recording_finished"" type")]
+        public void ThenTheVoiceEventDescribesANotifyEventWithARecordFinishedType()
+        {
+            _voiceSinchEvents.ParseEvent(_rawEventRecordAvailableContent).As<NotificationEvent>().Should().BeEquivalentTo(
+                new NotificationEvent()
+                {
+                    CallId = "33dd8e62-0ac6-4e0c-a89f-36d121f861f9",
+                    Version = 1,
+                    Type = "recording_finished",
+                });
+        }
+
+        [When(@"I send a request to trigger a ""recording_available"" event")]
+        public async Task WhenISendARequestToTriggerARecordingAvailableEvent()
+        {
+            _eventRecordingAvailableResponse =
+                await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/notify/recording_available");
+        }
+
+        [Then(@"the header of the ""recording_available"" event contains a valid authorization")]
+        public async Task ThenTheHeaderOfTheRecordingAvailableEventContainsAValidAuthorization()
+        {
+            _rawEventRecordAvailableContent = await _eventRecordingAvailableResponse.Content.ReadAsStringAsync();
+            _voiceSinchEventsWithAuth.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+                _eventRecordingAvailableResponse.GetAllHeaders(),
+                _rawEventRecordAvailableContent).Should().BeTrue();
+        }
+
+        [Then(@"the Voice event describes a ""notify"" event with a ""recording_available"" type")]
+        public void ThenTheVoiceEventNotifyDescribesAEventWithARecordingAvailableType()
+        {
+            _voiceSinchEvents.ParseEvent(_rawEventRecordAvailableContent).As<NotificationEvent>().Should().BeEquivalentTo(
+                new NotificationEvent()
+                {
+                    CallId = "33dd8e62-0ac6-4e0c-a89f-36d121f861f9",
+                    Version = 1,
+                    Type = "recording_available",
+                    Destination = "azure://sinchsdk/voice-recordings/my-recording.mp3"
+                });
+        }
+
+        [When(@"I send a request to trigger a ""transcription_available"" event")]
+        public async Task WhenISendARequestToTriggerATranscriptionAvailableEvent()
+        {
+            _eventTranscriptionAvailableResponse =
+                await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/notify/transcription_available");
+        }
+
+        [Then(@"the header of the ""transcription_available"" event contains a valid authorization")]
+        public async Task ThenTheHeaderOfTheTranscriptionAvailableEventContainsAValidAuthorization()
+        {
+            _rawEventTransactionContent = await _eventTranscriptionAvailableResponse.Content.ReadAsStringAsync();
+            _voiceSinchEventsWithAuth.ValidateAuthenticationHeader(HttpMethod.Post, "/webhooks/voice",
+                _eventTranscriptionAvailableResponse.GetAllHeaders(),
+                _rawEventTransactionContent).Should().BeTrue();
+        }
+
+        [Then(@"the Voice event describes a ""notify"" event with a ""transcription_available"" type")]
+        public void ThenTheVoiceEventDescribesANotifyEventWithATranscriptionAvailableType()
+        {
+            _voiceSinchEvents.ParseEvent(_rawEventTransactionContent).As<NotificationEvent>().Should().BeEquivalentTo(
+                new NotificationEvent()
+                {
+                    CallId = "33dd8e62-0ac6-4e0c-a89f-36d121f861f9",
+                    Version = 1,
+                    Type = "transcription_available",
+                    Destination = "azure://sinchsdk/voice-recordings/my-recording-transcript.json"
+                });
+        }
+    }
+}

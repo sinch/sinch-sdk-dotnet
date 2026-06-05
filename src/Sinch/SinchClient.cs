@@ -216,35 +216,13 @@ namespace Sinch
             return auth;
         }
 
-        private ISinchVoiceClient InitVoice()
-        {
-            var config = _sinchClientConfiguration.VoiceConfiguration ??
-                throw new InvalidOperationException($"{nameof(SinchVoiceConfiguration)} is not set.");
-
-            if (string.IsNullOrEmpty(config.AppKey))
-                throw new ArgumentNullException(nameof(config.AppKey), "The value should be present");
-
-            if (string.IsNullOrEmpty(config.AppSecret))
-                throw new ArgumentNullException(nameof(config.AppSecret), "The value should be present");
-
-            ISinchAuth auth = new ApplicationSignedAuth(config.AppKey, config.AppSecret);
-
-            var http = new Http(new Lazy<ISinchAuth>(auth), _httpClientAccessor, _loggerFactory?.Create<IHttp>(),
-                JsonNamingPolicy.CamelCase);
-
-            var voiceUrl = ResolveUrl(
+        private ISinchVoiceClient InitVoice() =>
+            new SinchVoiceClient(
+                _sinchClientConfiguration.VoiceConfiguration,
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VoiceUrl,
-                () => SinchUrlResolvers.ResolveVoiceUrl(config));
-
-            var voiceAppMgmtUrl = ResolveUrl(
                 _sinchClientConfiguration.SinchOptions?.ApiUrlOverrides?.VoiceApplicationManagementUrl,
-                () => SinchUrlResolvers.ResolveVoiceApplicationManagementUrl(config));
-
-            return new SinchVoiceClient(
-                voiceUrl,
-                _loggerFactory, http, (auth as ApplicationSignedAuth)!,
-                voiceAppMgmtUrl);
-        }
+                _loggerFactory,
+                _httpClientAccessor);
 
         private ISinchVerificationClient InitVerification() =>
             new SinchVerificationClient(

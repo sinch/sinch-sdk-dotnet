@@ -1,6 +1,7 @@
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using Sinch.Core;
+using Sinch.Voice.Destinations;
 
 namespace Sinch.Voice.Callouts.Callout
 {
@@ -16,7 +17,7 @@ namespace Sinch.Voice.Callouts.Callout
         /// <summary>
         ///     The type of device and number or endpoint to call.
         /// </summary>
-        public Destination? Destination { get; set; }
+        public ICalloutDestination? Destination { get; set; }
 
         /// <summary>
         ///     When the destination picks up, this DTMF tones will be played to the callee.

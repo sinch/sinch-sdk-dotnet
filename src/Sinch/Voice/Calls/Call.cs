@@ -1,4 +1,5 @@
 using System;
+using Sinch.Voice.Destinations;
 using System.Text;
 using System.Text.Json.Serialization;
 using Sinch.Core;
@@ -11,12 +12,12 @@ namespace Sinch.Voice.Calls
         /// <summary>
         ///     Contains the caller information.
         /// </summary>
-        public Destination? From { get; set; }
+        public ICalloutDestination? From { get; set; }
 
         /// <summary>
         ///     Contains the callee information.
         /// </summary>
-        public Destination? To { get; set; }
+        public ICalloutDestination? To { get; set; }
 
         /// <summary>
         ///     Must be &#x60;pstn&#x60; for PSTN.

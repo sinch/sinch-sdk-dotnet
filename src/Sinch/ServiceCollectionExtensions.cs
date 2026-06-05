@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Sinch.Numbers.SinchEvents;
 using Sinch.SMS.SinchEvents;
 using Sinch.Verification.SinchEvents;
+using Sinch.Voice.SinchEvents;
 
 namespace Sinch
 {
@@ -154,6 +155,11 @@ namespace Sinch
             services.TryAdd(new ServiceDescriptor(
                 typeof(IVerificationSinchEvents),
                 sp => sp.GetRequiredService<ISinchClient>().Verification.SinchEvents,
+                lifetime));
+
+            services.TryAdd(new ServiceDescriptor(
+                typeof(IVoiceSinchEvents),
+                sp => sp.GetRequiredService<ISinchClient>().Voice.SinchEvents,
                 lifetime));
 
             return services;

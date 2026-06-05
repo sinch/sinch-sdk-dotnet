@@ -121,8 +121,6 @@ namespace Sinch.Tests.Features.Verification
                 SmsResult = SmsDeliveryResult.Successful
             });
 
-
-
         }
     }
 }

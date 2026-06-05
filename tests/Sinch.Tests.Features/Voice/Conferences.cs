@@ -1,4 +1,5 @@
 using System;
+using Sinch.Voice.Destinations;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -33,11 +34,7 @@ namespace Sinch.Tests.Features.Voice
             _conferencesResponse = await _sinchVoiceConferences.Call(new ConferenceCalloutRequest()
             {
                 Cli = "+12015555555",
-                Destination = new Destination()
-                {
-                    Type = DestinationType.Number,
-                    Endpoint = "+12017777777"
-                },
+                Destination = new DestinationPstn { Endpoint = "+12017777777" },
                 ConferenceId = "myConferenceId-E2E",
                 Locale = "en-US",
                 Greeting = "Welcome to this conference call.",
