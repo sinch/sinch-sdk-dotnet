@@ -1,0 +1,37 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "..",
+          "files": ["src/**/*.csproj"],
+          "exclude": ["**/bin/**", "**/obj/**"]
+        }
+      ],
+      "dest": "api",
+      "filter": "filterConfig.yml",
+      "namespaceLayout": "nested",
+      "memberLayout": "separatePages"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": ["api/*.yml", "api/toc.yml"]
+      }
+    ],
+    "resource": [
+      {
+        "src": "../src/Sinch",
+        "files": ["icon.png"]
+      }
+    ],
+    "dest": "_site",
+    "template": ["template", "staticdoc"],
+    "globalMetadata": {
+      "_appTitle": "Sinch .NET SDK",
+      "_appLogoPath": "icon.png",
+      "_enableSearch": true
+    }
+  }
+}

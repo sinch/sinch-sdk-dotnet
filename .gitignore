@@ -34,5 +34,8 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 
-# Visual Studio 2015
 .vs/
+
+# docs generated files
+docs/api
+docs/_site

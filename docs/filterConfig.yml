@@ -1,0 +1,7 @@
+apiRules:
+  - exclude:
+      uidRegex: ^Sinch\.Auth
+  - exclude:
+      uidRegex: Converter
+  - exclude:
+      uidRegex: ^Sinch\.Logger
