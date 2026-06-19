@@ -60,7 +60,7 @@ namespace Sinch.Conversation.Events
 
 
         /// <summary>
-        ///     Whether or not Conversation API should store contacts and conversations for the app. For more information, see [Processing Modes](../../../../../conversation/processing-modes/).
+        ///     Whether or not Conversation API should store contacts and conversations for the app. For more information, see [Processing Modes](https://developers.sinch.com/docs/conversation/processing-modes).
         /// </summary>
 #if NET7_0_OR_GREATER
         public required ProcessingMode ProcessingMode { get; set; }

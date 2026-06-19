@@ -27,7 +27,7 @@ namespace Sinch.SMS.Hooks
         ///     then this field contains *that* client reference.
         ///     Utilizing this feature requires additional setup on your account.
         ///     Contact your
-        ///     <see href="">https://dashboard.sinch.com/settings/account-details</see> to enable this feature.
+        ///     <see href="https://dashboard.sinch.com/settings/account-details">account manager</see> to enable this feature.
         /// </summary>
         [JsonPropertyName("client_reference")]
         public string? ClientReference { get; set; }

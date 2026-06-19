@@ -5,3 +5,7 @@ apiRules:
       uidRegex: Converter
   - exclude:
       uidRegex: ^Sinch\.Logger
+  - exclude:
+      uidRegex: ^Sinch\.Core\.EmptyResponse
+  - exclude:
+      uidRegex: ^Sinch\.Core\.JsonExtensions
