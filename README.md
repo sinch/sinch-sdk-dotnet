@@ -68,12 +68,12 @@ using Sinch;
 // Warning: not all APIs support project authentication. Check the section for each API before using this snippet.
 
 var sinch = new SinchClient(
-    Environment.GetEnvironmentVariable("SINCH_PROJECT_ID"),
-    Environment.GetEnvironmentVariable("SINCH_KEY_ID"),
-    Environment.GetEnvironmentVariable("SINCH_KEY_SECRET"));
+    "SINCH_PROJECT_ID",
+    "SINCH_KEY_ID",
+    "SINCH_KEY_SECRET");
 ```
 
-Get `project_id`, `key_id` and `key_secret` from the [Access keys](https://dashboard.sinch.com/settings/access-keys) page in your Sinch dashboard (`key_secret` is shown only once, at creation time). It's highly recommended to not hardcode these credentials: load them from environment variables for local development, and from a secret manager in production.
+Get `SINCH_PROJECT_ID`, `SINCH_KEY_ID` and `SINCH_KEY_SECRET` from the [Access keys](https://dashboard.sinch.com/settings/access-keys) page in your Sinch dashboard (`SINCH_KEY_SECRET` is shown only once, at creation time). It's highly recommended to not hardcode these credentials: load them from environment variables for local development, and from a secret manager in production.
 
 This snippet is the common starting point for project-based APIs. Some APIs need a different initialization or extra parameters (for example, a region or application credentials), see the section for each API below.
 
@@ -96,9 +96,9 @@ using Sinch;
 using Sinch.Conversation;
 
 var sinch = new SinchClient(
-    Environment.GetEnvironmentVariable("SINCH_PROJECT_ID"),
-    Environment.GetEnvironmentVariable("SINCH_KEY_ID"),
-    Environment.GetEnvironmentVariable("SINCH_KEY_SECRET"),
+    "SINCH_PROJECT_ID",
+    "SINCH_KEY_ID",
+    "SINCH_KEY_SECRET",
     options =>
     {
         options.ConversationRegion = ConversationRegion.Eu;
@@ -138,9 +138,9 @@ using Sinch;
 using Sinch.SMS;
 
 var sinch = new SinchClient(
-    Environment.GetEnvironmentVariable("SINCH_PROJECT_ID"),
-    Environment.GetEnvironmentVariable("SINCH_KEY_ID"),
-    Environment.GetEnvironmentVariable("SINCH_KEY_SECRET"),
+    "SINCH_PROJECT_ID",
+    "SINCH_KEY_ID",
+    "SINCH_KEY_SECRET",
     options =>
     {
         options.SmsRegion = SmsRegion.Us;
@@ -167,8 +167,8 @@ var sinch = new SinchClient(default, default, default,
     options =>
     {
         options.UseServicePlanIdWithSms(
-            Environment.GetEnvironmentVariable("SINCH_SERVICE_PLAN_ID")!,
-            Environment.GetEnvironmentVariable("SINCH_SMS_API_TOKEN")!,
+            "SINCH_SERVICE_PLAN_ID",
+            "SINCH_SMS_API_TOKEN",
             SmsServicePlanIdRegion.Us);
     });
 ```
@@ -203,8 +203,8 @@ using Sinch;
 using Sinch.Voice;
 
 var voiceClient = sinch.Voice(
-    Environment.GetEnvironmentVariable("SINCH_APPLICATION_KEY")!,
-    Environment.GetEnvironmentVariable("SINCH_APPLICATION_SECRET")!,
+    "SINCH_APPLICATION_KEY",
+    "SINCH_APPLICATION_SECRET",
     VoiceRegion.Global);
 ```
 
@@ -236,8 +236,8 @@ The Verification API uses application credentials. Set `application_key` and `ap
 using Sinch;
 
 var verificationClient = sinch.Verification(
-    Environment.GetEnvironmentVariable("SINCH_APPLICATION_KEY")!,
-    Environment.GetEnvironmentVariable("SINCH_APPLICATION_SECRET")!);
+    "SINCH_APPLICATION_KEY",
+    "SINCH_APPLICATION_SECRET");
 ```
 
 #### Sinch Events
@@ -258,8 +258,6 @@ var verificationEvent = JsonSerializer.Deserialize<VerificationRequestEvent>(raw
 ```
 
 Some events expect a response: build it from the business layer and return it to Sinch.
-
-You can find a complete example in [examples/Console/UseOnlyVoiceOrVerification.cs](examples/Console/UseOnlyVoiceOrVerification.cs).
 
 ### Numbers API
 
@@ -344,9 +342,9 @@ The SDK uses [Microsoft.Extensions.Logging](https://learn.microsoft.com/en-us/do
 using Sinch;
 
 var sinch = new SinchClient(
-    Environment.GetEnvironmentVariable("SINCH_PROJECT_ID"),
-    Environment.GetEnvironmentVariable("SINCH_KEY_ID"),
-    Environment.GetEnvironmentVariable("SINCH_KEY_SECRET"),
+    "SINCH_PROJECT_ID",
+    "SINCH_KEY_ID",
+    "SINCH_KEY_SECRET",
     options =>
     {
         options.LoggerFactory = LoggerFactory.Create(config =>
@@ -388,17 +386,14 @@ By default, the SDK creates and manages its own `HttpClient`. To provide your ow
 
 ```csharp
 using Sinch;
-using Sinch.SMS;
 
 var sinch = new SinchClient(
-    Environment.GetEnvironmentVariable("SINCH_PROJECT_ID"),
-    Environment.GetEnvironmentVariable("SINCH_KEY_ID"),
-    Environment.GetEnvironmentVariable("SINCH_KEY_SECRET"),
+    "SINCH_PROJECT_ID",
+    "SINCH_KEY_ID",
+    "SINCH_KEY_SECRET",
     options =>
     {
         options.HttpClient = new HttpClient();
-        options.SmsRegion = SmsRegion.Eu;
-        options.ConversationRegion = ConversationRegion.Eu;
     });
 ```
 
