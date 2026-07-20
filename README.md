@@ -10,11 +10,10 @@ Here you'll find documentation related to the Sinch .NET SDK, including how to i
 
 To use Sinch services, you'll need a Sinch account and access keys. You can sign up for an account and create access keys at [dashboard.sinch.com](https://dashboard.sinch.com).
 
-For more information on the SDK, refer to the dedicated [.NET SDK documentation section](https://developers.sinch.com/docs/sdks/dotnet), and for the Sinch APIs on which this SDK is based, refer to the official [developer documentation portal](https://developers.sinch.com/).
-
 ## Table of contents
 
 - [Prerequisites](#prerequisites)
+- [Documentation](#documentation)
 - [Installation](#installation)
 - [Supported APIs](#supported-apis)
 - [Getting started](#getting-started)
@@ -34,6 +33,14 @@ For more information on the SDK, refer to the dedicated [.NET SDK documentation 
 - [Sinch account](https://dashboard.sinch.com/)
 
 > **Warning**: This SDK is intended for server-side (backend) use only. Do not use it in front-end or client-side applications (web, mobile, or desktop), regardless of language or framework. Doing so can expose your Sinch credentials to end-users.
+
+## Documentation
+
+For more information on the SDK, refer to the dedicated [.NET SDK documentation](https://developers.sinch.com/docs/sdks/dotnet).
+
+For the SDK's programmatic API surface, see the online [SDK reference](https://developers.sinch.com/sdk/sinch-sdk-dotnet/latest).
+
+For broader Sinch product documentation, including the underlying REST APIs, visit the official [Sinch developer portal](https://developers.sinch.com/).
 
 ## Installation
 
@@ -123,7 +130,7 @@ ICallbackEvent callbackEvent = sinch.Conversation.Webhooks.ParseEvent(body);
 
 `sinchEventsSecret` is set per app in the [Conversation dashboard](https://dashboard.sinch.com/convapi/apps). `ParseEvent` works without validating the request, but then its origin can't be verified, so validating is recommended in production.
 
-You can find a complete example in [examples/WebApi/Controllers/ReceiveConversationCallbackController.cs](examples/WebApi/Controllers/ReceiveConversationCallbackController.cs).
+You can find a complete example in [examples/WebApi/Controllers/ReceiveConversationCallbackController.cs](https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/WebApi/Controllers/ReceiveConversationCallbackController.cs).
 
 ### SMS API
 
@@ -192,7 +199,7 @@ public async Task HandleInbound([FromBody] IncomingTextSms incomingSms)
 
 Signature authentication for SMS events must be enabled for your account by your account manager. Until it is activated, signature headers will not be present. See the [SMS events documentation](https://developers.sinch.com/docs/sms/api-reference/sms/tag/Webhooks/#tag/Webhooks/section/Callbacks).
 
-You can find a complete example in [examples/WebApi/Controllers/InboundSmsController.cs](examples/WebApi/Controllers/InboundSmsController.cs).
+You can find a complete example in [examples/WebApi/Controllers/InboundSmsController.cs](https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/WebApi/Controllers/InboundSmsController.cs).
 
 ### Voice API
 
@@ -226,7 +233,7 @@ IVoiceEvent voiceEvent = voiceClient.ParseEvent(rawBody);
 
 Some events (for example an incoming call) expect a SVAML response: build it from the business layer and return it from your controller.
 
-You can find a complete example in [examples/WebApi/Controllers/HandleIncomingIceEventController.cs](examples/WebApi/Controllers/HandleIncomingIceEventController.cs).
+You can find a complete example in [examples/WebApi/Controllers/HandleIncomingIceEventController.cs](https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/WebApi/Controllers/HandleIncomingIceEventController.cs).
 
 ### Verification API
 
@@ -296,7 +303,7 @@ public IActionResult HandleFaxEvent([FromBody] IFaxEvent faxEvent)
 }
 ```
 
-No request signature validation is implemented for the Fax API. You can find a complete example in [examples/WebApi/Controllers/HandleFaxEventController.cs](examples/WebApi/Controllers/HandleFaxEventController.cs).
+No request signature validation is implemented for the Fax API. You can find a complete example in [examples/WebApi/Controllers/HandleFaxEventController.cs](https://github.com/sinch/sinch-sdk-dotnet/blob/main/examples/WebApi/Controllers/HandleFaxEventController.cs).
 
 ### Your first request
 
@@ -397,7 +404,7 @@ var sinch = new SinchClient(
     });
 ```
 
-For additional configuration options such as API URL overrides, see [`SinchOptions`](src/Sinch/SinchOptions.cs).
+For additional configuration options such as API URL overrides, see [`SinchOptions`](https://github.com/sinch/sinch-sdk-dotnet/blob/main/src/Sinch/SinchOptions.cs).
 
 ## Third-party dependencies
 
@@ -411,9 +418,9 @@ The SDK relies on the following third-party dependencies:
 
 You can find:
 
-- a C# example of selected API operations in the [snippets](snippets) folder.
-- console application examples in the [examples/Console](examples/Console) folder.
-- an ASP.NET web application for handling Sinch Events in the [examples/WebApi](examples/WebApi) folder.
+- a C# example of selected API operations in the [snippets](https://github.com/sinch/sinch-sdk-dotnet/tree/main/snippets) folder.
+- console application examples in the [examples/Console](https://github.com/sinch/sinch-sdk-dotnet/tree/main/examples/Console) folder.
+- an ASP.NET web application for handling Sinch Events in the [examples/WebApi](https://github.com/sinch/sinch-sdk-dotnet/tree/main/examples/WebApi) folder.
 
 ## Changelog & Migration
 
@@ -421,7 +428,7 @@ For information about the latest changes in the SDK, please refer to the [GitHub
 
 ## License
 
-This project is licensed under the Apache License. See the [LICENSE](LICENSE) file for the license text.
+This project is licensed under the Apache License. See the [LICENSE](https://github.com/sinch/sinch-sdk-dotnet/blob/main/LICENSE) file for the license text.
 
 ## Contact
 
