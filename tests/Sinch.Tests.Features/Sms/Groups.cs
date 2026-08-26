@@ -31,6 +31,12 @@ namespace Sinch.Tests.Features.Sms
             _groups = Utils.SinchClient.Sms.Groups;
         }
 
+        [Given(@"the SMS service ""Groups"" is available and is configured for servicePlanId authentication")]
+        public void GivenTheSmsServiceIsAvailableForServicePlanId()
+        {
+            _groups = Utils.SinchClientServicePlanId.Sms.Groups;
+        }
+
 
         [When(@"I send a request to create an SMS group")]
         public async Task WhenISendARequestToCreateAnSmsGroup()

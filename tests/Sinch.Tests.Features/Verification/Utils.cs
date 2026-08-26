@@ -9,8 +9,8 @@ namespace Sinch.Tests.Features.Verification
             {
                 options.ApiUrlOverrides = new ApiUrlOverrides()
                 {
-                    VerificationUrl = "http://localhost:3018",
-                    AuthUrl = "http://localhost:3011",
+                    VerificationUrl = Helpers.MOCKSERVER_VERIFICATION_URL,
+                    AuthUrl = Helpers.MOCKSERVER_AUTH_URL,
                 };
             }).Verification("appKey", "YXBwU2VjcmV0");
     }

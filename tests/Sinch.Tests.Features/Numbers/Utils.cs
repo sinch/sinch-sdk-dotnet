@@ -10,8 +10,8 @@ namespace Sinch.Tests.Features.Numbers
             {
                 options.ApiUrlOverrides = new ApiUrlOverrides()
                 {
-                    AuthUrl = "http://localhost:3011",
-                    NumbersUrl = "http://localhost:3013"
+                    AuthUrl = Helpers.MOCKSERVER_AUTH_URL,
+                    NumbersUrl = Helpers.MOCKSERVER_NUMBERS_URL
                 };
             }).Numbers;
         }

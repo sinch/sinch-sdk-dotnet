@@ -4,7 +4,7 @@ on: [ push ]
 jobs:
   build:
     runs-on: ubuntu-latest
-      
+    timeout-minutes: 10  
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,8 +36,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: sinch/sinch-sdk-mockserver
-          token: ${{ secrets.MOCKSERVER_REPO_PAT_CI }}
-          ref: main
+          token: ${{ secrets.MOCKSERVER_REPO_PAT_CI }}          
+          fetch-depth: 1          
           path: sinch-sdk-mockserver
 
       - name: Copy feature files from mockserver
@@ -54,15 +54,16 @@ jobs:
           cp sinch-sdk-mockserver/features/numbers/webhooks.feature tests/Sinch.Tests.Features/features/numbers/
 
           cp sinch-sdk-mockserver/features/sms/batches.feature tests/Sinch.Tests.Features/features/sms/
+          cp sinch-sdk-mockserver/features/sms/batches_servicePlanId.feature tests/Sinch.Tests.Features/features/sms/
           cp sinch-sdk-mockserver/features/sms/delivery-reports.feature tests/Sinch.Tests.Features/features/sms/
+          cp sinch-sdk-mockserver/features/sms/delivery-reports_servicePlanId.feature tests/Sinch.Tests.Features/features/sms/          
           cp sinch-sdk-mockserver/features/sms/groups.feature tests/Sinch.Tests.Features/features/sms/
+          cp sinch-sdk-mockserver/features/sms/groups_servicePlanId.feature tests/Sinch.Tests.Features/features/sms/
+          cp sinch-sdk-mockserver/features/sms/inbounds.feature tests/Sinch.Tests.Features/features/sms/
+          cp sinch-sdk-mockserver/features/sms/inbounds_servicePlanId.feature tests/Sinch.Tests.Features/features/sms/
 
           cp sinch-sdk-mockserver/features/voice/*.feature tests/Sinch.Tests.Features/features/voice/
           cp sinch-sdk-mockserver/features/verification/*.feature tests/Sinch.Tests.Features/features/verification/
-
-      - name: Run mockserver docker-compose
-        run: docker compose up -d
-        working-directory: sinch-sdk-mockserver
         
       - name: Install dependencies
         run: dotnet restore

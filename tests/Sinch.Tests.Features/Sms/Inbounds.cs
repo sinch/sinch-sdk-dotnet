@@ -23,6 +23,12 @@ namespace Sinch.Tests.Features.Sms
             _inbounds = Utils.SinchClient.Sms.Inbounds;
         }
 
+        [Given(@"the SMS service ""Inbounds"" is available and is configured for servicePlanId authentication")]
+        public void GivenTheSmsServiceIsAvailableForServicePlanId()
+        {
+            _inbounds = Utils.SinchClientServicePlanId.Sms.Inbounds;
+        }
+
         [When(@"I send a request to retrieve an inbound message")]
         public async Task WhenISendARequestToRetrieveAnInboundMessage()
         {
