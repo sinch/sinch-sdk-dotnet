@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -99,7 +100,7 @@ namespace Sinch.Fax.Faxes
 
             if (request.Files is not null && request.Files.Any())
             {
-                // Base64 files → JSON
+                // Base64 files -> JSON
                 if (isMultipleRecipients)
                 {
                     var faxList = await _http.Send<SendFaxRequest, SendFaxResponse>(_uri, HttpMethod.Post,
@@ -111,19 +112,21 @@ namespace Sinch.Fax.Faxes
                     request, cancellationToken: cancellationToken)];
             }
 
-            // File upload or content URLs → multipart/form-data
-            var multipartContent = BuildMultipartContent(request);
+            // File upload or content URLs -> multipart/form-data
+            HttpContent BuildContent(Stream? fileStream) => BuildMultipartContent(request, fileStream);
+
             if (isMultipleRecipients)
             {
-                var faxList = await _http.Send<SendFaxResponse>(_uri, HttpMethod.Post, multipartContent,
-                    cancellationToken);
+                var faxList = await _http.Send<SendFaxResponse>(_uri, HttpMethod.Post, request.FileContent,
+                    BuildContent, cancellationToken);
                 return faxList.Faxes;
             }
 
-            return [await _http.Send<Fax>(_uri, HttpMethod.Post, multipartContent, cancellationToken)];
+            return [await _http.Send<Fax>(_uri, HttpMethod.Post, request.FileContent, BuildContent,
+                cancellationToken)];
         }
 
-        private static MultipartFormDataContent BuildMultipartContent(SendFaxRequest request)
+        private static MultipartFormDataContent BuildMultipartContent(SendFaxRequest request, Stream? fileStream)
         {
             var content = new MultipartFormDataContent();
 
@@ -136,11 +139,9 @@ namespace Sinch.Fax.Faxes
             if (request.From != null)
                 content.Add(new StringContent(request.From), "from");
 
-            if (request.FileContent is { Length: > 0 })
+            if (fileStream is { Length: > 0 })
             {
-                request.FileContent.Position = 0;
-
-                var streamContent = new StreamContent(request.FileContent);
+                var streamContent = new StreamContent(fileStream);
                 var fileName = request.FileName ?? "file";
 
                 if (new FileExtensionContentTypeProvider().TryGetContentType(fileName, out var contentType) &&
