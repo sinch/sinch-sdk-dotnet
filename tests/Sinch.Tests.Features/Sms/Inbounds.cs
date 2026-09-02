@@ -24,7 +24,7 @@ namespace Sinch.Tests.Features.Sms
         }
 
         [Given(@"the SMS service ""Inbounds"" is available and is configured for servicePlanId authentication")]
-        public void GivenTheSmsServiceInboundsIsAvailableAndIsConfiguredForServicePlanIdAuthentication()
+        public void GivenTheSmsServiceIsAvailableForServicePlanId()
         {
             _inbounds = Utils.SinchClientServicePlanId.Sms.Inbounds;
         }

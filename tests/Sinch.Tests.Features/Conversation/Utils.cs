@@ -23,9 +23,9 @@ namespace Sinch.Tests.Features.Conversation
                     {
                         ApiUrlOverrides = new ApiUrlOverrides()
                         {
-                            AuthUrl = "http://localhost:3011",
-                            ConversationUrl = "http://localhost:3014",
-                            TemplatesUrl = "http://localhost:3015"
+                            AuthUrl = Helpers.MOCKSERVER_AUTH_URL,
+                            ConversationUrl = Helpers.MOCKSERVER_CONVERSATION_URL,
+                            TemplatesUrl = Helpers.MOCKSERVER_CONVERSATION_TEMPLATES_URL
                         }
                     }
                 }

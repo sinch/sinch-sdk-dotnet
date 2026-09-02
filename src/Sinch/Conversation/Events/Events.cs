@@ -125,7 +125,7 @@ namespace Sinch.Conversation.Events
             do
             {
                 var query = Utils.ToSnakeCaseQueryString(request);
-                var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/events?{query}");
+                var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/events?{query}");
                 var response =
                     await _http.Value.Send<ListEventsResponse>(uri, HttpMethod.Get, cancellationToken);
                 request.PageToken = response.NextPageToken;

@@ -14,7 +14,7 @@ namespace Sinch.Tests.Features.Conversation;
 public class WebhooksEvents
 {
     private const string CallbackSecret = "CactusKnight_SurfsWaves";
-    private const string BaseWebhookUrl = "http://localhost:3014/webhooks/conversation";
+    private const string BaseWebhookUrl = Helpers.MOCKSERVER_CONVERSATION_URL + "webhooks/conversation";
 
     private readonly HttpClient _httpClient = new();
     private ISinchConversationWebhooks _webhooks;

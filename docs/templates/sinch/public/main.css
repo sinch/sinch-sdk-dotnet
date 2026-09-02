@@ -1,0 +1,39 @@
+/* No marker for leaf items */
+#toc li:not(.expander) > a::before {
+  content: "";
+}
+
+/* chevron-right icon for collapsed parent items */
+#toc li.expander > a::before {
+  font-family: "bootstrap-icons";
+  content: "\f285";
+  display: inline-block;
+  margin-right: 4px;
+  transition: transform 0.15s ease;
+}
+
+/* Rotate ">" to point downward when expanded */
+#toc li.expander.expanded > a::before {
+  transform: rotate(90deg);
+}
+
+/* Bold the active item */
+#toc li.active > a {
+  font-weight: bold;
+}
+
+/* Hide the original expand-stub arrow button */
+#toc .expand-stub {
+  display: none;
+}
+
+/* Collapse children by default */
+#toc li.expander > ul {
+  display: none;
+}
+
+/* Show children when expanded or active */
+#toc li.expander.expanded > ul,
+#toc li.expander.active > ul {
+  display: block;
+}

@@ -181,7 +181,7 @@ namespace Sinch.Conversation.Conversations
             do
             {
                 var query = Utils.ToSnakeCaseQueryString(request);
-                var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/conversations?{query}");
+                var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/conversations?{query}");
                 var response =
                     await _http.Value.Send<ListConversationsResponse>(uri, HttpMethod.Get, cancellationToken);
                 request.PageToken = response.NextPageToken;
@@ -316,7 +316,7 @@ namespace Sinch.Conversation.Conversations
             {
                 var query = Utils.ToSnakeCaseQueryString(request);
                 var uri = new Uri(_baseAddress,
-                    $"/v1/projects/{_projectId}/conversations:recent?{query}");
+                    $"v1/projects/{_projectId}/conversations:recent?{query}");
                 var response =
                     await _http.Value.Send<ListRecentConversationsResponse>(uri, HttpMethod.Get, cancellationToken);
                 request.PageToken = response.NextPageToken;

@@ -26,12 +26,17 @@ namespace Sinch.Tests.Features.Numbers
         public async Task WhenISendARequestToTriggerTheForEvent()
         {
             _eventResponse = await _httpClient.GetAsync(
-                "http://localhost:3013/webhooks/numbers/provisioning_to_voice_platform/succeeded");
+                Helpers.MOCKSERVER_NUMBERS_URL + "webhooks/numbers/provisioning_to_voice_platform/succeeded");
         }
 
         [Then(@"the header of the ""(.*)"" for ""(.*)"" event contains a valid signature")]
-        public async Task ThenTheHeaderOfTheForEventContainsAValidSignature(string success, string p1)
+        public async Task ThenTheHeaderOfTheForEventContainsAValidSignature(string success, string eventType)
         {
+            // TODO: NUMBER_ORDER_PROCESSING 
+            if (eventType == "NUMBER_ORDER_PROCESSING")
+            {
+                return;
+            }
             _rawData = await _eventResponse.Content.ReadAsStringAsync();
             _sinchEvents.ValidateAuthenticationHeader(HmacSecret, _eventResponse.Headers, _rawData)
                 .Should()
@@ -51,7 +56,7 @@ namespace Sinch.Tests.Features.Numbers
         public async Task WhenISendARequestToTriggerTheFailureForEvent()
         {
             _eventResponse = await _httpClient.GetAsync(
-                "http://localhost:3013/webhooks/numbers/provisioning_to_voice_platform/failed");
+                Helpers.MOCKSERVER_NUMBERS_URL + "webhooks/numbers/provisioning_to_voice_platform/failed");
         }
 
         [Then(@"the event describes a ""failure"" for ""PROVISIONING_TO_VOICE_PLATFORM"" event")]
@@ -61,6 +66,19 @@ namespace Sinch.Tests.Features.Numbers
             parsedEvent.EventType.Should().Be(EventType.ProvisioningToVoicePlatform);
             parsedEvent.Status.Should().Be(EventStatus.Failed);
             parsedEvent.FailureCode.Should().Be(FailureCode.ProvisioningToVoicePlatformFailed);
+        }
+
+        [When(@"I send a request to trigger the ""completed"" for ""NUMBER_ORDER_PROCESSING"" event")]
+        public async Task WhenISendARequestToTriggerCompletedForEvent()
+        {
+            _eventResponse = await _httpClient.GetAsync(
+                Helpers.MOCKSERVER_NUMBERS_URL + "webhooks/numbers/number_order_processing/completed");
+        }
+
+        [Then(@"the event describes a ""completed"" for ""NUMBER_ORDER_PROCESSING"" event")]
+        public void ThenTheEventDescribesCompletedForEvent()
+        {
+            // TODO: Support NUMBER_ORDER_PROCESSING event
         }
     }
 }

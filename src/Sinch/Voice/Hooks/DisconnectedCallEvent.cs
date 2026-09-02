@@ -100,7 +100,7 @@ namespace Sinch.Voice.Hooks
 
         /// <summary>
         ///     If the call was initiated by a Sinch SDK client, call headers are the headers specified by the *caller* client.
-        ///     Read more about call headers [here](../../../call-headers/).
+        ///     Read more about call headers [here](https://developers.sinch.com/docs/voice/api-reference/call-headers).
         /// </summary>
         [JsonPropertyName("callHeaders")]
         public List<CallHeader>? CallHeaders { get; set; }

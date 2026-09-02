@@ -26,7 +26,7 @@ namespace Sinch.Tests.Features.Sms
         }
 
         [Given(@"the SMS service ""Delivery Reports"" is available and is configured for servicePlanId authentication")]
-        public void GivenTheSmsServiceDeliveryReportsIsAvailableAndIsConfiguredForServicePlanIdAuthentication()
+        public void GivenTheSmsServiceIsAvailableForServicePlanId()
         {
             _deliveryReports = Utils.SinchClientServicePlanId.Sms.DeliveryReports;
         }

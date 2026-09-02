@@ -13,7 +13,7 @@ namespace Sinch.Tests.Features.Sms
     public class SinchEvents
     {
         private const string SinchEventsSecret = "KayakingTheSwell";
-        private const string SinchEventsUrlPrefix = "http://localhost:3017/webhooks/sms";
+        private const string SinchEventsUrlPrefix = Helpers.MOCKSERVER_SMS_URL + "webhooks/sms";
 
         private readonly HttpClient _httpClient = new();
         private static ISmsSinchEvents _smsSinchEvents;

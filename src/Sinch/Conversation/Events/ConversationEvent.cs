@@ -41,7 +41,7 @@ namespace Sinch.Conversation.Events
         public DateTimeOffset AcceptTime { get; set; }
 
         /// <summary>
-        ///     Whether or not Conversation API should store contacts and conversations for the app. For more information, see Processing Modes.
+        ///     Whether or not Conversation API should store contacts and conversations for the app. For more information, see [Processing Modes](https://developers.sinch.com/docs/conversation/processing-modes).
         /// </summary>
         public required ProcessingMode ProcessingMode { get; set; }
 

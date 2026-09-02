@@ -17,7 +17,7 @@ namespace Sinch.Tests.Features.Verification
                     {
                         ApiUrlOverrides = new ApiUrlOverrides()
                         {
-                            VerificationUrl = "http://localhost:3018"
+                            VerificationUrl = Helpers.MOCKSERVER_VERIFICATION_URL
                         }
                     }
                 }

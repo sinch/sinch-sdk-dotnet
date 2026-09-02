@@ -40,8 +40,8 @@ namespace Sinch.Tests.Features.Voice
                     {
                         ApiUrlOverrides = new ApiUrlOverrides()
                         {
-                            VoiceUrl = "http://localhost:3019",
-                            VoiceApplicationManagementUrl = "http://localhost:3020"
+                            VoiceUrl = Helpers.MOCKSERVER_VOICE_URL,
+                            VoiceApplicationManagementUrl = Helpers.MOCKSERVER_VOICE_APPLICATION_MANAGEMENT_URL
                         }
                     },
                     VoiceConfiguration = new SinchVoiceConfiguration()
@@ -56,7 +56,7 @@ namespace Sinch.Tests.Features.Voice
         [When(@"I send a request to trigger a ""PIE"" event with a ""return"" type")]
         public async Task WhenISendARequestToTriggerAEventWithAType()
         {
-            _pieReturnResponse = await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/pie-return");
+            _pieReturnResponse = await _httpClient.GetAsync(Helpers.MOCKSERVER_VOICE_URL + "webhooks/voice/pie-return");
         }
 
         [Then(@"the header of the ""PIE"" event with a ""return"" type contains a valid authorization")]
@@ -92,7 +92,7 @@ namespace Sinch.Tests.Features.Voice
         [When(@"I send a request to trigger a ""PIE"" event with a ""sequence"" type")]
         public async Task WhenISendARequestToTriggerAPieEventWithATypeSequence()
         {
-            _pieSequenceResponse = await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/pie-sequence");
+            _pieSequenceResponse = await _httpClient.GetAsync(Helpers.MOCKSERVER_VOICE_URL + "webhooks/voice/pie-sequence");
         }
 
         [Then(@"the header of the ""PIE"" event with a ""sequence"" type contains a valid authorization")]
@@ -128,7 +128,7 @@ namespace Sinch.Tests.Features.Voice
         [When(@"I send a request to trigger a ""DICE"" event")]
         public async Task WhenISendARequestToTriggerAEvent()
         {
-            _diceResponse = await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/dice");
+            _diceResponse = await _httpClient.GetAsync(Helpers.MOCKSERVER_VOICE_URL + "webhooks/voice/dice");
         }
 
         [Then(@"the header of the ""DICE"" event contains a valid authorization")]
@@ -175,7 +175,7 @@ namespace Sinch.Tests.Features.Voice
         [When(@"I send a request to trigger a ""ACE"" event")]
         public async Task WhenISendARequestToTriggerAceEvent()
         {
-            _aceResponse = await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/ace");
+            _aceResponse = await _httpClient.GetAsync(Helpers.MOCKSERVER_VOICE_URL + "webhooks/voice/ace");
         }
 
         [Then(@"the header of the ""ACE"" event contains a valid authorization")]
@@ -205,7 +205,7 @@ namespace Sinch.Tests.Features.Voice
         [When(@"I send a request to trigger a ""ICE"" event")]
         public async Task WhenISendARequestToTriggerIceEvent()
         {
-            _iceResponse = await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/ice");
+            _iceResponse = await _httpClient.GetAsync(Helpers.MOCKSERVER_VOICE_URL + "webhooks/voice/ice");
         }
 
         [Then(@"the header of the ""ICE"" event contains a valid authorization")]
@@ -250,7 +250,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task WhenISendARequestToTriggerARecordFinishedEvent()
         {
             _eventRecordingFinishedResponse =
-                await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/notify/recording_finished");
+                await _httpClient.GetAsync(Helpers.MOCKSERVER_VOICE_URL + "webhooks/voice/notify/recording_finished");
         }
 
         [Then(@"the header of the ""recording_finished"" event contains a valid authorization")]
@@ -278,7 +278,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task WhenISendARequestToTriggerARecordingAvailableEvent()
         {
             _eventRecordingAvailableResponse =
-                await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/notify/recording_available");
+                await _httpClient.GetAsync(Helpers.MOCKSERVER_VOICE_URL + "webhooks/voice/notify/recording_available");
         }
 
         [Then(@"the header of the ""recording_available"" event contains a valid authorization")]
@@ -307,7 +307,7 @@ namespace Sinch.Tests.Features.Voice
         public async Task WhenISendARequestToTriggerATranscriptionAvailableEvent()
         {
             _eventTranscriptionAvailableResponse =
-                await _httpClient.GetAsync("http://localhost:3019/webhooks/voice/notify/transcription_available");
+                await _httpClient.GetAsync(Helpers.MOCKSERVER_VOICE_URL + "webhooks/voice/notify/transcription_available");
         }
 
         [Then(@"the header of the ""transcription_available"" event contains a valid authorization")]

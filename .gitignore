@@ -38,13 +38,9 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 
-# Visual Studio 2015
 .vs/
 *.lscache
 
-# Local only
-.artifacts/
-.github/agents/
-.github/skills/
-.github/instructions/
-AGENTS.md
+# docs generated files
+docs/api
+docs/_site

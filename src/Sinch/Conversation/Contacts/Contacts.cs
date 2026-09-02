@@ -253,7 +253,7 @@ namespace Sinch.Conversation.Contacts
         /// <inheritdoc />
         public Task<Contact> Get(string contactId, CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{contactId}");
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/contacts/{contactId}");
             _logger?.LogDebug("Getting a {contactId} for a {projectId}", contactId, _projectId);
             return _http.Value.Send<Contact>(uri, HttpMethod.Get,
                 cancellationToken);
@@ -262,7 +262,7 @@ namespace Sinch.Conversation.Contacts
         /// <inheritdoc />
         public Task<Contact> Create(CreateContactRequest request, CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts");
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/contacts");
             _logger?.LogDebug("Creating a contact for a {projectId}", _projectId);
             return _http.Value.Send<CreateContactRequest, Contact>(uri, HttpMethod.Post, request,
                 cancellationToken);
@@ -277,7 +277,7 @@ namespace Sinch.Conversation.Contacts
             CancellationToken cancellationToken = default)
         {
             var query = Utils.ToSnakeCaseQueryString(request);
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts?{query}");
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/contacts?{query}");
             _logger?.LogDebug("Listing contacts for {projectId}", _projectId);
             return _http.Value.Send<ListContactsResponse>(uri, HttpMethod.Get, cancellationToken);
         }
@@ -294,7 +294,7 @@ namespace Sinch.Conversation.Contacts
             do
             {
                 var query = Utils.ToSnakeCaseQueryString(request);
-                var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts?{query}");
+                var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/contacts?{query}");
                 var response =
                     await _http.Value.Send<ListContactsResponse>(uri, HttpMethod.Get, cancellationToken);
                 request.PageToken = response.NextPageToken;
@@ -308,7 +308,7 @@ namespace Sinch.Conversation.Contacts
         public Task Delete(string contactId, CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Deleting a {contactId} from {projectId}", contactId, _projectId);
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{contactId}");
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/contacts/{contactId}");
             return _http.Value.Send<EmptyResponse>(uri, HttpMethod.Delete, cancellationToken);
         }
 
@@ -317,7 +317,7 @@ namespace Sinch.Conversation.Contacts
             CancellationToken cancellationToken = default)
         {
             _logger?.LogDebug("Getting a profile for {projectId} of {channel}", _projectId, request.Channel);
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts:getChannelProfile");
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/contacts:getChannelProfile");
             return _http.Value.Send<GetChannelProfileRequest, ChannelProfile>(uri, HttpMethod.Post, request,
                 cancellationToken);
         }
@@ -360,7 +360,7 @@ namespace Sinch.Conversation.Contacts
             // the update_mask param will regulate which properties to set.
             // Keep in mind that no depth is supported: for example, you cannot mask channel_identities.identity 
             var uri = new Uri(_baseAddress,
-                $"/v1/projects/{_projectId}/contacts/{contact.Id}?update_mask={contact.GetPropertiesMask()}");
+                $"v1/projects/{_projectId}/contacts/{contact.Id}?update_mask={contact.GetPropertiesMask()}");
             return _http.Value.Send<Contact, Contact>(uri, HttpMethod.Patch, contact,
                 cancellationToken);
         }
@@ -371,7 +371,7 @@ namespace Sinch.Conversation.Contacts
         {
             _logger?.LogDebug("Merging contacts from {sourceId} to {destinationId} for {projectId}", request.SourceId,
                 destinationId, _projectId);
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts/{destinationId}:merge");
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/contacts/{destinationId}:merge");
             return _http.Value.Send<MergeContactRequest, Contact>(uri, HttpMethod.Post, request, cancellationToken);
         }
 
@@ -384,7 +384,7 @@ namespace Sinch.Conversation.Contacts
             CancellationToken cancellationToken = default)
         {
             var query = Utils.ToSnakeCaseQueryString(request);
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts:identityConflicts?{query}");
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/contacts:identityConflicts?{query}");
 
             _logger?.LogDebug("Listing identity conflicts for {projectId}", _projectId);
 
@@ -405,7 +405,7 @@ namespace Sinch.Conversation.Contacts
             do
             {
                 var query = Utils.ToSnakeCaseQueryString(request);
-                var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/contacts:identityConflicts?{query}");
+                var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/contacts:identityConflicts?{query}");
                 var response = await _http.Value.Send<ListIdentityConflictsResponse>(uri, HttpMethod.Get, cancellationToken);
 
                 request.PageToken = response.NextPageToken;

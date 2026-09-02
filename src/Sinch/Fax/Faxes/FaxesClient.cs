@@ -82,7 +82,7 @@ namespace Sinch.Fax.Faxes
         {
             _loggerAdapter = loggerAdapter;
             _http = httpClient;
-            _uri = new Uri(uri, $"/v3/projects/{projectId}/faxes");
+            _uri = new Uri(uri, $"v3/projects/{projectId}/faxes");
         }
 
         // the fax will return a PLAIN fax if there is ONE TO number, but an array if there  is > 1 

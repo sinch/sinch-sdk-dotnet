@@ -12,8 +12,8 @@ namespace Sinch.Tests.Features.Voice
                     {
                         ApiUrlOverrides = new ApiUrlOverrides()
                         {
-                            VoiceUrl = "http://localhost:3019",
-                            VoiceApplicationManagementUrl = "http://localhost:3020"
+                            VoiceUrl = Helpers.MOCKSERVER_VOICE_URL,
+                            VoiceApplicationManagementUrl = Helpers.MOCKSERVER_VOICE_APPLICATION_MANAGEMENT_URL
                         }
                     },
                     VoiceConfiguration = new SinchVoiceConfiguration()

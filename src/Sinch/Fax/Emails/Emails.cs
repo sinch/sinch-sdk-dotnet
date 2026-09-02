@@ -139,7 +139,7 @@ namespace Sinch.Fax.Emails
             _logger = loggerAdapter;
             _http = httpClient;
             _projectId = projectId;
-            _apiBasePath = new Uri(baseAddress, $"/v3/projects/{projectId}/services");
+            _apiBasePath = new Uri(baseAddress, $"v3/projects/{projectId}/services");
         }
 
 

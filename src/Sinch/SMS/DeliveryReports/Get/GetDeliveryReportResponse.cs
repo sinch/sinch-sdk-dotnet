@@ -5,7 +5,6 @@ namespace Sinch.SMS.DeliveryReports.Get
     public sealed class GetDeliveryReportResponse
     {
 #pragma warning disable CS1570
-
         /// <summary>
         ///     The type of delivery report Sinch Event.
         ///     Returns a either a full or summary delivery report depending on what was set in the batch.

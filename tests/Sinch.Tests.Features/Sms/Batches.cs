@@ -32,7 +32,7 @@ namespace Sinch.Tests.Features.Sms
         }
 
         [Given(@"the SMS service ""Batches"" is available and is configured for servicePlanId authentication")]
-        public void GivenTheSmsServiceBatchesIsAvailableAndIsConfiguredForServicePlanIdAuthentication()
+        public void GivenTheSmsServiceIsAvailableForServicePlanId()
         {
             _sinchSmsBatches = Utils.SinchClientServicePlanId.Sms.Batches;
         }

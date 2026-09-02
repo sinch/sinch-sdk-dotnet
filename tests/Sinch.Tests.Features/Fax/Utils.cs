@@ -19,8 +19,8 @@ public class Utils
                 {
                     ApiUrlOverrides = new ApiUrlOverrides()
                     {
-                        AuthUrl = "http://localhost:3011",
-                        FaxUrl = "http://localhost:3012"
+                        AuthUrl = Helpers.MOCKSERVER_AUTH_URL,
+                        FaxUrl = Helpers.MOCKSERVER_FAX_URL
                     }
                 }
             }

@@ -270,4 +270,16 @@ public class FaxesSteps
     {
         await _deleteContentOp.Should().NotThrowAsync();
     }
+
+    [When(@"I send a request to export faxes as CSV")]
+    public async Task WhenISendARequestToExportFaxesAsCSV()
+    {
+        // TODO: Implement export faxes as CSV
+    }
+
+    [Then(@"the response contains the CSV file with the fax records")]
+    public void ThenTheResponseContainsTheCSVFileWithTheFaxRecords()
+    {
+        // TODO: Verify CSV file content
+    }
 }

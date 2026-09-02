@@ -120,7 +120,7 @@ namespace Sinch.Conversation.Webhooks
         /// <inheritdoc />
         public Task<Webhook> Create(CreateWebhookRequest request, CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks");
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/webhooks");
             _logger?.LogDebug("Creating a webhook...");
             return _http.Value.Send<CreateWebhookRequest, Webhook>(uri, HttpMethod.Post, request,
                 cancellationToken);
@@ -129,7 +129,7 @@ namespace Sinch.Conversation.Webhooks
         /// <inheritdoc />
         public Task<Webhook> Get(string webhookId, CancellationToken cancellationToken = default)
         {
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{webhookId}");
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/webhooks/{webhookId}");
             _logger?.LogDebug("Getting a webhook with {id}...", webhookId);
             return _http.Value.Send<Webhook>(uri, HttpMethod.Get,
                 cancellationToken);
@@ -143,7 +143,7 @@ namespace Sinch.Conversation.Webhooks
                 throw new ArgumentNullException(nameof(appId), "Should have a value");
             }
 
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/apps/{appId}/webhooks");
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/apps/{appId}/webhooks");
             _logger?.LogDebug("Listing webhooks for an {appId}...", appId);
             return _http.Value.Send<ListWebhooksResponse>(uri, HttpMethod.Get, cancellationToken);
         }
@@ -178,7 +178,7 @@ namespace Sinch.Conversation.Webhooks
                 throw new NullReferenceException($"{nameof(request)}.{nameof(webhookId)} shouldn't be null");
             }
 
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{webhookId}");
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/webhooks/{webhookId}");
 
             var builder = new UriBuilder(uri);
             var queryString = HttpUtility.ParseQueryString(string.Empty);
@@ -199,7 +199,7 @@ namespace Sinch.Conversation.Webhooks
                 throw new ArgumentNullException(nameof(webhookId), "Should have a value");
             }
 
-            var uri = new Uri(_baseAddress, $"/v1/projects/{_projectId}/webhooks/{webhookId}");
+            var uri = new Uri(_baseAddress, $"v1/projects/{_projectId}/webhooks/{webhookId}");
             _logger?.LogDebug("Deleting a webhook with {id}...", webhookId);
             return _http.Value.Send<object>(uri, HttpMethod.Delete,
                 cancellationToken);

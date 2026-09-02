@@ -1,0 +1,53 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../src",
+          "files": [
+            "**/*.csproj"
+          ]
+        }
+      ],
+      "dest": "api",
+      "filter": "filterConfig.yml",
+      "attributeFilters": [
+        {
+          "uid": "System.Text.Json.Serialization.JsonPropertyNameAttribute",
+          "exclude": true
+        }
+      ]
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "api/**.{md,yml}",
+          "index.md"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "output": "_site",
+    "template": [
+      "default",
+      "modern",
+      "templates/sinch"
+    ],
+    "globalMetadata": {
+      "_appName": "Sinch .NET SDK",
+      "_appTitle": "Sinch .NET SDK",
+      "_appLogoPath": "images/logo.png",
+      "_enableSearch": true,
+      "pdf": false
+    }
+  }
+}

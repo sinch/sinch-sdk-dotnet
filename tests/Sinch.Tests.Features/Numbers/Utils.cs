@@ -6,7 +6,6 @@ namespace Sinch.Tests.Features.Numbers
     {
         public static ISinchNumbers SinchNumbersClient()
         {
-
             return new SinchClient(
                    new SinchClientConfiguration()
                    {
@@ -20,8 +19,8 @@ namespace Sinch.Tests.Features.Numbers
                        {
                            ApiUrlOverrides = new ApiUrlOverrides()
                            {
-                               AuthUrl = "http://localhost:3011",
-                               NumbersUrl = "http://localhost:3013"
+                               AuthUrl = Helpers.MOCKSERVER_AUTH_URL,
+                               NumbersUrl = Helpers.MOCKSERVER_NUMBERS_URL
                            }
                        }
                    }

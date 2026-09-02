@@ -21,8 +21,8 @@ namespace Sinch.Tests.Features.Sms
                     {
                         ApiUrlOverrides = new ApiUrlOverrides()
                         {
-                            AuthUrl = "http://localhost:3011",
-                            SmsUrl = "http://localhost:3017"
+                            AuthUrl = Helpers.MOCKSERVER_AUTH_URL,
+                            SmsUrl = Helpers.MOCKSERVER_SMS_URL
                         }
                     }
                 }
@@ -35,7 +35,7 @@ namespace Sinch.Tests.Features.Sms
                         "CappyPremiumPlan",
                         "HappyCappyToken",
                         SmsServicePlanIdRegion.Us,
-                        urlOverride: "http://localhost:3017")
+                        urlOverride: Helpers.MOCKSERVER_SMS_URL)
                 }
             );
     }

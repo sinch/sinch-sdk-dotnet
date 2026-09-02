@@ -31,7 +31,7 @@ namespace Sinch.Tests.Features.Verification
         public async Task WhenISendARequestToTriggerAEvent()
         {
             _verificationRequestResponseMessage =
-                await _httpClient.GetAsync("http://localhost:3018/webhooks/verification/verification-request-event");
+                await _httpClient.GetAsync(Helpers.MOCKSERVER_VERIFICATION_URL + "webhooks/verification/verification-request-event");
         }
 
         [Then(@"the header of the Verification event ""Verification Request"" contains a valid authorization")]
@@ -65,7 +65,7 @@ namespace Sinch.Tests.Features.Verification
         public async Task WhenISendARequestToTriggerAVerificationResultEvent()
         {
             _verificationResultResponse =
-                await _httpClient.GetAsync("http://localhost:3018/webhooks/verification/verification-result-event");
+                await _httpClient.GetAsync(Helpers.MOCKSERVER_VERIFICATION_URL + "webhooks/verification/verification-result-event");
         }
 
         [Then(@"the header of the Verification event ""Verification Result"" contains a valid authorization")]
@@ -95,7 +95,7 @@ namespace Sinch.Tests.Features.Verification
         public async Task WhenISendARequestToTriggerAVerificationSMSDelivered()
         {
             _verificationSMSDeliveredEventResponse =
-                 await _httpClient.GetAsync("http://localhost:3018/webhooks/verification/verification-sms-delivery-event");
+                 await _httpClient.GetAsync(Helpers.MOCKSERVER_VERIFICATION_URL + "webhooks/verification/verification-sms-delivery-event");
         }
 
         [Then(@"the header of the Verification event ""Verification SMS Delivered Event"" contains a valid authorization")]

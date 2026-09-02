@@ -106,7 +106,7 @@ namespace Sinch.Fax.Services
             _projectId = projectId;
             _logger = logger;
             _http = http;
-            _apiBasePath = new Uri(baseAddress, $"/v3/projects/{projectId}/services");
+            _apiBasePath = new Uri(baseAddress, $"v3/projects/{projectId}/services");
         }
 
         public Task<Service> Create(CreateFaxServiceRequest request, CancellationToken cancellationToken = default)
