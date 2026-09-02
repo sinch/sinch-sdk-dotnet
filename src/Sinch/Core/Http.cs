@@ -93,21 +93,28 @@ namespace Sinch.Core
         public Task<TResponse> SendMultipart<TRequest, TResponse>(Uri uri, TRequest request, Stream stream,
             string fileName, CancellationToken cancellationToken = default)
         {
-            var content = BuildMultipartFormDataContent(request);
-
-            stream.Position = 0;
-            var isContentType = new FileExtensionContentTypeProvider().TryGetContentType(fileName, out var contentType);
-            var streamContent = new StreamContent(stream)
+            // Content must be rebuilt on every retry attempt: if a retry is needed, stream will
+            // have been consumed by the previous attempt, so a new StreamContent will be required
+            HttpContent ContentFactory()
             {
-                Headers =
+                var content = BuildMultipartFormDataContent(request);
+
+                stream.Position = 0;
+                var isContentType =
+                    new FileExtensionContentTypeProvider().TryGetContentType(fileName, out var contentType);
+                var streamContent = new StreamContent(new NonDisposingStream(stream))
                 {
-                    ContentType = isContentType ? new MediaTypeHeaderValue(contentType!) : null
-                }
-            };
-            content.Add(streamContent, "file", fileName);
+                    Headers =
+                    {
+                        ContentType = isContentType ? new MediaTypeHeaderValue(contentType!) : null
+                    }
+                };
+                content.Add(streamContent, "file", fileName);
 
+                return content;
+            }
 
-            return SendHttpContent<TResponse>(uri, HttpMethod.Post, content, cancellationToken);
+            return SendHttpContent<TResponse>(uri, HttpMethod.Post, ContentFactory, cancellationToken);
         }
 
         /// <summary>
@@ -178,7 +185,7 @@ namespace Sinch.Core
         }
 
         private async Task<TResponse> SendHttpContent<TResponse>(Uri uri, HttpMethod httpMethod,
-            HttpContent? httpContent,
+            Func<HttpContent?> contentFactory,
             CancellationToken cancellationToken = default, Dictionary<string, IEnumerable<string>>? headers = null)
         {
             var retry = true;
@@ -186,29 +193,52 @@ namespace Sinch.Core
             {
                 _logger?.LogDebug("Sending request to {uri}", uri);
 
+                // See https://github.com/sinch/sinch-sdk-dotnet/issues/214
+                // A fresh HttpContent is built for every attempt
+                var httpContent = contentFactory();
+
 #if DEBUG
                 Debug.WriteLine($"Http Method: {httpMethod}");
                 Debug.WriteLine($"Request uri: {uri}");
                 Debug.WriteLine($"Request body: {httpContent?.ReadAsStringAsync(cancellationToken).Result}");
 #endif
 
-                using var msg = new HttpRequestMessage();
-                msg.RequestUri = uri;
-                msg.Method = httpMethod;
-                msg.Content = httpContent;
-
-                (var token, retry) = await Authenticate(msg, retry, cancellationToken);
-
-                msg.Headers.Authorization = new AuthenticationHeaderValue(_auth.Scheme, token);
-
-                msg.Headers.Add("User-Agent", UserAgent);
-
-                if (headers != null && headers.Any())
+                var msg = new HttpRequestMessage();
+                HttpResponseMessage result;
+                try
                 {
-                    AddOrOverrideHeaders(msg, headers);
-                }
+                    msg.RequestUri = uri;
+                    msg.Method = httpMethod;
+                    msg.Content = httpContent;
 
-                var result = await _httpClient.SendAsync(msg, cancellationToken);
+                    (var token, retry) = await Authenticate(msg, retry, cancellationToken);
+
+                    msg.Headers.Authorization = new AuthenticationHeaderValue(_auth.Scheme, token);
+
+                    msg.Headers.Add("User-Agent", UserAgent);
+
+                    if (headers != null && headers.Any())
+                    {
+                        AddOrOverrideHeaders(msg, headers);
+                    }
+
+                    result = await _httpClient.SendAsync(msg, cancellationToken);
+                }
+                finally
+                {
+                    // History: https://github.com/sinch/sinch-sdk-dotnet/issues/214
+                    // The previous code reused one HttpContent instance across every retry attempt 
+                    // Disposing msg after the first attempt cascaded into disposing that shared 
+                    // content, so the retry crashed with ObjectDisposedException instead of 
+                    // resending the request
+                    // Content is now rebuilt fresh for every attempt (see contentFactory above), 
+                    // so it's never shared across retries
+                    // We keep this explicit detach-then-dispose so cleanup order stays 
+                    // intentional, not implicit
+                    msg.Content = null;
+                    msg.Dispose();
+                    httpContent?.Dispose();
+                }
 
                 if (result.StatusCode == HttpStatusCode.Unauthorized && retry)
                 {
@@ -222,75 +252,91 @@ namespace Sinch.Core
                     else
                     {
                         retry = false;
+                        result.Dispose();
                         continue;
                     }
                 }
 
-                await result.EnsureSuccessApiStatusCode(_jsonSerializerOptions);
-
-                _logger?.LogDebug("Finished processing request for {uri}", uri);
-
-#if DEBUG
                 try
                 {
-                    var responseStr = await result.Content.ReadAsStringAsync(cancellationToken);
-                    Debug.WriteLine($"Response string: {responseStr}");
-                    using var jDoc = JsonDocument.Parse(responseStr);
-                    Debug.WriteLine(
-                        $"Response content: {JsonSerializer.Serialize(jDoc, new JsonSerializerOptions() { WriteIndented = true })}");
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine($"Failed to parse json {e.Message}");
-                }
+                    await result.EnsureSuccessApiStatusCode(_jsonSerializerOptions);
+
+                    _logger?.LogDebug("Finished processing request for {uri}", uri);
+
+#if DEBUG
+                    try
+                    {
+                        var responseStr = await result.Content.ReadAsStringAsync(cancellationToken);
+                        Debug.WriteLine($"Response string: {responseStr}");
+                        using var jDoc = JsonDocument.Parse(responseStr);
+                        Debug.WriteLine(
+                            $"Response content: {JsonSerializer.Serialize(jDoc, new JsonSerializerOptions() { WriteIndented = true })}");
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"Failed to parse json {e.Message}");
+                    }
 #endif
 
-                // if empty response is expected, any non-related response is dropped
-                if (typeof(TResponse) == typeof(EmptyResponse))
-                {
-                    // if not empty content, check what is there for debug purposes.
-                    // C# EmptyContent class is internal, so checking it by the name
-                    // for more details, see: https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http/src/System/Net/Http/EmptyContent.cs
-                    if (result.Content.GetType().Name != "EmptyContent")
+                    // if empty response is expected, any non-related response is dropped
+                    if (typeof(TResponse) == typeof(EmptyResponse))
                     {
-                        _logger?.LogDebug("Expected empty content, but got {content}",
-                            await result.Content.ReadAsStringAsync(cancellationToken));
+                        // if not empty content, check what is there for debug purposes.
+                        // C# EmptyContent class is internal, so checking it by the name
+                        // for more details, see: https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http/src/System/Net/Http/EmptyContent.cs
+                        if (result.Content.GetType().Name != "EmptyContent")
+                        {
+                            _logger?.LogDebug("Expected empty content, but got {content}",
+                                await result.Content.ReadAsStringAsync(cancellationToken));
+                        }
+
+                        return (TResponse)(object)new EmptyResponse();
                     }
 
-                    return (TResponse)(object)new EmptyResponse();
-                }
-
-                // NOTE: there wil probably be other files supported in the future
-                if (result.IsPdf())
-                {
-                    if (typeof(TResponse) != typeof(ContentResult))
+                    // NOTE: there will probably be other files supported in the future
+                    if (result.IsPdf())
                     {
-                        throw new InvalidOperationException(
-                            $"Received pdf, but expected response type is not a {nameof(ContentResult)}.");
+                        if (typeof(TResponse) != typeof(ContentResult))
+                        {
+                            throw new InvalidOperationException(
+                                $"Received pdf, but expected response type is not a {nameof(ContentResult)}.");
+                        }
+
+                        // Keep the PDF response streaming, but let the returned stream own the HTTP response.
+                        // The wrapper exposes the stream to callers while disposing the response with the result.
+                        // yes, the header currently returns double quotes ""IFOFJSLJ12313.pdf""
+                        var fileName = result.Content.Headers.ContentDisposition?.FileName?.Trim('"');
+                        var responseStream = await result.Content.ReadAsStreamAsync(cancellationToken);
+                        var response = result;
+                        result = null!;
+                        return (TResponse)(object)new ContentResult()
+                        {
+                            Stream = new OwnedResponseStream(responseStream, response),
+                            FileName = fileName
+                        };
                     }
 
-                    // yes, the header currently returns double quotes ""IFOFJSLJ12313.pdf""
-                    var fileName = result.Content.Headers.ContentDisposition?.FileName?.Trim('"');
-                    return (TResponse)(object)new ContentResult()
+                    if (result.IsJson())
                     {
-                        Stream = await result.Content.ReadAsStreamAsync(cancellationToken),
-                        FileName = fileName
-                    };
+                        return await result.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken,
+                                   options: _jsonSerializerOptions)
+                               ?? throw new InvalidOperationException(
+                                   $"{typeof(TResponse).Name} is null");
+                    }
+
+                    // unexpected content, log warning and throw exception
+                    _logger?.LogWarning("Response is not json, but {content}",
+                        await result.Content.ReadAsStringAsync(cancellationToken));
+
+                    throw new InvalidOperationException("The response is not Json or EmptyResponse");
                 }
-
-
-
-                if (result.IsJson())
-                    return await result.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken,
-                               options: _jsonSerializerOptions)
-                           ?? throw new InvalidOperationException(
-                               $"{typeof(TResponse).Name} is null");
-
-                // unexpected content, log warning and throw exception
-                _logger?.LogWarning("Response is not json, but {content}",
-                    await result.Content.ReadAsStringAsync(cancellationToken));
-
-                throw new InvalidOperationException("The response is not Json or EmptyResponse");
+                finally
+                {
+                    if (result is not null)
+                    {
+                        result.Dispose();
+                    }
+                }
             }
         }
 
@@ -353,11 +399,12 @@ namespace Sinch.Core
         public async Task<TResponse> Send<TRequest, TResponse>(Uri uri, HttpMethod httpMethod, TRequest? request,
             CancellationToken cancellationToken = default, Dictionary<string, IEnumerable<string>>? headers = null)
         {
-            HttpContent? httpContent =
-                request == null ? null : JsonContent.Create(request, options: _jsonSerializerOptions);
+            HttpContent? ContentFactory()
+            {
+                return request == null ? null : JsonContent.Create(request, options: _jsonSerializerOptions);
+            }
 
-
-            return await SendHttpContent<TResponse>(uri: uri, httpMethod: httpMethod, httpContent,
+            return await SendHttpContent<TResponse>(uri: uri, httpMethod: httpMethod, ContentFactory,
                 cancellationToken: cancellationToken, headers: headers);
         }
 
@@ -368,6 +415,69 @@ namespace Sinch.Core
             var runtimeIdentifier = RuntimeInformation.RuntimeIdentifier;
 
             return $"sinch-sdk/{sdkVersion} (csharp/{frameworkDescription}; {runtimeIdentifier};)";
+        }
+
+        private abstract class StreamWrapper : Stream
+        {
+            protected readonly Stream _inner;
+
+            protected StreamWrapper(Stream inner)
+            {
+                _inner = inner;
+            }
+
+            public override bool CanRead => _inner.CanRead;
+            public override bool CanSeek => _inner.CanSeek;
+            public override bool CanWrite => _inner.CanWrite;
+            public override long Length => _inner.Length;
+            public override long Position
+            {
+                get => _inner.Position;
+                set => _inner.Position = value;
+            }
+
+            public override void Flush() => _inner.Flush();
+            public override int Read(byte[] buffer, int offset, int count) => _inner.Read(buffer, offset, count);
+            public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) =>
+                _inner.ReadAsync(buffer, offset, count, cancellationToken);
+            public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) =>
+                _inner.ReadAsync(buffer, cancellationToken);
+            public override long Seek(long offset, SeekOrigin origin) => _inner.Seek(offset, origin);
+            public override void SetLength(long value) => _inner.SetLength(value);
+            public override void Write(byte[] buffer, int offset, int count) => _inner.Write(buffer, offset, count);
+        }
+
+        private sealed class OwnedResponseStream : StreamWrapper
+        {
+            private readonly HttpResponseMessage _owner;
+
+            public OwnedResponseStream(Stream inner, HttpResponseMessage owner) : base(inner)
+            {
+                _owner = owner;
+            }
+
+            public override ValueTask DisposeAsync()
+            {
+                _owner.Dispose();
+                return ValueTask.CompletedTask;
+            }
+
+            protected override void Dispose(bool disposing)
+            {
+                _owner.Dispose();
+            }
+        }
+
+        private sealed class NonDisposingStream : StreamWrapper
+        {
+            public NonDisposingStream(Stream inner) : base(inner)
+            {
+            }
+
+            protected override void Dispose(bool disposing)
+            {
+                // Intentionally do not dispose the wrapped stream. The caller owns it.
+            }
         }
     }
 }

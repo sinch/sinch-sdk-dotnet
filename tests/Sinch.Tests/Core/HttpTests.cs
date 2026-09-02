@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -32,6 +33,46 @@ namespace Sinch.Tests.Core
             _tokenManagerMock = Substitute.For<ISinchAuth>();
             _tokenManagerMock.Scheme.Returns("Bearer");
             _httpMessageHandlerMock = new MockHttpMessageHandler();
+        }
+
+        private sealed class TrackingHttpContent : HttpContent
+        {
+            private readonly byte[] _bytes;
+
+            public bool IsDisposed { get; private set; }
+
+            public TrackingHttpContent(string text)
+            {
+                _bytes = System.Text.Encoding.UTF8.GetBytes(text);
+            }
+
+            protected override Task SerializeToStreamAsync(Stream stream, TransportContext context)
+            {
+                return stream.WriteAsync(_bytes, 0, _bytes.Length);
+            }
+
+            protected override bool TryComputeLength(out long length)
+            {
+                length = _bytes.Length;
+                return true;
+            }
+
+            protected override void Dispose(bool disposing)
+            {
+                IsDisposed = true;
+                base.Dispose(disposing);
+            }
+        }
+
+        private sealed class TrackingStream : MemoryStream
+        {
+            public bool IsDisposed { get; private set; }
+
+            protected override void Dispose(bool disposing)
+            {
+                IsDisposed = true;
+                base.Dispose(disposing);
+            }
         }
 
         [Fact]
@@ -245,6 +286,43 @@ namespace Sinch.Tests.Core
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 
+        // Reproduces https://github.com/sinch/sinch-sdk-dotnet/issues/214 for multipart requests:
+        // the file stream is fully consumed (positioned at EOF) after the first send, so if the
+        // retried request reuses the same StreamContent instance, its body would wrongly come back empty.
+        [Fact]
+        public async Task SendMultipartFormData_RetryAfterExpiredToken_ResendsFileContent()
+        {
+            _tokenManagerMock
+                .GetAuthToken(Arg.Is<bool>(x => !x))
+                .Returns("first_token");
+            _tokenManagerMock
+                .GetAuthToken(true)
+                .Returns("second_token");
+
+            var uri = new Uri("http://hello.fax");
+            _httpMessageHandlerMock.Expect(HttpMethod.Post, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .WithPartialContent("some-pdf-bytes")
+                .Respond(HttpStatusCode.Unauthorized, _expiredHeader, (HttpContent)null);
+
+            _httpMessageHandlerMock.Expect(HttpMethod.Post, uri.ToString())
+                .WithHeaders("Authorization", "Bearer second_token")
+                .WithPartialContent("some-pdf-bytes")
+                .Respond(HttpStatusCode.OK);
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+            var fileStream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes("some-pdf-bytes"));
+            var faxRequest = new SendFaxRequest(fileStream, "file.pdf");
+            faxRequest.SetTo(new List<string>() { "123" });
+
+            Func<Task<EmptyResponse>> response = () => http.SendMultipart<SendFaxRequest, EmptyResponse>(
+                uri, faxRequest, faxRequest.FileContent!, faxRequest.FileName!);
+
+            await response.Should().NotThrowAsync();
+            _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
         [Fact]
         public async Task UnauthorizedAndNoSecondAuthCallIfExpiredHeaderIsNotPresent()
         {
@@ -318,6 +396,283 @@ namespace Sinch.Tests.Core
             // now this call see a latest token is expired and should re fetched
             await op2.Should().NotThrowAsync();
 
+            _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        // Reproduces https://github.com/sinch/sinch-sdk-dotnet/issues/214:
+        // the HttpContent instance is reused across retry iterations in SendHttpContent, but
+        // was "disposed" before retrying request: So the retried request was throwing
+        // ObjectDisposedException
+        [Fact]
+        public async Task RetryAfterExpiredTokenWithBody_RecreatesContentAndSucceeds()
+        {
+            _tokenManagerMock
+                .GetAuthToken(Arg.Is<bool>(x => !x))
+                .Returns("first_token");
+            _tokenManagerMock
+                .GetAuthToken(true)
+                .Returns("second_token");
+
+            var uri = new Uri("http://sinch.com/items");
+
+            _httpMessageHandlerMock.Expect(HttpMethod.Post, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .WithContent(JsonSerializer.Serialize("body"))
+                .Respond(HttpStatusCode.Unauthorized, _expiredHeader, (HttpContent)null);
+
+            _httpMessageHandlerMock.Expect(HttpMethod.Post, uri.ToString())
+                .WithHeaders("Authorization", "Bearer second_token")
+                .WithContent(JsonSerializer.Serialize("body"))
+                .Respond(HttpStatusCode.OK);
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+
+            Func<Task<EmptyResponse>> response = () => http.Send<string, EmptyResponse>(uri, HttpMethod.Post, "body");
+
+            await response.Should().NotThrowAsync();
+            _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
+        public async Task RetryAfterExpiredToken_DisposesRetryingResponse()
+        {
+            _tokenManagerMock
+                .GetAuthToken(Arg.Is<bool>(x => !x))
+                .Returns("first_token");
+            _tokenManagerMock
+                .GetAuthToken(true)
+                .Returns("second_token");
+
+            var firstResponseContent = new TrackingHttpContent("expired");
+            var uri = new Uri("http://sinch.com/items");
+
+            _httpMessageHandlerMock.Expect(HttpMethod.Post, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .Respond(_ => new HttpResponseMessage(HttpStatusCode.Unauthorized)
+                {
+                    Content = firstResponseContent,
+                    Headers =
+                    {
+                        { "www-authenticate", "Bearer error=\"invalid_token\", error_description=\"Jwt expired\"" }
+                    }
+                });
+
+            _httpMessageHandlerMock.Expect(HttpMethod.Post, uri.ToString())
+                .WithHeaders("Authorization", "Bearer second_token")
+                .Respond(HttpStatusCode.OK);
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+
+            await http.Send<string, EmptyResponse>(uri, HttpMethod.Post, "body");
+
+            firstResponseContent.IsDisposed.Should().BeTrue();
+            _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
+        public async Task UnauthorizedNoRetry_DisposesResponseEvenWhenThrowing()
+        {
+            _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
+                .Returns("first_token");
+
+            var uri = new Uri("http://sinch.com/items");
+            var failureContent = new TrackingHttpContent("{}");
+
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .Respond(_ => new HttpResponseMessage(HttpStatusCode.Unauthorized)
+                {
+                    Content = failureContent
+                });
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+
+            Func<Task<EmptyResponse>> response = () => http.Send<EmptyResponse>(uri, HttpMethod.Get);
+
+            await response.Should().ThrowAsync<SinchApiException>();
+            failureContent.IsDisposed.Should().BeTrue();
+            _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
+        public async Task SendMultipartFormData_DoesNotDisposeCallerOwnedStream()
+        {
+            _tokenManagerMock
+                .GetAuthToken(Arg.Any<bool>())
+                .Returns("first_token");
+
+            var uri = new Uri("http://hello.fax");
+            var trackingStream = new TrackingStream();
+            var faxRequest = new SendFaxRequest(trackingStream, "file.pdf");
+            faxRequest.SetTo(new List<string>() { "123" });
+
+            _httpMessageHandlerMock.Expect(HttpMethod.Post, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .Respond(HttpStatusCode.OK);
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+
+            await http.SendMultipart<SendFaxRequest, EmptyResponse>(uri, faxRequest, faxRequest.FileContent!, faxRequest.FileName!);
+
+            trackingStream.IsDisposed.Should().BeFalse();
+            _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
+        public async Task PdfResponse_StreamsContentAndDisposesOnResult()
+        {
+            _tokenManagerMock
+                .GetAuthToken(Arg.Any<bool>())
+                .Returns("first_token");
+
+            var uri = new Uri("http://sinch.com/items");
+            var trackingContent = new TrackingHttpContent("pdf-bytes");
+            trackingContent.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+            trackingContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = "report.pdf"
+            };
+
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .Respond(_ => new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = trackingContent
+                });
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+
+            var contentResult = await http.Send<ContentResult>(uri, HttpMethod.Get);
+
+            contentResult.FileName.Should().Be("report.pdf");
+
+            using var reader = new StreamReader(contentResult.Stream, System.Text.Encoding.UTF8, leaveOpen: true);
+            (await reader.ReadToEndAsync()).Should().Be("pdf-bytes");
+
+            trackingContent.IsDisposed.Should().BeFalse();
+
+            contentResult.Dispose();
+
+            trackingContent.IsDisposed.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task PdfResponse_DisposeAsync_DisposesUnderlyingResponse()
+        {
+            _tokenManagerMock
+                .GetAuthToken(Arg.Any<bool>())
+                .Returns("first_token");
+
+            var uri = new Uri("http://sinch.com/items");
+            var trackingContent = new TrackingHttpContent("pdf-bytes");
+            trackingContent.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+            trackingContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = "report.pdf"
+            };
+
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .Respond(_ => new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = trackingContent
+                });
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+
+            var contentResult = await http.Send<ContentResult>(uri, HttpMethod.Get);
+
+            trackingContent.IsDisposed.Should().BeFalse();
+
+            await contentResult.DisposeAsync();
+
+            trackingContent.IsDisposed.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task UnexpectedContentType_ThrowsAndDisposesResponse()
+        {
+            _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
+                .Returns("first_token");
+
+            var uri = new Uri("http://sinch.com/items");
+            var textContent = new TrackingHttpContent("plain text, not json or pdf");
+            textContent.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
+
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .Respond(_ => new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = textContent
+                });
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+
+            Func<Task<string>> response = () => http.Send<string>(uri, HttpMethod.Get);
+
+            await response.Should().ThrowAsync<InvalidOperationException>();
+            textContent.IsDisposed.Should().BeTrue();
+            _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
+        public async Task JsonResponse_DisposesHttpContent()
+        {
+            _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
+                .Returns("first_token");
+
+            var uri = new Uri("http://sinch.com/items");
+            var jsonContent = new TrackingHttpContent(JsonSerializer.Serialize("json-value"));
+            jsonContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .Respond(_ => new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = jsonContent
+                });
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+
+            var response = await http.Send<string>(uri, HttpMethod.Get);
+
+            response.Should().Be("json-value");
+            jsonContent.IsDisposed.Should().BeTrue();
+            _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
+        }
+
+        [Fact]
+        public async Task EmptyResponse_DisposesHttpContent()
+        {
+            _tokenManagerMock.GetAuthToken(Arg.Any<bool>())
+                .Returns("first_token");
+
+            var uri = new Uri("http://sinch.com/items");
+            var emptyContent = new TrackingHttpContent("{}");
+            emptyContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            _httpMessageHandlerMock.Expect(HttpMethod.Get, uri.ToString())
+                .WithHeaders("Authorization", "Bearer first_token")
+                .Respond(_ => new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = emptyContent
+                });
+
+            var httpClient = new HttpClient(_httpMessageHandlerMock);
+            var http = new Http(_tokenManagerMock, httpClient, null, new SnakeCaseNamingPolicy());
+
+            var response = await http.Send<EmptyResponse>(uri, HttpMethod.Get);
+
+            response.Should().NotBeNull();
+            emptyContent.IsDisposed.Should().BeTrue();
             _httpMessageHandlerMock.VerifyNoOutstandingExpectation();
         }
 

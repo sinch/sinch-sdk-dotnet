@@ -461,7 +461,7 @@ You can find:
 
 ## Changelog & Migration
 
-For information about the latest changes in the SDK, please refer to the [GitHub releases](https://github.com/sinch/sinch-sdk-dotnet/releases) page.
+For information about the latest changes in the SDK, please refer to the [CHANGELOG](https://github.com/sinch/sinch-sdk-dotnet/blob/main/CHANGELOG.md) file.
 
 ## License
 
