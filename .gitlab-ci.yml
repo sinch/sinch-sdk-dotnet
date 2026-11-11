@@ -1,0 +1,147 @@
+# CI for the internal .NET SDK repository on GitLab.
+# Public CI, NuGet publishing and documentation upload stay on GitHub
+# (.github/workflows), in the public repository sinch/sinch-sdk-dotnet.
+#
+# CI/CD variables (Settings > CI/CD > Variables):
+#   MOCKSERVER_REPO_TOKEN        Read-only GitHub token for sinch/sinch-sdk-mockserver   (masked, hidden; not protected, because build runs on every branch)
+#   GITHUB_SYNC_APP_CLIENT_ID    Client ID of the sinch-internal-repo-sync-bot GitHub App (protected)
+#   GITHUB_SYNC_APP_PRIVATE_KEY  Private key of that App                                 (File, protected)
+#   GITLAB_SYNC_TOKEN            Project access token, Maintainer, write_repository      (masked, hidden, protected)
+#
+# Pipelines:
+#   push to any branch          build
+#   push to main or v*          build, then sync-to-public if the commit is an MR merge
+#   SYNC_FROM_PUBLIC == "true"  sync-from-public only. Set by the nightly schedule and
+#                               by the trigger in the public repo (notify-private-repo.yml)
+
+workflow:
+  rules:
+    # Branch pipelines only, like "on: push" on GitHub. MR pipelines would run
+    # the build twice.
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - when: always
+
+default:
+  tags: [default]
+
+variables:
+  SDK_NAME: sinch-sdk-dotnet
+  PUBLIC_REPO: sinch/sinch-sdk-dotnet
+
+stages:
+  - build
+  - sync
+
+build:
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:8.0
+  timeout: 20m
+  rules:
+    - if: $SYNC_FROM_PUBLIC == "true"
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"
+  variables:
+    # GitVersion needs the full history and tags.
+    GIT_DEPTH: 0
+  before_script:
+    # The SDK image ships the .NET 8 runtime. The library and the unit tests
+    # also target net6.0 and net7.0, so install those runtimes as well.
+    - curl -sSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh
+    - bash /tmp/dotnet-install.sh --runtime dotnet --channel 6.0 --install-dir /usr/share/dotnet
+    - bash /tmp/dotnet-install.sh --runtime dotnet --channel 7.0 --install-dir /usr/share/dotnet
+    # Pinned to 5.11.x, see https://github.com/GitTools/GitVersion/issues/3614
+    - dotnet tool install --global GitVersion.Tool --version 5.11.1
+    - export PATH="$PATH:$HOME/.dotnet/tools"
+  script:
+    # GitLab checks out a detached HEAD. GitVersion needs the branch to exist locally.
+    - if [ -n "${CI_COMMIT_BRANCH:-}" ]; then git checkout -B "$CI_COMMIT_BRANCH" "$CI_COMMIT_SHA"; fi
+    - SEMVER=$(dotnet-gitversion /showvariable SemVer)
+    - echo "Version $SEMVER"
+
+    - ': "${MOCKSERVER_REPO_TOKEN:?Set MOCKSERVER_REPO_TOKEN in Settings > CI/CD > Variables}"'
+    - git clone --depth 1 "https://x-access-token:${MOCKSERVER_REPO_TOKEN}@github.com/sinch/sinch-sdk-mockserver.git" sinch-sdk-mockserver
+    - |
+      features=tests/Sinch.Tests.Features/features
+      mkdir -p $features/numbers $features/sms $features/voice $features/verification
+
+      # Copy the feature files we support
+      cp sinch-sdk-mockserver/features/numbers/available-regions.feature $features/numbers/
+      cp sinch-sdk-mockserver/features/numbers/callback-configuration.feature $features/numbers/
+      cp sinch-sdk-mockserver/features/numbers/numbers.feature $features/numbers/
+      cp sinch-sdk-mockserver/features/numbers/webhooks.feature $features/numbers/
+
+      cp sinch-sdk-mockserver/features/sms/batches.feature $features/sms/
+      cp sinch-sdk-mockserver/features/sms/batches_servicePlanId.feature $features/sms/
+      cp sinch-sdk-mockserver/features/sms/delivery-reports.feature $features/sms/
+      cp sinch-sdk-mockserver/features/sms/delivery-reports_servicePlanId.feature $features/sms/
+      cp sinch-sdk-mockserver/features/sms/groups.feature $features/sms/
+      cp sinch-sdk-mockserver/features/sms/groups_servicePlanId.feature $features/sms/
+      cp sinch-sdk-mockserver/features/sms/inbounds.feature $features/sms/
+      cp sinch-sdk-mockserver/features/sms/inbounds_servicePlanId.feature $features/sms/
+
+      cp sinch-sdk-mockserver/features/voice/*.feature $features/voice/
+      cp sinch-sdk-mockserver/features/verification/*.feature $features/verification/
+
+    - dotnet restore
+    - dotnet format --verify-no-changes --verbosity diagnostic
+    - dotnet build -p:Version=$SEMVER --configuration Release --no-restore
+    - dotnet test tests/Sinch.Tests --no-restore --verbosity normal
+    - dotnet test tests/Sinch.Tests.Features --no-restore --verbosity normal
+    - dotnet pack --configuration Release src/Sinch -p:PackageVersion=$SEMVER -p:Version=$SEMVER --no-restore
+  artifacts:
+    name: package
+    paths:
+      - src/Sinch/bin/Release/*.nupkg
+    expire_in: 30 days
+
+# Replaces .github/workflows/sync-to-public.yml. When an MR is merged, push the
+# target branch to the public repository. GitLab has no "MR merged" event, so
+# the rule matches the merge commit, whose message always contains
+# "See merge request". Commits pushed by the sync bot are skipped, so changes
+# that came from the public repo are not pushed back.
+# Only protected branches (main, v*) are synced, because the App key is a
+# protected variable that pipelines on other branches cannot read.
+sync-to-public:
+  stage: sync
+  image: alpine:3.20
+  needs: []
+  resource_group: sync-to-public-$CI_COMMIT_BRANCH
+  rules:
+    - if: $SYNC_FROM_PUBLIC == "true"
+      when: never
+    - if: $CI_COMMIT_REF_PROTECTED != "true"
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH && $CI_COMMIT_MESSAGE =~ /See merge request / && $GITLAB_USER_LOGIN !~ /^project_\d+_bot/
+    # Manual recovery: Run pipeline on main or v* with SYNC_TO_PUBLIC=true.
+    - if: $CI_PIPELINE_SOURCE == "web" && $SYNC_TO_PUBLIC == "true"
+  variables:
+    GIT_DEPTH: 0
+  before_script:
+    - apk add --no-cache git curl jq openssl
+  script:
+    - TOKEN=$(sh .gitlab/scripts/github-app-token.sh sinch "$SDK_NAME")
+    - echo "Syncing $CI_COMMIT_BRANCH ($CI_COMMIT_SHORT_SHA) to $PUBLIC_REPO"
+    # No force push, so public history is never overwritten if the repos diverge.
+    - git push "https://x-access-token:${TOKEN}@github.com/${PUBLIC_REPO}.git" "${CI_COMMIT_SHA}:refs/heads/${CI_COMMIT_BRANCH}"
+
+# Replaces .github/workflows/sync-from-public.yml. Copies every branch and tag
+# from the public repository into this one.
+sync-from-public:
+  stage: sync
+  image: alpine:3.20
+  needs: []
+  resource_group: sync-from-public
+  rules:
+    - if: $SYNC_FROM_PUBLIC == "true"
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - apk add --no-cache git
+  script:
+    - ': "${GITLAB_SYNC_TOKEN:?Set GITLAB_SYNC_TOKEN in Settings > CI/CD > Variables}"'
+    - rm -rf public_repo
+    - git clone --bare "https://github.com/${PUBLIC_REPO}.git" public_repo
+    - cd public_repo
+    - git push --all "https://oauth2:${GITLAB_SYNC_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+    - git push --tags "https://oauth2:${GITLAB_SYNC_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
